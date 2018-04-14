@@ -15,6 +15,7 @@ typedef int socklen_t;
 #include <errno.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <cstdarg>
 //typedef void* receiveBufer_t;
 typedef int SOCKET;
 const int NO_ERROR = 0;
@@ -50,6 +51,8 @@ using std::unordered_set;
 
 #include "ActionServerMath.h"
 
+#include "Utility.h"
+
 #include "SocketAddress.h"
 #include "UDPSocket.h"
 
@@ -63,4 +66,9 @@ using std::unordered_set;
 
 #include "Timing.h"
 
+#include "ClientProxy.h"
 #include "NetworkManager.h"
+
+
+#include "NetworkManagerServer.h"
+#include "Server.h"

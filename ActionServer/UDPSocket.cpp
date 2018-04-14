@@ -40,9 +40,9 @@ void UDPSocket::ReportError(const char* inOperationDesc)
 		0, NULL);
 
 
-	//LOG("Error %s: %d- %s", inOperationDesc, errorNum, lpMsgBuf);
+	LOG("Error %s: %d- %s", inOperationDesc, errorNum, lpMsgBuf);
 #else
-	//LOG("Error: %hs", inOperationDesc);
+	LOG("Error: %hs", inOperationDesc);
 #endif
 }
 
@@ -89,6 +89,7 @@ int UDPSocket::SendTo(const void* inToSend, int inLength, const SocketAddress& i
 		static_cast<const char*>(inToSend),
 		inLength,
 		0, &inToAddress.mSockAddr, inToAddress.GetSize());
+
 	if (byteSentCount <= 0)
 	{
 		//we'll return error as negative number to indicate less than requested amount of bytes sent...
@@ -125,7 +126,7 @@ int UDPSocket::ReceiveFrom(void* inToReceive, int inMaxLength, SocketAddress& ou
 		{
 			//this can happen if a client closed and we haven't DC'd yet.
 			//this is the ICMP message being sent back saying the port on that computer is closed
-			//LOG("Connection reset from %s", outFromAddress.ToString().c_str());
+			LOG("Connection reset from %s", outFromAddress.ToString().c_str());
 			return -WSAECONNRESET;
 		}
 		else

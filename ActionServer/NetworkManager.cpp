@@ -22,7 +22,7 @@ bool NetworkManager::Init(uint16_t inPort)
 	SocketAddress ownAddress(INADDR_ANY, inPort);
 	mSocket->Bind(ownAddress);
 
-	//LOG("Initializing NetworkManager at port %d", inPort);
+	LOG("Initializing NetworkManager at port %d", inPort);
 
 	//mBytesReceivedPerSecond = WeightedTimedMovingAverage(1.f);
 	//mBytesSentPerSecond = WeightedTimedMovingAverage(1.f);
@@ -99,7 +99,7 @@ void NetworkManager::ReadIncomingPacketsIntoQueue()
 			}
 			else
 			{
-				//LOG( "Dropped packet!", 0 );
+				LOG( "Dropped packet!", 0 );
 				//dropped!
 			}
 		}
@@ -123,7 +123,7 @@ void NetworkManager::ProcessQueuedPackets()
 		ReceivedPacket& nextPacket = mPacketQueue.front();
 		if (Timing::sInstance.GetTimef() > nextPacket.GetReceivedTime())
 		{
-			//ProcessPacket( nextPacket.GetPacketBuffer(), nextPacket.GetFromAddress() );
+			ProcessPacket( nextPacket.GetPacketBuffer(), nextPacket.GetFromAddress() );
 			mPacketQueue.pop();
 		}
 		else
@@ -135,10 +135,12 @@ void NetworkManager::ProcessQueuedPackets()
 
 }
 
-
-NetworkManager::ReceivedPacket::ReceivedPacket( float inReceivedTime, InputMemoryBitStream& ioInputMemoryBitStream, const SocketAddress& inFromAddress ) :
-	mReceivedTime( inReceivedTime ),
-	mFromAddress( inFromAddress ),
-	mPacketBuffer( ioInputMemoryBitStream )
+void NetworkManager::SendPacket( const OutputMemoryBitStream& inOutputStream, const SocketAddress& inFromAddress )
 {
+	int sentByteCount = mSocket->SendTo( inOutputStream.GetBufferPtr(), inOutputStream.GetByteLength(), inFromAddress );
+	if (sentByteCount > 0)
+	{
+		mBytesSentThisFrame += sentByteCount;
+	}
 }
+

@@ -10,7 +10,7 @@ project (${PROJ_NAME})
 
 
 #设置执行文件输出目录
-SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
+#SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 #设置库输出路径
 SET(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 
@@ -27,16 +27,23 @@ source_group("Include" FILES ${CURRENT_HEADERS})
 add_executable(${PROJ_NAME} ${DIR_SRCS} ${CURRENT_HEADERS})
 
 IF(WIN32) # Check if we are on Windows
-  if(MSVC) # Check if we are using the Visual Studio compiler
-    set_target_properties(${PROJ_NAME} PROPERTIES LINK_FLAGS "/SUBSYSTEM:WINDOWS") # works for all build modes
-	  target_link_libraries(${PROJ_NAME} wsock32 ws2_32)
-  elseif(CMAKE_COMPILER_IS_GNUCXX)
-    # SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mwindows") # Not tested
-  else()
-    message(SEND_ERROR "You are using an unsupported Windows compiler! (Not MSVC or GCC)")
-  endif()
+	if(MSVC) # Check if we are using the Visual Studio compiler
+		set_target_properties(${PROJ_NAME} PROPERTIES LINK_FLAGS "/SUBSYSTEM:WINDOWS") # works for all build modes
+		target_link_libraries(${PROJ_NAME} wsock32 ws2_32)
+        set_target_properties(${PROJ_NAME}
+            PROPERTIES
+            COMPILE_FLAGS /wd"4819"
+        )
+  	elseif(CMAKE_COMPILER_IS_GNUCXX)
+	  	# SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mwindows") # Not tested
+  	else()
+	  	message(SEND_ERROR "You are using an unsupported Windows compiler! (Not MSVC or GCC)")
+  	endif()
 elseif(UNIX)
-  # Nothing special required
+  	# Nothing special required
+    set(CMAKE_BUILD_TYPE "Debug")
+    set(CMAKE_CXX_FLAGS_DEBUG "$ENV{CXXFLAGS} -O0 -Wall -g -ggdb")
+    set(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall")
 else()
-  message(SEND_ERROR "You are on an unsupported platform! (Not Win32 or Unix)")
+  	message(SEND_ERROR "You are on an unsupported platform! (Not Win32 or Unix)")
 ENDIF()

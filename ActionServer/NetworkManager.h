@@ -1,6 +1,3 @@
-//#pragma once
-//#include "ActionServerShared.h"
-
 class NetworkManager
 {
 public:
@@ -16,15 +13,25 @@ public:
 	bool	Init( uint16_t inPort );
 	void	ProcessIncomingPackets();
 
-	virtual void	ProcessPacket( InputMemoryBitStream& inInputStream, const SocketAddress& inFromAddress ) {}
+	virtual void	ProcessPacket( InputMemoryBitStream& inInputStream, const SocketAddress& inFromAddress ) = 0;
 	virtual void HandleConnectionReset( const SocketAddress& inFromAddress ) {}
+
+	void	SendPacket( const OutputMemoryBitStream& inOutputStream, const SocketAddress& inFromAddress );
+
+	void	SetDropPacketChance( float inChance ) { mDropPacketChance = inChance; }
+	void	SetSimulatedLatency( float inLatency ) { mSimulatedLatency = inLatency; }
 
 private:
 
 	class ReceivedPacket
 	{
 	public:
-		ReceivedPacket( float inReceivedTime, InputMemoryBitStream& inInputMemoryBitStream, const SocketAddress& inAddress );
+		ReceivedPacket( float inReceivedTime, InputMemoryBitStream& ioInputMemoryBitStream, const SocketAddress& inFromAddress ) :
+		mReceivedTime( inReceivedTime ),
+		mFromAddress( inFromAddress ),
+		mPacketBuffer( ioInputMemoryBitStream )
+		{
+		}
 
 		const	SocketAddress&			GetFromAddress()	const { return mFromAddress; }
 		float					GetReceivedTime()	const { return mReceivedTime; }
