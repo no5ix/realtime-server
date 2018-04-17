@@ -1,3 +1,5 @@
+typedef unordered_map< int, GameObjectPtr > IntToGameObjectMap;
+
 class NetworkManager
 {
 public:
@@ -20,6 +22,12 @@ public:
 
 	void	SetDropPacketChance( float inChance ) { mDropPacketChance = inChance; }
 	void	SetSimulatedLatency( float inLatency ) { mSimulatedLatency = inLatency; }
+
+	inline	GameObjectPtr	GetGameObject( int inNetworkId ) const;
+
+protected:
+
+	IntToGameObjectMap		mNetworkIdToGameObjectMap;
 
 private:
 
@@ -61,3 +69,16 @@ private:
 	float						mDropPacketChance;
 	float						mSimulatedLatency;
 };
+
+inline	GameObjectPtr NetworkManager::GetGameObject( int inNetworkId ) const
+{
+	auto gameObjectIt = mNetworkIdToGameObjectMap.find( inNetworkId );
+	if (gameObjectIt != mNetworkIdToGameObjectMap.end())
+	{
+		return gameObjectIt->second;
+	}
+	else
+	{
+		return GameObjectPtr();
+	}
+}

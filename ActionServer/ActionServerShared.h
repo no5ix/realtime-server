@@ -49,6 +49,8 @@ using std::unordered_map;
 using std::string;
 using std::unordered_set;
 
+class GameObject;
+
 #include "ActionServerMath.h"
 
 #include "Utility.h"
@@ -64,7 +66,18 @@ using std::unordered_set;
 
 #include "MemoryBitStream.h"
 
+#include "InputState.h"
+#include "Move.h"
+#include "MoveList.h"
+
+#include "GameObject.h"
+#include "GameObjectRegistry.h"
+#include "Character.h"
+#include "World.h"
 #include "Timing.h"
+
+#include "ReplicationCommand.h"
+#include "ReplicationManagerServer.h"
 
 #include "ClientProxy.h"
 #include "NetworkManager.h"
@@ -72,3 +85,5 @@ using std::unordered_set;
 
 #include "NetworkManagerServer.h"
 #include "Server.h"
+
+#include "CharacterServer.h"

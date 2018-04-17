@@ -1,4 +1,5 @@
 #include "ActionServerPCH.h"
+#include <time.h>
 
 
 
@@ -12,21 +13,6 @@ bool Server::StaticInit()
 	sInstance.reset( new Server() );
 
 	return true;
-}
-
-
-void Server::DoFrame()
-{
-	NetworkManagerServer::sInstance->ProcessIncomingPackets();
-
-	//NetworkManagerServer::sInstance->CheckForDisconnects();
-
-	//NetworkManagerServer::sInstance->RespawnCats();
-
-	//Engine::DoFrame();
-
-	//NetworkManagerServer::sInstance->SendOutgoingPackets();
-
 }
 
 int Server::Run()
@@ -43,8 +29,34 @@ int Server::Run()
 	return 0;
 }
 
+
+void Server::DoFrame()
+{
+	NetworkManagerServer::sInstance->ProcessIncomingPackets();
+
+	//NetworkManagerServer::sInstance->CheckForDisconnects();
+
+	//NetworkManagerServer::sInstance->RespawnCats();
+
+	//Engine::DoFrame();
+
+	NetworkManagerServer::sInstance->SendOutgoingPackets();
+
+}
+
 Server::Server()
 {
+
+
+	srand( static_cast< uint32_t >( time( nullptr ) ) );
+
+	GameObjectRegistry::StaticInit();
+
+
+	World::StaticInit();
+
+	GameObjectRegistry::sInstance->RegisterCreationFunction( 'CHAR', CharacterServer::StaticCreate );
+
 	InitNetworkManager();
 
 	//NetworkManagerServer::sInstance->SetDropPacketChance( 0.8f );
@@ -74,8 +86,18 @@ bool Server::InitNetworkManager()
 void Server::HandleNewClient( ClientProxyPtr inClientProxy )
 {
 
-	//int playerId = inClientProxy->GetPlayerId();
+	int playerId = inClientProxy->GetPlayerId();
 
 	//ScoreBoardManager::sInstance->AddEntry( playerId, inClientProxy->GetName() );
-	//SpawnCatForPlayer( playerId );
+	SpawnCharacterForPlayer( playerId );
+}
+
+void Server::SpawnCharacterForPlayer( int inPlayerId )
+{
+	CharacterPtr character = std::static_pointer_cast< Character >( GameObjectRegistry::sInstance->CreateGameObject( 'CHAR' ) );
+	//character->SetColor( ScoreBoardManager::sInstance->GetEntry( inPlayerId )->GetColor() );
+	character->SetPlayerId( inPlayerId );
+	//gotta pick a better spawn location than this...
+	character->SetLocation( Vector3( 1.f - static_cast< float >( inPlayerId ), 0.f, 0.f ) );
+
 }

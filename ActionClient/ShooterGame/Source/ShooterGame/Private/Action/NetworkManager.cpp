@@ -18,6 +18,7 @@ NetworkManager::NetworkManager() :
 	mState( NCS_Uninitialized )
 {
 	mSocket = NULL;
+	mReplicationManagerClient = NewObject<UReplicationManagerClientObj>();
 }
 
 void NetworkManager::StaticInit( const FString& inIP, int inPort, const FString& inPlayerName )
@@ -162,13 +163,17 @@ void NetworkManager::HandleStatePacket( InputMemoryBitStream& inInputStream )
 	{
 		ReadLastMoveProcessedOnServerTimestamp( inInputStream );
 
+		UE_LOG( LogTemp, Log, TEXT( "\n\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" ) );
+		UE_LOG( LogTemp, Log, TEXT( "****ReadLastMoveProcessedOnServerTimestamp;****  Successfully!!!" ) );
+		UE_LOG( LogTemp, Log, TEXT( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n\n" ) );
+
 		//old
 		//HandleGameObjectState( inPacketBuffer );
 		//HandleScoreBoardState( inInputStream );
 
 
 		//tell the replication manager to handle the rest...
-		mReplicationManagerClient.Read( inInputStream );
+		mReplicationManagerClient->Read( inInputStream );
 	}
 }
 
@@ -208,6 +213,11 @@ void NetworkManager::ProcessPacket( InputMemoryBitStream& inInputStream )
 	case kStateCC:
 		//if (mDeliveryNotificationManager.ReadAndProcessState( inInputStream ))
 		//{
+
+		UE_LOG( LogTemp, Log, TEXT( "\n\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" ) );
+		UE_LOG( LogTemp, Log, TEXT( "****HandleStatePacket;****  Successfully!!!" ) );
+		UE_LOG( LogTemp, Log, TEXT( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n\n" ) );
+
 			HandleStatePacket( inInputStream );
 		//}
 		break;

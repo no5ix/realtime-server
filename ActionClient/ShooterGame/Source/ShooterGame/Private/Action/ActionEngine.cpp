@@ -31,7 +31,8 @@ void UActionEngine::BeginPlay()
 	// ...
 
 	NetworkManager::StaticInit( ip, port, player_name );
-	
+
+	//NetworkManager::sInstance->mReplicationManagerClient = NewObject<UReplicationManagerClientObj>();
 }
 
 

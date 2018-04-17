@@ -7,7 +7,7 @@
 #include <list>
 #include "Networking.h"
 #include "MemoryBitStream.h"
-#include "ReplicationManagerClient.h"
+#include "ReplicationManagerClientObj.h"
 
 /**
  * 
@@ -45,6 +45,7 @@ public:
 	void	SetDropPacketChance( float inChance ) { mDropPacketChance = inChance; }
 	void	SetSimulatedLatency( float inLatency ) { mSimulatedLatency = inLatency; }
 	int		GetPlayerId() const	{ return mPlayerId; }
+
 private:
 
 	NetworkManager();
@@ -67,7 +68,7 @@ private:
 
 
 private:
-	ReplicationManagerClient	mReplicationManagerClient;
+	UReplicationManagerClientObj*	mReplicationManagerClient;
 
 	TSharedPtr<FInternetAddr>	mRemoteAddr;
 	FSocket* mSocket;

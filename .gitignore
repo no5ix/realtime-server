@@ -166,3 +166,20 @@ $RECYCLE.BIN/
   
 # VisualStudioCode  
 .vscode  
+
+ActionClient/*
+
+!ActionClient/ShooterGame/
+ActionClient/ShooterGame/*
+!ActionClient/ShooterGame/Source/
+ActionClient/ShooterGame/Source/*
+!ActionClient/ShooterGame/Source/ShooterGame/
+ActionClient/ShooterGame/Source/ShooterGame/*
+
+!ActionClient/ShooterGame/Source/ShooterGame/Public/
+ActionClient/ShooterGame/Source/ShooterGame/Public/*
+!ActionClient/ShooterGame/Source/ShooterGame/Public/Action/
+
+!ActionClient/ShooterGame/Source/ShooterGame/Private/
+ActionClient/ShooterGame/Source/ShooterGame/Private/*
+!ActionClient/ShooterGame/Source/ShooterGame/Private/Action/

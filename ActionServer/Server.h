@@ -13,7 +13,7 @@ public:
 	//void HandleLostClient( ClientProxyPtr inClientProxy );
 
 	//RoboCatPtr	GetCatForPlayer( int inPlayerId );
-	//void	SpawnCatForPlayer( int inPlayerId );
+	void	SpawnCharacterForPlayer( int inPlayerId );
 
 
 private:
@@ -21,8 +21,8 @@ private:
 
 	bool	InitNetworkManager();
 
-//private:
+private:
 
-	//bool	mShouldKeepRunning;
+	bool	mShouldKeepRunning;
 
 };

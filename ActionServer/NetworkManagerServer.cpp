@@ -52,12 +52,30 @@ void NetworkManagerServer::ProcessPacket( ClientProxyPtr inClientProxy, InputMem
 	case kInputCC:
 		//if (inClientProxy->GetDeliveryNotificationManager().ReadAndProcessState( inInputStream ))
 		//{
-		//	HandleInputPacket( inClientProxy, inInputStream );
+			HandleInputPacket( inClientProxy, inInputStream );
 		//}
 		break;
 	default:
 		LOG( "Unknown packet type received from %s", inClientProxy->GetSocketAddress().ToString().c_str() );
 		break;
+	}
+}
+
+void NetworkManagerServer::HandleInputPacket( ClientProxyPtr inClientProxy, InputMemoryBitStream& inInputStream )
+{
+	uint32_t moveCount = 0;
+	Move move;
+	inInputStream.Read( moveCount, 2 );
+
+	for (; moveCount > 0; --moveCount)
+	{
+		if (move.Read( inInputStream ))
+		{
+			if (inClientProxy->GetUnprocessedMoveList().AddMove( move ))
+			{
+				inClientProxy->SetIsLastMoveTimestampDirty( true );
+			}
+		}
 	}
 }
 
@@ -86,10 +104,10 @@ void NetworkManagerServer::HandlePacketFromNewClient( InputMemoryBitStream& inIn
 		SendWelcomePacket( newClientProxy );
 
 		//and now init the replication manager with everything we know about!
-		//for (const auto& pair : mNetworkIdToGameObjectMap)
-		//{
-		//	newClientProxy->GetReplicationManagerServer().ReplicateCreate( pair.first, pair.second->GetAllStateMask() );
-		//}
+		for (const auto& pair : mNetworkIdToGameObjectMap)
+		{
+			newClientProxy->GetReplicationManagerServer().ReplicateCreate( pair.first, pair.second->GetAllStateMask() );
+		}
 
 
 		LOG( "a new client at socket %s", inFromAddress.ToString().c_str() );
@@ -111,4 +129,101 @@ void NetworkManagerServer::SendWelcomePacket( ClientProxyPtr inClientProxy )
 	LOG( "Server Welcoming, new client '%s' as player %d", inClientProxy->GetName().c_str(), inClientProxy->GetPlayerId() );
 
 	SendPacket( welcomePacket, inClientProxy->GetSocketAddress() );
+}
+
+void NetworkManagerServer::RegisterGameObject( GameObjectPtr inGameObject )
+{
+	//assign network id
+	int newNetworkId = GetNewNetworkId();
+	inGameObject->SetNetworkId( newNetworkId );
+
+	//add mapping from network id to game object
+	mNetworkIdToGameObjectMap[newNetworkId] = inGameObject;
+
+	//tell all client proxies this is new...
+	for (const auto& pair : mAddressToClientMap)
+	{
+		pair.second->GetReplicationManagerServer().ReplicateCreate( newNetworkId, inGameObject->GetAllStateMask() );
+	}
+}
+
+
+void NetworkManagerServer::UnregisterGameObject( GameObject* inGameObject )
+{
+	int networkId = inGameObject->GetNetworkId();
+	mNetworkIdToGameObjectMap.erase( networkId );
+
+	//tell all client proxies to STOP replicating!
+	//tell all client proxies this is new...
+	for (const auto& pair : mAddressToClientMap)
+	{
+		pair.second->GetReplicationManagerServer().ReplicateDestroy( networkId );
+	}
+}
+
+int NetworkManagerServer::GetNewNetworkId()
+{
+	int toRet = mNewNetworkId++;
+	if (mNewNetworkId < toRet)
+	{
+		LOG( "Network ID Wrap Around!!! You've been playing way too long...", 0 );
+	}
+
+	return toRet;
+
+}
+
+void NetworkManagerServer::SendOutgoingPackets()
+{
+	//let's send a client a state packet whenever their move has come in...
+	for (auto it = mAddressToClientMap.begin(), end = mAddressToClientMap.end(); it != end; ++it)
+	{
+		ClientProxyPtr clientProxy = it->second;
+		//if (clientProxy->IsLastMoveTimestampDirty())
+		//{
+			SendStatePacketToClient( clientProxy );
+		//}
+	}
+}
+
+void NetworkManagerServer::SendStatePacketToClient( ClientProxyPtr inClientProxy )
+{
+	//build state packet
+	OutputMemoryBitStream	statePacket;
+	static bool tempOnceTest = false;
+	if (!tempOnceTest)
+	{
+		tempOnceTest = true;
+		//it's state!
+		statePacket.Write( kStateCC );
+
+		WriteLastMoveTimestampIfDirty( statePacket, inClientProxy );
+
+		//AddScoreBoardStateToPacket( statePacket );
+
+		inClientProxy->GetReplicationManagerServer().Write( statePacket );
+		SendPacket( statePacket, inClientProxy->GetSocketAddress() );
+	}
+	////it's state!
+	//statePacket.Write( kStateCC );
+
+	//WriteLastMoveTimestampIfDirty( statePacket, inClientProxy );
+
+	////AddScoreBoardStateToPacket( statePacket );
+
+	//inClientProxy->GetReplicationManagerServer().Write( statePacket );
+	//SendPacket( statePacket, inClientProxy->GetSocketAddress() );
+
+}
+
+void NetworkManagerServer::WriteLastMoveTimestampIfDirty( OutputMemoryBitStream& inOutputStream, ClientProxyPtr inClientProxy )
+{
+	//first, dirty?
+	bool isTimestampDirty = inClientProxy->IsLastMoveTimestampDirty();
+	inOutputStream.Write( isTimestampDirty );
+	if (isTimestampDirty)
+	{
+		inOutputStream.Write( inClientProxy->GetUnprocessedMoveList().GetLastMoveTimestamp() );
+		inClientProxy->SetIsLastMoveTimestampDirty( false );
+	}
 }

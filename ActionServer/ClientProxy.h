@@ -8,17 +8,17 @@ public:
 	int				GetPlayerId()		const { return mPlayerId; }
 	const	string&		GetName()			const { return mName; }
 
-	//void			SetInputState( const InputState& inInputState ) { mInputState = inInputState; }
-	//const	InputState&		GetInputState()		const { return mInputState; }
+	void			SetInputState( const InputState& inInputState ) { mInputState = inInputState; }
+	const	InputState&		GetInputState()		const { return mInputState; }
 
 	void			UpdateLastPacketTime();
 	float			GetLastPacketFromClientTime()	const { return mLastPacketFromClientTime; }
 
 	//DeliveryNotificationManager&	GetDeliveryNotificationManager() { return mDeliveryNotificationManager; }
-	//ReplicationManagerServer&		GetReplicationManagerServer() { return mReplicationManagerServer; }
+	ReplicationManagerServer&		GetReplicationManagerServer() { return mReplicationManagerServer; }
 
-	//const	MoveList&				GetUnprocessedMoveList() const { return mUnprocessedMoveList; }
-	//MoveList&				GetUnprocessedMoveList() { return mUnprocessedMoveList; }
+ 	const	MoveList&				GetUnprocessedMoveList() const { return mUnprocessedMoveList; }
+ 	MoveList&				GetUnprocessedMoveList() { return mUnprocessedMoveList; }
 
 	void	SetIsLastMoveTimestampDirty( bool inIsDirty ) { mIsLastMoveTimestampDirty = inIsDirty; }
 	bool	IsLastMoveTimestampDirty()						const { return mIsLastMoveTimestampDirty; }
@@ -29,19 +29,19 @@ public:
 private:
 
 	//DeliveryNotificationManager	mDeliveryNotificationManager;
-	//ReplicationManagerServer	mReplicationManagerServer;
+	ReplicationManagerServer	mReplicationManagerServer;
 
 	SocketAddress	mSocketAddress;
 	string			mName;
 	int				mPlayerId;
 
 	//going away!
-	//InputState		mInputState;
+	InputState		mInputState;
 
 	float			mLastPacketFromClientTime;
 	float			mTimeToRespawn;
 
-	//MoveList		mUnprocessedMoveList;
+	MoveList		mUnprocessedMoveList;
 	bool			mIsLastMoveTimestampDirty;
 
 

@@ -9,12 +9,12 @@ public:
 	virtual void			ProcessPacket( InputMemoryBitStream& inInputStream, const SocketAddress& inFromAddress ) override;
 //	virtual void			HandleConnectionReset( const SocketAddress& inFromAddress ) override;
 //
-//	void			SendOutgoingPackets();
+	void			SendOutgoingPackets();
 //	void			CheckForDisconnects();
 //
-//	void			RegisterGameObject( GameObjectPtr inGameObject );
-//	inline	GameObjectPtr	RegisterAndReturn( GameObject* inGameObject );
-//	void			UnregisterGameObject( GameObject* inGameObject );
+	void			RegisterGameObject( GameObjectPtr inGameObject );
+	inline	GameObjectPtr	RegisterAndReturn( GameObject* inGameObject );
+	void			UnregisterGameObject( GameObject* inGameObject );
 //	void			SetStateDirty( int inNetworkId, uint32_t inDirtyState );
 //
 //	void			RespawnCats();
@@ -33,14 +33,14 @@ private:
 //	void	AddWorldStateToPacket( OutputMemoryBitStream& inOutputStream );
 //	void	AddScoreBoardStateToPacket( OutputMemoryBitStream& inOutputStream );
 //
-//	void	SendStatePacketToClient( ClientProxyPtr inClientProxy );
-//	void	WriteLastMoveTimestampIfDirty( OutputMemoryBitStream& inOutputStream, ClientProxyPtr inClientProxy );
+	void	SendStatePacketToClient( ClientProxyPtr inClientProxy );
+	void	WriteLastMoveTimestampIfDirty( OutputMemoryBitStream& inOutputStream, ClientProxyPtr inClientProxy );
 //
-//	void	HandleInputPacket( ClientProxyPtr inClientProxy, InputMemoryBitStream& inInputStream );
+	void	HandleInputPacket( ClientProxyPtr inClientProxy, InputMemoryBitStream& inInputStream );
 //
 //	void	HandleClientDisconnected( ClientProxyPtr inClientProxy );
 //
-//	int		GetNewNetworkId();
+	int		GetNewNetworkId();
 
 	typedef unordered_map< int, ClientProxyPtr >	IntToClientMap;
 	typedef unordered_map< SocketAddress, ClientProxyPtr >	AddressToClientMap;
@@ -57,9 +57,9 @@ private:
 };
 
 
-//inline GameObjectPtr NetworkManagerServer::RegisterAndReturn( GameObject* inGameObject )
-//{
-//	GameObjectPtr toRet( inGameObject );
-//	RegisterGameObject( toRet );
-//	return toRet;
-//}
+inline GameObjectPtr NetworkManagerServer::RegisterAndReturn( GameObject* inGameObject )
+{
+	GameObjectPtr toRet( inGameObject );
+	RegisterGameObject( toRet );
+	return toRet;
+}
