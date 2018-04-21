@@ -29,6 +29,11 @@ int Server::Run()
 	return 0;
 }
 
+Server::~Server()
+{
+	UDPSocket::CleanUp();
+}
+
 
 void Server::DoFrame()
 {

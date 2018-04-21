@@ -15,6 +15,7 @@ public:
 	//RoboCatPtr	GetCatForPlayer( int inPlayerId );
 	void	SpawnCharacterForPlayer( int inPlayerId );
 
+	virtual ~Server();
 
 private:
 	Server();
