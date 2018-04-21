@@ -2,7 +2,7 @@
 
 #include "ActionClient.h"
 #include "ActionPlayerCameraManager.h"
-#include "ActionCharacter.h"
+#include "ActionPawn.h"
 
 
 
@@ -18,7 +18,7 @@ AActionPlayerCameraManager::AActionPlayerCameraManager( const FObjectInitializer
 
 void AActionPlayerCameraManager::UpdateCamera( float DeltaTime )
 {
-	AActionCharacter* MyPawn = PCOwner ? Cast<AActionCharacter>( PCOwner->GetPawn() ) : NULL;
+	AActionPawn* MyPawn = PCOwner ? Cast<AActionPawn>( PCOwner->GetPawn() ) : NULL;
 	//if (MyPawn && MyPawn->IsFirstPerson())
 	//{
 	//	const float TargetFOV = MyPawn->IsTargeting() ? TargetingFOV : NormalFOV;

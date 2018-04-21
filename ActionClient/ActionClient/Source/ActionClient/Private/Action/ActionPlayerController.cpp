@@ -11,6 +11,6 @@
 AActionPlayerController::AActionPlayerController()
 {
 
-	PlayerCameraManagerClass = AActionPlayerCameraManager::StaticClass();
+	//PlayerCameraManagerClass = AActionPlayerCameraManager::StaticClass();
 
 }

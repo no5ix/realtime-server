@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "GameFramework/Character.h"
+#include "GameFramework/Pawn.h"
 #include "MemoryBitStream.h"
 #include "ActionMath.h"
 #include "ActionEntity.generated.h"
@@ -15,7 +15,7 @@
 
 
 UCLASS()
-class AActionEntity : public ACharacter
+class AActionEntity : public APawn
 {
 	GENERATED_BODY()
 

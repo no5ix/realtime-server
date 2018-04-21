@@ -8,7 +8,7 @@
 
 
 UCLASS()
-class AActionCharacter : public AActionEntity
+class AActionCharacter : public ACharacter
 {
 	GENERATED_UCLASS_BODY()
 
