@@ -173,7 +173,7 @@ struct GetRequiredBits
 
 namespace ActionServerMath
 {
-	const float PI = 3.1415926535f;
+	//const float PI = 3.1415926535f;
 	float GetRandomFloat();
 
 	//Vector3 GetRandomVector( const Vector3& inMin, const Vector3& inMax );
