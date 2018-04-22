@@ -4,6 +4,7 @@
 
 #include "GameFramework/Pawn.h"
 #include "ActionEntity.h"
+#include "ActionInputState.h"
 #include "ActionPawn.generated.h"
 
 UCLASS()
@@ -18,8 +19,10 @@ protected:
 	void ApplyControlInputToVelocity(float DeltaTime);
 
 public:
+	virtual void	Update() override;
 
-	//CLASS_IDENTIFICATION( 'CHAR', GameObject )
+	void ProcessInput( float inDeltaTime, const ActionInputState& inInputState );
+	//void SimulateMovement( float inDeltaTime );
 
 protected:
 	// Called when the game starts or when spawned
@@ -62,7 +65,7 @@ public:
 
 	bool IsExceedingMaxSpeed( float inMaxSpeed ) const;
 
-	void ActionAddMovementInput( FVector WorldAccel );
+	void ActionAddMovementInput( FVector WorldDirection, float ScaleValue = 1.0f );
 
 	FVector ActionConsumeMovementInputVector();
 

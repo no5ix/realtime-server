@@ -52,25 +52,25 @@ void OutputMemoryBitStream::WriteBits( const void* inData, uint32_t inBitCount )
 
 void OutputMemoryBitStream::Write( const Vector3& inVector )
 {
-	Write( inVector.mX );
-	Write( inVector.mY );
-	Write( inVector.mZ );
+	Write( inVector.X );
+	Write( inVector.Y );
+	Write( inVector.Z );
 }
 
 void InputMemoryBitStream::Read( Vector3& outVector )
 {
-	Read( outVector.mX );
-	Read( outVector.mY );
-	Read( outVector.mZ );
+	Read( outVector.X );
+	Read( outVector.Y );
+	Read( outVector.Z );
 }
 
 void OutputMemoryBitStream::Write( const Quaternion& inQuat )
 {
 	float precision = ( 2.f / 65535.f );
-	Write( ConvertToFixed( inQuat.mX, -1.f, precision ), 16 );
-	Write( ConvertToFixed( inQuat.mY, -1.f, precision ), 16 );
-	Write( ConvertToFixed( inQuat.mZ, -1.f, precision ), 16 );
-	Write( inQuat.mW < 0 );
+	Write( ConvertToFixed( static_cast< float > ( inQuat.X ), -1.f, precision ), 16 );
+	Write( ConvertToFixed( static_cast< float > ( inQuat.Y ), -1.f, precision ), 16 );
+	Write( ConvertToFixed( static_cast< float > ( inQuat.Z ), -1.f, precision ), 16 );
+	Write( inQuat.W < 0 );
 }
 
 
@@ -151,21 +151,21 @@ void InputMemoryBitStream::Read( Quaternion& outQuat )
 	uint32_t f = 0;
 
 	Read( f, 16 );
-	outQuat.mX = ConvertFromFixed( f, -1.f, precision );
+	outQuat.X = ConvertFromFixed( f, -1.f, precision );
 	Read( f, 16 );
-	outQuat.mY = ConvertFromFixed( f, -1.f, precision );
+	outQuat.Y = ConvertFromFixed( f, -1.f, precision );
 	Read( f, 16 );
-	outQuat.mZ = ConvertFromFixed( f, -1.f, precision );
+	outQuat.Z = ConvertFromFixed( f, -1.f, precision );
 
-	outQuat.mW = sqrtf( 1.f -
-		outQuat.mX * outQuat.mX +
-		outQuat.mY * outQuat.mY +
-		outQuat.mZ * outQuat.mZ );
+	outQuat.W = sqrtf( static_cast< float > ( 1.f -
+		outQuat.X * outQuat.X +
+		outQuat.Y * outQuat.Y +
+		outQuat.Z * outQuat.Z ) );
 	bool isNegative;
 	Read( isNegative );
 
 	if (isNegative)
 	{
-		outQuat.mW *= -1;
+		outQuat.W *= -1;
 	}
 }

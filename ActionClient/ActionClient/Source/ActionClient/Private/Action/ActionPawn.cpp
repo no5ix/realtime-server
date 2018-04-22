@@ -3,6 +3,7 @@
 #include "ActionClient.h"
 #include "ActionPawn.h"
 #include "InputManager.h"
+#include "ActionHelper.h"
 
 
 
@@ -62,6 +63,41 @@ void AActionPawn::BeginPlay()
 {
 	Super::BeginPlay();
 
+
+	//FRotator eulerRot = FRotator( 12, -3.4, 7 );
+	//FRotator eulerRot = FRotator( 0.f, 0.f, 86.1f );
+	FRotator eulerRot = FRotator( 10.f, 30.f, 279.1f );
+	FQuat quatRot = eulerRot.Quaternion();
+	//quatRot = FQuat()
+	//quatRot.GetForwardVector();
+	//Quaternion quatRot = Quaternion::FromEuler( eulerRot );
+
+
+	//std::cout << quatRot.X << ", " << quatRot.Y << ", " << quatRot.Z << ", " << quatRot.W << std::endl;
+
+	ActionHelper::ScreenMsg( "quatRot.X = ", quatRot.X );
+	ActionHelper::ScreenMsg( "quatRot.Y = ", quatRot.Y );
+	ActionHelper::ScreenMsg( "quatRot.Z = ", quatRot.Z );
+	ActionHelper::ScreenMsg( "quatRot.W = ", quatRot.W );
+
+	//FRotator newRot = quatRot.Rotator();
+
+	//ActionHelper::ScreenMsg( "newRot.X = ", newRot.Roll );
+	//ActionHelper::ScreenMsg( "newRot.Y = ", newRot.Pitch );
+	//ActionHelper::ScreenMsg( "newRot.Z = ", newRot.Yaw );
+
+	
+	ActionHelper::ScreenMsg( "quatRot.GetForwardVector().X = ", quatRot.GetForwardVector().X );
+	ActionHelper::ScreenMsg( "quatRot.GetForwardVector().Y = ", quatRot.GetForwardVector().Y );
+	ActionHelper::ScreenMsg( "quatRot.GetForwardVector().Z = ", quatRot.GetForwardVector().Z );
+
+	ActionHelper::ScreenMsg( "quatRot.GetRightVector().X = ", quatRot.GetRightVector().X );
+	ActionHelper::ScreenMsg( "quatRot.GetRightVector().Y = ", quatRot.GetRightVector().Y );
+	ActionHelper::ScreenMsg( "quatRot.GetRightVector().Z = ", quatRot.GetRightVector().Z );
+
+	ActionHelper::ScreenMsg( "quatRot.GetUpVector().X = ", quatRot.GetUpVector().X );
+	ActionHelper::ScreenMsg( "quatRot.GetUpVector().Y = ", quatRot.GetUpVector().Y );
+	ActionHelper::ScreenMsg( "quatRot.GetUpVector().Z = ", quatRot.GetUpVector().Z );
 }
 
 
@@ -70,15 +106,7 @@ void AActionPawn::Tick( float DeltaTime )
 {
 	Super::Tick( DeltaTime );
 
-	ApplyControlInputToVelocity( DeltaTime );
-
-	// Move actor
-	FVector Delta = Velocity * DeltaTime;
-
-	if (!Delta.IsNearlyZero( 1e-6f ))
-	{
-		SetActorLocation( GetActorLocation() + Delta );
-	}
+	Update();
 }
 
 // Called to bind functionality to input
@@ -96,52 +124,56 @@ void AActionPawn::SetupPlayerInputComponent( UInputComponent* PlayerInputCompone
 
 void AActionPawn::MoveForward( float Val )
 {
-	if (Val != 0.f)
-	{
-		const FQuat Rotation = GetActorQuat();
-		const FVector Direction = FQuatRotationMatrix( Rotation ).GetScaledAxis( EAxis::X );
-		ActionAddMovementInput( Direction * Val );
+	//if (Val != 0.f)
+	//{
+		//const FQuat Rotation = GetActorQuat();
+		//const FVector Direction = FQuatRotationMatrix( Rotation ).GetScaledAxis( EAxis::X );
+		//ActionAddMovementInput( Direction * Val );
 
 
 		InputManager::sInstance->HandleInput( InputManager::EIA_MoveForward, Val );
-	}
+	//}
 }
 
 void AActionPawn::MoveRight( float Val )
 {
-	if (Val != 0.f)
-	{
-		const FQuat Rotation = GetActorQuat();
-		const FVector Direction = FQuatRotationMatrix( Rotation ).GetScaledAxis( EAxis::Y );
-		ActionAddMovementInput( Direction * Val );
+	//if (Val != 0.f)
+	//{
+		//const FQuat Rotation = GetActorQuat();
+		//const FVector Direction = FQuatRotationMatrix( Rotation ).GetScaledAxis( EAxis::Y );
+		//ActionAddMovementInput( Direction * Val );
 
 		InputManager::sInstance->HandleInput( InputManager::EIA_MoveRight, Val );
-	}
+	//}
 }
 
 void AActionPawn::Turn( float Val )
 {
 	//APawn::AddControllerYawInput( Val );
+	//if ( Val != 0 )
+	//{
+		//FRotator newRot( GetActorRotation() );
+		//newRot.Yaw += ( BaseTurnRate * Val );
+		//SetActorRotation( newRot );
 
-	FRotator newRot( GetActorRotation() );
-	newRot.Yaw += ( BaseTurnRate * Val );
-	SetActorRotation( newRot );
+		InputManager::sInstance->HandleInput( InputManager::EIA_Turn, Val );
 
-	InputManager::sInstance->HandleInput( InputManager::EIA_Turn, Val );
+	//}
 
 }
 
 void AActionPawn::LookUp( float Val )
 {
 	//AddControllerPitchInput( Val );
-	if (ActionPawnCamera)
-	{
-		FRotator newRot( ActionPawnCamera->GetComponentRotation() );
-		newRot.Pitch = FMath::Clamp( ( newRot.Pitch + ( -1 * BaseLookUpRate * Val ) ), -89.f, 89.f );
-		ActionPawnCamera->SetWorldRotation( newRot );
+
+	//if ( ActionPawnCamera && Val != 0 )
+	//{
+		//FRotator newRot( ActionPawnCamera->GetComponentRotation() );
+		//newRot.Pitch = FMath::Clamp( ( newRot.Pitch + ( -1 * BaseLookUpRate * Val ) ), -89.f, 89.f );
+		//ActionPawnCamera->SetWorldRotation( newRot );
 
 		InputManager::sInstance->HandleInput( InputManager::EIA_LookUp, Val );
-	}
+	//}
 }
 
 bool AActionPawn::IsExceedingMaxSpeed( float inMaxSpeed ) const
@@ -154,9 +186,9 @@ bool AActionPawn::IsExceedingMaxSpeed( float inMaxSpeed ) const
 	return ( Velocity.SizeSquared() > MaxSpeedSquared * OverVelocityPercent );
 }
 
-void AActionPawn::ActionAddMovementInput( FVector WorldAccel )
+void AActionPawn::ActionAddMovementInput( FVector WorldDirection, float ScaleValue /*= 1.0f*/ )
 {
-	ActionControlInputVector += WorldAccel;
+	ActionControlInputVector += WorldDirection * ScaleValue;
 }
 
 FVector AActionPawn::ActionConsumeMovementInputVector()
@@ -215,6 +247,74 @@ void AActionPawn::ApplyControlInputToVelocity( float DeltaTime )
 	Velocity.Z = 0.f;
 
 	ActionConsumeMovementInputVector();
+}
+
+void AActionPawn::Update()
+{
+	//if (GetPlayerId() == NetworkManager::sInstance->GetPlayerId())
+	//{
+		const Action* pendingMove = InputManager::sInstance->GetAndClearPendingAction();
+		//in theory, only do this if we want to sample input this frame / if there's a new move ( since we have to keep in sync with server )
+		if (pendingMove) //is it time to sample a new move...
+		{
+			float deltaTime = pendingMove->GetDeltaTime();
+
+			//apply that input
+
+			ProcessInput( deltaTime, pendingMove->GetInputState() );
+
+			//and simulate!
+
+			//SimulateMovement( deltaTime );
+
+			//LOG( "Client Move Time: %3.4f deltaTime: %3.4f left rot at %3.4f", latestMove.GetTimestamp(), deltaTime, GetRotation() );
+		}
+	//}
+	//else
+	//{
+	//	SimulateMovement( Timing::sInstance.GetDeltaTime() );
+
+	//	if (RoboMath::Is2DVectorEqual( GetVelocity(), Vector3::Zero ))
+	//	{
+	//		//we're in sync if our velocity is 0
+	//		mTimeLocationBecameOutOfSync = 0.f;
+	//	}
+	//}
+}
+
+void AActionPawn::ProcessInput( float inDeltaTime, const ActionInputState& inInputState )
+{
+	FRotator newRot( GetActorRotation() );
+	newRot.Yaw += ( BaseTurnRate * inInputState.GetDesiredTurnAmount() );
+	SetActorRotation( newRot );
+
+	newRot = ActionPawnCamera->GetComponentRotation();
+	newRot.Pitch = FMath::Clamp( ( newRot.Pitch + ( -1 * BaseLookUpRate * inInputState.GetDesiredLookUpAmount() ) ), -89.f, 89.f );
+	ActionPawnCamera->SetWorldRotation( newRot );
+
+	//const FQuat Rotation = GetActorQuat();
+	//const FVector Direction = FQuatRotationMatrix( Rotation ).GetScaledAxis( EAxis::X );
+	//ActionAddMovementInput( Direction * Val );
+
+	//const FQuat Rotation = GetActorQuat();
+	//const FVector Direction = FQuatRotationMatrix( Rotation ).GetScaledAxis( EAxis::Y );
+	//ActionAddMovementInput( Direction * Val );
+
+	const FQuatRotationMatrix newRotMatrix = FQuatRotationMatrix( newRot.Quaternion() );
+	ActionAddMovementInput( newRotMatrix.GetScaledAxis( EAxis::X ), inInputState.GetDesiredMoveForwardAmount() );
+	ActionAddMovementInput( newRotMatrix.GetScaledAxis( EAxis::Y ), inInputState.GetDesiredMoveRightAmount() );
+
+
+	ApplyControlInputToVelocity( inDeltaTime );
+
+	// Move actor
+	FVector Delta = Velocity * inDeltaTime;
+
+	if (!Delta.IsNearlyZero( 1e-6f ))
+	{
+		SetActorLocation( GetActorLocation() + Delta );
+	}
+
 }
 
 bool AActionPawn::IsFirstPerson() const

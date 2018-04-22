@@ -1,7 +1,5 @@
 #include "ActionServerPCH.h"
 
-
-
 //zoom hardcoded at 100...if we want to lock players on screen, this could be calculated from zoom
 const float HALF_WORLD_HEIGHT = 3.6f;
 const float HALF_WORLD_WIDTH = 6.4f;
@@ -10,7 +8,7 @@ Character::Character() :
 	GameObject(),
 	mMaxRotationSpeed( 5.f ),
 	mMaxLinearSpeed( 50.f ),
-	mVelocity( Vector3::Zero ),
+	mVelocity( Vector3::Zero() ),
 	mWallRestitution( 0.1f ),
 	mCatRestitution( 0.1f ),
 	mThrustDir( 0.f ),
@@ -21,22 +19,55 @@ Character::Character() :
 	//SetCollisionRadius( 0.5f );
 }
 
-//void Character::ProcessInput( float inDeltaTime, const InputState& inInputState )
-//{
-//	//process our input....
-//
-//	//turning...
-//	float newRotation = GetRotation() + inInputState.GetDesiredHorizontalDelta() * mMaxRotationSpeed * inDeltaTime;
-//	SetRotation( newRotation );
-//
-//	//moving...
-//	float inputForwardDelta = inInputState.GetDesiredVerticalDelta();
-//	mThrustDir = inputForwardDelta;
-//
-//
-//	mIsShooting = inInputState.IsShooting();
-//
-//}
+void Character::ProcessInput( float inDeltaTime, const InputState& inInputState )
+{
+	////process our input....
+
+	////turning...
+	//float newRotation = GetRotation() + inInputState.GetDesiredHorizontalDelta() * mMaxRotationSpeed * inDeltaTime;
+	//SetRotation( newRotation );
+
+	////moving...
+	//float inputForwardDelta = inInputState.GetDesiredVerticalDelta();
+	//mThrustDir = inputForwardDelta;
+
+
+	//mIsShooting = inInputState.IsShooting();
+
+	/////////////////////////
+
+	//FRotator newRot( GetActorRotation() );
+	//newRot.Yaw += ( BaseTurnRate * inInputState.GetDesiredTurnAmount() );
+	//SetActorRotation( newRot );
+
+	//newRot = ActionPawnCamera->GetComponentRotation();
+	//newRot.Pitch = FMath::Clamp( ( newRot.Pitch + ( -1 * BaseLookUpRate * inInputState.GetDesiredLookUpAmount() ) ), -89.f, 89.f );
+	//ActionPawnCamera->SetWorldRotation( newRot );
+
+
+	////const FQuat Rotation = GetActorQuat();
+	////const FVector Direction = FQuatRotationMatrix( Rotation ).GetScaledAxis( EAxis::X );
+	////ActionAddMovementInput( Direction * Val );
+
+	////const FQuat Rotation = GetActorQuat();
+	////const FVector Direction = FQuatRotationMatrix( Rotation ).GetScaledAxis( EAxis::Y );
+	////ActionAddMovementInput( Direction * Val );
+
+	//const FQuatRotationMatrix newRotMatrix = FQuatRotationMatrix( newRot.Quaternion() );
+	//ActionAddMovementInput( newRotMatrix.GetScaledAxis( EAxis::X ), inInputState.GetDesiredMoveForwardAmount() );
+	//ActionAddMovementInput( newRotMatrix.GetScaledAxis( EAxis::Y ), inInputState.GetDesiredMoveRightAmount() );
+
+
+	//ApplyControlInputToVelocity( inDeltaTime );
+
+	//// Move actor
+	//FVector Delta = Velocity * inDeltaTime;
+
+	//if (!Delta.IsNearlyZero( 1e-6f ))
+	//{
+	//	SetActorLocation( GetActorLocation() + Delta );
+	//}
+}
 
 //void Character::AdjustVelocityByThrust( float inDeltaTime )
 //{
@@ -198,12 +229,12 @@ uint32_t Character::Write( OutputMemoryBitStream& inOutputStream, uint32_t inDir
 		inOutputStream.Write( ( bool )true );
 
 		Vector3 velocity = mVelocity;
-		inOutputStream.Write( velocity.mX );
-		inOutputStream.Write( velocity.mY );
+		inOutputStream.Write( velocity.X );
+		inOutputStream.Write( velocity.Y );
 
 		Vector3 location = GetLocation();
-		inOutputStream.Write( location.mX );
-		inOutputStream.Write( location.mY );
+		inOutputStream.Write( location.X );
+		inOutputStream.Write( location.Y );
 
 		inOutputStream.Write( GetRotation() );
 

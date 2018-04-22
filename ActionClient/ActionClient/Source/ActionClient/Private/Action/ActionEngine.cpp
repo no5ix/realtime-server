@@ -4,6 +4,7 @@
 #include "ActionEngine.h"
 #include "NetworkManager.h"
 #include "InputManager.h"
+#include "ActionTiming.h"
 
 // Sets default values for this component's properties
 UActionEngine::UActionEngine( const FObjectInitializer& ObjectInitializer ) : Super( ObjectInitializer )
@@ -41,6 +42,7 @@ void UActionEngine::TickComponent(float DeltaTime, ELevelTick TickType, FActorCo
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	// ...
+	ActionTiming::sInstance.Update();
 
 	InputManager::sInstance->Update();
 

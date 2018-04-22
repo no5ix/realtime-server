@@ -24,7 +24,7 @@ public:
 
 	virtual void Update() override;
 
-	//void ProcessInput( float inDeltaTime, const InputState& inInputState );
+	void ProcessInput( float inDeltaTime, const InputState& inInputState );
 	//void SimulateMovement( float inDeltaTime );
 
 	//void ProcessCollisions();

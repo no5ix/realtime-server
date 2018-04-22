@@ -75,14 +75,16 @@ const Action& InputManager::SampleInputAsAction()
 
 bool InputManager::IsTimeToSampleInput()
 {
-	float time = ActionTiming::sInstance.GetFrameStartTime();
-	if (time > mNextTimeToSampleInput)
-	{
-		mNextTimeToSampleInput = mNextTimeToSampleInput + kTimeBetweenInputSamples;
-		return true;
-	}
+	//float time = ActionTiming::sInstance.GetFrameStartTime();
+	//if (time > mNextTimeToSampleInput)
+	//{
+	//	mNextTimeToSampleInput = mNextTimeToSampleInput + kTimeBetweenInputSamples;
+	//	return true;
+	//}
 
-	return false;
+	//return false;
+
+	return true;
 }
 
 void InputManager::Update()

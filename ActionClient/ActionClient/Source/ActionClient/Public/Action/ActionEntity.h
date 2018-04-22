@@ -34,6 +34,7 @@ public:
 	};
 
 public:
+	virtual void	Update() {}
 	void Read( InputMemoryBitStream& inInputStream );
 
 	void		SetPlayerId( uint32_t inPlayerId ) { mPlayerId = inPlayerId; }
