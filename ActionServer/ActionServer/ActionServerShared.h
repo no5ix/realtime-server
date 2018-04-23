@@ -51,6 +51,11 @@ using std::unordered_set;
 
 class GameObject;
 
+#include "Vector3.h"
+#include "Quaternion.h"
+#include "Matrix3x3.h"
+#include "Vector2.h"
+
 #include "ActionServerMath.h"
 
 #include "Utility.h"
@@ -58,11 +63,8 @@ class GameObject;
 #include "SocketAddress.h"
 #include "UDPSocket.h"
 
-#ifdef _WIN32
-
 #include "Macro.h"
 
-#endif
 
 #include "MemoryBitStream.h"
 

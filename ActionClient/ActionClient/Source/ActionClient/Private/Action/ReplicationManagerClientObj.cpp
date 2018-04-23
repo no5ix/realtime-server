@@ -9,52 +9,32 @@
 
 void UReplicationManagerClientObj::Read( InputMemoryBitStream& inInputStream )
 {
-	UWorld* const World = GetWorld();
-
-	UE_LOG( LogTemp, Log, TEXT( "\n\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" ) );
-	UE_LOG( LogTemp, Log, TEXT( "****Read;****  Successfully!!!" ) );
-	UE_LOG( LogTemp, Log, TEXT( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n\n" ) );
-
-	if (World)
+	while (inInputStream.GetRemainingBitCount() >= 34)
 	{
+		//read the network id...
+		int networkId; 
+		inInputStream.Read( networkId );
 
-		UE_LOG( LogTemp, Log, TEXT( "\n\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" ) );
-		UE_LOG( LogTemp, Log, TEXT( "****World;****  Successfully!!!" ) );
-		UE_LOG( LogTemp, Log, TEXT( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n\n" ) );
-		AActionPlayerController* const FirstPC = Cast<AActionPlayerController>( UGameplayStatics::GetPlayerController( GetWorld(), 0 ) );
-		if (FirstPC != nullptr)
+		//only need 2 bits for action...
+		uint8_t action; 
+		inInputStream.Read( action, 2 );
+
+		switch (action)
 		{
-
-			UE_LOG( LogTemp, Log, TEXT( "\n\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" ) );
-			UE_LOG( LogTemp, Log, TEXT( "****FirstPC;****  Successfully!!!" ) );
-			UE_LOG( LogTemp, Log, TEXT( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n\n" ) );
-
-			//FRotator Rot( 0.f, 0.f, 0.f );
-			//FTransform SpawnTransform( Rot, FVector::ZeroVector );
-
-			//TSubclassOf<class AActionCharacter> CharacterClass;
-			//AActionCharacter* DeferredActor = Cast<AActionCharacter>( UGameplayStatics::BeginDeferredActorSpawnFromClass( this, CharacterClass, SpawnTransform ) );
-			//if (DeferredActor)
-			//{
-			//	UGameplayStatics::FinishSpawningActor( DeferredActor, SpawnTransform );
-			//}
-
-			//TSubclassOf<AActor> ActorClass
-			FActorSpawnParameters SpawnParams;
-			SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-			AActionCharacter* const NewActionCharacter = World->SpawnActor<AActionCharacter>( DefaultCharacterClasses, FTransform::Identity, SpawnParams );
-
-			UE_LOG( LogTemp, Log, TEXT( "\n\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" ) );
-			UE_LOG( LogTemp, Log, TEXT( "***NewActionCharacter****  Successfully!!!" ) );
-			UE_LOG( LogTemp, Log, TEXT( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n\n" ) );
-
-			FirstPC->Possess( NewActionCharacter );
-
-			UE_LOG( LogTemp, Log, TEXT( "\n\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" ) );
-			UE_LOG( LogTemp, Log, TEXT( "****FirstPC->Possess( NewActionCharacter );****  Successfully!!!" ) );
-			UE_LOG( LogTemp, Log, TEXT( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n\n" ) );
+		case RA_Create:
+			ReadAndDoCreateAction( inInputStream, networkId );
+			break;
+		case RA_Update:
+			ReadAndDoUpdateAction( inInputStream, networkId );
+			break;
+		case RA_Destroy:
+			ReadAndDoDestroyAction( inInputStream, networkId );
+			break;
 		}
+
 	}
+
+	/////
 }
 
 UWorld* UReplicationManagerClientObj::GetWorld() const
@@ -64,6 +44,57 @@ UWorld* UReplicationManagerClientObj::GetWorld() const
 
 void UReplicationManagerClientObj::ReadAndDoCreateAction( InputMemoryBitStream& inInputStream, int inNetworkId )
 {
+
+	////need 4 cc
+	//uint32_t fourCCName;
+	//inInputStream.Read( fourCCName );
+
+	////we might already have this object- could happen if our ack of the create got dropped so server resends create request 
+	////( even though we might have created )
+	//GameObjectPtr gameObject = NetworkManagerClient::sInstance->GetGameObject( inNetworkId );
+	//if (!gameObject)
+	//{
+	//	//create the object and map it...
+	//	gameObject = GameObjectRegistry::sInstance->CreateGameObject( fourCCName );
+	//	gameObject->SetNetworkId( inNetworkId );
+	//	NetworkManagerClient::sInstance->AddToNetworkIdToGameObjectMap( gameObject );
+
+	//	//it had really be the rigth type...
+	//	assert( gameObject->GetClassId() == fourCCName );
+	//}
+
+	////and read state
+	//gameObject->Read( inInputStream );
+
+	/////////////////////////////////////////////////////////////////
+
+	//UWorld* const World = GetWorld();
+
+	//if (World)
+	//{
+	//	AActionPlayerController* const FirstPC = Cast<AActionPlayerController>( UGameplayStatics::GetPlayerController( GetWorld(), 0 ) );
+	//	if (FirstPC != nullptr)
+	//	{
+
+	//		//FRotator Rot( 0.f, 0.f, 0.f );
+	//		//FTransform SpawnTransform( Rot, FVector::ZeroVector );
+
+	//		//TSubclassOf<class AActionCharacter> CharacterClass;
+	//		//AActionCharacter* DeferredActor = Cast<AActionCharacter>( UGameplayStatics::BeginDeferredActorSpawnFromClass( this, CharacterClass, SpawnTransform ) );
+	//		//if (DeferredActor)
+	//		//{
+	//		//	UGameplayStatics::FinishSpawningActor( DeferredActor, SpawnTransform );
+	//		//}
+
+	//		//TSubclassOf<AActor> ActorClass
+	//		FActorSpawnParameters SpawnParams;
+	//		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	//		AActionCharacter* const NewActionCharacter = World->SpawnActor<AActionCharacter>( DefaultCharacterClasses, FTransform::Identity, SpawnParams );
+
+
+	//		FirstPC->Possess( NewActionCharacter );
+	//	}
+	//}
 
 }
 

@@ -7,7 +7,12 @@
 #include <list>
 #include "Networking.h"
 #include "MemoryBitStream.h"
-#include "ReplicationManagerClientObj.h"
+#include "GameObjectRegistryUObj.h"
+#include "ReplicationManagerClient.h"
+#include "ActionEntity.h"
+#include <unordered_map>
+
+typedef std::unordered_map< int, GameObjectPtr > IntToGameObjectMap;
 
 /**
  * 
@@ -46,7 +51,15 @@ public:
 	void	SetSimulatedLatency( float inLatency ) { mSimulatedLatency = inLatency; }
 	int		GetPlayerId() const	{ return mPlayerId; }
 
-	UReplicationManagerClientObj* GetReplicationManagerClient() { return mReplicationManagerClient; }
+	GameObjectPtr	GetGameObject( int inNetworkId ) const;
+	void	AddToNetworkIdToGameObjectMap( GameObjectPtr inGameObject );
+	void	RemoveFromNetworkIdToGameObjectMap( GameObjectPtr inGameObject );
+
+	ReplicationManagerClient GetReplicationManagerClient() { return mReplicationManagerClient; }
+	UGameObjectRegistryUObj* GetGameObjectRegistryUObj();
+protected:
+
+	IntToGameObjectMap		mNetworkIdToGameObjectMap;
 private:
 
 	NetworkManager();
@@ -69,7 +82,9 @@ private:
 
 
 private:
-	UReplicationManagerClientObj*	mReplicationManagerClient;
+	ReplicationManagerClient	mReplicationManagerClient;
+
+	UGameObjectRegistryUObj*    mGameObjectRegistryUObj;
 
 	TSharedPtr<FInternetAddr>	mRemoteAddr;
 	FSocket* mSocket;

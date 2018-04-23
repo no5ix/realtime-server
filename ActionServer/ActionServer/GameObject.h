@@ -8,7 +8,7 @@ static GameObject* CreateInstance() { return static_cast< GameObject* >( new inC
 class GameObject
 {
 public:
-
+	// 'GOBJ' = 1196376650;
 	CLASS_IDENTIFICATION( 'GOBJ', GameObject )
 
 	GameObject();
@@ -29,8 +29,8 @@ public:
 	void	SetIndexInWorld( int inIndex ) { mIndexInWorld = inIndex; }
 	int		GetIndexInWorld()				const { return mIndexInWorld; }
 
-	void	SetRotation( float inRotation ) { mRotation = inRotation; }
-	float	GetRotation()					const { return mRotation; }
+	void	SetRotation( Vector3 inRotation ) { mRotation = inRotation; }
+	Vector3	GetRotation()					const { return mRotation; }
 
 	void	SetScale( float inScale ) { mScale = inScale; }
 	float	GetScale()						const { return mScale; }
@@ -45,8 +45,6 @@ public:
 //	Vector3		GetForwardVector()			const;
 //
 //
-	void		SetColor( const Vector3& inColor ) { mColor = inColor; }
-	const Vector3&		GetColor()					const { return mColor; }
 
 	bool		DoesWantToDie()				const { return mDoesWantToDie; }
 	void		SetDoesWantToDie( bool inWants ) { mDoesWantToDie = inWants; }
@@ -60,12 +58,12 @@ public:
 private:
 
 	Vector3											mLocation;
-	Vector3											mColor;
+	//Vector3											mColor;
 
 	float											mCollisionRadius;
 
 
-	float											mRotation;
+	Vector3											mRotation;
 	float											mScale;
 	int												mIndexInWorld;
 

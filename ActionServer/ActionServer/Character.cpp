@@ -6,207 +6,140 @@ const float HALF_WORLD_WIDTH = 6.4f;
 
 Character::Character() :
 	GameObject(),
-	mMaxRotationSpeed( 5.f ),
-	mMaxLinearSpeed( 50.f ),
-	mVelocity( Vector3::Zero() ),
-	mWallRestitution( 0.1f ),
-	mCatRestitution( 0.1f ),
-	mThrustDir( 0.f ),
 	mPlayerId( 0 ),
 	mIsShooting( false ),
 	mHealth( 10 )
 {
 	//SetCollisionRadius( 0.5f );
+
+
+	BaseTurnRate = 2.f;
+	BaseLookUpRate = 2.f;
+
+	MaxSpeed = 440;
+	Acceleration = 1000.f;
+	Deceleration = 2000.f;
+	TurningBoost = 8.0f;
+
+	Velocity = Vector3::Zero();
+	ActionPawnCameraRotation = Vector3::Zero();
+
+	ActionPawnCameraRotation = GetRotation();
 }
 
 void Character::ProcessInput( float inDeltaTime, const InputState& inInputState )
 {
-	////process our input....
+	//process our input....
 
-	////turning...
-	//float newRotation = GetRotation() + inInputState.GetDesiredHorizontalDelta() * mMaxRotationSpeed * inDeltaTime;
-	//SetRotation( newRotation );
+	Vector3 newRot( GetRotation() );
+	newRot.X += ( BaseTurnRate * inInputState.GetDesiredTurnAmount() );
+	SetRotation( newRot );
 
-	////moving...
-	//float inputForwardDelta = inInputState.GetDesiredVerticalDelta();
-	//mThrustDir = inputForwardDelta;
+	ActionPawnCameraRotation.X = newRot.X;
+	ActionPawnCameraRotation.Z = newRot.Z;
+	ActionPawnCameraRotation.Y = ActionServerMath::Clamp( 
+		( ActionPawnCameraRotation.Y + ( -1 * BaseLookUpRate * inInputState.GetDesiredLookUpAmount() ) ),
+		-89.f, 
+		89.f );
 
-
-	//mIsShooting = inInputState.IsShooting();
-
-	/////////////////////////
-
-	//FRotator newRot( GetActorRotation() );
-	//newRot.Yaw += ( BaseTurnRate * inInputState.GetDesiredTurnAmount() );
-	//SetActorRotation( newRot );
-
-	//newRot = ActionPawnCamera->GetComponentRotation();
-	//newRot.Pitch = FMath::Clamp( ( newRot.Pitch + ( -1 * BaseLookUpRate * inInputState.GetDesiredLookUpAmount() ) ), -89.f, 89.f );
-	//ActionPawnCamera->SetWorldRotation( newRot );
+	ActionAddMovementInput( ActionPawnCameraRotation.ToQuaternion() * Vector3::Forward(), inInputState.GetDesiredMoveForwardAmount() );
+	ActionAddMovementInput( ActionPawnCameraRotation.ToQuaternion() * Vector3::Right(), inInputState.GetDesiredMoveRightAmount() );
 
 
-	////const FQuat Rotation = GetActorQuat();
-	////const FVector Direction = FQuatRotationMatrix( Rotation ).GetScaledAxis( EAxis::X );
-	////ActionAddMovementInput( Direction * Val );
-
-	////const FQuat Rotation = GetActorQuat();
-	////const FVector Direction = FQuatRotationMatrix( Rotation ).GetScaledAxis( EAxis::Y );
-	////ActionAddMovementInput( Direction * Val );
-
-	//const FQuatRotationMatrix newRotMatrix = FQuatRotationMatrix( newRot.Quaternion() );
-	//ActionAddMovementInput( newRotMatrix.GetScaledAxis( EAxis::X ), inInputState.GetDesiredMoveForwardAmount() );
-	//ActionAddMovementInput( newRotMatrix.GetScaledAxis( EAxis::Y ), inInputState.GetDesiredMoveRightAmount() );
-
-
-	//ApplyControlInputToVelocity( inDeltaTime );
-
-	//// Move actor
-	//FVector Delta = Velocity * inDeltaTime;
-
-	//if (!Delta.IsNearlyZero( 1e-6f ))
-	//{
-	//	SetActorLocation( GetActorLocation() + Delta );
-	//}
+	ApplyControlInputToVelocity( inDeltaTime );
 }
 
-//void Character::AdjustVelocityByThrust( float inDeltaTime )
-//{
-//	//just set the velocity based on the thrust direction -- no thrust will lead to 0 velocity
-//	//simulating acceleration makes the client prediction a bit more complex
-//	Vector3 forwardVector = GetForwardVector();
-//	mVelocity = forwardVector * ( mThrustDir * inDeltaTime * mMaxLinearSpeed );
-//}
-//
-//void Character::SimulateMovement( float inDeltaTime )
-//{
-//	//simulate us...
-//	AdjustVelocityByThrust( inDeltaTime );
-//
-//	SetLocation( GetLocation() + mVelocity * inDeltaTime );
-//
-//	ProcessCollisions();
-//}
+void Character::SimulateMovement( float inDeltaTime )
+{
+	// Move actor
+	Vector3 Delta = Velocity * inDeltaTime;
+
+	if (!Delta.IsNearlyZero( 1e-6f ))
+	{
+		SetLocation( GetLocation() + Delta );
+	}
+
+}
+
+bool Character::IsExceedingMaxSpeed( float inMaxSpeed ) const
+{
+	inMaxSpeed = ActionServerMath::Max( 0.f, inMaxSpeed );
+	const float MaxSpeedSquared = ActionServerMath::Square( inMaxSpeed );
+
+	// Allow 1% error tolerance, to account for numeric imprecision.
+	const float OverVelocityPercent = 1.01f;
+	return ( Velocity.SizeSquared() > MaxSpeedSquared * OverVelocityPercent );
+}
+
+void Character::ActionAddMovementInput( Vector3 WorldDirection, float ScaleValue /*= 1.0f*/ )
+{
+	ActionControlInputVector += WorldDirection * ScaleValue;
+}
+
+Vector3 Character::ActionConsumeMovementInputVector()
+{
+	ActionLastControlInputVector = ActionControlInputVector;
+	ActionControlInputVector = Vector3::Zero();
+	return ActionLastControlInputVector;
+}
+
+Vector3 Character::ActionGetPendingInputVector() const
+{
+	// There's really no point redirecting to the MovementComponent since GetInputVector is not virtual there, and it just comes back to us.
+	return ActionControlInputVector;
+}
+
+void Character::ApplyControlInputToVelocity( float DeltaTime )
+{
+	const Vector3 ControlAcceleration = ActionGetPendingInputVector().GetClampedToMaxSize( 1.f );
+
+	const float AnalogInputModifier = ( ControlAcceleration.SizeSquared() > 0.f ? ControlAcceleration.Size() : 0.f );
+	const float MaxPawnSpeed = GetMaxSpeed() * AnalogInputModifier;
+	const bool bExceedingMaxSpeed = IsExceedingMaxSpeed( MaxPawnSpeed );
+
+	if (AnalogInputModifier > 0.f && !bExceedingMaxSpeed)
+	{
+		// Apply change in velocity direction
+		if (Velocity.SizeSquared() > 0.f)
+		{
+			// Change direction faster than only using acceleration, but never increase velocity magnitude.
+			const float TimeScale = ActionServerMath::Clamp( DeltaTime * TurningBoost, 0.f, 1.f );
+			Velocity = Velocity + ( ControlAcceleration * Velocity.Size() - Velocity ) * TimeScale;
+		}
+	}
+	else
+	{
+		// Dampen velocity magnitude based on deceleration.
+		if (Velocity.SizeSquared() > 0.f)
+		{
+			const Vector3 OldVelocity = Velocity;
+			const float VelSize = ActionServerMath::Max( Velocity.Size() - ActionServerMath::Abs( Deceleration ) * DeltaTime, 0.f );
+			Velocity = Velocity.GetSafeNormal() * VelSize;
+
+			// Don't allow braking to lower us below max speed if we started above it.
+			if (bExceedingMaxSpeed && Velocity.SizeSquared() < ActionServerMath::Square( MaxPawnSpeed ))
+			{
+				Velocity = OldVelocity.GetSafeNormal() * MaxPawnSpeed;
+			}
+		}
+	}
+
+	// Apply acceleration and clamp velocity magnitude.
+	const float NewMaxSpeed = ( IsExceedingMaxSpeed( MaxPawnSpeed ) ) ? Velocity.Size() : MaxPawnSpeed;
+	Velocity += ControlAcceleration * ActionServerMath::Abs( Acceleration ) * DeltaTime;
+	Velocity = Velocity.GetClampedToMaxSize( NewMaxSpeed );
+
+	Velocity.Z = 0.f;
+
+	ActionConsumeMovementInputVector();
+}
+
 
 void Character::Update()
 {
 
 }
 
-//void Character::ProcessCollisions()
-//{
-//	//right now just bounce off the sides..
-//	ProcessCollisionsWithScreenWalls();
-//
-//	float sourceRadius = GetCollisionRadius();
-//	Vector3 sourceLocation = GetLocation();
-//
-//	//now let's iterate through the world and see what we hit...
-//	//note: since there's a small number of objects in our game, this is fine.
-//	//but in a real game, brute-force checking collisions against every other object is not efficient.
-//	//it would be preferable to use a quad tree or some other structure to minimize the
-//	//number of collisions that need to be tested.
-//	for (auto goIt = World::sInstance->GetGameObjects().begin(), end = World::sInstance->GetGameObjects().end(); goIt != end; ++goIt)
-//	{
-//		GameObject* target = goIt->get();
-//		if (target != this && !target->DoesWantToDie())
-//		{
-//			//simple collision test for spheres- are the radii summed less than the distance?
-//			Vector3 targetLocation = target->GetLocation();
-//			float targetRadius = target->GetCollisionRadius();
-//
-//			Vector3 delta = targetLocation - sourceLocation;
-//			float distSq = delta.LengthSq2D();
-//			float collisionDist = ( sourceRadius + targetRadius );
-//			if (distSq < ( collisionDist * collisionDist ))
-//			{
-//				//first, tell the other guy there was a collision with a cat, so it can do something...
-//
-//				if (target->HandleCollisionWithCat( this ))
-//				{
-//					//okay, you hit something!
-//					//so, project your location far enough that you're not colliding
-//					Vector3 dirToTarget = delta;
-//					dirToTarget.Normalize2D();
-//					Vector3 acceptableDeltaFromSourceToTarget = dirToTarget * collisionDist;
-//					//important note- we only move this cat. the other cat can take care of moving itself
-//					SetLocation( targetLocation - acceptableDeltaFromSourceToTarget );
-//
-//
-//					Vector3 relVel = mVelocity;
-//
-//					//if other object is a cat, it might have velocity, so there might be relative velocity...
-//					Character* targetCat = target->GetAsCat();
-//					if (targetCat)
-//					{
-//						relVel -= targetCat->mVelocity;
-//					}
-//
-//					//got vel with dir between objects to figure out if they're moving towards each other
-//					//and if so, the magnitude of the impulse ( since they're both just balls )
-//					float relVelDotDir = Dot2D( relVel, dirToTarget );
-//
-//					if (relVelDotDir > 0.f)
-//					{
-//						Vector3 impulse = relVelDotDir * dirToTarget;
-//
-//						if (targetCat)
-//						{
-//							mVelocity -= impulse;
-//							mVelocity *= mCatRestitution;
-//						}
-//						else
-//						{
-//							mVelocity -= impulse * 2.f;
-//							mVelocity *= mWallRestitution;
-//						}
-//
-//					}
-//				}
-//			}
-//		}
-//	}
-//
-//}
-//
-//void Character::ProcessCollisionsWithScreenWalls()
-//{
-//	Vector3 location = GetLocation();
-//	float x = location.mX;
-//	float y = location.mY;
-//
-//	float vx = mVelocity.mX;
-//	float vy = mVelocity.mY;
-//
-//	float radius = GetCollisionRadius();
-//
-//	//if the cat collides against a wall, the quick solution is to push it off
-//	if (( y + radius ) >= HALF_WORLD_HEIGHT && vy > 0)
-//	{
-//		mVelocity.mY = -vy * mWallRestitution;
-//		location.mY = HALF_WORLD_HEIGHT - radius;
-//		SetLocation( location );
-//	}
-//	else if (y <= ( -HALF_WORLD_HEIGHT - radius ) && vy < 0)
-//	{
-//		mVelocity.mY = -vy * mWallRestitution;
-//		location.mY = -HALF_WORLD_HEIGHT - radius;
-//		SetLocation( location );
-//	}
-//
-//	if (( x + radius ) >= HALF_WORLD_WIDTH && vx > 0)
-//	{
-//		mVelocity.mX = -vx * mWallRestitution;
-//		location.mX = HALF_WORLD_WIDTH - radius;
-//		SetLocation( location );
-//	}
-//	else if (x <= ( -HALF_WORLD_WIDTH - radius ) && vx < 0)
-//	{
-//		mVelocity.mX = -vx * mWallRestitution;
-//		location.mX = -HALF_WORLD_WIDTH - radius;
-//		SetLocation( location );
-//	}
-//}
-//
 uint32_t Character::Write( OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState ) const
 {
 	uint32_t writtenState = 0;
@@ -228,15 +161,20 @@ uint32_t Character::Write( OutputMemoryBitStream& inOutputStream, uint32_t inDir
 	{
 		inOutputStream.Write( ( bool )true );
 
-		Vector3 velocity = mVelocity;
+		Vector3 velocity = Velocity;
 		inOutputStream.Write( velocity.X );
 		inOutputStream.Write( velocity.Y );
+		inOutputStream.Write( velocity.Z );
 
 		Vector3 location = GetLocation();
 		inOutputStream.Write( location.X );
 		inOutputStream.Write( location.Y );
+		inOutputStream.Write( location.Z );
 
-		inOutputStream.Write( GetRotation() );
+		Vector3 rotation = GetRotation();
+		inOutputStream.Write( rotation.X );
+		inOutputStream.Write( rotation.Y );
+		inOutputStream.Write( rotation.Z );
 
 		writtenState |= ECRS_Pose;
 	}
@@ -245,40 +183,7 @@ uint32_t Character::Write( OutputMemoryBitStream& inOutputStream, uint32_t inDir
 		inOutputStream.Write( ( bool )false );
 	}
 
-	//always write mThrustDir- it's just two bits
-	if (mThrustDir != 0.f)
-	{
-		inOutputStream.Write( true );
-		inOutputStream.Write( mThrustDir > 0.f );
-	}
-	else
-	{
-		inOutputStream.Write( false );
-	}
-
-	if (inDirtyState & ECRS_Color)
-	{
-		inOutputStream.Write( ( bool )true );
-		inOutputStream.Write( GetColor() );
-
-		writtenState |= ECRS_Color;
-	}
-	else
-	{
-		inOutputStream.Write( ( bool )false );
-	}
-
-	if (inDirtyState & ECRS_Health)
-	{
-		inOutputStream.Write( ( bool )true );
-		inOutputStream.Write( mHealth, 4 );
-
-		writtenState |= ECRS_Health;
-	}
-	else
-	{
-		inOutputStream.Write( ( bool )false );
-	}
+	LOG( "a new Character::Write %s", "for test" );
 
 	return writtenState;
 

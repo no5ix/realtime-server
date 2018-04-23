@@ -7,9 +7,9 @@ GameObject::GameObject() :
 	mIndexInWorld( -1 ),
 	mCollisionRadius( 0.5f ),
 	mDoesWantToDie( false ),
-	mRotation( 0.f ),
+	mRotation( Vector3::Zero() ),
 	mNetworkId( 0 ),
-	mColor( Colors::White ),
+	//mColor( Colors::White ),
 	mScale( 1.0f )
 {
 }

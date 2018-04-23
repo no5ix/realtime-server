@@ -29,14 +29,14 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ActionEngine)
 		FString ip;
 
-	UPROPERTY( EditAnywhere, BlueprintReadWrite, Category = ActionEngine )
-		FString player_name;
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ActionEngine)
 		int port;
+
+	UPROPERTY( EditAnywhere, BlueprintReadWrite, Category = ActionEngine )
+		FString player_name;
 
 public:
 	/** default inventory list */
 	UPROPERTY( EditAnywhere, Category = ActionEngine )
-		TSubclassOf<class AActionCharacter> DefaultCharacterClasses;
+		TSubclassOf<class AActionPawn> DefaultCharacterClasses;
 };

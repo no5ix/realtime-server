@@ -5,13 +5,12 @@
 #include "GameFramework/Pawn.h"
 #include "MemoryBitStream.h"
 #include "ActionMath.h"
+#include <memory>
 #include "ActionEntity.generated.h"
 
 
-//#define CLASS_IDENTIFICATION( inCode, inClass ) \
-//enum { kClassId = inCode }; \
-//virtual uint32_t GetClassId() const { return kClassId; } \
-//static AActionEntity* CreateInstance() { return static_cast< AActionEntity* >( new inClass() ); } \
+
+
 
 
 UCLASS()
@@ -19,9 +18,10 @@ class AActionEntity : public APawn
 {
 	GENERATED_BODY()
 
-
 public:
-	//CLASS_IDENTIFICATION( 'AENT', GameObject )
+	// 'GOBJ' = 1196376650;
+	virtual uint32_t GetClassId() const /*{ return 'GOBJ'; }*/ ;
+	//virtual uint32_t GetClassId() const { return 1196376650; }
 
 	enum ECatReplicationState
 	{
@@ -35,29 +35,40 @@ public:
 
 public:
 	virtual void	Update() {}
-	void Read( InputMemoryBitStream& inInputStream );
+
+	virtual uint32_t	Write( OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState ) const { return 0; }
+	virtual void		Read( InputMemoryBitStream& inInputStream ) {}
+
 
 	void		SetPlayerId( uint32_t inPlayerId ) { mPlayerId = inPlayerId; }
 	uint32_t	GetPlayerId()						const { return mPlayerId; }
 
-	void			SetActionEntityVelocity( const Vector3& inVelocity ) { mVelocity = inVelocity; }
-	const Vector3&	GetActionEntityVelocity()						const { return mVelocity; }
+	void			SetActionEntityVelocity( const FVector& inVelocity ) { Velocity = inVelocity; }
+	const FVector&	GetActionEntityVelocity()						const { return Velocity; }
 
 
-	const Vector3&		GetLocation()				const { return mLocation; }
-	void		SetLocation( const Vector3& inLocation ) { mLocation = inLocation; }
+	//const FVector&		GetLocation()				const { return mLocation; }
+	//void		SetLocation( const FVector& inLocation ) { mLocation = inLocation; }
 
-	void	SetRotation( float inRotation ) { mRotation = inRotation; };
-	float	GetRotation()					const { return mRotation; }
+	//void	SetRotation( float inRotation ) { mRotation = inRotation; };
+	//float	GetRotation()					const { return mRotation; }
 
-	void		SetColor( const Vector3& inColor ) { mColor = inColor; }
-	const Vector3&		GetColor()					const { return mColor; }
+	//void		SetColor( const FVector& inColor ) { mColor = inColor; }
+	//const FVector&		GetColor()					const { return mColor; }
+
+	int			GetNetworkId()				const { return mNetworkId; }
+	void		SetNetworkId( int inNetworkId ) { mNetworkId = inNetworkId;  }
+
+protected:
+	UPROPERTY( EditAnywhere, BlueprintReadWrite, Category = ActionPawnMovement )
+		FVector Velocity;
 
 private:
 
-	Vector3				mVelocity;
-	Vector3											mLocation;
-	Vector3											mColor;
+
+	//FVector				mVelocity;
+	FVector											mLocation;
+	FVector											mColor;
 
 	float											mRotation;
 	float											mScale;
@@ -82,8 +93,11 @@ protected:
 
 	float				mLastMoveTimestamp;
 
-	float				mThrustDir;
+	//float				mThrustDir;
 	int					mHealth;
 
 	bool				mIsShooting;
 };
+
+
+typedef std::shared_ptr< AActionEntity >	GameObjectPtr;

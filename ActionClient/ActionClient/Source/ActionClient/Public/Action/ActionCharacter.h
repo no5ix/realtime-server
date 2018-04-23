@@ -14,7 +14,7 @@ class AActionCharacter : public ACharacter
 
 public:
 
-	//CLASS_IDENTIFICATION( 'CHAR', GameObject )
+	//virtual uint32_t GetClassId() const { return 1128813140; }
 
 protected:
 	// Called when the game starts or when spawned

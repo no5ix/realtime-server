@@ -8,10 +8,14 @@
 #include "ActionPawn.generated.h"
 
 UCLASS()
-class ACTIONCLIENT_API AActionPawn : public AActionEntity
+class AActionPawn : public AActionEntity
 {
 	GENERATED_UCLASS_BODY()
 
+public:
+
+	// 'CHRT' = 1128813140;
+	virtual uint32_t GetClassId() const /*{ return 1128813140; }*/ ;
 
 protected:
 
@@ -19,9 +23,13 @@ protected:
 	void ApplyControlInputToVelocity(float DeltaTime);
 
 public:
+
 	virtual void	Update() override;
 
+	virtual void	Read( InputMemoryBitStream& inInputStream ) override;
+
 	void ProcessInput( float inDeltaTime, const ActionInputState& inInputState );
+
 	//void SimulateMovement( float inDeltaTime );
 
 protected:
@@ -116,9 +124,6 @@ private:
 	FVector ActionLastControlInputVector;
 protected:
 
-	UPROPERTY( EditAnywhere, BlueprintReadWrite, Category = ActionPawnMovement )
-		FVector Velocity;
-
 	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
 	UPROPERTY( EditAnywhere, BlueprintReadWrite, Category = ActionPawnMovement )
 	float BaseTurnRate;
@@ -142,5 +147,6 @@ protected:
 	UPROPERTY( EditAnywhere, BlueprintReadWrite, Category = ActionPawnMovement, meta = ( ClampMin = "0", UIMin = "0" ) )
 		float TurningBoost;
 
-	
+private:
+	FRotator ActionPawnCameraRotation;
 };

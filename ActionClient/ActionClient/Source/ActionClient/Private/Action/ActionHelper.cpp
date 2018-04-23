@@ -3,23 +3,43 @@
 #include "ActionClient.h"
 #include "ActionHelper.h"
 
-bool ActionHelper::ShowOnScreenDebugMessages = true;
+bool ActionHelper::bShowDebugMessages = true;
 
-//ScreenMsg
+// ScreenMsg
 void ActionHelper::ScreenMsg( const FString& Msg )
 {
-	if (!ShowOnScreenDebugMessages) return;
-	GEngine->AddOnScreenDebugMessage( -1, 55.f, FColor::Red, *Msg );
-}
-
-void ActionHelper::ScreenMsg( const FString& Msg, const float Value )
-{
-	if (!ShowOnScreenDebugMessages) return;
-	GEngine->AddOnScreenDebugMessage( -1, 55.f, FColor::Red, FString::Printf( TEXT( "%s %f" ), *Msg, Value ) );
+	if (!bShowDebugMessages) return;
+	GEngine->AddOnScreenDebugMessage( -1, 66.f, FColor::Red, *( STR_CUR_CLASS_LINE + "  :  " + *Msg ) );
 }
 
 void ActionHelper::ScreenMsg( const FString& Msg, const FString& Msg2 )
 {
-	if (!ShowOnScreenDebugMessages) return;
-	GEngine->AddOnScreenDebugMessage( -1, 55.f, FColor::Red, FString::Printf( TEXT( "%s %s" ), *Msg, *Msg2 ) );
+	if (!bShowDebugMessages) return;
+	GEngine->AddOnScreenDebugMessage( -1, 66.f, FColor::Red, *( STR_CUR_CLASS_LINE + "  :  " + *Msg + "      " + *Msg2 ) );
 }
+
+void ActionHelper::ScreenMsg( const FString& Msg, const float FloatValue )
+{
+	if (!bShowDebugMessages) return;
+	GEngine->AddOnScreenDebugMessage( -1, 66.f, FColor::Red, *( STR_CUR_CLASS_LINE + "  :  " + Msg + "      " + FString::SanitizeFloat( FloatValue ) ) );
+}
+
+// OutputLog
+void ActionHelper::OutputLog( const FString& Msg )
+{
+	if (!bShowDebugMessages) return;
+	UE_LOG( LogTemp, Warning, TEXT( "%s  :  %s" ), *STR_CUR_CLASS_LINE, *FString( Msg ) );
+};
+
+void ActionHelper::OutputLog( const FString& Msg, const FString& Msg2 )
+{      
+	if (!bShowDebugMessages) return;
+	UE_LOG( LogTemp, Warning, TEXT( "%s  :  %s     %s" ), *STR_CUR_CLASS_LINE, *FString( Msg ), *FString( Msg2 ) );
+}
+
+void ActionHelper::OutputLog( const FString& Msg, const float FloatValue )
+{      
+	if (!bShowDebugMessages) return;
+	UE_LOG( LogTemp, Warning, TEXT( "%s  :  %s    %f" ), *STR_CUR_CLASS_LINE, *FString( Msg ), FloatValue );
+}
+

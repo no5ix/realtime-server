@@ -3,16 +3,20 @@
 class Character : public GameObject
 {
 public:
-	CLASS_IDENTIFICATION( 'CHAR', GameObject )
+	// 'CHRT' = 1128813140;
+	CLASS_IDENTIFICATION( 'CHRT', GameObject )
 
-	enum ECatReplicationState
+	enum ECharacterReplicationState
 	{
 		ECRS_Pose = 1 << 0,
-		ECRS_Color = 1 << 1,
+		//ECRS_Color = 1 << 1,
 		ECRS_PlayerId = 1 << 2,
-		ECRS_Health = 1 << 3,
+		//ECRS_Health = 1 << 3,
 
-		ECRS_AllState = ECRS_Pose | ECRS_Color | ECRS_PlayerId | ECRS_Health
+		ECRS_AllState = ECRS_Pose 
+			//| ECRS_Color
+			| ECRS_PlayerId
+			//| ECRS_Health
 	};
 
 
@@ -25,7 +29,7 @@ public:
 	virtual void Update() override;
 
 	void ProcessInput( float inDeltaTime, const InputState& inInputState );
-	//void SimulateMovement( float inDeltaTime );
+	void SimulateMovement( float inDeltaTime );
 
 	//void ProcessCollisions();
 	//void ProcessCollisionsWithScreenWalls();
@@ -33,28 +37,31 @@ public:
 	void		SetPlayerId( uint32_t inPlayerId ) { mPlayerId = inPlayerId; }
 	uint32_t	GetPlayerId()						const { return mPlayerId; }
 
-	void			SetVelocity( const Vector3& inVelocity ) { mVelocity = inVelocity; }
-	const Vector3&	GetVelocity()						const { return mVelocity; }
-
 	virtual uint32_t	Write( OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState ) const override;
 
+
+	bool IsExceedingMaxSpeed( float inMaxSpeed ) const;
+
+	void ActionAddMovementInput( Vector3 WorldDirection, float ScaleValue = 1.0f );
+
+	Vector3 ActionConsumeMovementInputVector();
+
+	Vector3 ActionGetPendingInputVector() const;
+
+	virtual Vector3 GetVelocity() const { return Velocity; }
+
+	void			SetVelocity( const Vector3& inVelocity ) { Velocity = inVelocity; }
+
+	float GetMaxSpeed() const { return MaxSpeed; }
+
+protected:
+
+	/** Update Velocity based on input. Also applies gravity. */
+	void ApplyControlInputToVelocity( float DeltaTime );
 protected:
 	Character();
 
 private:
-
-
-	//void	AdjustVelocityByThrust( float inDeltaTime );
-
-	Vector3				mVelocity;
-
-
-	float				mMaxLinearSpeed;
-	float				mMaxRotationSpeed;
-
-	//bounce fraction when hitting various things
-	float				mWallRestitution;
-	float				mCatRestitution;
 
 
 	uint32_t			mPlayerId;
@@ -65,10 +72,44 @@ protected:
 
 	float				mLastMoveTimestamp;
 
-	float				mThrustDir;
 	int					mHealth;
 
 	bool				mIsShooting;
+
+	Vector3             ActionPawnCameraRotation;
+
+private:
+
+	Vector3 ActionControlInputVector;
+
+	Vector3 ActionLastControlInputVector;
+protected:
+
+
+	Vector3 Velocity;
+
+	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
+
+	float BaseTurnRate;
+
+	/** Base lookup rate, in deg/sec. Other scaling may affect final lookup rate. */
+
+	float BaseLookUpRate;
+
+	/** Maximum velocity magnitude allowed for the controlled Pawn. */
+
+	float MaxSpeed;
+
+	/** Acceleration applied by input (rate of change of velocity) */
+
+	float Acceleration;
+
+	/** Deceleration applied when there is no input (rate of change of velocity) */
+
+	float Deceleration;
+
+
+	float TurningBoost;
 };
 
 typedef shared_ptr< Character >	CharacterPtr;

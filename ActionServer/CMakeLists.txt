@@ -58,7 +58,13 @@ IF(WIN32) # Check if we are on Windows
 	  	message(SEND_ERROR "You are using an unsupported Windows compiler! (Not MSVC or GCC)")
   	endif()
 elseif(UNIX)
-  	# Nothing special required
+    # Inhibit all warning messages.
+    if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
+        # Update if necessary
+        # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wno-long-long -pedantic")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w")
+    endif()
+  	# For gdb
     set(CMAKE_BUILD_TYPE "Debug")
     set(CMAKE_CXX_FLAGS_DEBUG "$ENV{CXXFLAGS} -O0 -Wall -g -ggdb")
     set(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall")

@@ -19,7 +19,7 @@ UActionEngine::UActionEngine( const FObjectInitializer& ObjectInitializer ) : Su
 
 	ip = TEXT( "127.0.0.1" );
 	port = 45000;
-	player_name = TEXT( "ActionTestPlayerName" );
+	player_name = TEXT( "ActionClientTestPlayerName" );
 
 	InputManager::StaticInit();
 }
@@ -31,8 +31,14 @@ void UActionEngine::BeginPlay()
 
 	// ...
 
+
+	//GameObjectRegistry::sInstance->RegisterCreationFunction( 'RCAT', RoboCatClient::StaticCreate );
+	//GameObjectRegistry::sInstance->RegisterCreationFunction( 'MOUS', MouseClient::StaticCreate );
+	//GameObjectRegistry::sInstance->RegisterCreationFunction( 'YARN', YarnClient::StaticCreate );
+
 	NetworkManager::StaticInit( ip, port, player_name );
-	NetworkManager::sInstance->GetReplicationManagerClient()->SetDefaultCharacterClasses( DefaultCharacterClasses );
+	//NetworkManager::sInstance->GetReplicationManagerClient()->SetDefaultCharacterClasses( DefaultCharacterClasses );
+	NetworkManager::sInstance->GetGameObjectRegistryUObj()->SetDefaultCharacterClasses( DefaultCharacterClasses );
 }
 
 

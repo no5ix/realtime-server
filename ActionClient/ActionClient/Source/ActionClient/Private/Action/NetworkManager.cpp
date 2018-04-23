@@ -21,7 +21,8 @@ NetworkManager::NetworkManager() :
 	mState( NCS_Uninitialized )
 {
 	mSocket = NULL;
-	mReplicationManagerClient = NewObject<UReplicationManagerClientObj>();
+	//mReplicationManagerClient = NewObject<UReplicationManagerClientObj>();
+	mGameObjectRegistryUObj = NewObject<UGameObjectRegistryUObj>();
 }
 
 void NetworkManager::StaticInit( const FString& inIP, int inPort, const FString& inPlayerName )
@@ -38,9 +39,9 @@ void NetworkManager::Init( const FString& inYourChosenSocketName, const FString&
 
 	if ( ActionSocketUtil::CreateInternetAddress( mRemoteAddr, inIP, inPort ) )
 	{
-		UE_LOG( LogTemp, Log, TEXT( "\n\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" ) );
-		UE_LOG( LogTemp, Log, TEXT( "ActionUDPSocket Initialized Successfully!!!" ) );
-		UE_LOG( LogTemp, Log, TEXT( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n\n" ) );
+		UE_LOG( LogTemp, Warning, TEXT( "\n\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" ) );
+		UE_LOG( LogTemp, Warning, TEXT( "ActionUDPSocket Initialized Successfully!!!" ) );
+		UE_LOG( LogTemp, Warning, TEXT( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n\n" ) );
 	}
 
 	mState = NCS_SayingHello;
@@ -60,9 +61,9 @@ void NetworkManager::SendPacket( const OutputMemoryBitStream& inOutputStream )
 	}
 	else
 	{
-		UE_LOG( LogTemp, Log, TEXT( "\n\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" ) );
-		UE_LOG( LogTemp, Log, TEXT( "****UDP**** Send Hello Packet Successfully!!!" ) );
-		UE_LOG( LogTemp, Log, TEXT( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n\n" ) );
+		UE_LOG( LogTemp, Warning, TEXT( "\n\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" ) );
+		UE_LOG( LogTemp, Warning, TEXT( "****UDP**** Send Hello Packet Successfully!!!" ) );
+		UE_LOG( LogTemp, Warning, TEXT( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n\n" ) );
 	}
 }
 
@@ -101,9 +102,9 @@ void NetworkManager::ReadIncomingPacketsIntoQueue()
 	if (!isFirstFlagForDebug)
 	{
 
-		UE_LOG( LogTemp, Log, TEXT( "\n\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" ) );
-		UE_LOG( LogTemp, Log, TEXT( "****UDP**** DataRecv come in!!!" ) );
-		UE_LOG( LogTemp, Log, TEXT( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n\n" ) );
+		UE_LOG( LogTemp, Warning, TEXT( "\n\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" ) );
+		UE_LOG( LogTemp, Warning, TEXT( "****UDP**** DataRecv come in!!!" ) );
+		UE_LOG( LogTemp, Warning, TEXT( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n\n" ) );
 
 		isFirstFlagForDebug = true;
 	}
@@ -160,44 +161,6 @@ void NetworkManager::ProcessQueuedPackets()
 
 }
 
-void NetworkManager::HandleStatePacket( InputMemoryBitStream& inInputStream )
-{
-	if (mState == NCS_Welcomed)
-	{
-		ReadLastMoveProcessedOnServerTimestamp( inInputStream );
-
-		UE_LOG( LogTemp, Log, TEXT( "\n\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" ) );
-		UE_LOG( LogTemp, Log, TEXT( "****ReadLastMoveProcessedOnServerTimestamp;****  Successfully!!!" ) );
-		UE_LOG( LogTemp, Log, TEXT( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n\n" ) );
-
-		//old
-		//HandleGameObjectState( inPacketBuffer );
-		//HandleScoreBoardState( inInputStream );
-
-
-		//tell the replication manager to handle the rest...
-		mReplicationManagerClient->Read( inInputStream );
-	}
-}
-
-void NetworkManager::ReadLastMoveProcessedOnServerTimestamp( InputMemoryBitStream& inInputStream )
-{
-	bool isTimestampDirty;
-	inInputStream.Read( isTimestampDirty );
-	if (isTimestampDirty)
-	{
-		inInputStream.Read( mLastMoveProcessedByServerTimestamp );
-
-		float rtt = ActionTiming::sInstance.GetFrameStartTime() - mLastMoveProcessedByServerTimestamp;
-		mLastRoundTripTime = rtt;
-		//mAvgRoundTripTime.Update( rtt );
-
-		InputManager::sInstance->GetActionList().RemovedProcessedActions( mLastMoveProcessedByServerTimestamp );
-
-	}
-
-}
-
 void NetworkManager::UpdateBytesSentLastFrame()
 {
 
@@ -217,9 +180,9 @@ void NetworkManager::ProcessPacket( InputMemoryBitStream& inInputStream )
 		//if (mDeliveryNotificationManager.ReadAndProcessState( inInputStream ))
 		//{
 
-		UE_LOG( LogTemp, Log, TEXT( "\n\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" ) );
-		UE_LOG( LogTemp, Log, TEXT( "****HandleStatePacket;****  Successfully!!!" ) );
-		UE_LOG( LogTemp, Log, TEXT( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n\n" ) );
+		UE_LOG( LogTemp, Warning, TEXT( "\n\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" ) );
+		UE_LOG( LogTemp, Warning, TEXT( "****HandleStatePacket;****  Successfully!!!" ) );
+		UE_LOG( LogTemp, Warning, TEXT( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n\n" ) );
 
 			HandleStatePacket( inInputStream );
 		//}
@@ -252,6 +215,23 @@ void NetworkManager::UpdateSayingHello()
 	}
 }
 
+UGameObjectRegistryUObj* NetworkManager::GetGameObjectRegistryUObj()
+{
+	if (mGameObjectRegistryUObj == nullptr)
+	{
+		mGameObjectRegistryUObj = NewObject<UGameObjectRegistryUObj>();
+		if (mGameObjectRegistryUObj)
+		{
+			ActionHelper::OutputLog( "mGameObjectRegistryUObj is not null" );
+		}
+		else
+		{
+			ActionHelper::OutputLog( "mGameObjectRegistryUObj is null" );
+		}
+	}
+	return mGameObjectRegistryUObj;
+}
+
 void NetworkManager::HandleWelcomePacket( InputMemoryBitStream& inInputStream )
 {
 	if (mState == NCS_SayingHello)
@@ -264,9 +244,71 @@ void NetworkManager::HandleWelcomePacket( InputMemoryBitStream& inInputStream )
 
 		ActionHelper::ScreenMsg( "welcome on client as playerID = ", mPlayerId );
 
-		UE_LOG( LogTemp, Log, TEXT( "\n\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" ) );
-		UE_LOG( LogTemp, Log, TEXT( "****UDP**** HandleWelcomePacket Successfully!!!" ) );
-		UE_LOG( LogTemp, Log, TEXT( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n\n" ) );
+		UE_LOG( LogTemp, Warning, TEXT( "\n\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" ) );
+		UE_LOG( LogTemp, Warning, TEXT( "****UDP**** HandleWelcomePacket Successfully!!!" ) );
+		UE_LOG( LogTemp, Warning, TEXT( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n\n" ) );
 
 	}
+}
+
+void NetworkManager::HandleStatePacket( InputMemoryBitStream& inInputStream )
+{
+	if (mState == NCS_Welcomed)
+	{
+		ReadLastMoveProcessedOnServerTimestamp( inInputStream );
+
+		UE_LOG( LogTemp, Warning, TEXT( "\n\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" ) );
+		UE_LOG( LogTemp, Warning, TEXT( "****ReadLastMoveProcessedOnServerTimestamp;****  Successfully!!!" ) );
+		UE_LOG( LogTemp, Warning, TEXT( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n\n" ) );
+
+		//old
+		//HandleGameObjectState( inPacketBuffer );
+		//HandleScoreBoardState( inInputStream );
+
+
+		//tell the replication manager to handle the rest...
+		mReplicationManagerClient.Read( inInputStream );
+	}
+}
+
+void NetworkManager::ReadLastMoveProcessedOnServerTimestamp( InputMemoryBitStream& inInputStream )
+{
+	bool isTimestampDirty;
+	inInputStream.Read( isTimestampDirty );
+	if (isTimestampDirty)
+	{
+		inInputStream.Read( mLastMoveProcessedByServerTimestamp );
+
+		float rtt = ActionTiming::sInstance.GetFrameStartTime() - mLastMoveProcessedByServerTimestamp;
+		mLastRoundTripTime = rtt;
+		//mAvgRoundTripTime.Update( rtt );
+
+		InputManager::sInstance->GetActionList().RemovedProcessedActions( mLastMoveProcessedByServerTimestamp );
+
+	}
+
+}
+
+
+GameObjectPtr NetworkManager::GetGameObject( int inNetworkId ) const
+{
+	auto gameObjectIt = mNetworkIdToGameObjectMap.find( inNetworkId );
+	if (gameObjectIt != mNetworkIdToGameObjectMap.end())
+	{
+		return gameObjectIt->second;
+	}
+	else
+	{
+		return GameObjectPtr();
+	}
+}
+
+void NetworkManager::AddToNetworkIdToGameObjectMap( GameObjectPtr inGameObject )
+{
+	mNetworkIdToGameObjectMap[inGameObject->GetNetworkId()] = inGameObject;
+}
+
+void NetworkManager::RemoveFromNetworkIdToGameObjectMap( GameObjectPtr inGameObject )
+{
+	mNetworkIdToGameObjectMap.erase( inGameObject->GetNetworkId() );
 }

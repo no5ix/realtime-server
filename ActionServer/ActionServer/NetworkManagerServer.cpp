@@ -204,16 +204,6 @@ void NetworkManagerServer::SendStatePacketToClient( ClientProxyPtr inClientProxy
 		inClientProxy->GetReplicationManagerServer().Write( statePacket );
 		SendPacket( statePacket, inClientProxy->GetSocketAddress() );
 	}
-	////it's state!
-	//statePacket.Write( kStateCC );
-
-	//WriteLastMoveTimestampIfDirty( statePacket, inClientProxy );
-
-	////AddScoreBoardStateToPacket( statePacket );
-
-	//inClientProxy->GetReplicationManagerServer().Write( statePacket );
-	//SendPacket( statePacket, inClientProxy->GetSocketAddress() );
-
 }
 
 void NetworkManagerServer::WriteLastMoveTimestampIfDirty( OutputMemoryBitStream& inOutputStream, ClientProxyPtr inClientProxy )

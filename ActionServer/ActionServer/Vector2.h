@@ -12,10 +12,10 @@ struct Vector2
     {
         struct
         {
-            double X;
-            double Y;
+            float X;
+            float Y;
         };
-        double data[2];
+        float data[2];
     };
 
 
@@ -23,9 +23,9 @@ struct Vector2
      * Constructors.
      */
     inline Vector2();
-    inline Vector2(double data[]);
-    inline Vector2(double value);
-    inline Vector2(double x, double y);
+    inline Vector2(float data[]);
+    inline Vector2(float value);
+    inline Vector2(float x, float y);
 
 
     /**
@@ -45,7 +45,7 @@ struct Vector2
      * @param b: The second vector.
      * @return: A scalar value.
      */
-    static inline double Angle(Vector2 a, Vector2 b);
+    static inline float Angle(Vector2 a, Vector2 b);
 
     /**
      * Returns a vector with its magnitude clamped to maxLength.
@@ -53,7 +53,7 @@ struct Vector2
      * @param maxLength: The maximum length of the return vector.
      * @return: A new vector.
      */
-    static inline Vector2 ClampMagnitude(Vector2 vector, double maxLength);
+    static inline Vector2 ClampMagnitude(Vector2 vector, float maxLength);
 
     /**
      * Returns the component of a in the direction of b (scalar projection).
@@ -61,7 +61,7 @@ struct Vector2
      * @param b: The vector being compared against.
      * @return: A scalar value.
      */
-    static inline double Component(Vector2 a, Vector2 b);
+    static inline float Component(Vector2 a, Vector2 b);
 
     /**
      * Returns the distance between a and b.
@@ -69,7 +69,7 @@ struct Vector2
      * @param b: The second point.
      * @return: A scalar value.
      */
-    static inline double Distance(Vector2 a, Vector2 b);
+    static inline float Distance(Vector2 a, Vector2 b);
 
     /**
      * Returns the dot product of two vectors.
@@ -77,7 +77,7 @@ struct Vector2
      * @param rhs: The right side of the multiplication.
      * @return: A scalar value.
      */
-    static inline double Dot(Vector2 lhs, Vector2 rhs);
+    static inline float Dot(Vector2 lhs, Vector2 rhs);
 
     /**
      * Converts a polar representation of a vector into cartesian
@@ -86,7 +86,7 @@ struct Vector2
      * @param theta: The angle from the X axis.
      * @return: A new vector.
      */
-    static inline Vector2 FromPolar(double rad, double theta);
+    static inline Vector2 FromPolar(float rad, float theta);
 
     /**
      * Returns a vector linearly interpolated between a and b, moving along
@@ -96,7 +96,7 @@ struct Vector2
      * @param t: The interpolation value [0-1].
      * @return: A new vector.
      */
-    static inline Vector2 Lerp(Vector2 a, Vector2 b, double t);
+    static inline Vector2 Lerp(Vector2 a, Vector2 b, float t);
 
     /**
      * Returns a vector linearly interpolated between a and b, moving along
@@ -106,14 +106,14 @@ struct Vector2
      * @param t: The interpolation value [0-1] (no actual bounds).
      * @return: A new vector.
      */
-    static inline Vector2 LerpUnclamped(Vector2 a, Vector2 b, double t);
+    static inline Vector2 LerpUnclamped(Vector2 a, Vector2 b, float t);
 
     /**
      * Returns the magnitude of a vector.
      * @param v: The vector in question.
      * @return: A scalar value.
      */
-    static inline double Magnitude(Vector2 v);
+    static inline float Magnitude(Vector2 v);
 
     /**
      * Returns a vector made from the largest components of two other vectors.
@@ -140,7 +140,7 @@ struct Vector2
      * @return: A new vector.
      */
     static inline Vector2 MoveTowards(Vector2 current, Vector2 target,
-                               double maxDistanceDelta);
+                               float maxDistanceDelta);
 
     /**
      * Returns a new vector with magnitude of one.
@@ -198,8 +198,8 @@ struct Vector2
      * @return: A new vector.
      */
     static inline Vector2 RotateTowards(Vector2 current, Vector2 target,
-                                 double maxRadiansDelta,
-                                 double maxMagnitudeDelta);
+                                 float maxRadiansDelta,
+                                 float maxMagnitudeDelta);
 
     /**
      * Multiplies two vectors component-wise.
@@ -217,7 +217,7 @@ struct Vector2
      * @param b: The ending direction.
      * @param t: The interpolation value [0-1].
      */
-    static inline Vector2 Slerp(Vector2 a, Vector2 b, double t);
+    static inline Vector2 Slerp(Vector2 a, Vector2 b, float t);
 
     /**
      * Returns a vector rotated towards b from a by the percent t.
@@ -227,7 +227,7 @@ struct Vector2
      * @param b: The ending direction.
      * @param t: The interpolation value [0-1].
      */
-    static inline Vector2 SlerpUnclamped(Vector2 a, Vector2 b, double t);
+    static inline Vector2 SlerpUnclamped(Vector2 a, Vector2 b, float t);
 
     /**
      * Returns the squared magnitude of a vector.
@@ -237,7 +237,7 @@ struct Vector2
      * @param v: The vector in question.
      * @return: A scalar value.
      */
-    static inline double SqrMagnitude(Vector2 v);
+    static inline float SqrMagnitude(Vector2 v);
 
     /**
      * Calculates the polar coordinate space representation of a vector.
@@ -245,29 +245,29 @@ struct Vector2
      * @param rad: The magnitude of the vector.
      * @param theta: The angle from the X axis.
      */
-    static inline void ToPolar(Vector2 vector, double &rad, double &theta);
+    static inline void ToPolar(Vector2 vector, float &rad, float &theta);
 
 
     /**
      * Operator overloading.
      */
-    inline struct Vector2& operator+=(const double rhs);
-    inline struct Vector2& operator-=(const double rhs);
-    inline struct Vector2& operator*=(const double rhs);
-    inline struct Vector2& operator/=(const double rhs);
+    inline struct Vector2& operator+=(const float rhs);
+    inline struct Vector2& operator-=(const float rhs);
+    inline struct Vector2& operator*=(const float rhs);
+    inline struct Vector2& operator/=(const float rhs);
     inline struct Vector2& operator+=(const Vector2 rhs);
     inline struct Vector2& operator-=(const Vector2 rhs);
 };
 
 inline Vector2 operator-(Vector2 rhs);
-inline Vector2 operator+(Vector2 lhs, const double rhs);
-inline Vector2 operator-(Vector2 lhs, const double rhs);
-inline Vector2 operator*(Vector2 lhs, const double rhs);
-inline Vector2 operator/(Vector2 lhs, const double rhs);
-inline Vector2 operator+(const double lhs, Vector2 rhs);
-inline Vector2 operator-(const double lhs, Vector2 rhs);
-inline Vector2 operator*(const double lhs, Vector2 rhs);
-inline Vector2 operator/(const double lhs, Vector2 rhs);
+inline Vector2 operator+(Vector2 lhs, const float rhs);
+inline Vector2 operator-(Vector2 lhs, const float rhs);
+inline Vector2 operator*(Vector2 lhs, const float rhs);
+inline Vector2 operator/(Vector2 lhs, const float rhs);
+inline Vector2 operator+(const float lhs, Vector2 rhs);
+inline Vector2 operator-(const float lhs, Vector2 rhs);
+inline Vector2 operator*(const float lhs, Vector2 rhs);
+inline Vector2 operator/(const float lhs, Vector2 rhs);
 inline Vector2 operator+(Vector2 lhs, const Vector2 rhs);
 inline Vector2 operator-(Vector2 lhs, const Vector2 rhs);
 inline bool operator==(const Vector2 lhs, const Vector2 rhs);
@@ -280,9 +280,9 @@ inline bool operator!=(const Vector2 lhs, const Vector2 rhs);
  */
 
 Vector2::Vector2() : X(0), Y(0) {}
-Vector2::Vector2(double data[]) : X(data[0]), Y(data[1]) {}
-Vector2::Vector2(double value) : X(value), Y(value) {}
-Vector2::Vector2(double x, double y) : X(x), Y(y) {}
+Vector2::Vector2(float data[]) : X(data[0]), Y(data[1]) {}
+Vector2::Vector2(float value) : X(value), Y(value) {}
+Vector2::Vector2(float x, float y) : X(x), Y(y) {}
 
 
 Vector2 Vector2::Zero() { return Vector2(0, 0); }
@@ -293,38 +293,38 @@ Vector2 Vector2::Up() { return Vector2(0, 1); }
 Vector2 Vector2::Down() { return Vector2(0, -1); }
 
 
-double Vector2::Angle(Vector2 a, Vector2 b)
+float Vector2::Angle(Vector2 a, Vector2 b)
 {
-    double v = Dot(a, b) / (Magnitude(a) * Magnitude(b));
-    v = fmax(v, -1.0);
-    v = fmin(v, 1.0);
+    float v = Dot(a, b) / (Magnitude(a) * Magnitude(b));
+    v = fmax(v, -1.0f);
+    v = fmin(v, 1.0f);
     return acos(v);
 }
 
-Vector2 Vector2::ClampMagnitude(Vector2 vector, double maxLength)
+Vector2 Vector2::ClampMagnitude(Vector2 vector, float maxLength)
 {
-    double length = Magnitude(vector);
+    float length = Magnitude(vector);
     if (length > maxLength)
         vector *= maxLength / length;
     return vector;
 }
 
-double Vector2::Component(Vector2 a, Vector2 b)
+float Vector2::Component(Vector2 a, Vector2 b)
 {
     return Dot(a, b) / Magnitude(b);
 }
 
-double Vector2::Distance(Vector2 a, Vector2 b)
+float Vector2::Distance(Vector2 a, Vector2 b)
 {
     return Vector2::Magnitude(a - b);
 }
 
-double Vector2::Dot(Vector2 lhs, Vector2 rhs)
+float Vector2::Dot(Vector2 lhs, Vector2 rhs)
 {
     return lhs.X * rhs.X + lhs.Y * rhs.Y;
 }
 
-Vector2 Vector2::FromPolar(double rad, double theta)
+Vector2 Vector2::FromPolar(float rad, float theta)
 {
     Vector2 v;
     v.X = rad * cos(theta);
@@ -332,42 +332,42 @@ Vector2 Vector2::FromPolar(double rad, double theta)
     return v;
 }
 
-Vector2 Vector2::Lerp(Vector2 a, Vector2 b, double t)
+Vector2 Vector2::Lerp(Vector2 a, Vector2 b, float t)
 {
     if (t < 0) return a;
     else if (t > 1) return b;
     return LerpUnclamped(a, b, t);
 }
 
-Vector2 Vector2::LerpUnclamped(Vector2 a, Vector2 b, double t)
+Vector2 Vector2::LerpUnclamped(Vector2 a, Vector2 b, float t)
 {
     return (b - a) * t + a;
 }
 
-double Vector2::Magnitude(Vector2 v)
+float Vector2::Magnitude(Vector2 v)
 {
     return sqrt(SqrMagnitude(v));
 }
 
 Vector2 Vector2::Max(Vector2 a, Vector2 b)
 {
-    double x = a.X > b.X ? a.X : b.X;
-    double y = a.Y > b.Y ? a.Y : b.Y;
+    float x = a.X > b.X ? a.X : b.X;
+    float y = a.Y > b.Y ? a.Y : b.Y;
     return Vector2(x, y);
 }
 
 Vector2 Vector2::Min(Vector2 a, Vector2 b)
 {
-    double x = a.X > b.X ? b.X : a.X;
-    double y = a.Y > b.Y ? b.Y : a.Y;
+    float x = a.X > b.X ? b.X : a.X;
+    float y = a.Y > b.Y ? b.Y : a.Y;
     return Vector2(x, y);
 }
 
 Vector2 Vector2::MoveTowards(Vector2 current, Vector2 target,
-                             double maxDistanceDelta)
+                             float maxDistanceDelta)
 {
     Vector2 d = target - current;
-    double m = Magnitude(d);
+    float m = Magnitude(d);
     if (m < maxDistanceDelta || m == 0)
         return target;
     return current + (d * maxDistanceDelta / m);
@@ -375,7 +375,7 @@ Vector2 Vector2::MoveTowards(Vector2 current, Vector2 target,
 
 Vector2 Vector2::Normalized(Vector2 v)
 {
-    double mag = Magnitude(v);
+    float mag = Magnitude(v);
     if (mag == 0)
         return Vector2::Zero();
     return v / mag;
@@ -390,7 +390,7 @@ void Vector2::OrthoNormalize(Vector2 &normal, Vector2 &tangent)
 
 Vector2 Vector2::Project(Vector2 a, Vector2 b)
 {
-    double m = Magnitude(b);
+    float m = Magnitude(b);
     return Dot(a, b) / (m * m) * b;
 }
 
@@ -405,23 +405,23 @@ Vector2 Vector2::Reject(Vector2 a, Vector2 b)
 }
 
 Vector2 Vector2::RotateTowards(Vector2 current, Vector2 target,
-                               double maxRadiansDelta,
-                               double maxMagnitudeDelta)
+                               float maxRadiansDelta,
+                               float maxMagnitudeDelta)
 {
-    double magCur = Magnitude(current);
-    double magTar = Magnitude(target);
-    double newMag = magCur + maxMagnitudeDelta *
+    float magCur = Magnitude(current);
+    float magTar = Magnitude(target);
+    float newMag = magCur + maxMagnitudeDelta *
         ((magTar > magCur) - (magCur > magTar));
     newMag = fmin(newMag, fmax(magCur, magTar));
     newMag = fmax(newMag, fmin(magCur, magTar));
 
-    double totalAngle = Angle(current, target) - maxRadiansDelta;
+    float totalAngle = Angle(current, target) - maxRadiansDelta;
     if (totalAngle <= 0)
         return Normalized(target) * newMag;
     else if (totalAngle >= M_PI)
         return Normalized(-target) * newMag;
 
-    double axis = current.X * target.Y - current.Y * target.X;
+    float axis = current.X * target.Y - current.Y * target.X;
     axis = axis / fabs(axis);
     if (!(1 - fabs(axis) < 0.00001))
         axis = 1;
@@ -436,62 +436,62 @@ Vector2 Vector2::Scale(Vector2 a, Vector2 b)
     return Vector2(a.X * b.X, a.Y * b.Y);
 }
 
-Vector2 Vector2::Slerp(Vector2 a, Vector2 b, double t)
+Vector2 Vector2::Slerp(Vector2 a, Vector2 b, float t)
 {
     if (t < 0) return a;
     else if (t > 1) return b;
     return SlerpUnclamped(a, b, t);
 }
 
-Vector2 Vector2::SlerpUnclamped(Vector2 a, Vector2 b, double t)
+Vector2 Vector2::SlerpUnclamped(Vector2 a, Vector2 b, float t)
 {
-    double magA = Magnitude(a);
-    double magB = Magnitude(b);
+    float magA = Magnitude(a);
+    float magB = Magnitude(b);
     a /= magA;
     b /= magB;
-    double dot = Dot(a, b);
-    dot = fmax(dot, -1.0);
-    dot = fmin(dot, 1.0);
-    double theta = acos(dot) * t;
+    float dot = Dot(a, b);
+    dot = fmax(dot, -1.0f);
+    dot = fmin(dot, 1.0f);
+    float theta = acos(dot) * t;
     Vector2 relativeVec = Normalized(b - a * dot);
     Vector2 newVec = a * cos(theta) + relativeVec * sin(theta);
     return newVec * (magA + (magB - magA) * t);
 }
 
-double Vector2::SqrMagnitude(Vector2 v)
+float Vector2::SqrMagnitude(Vector2 v)
 {
     return v.X * v.X + v.Y * v.Y;
 }
 
-void Vector2::ToPolar(Vector2 vector, double &rad, double &theta)
+void Vector2::ToPolar(Vector2 vector, float &rad, float &theta)
 {
     rad = Magnitude(vector);
     theta = atan2(vector.Y, vector.X);
 }
 
 
-struct Vector2& Vector2::operator+=(const double rhs)
+struct Vector2& Vector2::operator+=(const float rhs)
 {
     X += rhs;
     Y += rhs;
     return *this;
 }
 
-struct Vector2& Vector2::operator-=(const double rhs)
+struct Vector2& Vector2::operator-=(const float rhs)
 {
     X -= rhs;
     Y -= rhs;
     return *this;
 }
 
-struct Vector2& Vector2::operator*=(const double rhs)
+struct Vector2& Vector2::operator*=(const float rhs)
 {
     X *= rhs;
     Y *= rhs;
     return *this;
 }
 
-struct Vector2& Vector2::operator/=(const double rhs)
+struct Vector2& Vector2::operator/=(const float rhs)
 {
     X /= rhs;
     Y /= rhs;
@@ -513,14 +513,14 @@ struct Vector2& Vector2::operator-=(const Vector2 rhs)
 }
 
 Vector2 operator-(Vector2 rhs) { return rhs * -1; }
-Vector2 operator+(Vector2 lhs, const double rhs) { return lhs += rhs; }
-Vector2 operator-(Vector2 lhs, const double rhs) { return lhs -= rhs; }
-Vector2 operator*(Vector2 lhs, const double rhs) { return lhs *= rhs; }
-Vector2 operator/(Vector2 lhs, const double rhs) { return lhs /= rhs; }
-Vector2 operator+(const double lhs, Vector2 rhs) { return rhs += lhs; }
-Vector2 operator-(const double lhs, Vector2 rhs) { return rhs -= lhs; }
-Vector2 operator*(const double lhs, Vector2 rhs) { return rhs *= lhs; }
-Vector2 operator/(const double lhs, Vector2 rhs) { return rhs /= lhs; }
+Vector2 operator+(Vector2 lhs, const float rhs) { return lhs += rhs; }
+Vector2 operator-(Vector2 lhs, const float rhs) { return lhs -= rhs; }
+Vector2 operator*(Vector2 lhs, const float rhs) { return lhs *= rhs; }
+Vector2 operator/(Vector2 lhs, const float rhs) { return lhs /= rhs; }
+Vector2 operator+(const float lhs, Vector2 rhs) { return rhs += lhs; }
+Vector2 operator-(const float lhs, Vector2 rhs) { return rhs -= lhs; }
+Vector2 operator*(const float lhs, Vector2 rhs) { return rhs *= lhs; }
+Vector2 operator/(const float lhs, Vector2 rhs) { return rhs /= lhs; }
 Vector2 operator+(Vector2 lhs, const Vector2 rhs) { return lhs += rhs; }
 Vector2 operator-(Vector2 lhs, const Vector2 rhs) { return lhs -= rhs; }
 
