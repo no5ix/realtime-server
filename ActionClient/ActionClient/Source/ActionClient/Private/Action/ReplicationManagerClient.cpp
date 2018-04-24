@@ -5,11 +5,14 @@
 #include "NetworkManager.h"
 #include "ActionEntity.h"
 #include "GameObjectRegistryUObj.h"
+#include "ActionHelper.h"
 
 
 
 void ReplicationManagerClient::Read( InputMemoryBitStream& inInputStream )
 {
+	A_LOG();
+
 	while (inInputStream.GetRemainingBitCount() >= 34)
 	{
 		//read the network id...
@@ -19,6 +22,8 @@ void ReplicationManagerClient::Read( InputMemoryBitStream& inInputStream )
 		//only need 2 bits for action...
 		uint8_t action;
 		inInputStream.Read( action, 2 );
+
+		//A_LOG_1( "into while" );
 
 		switch (action)
 		{
@@ -56,6 +61,11 @@ void ReplicationManagerClient::ReadAndDoCreateAction( InputMemoryBitStream& inIn
 	}
 
 	gameObject->Read( inInputStream );
+
+	A_LOG_1( "= = == = = == = = = = == = = = = =" );
+	A_LOG();
+	A_LOG_1( "= = == = = == = = = = == = = = = =" );
+	
 }
 
 void ReplicationManagerClient::ReadAndDoUpdateAction( InputMemoryBitStream& inInputStream, int inNetworkId )
@@ -63,6 +73,10 @@ void ReplicationManagerClient::ReadAndDoUpdateAction( InputMemoryBitStream& inIn
 	GameObjectPtr gameObject = NetworkManager::sInstance->GetGameObject( inNetworkId );
 
 	gameObject->Read( inInputStream );
+
+	A_LOG_1( "= = == = = == = = = = == = = = = =" );
+	A_LOG();
+	A_LOG_1( "= = == = = == = = = = == = = = = =" );
 }
 
 void ReplicationManagerClient::ReadAndDoDestroyAction( InputMemoryBitStream& inInputStream, int inNetworkId )

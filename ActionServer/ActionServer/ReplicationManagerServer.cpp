@@ -43,16 +43,20 @@ void ReplicationManagerServer::Write( OutputMemoryBitStream& inOutputStream )
 			uint32_t writtenState = 0;
 			uint32_t dirtyState = replicationCommand.GetDirtyState();
 
+
+
 			//now do what?
 			switch (action)
 			{
 			case RA_Create:
+				//LOG( " GetAction = RA_Create %d", action );
 				writtenState = WriteCreateAction( inOutputStream, networkId, dirtyState );
 				//once the create action is transmitted, future replication
 				//of this object should be updates instead of creates
 				replicationCommand.SetAction( RA_Update );
 				break;
 			case RA_Update:
+				//LOG( " GetAction = RA_Update %d", action );
 				writtenState = WriteUpdateAction( inOutputStream, networkId, dirtyState );
 				break;
 			case RA_Destroy:

@@ -30,6 +30,8 @@ void CharacterServer::Update()
 			float deltaTime = unprocessedMove.GetDeltaTime();
 			ProcessInput( deltaTime, currentState );
 			SimulateMovement( deltaTime );
+
+			//LOG( " CharacterServer::SimulateMovement() GetPlayerId = %d", GetPlayerId() );
 		}
 
 		moveList.Clear();
@@ -37,11 +39,17 @@ void CharacterServer::Update()
 
 	//HandleShooting();
 
+
+	//LOG( "GetLocation = %f, %f, %f", GetLocation().X, GetLocation().Y, GetLocation().Z );
+	//LOG( "GetRotation = %f, %f, %f", GetRotation().X, GetRotation().Y, GetRotation().Z );
+	//LOG( "GetVelocity = %f, %f, %f", GetVelocity().X, GetVelocity().Y, GetVelocity().Z );
+
 	if ( !ActionServerMath::Is3DVectorEqual( oldLocation, GetLocation() ) ||
 		 !ActionServerMath::Is3DVectorEqual( oldVelocity, GetVelocity() ) ||
 		 !ActionServerMath::Is3DVectorEqual( oldRotation, GetRotation() ) 
 		)
 	{
+		//LOG( " NetworkManagerServer::sInstance->SetStateDirty( GetNetworkId(), ECRS_Pose );  GetPlayerId = %d", GetPlayerId() );
 		NetworkManagerServer::sInstance->SetStateDirty( GetNetworkId(), ECRS_Pose );
 	}
 }

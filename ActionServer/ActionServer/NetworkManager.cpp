@@ -73,6 +73,7 @@ void NetworkManager::ReadIncomingPacketsIntoQueue()
 		if (readByteCount == 0)
 		{
 			//nothing to read
+			//LOG( "ReadIncomingPacketsIntoQueue readByteCount = %d ", 0 );
 			break;
 		}
 		else if (readByteCount == -WSAECONNRESET)

@@ -45,6 +45,9 @@ string Utility::Sprintf( const char* inFormat, ... )
 
 void Utility::Log( const char* inFormat, ... )
 {
+	if ( !ACTION_SHOW_DEBUG_MESSAGE )
+		return;
+
 	//not thread safe...
 	static char temp[4096];
 

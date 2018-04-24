@@ -100,4 +100,5 @@ protected:
 };
 
 
-typedef std::shared_ptr< AActionEntity >	GameObjectPtr;
+//typedef std::shared_ptr< AActionEntity >	GameObjectPtr;
+typedef AActionEntity*	GameObjectPtr;

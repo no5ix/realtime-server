@@ -4,6 +4,7 @@
 //#include "Action.h"
 #include "InputManager.h"
 #include "ActionTiming.h"
+#include "ActionHelper.h"
 
 std::unique_ptr< InputManager >	InputManager::sInstance;
 
@@ -70,7 +71,12 @@ void InputManager::HandleInput( EInputAction inInputAction, float inValue )
 
 const Action& InputManager::SampleInputAsAction()
 {
+
 	return mActionList.AddAction( GetState(), ActionTiming::sInstance.GetFrameStartTime() );
+
+	//const Action& testAction = mActionList.AddAction( GetState(), ActionTiming::sInstance.GetFrameStartTime() );
+	//A_LOG_N( "mActionList.GetActionCount() : ", float( mActionList.GetActionCount() ) );
+	//return testAction;
 }
 
 bool InputManager::IsTimeToSampleInput()

@@ -54,6 +54,8 @@ public:
 
 	float GetMaxSpeed() const { return MaxSpeed; }
 
+	Vector3 GetActionPawnCameraRotation() const { return ActionPawnCameraRotation; }
+
 protected:
 
 	/** Update Velocity based on input. Also applies gravity. */

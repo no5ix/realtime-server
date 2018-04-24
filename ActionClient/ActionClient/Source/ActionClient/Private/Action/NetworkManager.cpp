@@ -60,12 +60,6 @@ void NetworkManager::SendPacket( const OutputMemoryBitStream& inOutputStream )
 		UE_LOG( LogTemp, Error, TEXT( "%s" ), *Str );
 		ActionHelper::ScreenMsg( Str );
 	}
-	else
-	{
-		UE_LOG( LogTemp, Warning, TEXT( "\n\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" ) );
-		UE_LOG( LogTemp, Warning, TEXT( "****UDP**** Send Hello Packet Successfully!!!" ) );
-		UE_LOG( LogTemp, Warning, TEXT( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n\n" ) );
-	}
 }
 
 void NetworkManager::SendHelloPacket()
@@ -76,6 +70,12 @@ void NetworkManager::SendHelloPacket()
 	helloPacket.Write( std::string( TCHAR_TO_UTF8( *mPlayerName ) ) );
 
 	SendPacket( helloPacket );
+	
+	
+	UE_LOG( LogTemp, Warning, TEXT( "\n\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" ) );
+	UE_LOG( LogTemp, Warning, TEXT( "****UDP**** Send Hello Packet Successfully!!!" ) );
+	UE_LOG( LogTemp, Warning, TEXT( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n\n" ) );
+	
 }
 
 
@@ -99,16 +99,6 @@ void NetworkManager::ReadIncomingPacketsIntoQueue()
 	TSharedRef<FInternetAddr> fromAddress = ISocketSubsystem::Get( PLATFORM_SOCKETSUBSYSTEM )->CreateInternetAddr();
 
 
-	static bool isFirstFlagForDebug = false;
-	if (!isFirstFlagForDebug)
-	{
-
-		UE_LOG( LogTemp, Warning, TEXT( "\n\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" ) );
-		UE_LOG( LogTemp, Warning, TEXT( "****UDP**** DataRecv come in!!!" ) );
-		UE_LOG( LogTemp, Warning, TEXT( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n\n" ) );
-
-		isFirstFlagForDebug = true;
-	}
 
 
 	//keep reading until we don't have anything to read ( or we hit a max number that we'll process per frame )
@@ -180,11 +170,6 @@ void NetworkManager::ProcessPacket( InputMemoryBitStream& inInputStream )
 	case kStateCC:
 		//if (mDeliveryNotificationManager.ReadAndProcessState( inInputStream ))
 		//{
-
-		UE_LOG( LogTemp, Warning, TEXT( "\n\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" ) );
-		UE_LOG( LogTemp, Warning, TEXT( "****HandleStatePacket;****  Successfully!!!" ) );
-		UE_LOG( LogTemp, Warning, TEXT( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n\n" ) );
-
 			HandleStatePacket( inInputStream );
 		//}
 		break;
@@ -221,14 +206,14 @@ UGameObjectRegistryUObj* NetworkManager::GetGameObjectRegistryUObj()
 	if (mGameObjectRegistryUObj == nullptr)
 	{
 		mGameObjectRegistryUObj = NewObject<UGameObjectRegistryUObj>();
-		if (mGameObjectRegistryUObj)
-		{
-			ActionHelper::OutputLog( "mGameObjectRegistryUObj is not null" );
-		}
-		else
-		{
-			ActionHelper::OutputLog( "mGameObjectRegistryUObj is null" );
-		}
+		//if (mGameObjectRegistryUObj)
+		//{
+		//	ActionHelper::OutputLog( "mGameObjectRegistryUObj is not null" );
+		//}
+		//else
+		//{
+		//	ActionHelper::OutputLog( "mGameObjectRegistryUObj is null" );
+		//}
 	}
 	return mGameObjectRegistryUObj;
 }
@@ -258,9 +243,7 @@ void NetworkManager::HandleStatePacket( InputMemoryBitStream& inInputStream )
 	{
 		ReadLastMoveProcessedOnServerTimestamp( inInputStream );
 
-		UE_LOG( LogTemp, Warning, TEXT( "\n\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" ) );
-		UE_LOG( LogTemp, Warning, TEXT( "****ReadLastMoveProcessedOnServerTimestamp;****  Successfully!!!" ) );
-		UE_LOG( LogTemp, Warning, TEXT( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n\n" ) );
+		//A_LOG();
 
 		//old
 		//HandleGameObjectState( inPacketBuffer );
@@ -286,6 +269,7 @@ void NetworkManager::ReadLastMoveProcessedOnServerTimestamp( InputMemoryBitStrea
 
 		InputManager::sInstance->GetActionList().RemovedProcessedActions( mLastMoveProcessedByServerTimestamp );
 
+		A_LOG();
 	}
 
 }
@@ -306,17 +290,22 @@ void NetworkManager::SendInputPacket()
 {
 	ActionList& moveList = InputManager::sInstance->GetActionList();
 
+
 	if (moveList.HasActions())
 	{
 		OutputMemoryBitStream inputPacket;
 		inputPacket.Write( kInputCC );
 
 		int moveCount = moveList.GetActionCount();
+
+		A_LOG_N( "moveCount = ", ( float )moveCount );
+
 		int startIndex = moveCount > 3 ? moveCount - 3 - 1 : 0;
 		inputPacket.Write( moveCount - startIndex, 2 );
 		for (int i = startIndex; i < moveCount; ++i)
 		{
 			moveList[i].Write( inputPacket );
+
 		}
 
 		SendPacket( inputPacket );

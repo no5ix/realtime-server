@@ -5,6 +5,7 @@
 #include "NetworkManager.h"
 #include "InputManager.h"
 #include "ActionTiming.h"
+#include "ActionHelper.h"
 
 // Sets default values for this component's properties
 UActionEngine::UActionEngine( const FObjectInitializer& ObjectInitializer ) : Super( ObjectInitializer )
@@ -31,6 +32,13 @@ void UActionEngine::BeginPlay()
 
 	// ...
 
+	//int32 testFloatPrint = 88;
+	//A_LOG_N( "testFloatPrint : ", testFloatPrint );
+	//A_LOG_N( "( float )testFloatPrint : ", ( float )testFloatPrint );
+
+	////A_SCREENMSG_F
+	//A_SCREENMSG_F( "testFloatPrint : ", testFloatPrint );
+	//A_SCREENMSG_F( "( float )testFloatPrint : ", ( float )testFloatPrint );
 
 	//GameObjectRegistry::sInstance->RegisterCreationFunction( 'RCAT', RoboCatClient::StaticCreate );
 	//GameObjectRegistry::sInstance->RegisterCreationFunction( 'MOUS', MouseClient::StaticCreate );
@@ -52,11 +60,9 @@ void UActionEngine::TickComponent(float DeltaTime, ELevelTick TickType, FActorCo
 
 	InputManager::sInstance->Update();
 
-	//Engine::DoFrame();
 
 	NetworkManager::sInstance->ProcessIncomingPackets();
 
-	//RenderManager::sInstance->Render();
 
 	NetworkManager::sInstance->SendOutgoingPackets();
 }

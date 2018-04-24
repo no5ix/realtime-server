@@ -16,9 +16,9 @@ public:
     {
         struct
         {
-            float X;
-            float Y;
-            float Z;
+            float X; // Pitch
+            float Y; // Yaw
+            float Z; // Roll
         };
         float data[3];
     };

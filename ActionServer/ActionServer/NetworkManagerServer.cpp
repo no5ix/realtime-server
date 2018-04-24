@@ -74,6 +74,8 @@ void NetworkManagerServer::HandleInputPacket( ClientProxyPtr inClientProxy, Inpu
 			if (inClientProxy->GetUnprocessedMoveList().AddMove( move ))
 			{
 				inClientProxy->SetIsLastMoveTimestampDirty( true );
+
+				//LOG( "HandleInputPacket %d", 1 );
 			}
 		}
 	}
@@ -190,23 +192,29 @@ void NetworkManagerServer::SendStatePacketToClient( ClientProxyPtr inClientProxy
 {
 	//build state packet
 	OutputMemoryBitStream	statePacket;
+
 	//static bool tempOnceTest = false;
 	//if (!tempOnceTest)
 	//{
-		//tempOnceTest = true;
+	//	tempOnceTest = true;
+
 		//it's state!
 		statePacket.Write( kStateCC );
 
-		WriteLastMoveTimestampIfDirty( statePacket, inClientProxy );
+		bool isTimestampDirty = WriteLastMoveTimestampIfDirty( statePacket, inClientProxy );
 
-		//AddScoreBoardStateToPacket( statePacket );
+		if (isTimestampDirty)
+		{
+			inClientProxy->GetReplicationManagerServer().Write( statePacket );
+			SendPacket( statePacket, inClientProxy->GetSocketAddress() );
 
-		inClientProxy->GetReplicationManagerServer().Write( statePacket );
-		SendPacket( statePacket, inClientProxy->GetSocketAddress() );
+			//LOG( "SendStatePacketToClient %d", 1 );
+		}
+
 	//}
 }
 
-void NetworkManagerServer::WriteLastMoveTimestampIfDirty( OutputMemoryBitStream& inOutputStream, ClientProxyPtr inClientProxy )
+bool NetworkManagerServer::WriteLastMoveTimestampIfDirty( OutputMemoryBitStream& inOutputStream, ClientProxyPtr inClientProxy )
 {
 	//first, dirty?
 	bool isTimestampDirty = inClientProxy->IsLastMoveTimestampDirty();
@@ -215,7 +223,10 @@ void NetworkManagerServer::WriteLastMoveTimestampIfDirty( OutputMemoryBitStream&
 	{
 		inOutputStream.Write( inClientProxy->GetUnprocessedMoveList().GetLastMoveTimestamp() );
 		inClientProxy->SetIsLastMoveTimestampDirty( false );
+
+		//LOG( "WriteLastMoveTimestampIfDirty %d", 1 );
 	}
+	return isTimestampDirty;
 }
 
 ClientProxyPtr NetworkManagerServer::GetClientProxy( int inPlayerId ) const

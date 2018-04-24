@@ -23,6 +23,7 @@ Quaternion Vector3::ToQuaternion() const
 	//q.Z = cx * cy * sz - cz * sx * sy;
 	//q.W = sx * sy * sz + cx * cy * cz;
 
+	//   ≈‰UE4
 	q.X = cz*sx*sy - sz*cx*cy;
 	q.Y = -cz*sx*cy - sz*cx*sy;
 	q.Z = cz*cx*sy - sz*sx*cy;

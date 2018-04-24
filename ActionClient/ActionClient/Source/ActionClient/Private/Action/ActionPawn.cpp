@@ -63,6 +63,8 @@ AActionPawn::AActionPawn( const FObjectInitializer& ObjectInitializer )
 	Velocity = FVector::ZeroVector;
 	ActionPawnCameraRotation = FRotator::ZeroRotator;
 
+	bTestUpdate = false;
+
 }
 
 // Called when the game starts or when spawned
@@ -79,6 +81,10 @@ void AActionPawn::Tick( float DeltaTime )
 {
 	Super::Tick( DeltaTime );
 
+	if (bTestUpdate)
+	{
+		Update();
+	}
 	//Update();
 }
 
@@ -103,8 +109,10 @@ void AActionPawn::MoveForward( float Val )
 		//const FVector Direction = FQuatRotationMatrix( Rotation ).GetScaledAxis( EAxis::X );
 		//ActionAddMovementInput( Direction * Val );
 
-
 		InputManager::sInstance->HandleInput( InputManager::EIA_MoveForward, Val );
+		//InputManager::sInstance->HandleInput( InputManager::EIA_MoveForward, 1.f );
+
+		A_LOG_N("Val = ", Val);
 	//}
 }
 
@@ -117,19 +125,27 @@ void AActionPawn::MoveRight( float Val )
 		//ActionAddMovementInput( Direction * Val );
 
 		InputManager::sInstance->HandleInput( InputManager::EIA_MoveRight, Val );
+		//InputManager::sInstance->HandleInput( InputManager::EIA_MoveRight, 1.f );
+
+		
+		A_LOG_N("Val = ", Val);
 	//}
 }
 
 void AActionPawn::Turn( float Val )
 {
 	//APawn::AddControllerYawInput( Val );
-	//if ( Val != 0 )
+	//if (Val != 0)
 	//{
 		//FRotator newRot( GetActorRotation() );
 		//newRot.Yaw += ( BaseTurnRate * Val );
 		//SetActorRotation( newRot );
 
 		InputManager::sInstance->HandleInput( InputManager::EIA_Turn, Val );
+		//InputManager::sInstance->HandleInput( InputManager::EIA_Turn, 5.f );
+
+		
+		A_LOG_N("Val = ", Val);
 
 	//}
 
@@ -139,14 +155,18 @@ void AActionPawn::LookUp( float Val )
 {
 	//AddControllerPitchInput( Val );
 
-	//if ( ActionPawnCamera && Val != 0 )
-	//{
+	//if (ActionPawnCamera && Val != 0)
+	if (ActionPawnCamera)
+	{
 		//FRotator newRot( ActionPawnCamera->GetComponentRotation() );
 		//newRot.Pitch = FMath::Clamp( ( newRot.Pitch + ( -1 * BaseLookUpRate * Val ) ), -89.f, 89.f );
 		//ActionPawnCamera->SetWorldRotation( newRot );
 
 		InputManager::sInstance->HandleInput( InputManager::EIA_LookUp, Val );
-	//}
+
+		
+		A_LOG_N("Val = ", Val);
+	}
 }
 
 bool AActionPawn::IsExceedingMaxSpeed( float inMaxSpeed ) const
@@ -299,6 +319,13 @@ void AActionPawn::Read( InputMemoryBitStream& inInputStream )
 		inInputStream.Read( replicatedRotation.Roll );
 
 		SetActorRotation( replicatedRotation );
+
+		inInputStream.Read( ActionPawnCameraRotation.Pitch );
+		inInputStream.Read( ActionPawnCameraRotation.Yaw );
+		inInputStream.Read( ActionPawnCameraRotation.Roll );
+
+		ActionPawnCamera->SetWorldRotation( ActionPawnCameraRotation );
+
 
 		readState |= ECRS_Pose;
 	}

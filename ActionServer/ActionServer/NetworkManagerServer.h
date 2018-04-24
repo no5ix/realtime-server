@@ -34,7 +34,7 @@ private:
 //	void	AddScoreBoardStateToPacket( OutputMemoryBitStream& inOutputStream );
 //
 	void	SendStatePacketToClient( ClientProxyPtr inClientProxy );
-	void	WriteLastMoveTimestampIfDirty( OutputMemoryBitStream& inOutputStream, ClientProxyPtr inClientProxy );
+	bool	WriteLastMoveTimestampIfDirty( OutputMemoryBitStream& inOutputStream, ClientProxyPtr inClientProxy );
 //
 	void	HandleInputPacket( ClientProxyPtr inClientProxy, InputMemoryBitStream& inInputStream );
 //

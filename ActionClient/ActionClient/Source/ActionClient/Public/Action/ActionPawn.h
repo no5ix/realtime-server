@@ -149,4 +149,8 @@ protected:
 
 private:
 	FRotator ActionPawnCameraRotation;
+
+protected:
+	UPROPERTY( EditAnywhere, BlueprintReadWrite, Category = ActionPawnMovement )
+		bool bTestUpdate;
 };

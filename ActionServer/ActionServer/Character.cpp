@@ -32,13 +32,13 @@ void Character::ProcessInput( float inDeltaTime, const InputState& inInputState 
 	//process our input....
 
 	Vector3 newRot( GetRotation() );
-	newRot.X += ( BaseTurnRate * inInputState.GetDesiredTurnAmount() );
+	newRot.Y += ( BaseTurnRate * inInputState.GetDesiredTurnAmount() );
 	SetRotation( newRot );
 
-	ActionPawnCameraRotation.X = newRot.X;
+	ActionPawnCameraRotation.Y = newRot.Y;
 	ActionPawnCameraRotation.Z = newRot.Z;
-	ActionPawnCameraRotation.Y = ActionServerMath::Clamp( 
-		( ActionPawnCameraRotation.Y + ( -1 * BaseLookUpRate * inInputState.GetDesiredLookUpAmount() ) ),
+	ActionPawnCameraRotation.X = ActionServerMath::Clamp( 
+		( ActionPawnCameraRotation.X + ( -1 * BaseLookUpRate * inInputState.GetDesiredLookUpAmount() ) ),
 		-89.f, 
 		89.f );
 
@@ -161,20 +161,25 @@ uint32_t Character::Write( OutputMemoryBitStream& inOutputStream, uint32_t inDir
 	{
 		inOutputStream.Write( ( bool )true );
 
-		Vector3 velocity = Velocity;
-		inOutputStream.Write( velocity.X );
-		inOutputStream.Write( velocity.Y );
-		inOutputStream.Write( velocity.Z );
+		//Vector3 velocity = Velocity;
+		inOutputStream.Write( Velocity.X );
+		inOutputStream.Write( Velocity.Y );
+		inOutputStream.Write( Velocity.Z );
 
-		Vector3 location = GetLocation();
-		inOutputStream.Write( location.X );
-		inOutputStream.Write( location.Y );
-		inOutputStream.Write( location.Z );
+		//Vector3 location = GetLocation();
+		inOutputStream.Write( GetLocation().X );
+		inOutputStream.Write( GetLocation().Y );
+		inOutputStream.Write( GetLocation().Z );
 
-		Vector3 rotation = GetRotation();
-		inOutputStream.Write( rotation.X );
-		inOutputStream.Write( rotation.Y );
-		inOutputStream.Write( rotation.Z );
+		//Vector3 rotation = GetRotation();
+		inOutputStream.Write( GetRotation().X );
+		inOutputStream.Write( GetRotation().Y );
+		inOutputStream.Write( GetRotation().Z );
+
+		//Vector3 rotation = GetActionPawnCameraRotation();
+		inOutputStream.Write( GetActionPawnCameraRotation().X );
+		inOutputStream.Write( GetActionPawnCameraRotation().Y );
+		inOutputStream.Write( GetActionPawnCameraRotation().Z );
 
 		writtenState |= ECRS_Pose;
 	}
@@ -183,7 +188,7 @@ uint32_t Character::Write( OutputMemoryBitStream& inOutputStream, uint32_t inDir
 		inOutputStream.Write( ( bool )false );
 	}
 
-	LOG( " mPlayerId = $d Character::Write finished. ", mPlayerId );
+	//LOG( " mPlayerId = $d Character::Write finished. writtenState = %d", mPlayerId, writtenState );
 
 	return writtenState;
 

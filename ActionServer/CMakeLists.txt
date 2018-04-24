@@ -46,7 +46,8 @@ add_executable(${PROJ_NAME} ${DIR_SRCS} ${CURRENT_HEADERS})
 
 IF(WIN32) # Check if we are on Windows
 	if(MSVC) # Check if we are using the Visual Studio compiler
-		set_target_properties(${PROJ_NAME} PROPERTIES LINK_FLAGS "/SUBSYSTEM:WINDOWS") # works for all build modes
+		# set_target_properties(${PROJ_NAME} PROPERTIES LINK_FLAGS "/SUBSYSTEM:WINDOWS") # works for all build modes
+		set_target_properties(${PROJ_NAME} PROPERTIES LINK_FLAGS "/SUBSYSTEM:CONSOLE") # works for all build modes
 		target_link_libraries(${PROJ_NAME} wsock32 ws2_32)
         set_target_properties(${PROJ_NAME}
             PROPERTIES

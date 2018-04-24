@@ -82,7 +82,7 @@ void Server::DoFrame()
 
 	//NetworkManagerServer::sInstance->RespawnCats();
 
-	//Engine::DoFrame();
+
 	World::sInstance->Update();
 
 	NetworkManagerServer::sInstance->SendOutgoingPackets();
@@ -100,10 +100,20 @@ void Server::HandleNewClient( ClientProxyPtr inClientProxy )
 void Server::SpawnCharacterForPlayer( int inPlayerId )
 {
 	CharacterPtr character = std::static_pointer_cast< Character >( GameObjectRegistry::sInstance->CreateGameObject( 'CHRT' ) );
-	//character->SetColor( ScoreBoardManager::sInstance->GetEntry( inPlayerId )->GetColor() );
+
 	character->SetPlayerId( inPlayerId );
 
-	//gotta pick a better spawn location than this...
-	character->SetLocation( Vector3( -1000.f + static_cast< float >( inPlayerId ), static_cast< float >( inPlayerId ), 40.f ) );
-	character->SetRotation( Vector3( 0.f, 180.f, 0.f ) );
+	character->SetLocation( Vector3(
+		-1000.f + ( static_cast< float >( inPlayerId ) * ActionServerMath::GetRandomFloat() * 400.f ),
+		static_cast< float >( inPlayerId  * ActionServerMath::GetRandomFloat() * 100 ),
+		40.f ) );
+
+	character->SetRotation( Vector3(
+		0.f,
+		ActionServerMath::Clamp( static_cast< float >( inPlayerId ) * ActionServerMath::GetRandomFloat() * 200.f, 0.f, 180.f ),
+		0.f ) );
+
+	//character->SetRotation( Vector3( -1000.f + static_cast< float >( inPlayerId ), static_cast< float >( inPlayerId ), 40.f ) );
+
+	//character->SetRotation( Vector3( 0.f, 180.f, 0.f ) );
 }
