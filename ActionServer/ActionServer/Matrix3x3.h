@@ -15,8 +15,9 @@
 #       include "Vector3.h"
 #   elif !defined(GMATH_VECTOR3)
         #define GMATH_VECTOR3
-        struct Vector3
+        class Vector3
         {
+		public:
             union
             {
                 struct
@@ -94,8 +95,9 @@
 #       include "Quaternion.h"
 #   elif !defined(GMATH_QUATERNION)
         #define GMATH_QUATERNION
-        struct Quaternion
+        class Quaternion
         {
+		public:
             union
             {
                 struct
@@ -122,8 +124,9 @@
 #endif
 
 
-struct Matrix3x3
+class Matrix3x3
 {
+public:
     union
     {
         struct
@@ -213,13 +216,13 @@ struct Matrix3x3
     /**
      * Operator overloading.
      */
-    inline struct Matrix3x3& operator+=(const float rhs);
-    inline struct Matrix3x3& operator-=(const float rhs);
-    inline struct Matrix3x3& operator*=(const float rhs);
-    inline struct Matrix3x3& operator/=(const float rhs);
-    inline struct Matrix3x3& operator+=(const Matrix3x3 rhs);
-    inline struct Matrix3x3& operator-=(const Matrix3x3 rhs);
-    inline struct Matrix3x3& operator*=(const Matrix3x3 rhs);
+    inline Matrix3x3& operator+=(const float rhs);
+    inline Matrix3x3& operator-=(const float rhs);
+    inline Matrix3x3& operator*=(const float rhs);
+    inline Matrix3x3& operator/=(const float rhs);
+    inline Matrix3x3& operator+=(const Matrix3x3 rhs);
+    inline Matrix3x3& operator-=(const Matrix3x3 rhs);
+    inline Matrix3x3& operator*=(const Matrix3x3 rhs);
 };
 
 inline Matrix3x3 operator-(Matrix3x3 rhs);
@@ -405,7 +408,7 @@ Matrix3x3 Matrix3x3::Transpose(Matrix3x3 matrix)
 }
 
 
-struct Matrix3x3& Matrix3x3::operator+=(const float rhs)
+Matrix3x3& Matrix3x3::operator+=(const float rhs)
 {
     D00 += rhs; D01 += rhs; D02 += rhs;
     D10 += rhs; D11 += rhs; D12 += rhs;
@@ -413,7 +416,7 @@ struct Matrix3x3& Matrix3x3::operator+=(const float rhs)
     return *this;
 }
 
-struct Matrix3x3& Matrix3x3::operator-=(const float rhs)
+Matrix3x3& Matrix3x3::operator-=(const float rhs)
 {
     D00 -= rhs; D01 -= rhs; D02 -= rhs;
     D10 -= rhs; D11 -= rhs; D12 -= rhs;
@@ -421,7 +424,7 @@ struct Matrix3x3& Matrix3x3::operator-=(const float rhs)
     return *this;
 }
 
-struct Matrix3x3& Matrix3x3::operator*=(const float rhs)
+Matrix3x3& Matrix3x3::operator*=(const float rhs)
 {
     D00 *= rhs; D01 *= rhs; D02 *= rhs;
     D10 *= rhs; D11 *= rhs; D12 *= rhs;
@@ -429,7 +432,7 @@ struct Matrix3x3& Matrix3x3::operator*=(const float rhs)
     return *this;
 }
 
-struct Matrix3x3& Matrix3x3::operator/=(const float rhs)
+Matrix3x3& Matrix3x3::operator/=(const float rhs)
 {
     D00 /= rhs; D01 /= rhs; D02 /= rhs;
     D10 /= rhs; D11 /= rhs; D12 /= rhs;
@@ -437,7 +440,7 @@ struct Matrix3x3& Matrix3x3::operator/=(const float rhs)
     return *this;
 }
 
-struct Matrix3x3& Matrix3x3::operator+=(const Matrix3x3 rhs)
+Matrix3x3& Matrix3x3::operator+=(const Matrix3x3 rhs)
 {
     D00 += rhs.D00; D01 += rhs.D01; D02 += rhs.D02;
     D10 += rhs.D10; D11 += rhs.D11; D12 += rhs.D12;
@@ -445,7 +448,7 @@ struct Matrix3x3& Matrix3x3::operator+=(const Matrix3x3 rhs)
     return *this;
 }
 
-struct Matrix3x3& Matrix3x3::operator-=(const Matrix3x3 rhs)
+Matrix3x3& Matrix3x3::operator-=(const Matrix3x3 rhs)
 {
     D00 -= rhs.D00; D01 -= rhs.D01; D02 -= rhs.D02;
     D10 -= rhs.D10; D11 -= rhs.D11; D12 -= rhs.D12;
@@ -453,7 +456,7 @@ struct Matrix3x3& Matrix3x3::operator-=(const Matrix3x3 rhs)
     return *this;
 }
 
-struct Matrix3x3& Matrix3x3::operator*=(const Matrix3x3 rhs)
+Matrix3x3& Matrix3x3::operator*=(const Matrix3x3 rhs)
 {
     Matrix3x3 m;
     m.D00 = D00 * rhs.D00 + D01 * rhs.D10 + D02 * rhs.D20;

@@ -8,8 +8,10 @@
 
 class Quaternion;
 
-struct Vector3
+class Vector3
 {
+public:
+
     union
     {
         struct
@@ -342,12 +344,12 @@ struct Vector3
     /**
      * Operator overloading.
      */
-    inline struct Vector3& operator+=(const float rhs);
-    inline struct Vector3& operator-=(const float rhs);
-    inline struct Vector3& operator*=(const float rhs);
-    inline struct Vector3& operator/=(const float rhs);
-    inline struct Vector3& operator+=(const Vector3 rhs);
-    inline struct Vector3& operator-=(const Vector3 rhs);
+    inline Vector3& operator+=(const float rhs);
+    inline Vector3& operator-=(const float rhs);
+    inline Vector3& operator*=(const float rhs);
+    inline Vector3& operator/=(const float rhs);
+    inline Vector3& operator+=(const Vector3 rhs);
+    inline Vector3& operator-=(const Vector3 rhs);
 };
 
 inline Vector3 operator-(Vector3 rhs);
@@ -670,7 +672,7 @@ void Vector3::ToSpherical(Vector3 vector, float &rad, float &theta,
 }
 
 
-struct Vector3& Vector3::operator+=(const float rhs)
+Vector3& Vector3::operator+=(const float rhs)
 {
     X += rhs;
     Y += rhs;
@@ -678,7 +680,7 @@ struct Vector3& Vector3::operator+=(const float rhs)
     return *this;
 }
 
-struct Vector3& Vector3::operator-=(const float rhs)
+Vector3& Vector3::operator-=(const float rhs)
 {
     X -= rhs;
     Y -= rhs;
@@ -686,7 +688,7 @@ struct Vector3& Vector3::operator-=(const float rhs)
     return *this;
 }
 
-struct Vector3& Vector3::operator*=(const float rhs)
+Vector3& Vector3::operator*=(const float rhs)
 {
     X *= rhs;
     Y *= rhs;
@@ -694,7 +696,7 @@ struct Vector3& Vector3::operator*=(const float rhs)
     return *this;
 }
 
-struct Vector3& Vector3::operator/=(const float rhs)
+Vector3& Vector3::operator/=(const float rhs)
 {
     X /= rhs;
     Y /= rhs;
@@ -702,7 +704,7 @@ struct Vector3& Vector3::operator/=(const float rhs)
     return *this;
 }
 
-struct Vector3& Vector3::operator+=(const Vector3 rhs)
+Vector3& Vector3::operator+=(const Vector3 rhs)
 {
     X += rhs.X;
     Y += rhs.Y;
@@ -710,7 +712,7 @@ struct Vector3& Vector3::operator+=(const Vector3 rhs)
     return *this;
 }
 
-struct Vector3& Vector3::operator-=(const Vector3 rhs)
+Vector3& Vector3::operator-=(const Vector3 rhs)
 {
     X -= rhs.X;
     Y -= rhs.Y;

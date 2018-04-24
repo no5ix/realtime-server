@@ -1,5 +1,6 @@
 #include "ActionServerPCH.h"
-
+#include "Vector2.h"
+#include "Vector3.h"
 
 
 
@@ -24,3 +25,14 @@ float ActionServerMath::GetRandomFloat()
 //	Vector3 r = Vector3( GetRandomFloat(), GetRandomFloat(), GetRandomFloat() );
 //	return inMin + ( inMax - inMin ) * r;
 //}
+
+
+bool	ActionServerMath::Is3DVectorEqual( const Vector3& inA, const Vector3& inB ) 
+{
+	return ( inA.X == inB.X && inA.Y == inB.Y && inA.Z == inB.Z );
+}
+
+bool	ActionServerMath::Is2DVectorEqual( const Vector2& inA, const Vector2& inB )
+{
+	return ( inA.X == inB.X && inA.Y == inB.Y );
+}

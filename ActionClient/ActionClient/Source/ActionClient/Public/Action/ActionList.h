@@ -31,6 +31,8 @@ public:
 	std::deque< Action >::const_iterator  begin()	const { return mActions.begin(); }
 	std::deque< Action >::const_iterator	 end()		const { return mActions.end(); }
 
+	const Action&		operator[]( size_t i )	const { return mActions[i]; }
+
 private:
 
 	float			mLastActionTimestamp;

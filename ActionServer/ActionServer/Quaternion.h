@@ -20,8 +20,9 @@
 #       include "Vector3.h"
 #   elif !defined(GMATH_VECTOR3)
         #define GMATH_VECTOR3
-        struct Vector3
+        class Vector3
         {
+		public:
             union
             {
                 struct

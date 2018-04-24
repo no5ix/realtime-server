@@ -15,11 +15,11 @@ public:
 	void			RegisterGameObject( GameObjectPtr inGameObject );
 	inline	GameObjectPtr	RegisterAndReturn( GameObject* inGameObject );
 	void			UnregisterGameObject( GameObject* inGameObject );
-//	void			SetStateDirty( int inNetworkId, uint32_t inDirtyState );
+	void			SetStateDirty( int inNetworkId, uint32_t inDirtyState );
 //
 //	void			RespawnCats();
 //
-//	ClientProxyPtr	GetClientProxy( int inPlayerId ) const;
+	ClientProxyPtr	GetClientProxy( int inPlayerId ) const;
 //
 private:
 	NetworkManagerServer();

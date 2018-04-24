@@ -6,6 +6,7 @@
 #include "ActionSocketUtil.h"
 #include "InputManager.h"
 #include "ActionHelper.h"
+#include "ActionList.h"
 
 std::unique_ptr<NetworkManager> NetworkManager::sInstance;
 
@@ -199,7 +200,7 @@ void NetworkManager::SendOutgoingPackets()
 		UpdateSayingHello();
 		break;
 	case NCS_Welcomed:
-		//UpdateSendingInputPacket();
+		UpdateSendingInputPacket();
 		break;
 	}
 }
@@ -289,6 +290,39 @@ void NetworkManager::ReadLastMoveProcessedOnServerTimestamp( InputMemoryBitStrea
 
 }
 
+
+void NetworkManager::UpdateSendingInputPacket()
+{
+	float time = ActionTiming::sInstance.GetTimef();
+
+	if (time > mTimeOfLastInputPacket + kTimeBetweenInputPackets)
+	{
+		SendInputPacket();
+		mTimeOfLastInputPacket = time;
+	}
+}
+
+void NetworkManager::SendInputPacket()
+{
+	ActionList& moveList = InputManager::sInstance->GetActionList();
+
+	if (moveList.HasActions())
+	{
+		OutputMemoryBitStream inputPacket;
+		inputPacket.Write( kInputCC );
+
+		int moveCount = moveList.GetActionCount();
+		int startIndex = moveCount > 3 ? moveCount - 3 - 1 : 0;
+		inputPacket.Write( moveCount - startIndex, 2 );
+		for (int i = startIndex; i < moveCount; ++i)
+		{
+			moveList[i].Write( inputPacket );
+		}
+
+		SendPacket( inputPacket );
+		moveList.Clear();
+	}
+}
 
 GameObjectPtr NetworkManager::GetGameObject( int inNetworkId ) const
 {

@@ -71,42 +71,6 @@ void AActionPawn::BeginPlay()
 	Super::BeginPlay();
 
 	ActionPawnCameraRotation = GetActorRotation();
-
-
-	//FRotator eulerRot = FRotator( 12, -3.4, 7 );
-	//FRotator eulerRot = FRotator( 0.f, 0.f, 86.1f );
-	//FRotator eulerRot = FRotator( 10.f, 30.f, 279.1f );
-	//FQuat quatRot = eulerRot.Quaternion();
-	//quatRot = FQuat()
-	//quatRot.GetForwardVector();
-	//Quaternion quatRot = Quaternion::FromEuler( eulerRot );
-
-
-	//std::cout << quatRot.X << ", " << quatRot.Y << ", " << quatRot.Z << ", " << quatRot.W << std::endl;
-
-	//ActionHelper::ScreenMsg( "quatRot.X = ", quatRot.X );
-	//ActionHelper::ScreenMsg( "quatRot.Y = ", quatRot.Y );
-	//ActionHelper::ScreenMsg( "quatRot.Z = ", quatRot.Z );
-	//ActionHelper::ScreenMsg( "quatRot.W = ", quatRot.W );
-	
-	//FRotator newRot = quatRot.Rotator();
-
-	//ActionHelper::ScreenMsg( "newRot.X = ", newRot.Roll );
-	//ActionHelper::ScreenMsg( "newRot.Y = ", newRot.Pitch );
-	//ActionHelper::ScreenMsg( "newRot.Z = ", newRot.Yaw );
-
-	
-	//ActionHelper::ScreenMsg( "quatRot.GetForwardVector().X = ", quatRot.GetForwardVector().X );
-	//ActionHelper::ScreenMsg( "quatRot.GetForwardVector().Y = ", quatRot.GetForwardVector().Y );
-	//ActionHelper::ScreenMsg( "quatRot.GetForwardVector().Z = ", quatRot.GetForwardVector().Z );
-
-	//ActionHelper::ScreenMsg( "quatRot.GetRightVector().X = ", quatRot.GetRightVector().X );
-	//ActionHelper::ScreenMsg( "quatRot.GetRightVector().Y = ", quatRot.GetRightVector().Y );
-	//ActionHelper::ScreenMsg( "quatRot.GetRightVector().Z = ", quatRot.GetRightVector().Z );
-
-	//ActionHelper::ScreenMsg( "quatRot.GetUpVector().X = ", quatRot.GetUpVector().X );
-	//ActionHelper::ScreenMsg( "quatRot.GetUpVector().Y = ", quatRot.GetUpVector().Y );
-	//ActionHelper::ScreenMsg( "quatRot.GetUpVector().Z = ", quatRot.GetUpVector().Z );
 }
 
 

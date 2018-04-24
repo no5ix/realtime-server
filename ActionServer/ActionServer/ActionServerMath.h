@@ -1,5 +1,8 @@
 #pragma once
 
+class Vector3;
+class Vector2;
+
 namespace ActionServerMath
 {
 	//const float PI = 3.1415926535f;
@@ -7,10 +10,11 @@ namespace ActionServerMath
 
 	//Vector3 GetRandomVector( const Vector3& inMin, const Vector3& inMax );
 
-	//inline bool	Is2DVectorEqual( const Vector3& inA, const Vector3& inB )
-	//{
-	//	return ( inA.mX == inB.mX && inA.mY == inB.mY );
-	//}
+	bool	Is3DVectorEqual( const Vector3& inA, const Vector3& inB );
+	
+
+	bool	Is2DVectorEqual( const Vector2& inA, const Vector2& inB );
+	
 
 	inline float ToDegrees( float inRadians )
 	{

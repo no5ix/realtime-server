@@ -45,7 +45,6 @@ public:
 
 	void	SendOutgoingPackets();
 
-	void    UpdateSayingHello();
 
 	void	SetDropPacketChance( float inChance ) { mDropPacketChance = inChance; }
 	void	SetSimulatedLatency( float inLatency ) { mSimulatedLatency = inLatency; }
@@ -70,7 +69,6 @@ private:
 		const int32 inPort,
 		const FString& inPlayerName );
 
-	void SendHelloPacket();
 
 	void	HandleWelcomePacket( InputMemoryBitStream& inInputStream );
 
@@ -80,6 +78,11 @@ private:
 	void	HandleStatePacket( InputMemoryBitStream& inInputStream );
 	void	ReadLastMoveProcessedOnServerTimestamp( InputMemoryBitStream& inInputStream );
 
+	void	UpdateSendingInputPacket();
+	void    SendInputPacket();
+
+	void    UpdateSayingHello();
+	void    SendHelloPacket();
 
 private:
 	ReplicationManagerClient	mReplicationManagerClient;
@@ -94,6 +97,7 @@ private:
 	NetworkClientState mState;
 
 	float	mTimeOfLastHello;
+	float				mTimeOfLastInputPacket;
 
 	int mPlayerId;
 	float				mLastMoveProcessedByServerTimestamp;

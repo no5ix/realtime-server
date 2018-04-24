@@ -83,6 +83,7 @@ void Server::DoFrame()
 	//NetworkManagerServer::sInstance->RespawnCats();
 
 	//Engine::DoFrame();
+	World::sInstance->Update();
 
 	NetworkManagerServer::sInstance->SendOutgoingPackets();
 

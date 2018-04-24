@@ -183,7 +183,7 @@ uint32_t Character::Write( OutputMemoryBitStream& inOutputStream, uint32_t inDir
 		inOutputStream.Write( ( bool )false );
 	}
 
-	LOG( "a new Character::Write %s", "for test" );
+	LOG( " mPlayerId = $d Character::Write finished. ", mPlayerId );
 
 	return writtenState;
 

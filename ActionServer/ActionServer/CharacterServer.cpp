@@ -14,72 +14,44 @@ void CharacterServer::HandleDying()
 
 void CharacterServer::Update()
 {
-	//Character::Update();
+	Character::Update();
 
-	//Vector3 oldLocation = GetLocation();
-	//Vector3 oldVelocity = GetVelocity();
-	//float oldRotation = GetRotation();
+	Vector3 oldLocation = GetLocation();
+	Vector3 oldVelocity = GetVelocity();
+	Vector3 oldRotation = GetRotation();
 
-	//ClientProxyPtr client = NetworkManagerServer::sInstance->GetClientProxy( GetPlayerId() );
-	//if (client)
-	//{
-	//	MoveList& moveList = client->GetUnprocessedMoveList();
-	//	for (const Move& unprocessedMove : moveList)
-	//	{
-	//		const InputState& currentState = unprocessedMove.GetInputState();
-	//		float deltaTime = unprocessedMove.GetDeltaTime();
-	//		ProcessInput( deltaTime, currentState );
-	//		SimulateMovement( deltaTime );
-	//	}
+	ClientProxyPtr client = NetworkManagerServer::sInstance->GetClientProxy( GetPlayerId() );
+	if (client)
+	{
+		MoveList& moveList = client->GetUnprocessedMoveList();
+		for (const Move& unprocessedMove : moveList)
+		{
+			const InputState& currentState = unprocessedMove.GetInputState();
+			float deltaTime = unprocessedMove.GetDeltaTime();
+			ProcessInput( deltaTime, currentState );
+			SimulateMovement( deltaTime );
+		}
 
-	//	moveList.Clear();
-	//}
+		moveList.Clear();
+	}
 
 	//HandleShooting();
 
-	//if (!RoboMath::Is2DVectorEqual( oldLocation, GetLocation() ) ||
-	//	!RoboMath::Is2DVectorEqual( oldVelocity, GetVelocity() ) ||
-	//	oldRotation != GetRotation())
-	//{
-	//	NetworkManagerServer::sInstance->SetStateDirty( GetNetworkId(), ECRS_Pose );
-	//}
+	if ( !ActionServerMath::Is3DVectorEqual( oldLocation, GetLocation() ) ||
+		 !ActionServerMath::Is3DVectorEqual( oldVelocity, GetVelocity() ) ||
+		 !ActionServerMath::Is3DVectorEqual( oldRotation, GetRotation() ) 
+		)
+	{
+		NetworkManagerServer::sInstance->SetStateDirty( GetNetworkId(), ECRS_Pose );
+	}
 }
 
 void CharacterServer::HandleShooting()
 {
-	//float time = Timing::sInstance.GetFrameStartTime();
-	//if (mIsShooting && Timing::sInstance.GetFrameStartTime() > mTimeOfNextShot)
-	//{
-	//	//not exact, but okay
-	//	mTimeOfNextShot = time + mTimeBetweenShots;
-
-	//	//fire!
-	//	YarnPtr yarn = std::static_pointer_cast< Yarn >( GameObjectRegistry::sInstance->CreateGameObject( 'YARN' ) );
-	//	yarn->InitFromShooter( this );
-	//}
 }
 
 void CharacterServer::TakeDamage( int inDamagingPlayerId )
 {
-	//mHealth--;
-	//if (mHealth <= 0.f)
-	//{
-	//	//score one for damaging player...
-	//	ScoreBoardManager::sInstance->IncScore( inDamagingPlayerId, 1 );
-
-	//	//and you want to die
-	//	SetDoesWantToDie( true );
-
-	//	//tell the client proxy to make you a new cat
-	//	ClientProxyPtr clientProxy = NetworkManagerServer::sInstance->GetClientProxy( GetPlayerId() );
-	//	if (clientProxy)
-	//	{
-	//		clientProxy->HandleCatDied();
-	//	}
-	//}
-
-	////tell the world our health dropped
-	//NetworkManagerServer::sInstance->SetStateDirty( GetNetworkId(), ECRS_Health );
 }
 
 

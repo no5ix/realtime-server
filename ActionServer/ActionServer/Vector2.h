@@ -6,8 +6,10 @@
 #include <math.h>
 
 
-struct Vector2
+class Vector2
 {
+public:
+
     union
     {
         struct
@@ -251,12 +253,12 @@ struct Vector2
     /**
      * Operator overloading.
      */
-    inline struct Vector2& operator+=(const float rhs);
-    inline struct Vector2& operator-=(const float rhs);
-    inline struct Vector2& operator*=(const float rhs);
-    inline struct Vector2& operator/=(const float rhs);
-    inline struct Vector2& operator+=(const Vector2 rhs);
-    inline struct Vector2& operator-=(const Vector2 rhs);
+    inline Vector2& operator+=(const float rhs);
+    inline Vector2& operator-=(const float rhs);
+    inline Vector2& operator*=(const float rhs);
+    inline Vector2& operator/=(const float rhs);
+    inline Vector2& operator+=(const Vector2 rhs);
+    inline Vector2& operator-=(const Vector2 rhs);
 };
 
 inline Vector2 operator-(Vector2 rhs);
@@ -470,42 +472,42 @@ void Vector2::ToPolar(Vector2 vector, float &rad, float &theta)
 }
 
 
-struct Vector2& Vector2::operator+=(const float rhs)
+Vector2& Vector2::operator+=(const float rhs)
 {
     X += rhs;
     Y += rhs;
     return *this;
 }
 
-struct Vector2& Vector2::operator-=(const float rhs)
+Vector2& Vector2::operator-=(const float rhs)
 {
     X -= rhs;
     Y -= rhs;
     return *this;
 }
 
-struct Vector2& Vector2::operator*=(const float rhs)
+Vector2& Vector2::operator*=(const float rhs)
 {
     X *= rhs;
     Y *= rhs;
     return *this;
 }
 
-struct Vector2& Vector2::operator/=(const float rhs)
+Vector2& Vector2::operator/=(const float rhs)
 {
     X /= rhs;
     Y /= rhs;
     return *this;
 }
 
-struct Vector2& Vector2::operator+=(const Vector2 rhs)
+Vector2& Vector2::operator+=(const Vector2 rhs)
 {
     X += rhs.X;
     Y += rhs.Y;
     return *this;
 }
 
-struct Vector2& Vector2::operator-=(const Vector2 rhs)
+Vector2& Vector2::operator-=(const Vector2 rhs)
 {
     X -= rhs.X;
     Y -= rhs.Y;

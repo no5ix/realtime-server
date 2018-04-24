@@ -190,10 +190,10 @@ void NetworkManagerServer::SendStatePacketToClient( ClientProxyPtr inClientProxy
 {
 	//build state packet
 	OutputMemoryBitStream	statePacket;
-	static bool tempOnceTest = false;
-	if (!tempOnceTest)
-	{
-		tempOnceTest = true;
+	//static bool tempOnceTest = false;
+	//if (!tempOnceTest)
+	//{
+		//tempOnceTest = true;
 		//it's state!
 		statePacket.Write( kStateCC );
 
@@ -203,7 +203,7 @@ void NetworkManagerServer::SendStatePacketToClient( ClientProxyPtr inClientProxy
 
 		inClientProxy->GetReplicationManagerServer().Write( statePacket );
 		SendPacket( statePacket, inClientProxy->GetSocketAddress() );
-	}
+	//}
 }
 
 void NetworkManagerServer::WriteLastMoveTimestampIfDirty( OutputMemoryBitStream& inOutputStream, ClientProxyPtr inClientProxy )
@@ -215,5 +215,25 @@ void NetworkManagerServer::WriteLastMoveTimestampIfDirty( OutputMemoryBitStream&
 	{
 		inOutputStream.Write( inClientProxy->GetUnprocessedMoveList().GetLastMoveTimestamp() );
 		inClientProxy->SetIsLastMoveTimestampDirty( false );
+	}
+}
+
+ClientProxyPtr NetworkManagerServer::GetClientProxy( int inPlayerId ) const
+{
+	auto it = mPlayerIdToClientMap.find( inPlayerId );
+	if (it != mPlayerIdToClientMap.end())
+	{
+		return it->second;
+	}
+
+	return nullptr;
+}
+
+void NetworkManagerServer::SetStateDirty( int inNetworkId, uint32_t inDirtyState )
+{
+	//tell everybody this is dirty
+	for (const auto& pair : mAddressToClientMap)
+	{
+		pair.second->GetReplicationManagerServer().SetStateDirty( inNetworkId, inDirtyState );
 	}
 }

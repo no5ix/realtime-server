@@ -60,12 +60,9 @@ void ReplicationManagerClient::ReadAndDoCreateAction( InputMemoryBitStream& inIn
 
 void ReplicationManagerClient::ReadAndDoUpdateAction( InputMemoryBitStream& inInputStream, int inNetworkId )
 {
-//	//need object
-//	GameObjectPtr gameObject = NetworkManagerClient::sInstance->GetGameObject( inNetworkId );
-//
-//	//gameObject MUST be found, because create was ack'd if we're getting an update...
-//	//and read state
-//	gameObject->Read( inInputStream );
+	GameObjectPtr gameObject = NetworkManager::sInstance->GetGameObject( inNetworkId );
+
+	gameObject->Read( inInputStream );
 }
 
 void ReplicationManagerClient::ReadAndDoDestroyAction( InputMemoryBitStream& inInputStream, int inNetworkId )
