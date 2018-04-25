@@ -44,10 +44,11 @@ GameObjectPtr UGameObjectRegistryUObj::CreateGameObject( uint32_t inFourCCName )
 
 GameObjectPtr UGameObjectRegistryUObj::CreateActionPawn()
 {
+	check( GetWorld() );
 
-	UWorld* const World = GetWorld();
+	UWorld* const world = GetWorld();
 
-	if (World)
+	if (world)
 	{
 		//AActionPlayerController* const FirstPC = Cast<AActionPlayerController>( UGameplayStatics::GetPlayerController( GetWorld(), 0 ) );
 		//if (FirstPC != nullptr)
@@ -70,7 +71,7 @@ GameObjectPtr UGameObjectRegistryUObj::CreateActionPawn()
 
 			FActorSpawnParameters SpawnParams;
 			SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-			AActionPawn* const newActionPawn = World->SpawnActor<AActionPawn>( DefaultCharacterClasses, FTransform::Identity, SpawnParams );
+			AActionPawn* const newActionPawn = world->SpawnActor<AActionPawn>( DefaultCharacterClasses, FTransform::Identity, SpawnParams );
 
 		//	if (inPlayerID == NetworkManager::sInstance->GetPlayerId())
 		//	{

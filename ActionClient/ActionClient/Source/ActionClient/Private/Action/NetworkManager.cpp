@@ -23,7 +23,6 @@ NetworkManager::NetworkManager() :
 {
 	mSocket = NULL;
 	//mReplicationManagerClient = NewObject<UReplicationManagerClientObj>();
-	mGameObjectRegistryUObj = NewObject<UGameObjectRegistryUObj>();
 }
 
 void NetworkManager::StaticInit( const FString& inIP, int inPort, const FString& inPlayerName )
@@ -34,6 +33,8 @@ void NetworkManager::StaticInit( const FString& inIP, int inPort, const FString&
 
 void NetworkManager::Init( const FString& inYourChosenSocketName, const FString& inIP, const int32 inPort, const FString& inPlayerName )
 {
+	mGameObjectRegistryUObj = NewObject<UGameObjectRegistryUObj>();
+
 	mPlayerName = inPlayerName;
 
 	ActionSocketUtil::CreateUDPSocket( mSocket, inYourChosenSocketName );
@@ -203,9 +204,9 @@ void NetworkManager::UpdateSayingHello()
 
 UGameObjectRegistryUObj* NetworkManager::GetGameObjectRegistryUObj()
 {
-	if (mGameObjectRegistryUObj == nullptr)
-	{
-		mGameObjectRegistryUObj = NewObject<UGameObjectRegistryUObj>();
+	//if (mGameObjectRegistryUObj == nullptr)
+	//{
+		//mGameObjectRegistryUObj = NewObject<UGameObjectRegistryUObj>();
 		//if (mGameObjectRegistryUObj)
 		//{
 		//	ActionHelper::OutputLog( "mGameObjectRegistryUObj is not null" );
@@ -214,8 +215,14 @@ UGameObjectRegistryUObj* NetworkManager::GetGameObjectRegistryUObj()
 		//{
 		//	ActionHelper::OutputLog( "mGameObjectRegistryUObj is null" );
 		//}
-	}
+	//}
 	return mGameObjectRegistryUObj;
+}
+
+void NetworkManager::SetGameObjectRegistryUObj( UGameObjectRegistryUObj* inGameObjectRegistry, UWorld * inWorld )
+{
+	mGameObjectRegistryUObj = inGameObjectRegistry;
+	mGameObjectRegistryUObj->World = inWorld;
 }
 
 void NetworkManager::HandleWelcomePacket( InputMemoryBitStream& inInputStream )

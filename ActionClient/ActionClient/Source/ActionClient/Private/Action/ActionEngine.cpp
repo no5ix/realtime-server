@@ -6,6 +6,7 @@
 #include "InputManager.h"
 #include "ActionTiming.h"
 #include "ActionHelper.h"
+// #include "GameObjectRegistryUObj.h"
 
 // Sets default values for this component's properties
 UActionEngine::UActionEngine( const FObjectInitializer& ObjectInitializer ) : Super( ObjectInitializer )
@@ -40,11 +41,11 @@ void UActionEngine::BeginPlay()
 	//A_SCREENMSG_F( "testFloatPrint : ", testFloatPrint );
 	//A_SCREENMSG_F( "( float )testFloatPrint : ", ( float )testFloatPrint );
 
-	//GameObjectRegistry::sInstance->RegisterCreationFunction( 'RCAT', RoboCatClient::StaticCreate );
-	//GameObjectRegistry::sInstance->RegisterCreationFunction( 'MOUS', MouseClient::StaticCreate );
-	//GameObjectRegistry::sInstance->RegisterCreationFunction( 'YARN', YarnClient::StaticCreate );
-
 	NetworkManager::StaticInit( ip, port, player_name );
+
+
+	//NetworkManager::sInstance->SetGameObjectRegistryUObj( NewObject<UGameObjectRegistryUObj>( this ), GetWorld() );
+
 	//NetworkManager::sInstance->GetReplicationManagerClient()->SetDefaultCharacterClasses( DefaultCharacterClasses );
 	NetworkManager::sInstance->GetGameObjectRegistryUObj()->SetDefaultCharacterClasses( DefaultCharacterClasses );
 }

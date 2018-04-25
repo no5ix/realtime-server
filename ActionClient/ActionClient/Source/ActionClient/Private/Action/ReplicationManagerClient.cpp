@@ -14,7 +14,7 @@ void ReplicationManagerClient::Read( InputMemoryBitStream& inInputStream )
 {
 	A_LOG();
 
-	while (inInputStream.GetRemainingBitCount() >= 34)
+	while (inInputStream.GetRemainingBitCount() >= 32)
 	{
 		//read the network id...
 		int networkId;
@@ -53,8 +53,8 @@ void ReplicationManagerClient::ReadAndDoCreateAction( InputMemoryBitStream& inIn
 	{
 		//UGameObjectRegistryUObj* gameObjRegistry =  NetworkManager::sInstance->GetGameObjectRegistryUObj();
 		gameObject = NetworkManager::sInstance->GetGameObjectRegistryUObj()->CreateGameObject( fourCCName );
-		if (!gameObject)
-			return;
+	
+		check( gameObject );
 		gameObject->SetNetworkId( inNetworkId );
 		NetworkManager::sInstance->AddToNetworkIdToGameObjectMap( gameObject );
 

@@ -181,10 +181,10 @@ void NetworkManagerServer::SendOutgoingPackets()
 	for (auto it = mAddressToClientMap.begin(), end = mAddressToClientMap.end(); it != end; ++it)
 	{
 		ClientProxyPtr clientProxy = it->second;
-		//if (clientProxy->IsLastMoveTimestampDirty())
-		//{
+		if (clientProxy->IsLastMoveTimestampDirty())
+		{
 			SendStatePacketToClient( clientProxy );
-		//}
+		}
 	}
 }
 
@@ -201,20 +201,17 @@ void NetworkManagerServer::SendStatePacketToClient( ClientProxyPtr inClientProxy
 		//it's state!
 		statePacket.Write( kStateCC );
 
-		bool isTimestampDirty = WriteLastMoveTimestampIfDirty( statePacket, inClientProxy );
+		WriteLastMoveTimestampIfDirty( statePacket, inClientProxy );
 
-		if (isTimestampDirty)
-		{
-			inClientProxy->GetReplicationManagerServer().Write( statePacket );
-			SendPacket( statePacket, inClientProxy->GetSocketAddress() );
+		inClientProxy->GetReplicationManagerServer().Write( statePacket );
+		SendPacket( statePacket, inClientProxy->GetSocketAddress() );
 
-			//LOG( "SendStatePacketToClient %d", 1 );
-		}
+		//LOG( "SendStatePacketToClient %d", 1 );
 
 	//}
 }
 
-bool NetworkManagerServer::WriteLastMoveTimestampIfDirty( OutputMemoryBitStream& inOutputStream, ClientProxyPtr inClientProxy )
+void NetworkManagerServer::WriteLastMoveTimestampIfDirty( OutputMemoryBitStream& inOutputStream, ClientProxyPtr inClientProxy )
 {
 	//first, dirty?
 	bool isTimestampDirty = inClientProxy->IsLastMoveTimestampDirty();
@@ -226,7 +223,6 @@ bool NetworkManagerServer::WriteLastMoveTimestampIfDirty( OutputMemoryBitStream&
 
 		//LOG( "WriteLastMoveTimestampIfDirty %d", 1 );
 	}
-	return isTimestampDirty;
 }
 
 ClientProxyPtr NetworkManagerServer::GetClientProxy( int inPlayerId ) const
