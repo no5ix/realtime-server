@@ -12,21 +12,21 @@ AActionGameModeBase::AActionGameModeBase()
 	PlayerControllerClass = AActionPlayerController::StaticClass();
 }
 
-UGameObjectRegistryUObj* AActionGameModeBase::GetGameObjectRegistryUObj()
-{
-	if (mGameObjectRegistryUObj == nullptr)
-	{
-		mGameObjectRegistryUObj = NewObject<UGameObjectRegistryUObj>();
-		mGameObjectRegistryUObj->SetDefaultCharacterClasses( DefaultCharacterClasses );
-		//if (mGameObjectRegistryUObj)
-		//{
-		//	ActionHelper::OutputLog( "mGameObjectRegistryUObj is not null" );
-		//}
-		//else
-		//{
-		//	ActionHelper::OutputLog( "mGameObjectRegistryUObj is null" );
-		//}
-	}
-	return mGameObjectRegistryUObj;
-
-}
+//UGameObjectRegistryUObj* AActionGameModeBase::GetGameObjectRegistryUObj()
+//{
+//	if (mGameObjectRegistryUObj == nullptr)
+//	{
+//		mGameObjectRegistryUObj = NewObject<UGameObjectRegistryUObj>();
+//		mGameObjectRegistryUObj->SetDefaultCharacterClasses( DefaultCharacterClasses );
+//		//if (mGameObjectRegistryUObj)
+//		//{
+//		//	ActionHelper::OutputLog( "mGameObjectRegistryUObj is not null" );
+//		//}
+//		//else
+//		//{
+//		//	ActionHelper::OutputLog( "mGameObjectRegistryUObj is null" );
+//		//}
+//	}
+//	return mGameObjectRegistryUObj;
+//
+//}

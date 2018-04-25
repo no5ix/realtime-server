@@ -40,9 +40,9 @@ void NetworkManager::Init( const FString& inYourChosenSocketName, const FString&
 
 	if ( ActionSocketUtil::CreateInternetAddress( mRemoteAddr, inIP, inPort ) )
 	{
-		UE_LOG( LogTemp, Warning, TEXT( "\n\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" ) );
-		UE_LOG( LogTemp, Warning, TEXT( "ActionUDPSocket Initialized Successfully!!!" ) );
-		UE_LOG( LogTemp, Warning, TEXT( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n\n" ) );
+		A_LOG_1( "\n\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" );
+		A_LOG_1( "ActionUDPSocket Initialized Successfully!!!" );
+		A_LOG_1( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n\n" );
 	}
 
 	mState = NCS_SayingHello;
@@ -72,9 +72,9 @@ void NetworkManager::SendHelloPacket()
 	SendPacket( helloPacket );
 	
 	
-	UE_LOG( LogTemp, Warning, TEXT( "\n\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" ) );
-	UE_LOG( LogTemp, Warning, TEXT( "****UDP**** Send Hello Packet Successfully!!!" ) );
-	UE_LOG( LogTemp, Warning, TEXT( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n\n" ) );
+	A_LOG_1( "\n\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" );
+	A_LOG_1( "****UDP**** Send Hello Packet Successfully!!!" );
+	A_LOG_1( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n\n" );
 	
 }
 
@@ -230,9 +230,9 @@ void NetworkManager::HandleWelcomePacket( InputMemoryBitStream& inInputStream )
 
 		ActionHelper::ScreenMsg( "welcome on client as playerID = ", mPlayerId );
 
-		UE_LOG( LogTemp, Warning, TEXT( "\n\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" ) );
-		UE_LOG( LogTemp, Warning, TEXT( "****UDP**** HandleWelcomePacket Successfully!!!" ) );
-		UE_LOG( LogTemp, Warning, TEXT( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n\n" ) );
+		A_LOG_1( "\n\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" );
+		A_LOG_1( "****UDP**** HandleWelcomePacket Successfully!!!" );
+		A_LOG_1( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n\n" );
 
 	}
 }

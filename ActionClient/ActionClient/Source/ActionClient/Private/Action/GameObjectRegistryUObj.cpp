@@ -4,7 +4,7 @@
 #include "GameObjectRegistryUObj.h"
 #include "ActionPlayerController.h"
 #include "ActionPawn.h"
-
+#include "NetworkManager.h"
 
 
 UGameObjectRegistryUObj::UGameObjectRegistryUObj()
@@ -49,9 +49,9 @@ GameObjectPtr UGameObjectRegistryUObj::CreateActionPawn()
 
 	if (World)
 	{
-		AActionPlayerController* const FirstPC = Cast<AActionPlayerController>( UGameplayStatics::GetPlayerController( GetWorld(), 0 ) );
-		if (FirstPC != nullptr)
-		{
+		//AActionPlayerController* const FirstPC = Cast<AActionPlayerController>( UGameplayStatics::GetPlayerController( GetWorld(), 0 ) );
+		//if (FirstPC != nullptr)
+		//{
 
 			//FRotator Rot( 0.f, 0.f, 0.f );
 			//FTransform SpawnTransform( Rot, FVector::ZeroVector );
@@ -72,9 +72,13 @@ GameObjectPtr UGameObjectRegistryUObj::CreateActionPawn()
 			SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 			AActionPawn* const newActionPawn = World->SpawnActor<AActionPawn>( DefaultCharacterClasses, FTransform::Identity, SpawnParams );
 
-			FirstPC->Possess( newActionPawn );
+		//	if (inPlayerID == NetworkManager::sInstance->GetPlayerId())
+		//	{
+		//		FirstPC->Possess( newActionPawn );
+		//	}
+
 			return GameObjectPtr( newActionPawn );
-		}
+		//}
 	}
 	return GameObjectPtr();
 }

@@ -40,15 +40,23 @@ Server::Server()
 	//NetworkManagerServer::sInstance->SetSimulatedLatency( 0.5f );
 	//NetworkManagerServer::sInstance->SetSimulatedLatency( 0.1f );
 
-	// Setup latency & Setup DropPacketChance
+	// Setup latency
 	float latency = 0.0f;
-	string latencyString = Utility::GetCommandLineArg( 2 ); 
+	string latencyString = Utility::GetCommandLineArg( 2 ); // 以秒为单位, 建议填入 0.5 来测试, 即模拟延迟500毫秒的情况; 不填, 则不模拟延迟
 	if (!latencyString.empty())
 	{
 		latency = stof( latencyString );
+		NetworkManagerServer::sInstance->SetSimulatedLatency( latency );
 	}
-	NetworkManagerServer::sInstance->SetSimulatedLatency( latency );
-	NetworkManagerServer::sInstance->SetDropPacketChance( latency );
+
+	// Setup DropPacketChance
+	float dropPacketChance = 0.0f;
+	string dropPacketChanceString = Utility::GetCommandLineArg( 3 );
+	if (!dropPacketChanceString.empty())
+	{
+		dropPacketChance = stof( dropPacketChanceString );
+		NetworkManagerServer::sInstance->SetDropPacketChance( dropPacketChance );
+	}
 }
 
 bool Server::InitNetworkManager()

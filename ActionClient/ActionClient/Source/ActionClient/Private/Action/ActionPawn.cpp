@@ -4,6 +4,9 @@
 #include "ActionPawn.h"
 #include "InputManager.h"
 #include "ActionHelper.h"
+#include "ActionTiming.h"
+#include "NetworkManager.h"
+#include "ActionPlayerController.h"
 
 
 
@@ -64,7 +67,7 @@ AActionPawn::AActionPawn( const FObjectInitializer& ObjectInitializer )
 	ActionPawnCameraRotation = FRotator::ZeroRotator;
 
 	bTestUpdate = false;
-
+	mLastReadStateTimestamp = -1.f;
 }
 
 // Called when the game starts or when spawned
@@ -134,6 +137,9 @@ void AActionPawn::MoveRight( float Val )
 
 void AActionPawn::Turn( float Val )
 {
+
+
+
 	//APawn::AddControllerYawInput( Val );
 	//if (Val != 0)
 	//{
@@ -158,6 +164,12 @@ void AActionPawn::LookUp( float Val )
 	//if (ActionPawnCamera && Val != 0)
 	if (ActionPawnCamera)
 	{
+		//FRotator newRot( GetActorRotation() );
+		//ActionPawnCameraRotationLocal.Yaw = newRot.Yaw;
+		//ActionPawnCameraRotationLocal.Roll = newRot.Roll;
+		//ActionPawnCameraRotationLocal.Pitch = FMath::Clamp( ( ActionPawnCameraRotationLocal.Pitch + ( -1 * BaseLookUpRate * Val ) ), -89.f, 89.f );
+		//ActionPawnCamera->SetWorldRotation( ActionPawnCameraRotationLocal );
+
 		//FRotator newRot( ActionPawnCamera->GetComponentRotation() );
 		//newRot.Pitch = FMath::Clamp( ( newRot.Pitch + ( -1 * BaseLookUpRate * Val ) ), -89.f, 89.f );
 		//ActionPawnCamera->SetWorldRotation( newRot );
@@ -289,15 +301,28 @@ void AActionPawn::Read( InputMemoryBitStream& inInputStream )
 		inInputStream.Read( playerId );
 		SetPlayerId( playerId );
 		readState |= ECRS_PlayerId;
+
+
+		AActionPlayerController* const FirstPC = Cast<AActionPlayerController>( UGameplayStatics::GetPlayerController( GetWorld(), 0 ) );
+		if (FirstPC != nullptr)
+		{
+			if ( GetPlayerId() == NetworkManager::sInstance->GetPlayerId() )
+			{
+				FirstPC->Possess( this );
+			}
+
+		}
 	}
 
-	//float oldRotation = GetRotation();
-	//FVector oldLocation = GetLocation();
+	FRotator oldRotation = GetActorRotation();
+	//FVector oldLocation = GetActorLocation();
 	//FVector oldVelocity = GetVelocity();
+	FRotator oldActionPawnCameraRotation = ActionPawnCameraRotation;
 
 	FRotator replicatedRotation;
 	FVector replicatedLocation;
 	FVector replicatedVelocity;
+	//FVector replicatedActionPawnCameraRotation;
 
 	inInputStream.Read( stateBit );
 	if (stateBit)
@@ -318,13 +343,33 @@ void AActionPawn::Read( InputMemoryBitStream& inInputStream )
 		inInputStream.Read( replicatedRotation.Yaw );
 		inInputStream.Read( replicatedRotation.Roll );
 
-		SetActorRotation( replicatedRotation );
 
 		inInputStream.Read( ActionPawnCameraRotation.Pitch );
 		inInputStream.Read( ActionPawnCameraRotation.Yaw );
 		inInputStream.Read( ActionPawnCameraRotation.Roll );
 
-		ActionPawnCamera->SetWorldRotation( ActionPawnCameraRotation );
+
+		if ( GetPlayerId() != NetworkManager::sInstance->GetPlayerId() )
+		{
+			float curTime = ActionTiming::sInstance.GetTimef();
+			float deltaTime = mLastReadStateTimestamp >= 0.f ? curTime - mLastReadStateTimestamp : 0.f;
+			SetActorRotation( FMath::RInterpTo( oldRotation,
+				replicatedRotation,
+				deltaTime, 
+				BaseTurnRate ) );
+			ActionPawnCamera->SetWorldRotation( FMath::RInterpTo( oldActionPawnCameraRotation,
+				ActionPawnCameraRotation,
+				deltaTime,
+				BaseLookUpRate ) );
+			mLastReadStateTimestamp = curTime;
+		}
+		else
+		{
+			SetActorRotation( replicatedRotation );
+			ActionPawnCamera->SetWorldRotation( ActionPawnCameraRotation );
+		}
+
+
 
 
 		readState |= ECRS_Pose;
@@ -337,11 +382,6 @@ void AActionPawn::ProcessInput( float inDeltaTime, const ActionInputState& inInp
 	newRot.Yaw += ( BaseTurnRate * inInputState.GetDesiredTurnAmount() );
 	SetActorRotation( newRot );
 
-	//newRot = ActionPawnCamera->GetComponentRotation();
-	//newRot.Pitch = FMath::Clamp( ( newRot.Pitch + ( -1 * BaseLookUpRate * inInputState.GetDesiredLookUpAmount() ) ), -89.f, 89.f );
-	//ActionPawnCamera->SetWorldRotation( newRot );
-
-	//newRot = ActionPawnCamera->GetComponentRotation();
 	ActionPawnCameraRotation.Yaw = newRot.Yaw;
 	ActionPawnCameraRotation.Roll = newRot.Roll;
 	ActionPawnCameraRotation.Pitch = FMath::Clamp( ( ActionPawnCameraRotation.Pitch + ( -1 * BaseLookUpRate * inInputState.GetDesiredLookUpAmount() ) ), -89.f, 89.f );

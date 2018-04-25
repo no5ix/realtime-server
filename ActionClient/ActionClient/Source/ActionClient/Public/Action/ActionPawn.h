@@ -91,6 +91,8 @@ public:
 	UFUNCTION( BlueprintCallable, Category = Mesh )
 		virtual bool IsFirstPerson() const;
 
+	FRotator GetActionPawnCameraRotation() { return ActionPawnCameraRotation; }
+
 public:
 
 	FORCEINLINE class USkeletalMeshComponent* GetMesh1P() const { return Mesh1P; }
@@ -153,4 +155,6 @@ private:
 protected:
 	UPROPERTY( EditAnywhere, BlueprintReadWrite, Category = ActionPawnMovement )
 		bool bTestUpdate;
+
+	float	mLastReadStateTimestamp;
 };

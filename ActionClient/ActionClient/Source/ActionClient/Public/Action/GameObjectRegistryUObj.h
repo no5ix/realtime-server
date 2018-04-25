@@ -24,7 +24,7 @@ public:
 
 	void RegisterCreationFunction( uint32_t inFourCCName, GameObjectCreationFunc inCreationFunction );
 
-	GameObjectPtr CreateGameObject( uint32_t inFourCCName );
+	GameObjectPtr CreateGameObject( uint32_t inFourCCName);
 
 public:
 	GameObjectPtr CreateActionPawn();

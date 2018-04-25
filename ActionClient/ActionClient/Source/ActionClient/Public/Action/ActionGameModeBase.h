@@ -17,15 +17,15 @@ class AActionGameModeBase : public AGameModeBase
 public:
 	AActionGameModeBase();
 
-	UGameObjectRegistryUObj* GetGameObjectRegistryUObj();
-
-public:
-	/** default inventory list */
-	UPROPERTY( EditAnywhere, Category = ActionEngine )
-		TSubclassOf<class AActionPawn> DefaultCharacterClasses;
-
-private:
-	UGameObjectRegistryUObj*    mGameObjectRegistryUObj;
+//	UGameObjectRegistryUObj* GetGameObjectRegistryUObj();
+//
+//public:
+//	/** default inventory list */
+//	UPROPERTY( EditAnywhere, Category = ActionEngine )
+//		TSubclassOf<class AActionPawn> DefaultCharacterClasses;
+//
+//private:
+//	UGameObjectRegistryUObj*    mGameObjectRegistryUObj;
 	
 	
 };
