@@ -56,6 +56,7 @@ public:
 
 	ReplicationManagerClient GetReplicationManagerClient() { return mReplicationManagerClient; }
 	UGameObjectRegistryUObj* GetGameObjectRegistryUObj();
+	void SetGameObjectRegistryUObj(UGameObjectRegistryUObj* inGameObjectRegistry, UWorld * inWorld);
 protected:
 
 	IntToGameObjectMap		mNetworkIdToGameObjectMap;

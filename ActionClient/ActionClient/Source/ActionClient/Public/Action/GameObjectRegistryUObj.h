@@ -34,5 +34,8 @@ public:
 private:
 	std::unordered_map< uint32_t, GameObjectCreationFunc >	mNameToGameObjectCreationFunctionMap;
 	TSubclassOf<class AActionPawn> DefaultCharacterClasses;
+
+//public:
+//	UWorld * World;
 };
 
