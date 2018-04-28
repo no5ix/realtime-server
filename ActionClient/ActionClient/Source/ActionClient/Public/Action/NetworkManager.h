@@ -5,12 +5,15 @@
 #include <memory>
 #include <queue>
 #include <list>
+#include <unordered_map>
 #include "Networking.h"
 #include "MemoryBitStream.h"
 #include "GameObjectRegistryUObj.h"
 #include "ReplicationManagerClient.h"
 #include "ActionEntity.h"
-#include <unordered_map>
+#include "DeliveryNotificationManager.h"
+#include "WeightedTimedMovingAverage.h"
+
 
 typedef std::unordered_map< int, GameObjectPtr > IntToGameObjectMap;
 
@@ -45,6 +48,8 @@ public:
 
 	void	SendOutgoingPackets();
 
+	const	WeightedTimedMovingAverage&		GetAvgRoundTripTime()	const { return mAvgRoundTripTime; }
+	float									GetRoundTripTime()		const { return mAvgRoundTripTime.GetValue(); }
 
 	void	SetDropPacketChance( float inChance ) { mDropPacketChance = inChance; }
 	void	SetSimulatedLatency( float inLatency ) { mSimulatedLatency = inLatency; }
@@ -86,6 +91,8 @@ private:
 	void    SendHelloPacket();
 
 private:
+
+	DeliveryNotificationManager	mDeliveryNotificationManager;
 	ReplicationManagerClient	mReplicationManagerClient;
 
 	UGameObjectRegistryUObj*    mGameObjectRegistryUObj;
@@ -106,6 +113,8 @@ private:
 
 	float						mDropPacketChance;
 	float						mSimulatedLatency;
+
+	WeightedTimedMovingAverage	mAvgRoundTripTime;
 
 private:
 	class ReceivedPacket

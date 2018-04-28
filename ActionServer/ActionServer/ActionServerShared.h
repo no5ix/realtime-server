@@ -68,6 +68,11 @@ class GameObject;
 
 #include "MemoryBitStream.h"
 
+#include "TransmissionData.h"
+#include "InFlightPacket.h"
+#include "AckRange.h"
+#include "DeliveryNotificationManager.h"
+
 #include "InputState.h"
 #include "Move.h"
 #include "MoveList.h"
@@ -78,11 +83,16 @@ class GameObject;
 #include "World.h"
 #include "Timing.h"
 
+#include "WeightedTimedMovingAverage.h"
+
 #include "ReplicationCommand.h"
+#include "NetworkManager.h"
+
+
+#include "ReplicationManagerTransmissionData.h"
 #include "ReplicationManagerServer.h"
 
 #include "ClientProxy.h"
-#include "NetworkManager.h"
 
 
 #include "NetworkManagerServer.h"

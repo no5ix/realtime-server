@@ -14,7 +14,7 @@ public:
 	void			UpdateLastPacketTime();
 	float			GetLastPacketFromClientTime()	const { return mLastPacketFromClientTime; }
 
-	//DeliveryNotificationManager&	GetDeliveryNotificationManager() { return mDeliveryNotificationManager; }
+	DeliveryNotificationManager&	GetDeliveryNotificationManager() { return mDeliveryNotificationManager; }
 	ReplicationManagerServer&		GetReplicationManagerServer() { return mReplicationManagerServer; }
 
  	const	MoveList&				GetUnprocessedMoveList() const { return mUnprocessedMoveList; }
@@ -23,12 +23,10 @@ public:
 	void	SetIsLastMoveTimestampDirty( bool inIsDirty ) { mIsLastMoveTimestampDirty = inIsDirty; }
 	bool	IsLastMoveTimestampDirty()						const { return mIsLastMoveTimestampDirty; }
 
-	//void	HandleCatDied();
-	//void	RespawnCatIfNecessary();
 
 private:
 
-	//DeliveryNotificationManager	mDeliveryNotificationManager;
+	DeliveryNotificationManager	mDeliveryNotificationManager;
 	ReplicationManagerServer	mReplicationManagerServer;
 
 	SocketAddress	mSocketAddress;

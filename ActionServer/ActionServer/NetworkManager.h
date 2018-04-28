@@ -61,8 +61,8 @@ private:
 
 	UDPSocketPtr	mSocket;
 
-	//WeightedTimedMovingAverage	mBytesReceivedPerSecond;
-	//WeightedTimedMovingAverage	mBytesSentPerSecond;
+	WeightedTimedMovingAverage	mBytesReceivedPerSecond;
+	WeightedTimedMovingAverage	mBytesSentPerSecond;
 
 	int							mBytesSentThisFrame;
 

@@ -5,6 +5,7 @@
 #include "ActionPlayerController.h"
 #include "ActionPawn.h"
 #include "NetworkManager.h"
+#include "ActionWorld.h"
 
 
 UGameObjectRegistryUObj::UGameObjectRegistryUObj()
@@ -77,6 +78,8 @@ GameObjectPtr UGameObjectRegistryUObj::CreateActionPawn()
 		//	{
 		//		FirstPC->Possess( newActionPawn );
 		//	}
+
+			ActionWorld::sInstance->AddGameObject( newActionPawn );
 
 			return GameObjectPtr( newActionPawn );
 		//}

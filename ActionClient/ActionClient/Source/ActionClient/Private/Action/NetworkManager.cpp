@@ -19,6 +19,7 @@ namespace
 NetworkManager::NetworkManager() :
 	mDropPacketChance( 0.f ),
 	mSimulatedLatency( 0.f ),
+	mDeliveryNotificationManager( true, false ),
 	mState( NCS_Uninitialized )
 {
 	mSocket = NULL;
@@ -47,6 +48,8 @@ void NetworkManager::Init( const FString& inYourChosenSocketName, const FString&
 	}
 
 	mState = NCS_SayingHello;
+
+	mAvgRoundTripTime = WeightedTimedMovingAverage( 1.f );
 }
 
 
@@ -169,11 +172,11 @@ void NetworkManager::ProcessPacket( InputMemoryBitStream& inInputStream )
 		HandleWelcomePacket( inInputStream );
 		break;
 	case kStateCC:
-		//if (mDeliveryNotificationManager.ReadAndProcessState( inInputStream ))
-		//{
+ 		if (mDeliveryNotificationManager.ReadAndProcessState( inInputStream ))
+ 		{
 			HandleStatePacket( inInputStream );
-		//}
-		break;
+ 		}
+ 		break;
 	}
 }
 
@@ -272,7 +275,7 @@ void NetworkManager::ReadLastMoveProcessedOnServerTimestamp( InputMemoryBitStrea
 
 		float rtt = ActionTiming::sInstance.GetFrameStartTime() - mLastMoveProcessedByServerTimestamp;
 		mLastRoundTripTime = rtt;
-		//mAvgRoundTripTime.Update( rtt );
+		mAvgRoundTripTime.Update( rtt );
 
 		InputManager::sInstance->GetActionList().RemovedProcessedActions( mLastMoveProcessedByServerTimestamp );
 
@@ -295,28 +298,54 @@ void NetworkManager::UpdateSendingInputPacket()
 
 void NetworkManager::SendInputPacket()
 {
-	ActionList& moveList = InputManager::sInstance->GetActionList();
+	const ActionList& moveList = InputManager::sInstance->GetActionList();
 
-
-	if (moveList.HasActions())
+	if ( moveList.HasActions() )
 	{
 		OutputMemoryBitStream inputPacket;
+
 		inputPacket.Write( kInputCC );
 
+		mDeliveryNotificationManager.WriteState( inputPacket );
+
+		//eventually write the 3 latest moves so they have three chances to get through...
 		int moveCount = moveList.GetActionCount();
 
-		A_LOG_N( "moveCount = ", ( float )moveCount );
-
-		int startIndex = moveCount > 3 ? moveCount - 3 - 1 : 0;
-		inputPacket.Write( moveCount - startIndex, 2 );
-		for (int i = startIndex; i < moveCount; ++i)
+		// 如果 moveCount <= 5 的话, 则 firstMoveIndex = 0;
+		// 如果 moveCount >=6 的话, 则 firstMoveIndex = moveCount - 3;
+		// 举个例子, 比如 moveCount = 5 的话, 那就发送 index 为 0, 1, 2, 3, 4 这5个move; 
+		// 再举个例子, 比如 moveCount = 6 的话, 那就发送 index 为 3, 4, 5 这3个move
+		int firstMoveIndex = moveCount - 3;
+		if ( firstMoveIndex < 3 )
 		{
-			moveList[i].Write( inputPacket );
-
+			firstMoveIndex = 0;
 		}
 
+		// 		int firstMoveIndex = moveCount > 3 ? moveCount - 3 - 1 : 0;
+
+		//int hlhTestfirstMoveIndex = firstMoveIndex;
+
+		auto move = moveList.begin() + firstMoveIndex;
+
+
+		//only need two bits to write the move count, because it's 0, 1, 2 or 3
+		inputPacket.Write( moveCount - firstMoveIndex, 2 );
+
+		//int hlhTestSendTimes = 0;
+
+		for ( ; firstMoveIndex < moveCount; ++firstMoveIndex, ++move )
+		{
+			///would be nice to optimize the time stamp...
+			move->Write( inputPacket );
+			//hlhTestSendTimes++;
+		}
+
+		// 		if ( hlhTestSendTimes > 3 )
+		// 		{
+		//A_LOG_M( "moveCount = %d, hlhTestfirstMoveIndex = %d, hlhTestSendTimes = %d", moveCount, hlhTestfirstMoveIndex, hlhTestSendTimes );
+		// 		}
+
 		SendPacket( inputPacket );
-		moveList.Clear();
 	}
 }
 

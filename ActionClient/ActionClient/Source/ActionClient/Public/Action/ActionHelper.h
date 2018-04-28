@@ -5,8 +5,8 @@
 
 
 // 是否要显示调试打印信息
-#define ACTION_SHOW_DEBUG_SCREEN_MSG					false
-#define ACTION_SHOW_DEBUG_OUTPUT_LOG					false
+#define ACTION_SHOW_DEBUG_SCREEN_MSG					true
+#define ACTION_SHOW_DEBUG_OUTPUT_LOG					true
 
 
 //Current Class Name + Function Name where this is called!

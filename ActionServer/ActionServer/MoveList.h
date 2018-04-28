@@ -12,7 +12,7 @@ public:
 	{}
 
 	const	Move&	AddMove( const InputState& inInputState, float inTimestamp );
-	bool	AddMove( const Move& inMove );
+	bool	AddMoveIfNew( const Move& inMove );
 
 	void	RemovedProcessedMoves( float inLastMoveProcessedOnServerTimestamp );
 

@@ -23,7 +23,13 @@ void ReplicationManagerServer::SetStateDirty( int inNetworkId, uint32_t inDirtyS
 	mNetworkIdToReplicationCommand[inNetworkId].AddDirtyState( inDirtyState );
 }
 
-void ReplicationManagerServer::Write( OutputMemoryBitStream& inOutputStream )
+void ReplicationManagerServer::HandleCreateAckd( int inNetworkId )
+{
+	mNetworkIdToReplicationCommand[inNetworkId].HandleCreateAckd();
+}
+
+
+void ReplicationManagerServer::Write( OutputMemoryBitStream& inOutputStream, ReplicationManagerTransmissionData* ioTransmissinData )
 {
 	//run through each replication command and do something...
 	for (auto& pair : mNetworkIdToReplicationCommand)
@@ -51,9 +57,6 @@ void ReplicationManagerServer::Write( OutputMemoryBitStream& inOutputStream )
 			case RA_Create:
 				//LOG( " GetAction = RA_Create %d", action );
 				writtenState = WriteCreateAction( inOutputStream, networkId, dirtyState );
-				//once the create action is transmitted, future replication
-				//of this object should be updates instead of creates
-				replicationCommand.SetAction( RA_Update );
 				break;
 			case RA_Update:
 				//LOG( " GetAction = RA_Update %d", action );
@@ -62,26 +65,14 @@ void ReplicationManagerServer::Write( OutputMemoryBitStream& inOutputStream )
 			case RA_Destroy:
 				//don't need anything other than state!
 				writtenState = WriteDestroyAction( inOutputStream, networkId, dirtyState );
-				//add this to the list of replication commands to remove
-				mNetworkIdsToRemove.emplace_back( networkId );
 				break;
 			}
 
-			//let's pretend everything was written- don't make this too hard
+			ioTransmissinData->AddTransmission( networkId, action, writtenState );
+
 			replicationCommand.ClearDirtyState( writtenState );
 
 		}
-	}
-
-	//remove replication commands for destroyed objects
-	if (!mNetworkIdsToRemove.empty())
-	{
-		for (auto id : mNetworkIdsToRemove)
-		{
-			RemoveFromReplication( id );
-		}
-
-		mNetworkIdsToRemove.clear();
 	}
 }
 

@@ -1,15 +1,11 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-#include "ActionClient.h"
-#include "AckRange.h"
-
+#include "ActionServerPCH.h"
 
 void AckRange::Write( OutputMemoryBitStream& inOutputStream ) const
 {
 	inOutputStream.Write( mStart );
 	bool hasCount = mCount > 1;
 	inOutputStream.Write( hasCount );
-	if ( hasCount )
+	if( hasCount )
 	{
 		//most you can ack is 255...
 		uint32_t countMinusOne = mCount - 1;
@@ -23,7 +19,7 @@ void AckRange::Read( InputMemoryBitStream& inInputStream )
 	inInputStream.Read( mStart );
 	bool hasCount;
 	inInputStream.Read( hasCount );
-	if ( hasCount )
+	if( hasCount )
 	{
 		uint8_t countMinusOne;
 		inInputStream.Read( countMinusOne );

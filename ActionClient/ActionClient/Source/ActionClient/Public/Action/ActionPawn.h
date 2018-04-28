@@ -30,8 +30,9 @@ public:
 
 	void ProcessInput( float inDeltaTime, const ActionInputState& inInputState );
 
-	//void SimulateMovement( float inDeltaTime );
+	void SimulateMovement();
 
+	void DR( float inDeltaTime );
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -91,7 +92,18 @@ public:
 	UFUNCTION( BlueprintCallable, Category = Mesh )
 		virtual bool IsFirstPerson() const;
 
-	FRotator GetActionPawnCameraRotation() { return ActionPawnCameraRotation; }
+	FRotator GetActionPawnCameraRotation() const { return mActionPawnCameraRotation; }
+	void SetActionPawnCameraRotation( FRotator inActionPawnCameraRotation ) { mActionPawnCameraRotation = inActionPawnCameraRotation; }
+
+public:
+
+	void ReplayForLocalPawn( uint32_t inReadState );
+	void ReplayForRemotePawn( uint32_t inReadState );
+
+
+private:
+
+	void InterpolateClientSidePrediction( const FRotator& inOldRotation, const FRotator& inoldActionPawnCameraRotation, const FVector& inOldLocation, const FVector& inOldVelocity, bool inIsForRemotePawn );
 
 public:
 
@@ -101,9 +113,6 @@ public:
 
 	FORCEINLINE class UCameraComponent* GetCamera() const { return ActionPawnCamera; }
 
-	/** @return PhysicsVolume this MovementComponent is using, or the world's default physics volume if none. **/
-	UFUNCTION( BlueprintCallable, Category = "Components|Movement" )
-		virtual FVector GetVelocity() const override { return Velocity; }
 
 	float GetMaxSpeed() const { return MaxSpeed; }
 private:
@@ -150,11 +159,15 @@ protected:
 		float TurningBoost;
 
 private:
-	FRotator ActionPawnCameraRotation;
+	FRotator mActionPawnCameraRotation;
 
 protected:
 	UPROPERTY( EditAnywhere, BlueprintReadWrite, Category = ActionPawnMovement )
-		bool bTestUpdate;
+		bool bTestUpdateForDisconnect;
 
 	float	mLastReadStateTimestamp;
+
+	float	mTimeLocationBecameOutOfSync;
+	float	mTimeVelocityBecameOutOfSync;
+	float	mTimeRotationBecameOutOfSync;
 };

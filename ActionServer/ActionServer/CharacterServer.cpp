@@ -21,10 +21,10 @@ void CharacterServer::Update()
 	Vector3 oldRotation = GetRotation();
 
 	ClientProxyPtr client = NetworkManagerServer::sInstance->GetClientProxy( GetPlayerId() );
-	if (client)
+	if ( client )
 	{
 		MoveList& moveList = client->GetUnprocessedMoveList();
-		for (const Move& unprocessedMove : moveList)
+		for ( const Move& unprocessedMove : moveList )
 		{
 			const InputState& currentState = unprocessedMove.GetInputState();
 			float deltaTime = unprocessedMove.GetDeltaTime();
@@ -45,8 +45,8 @@ void CharacterServer::Update()
 	//LOG( "GetVelocity = %f, %f, %f", GetVelocity().X, GetVelocity().Y, GetVelocity().Z );
 
 	if ( !ActionServerMath::Is3DVectorEqual( oldLocation, GetLocation() ) ||
-		 !ActionServerMath::Is3DVectorEqual( oldVelocity, GetVelocity() ) ||
-		 !ActionServerMath::Is3DVectorEqual( oldRotation, GetRotation() ) 
+		!ActionServerMath::Is3DVectorEqual( oldVelocity, GetVelocity() ) ||
+		!ActionServerMath::Is3DVectorEqual( oldRotation, GetRotation() )
 		)
 	{
 		//LOG( " NetworkManagerServer::sInstance->SetStateDirty( GetNetworkId(), ECRS_Pose );  GetPlayerId = %d", GetPlayerId() );

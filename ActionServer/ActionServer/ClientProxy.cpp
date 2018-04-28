@@ -5,7 +5,7 @@ ClientProxy::ClientProxy( const SocketAddress& inSocketAddress, const string& in
 	mSocketAddress( inSocketAddress ),
 	mName( inName ),
 	mPlayerId( inPlayerId ),
-	//mDeliveryNotificationManager( false, true ),
+	mDeliveryNotificationManager( false, true ),
 	mIsLastMoveTimestampDirty( false ),
 	mTimeToRespawn( 0.f )
 {

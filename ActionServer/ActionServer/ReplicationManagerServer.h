@@ -10,8 +10,9 @@ public:
 	void ReplicateDestroy( int inNetworkId );
 	void SetStateDirty( int inNetworkId, uint32_t inDirtyState );
 	void RemoveFromReplication( int inNetworkId );
+	void HandleCreateAckd( int inNetworkId );
 
-	void Write( OutputMemoryBitStream& inOutputStream );
+	void Write( OutputMemoryBitStream& inOutputStream, ReplicationManagerTransmissionData* ioTransmissinData );
 
 private:
 
@@ -20,7 +21,6 @@ private:
 	uint32_t WriteDestroyAction( OutputMemoryBitStream& inOutputStream, int inNetworkId, uint32_t inDirtyState );
 
 	unordered_map< int, ReplicationCommand >	mNetworkIdToReplicationCommand;
-	vector< int >								mNetworkIdsToRemove;
 
 
 };

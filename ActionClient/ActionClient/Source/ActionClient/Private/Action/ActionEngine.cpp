@@ -6,7 +6,7 @@
 #include "InputManager.h"
 #include "ActionTiming.h"
 #include "ActionHelper.h"
-// #include "GameObjectRegistryUObj.h"
+ #include "ActionWorld.h"
 
 // Sets default values for this component's properties
 UActionEngine::UActionEngine( const FObjectInitializer& ObjectInitializer ) : Super( ObjectInitializer )
@@ -23,7 +23,6 @@ UActionEngine::UActionEngine( const FObjectInitializer& ObjectInitializer ) : Su
 	port = 45000;
 	player_name = TEXT( "ActionClientTestPlayerName" );
 
-	InputManager::StaticInit();
 }
 
 // Called when the game starts
@@ -41,6 +40,8 @@ void UActionEngine::BeginPlay()
 	//A_SCREENMSG_F( "testFloatPrint : ", testFloatPrint );
 	//A_SCREENMSG_F( "( float )testFloatPrint : ", ( float )testFloatPrint );
 
+	ActionWorld::StaticInit();
+	InputManager::StaticInit();
 	NetworkManager::StaticInit( ip, port, player_name );
 
 
@@ -61,6 +62,7 @@ void UActionEngine::TickComponent(float DeltaTime, ELevelTick TickType, FActorCo
 
 	InputManager::sInstance->Update();
 
+	ActionWorld::sInstance->Update();
 
 	NetworkManager::sInstance->ProcessIncomingPackets();
 

@@ -43,18 +43,28 @@ public:
 	void		SetPlayerId( uint32_t inPlayerId ) { mPlayerId = inPlayerId; }
 	uint32_t	GetPlayerId()						const { return mPlayerId; }
 
-	void			SetActionEntityVelocity( const FVector& inVelocity ) { Velocity = inVelocity; }
-	const FVector&	GetActionEntityVelocity()						const { return Velocity; }
+	void			SetActionEntityVelocity( const FVector& inVelocity ) { mVelocity = inVelocity; }
+	const FVector&	GetActionEntityVelocity()						const { return mVelocity; }
 
 
-	//const FVector&		GetLocation()				const { return mLocation; }
-	//void		SetLocation( const FVector& inLocation ) { mLocation = inLocation; }
+	UFUNCTION( BlueprintCallable, Category = "Components|Movement" )
+		virtual FVector GetVelocity() const override { return Velocity; }
 
-	//void	SetRotation( float inRotation ) { mRotation = inRotation; };
-	//float	GetRotation()					const { return mRotation; }
+	void SetVelocity() { Velocity = mVelocity; }
 
-	//void		SetColor( const FVector& inColor ) { mColor = inColor; }
-	//const FVector&		GetColor()					const { return mColor; }
+	void	SetIndexInWorld( int inIndex ) { mIndexInWorld = inIndex; }
+	int		GetIndexInWorld()				const { return mIndexInWorld; }
+
+	bool DoesWantToDie() const { return false; }
+
+	virtual void	HandleDying() {}
+
+	const FVector&		GetLocation()				const { return mLocation; }
+	void		SetLocation( const FVector& inLocation ) { mLocation = inLocation; }
+
+	void	SetRotation( FRotator inRotation ) { mRotation = inRotation; };
+	FRotator	GetRotation()					const { return mRotation; }
+
 
 	int			GetNetworkId()				const { return mNetworkId; }
 	void		SetNetworkId( int inNetworkId ) { mNetworkId = inNetworkId;  }
@@ -63,14 +73,14 @@ protected:
 	UPROPERTY( EditAnywhere, BlueprintReadWrite, Category = ActionPawnMovement )
 		FVector Velocity;
 
-private:
+protected:
 
-
-	//FVector				mVelocity;
+	FVector											mVelocity;
 	FVector											mLocation;
 	FVector											mColor;
 
-	float											mRotation;
+	FRotator										mRotation;
+
 	float											mScale;
 	int												mIndexInWorld;
 
