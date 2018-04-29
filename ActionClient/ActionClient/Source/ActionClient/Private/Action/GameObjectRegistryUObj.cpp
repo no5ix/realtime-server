@@ -78,9 +78,10 @@ GameObjectPtr UGameObjectRegistryUObj::CreateActionPawn()
 		//	{
 		//		FirstPC->Possess( newActionPawn );
 		//	}
-
-			ActionWorld::sInstance->AddGameObject( newActionPawn );
-
+			if (newActionPawn)
+			{
+				ActionWorld::sInstance->AddGameObject( newActionPawn );
+			}
 			return GameObjectPtr( newActionPawn );
 		//}
 	}

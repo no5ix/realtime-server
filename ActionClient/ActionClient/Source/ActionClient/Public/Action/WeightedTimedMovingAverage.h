@@ -41,7 +41,7 @@ public:
 		float fractionOfDuration = ( timeSinceLastEntry / mDuration );
 		if ( fractionOfDuration > 1.f ) { fractionOfDuration = 1.f; }
 
-		A_LOG_M( "fractionOfDuration = %f", fractionOfDuration );
+		//A_LOG_M( "fractionOfDuration = %f", fractionOfDuration );
 
 		mValue = mValue * ( 1.f - fractionOfDuration ) + inValue * fractionOfDuration;
 

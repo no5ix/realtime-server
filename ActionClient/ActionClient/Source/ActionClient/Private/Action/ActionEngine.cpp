@@ -6,7 +6,10 @@
 #include "InputManager.h"
 #include "ActionTiming.h"
 #include "ActionHelper.h"
- #include "ActionWorld.h"
+#include "ActionWorld.h"
+#include "ActionPlayerController.h"
+#include "ActionPawn.h"
+
 
 // Sets default values for this component's properties
 UActionEngine::UActionEngine( const FObjectInitializer& ObjectInitializer ) : Super( ObjectInitializer )
@@ -51,6 +54,19 @@ void UActionEngine::BeginPlay()
 	NetworkManager::sInstance->GetGameObjectRegistryUObj()->SetDefaultCharacterClasses( DefaultCharacterClasses );
 }
 
+void UActionEngine::UpdateLocalPlayer()
+{
+	AActionPlayerController* const FirstPC = Cast<AActionPlayerController>( UGameplayStatics::GetPlayerController( GetWorld(), 0 ) );
+	if ( FirstPC != nullptr && ( FirstPC->GetPawn() ) )
+	{
+		AActionPawn *p = Cast<AActionPawn>( FirstPC->GetPawn() );
+		if ( p )
+		{
+			p->SimulateMovementAfterReplay();
+		}
+	}
+}
+
 
 // Called every frame
 void UActionEngine::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
@@ -66,6 +82,7 @@ void UActionEngine::TickComponent(float DeltaTime, ELevelTick TickType, FActorCo
 
 	NetworkManager::sInstance->ProcessIncomingPackets();
 
+	//UpdateLocalPlayer();
 
 	NetworkManager::sInstance->SendOutgoingPackets();
 }

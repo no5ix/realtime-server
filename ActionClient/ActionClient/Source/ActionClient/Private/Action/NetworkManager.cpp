@@ -42,9 +42,9 @@ void NetworkManager::Init( const FString& inYourChosenSocketName, const FString&
 
 	if ( ActionSocketUtil::CreateInternetAddress( mRemoteAddr, inIP, inPort ) )
 	{
-		A_LOG_1( "\n\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" );
+		A_LOG_1( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" );
 		A_LOG_1( "ActionUDPSocket Initialized Successfully!!!" );
-		A_LOG_1( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n\n" );
+		A_LOG_1( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" );
 	}
 
 	mState = NCS_SayingHello;
@@ -76,9 +76,9 @@ void NetworkManager::SendHelloPacket()
 	SendPacket( helloPacket );
 	
 	
-	A_LOG_1( "\n\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" );
+	A_LOG_1( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" );
 	A_LOG_1( "****UDP**** Send Hello Packet Successfully!!!" );
-	A_LOG_1( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n\n" );
+	A_LOG_1( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" );
 	
 }
 
@@ -240,9 +240,9 @@ void NetworkManager::HandleWelcomePacket( InputMemoryBitStream& inInputStream )
 
 		ActionHelper::ScreenMsg( "welcome on client as playerID = ", mPlayerId );
 
-		A_LOG_1( "\n\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" );
+		A_LOG_1( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" );
 		A_LOG_1( "****UDP**** HandleWelcomePacket Successfully!!!" );
-		A_LOG_1( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n\n" );
+		A_LOG_1( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" );
 
 	}
 }
@@ -279,7 +279,10 @@ void NetworkManager::ReadLastMoveProcessedOnServerTimestamp( InputMemoryBitStrea
 
 		InputManager::sInstance->GetActionList().RemovedProcessedActions( mLastMoveProcessedByServerTimestamp );
 
-		A_LOG();
+		//A_LOG();
+		//A_LOG_N( "rtt = ", rtt );
+		//A_LOG_N( "ping = ", mAvgRoundTripTime.GetValue() / 2.f );
+		A_MSG_M( 0.05f, "ping = %f", mAvgRoundTripTime.GetValue() *1000.f );
 	}
 
 }
@@ -308,13 +311,8 @@ void NetworkManager::SendInputPacket()
 
 		mDeliveryNotificationManager.WriteState( inputPacket );
 
-		//eventually write the 3 latest moves so they have three chances to get through...
 		int moveCount = moveList.GetActionCount();
 
-		// 如果 moveCount <= 5 的话, 则 firstMoveIndex = 0;
-		// 如果 moveCount >=6 的话, 则 firstMoveIndex = moveCount - 3;
-		// 举个例子, 比如 moveCount = 5 的话, 那就发送 index 为 0, 1, 2, 3, 4 这5个move; 
-		// 再举个例子, 比如 moveCount = 6 的话, 那就发送 index 为 3, 4, 5 这3个move
 		int firstMoveIndex = moveCount - 3;
 		if ( firstMoveIndex < 3 )
 		{

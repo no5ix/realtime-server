@@ -68,7 +68,7 @@ AActionPawn::AActionPawn( const FObjectInitializer& ObjectInitializer )
 	mActionPawnCameraRotation = FRotator::ZeroRotator;
 
 	bTestUpdateForDisconnect = false;
-	mLastReadStateTimestamp = -1.f;
+	mLastDragTimestamp = -1.f;
 
 
 	mTimeLocationBecameOutOfSync = 0.f;
@@ -76,7 +76,6 @@ AActionPawn::AActionPawn( const FObjectInitializer& ObjectInitializer )
 	mTimeRotationBecameOutOfSync = 0.f;
 }
 
-// Called when the game starts or when spawned
 void AActionPawn::BeginPlay()
 {
 	Super::BeginPlay();
@@ -84,8 +83,6 @@ void AActionPawn::BeginPlay()
 	mActionPawnCameraRotation = GetActorRotation();
 }
 
-
-// Called every frame
 void AActionPawn::Tick( float DeltaTime )
 {
 	Super::Tick( DeltaTime );
@@ -97,7 +94,6 @@ void AActionPawn::Tick( float DeltaTime )
 	//Update();
 }
 
-// Called to bind functionality to input
 void AActionPawn::SetupPlayerInputComponent( UInputComponent* PlayerInputComponent )
 {
 	//Super::SetupPlayerInputComponent(PlayerInputComponent);
@@ -107,8 +103,6 @@ void AActionPawn::SetupPlayerInputComponent( UInputComponent* PlayerInputCompone
 	PlayerInputComponent->BindAxis( "Turn", this, &AActionPawn::Turn );
 	PlayerInputComponent->BindAxis( "LookUp", this, &AActionPawn::LookUp );
 }
-
-
 
 void AActionPawn::MoveForward( float Val )
 {
@@ -121,7 +115,7 @@ void AActionPawn::MoveForward( float Val )
 		InputManager::sInstance->HandleInput( InputManager::EIA_MoveForward, Val );
 		//InputManager::sInstance->HandleInput( InputManager::EIA_MoveForward, 1.f );
 
-		A_LOG_N("Val = ", Val);
+		//A_LOG_N("Val = ", Val);
 	//}
 }
 
@@ -137,7 +131,7 @@ void AActionPawn::MoveRight( float Val )
 		//InputManager::sInstance->HandleInput( InputManager::EIA_MoveRight, 1.f );
 
 		
-		A_LOG_N("Val = ", Val);
+		//A_LOG_N("Val = ", Val);
 	//}
 }
 
@@ -151,13 +145,12 @@ void AActionPawn::Turn( float Val )
 	//{
 		//FRotator newRot( GetActorRotation() );
 		//newRot.Yaw += ( BaseTurnRate * Val );
-		//SetActorRotation( newRot );
 
 		InputManager::sInstance->HandleInput( InputManager::EIA_Turn, Val );
 		//InputManager::sInstance->HandleInput( InputManager::EIA_Turn, 5.f );
 
 		
-		A_LOG_N("Val = ", Val);
+		//A_LOG_N("Val = ", Val);
 
 	//}
 
@@ -183,7 +176,7 @@ void AActionPawn::LookUp( float Val )
 		InputManager::sInstance->HandleInput( InputManager::EIA_LookUp, Val );
 
 		
-		A_LOG_N("Val = ", Val);
+		//A_LOG_N("Val = ", Val);
 	}
 }
 
@@ -199,16 +192,13 @@ void AActionPawn::Update()
 
 			ProcessInput( deltaTime, pendingMove->GetInputState() );
 
+			SimulateMovementAfterReplay();
 
-			SimulateMovement();
-
-			//A_LOG_M( "Client Move Time: %3.4f deltaTime: %3.4f left rot at %3.4f", latestMove.GetTimestamp(), deltaTime, GetRotation() );
+			//LocalSimulateMovement( deltaTime, pendingMove->GetInputState() );
 		}
 	}
 	else
 	{
-		//SimulateMovement( ActionTiming::sInstance.GetDeltaTime() );
-
 		DR( ActionTiming::sInstance.GetDeltaTime() );
 
 		SetActorLocation( mLocation );
@@ -220,22 +210,47 @@ void AActionPawn::Update()
 	}
 }
 
-void AActionPawn::ProcessInput( float inDeltaTime, const ActionInputState& inInputState )
+
+void AActionPawn::LocalSimulateMovement( float inDeltaTime, const ActionInputState& inInputState )
 {
 	FRotator newRot( GetActorRotation() );
 	newRot.Yaw += ( BaseTurnRate * inInputState.GetDesiredTurnAmount() );
-	//SetActorRotation( newRot );
-	SetRotation( newRot );
+	SetActorRotation( newRot );
+	//SetRotation( newRot );
 
-	mActionPawnCameraRotation.Yaw = newRot.Yaw;
-	mActionPawnCameraRotation.Roll = newRot.Roll;
+	mLocalActionPawnCameraRotation.Yaw = newRot.Yaw;
+	mLocalActionPawnCameraRotation.Roll = newRot.Roll;
+	mLocalActionPawnCameraRotation.Pitch = FMath::Clamp( ( mLocalActionPawnCameraRotation.Pitch + ( -1 * BaseLookUpRate * inInputState.GetDesiredLookUpAmount() ) ), -89.f, 89.f );
+	ActionPawnCamera->SetWorldRotation( mLocalActionPawnCameraRotation );
+	//SetActionPawnCameraRotation( mActionPawnCameraRotation );
+
+	ActionAddMovementInput( mLocalActionPawnCameraRotation.Quaternion().GetForwardVector(), inInputState.GetDesiredMoveForwardAmount() );
+	ActionAddMovementInput( mLocalActionPawnCameraRotation.Quaternion().GetRightVector(), inInputState.GetDesiredMoveRightAmount() );
+
+	ApplyControlInputToVelocity( inDeltaTime );
+
+	FVector Delta = mVelocity * inDeltaTime;
+
+	if ( !Delta.IsNearlyZero( 1e-6f ) )
+	{
+		SetActorLocation( GetActorLocation() + Delta );
+	}
+}
+
+void AActionPawn::ProcessInput( float inDeltaTime, const ActionInputState& inInputState )
+{
+	//FRotator newRot( GetActorRotation() );
+	mRotation.Yaw += ( BaseTurnRate * inInputState.GetDesiredTurnAmount() );
+	//SetRotation( newRot );
+
+	mActionPawnCameraRotation.Yaw = mRotation.Yaw;
+	mActionPawnCameraRotation.Roll = mRotation.Roll;
 	mActionPawnCameraRotation.Pitch = FMath::Clamp( ( mActionPawnCameraRotation.Pitch + ( -1 * BaseLookUpRate * inInputState.GetDesiredLookUpAmount() ) ), -89.f, 89.f );
 	//ActionPawnCamera->SetWorldRotation( ActionPawnCameraRotation );
-	SetActionPawnCameraRotation( mActionPawnCameraRotation );
+	//SetActionPawnCameraRotation( mActionPawnCameraRotation );
 
 	ActionAddMovementInput( mActionPawnCameraRotation.Quaternion().GetForwardVector(), inInputState.GetDesiredMoveForwardAmount() );
 	ActionAddMovementInput( mActionPawnCameraRotation.Quaternion().GetRightVector(), inInputState.GetDesiredMoveRightAmount() );
-
 
 	ApplyControlInputToVelocity( inDeltaTime );
 
@@ -247,17 +262,16 @@ void AActionPawn::ProcessInput( float inDeltaTime, const ActionInputState& inInp
 	}
 }
 
-void AActionPawn::SimulateMovement()
+void AActionPawn::SimulateMovementAfterReplay()
 {
+	//if ( GetPlayerId() != NetworkManager::sInstance->GetPlayerId() )
+	//{
+		SetActorRotation( mRotation );
+		ActionPawnCamera->SetWorldRotation( mActionPawnCameraRotation );
+	//}
+
 	SetVelocity();
-
-	SetActorRotation( mRotation );
-
-	ActionPawnCamera->SetWorldRotation( mActionPawnCameraRotation );
-
-
 	SetActorLocation( mLocation );
-
 }
 
 void AActionPawn::DR(float inDeltaTime)
@@ -268,7 +282,6 @@ void AActionPawn::DR(float inDeltaTime)
 		SetLocation( GetActorLocation() + Delta );
 	}
 }
-
 
 bool AActionPawn::IsExceedingMaxSpeed( float inMaxSpeed ) const
 {
@@ -297,7 +310,6 @@ FVector AActionPawn::ActionGetPendingInputVector() const
 	// There's really no point redirecting to the MovementComponent since GetInputVector is not virtual there, and it just comes back to us.
 	return ActionControlInputVector;
 }
-
 
 void AActionPawn::ApplyControlInputToVelocity( float DeltaTime )
 {
@@ -369,7 +381,6 @@ void AActionPawn::OnCameraUpdate( const FVector& CameraLocation, const FRotator&
 	Mesh1P->SetRelativeLocationAndRotation( PitchedMesh.GetOrigin(), PitchedMesh.Rotator() );
 }
 
-
 void AActionPawn::Read( InputMemoryBitStream& inInputStream )
 {
 	bool stateBit;
@@ -399,12 +410,30 @@ void AActionPawn::Read( InputMemoryBitStream& inInputStream )
 	FRotator oldRotation = GetActorRotation();
 	FVector oldLocation = GetActorLocation();
 	FVector oldVelocity = GetVelocity();
-	FRotator oldActionPawnCameraRotation = GetActionPawnCameraRotation();
+	FRotator oldActionPawnCameraRotation =
+		GetPlayerId() == NetworkManager::sInstance->GetPlayerId() ?
+		GetLocalActionPawnCameraRotation() : 
+		GetActionPawnCameraRotation();
+
+
+	A_LOG_1( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" );
+
+	A_LOG_M( "READ!!! GetActorRotation() = %f, %f, %f", oldRotation.Pitch, oldRotation.Yaw, oldRotation.Roll );
+	A_LOG_M( "READ!!! GetRotation() = %f, %f, %f", GetRotation().Pitch, GetRotation().Yaw, GetRotation().Roll );
+	A_LOG_1( "------------------------" );
+	A_LOG_M( "READ!!! oldActionPawnCameraRotation = %f, %f, %f", oldActionPawnCameraRotation.Pitch, oldActionPawnCameraRotation.Yaw, oldActionPawnCameraRotation.Roll );
+	A_LOG_1( "------------------------" );
+
+	A_LOG_M( "READ!!! GetActorLocation() = %f, %f, %f", GetActorLocation().X, GetActorLocation().Y, GetActorLocation().Z );
+	A_LOG_M( "READ!!! GetLocation() = %f, %f, %f", GetLocation().X, GetLocation().Y, GetLocation().Z );
+
+	A_LOG_1( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" );
+
 
 	//FRotator replicatedRotation;
 	//FVector replicatedLocation;
 	//FVector replicatedVelocity;
-	//FVector replicatedActionPawnCameraRotation;
+	//FRotator replicatedActionPawnCameraRotation;
 
 	inInputStream.Read( stateBit );
 	if ( stateBit )
@@ -431,7 +460,7 @@ void AActionPawn::Read( InputMemoryBitStream& inInputStream )
 		inInputStream.Read( mActionPawnCameraRotation.Yaw );
 		inInputStream.Read( mActionPawnCameraRotation.Roll );
 
-		//SetActionPawnCameraRotation(mActionPawnCameraRotation)
+		//SetActionPawnCameraRotation(mActionPawnCameraRotation);
 
 		readState |= ECRS_Pose;
 	}
@@ -448,6 +477,7 @@ void AActionPawn::Read( InputMemoryBitStream& inInputStream )
 	}
 	else
 	{
+
 		// temporary for now, may use entity interp instead later.
 		ReplayForRemotePawn( readState );
 
@@ -455,10 +485,9 @@ void AActionPawn::Read( InputMemoryBitStream& inInputStream )
 		{
 			InterpolateClientSidePrediction( oldRotation, oldActionPawnCameraRotation, oldLocation, oldVelocity , true );
 		}
-
 	}
 
-	SimulateMovement();
+	SimulateMovementAfterReplay();
 }
 
 
@@ -471,23 +500,17 @@ void AActionPawn::ReplayForLocalPawn( uint32_t inReadState )
 		for ( const Action& move : moveList )
 		{
 			float deltaTime = move.GetDeltaTime();
-			ProcessInput( deltaTime, move.GetInputState() );
-
-			//SimulateMovement( deltaTime );
+			ProcessInput( deltaTime, move.GetInputState());
 		}
 	}
 }
-
 
 void AActionPawn::ReplayForRemotePawn( uint32_t inReadState )
 {
 	if ( ( inReadState & ECRS_Pose ) != 0 )
 	{
-
 		float rtt = NetworkManager::sInstance->GetRoundTripTime();
-
 		float deltaTime = 1.f / 30.f;
-
 		while ( true )
 		{
 			if ( rtt < deltaTime )
@@ -505,18 +528,34 @@ void AActionPawn::ReplayForRemotePawn( uint32_t inReadState )
 
 }
 
-void AActionPawn::InterpolateClientSidePrediction( const FRotator& inOldRotation, const FRotator& inoldActionPawnCameraRotation, const FVector& inOldLocation, const FVector& inOldVelocity, bool inIsForRemotePawn )
+void AActionPawn::InterpolateClientSidePrediction( const FRotator& inOldRotation, const FRotator& inOldActionPawnCameraRotation, const FVector& inOldLocation, const FVector& inOldVelocity, bool inIsForRemotePawn )
 {
-	if ( inOldRotation != GetRotation() && !inIsForRemotePawn )
+	if ( !inOldRotation.Equals(GetRotation(), 10.f) && !inIsForRemotePawn )
 	{
-		A_LOG_1( "ERROR! Move replay ended with incorrect rotation!");
+		A_LOG_1( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" );
+		A_LOG_1( "ERROR! Move replay ended with incorrect local Rotation!" );
+		A_LOG_M( "inOldRotation = %f, %f, %f", inOldRotation.Pitch, inOldRotation.Yaw, inOldRotation.Roll );
+		A_LOG_M( "GetRotation() = %f, %f, %f", GetRotation().Pitch, GetRotation().Yaw, GetRotation().Roll );
+		A_LOG_1( "------------------------" );
+		A_LOG_M( "inoldActionPawnCameraRotation = %f, %f, %f", inOldActionPawnCameraRotation.Pitch, inOldActionPawnCameraRotation.Yaw, inOldActionPawnCameraRotation.Roll );
+		A_LOG_M( "GetActionPawnCameraRotation() = %f, %f, %f", GetActionPawnCameraRotation().Pitch, GetActionPawnCameraRotation().Yaw, GetActionPawnCameraRotation().Roll );
+		A_LOG_1( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" );
 	}
 
 	float roundTripTime = NetworkManager::sInstance->GetRoundTripTime();
 	float time = ActionTiming::sInstance.GetFrameStartTime();
 
-	if ( inIsForRemotePawn && inOldRotation != GetRotation() )
+	if ( inIsForRemotePawn && !inOldRotation.Equals( GetRotation(), 10.f ) )
+	//if ( inIsForRemotePawn && inOldRotation != GetRotation() )
 	{
+		A_LOG_1( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" );
+		A_LOG_1( "ERROR! Move replay ended with incorrect remote Rotation!" );
+		A_LOG_M( "inOldRotation = %f, %f, %f", inOldRotation.Pitch, inOldRotation.Yaw, inOldRotation.Roll );
+		A_LOG_M( "GetRotation() = %f, %f, %f", GetRotation().Pitch, GetRotation().Yaw, GetRotation().Roll );
+		A_LOG_1( "------------------------" );
+		A_LOG_M( "inoldActionPawnCameraRotation = %f, %f, %f", inOldActionPawnCameraRotation.Pitch, inOldActionPawnCameraRotation.Yaw, inOldActionPawnCameraRotation.Roll );
+		A_LOG_M( "GetActionPawnCameraRotation() = %f, %f, %f", GetActionPawnCameraRotation().Pitch, GetActionPawnCameraRotation().Yaw, GetActionPawnCameraRotation().Roll );
+		A_LOG_1( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" );
 
 		if ( mTimeRotationBecameOutOfSync == 0.f )
 		{
@@ -533,10 +572,9 @@ void AActionPawn::InterpolateClientSidePrediction( const FRotator& inOldRotation
 				true
 			);
 			SetRotation( newRot );
-			//SetActorRotation( newRot );
 
 			FRotator newActionPawnCameraRotation = UKismetMathLibrary::RLerp(
-				inoldActionPawnCameraRotation,
+				inOldActionPawnCameraRotation,
 				GetActionPawnCameraRotation(),
 				durationOutOfSync / roundTripTime,
 				true
@@ -552,10 +590,14 @@ void AActionPawn::InterpolateClientSidePrediction( const FRotator& inOldRotation
 	}
 
 
-	if ( inOldLocation != GetLocation() ) 
+	if ( !inOldLocation.Equals( GetLocation(), 10.f ) )
+	//if ( inOldLocation != GetLocation() )
 	{
+		A_LOG_1( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" );
+		A_LOG_1( "ERROR! Move replay ended with incorrect Location!" );
+		A_LOG_M( "inOldLocation = %f, %f, %f", inOldLocation.X, inOldLocation.Y, inOldLocation.Z );
+		A_LOG_M( "GetLocation() = %f, %f, %f", GetLocation().X, GetLocation().Y, GetLocation().Z );
 
-		//float time = ActionTiming::sInstance.GetFrameStartTime();
 		if ( mTimeLocationBecameOutOfSync == 0.f )
 		{
 			mTimeLocationBecameOutOfSync = time;
@@ -569,9 +611,13 @@ void AActionPawn::InterpolateClientSidePrediction( const FRotator& inOldRotation
 				GetLocation(),
 				inIsForRemotePawn ? durationOutOfSync / roundTripTime : 0.1f
 			);
+
+			A_LOG_M( "newLoc = %f, %f, %f", newLoc.X, newLoc.Y, newLoc.Z );
+
 			SetLocation( newLoc );
 			//SetActorLocation( newLoc );
 		}
+		A_LOG_1( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" );
 	}
 	else
 	{
@@ -579,11 +625,15 @@ void AActionPawn::InterpolateClientSidePrediction( const FRotator& inOldRotation
 	}
 
 
-	if ( inOldVelocity != GetActionEntityVelocity() )
+	if ( !inOldVelocity.Equals(GetActionEntityVelocity(), 10.f) )
+	//if ( inOldVelocity != GetActionEntityVelocity() )
 	{
-		A_LOG_1( "ERROR! Move replay ended with incorrect velocity!");
+		A_LOG_1( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" );
+		A_LOG_1( "ERROR! Move replay ended with incorrect velocity!" );
+		A_LOG_M( "inOldVelocity = %f, %f, %f", inOldVelocity.X, inOldVelocity.Y, inOldVelocity.Z );
+		A_LOG_M( "GetVelocity() = %f, %f, %f", GetActionEntityVelocity().X, GetActionEntityVelocity().Y, GetActionEntityVelocity().Z );
 
-		//float time = ActionTiming::sInstance.GetFrameStartTime();
+
 		if ( mTimeVelocityBecameOutOfSync == 0.f )
 		{
 			mTimeVelocityBecameOutOfSync = time;
@@ -598,12 +648,16 @@ void AActionPawn::InterpolateClientSidePrediction( const FRotator& inOldRotation
 				GetActionEntityVelocity(),
 				inIsForRemotePawn ? durationOutOfSync / roundTripTime : 0.1f
 			);
+
+			A_LOG_M( "newVel = %f, %f, %f", newVel.X, newVel.Y, newVel.Z );
+
 			SetActionEntityVelocity( newVel );
 		}
-
+		A_LOG_1( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" );
 	}
 	else
 	{
+		//A_LOG_1( " RESET mTimeVelocityBecameOutOfSync!!!" );
 		mTimeVelocityBecameOutOfSync = 0.f;
 	}
 

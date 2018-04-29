@@ -26,11 +26,13 @@ public:
 
 	virtual void	Update() override;
 
+	void LocalSimulateMovement( float inDeltaTime, const ActionInputState& inInputState );
+
 	virtual void	Read( InputMemoryBitStream& inInputStream ) override;
 
 	void ProcessInput( float inDeltaTime, const ActionInputState& inInputState );
 
-	void SimulateMovement();
+	void SimulateMovementAfterReplay();
 
 	void DR( float inDeltaTime );
 protected:
@@ -92,6 +94,8 @@ public:
 	UFUNCTION( BlueprintCallable, Category = Mesh )
 		virtual bool IsFirstPerson() const;
 
+	FRotator GetLocalActionPawnCameraRotation() const { return mLocalActionPawnCameraRotation; }
+
 	FRotator GetActionPawnCameraRotation() const { return mActionPawnCameraRotation; }
 	void SetActionPawnCameraRotation( FRotator inActionPawnCameraRotation ) { mActionPawnCameraRotation = inActionPawnCameraRotation; }
 
@@ -103,7 +107,7 @@ public:
 
 private:
 
-	void InterpolateClientSidePrediction( const FRotator& inOldRotation, const FRotator& inoldActionPawnCameraRotation, const FVector& inOldLocation, const FVector& inOldVelocity, bool inIsForRemotePawn );
+	void InterpolateClientSidePrediction( const FRotator& inOldRotation, const FRotator& inOldActionPawnCameraRotation, const FVector& inOldLocation, const FVector& inOldVelocity, bool inIsForRemotePawn );
 
 public:
 
@@ -135,23 +139,21 @@ private:
 	FVector ActionLastControlInputVector;
 protected:
 
-	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
+	UPROPERTY( EditAnywhere, BlueprintReadWrite, Category = ActionPawnMovement )
+		bool bTestUpdateForDisconnect;
+
 	UPROPERTY( EditAnywhere, BlueprintReadWrite, Category = ActionPawnMovement )
 	float BaseTurnRate;
 
-	/** Base lookup rate, in deg/sec. Other scaling may affect final lookup rate. */
 	UPROPERTY( EditAnywhere, BlueprintReadWrite, Category = ActionPawnMovement )
 	float BaseLookUpRate;
 
-	/** Maximum velocity magnitude allowed for the controlled Pawn. */
 	UPROPERTY( EditAnywhere, BlueprintReadWrite, Category = ActionPawnMovement )
 		float MaxSpeed;
 
-	/** Acceleration applied by input (rate of change of velocity) */
 	UPROPERTY( EditAnywhere, BlueprintReadWrite, Category = ActionPawnMovement )
 		float Acceleration;
 
-	/** Deceleration applied when there is no input (rate of change of velocity) */
 	UPROPERTY( EditAnywhere, BlueprintReadWrite, Category = ActionPawnMovement )
 		float Deceleration;
 
@@ -160,12 +162,11 @@ protected:
 
 private:
 	FRotator mActionPawnCameraRotation;
+	FRotator mLocalActionPawnCameraRotation;
 
 protected:
-	UPROPERTY( EditAnywhere, BlueprintReadWrite, Category = ActionPawnMovement )
-		bool bTestUpdateForDisconnect;
 
-	float	mLastReadStateTimestamp;
+	float	mLastDragTimestamp;
 
 	float	mTimeLocationBecameOutOfSync;
 	float	mTimeVelocityBecameOutOfSync;

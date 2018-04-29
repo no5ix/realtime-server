@@ -23,20 +23,18 @@ Character::Character() :
 
 	Velocity = Vector3::Zero();
 	ActionPawnCameraRotation = Vector3::Zero();
-
-	ActionPawnCameraRotation = GetRotation();
 }
 
 void Character::ProcessInput( float inDeltaTime, const InputState& inInputState )
 {
 	//process our input....
 
-	Vector3 newRot( GetRotation() );
-	newRot.Y += ( BaseTurnRate * inInputState.GetDesiredTurnAmount() );
-	SetRotation( newRot );
+	//Vector3 newRot( GetRotation() );
+	mRotation.Y += ( BaseTurnRate * inInputState.GetDesiredTurnAmount() );
+	//SetRotation( newRot );
 
-	ActionPawnCameraRotation.Y = newRot.Y;
-	ActionPawnCameraRotation.Z = newRot.Z;
+	ActionPawnCameraRotation.Y = mRotation.Y;
+	ActionPawnCameraRotation.Z = mRotation.Z;
 	ActionPawnCameraRotation.X = ActionServerMath::Clamp( 
 		( ActionPawnCameraRotation.X + ( -1 * BaseLookUpRate * inInputState.GetDesiredLookUpAmount() ) ),
 		-89.f, 
