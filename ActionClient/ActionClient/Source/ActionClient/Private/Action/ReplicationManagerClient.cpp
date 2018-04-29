@@ -12,8 +12,8 @@
 
 void ReplicationManagerClient::Read( InputMemoryBitStream& inInputStream )
 {
-	A_LOG_1( "ReplicationManagerClient::Read, start" );
-	int countForTest = 0;
+	//A_LOG_1( "ReplicationManagerClient::Read, start" );
+	//int countForTest = 0;
 
 	while (inInputStream.GetRemainingBitCount() >= 32)
 	{
@@ -40,10 +40,10 @@ void ReplicationManagerClient::Read( InputMemoryBitStream& inInputStream )
 			break;
 		}
 
-		++countForTest;
+		//++countForTest;
 	}
 
-	A_LOG_N( "ReplicationManagerClient::Read, end with countForTest = ", countForTest );
+	//A_LOG_N( "ReplicationManagerClient::Read, end with countForTest = ", countForTest );
 }
 
 void ReplicationManagerClient::ReadAndDoCreateAction( InputMemoryBitStream& inInputStream, int inNetworkId )

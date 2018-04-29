@@ -94,7 +94,7 @@ public:
 	UFUNCTION( BlueprintCallable, Category = Mesh )
 		virtual bool IsFirstPerson() const;
 
-	FRotator GetLocalActionPawnCameraRotation() const { return mLocalActionPawnCameraRotation; }
+	//FRotator GetLocalActionPawnCameraRotation() const { return mLocalActionPawnCameraRotation; }
 
 	FRotator GetActionPawnCameraRotation() const { return mActionPawnCameraRotation; }
 	void SetActionPawnCameraRotation( FRotator inActionPawnCameraRotation ) { mActionPawnCameraRotation = inActionPawnCameraRotation; }
@@ -160,9 +160,11 @@ protected:
 	UPROPERTY( EditAnywhere, BlueprintReadWrite, Category = ActionPawnMovement, meta = ( ClampMin = "0", UIMin = "0" ) )
 		float TurningBoost;
 
-private:
+protected:
 	FRotator mActionPawnCameraRotation;
 	FRotator mLocalActionPawnCameraRotation;
+
+	FRotator mLocalRotation;
 
 protected:
 

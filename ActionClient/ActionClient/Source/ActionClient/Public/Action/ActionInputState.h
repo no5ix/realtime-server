@@ -9,23 +9,30 @@ class ActionInputState
 public:
 
 	ActionInputState() :
-		mDesiredMoveForwardAmount( 0 ),
-		mDesiredMoveRightAmount( 0 ),
-		mDesiredLookUpAmount( 0 ),
-		mDesiredTurnAmount( 0 ),
-		mDesiredTurnRateAmount( 0 ),
-		mDesiredLookUpRateAmount( 0 ),
-		mDesiredOnStartJumpAmount( 0 ),
-		mDesiredOnStopJumpAmount( 0 ),
-		mDesiredMoveUpAmount( 0 ),
+		mDesiredMoveForwardAmount( 0.f ),
+		mDesiredMoveRightAmount( 0.f ),
+
+		mDesiredTurnAmountX( 0.f ),
+		mDesiredTurnAmountY( 0.f ),
+		mDesiredTurnAmountZ( 0.f ),
+
+		mDesiredLookUpAmountX( 0.f ),
+		mDesiredLookUpAmountY( 0.f ),
+		mDesiredLookUpAmountZ( 0.f ),
+
+		mDesiredTurnRateAmount( 0.f ),
+		mDesiredLookUpRateAmount( 0.f ),
+		mDesiredOnStartJumpAmount( 0.f ),
+		mDesiredOnStopJumpAmount( 0.f ),
+		mDesiredMoveUpAmount( 0.f ),
 		mIsShooting( false )
 	{}
 
 	float GetDesiredMoveForwardAmount()	const { return mDesiredMoveForwardAmount; }
 	float GetDesiredMoveRightAmount()	const { return mDesiredMoveRightAmount; }
 
-	float GetDesiredTurnAmount()	const { return mDesiredTurnAmount; }
-	float GetDesiredLookUpAmount()	const { return mDesiredLookUpAmount; }
+	FRotator GetDesiredTurnRot()	const { return FRotator(mDesiredTurnAmountX, mDesiredTurnAmountY, mDesiredTurnAmountZ); }
+	FRotator GetDesiredLookUpRot()	const { return FRotator(mDesiredLookUpAmountX, mDesiredLookUpAmountY, mDesiredLookUpAmountZ); }
 
 	float GetDesiredTurnRateAmount()	const { return mDesiredTurnRateAmount; }
 	float GetDesiredLookUpRateAmount()	const { return mDesiredLookUpRateAmount; }
@@ -43,8 +50,13 @@ public:
 private:
 	friend class InputManager;
 
-	float	mDesiredTurnAmount;
-	float   mDesiredLookUpAmount;
+	float	mDesiredTurnAmountX;
+	float	mDesiredTurnAmountY;
+	float	mDesiredTurnAmountZ;
+
+	float   mDesiredLookUpAmountX;
+	float   mDesiredLookUpAmountY;
+	float   mDesiredLookUpAmountZ;
 
 	float	mDesiredMoveRightAmount;
 	float	mDesiredMoveForwardAmount;

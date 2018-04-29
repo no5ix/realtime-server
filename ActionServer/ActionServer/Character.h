@@ -56,11 +56,17 @@ public:
 
 	Vector3 GetActionPawnCameraRotation() const { return ActionPawnCameraRotation; }
 
+//public:
 protected:
 
 	/** Update Velocity based on input. Also applies gravity. */
 	void ApplyControlInputToVelocity( float DeltaTime );
-protected:
+
+
+	Vector3 ActionControlInputVector;
+
+	Vector3 ActionLastControlInputVector;
+
 	Character();
 
 private:
@@ -80,11 +86,6 @@ protected:
 
 	Vector3             ActionPawnCameraRotation;
 
-private:
-
-	Vector3 ActionControlInputVector;
-
-	Vector3 ActionLastControlInputVector;
 protected:
 
 

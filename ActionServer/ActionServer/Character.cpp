@@ -30,15 +30,17 @@ void Character::ProcessInput( float inDeltaTime, const InputState& inInputState 
 	//process our input....
 
 	//Vector3 newRot( GetRotation() );
-	mRotation.Y += ( BaseTurnRate * inInputState.GetDesiredTurnAmount() );
+	//mRotation.Y += ( BaseTurnRate * inInputState.GetDesiredTurnAmount() );
+	mRotation = inInputState.GetDesiredTurnRot();
 	//SetRotation( newRot );
 
-	ActionPawnCameraRotation.Y = mRotation.Y;
-	ActionPawnCameraRotation.Z = mRotation.Z;
-	ActionPawnCameraRotation.X = ActionServerMath::Clamp( 
-		( ActionPawnCameraRotation.X + ( -1 * BaseLookUpRate * inInputState.GetDesiredLookUpAmount() ) ),
-		-89.f, 
-		89.f );
+	//ActionPawnCameraRotation.Y = mRotation.Y;
+	//ActionPawnCameraRotation.Z = mRotation.Z;
+	//ActionPawnCameraRotation.X = ActionServerMath::Clamp( 
+	//	( ActionPawnCameraRotation.X + ( -1 * BaseLookUpRate * inInputState.GetDesiredLookUpAmount() ) ),
+	//	-89.f, 
+	//	89.f );
+	ActionPawnCameraRotation = inInputState.GetDesiredLookUpRot();
 
 	ActionAddMovementInput( ActionPawnCameraRotation.ToQuaternion() * Vector3::Forward(), inInputState.GetDesiredMoveForwardAmount() );
 	ActionAddMovementInput( ActionPawnCameraRotation.ToQuaternion() * Vector3::Right(), inInputState.GetDesiredMoveRightAmount() );

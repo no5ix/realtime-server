@@ -111,7 +111,7 @@ void AActionCharacter::MoveForward( float Val )
 		AddMovementInput( Direction, Val );
 
 
-		InputManager::sInstance->HandleInput( InputManager::EIA_MoveForward, Val );
+		InputManager::sInstance->HandleMoveInput( InputManager::EIA_MoveForward, Val );
 	}
 }
 
@@ -123,7 +123,7 @@ void AActionCharacter::MoveRight( float Val )
 		const FVector Direction = FQuatRotationMatrix( Rotation ).GetScaledAxis( EAxis::Y );
 		AddMovementInput( Direction, Val );
 
-		InputManager::sInstance->HandleInput( InputManager::EIA_MoveRight, Val );
+		InputManager::sInstance->HandleMoveInput( InputManager::EIA_MoveRight, Val );
 	}
 }
 
@@ -139,7 +139,7 @@ void AActionCharacter::MoveUp( float Val )
 
 		AddMovementInput( FVector::UpVector, Val );
 
-		InputManager::sInstance->HandleInput( InputManager::EIA_MoveUp, Val );
+		InputManager::sInstance->HandleMoveInput( InputManager::EIA_MoveUp, Val );
 	}
 }
 
@@ -148,7 +148,7 @@ void AActionCharacter::Turn( float Val )
 	APawn::AddControllerYawInput( Val );
 
 
-	InputManager::sInstance->HandleInput( InputManager::EIA_Turn, Val );
+	InputManager::sInstance->HandleMoveInput( InputManager::EIA_Turn, Val );
 
 }
 
@@ -156,7 +156,7 @@ void AActionCharacter::LookUp( float Val )
 {
 	AddControllerPitchInput( Val );
 
-	InputManager::sInstance->HandleInput( InputManager::EIA_LookUp, Val );
+	InputManager::sInstance->HandleMoveInput( InputManager::EIA_LookUp, Val );
 }
 
 void AActionCharacter::TurnAtRate( float Val )
@@ -164,7 +164,7 @@ void AActionCharacter::TurnAtRate( float Val )
 	// calculate delta for this frame from the rate information
 	AddControllerYawInput( Val * BaseTurnRate * GetWorld()->GetDeltaSeconds() );
 
-	InputManager::sInstance->HandleInput( InputManager::EIA_TurnRate, Val );
+	InputManager::sInstance->HandleMoveInput( InputManager::EIA_TurnRate, Val );
 
 
 }
@@ -175,7 +175,7 @@ void AActionCharacter::LookUpAtRate( float Val )
 	AddControllerPitchInput( Val * BaseLookUpRate * GetWorld()->GetDeltaSeconds() );
 
 
-	InputManager::sInstance->HandleInput( InputManager::EIA_LookUpRate, Val );
+	InputManager::sInstance->HandleMoveInput( InputManager::EIA_LookUpRate, Val );
 
 }
 
@@ -189,7 +189,7 @@ void AActionCharacter::OnStartJump()
 	//}
 	bPressedJump = true;
 
-	InputManager::sInstance->HandleInput( InputManager::EIA_OnStartJump, 1.0f );
+	InputManager::sInstance->HandleMoveInput( InputManager::EIA_OnStartJump, 1.0f );
 }
 
 void AActionCharacter::OnStopJump()
@@ -197,7 +197,7 @@ void AActionCharacter::OnStopJump()
 	bPressedJump = false;
 	StopJumping();
 
-	InputManager::sInstance->HandleInput( InputManager::EIA_OnStopJump, 0.0f );
+	InputManager::sInstance->HandleMoveInput( InputManager::EIA_OnStopJump, 0.0f );
 }
 
 bool AActionCharacter::IsFirstPerson() const

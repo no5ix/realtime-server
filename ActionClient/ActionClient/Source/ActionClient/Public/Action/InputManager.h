@@ -27,7 +27,8 @@ public:
 	static void StaticInit();
 	static std::unique_ptr< InputManager >	sInstance;
 
-	void HandleInput( EInputAction inInputAction, float inValue);
+	void HandleMoveInput( EInputAction inMoveInputAction, float inValue );
+	void HandleTurnInput( EInputAction inTurnInputAction, float inX /*Pitch*/, float inY /*Yaw*/, float inZ /*Roll*/ );
 
 	const ActionInputState& GetState()	const { return mCurrentState; }
 

@@ -28,9 +28,35 @@ InputManager::InputManager() :
 
 }
 
-void InputManager::HandleInput( EInputAction inInputAction, float inValue )
+void InputManager::HandleTurnInput( EInputAction inTurnInputAction, float inX /*Pitch*/, float inY /*Yaw*/, float inZ /*Roll*/)
 {
-	switch (inInputAction)
+
+	switch ( inTurnInputAction )
+	{
+	case EIA_Turn:
+		mCurrentState.mDesiredTurnAmountX = inX;
+		mCurrentState.mDesiredTurnAmountY = inY;
+		mCurrentState.mDesiredTurnAmountZ = inZ;
+		break;
+
+	case EIA_LookUp:
+		mCurrentState.mDesiredLookUpAmountX = inX;
+		mCurrentState.mDesiredLookUpAmountY = inY;
+		mCurrentState.mDesiredLookUpAmountZ = inZ;
+		break;
+
+	//case EIA_LookUpRate:
+	//	mCurrentState.mDesiredLookUpRateAmount = inValue;
+	//	break;
+	//case EIA_TurnRate:
+	//	mCurrentState.mDesiredTurnRateAmount = inValue;
+	//	break;
+	}
+}
+
+void InputManager::HandleMoveInput( EInputAction inMoveInputAction, float inValue )
+{
+	switch (inMoveInputAction)
 	{
 	case EIA_MoveForward:
 		mCurrentState.mDesiredMoveForwardAmount = inValue;
@@ -40,23 +66,9 @@ void InputManager::HandleInput( EInputAction inInputAction, float inValue )
 		mCurrentState.mDesiredMoveRightAmount = inValue;
 		break;
 
-	case EIA_Turn:
-		mCurrentState.mDesiredTurnAmount = inValue;
-		break;
-
-	case EIA_LookUp:
-		mCurrentState.mDesiredLookUpAmount = inValue;
-		break;
 
 	case EIA_MoveUp:
 		mCurrentState.mDesiredMoveUpAmount = inValue;
-		break;
-
-	case EIA_LookUpRate:
-		mCurrentState.mDesiredLookUpRateAmount = inValue;
-		break;
-	case EIA_TurnRate:
-		mCurrentState.mDesiredTurnRateAmount = inValue;
 		break;
 	case EIA_OnStartJump:
 		mCurrentState.mDesiredOnStartJumpAmount = inValue;
