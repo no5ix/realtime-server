@@ -88,9 +88,6 @@ void Server::DoFrame()
 
 	//NetworkManagerServer::sInstance->CheckForDisconnects();
 
-	//NetworkManagerServer::sInstance->RespawnCats();
-
-
 	World::sInstance->Update();
 
 	NetworkManagerServer::sInstance->SendOutgoingPackets();
@@ -114,7 +111,7 @@ void Server::SpawnCharacterForPlayer( int inPlayerId )
 	character->SetLocation( Vector3(
 		-1000.f + ( static_cast< float >( inPlayerId ) * ActionServerMath::GetRandomFloat() * 400.f ),
 		static_cast< float >( inPlayerId  * ActionServerMath::GetRandomFloat() * 100 ),
-		40.f ) );
+		0.f ) );
 
 	character->SetRotation( Vector3(
 		0.f,

@@ -182,29 +182,32 @@ void NetworkManagerServer::SendStatePacketToClient( ClientProxyPtr inClientProxy
 	//build state packet
 	OutputMemoryBitStream	statePacket;
 
-	//static bool tempOnceTest = false;
-	//if (!tempOnceTest)
+	
+	//static bool tempOnceTest = false; // for test a
+	//if ( !tempOnceTest )        // for test a
 	//{
-	//	tempOnceTest = true;
+	//	tempOnceTest = true;     // for test a
+
 
 		//it's state!
-	statePacket.Write( kStateCC );
+		statePacket.Write( kStateCC );
 
 
-	InFlightPacket* ifp = inClientProxy->GetDeliveryNotificationManager().WriteState( statePacket );
+		InFlightPacket* ifp = inClientProxy->GetDeliveryNotificationManager().WriteState( statePacket );
 
-	WriteLastMoveTimestampIfDirty( statePacket, inClientProxy );
+		WriteLastMoveTimestampIfDirty( statePacket, inClientProxy );
 
 
-	ReplicationManagerTransmissionData* rmtd = new ReplicationManagerTransmissionData( &inClientProxy->GetReplicationManagerServer() );
-	inClientProxy->GetReplicationManagerServer().Write( statePacket, rmtd );
-	ifp->SetTransmissionData( 'RPLM', TransmissionDataPtr( rmtd ) );
+		ReplicationManagerTransmissionData* rmtd = new ReplicationManagerTransmissionData( &inClientProxy->GetReplicationManagerServer() );
+		inClientProxy->GetReplicationManagerServer().Write( statePacket, rmtd );
+		ifp->SetTransmissionData( 'RPLM', TransmissionDataPtr( rmtd ) );
 
-	SendPacket( statePacket, inClientProxy->GetSocketAddress() );
+		SendPacket( statePacket, inClientProxy->GetSocketAddress() );
 
-	//LOG( "SendStatePacketToClient %d", 1 );
+		//LOG( "SendStatePacketToClient %d", 1 );
 
-//}
+
+	//}     // for test a
 }
 
 void NetworkManagerServer::WriteLastMoveTimestampIfDirty( OutputMemoryBitStream& inOutputStream, ClientProxyPtr inClientProxy )

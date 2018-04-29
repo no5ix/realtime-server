@@ -26,13 +26,15 @@ public:
 
 	virtual void	Update() override;
 
-	void LocalSimulateMovement( float inDeltaTime, const ActionInputState& inInputState );
+	void ProcessInputBaseOnLocalState( float inDeltaTime, const ActionInputState& inInputState );
 
 	virtual void	Read( InputMemoryBitStream& inInputStream ) override;
 
-	void ProcessInput( float inDeltaTime, const ActionInputState& inInputState );
+	void ProcessInputBaseOnServerState( float inDeltaTime, const ActionInputState& inInputState );
 
-	void SimulateMovementAfterReplay();
+	void SimulateMovementForRemotePawn();
+
+	void SimulateMovementForLocalPawn(float inDeltaTime);
 
 	void DR( float inDeltaTime );
 protected:
@@ -165,6 +167,12 @@ protected:
 	FRotator mLocalActionPawnCameraRotation;
 
 	FRotator mLocalRotation;
+
+	FVector mLocalLocation;
+	bool bIsLocalPlayerServerLocationDirty;
+
+	FVector mLocalVelocity;
+
 
 protected:
 

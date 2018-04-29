@@ -19,6 +19,7 @@ namespace
 NetworkManager::NetworkManager() :
 	mDropPacketChance( 0.f ),
 	mSimulatedLatency( 0.f ),
+	mPlayerId(-1.f),
 	mDeliveryNotificationManager( true, false ),
 	mState( NCS_Uninitialized )
 {
@@ -282,7 +283,15 @@ void NetworkManager::ReadLastMoveProcessedOnServerTimestamp( InputMemoryBitStrea
 		//A_LOG();
 		//A_LOG_N( "rtt = ", rtt );
 		//A_LOG_N( "ping = ", mAvgRoundTripTime.GetValue() / 2.f );
-		A_MSG_M( 0.05f, "ping = %f", mAvgRoundTripTime.GetValue() *1000.f );
+
+		float currentTime = ActionTiming::sInstance.GetTimef();
+
+		if ( currentTime > mTimeOfLastHello + kTimeBetweenHellos )
+		{
+			//A_MSG_M( 2.f, "ping = %f", mAvgRoundTripTime.GetValue() *1000.f );
+			GEngine->AddOnScreenDebugMessage( -1, 2.f, FColor::Red, FString::Printf( TEXT( "%s  :  %s    %f" ), *STR_CUR_CLASS_FUNC_LINE, *FString( "ping = " ), float( mAvgRoundTripTime.GetValue() *1000.f ) ) );
+			mTimeOfLastHello = currentTime;
+		}
 	}
 
 }

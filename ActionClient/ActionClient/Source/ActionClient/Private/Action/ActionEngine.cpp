@@ -54,7 +54,7 @@ void UActionEngine::BeginPlay()
 	NetworkManager::sInstance->GetGameObjectRegistryUObj()->SetDefaultCharacterClasses( DefaultCharacterClasses );
 }
 
-void UActionEngine::UpdateLocalPlayer()
+void UActionEngine::UpdateLocalPlayer(float inDeltaTime)
 {
 	AActionPlayerController* const FirstPC = Cast<AActionPlayerController>( UGameplayStatics::GetPlayerController( GetWorld(), 0 ) );
 	if ( FirstPC != nullptr && ( FirstPC->GetPawn() ) )
@@ -62,7 +62,7 @@ void UActionEngine::UpdateLocalPlayer()
 		AActionPawn *p = Cast<AActionPawn>( FirstPC->GetPawn() );
 		if ( p )
 		{
-			p->SimulateMovementAfterReplay();
+			p->SimulateMovementForLocalPawn(inDeltaTime);
 		}
 	}
 }
@@ -82,6 +82,7 @@ void UActionEngine::TickComponent(float DeltaTime, ELevelTick TickType, FActorCo
 
 	NetworkManager::sInstance->ProcessIncomingPackets();
 
+	UpdateLocalPlayer(DeltaTime);
 
 	NetworkManager::sInstance->SendOutgoingPackets();
 }
