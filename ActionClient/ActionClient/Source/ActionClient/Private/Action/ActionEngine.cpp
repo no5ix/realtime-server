@@ -82,7 +82,7 @@ void UActionEngine::TickComponent(float DeltaTime, ELevelTick TickType, FActorCo
 
 	NetworkManager::sInstance->ProcessIncomingPackets();
 
-	UpdateLocalPlayer(DeltaTime);
+	//UpdateLocalPlayer(DeltaTime);
 
 	NetworkManager::sInstance->SendOutgoingPackets();
 }

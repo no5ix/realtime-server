@@ -239,6 +239,7 @@ void AActionPawn::Update()
 			//SimulateMovementAfterReplay();
 
 			ProcessInputBaseOnLocalState( deltaTime, pendingMove->GetInputState() );
+			SimulateMovementForLocalPawn( deltaTime );
 		}
 	}
 	else
@@ -363,31 +364,31 @@ void AActionPawn::SimulateMovementForLocalPawn(float inDeltaTime)
 		if ( !GetActorLocation().Equals( mLocation, 100.f ) )
 		{
 			mLocalLocation = mLocation;
-			A_LOG_1( "drag gggggggggggggggggggggggggggg" );
+			A_MSG_1(5.f, "drawwwwwwwwwwwwwwwww" );
 		}
-		else if ( !mVelocity.IsNearlyZero( 1e-6f ) )
-		{
-			A_LOG_1( "**********************START******************************************" );
-			A_LOG_1( "!mVelocity.IsNearlyZero( 1e-6f )))))))))))))))))))" );
+		//else if ( !mVelocity.IsNearlyZero( 1e-6f ) )
+		//{
+		//	A_LOG_1( "**********************START******************************************" );
+		//	A_LOG_1( "!mVelocity.IsNearlyZero( 1e-6f )))))))))))))))))))" );
 
-			A_LOG_M( "mLocation = %f, %f, %f", mLocation.X, mLocation.Y, mLocation.Z );
-			A_LOG_M( "*******before*******, mLocalLocation = %f, %f, %f", mLocalLocation.X, mLocalLocation.Y, mLocalLocation.Z );
+		//	A_LOG_M( "mLocation = %f, %f, %f", mLocation.X, mLocation.Y, mLocation.Z );
+		//	A_LOG_M( "*******before*******, mLocalLocation = %f, %f, %f", mLocalLocation.X, mLocalLocation.Y, mLocalLocation.Z );
 
-			mLocalLocation = UKismetMathLibrary::VInterpTo( GetActorLocation(), mLocation, inDeltaTime, FMath::Max( mVelocity.Size() / 25.f, 1.f ) );
+		//	mLocalLocation = UKismetMathLibrary::VInterpTo( GetActorLocation(), mLocation, inDeltaTime, FMath::Max( mVelocity.Size() / 25.f, 1.f ) );
 
-			A_LOG_M( "*******after*******, mLocalLocation = %f, %f, %f", mLocalLocation.X, mLocalLocation.Y, mLocalLocation.Z );
+		//	A_LOG_M( "*******after*******, mLocalLocation = %f, %f, %f", mLocalLocation.X, mLocalLocation.Y, mLocalLocation.Z );
 
-			//SetActorLocation( mLocalLocation );
-			//mLocalLocation = GetActorLocation();
+		//	//SetActorLocation( mLocalLocation );
+		//	//mLocalLocation = GetActorLocation();
 
-			if ( !mLocalLocation.Equals( mLocation, 1.f ) )
-			//if ( mLocalLocation == mLocation )
-			{
-				bIsLocalPlayerServerLocationDirty = false;
-			}
+		//	if ( !mLocalLocation.Equals( mLocation, 1.f ) )
+		//	//if ( mLocalLocation == mLocation )
+		//	{
+		//		bIsLocalPlayerServerLocationDirty = false;
+		//	}
 
-			A_LOG_1( "*************************END***************************************" );
-		}
+		//	A_LOG_1( "*************************END***************************************" );
+		//}
 	}
 	else
 	{
