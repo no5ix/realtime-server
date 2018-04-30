@@ -91,13 +91,13 @@ void NetworkManagerServer::HandlePacketFromNewClient( InputMemoryBitStream& inIn
 
 		Server::sInstance.get()->HandleNewClient( newClientProxy );
 
-		SendWelcomePacket( newClientProxy );
 
 		for ( const auto& pair : mNetworkIdToGameObjectMap )
 		{
 			newClientProxy->GetReplicationManagerServer().ReplicateCreate( pair.first, pair.second->GetAllStateMask() );
 		}
 
+		SendWelcomePacket( newClientProxy );
 
 		LOG( "a new client at socket %s", inFromAddress.ToString().c_str() );
 	}
@@ -116,7 +116,23 @@ void NetworkManagerServer::SendWelcomePacket( ClientProxyPtr inClientProxy )
 
 	LOG( "Server Welcoming, new client '%s' as player %d", inClientProxy->GetName().c_str(), inClientProxy->GetPlayerId() );
 
+	//statePacket.Write( kStateCC );
+
+
+	//InFlightPacket* ifp = inClientProxy->GetDeliveryNotificationManager().WriteState( welcomePacket );
+
+	//WriteLastMoveTimestampIfDirty( statePacket, inClientProxy );
+
+
+	ReplicationManagerTransmissionData* rmtd = new ReplicationManagerTransmissionData( &inClientProxy->GetReplicationManagerServer() );
+	inClientProxy->GetReplicationManagerServer().Write( welcomePacket, rmtd );
+	//ifp->SetTransmissionData( 'RPLM', TransmissionDataPtr( rmtd ) );
+
+	//SendPacket( statePacket, inClientProxy->GetSocketAddress() );
+
 	SendPacket( welcomePacket, inClientProxy->GetSocketAddress() );
+
+	//SendStatePacketToClient( inClientProxy );
 }
 
 void NetworkManagerServer::RegisterGameObject( GameObjectPtr inGameObject )

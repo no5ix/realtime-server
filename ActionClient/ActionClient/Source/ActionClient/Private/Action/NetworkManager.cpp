@@ -238,6 +238,7 @@ void NetworkManager::HandleWelcomePacket( InputMemoryBitStream& inInputStream )
 		inInputStream.Read( mPlayerId );
 		mState = NCS_Welcomed;
 
+		mReplicationManagerClient.Read( inInputStream );
 
 		ActionHelper::ScreenMsg( "welcome on client as playerID = ", mPlayerId );
 
