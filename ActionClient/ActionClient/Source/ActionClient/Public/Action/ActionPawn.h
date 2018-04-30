@@ -107,6 +107,7 @@ public:
 	void ReplayForRemotePawn( uint32_t inReadState );
 
 
+	void PrepareForInterpolate( const FRotator& inOldRotation, const FRotator& inOldActionPawnCameraRotation, const FVector& inOldLocation, const FVector& inOldVelocity, bool inIsForRemotePawn );
 private:
 
 	void InterpolateClientSidePrediction( const FRotator& inOldRotation, const FRotator& inOldActionPawnCameraRotation, const FVector& inOldLocation, const FVector& inOldVelocity, bool inIsForRemotePawn );
@@ -169,7 +170,13 @@ protected:
 	FRotator mLocalRotation;
 
 	FVector mLocalLocation;
+
 	bool bIsLocalPlayerServerLocationDirty;
+
+	bool bIsRemotePlayerServerLocationDirty;
+	bool bIsRemotePlayerServerRotationDirty;
+	bool bIsRemotePlayerServerCameraRotationDirty;
+	bool bIsRemotePlayerServerVelocityDirty;
 
 	FVector mLocalVelocity;
 

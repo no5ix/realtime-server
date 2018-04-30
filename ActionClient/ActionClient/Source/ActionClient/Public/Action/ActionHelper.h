@@ -5,8 +5,9 @@
 
 
 
-#define ACTION_SHOW_DEBUG_SCREEN_MSG					true
+#define ACTION_SHOW_DEBUG_SCREEN_MSG					false
 #define ACTION_SHOW_DEBUG_OUTPUT_LOG					true
+#define ACTION_SHOW_DEBUG_OUTPUT_LOG_EXTRA				true
 
 
 //Current Class Name + Function Name where this is called!
@@ -64,6 +65,24 @@
 
 // 
 #define A_LOG_M(FormatString, ...)     				if (ACTION_SHOW_DEBUG_OUTPUT_LOG) UE_LOG(LogTemp, Warning, TEXT("%s  :  %s"), *STR_CUR_CLASS_FUNC_LINE, *FString::Printf(TEXT(FormatString), ##__VA_ARGS__ ) )
+
+
+///////// UE LOG_EXTRA!
+
+// Example usage: A_LOG( "Action!" );
+#define	A_LOG_EXTRA() 		           					if (ACTION_SHOW_DEBUG_OUTPUT_LOG_EXTRA) UE_LOG(LogTemp, Warning, TEXT("%s"), *STR_CUR_CLASS_FUNC_LINE )
+
+// Example usage: A_LOG( "Action!" );
+#define A_LOG_1_EXTRA(StringParam1) 		           				if (ACTION_SHOW_DEBUG_OUTPUT_LOG_EXTRA) UE_LOG(LogTemp, Warning, TEXT("%s  :  %s"), *STR_CUR_CLASS_FUNC_LINE, *FString(StringParam1))
+
+// Example usage: A_LOG2("Action!", "Cut!");
+#define A_LOG_2_EXTRA(StringParam1, StringParam2) 	       				if (ACTION_SHOW_DEBUG_OUTPUT_LOG_EXTRA) UE_LOG(LogTemp, Warning, TEXT("%s  :  %s     %s"), *STR_CUR_CLASS_FUNC_LINE, *FString(StringParam1), *FString(StringParam2))
+
+// Example usage: A_LOGF("Action!", 88.f);
+#define A_LOG_N_EXTRA(StringParam1, NumericalParam2) 	       		if (ACTION_SHOW_DEBUG_OUTPUT_LOG_EXTRA) UE_LOG(LogTemp, Warning, TEXT("%s  :  %s    %f"), *STR_CUR_CLASS_FUNC_LINE, *FString(StringParam1), float(NumericalParam2) )
+
+// 
+#define A_LOG_M_EXTRA(FormatString, ...)     				if (ACTION_SHOW_DEBUG_OUTPUT_LOG_EXTRA) UE_LOG(LogTemp, Warning, TEXT("%s  :  %s"), *STR_CUR_CLASS_FUNC_LINE, *FString::Printf(TEXT(FormatString), ##__VA_ARGS__ ) )
 
 
 
