@@ -43,14 +43,14 @@ public:
 	void		SetPlayerId( uint32_t inPlayerId ) { mPlayerId = inPlayerId; }
 	uint32_t	GetPlayerId()						const { return mPlayerId; }
 
-	void			SetActionEntityVelocity( const FVector& inVelocity ) { mVelocity = inVelocity; }
-	const FVector&	GetActionEntityVelocity()						const { return mVelocity; }
+	void			SetLocalVelocity( const FVector& inVelocity ) { mLocalVelocity = inVelocity; }
+	const FVector&	GetLocalVelocity()						const { return mLocalVelocity; }
 
 
-	UFUNCTION( BlueprintCallable, Category = "Components|Movement" )
-		virtual FVector GetVelocity() const override { return Velocity; }
+	UFUNCTION( BlueprintCallable, Category = "ActionServer" )
+		virtual FVector GetVelocity() const override { return GetLocalVelocity(); }
 
-	void SetVelocity() { Velocity = mVelocity; }
+	void SetVelocity(const FVector& inVelocity) { mVelocity = inVelocity; }
 
 	void	SetIndexInWorld( int inIndex ) { mIndexInWorld = inIndex; }
 	int		GetIndexInWorld()				const { return mIndexInWorld; }
@@ -62,7 +62,7 @@ public:
 	const FVector&		GetLocation()				const { return mLocation; }
 	void		SetLocation( const FVector& inLocation ) { mLocation = inLocation; }
 
-	void	SetRotation( FRotator inRotation ) { mRotation = inRotation; };
+	void	SetRotation( const FRotator& inRotation ) { mRotation = inRotation; };
 	FRotator	GetRotation()					const { return mRotation; }
 
 
@@ -71,7 +71,12 @@ public:
 
 protected:
 	UPROPERTY( EditAnywhere, BlueprintReadWrite, Category = ActionPawnMovement )
-		FVector Velocity;
+		FVector mLocalVelocity;
+
+
+	FRotator mLocalRotation;
+
+	FVector mLocalLocation;
 
 protected:
 

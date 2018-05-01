@@ -2,7 +2,7 @@
 
 namespace
 {
-	const float kDelayBeforeAckTimeout = 1.5f;
+	const float kDelayBeforeAckTimeout = 2.5f;
 }
 
 DeliveryNotificationManager::DeliveryNotificationManager( bool inShouldSendAcks, bool inShouldProcessAcks ) :

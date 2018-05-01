@@ -30,9 +30,11 @@ public:
 
 	virtual void	Read( InputMemoryBitStream& inInputStream ) override;
 
+	void InitAfterCreate();
+
 	void ProcessInputBaseOnServerState( float inDeltaTime, const ActionInputState& inInputState );
 
-	void SimulateMovementForRemotePawn();
+	void SimulateMovementForRemotePawn(float inDeltaTime);
 
 	void SimulateMovementForLocalPawn(float inDeltaTime);
 
@@ -93,13 +95,20 @@ public:
 	void OnCameraUpdate( const FVector& CameraLocation, const FRotator& CameraRotation );
 
 	/** get camera view type */
-	UFUNCTION( BlueprintCallable, Category = Mesh )
+	UFUNCTION( BlueprintCallable, Category = ActionPawn )
 		virtual bool IsFirstPerson() const;
 
-	//FRotator GetLocalActionPawnCameraRotation() const { return mLocalActionPawnCameraRotation; }
+	const FRotator& GetActionPawnCameraRotation() const { return mActionPawnCameraRotation; }
 
-	FRotator GetActionPawnCameraRotation() const { return mActionPawnCameraRotation; }
-	void SetActionPawnCameraRotation( FRotator inActionPawnCameraRotation ) { mActionPawnCameraRotation = inActionPawnCameraRotation; }
+	void SetActionPawnCameraRotation( const FRotator& inActionPawnCameraRotation ) { mActionPawnCameraRotation = inActionPawnCameraRotation; }
+
+
+	UFUNCTION( BlueprintCallable, Category = "ActionServer" )
+		const FRotator& GetLocalActionPawnCameraRotation() const { return mLocalActionPawnCameraRotation; }
+
+	void SetLocalActionPawnCameraRotation( const FRotator& inActionPawnCameraRotation ) { mLocalActionPawnCameraRotation = inActionPawnCameraRotation; }
+
+
 
 public:
 
@@ -167,18 +176,12 @@ protected:
 	FRotator mActionPawnCameraRotation;
 	FRotator mLocalActionPawnCameraRotation;
 
-	FRotator mLocalRotation;
+	bool bIsPlayerLocationOutOfSync;
 
-	FVector mLocalLocation;
+	bool bIsRemotePlayerRotationOutOfSync;
+	bool bIsRemotePlayerCameraRotationOutOfSync;
+	bool bIsRemotePlayerVelocityOutOfSync;
 
-	bool bIsLocalPlayerServerLocationDirty;
-
-	bool bIsRemotePlayerServerLocationDirty;
-	bool bIsRemotePlayerServerRotationDirty;
-	bool bIsRemotePlayerServerCameraRotationDirty;
-	bool bIsRemotePlayerServerVelocityDirty;
-
-	FVector mLocalVelocity;
 
 
 protected:
