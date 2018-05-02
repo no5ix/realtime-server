@@ -297,8 +297,8 @@ void NetworkManager::ReadLastMoveProcessedOnServerTimestamp( InputMemoryBitStrea
 		if ( currentTime > mTimeOfLastHello + kTimeBetweenHellos )
 		{
 			//A_MSG_M( 2.f, "ping = %f", mAvgRoundTripTime.GetValue() *1000.f );
-			GEngine->AddOnScreenDebugMessage( -1, 2.f, FColor::Red, FString::Printf( TEXT( "%s    %f" ), *FString( "ping" ), float( mAvgRoundTripTime.GetValue() *1000.f ) ) );
-			//GEngine->AddOnScreenDebugMessage( -1, 2.f, FColor::Red, FString::Printf( TEXT( "%s    %f" ), *FString( "rtt = " ), float( rtt *1000.f ) ) );
+			//GEngine->AddOnScreenDebugMessage( -1, 2.f, FColor::Red, FString::Printf( TEXT( "%s    %f" ), *FString( "ping" ), float( mAvgRoundTripTime.GetValue() *1000.f ) ) );
+			GEngine->AddOnScreenDebugMessage( -1, 2.f, FColor::Red, FString::Printf( TEXT( "%s    %f" ), *FString( "ping" ), float( rtt *1000.f ) ) );
 			mTimeOfLastHello = currentTime;
 		}
 	}

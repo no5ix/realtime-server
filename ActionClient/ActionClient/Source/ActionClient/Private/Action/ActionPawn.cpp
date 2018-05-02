@@ -360,9 +360,11 @@ void AActionPawn::UpdateTargetState()
 	//	/ 
 	//	NetworkManager::kTimeBetweenStatePackets;
 	A_LOG_M_EXTRA( "READ!!! mRemotePawnTargetLocation = %f, %f, %f", mRemotePawnTargetLocation.X, mRemotePawnTargetLocation.Y, mRemotePawnTargetLocation.Z );
+	A_LOG_M_EXTRA( "READ!!! mInterpSpeedToRemotePawnTargetLocation = %f", mInterpSpeedToRemotePawnTargetLocation );
 	A_LOG_1_EXTRA( "------------------------" );
 
 	A_LOG_M_EXTRA( "READ!!! mRemotePawnTargetVelocity = %f, %f, %f", mRemotePawnTargetVelocity.X, mRemotePawnTargetVelocity.Y, mRemotePawnTargetVelocity.Z );
+	A_LOG_M_EXTRA( "READ!!! mInterpSpeedToRemotePawnTargetVelocity = %f", mInterpSpeedToRemotePawnTargetVelocity );
 	A_LOG_1_EXTRA( "------------------------" );
 
 	A_LOG_M_EXTRA( "READ!!! mRemotePawnTargetRotation = %f, %f, %f", mRemotePawnTargetRotation.Pitch, mRemotePawnTargetRotation.Yaw, mRemotePawnTargetRotation.Roll );
@@ -403,7 +405,6 @@ void AActionPawn::SimulateMovementForRemotePawn( float inDeltaTime )
 		return;
 	}
 
-
 	float time = ActionTiming::sInstance.GetCurrentGameTime();
 
 	if ( time > mTimeOfLastUpdateTargetState + NetworkManager::kTimeBetweenStatePackets )
@@ -412,21 +413,33 @@ void AActionPawn::SimulateMovementForRemotePawn( float inDeltaTime )
 		UpdateTargetState();
 	}
 
+	//mLocalLocation = mRemotePawnTargetLocation;
+	mLocalVelocity = mRemotePawnTargetVelocity;
+
+	//A_LOG_N_EXTRA( "VInterpTo_Constant start ActionTiming::sInstance.GetCurrentGameTime() = ", ActionTiming::sInstance.GetCurrentGameTime() );
 	mLocalLocation = UKismetMathLibrary::VInterpTo_Constant(
 		GetActorLocation(),
 		mRemotePawnTargetLocation,
 		inDeltaTime,
-		//( RemotePawnTargetLocation - GetActorLocation() ).Size() / NetworkManager::kTimeBetweenStatePackets
-		mInterpSpeedToRemotePawnTargetLocation
+		mLocalVelocity.Size()
 	);
+	//A_LOG_N_EXTRA( "VInterpTo_Constant end ActionTiming::sInstance.GetCurrentGameTime() = ", ActionTiming::sInstance.GetCurrentGameTime() );
 
-	mLocalVelocity = UKismetMathLibrary::VInterpTo_Constant(
-		GetLocalVelocity(),
-		mRemotePawnTargetVelocity,
-		inDeltaTime,
-		//( RemotePawnTargetVelocity - GetLocalVelocity() ).Size() / NetworkManager::kTimeBetweenStatePackets
-		mInterpSpeedToRemotePawnTargetVelocity
-	);
+
+	//mLocalVelocity = UKismetMathLibrary::VInterpTo_Constant(
+	//	GetLocalVelocity(),
+	//	mRemotePawnTargetVelocity,
+	//	inDeltaTime,
+	//	mInterpSpeedToRemotePawnTargetVelocity
+	//);
+
+	//FVector Delta = mLocalVelocity * inDeltaTime;
+	//if ( !Delta.IsNearlyZero( 1e-6f ) )
+	//{
+	//	//mLocalLocation = ( GetActorLocation() + Delta );
+	//	mLocalLocation = ( mRemotePawnTargetLocation + Delta );
+	//}
+
 
 	mLocalRotation = UKismetMathLibrary::RInterpTo(
 		GetActorRotation(),
@@ -865,23 +878,20 @@ void AActionPawn::Read( InputMemoryBitStream& inInputStream )
 		//	InitAfterCreate();
 		//}
 
-		//if ( ( readState & ECRS_PlayerId ) != 0 )
-		//{
-		//		InitAfterCreate();
-		//}
-
-		A_LOG_M( "READ!!! GetRotation() = %f, %f, %f", GetRotation().Pitch, GetRotation().Yaw, GetRotation().Roll );
-
-
-		mStateBuffer.AddStateData( mRotation, mVelocity, mLocation, mActionPawnCameraRotation );
+		if ( ( readState & ECRS_PlayerId ) != 0 )
+		{
+			InitAfterCreate();
+		}
+		else
+		{
+			mStateBuffer.AddStateData( mRotation, mVelocity, mLocation, mActionPawnCameraRotation );
+		}
 
 		A_LOG_1_EXTRA( "===================mStateBuffer.AddStateData=======start===================" );
-
 		A_LOG_M_EXTRA( "mStateBuffer.AddStateData.mLocation = %f, %f, %f", mLocation.X, mLocation.Y, mLocation.Z );
 		A_LOG_M_EXTRA( "mStateBuffer.AddStateData.mVelocity = %f, %f, %f", mVelocity.X, mVelocity.Y, mVelocity.Z );
 		A_LOG_M_EXTRA( "mRotation = %f, %f, %f", mRotation.Pitch, mRotation.Yaw, mRotation.Roll );
 		A_LOG_M_EXTRA( "mActionPawnCameraRotation = %f, %f, %f", mActionPawnCameraRotation.Pitch, mActionPawnCameraRotation.Yaw, mActionPawnCameraRotation.Roll );
-
 		A_LOG_1_EXTRA( "======end=============mStateBuffer.AddStateData==========================" );
 	}
 
@@ -890,9 +900,14 @@ void AActionPawn::Read( InputMemoryBitStream& inInputStream )
 void AActionPawn::InitAfterCreate()
 {
 	mLocalLocation = mLocation;
+	mLocalVelocity = mVelocity;
 	mLocalRotation = mRotation;
 	mLocalActionPawnCameraRotation = mRotation;
-	mLocalVelocity = mVelocity;
+
+	SetActorLocation( mLocalLocation );
+	SetLocalVelocity( mLocalVelocity );
+	SetActorRotation( mLocalRotation );
+	ActionPawnCamera->SetWorldRotation( mLocalActionPawnCameraRotation );
 }
 
 void AActionPawn::ReplayForLocalPawn( uint32_t inReadState )
