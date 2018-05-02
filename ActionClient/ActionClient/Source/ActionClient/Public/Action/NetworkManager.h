@@ -35,6 +35,8 @@ public:
 	static const uint32_t	kInputCC = 'INPT';
 	static const int		kMaxPacketsPerFrameCount = 10;
 
+	static float kTimeBetweenStatePackets;
+
 public:
 	static std::unique_ptr<NetworkManager>	sInstance;
 

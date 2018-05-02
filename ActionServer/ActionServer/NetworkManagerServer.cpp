@@ -3,6 +3,10 @@
 
 NetworkManagerServer*	NetworkManagerServer::sInstance;
 
+namespace
+{
+	const float kTimeBetweenStatePackets = 0.033f;
+}
 
 NetworkManagerServer::NetworkManagerServer() :
 	mNewPlayerId( 1 ),
@@ -113,6 +117,7 @@ void NetworkManagerServer::SendWelcomePacket( ClientProxyPtr inClientProxy )
 
 	welcomePacket.Write( kWelcomeCC );
 	welcomePacket.Write( inClientProxy->GetPlayerId() );
+	welcomePacket.Write( kTimeBetweenStatePackets );
 
 	LOG( "Server Welcoming, new client '%s' as player %d", inClientProxy->GetName().c_str(), inClientProxy->GetPlayerId() );
 
@@ -179,6 +184,16 @@ int NetworkManagerServer::GetNewNetworkId()
 
 void NetworkManagerServer::SendOutgoingPackets()
 {
+
+	float time = Timing::sInstance.GetTimef();
+
+	if ( time < mTimeOfLastStatePacket + kTimeBetweenStatePackets )
+	{
+		return;
+	}
+
+	mTimeOfLastStatePacket = time;
+
 	//let's send a client a state packet whenever their move has come in...
 	for ( auto it = mAddressToClientMap.begin(), end = mAddressToClientMap.end(); it != end; ++it )
 	{

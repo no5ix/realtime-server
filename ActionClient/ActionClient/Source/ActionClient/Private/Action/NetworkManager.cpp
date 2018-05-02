@@ -10,6 +10,8 @@
 
 std::unique_ptr<NetworkManager> NetworkManager::sInstance;
 
+float NetworkManager::kTimeBetweenStatePackets = 0.033f;
+
 namespace
 {
 	const float kTimeBetweenHellos = 1.f;
@@ -238,6 +240,10 @@ void NetworkManager::HandleWelcomePacket( InputMemoryBitStream& inInputStream )
 		inInputStream.Read( mPlayerId );
 		mState = NCS_Welcomed;
 
+
+		inInputStream.Read( kTimeBetweenStatePackets );
+		kTimeBetweenStatePackets *= 4.f;
+
 		mReplicationManagerClient.Read( inInputStream );
 
 		ActionHelper::ScreenMsg( "welcome on client as playerID = ", mPlayerId );
@@ -290,7 +296,7 @@ void NetworkManager::ReadLastMoveProcessedOnServerTimestamp( InputMemoryBitStrea
 		if ( currentTime > mTimeOfLastHello + kTimeBetweenHellos )
 		{
 			//A_MSG_M( 2.f, "ping = %f", mAvgRoundTripTime.GetValue() *1000.f );
-			GEngine->AddOnScreenDebugMessage( -1, 2.f, FColor::Red, FString::Printf( TEXT( "%s  :  %s    %f" ), *STR_CUR_CLASS_FUNC_LINE, *FString( "ping = " ), float( mAvgRoundTripTime.GetValue() *1000.f ) ) );
+			GEngine->AddOnScreenDebugMessage( -1, 2.f, FColor::Red, FString::Printf( TEXT( "%s  :  %s    %f" ), *STR_CUR_CLASS_FUNC_LINE, *FString( "ping = " ), float( rtt *1000.f ) ) );
 			mTimeOfLastHello = currentTime;
 		}
 	}

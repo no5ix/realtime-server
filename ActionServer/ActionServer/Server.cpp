@@ -42,7 +42,7 @@ Server::Server()
 
 	// Setup latency
 	float latency = 0.0f;
-	string latencyString = Utility::GetCommandLineArg( 2 ); // 以秒为单位, 建议填入 0.5 来测试, 即模拟延迟500毫秒的情况; 不填, 则不模拟延迟
+	string latencyString = Utility::GetCommandLineArg( 2 );
 	if (!latencyString.empty())
 	{
 		latency = stof( latencyString );
@@ -57,6 +57,19 @@ Server::Server()
 		dropPacketChance = stof( dropPacketChanceString );
 		NetworkManagerServer::sInstance->SetDropPacketChance( dropPacketChance );
 	}
+	// Setup Whether Simulate Jitter
+	int IsSimulatedJitter = 0;
+	string IsSimulatedJitterString = Utility::GetCommandLineArg( 4 );
+	if ( !IsSimulatedJitterString.empty() )
+	{
+		IsSimulatedJitter = stoi( IsSimulatedJitterString );
+		if ( IsSimulatedJitter )
+		{
+			NetworkManagerServer::sInstance->SetIsSimulatedJitter( true );
+		}
+	}
+
+
 }
 
 bool Server::InitNetworkManager()

@@ -35,6 +35,7 @@ public:
 
 public:
 	virtual void	Update() {}
+	virtual void	UpdateTargetState() {}
 
 	virtual uint32_t	Write( OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState ) const { return 0; }
 	virtual void		Read( InputMemoryBitStream& inInputStream ) {}

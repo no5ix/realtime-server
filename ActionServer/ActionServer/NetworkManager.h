@@ -23,6 +23,9 @@ public:
 	void	SetDropPacketChance( float inChance ) { mDropPacketChance = inChance; }
 	void	SetSimulatedLatency( float inLatency ) { mSimulatedLatency = inLatency; }
 
+	void	SetIsSimulatedJitter( bool inIsSimulatedJitter ) { mIsSimulatedJitter = inIsSimulatedJitter; }
+	bool	GetIsSimulatedJitter() const { return mIsSimulatedJitter; }
+
 	inline	GameObjectPtr	GetGameObject( int inNetworkId ) const;
 
 protected:
@@ -68,6 +71,7 @@ private:
 
 	float						mDropPacketChance;
 	float						mSimulatedLatency;
+	bool						mIsSimulatedJitter;
 };
 
 inline	GameObjectPtr NetworkManager::GetGameObject( int inNetworkId ) const

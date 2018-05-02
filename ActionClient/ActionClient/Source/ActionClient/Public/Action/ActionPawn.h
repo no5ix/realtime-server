@@ -5,6 +5,7 @@
 #include "GameFramework/Pawn.h"
 #include "ActionEntity.h"
 #include "ActionInputState.h"
+#include "StateQueue.h"
 #include "ActionPawn.generated.h"
 
 UCLASS()
@@ -108,7 +109,7 @@ public:
 
 	void SetLocalActionPawnCameraRotation( const FRotator& inActionPawnCameraRotation ) { mLocalActionPawnCameraRotation = inActionPawnCameraRotation; }
 
-
+	virtual void	UpdateTargetState() override;
 
 public:
 
@@ -191,4 +192,16 @@ protected:
 	float	mTimeLocationBecameOutOfSync;
 	float	mTimeVelocityBecameOutOfSync;
 	float	mTimeRotationBecameOutOfSync;
+
+	StateQueue mStateBuffer;
+
+	FVector mRemotePawnTargetLocation;
+	FVector mRemotePawnTargetVelocity;
+	FRotator mRemotePawnTargetRotation;
+	FRotator mRemotePawnTargetCameraRotation;
+
+	float mInterpSpeedToRemotePawnTargetLocation;
+	float mInterpSpeedToRemotePawnTargetVelocity;
+	float mInterpSpeedToRemotePawnTargetRotation;
+	float mInterpSpeedToRemotePawnTargetCameraRotation;
 };
