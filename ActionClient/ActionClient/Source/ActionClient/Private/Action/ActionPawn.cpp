@@ -414,24 +414,24 @@ void AActionPawn::SimulateMovementForRemotePawn( float inDeltaTime )
 	}
 
 	//mLocalLocation = mRemotePawnTargetLocation;
-	mLocalVelocity = mRemotePawnTargetVelocity;
+	//mLocalVelocity = mRemotePawnTargetVelocity;
 
 	//A_LOG_N_EXTRA( "VInterpTo_Constant start ActionTiming::sInstance.GetCurrentGameTime() = ", ActionTiming::sInstance.GetCurrentGameTime() );
 	mLocalLocation = UKismetMathLibrary::VInterpTo_Constant(
 		GetActorLocation(),
 		mRemotePawnTargetLocation,
 		inDeltaTime,
-		mLocalVelocity.Size()
+		mRemotePawnTargetVelocity.Size()
 	);
 	//A_LOG_N_EXTRA( "VInterpTo_Constant end ActionTiming::sInstance.GetCurrentGameTime() = ", ActionTiming::sInstance.GetCurrentGameTime() );
 
 
-	//mLocalVelocity = UKismetMathLibrary::VInterpTo_Constant(
-	//	GetLocalVelocity(),
-	//	mRemotePawnTargetVelocity,
-	//	inDeltaTime,
-	//	mInterpSpeedToRemotePawnTargetVelocity
-	//);
+	mLocalVelocity = UKismetMathLibrary::VInterpTo_Constant(
+		GetLocalVelocity(),
+		mRemotePawnTargetVelocity,
+		inDeltaTime,
+		Acceleration * 2.f
+	);
 
 	//FVector Delta = mLocalVelocity * inDeltaTime;
 	//if ( !Delta.IsNearlyZero( 1e-6f ) )
