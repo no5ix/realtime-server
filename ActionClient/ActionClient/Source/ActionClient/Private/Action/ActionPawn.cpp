@@ -88,6 +88,20 @@ AActionPawn::AActionPawn( const FObjectInitializer& ObjectInitializer )
 	mTimeLocationBecameOutOfSync = 0.f;
 	mTimeVelocityBecameOutOfSync = 0.f;
 	mTimeRotationBecameOutOfSync = 0.f;
+
+
+
+	mRemotePawnTargetLocation = FVector::ZeroVector;
+	mRemotePawnTargetVelocity = FVector::ZeroVector;
+	mRemotePawnTargetRotation = FRotator::ZeroRotator;
+	mRemotePawnTargetCameraRotation = FRotator::ZeroRotator;
+
+	mInterpSpeedToRemotePawnTargetLocation = 0.f;
+	mInterpSpeedToRemotePawnTargetVelocity = 0.f;
+	mInterpSpeedToRemotePawnTargetRotation = 0.f;
+	mInterpSpeedToRemotePawnTargetCameraRotation = 0.f;
+
+	mTimeOfLastUpdateTargetState = 0.f;
 }
 
 void AActionPawn::BeginPlay()
@@ -361,30 +375,43 @@ void AActionPawn::UpdateTargetState()
 
 void AActionPawn::SimulateMovementForRemotePawn( float inDeltaTime )
 {
-		A_LOG_1_EXTRA( "~~%%%%%%%%%%%%%%%%%%%SimulateMovementForRemotePawn%%%%%%Before%%%%%%%%%%%%%~~~~" );
-
-		A_LOG_M_EXTRA( "READ!!! GetActorLocation() = %f, %f, %f", GetActorLocation().X, GetActorLocation().Y, GetActorLocation().Z );
+	{
+		A_LOG_1_EXTRA( "~~%%%%%%%%%%%%%%%%%%%SimulateMovementForRemotePawn%%%%%%Before%%%%%%%%%%%%%~~~~" )
+			A_LOG_M_EXTRA( "READ!!! GetActorLocation() = %f, %f, %f", GetActorLocation().X, GetActorLocation().Y, GetActorLocation().Z );
 		A_LOG_M_EXTRA( "READ!!! GetLocation() = %f, %f, %f", GetLocation().X, GetLocation().Y, GetLocation().Z );
 		A_LOG_M_EXTRA( "READ!!! mRemotePawnTargetLocation = %f, %f, %f", mRemotePawnTargetLocation.X, mRemotePawnTargetLocation.Y, mRemotePawnTargetLocation.Z );
 		A_LOG_1_EXTRA( "------------------------" );
-
 		A_LOG_M_EXTRA( "READ!!! mLocalVelocity = %f, %f, %f", mLocalVelocity.X, mLocalVelocity.Y, mLocalVelocity.Z );
 		A_LOG_M_EXTRA( "READ!!! mVelocity = %f, %f, %f", mVelocity.X, mVelocity.Y, mVelocity.Z );
 		A_LOG_M_EXTRA( "READ!!! mRemotePawnTargetVelocity = %f, %f, %f", mRemotePawnTargetVelocity.X, mRemotePawnTargetVelocity.Y, mRemotePawnTargetVelocity.Z );
 		A_LOG_1_EXTRA( "------------------------" );
-
 		A_LOG_M_EXTRA( "READ!!! GetActorRotation() = %f, %f, %f", GetActorRotation().Pitch, GetActorRotation().Yaw, GetActorRotation().Roll );
 		A_LOG_M_EXTRA( "READ!!! GetRotation() = %f, %f, %f", GetRotation().Pitch, GetRotation().Yaw, GetRotation().Roll );
 		A_LOG_M_EXTRA( "READ!!! mRemotePawnTargetRotation = %f, %f, %f", mRemotePawnTargetRotation.Pitch, mRemotePawnTargetRotation.Yaw, mRemotePawnTargetRotation.Roll );
 		A_LOG_1_EXTRA( "------------------------" );
-	
 		A_LOG_M_EXTRA( "READ!!! ActionPawnCamera->GetComponentRotation() = %f, %f, %f", ActionPawnCamera->GetComponentRotation().Pitch, ActionPawnCamera->GetComponentRotation().Yaw, ActionPawnCamera->GetComponentRotation().Roll );
 		A_LOG_M_EXTRA( "READ!!! mActionPawnCameraRotation = %f, %f, %f", mActionPawnCameraRotation.Pitch, mActionPawnCameraRotation.Yaw, mActionPawnCameraRotation.Roll );
 		A_LOG_M_EXTRA( "READ!!! mRemotePawnTargetCameraRotation = %f, %f, %f", mRemotePawnTargetCameraRotation.Pitch, mRemotePawnTargetCameraRotation.Yaw, mRemotePawnTargetCameraRotation.Roll );
-	
-	
 		A_LOG_1_EXTRA( "%%%%%%%%%%%%%%%%%%%~~~SimulateMovementForRemotePawn%%%%%%%Before%%%%%%%%%%%%~~~" );
-	
+	}
+
+	//A_LOG_N_EXTRA( "ActionTiming::sInstance.GetCurrentGameTime() = ", ActionTiming::sInstance.GetCurrentGameTime() );
+
+	if ( ActionTiming::sInstance.GetCurrentGameTime() < mIsTimeToStartSimulateMovementForRemotePawn )
+	{
+		A_LOG_1_EXTRA( "ActionTiming::sInstance.GetCurrentGameTime() < mIsTimeToStartSimulateMovementForRemotePawn" );
+		return;
+	}
+
+
+	float time = ActionTiming::sInstance.GetCurrentGameTime();
+
+	if ( time > mTimeOfLastUpdateTargetState + NetworkManager::kTimeBetweenStatePackets )
+	{
+		mTimeOfLastUpdateTargetState = time;
+		UpdateTargetState();
+	}
+
 	mLocalLocation = UKismetMathLibrary::VInterpTo_Constant(
 		GetActorLocation(),
 		mRemotePawnTargetLocation,
@@ -416,28 +443,23 @@ void AActionPawn::SimulateMovementForRemotePawn( float inDeltaTime )
 		BaseLookUpRate * 8.f
 	);
 
-	A_LOG_1_EXTRA( "~~***************SimulateMovementForRemotePawn*%After***************%~~~~" );
-
-	A_LOG_M_EXTRA( "READ!!! mLocalLocation = %f, %f, %f", mLocalLocation.X, mLocalLocation.Y, mLocalLocation.Z );
-	A_LOG_1_EXTRA( "------------------------" );
-
-	A_LOG_M_EXTRA( "READ!!! mLocalVelocity = %f, %f, %f", mLocalVelocity.X, mLocalVelocity.Y, mLocalVelocity.Z );
-	A_LOG_1_EXTRA( "------------------------" );
-
-	A_LOG_M_EXTRA( "READ!!! mLocalRotation = %f, %f, %f", mLocalRotation.Pitch, mLocalRotation.Yaw, mLocalRotation.Roll );
-	A_LOG_1_EXTRA( "------------------------" );
-
-	A_LOG_M_EXTRA( "READ!!! mLocalActionPawnCameraRotation = %f, %f, %f", mLocalActionPawnCameraRotation.Pitch, mLocalActionPawnCameraRotation.Yaw, mLocalActionPawnCameraRotation.Roll );
-	A_LOG_1_EXTRA( "------------------------" );
-
-
-	A_LOG_1_EXTRA( "***************~~~SimulateMovementForRemotePawn**************%After**************%%%%~~~" );
+	{
+		A_LOG_1_EXTRA( "~~***************SimulateMovementForRemotePawn*%After***************%~~~~" );
+		A_LOG_M_EXTRA( "READ!!! mLocalLocation = %f, %f, %f", mLocalLocation.X, mLocalLocation.Y, mLocalLocation.Z );
+		A_LOG_1_EXTRA( "------------------------" );
+		A_LOG_M_EXTRA( "READ!!! mLocalVelocity = %f, %f, %f", mLocalVelocity.X, mLocalVelocity.Y, mLocalVelocity.Z );
+		A_LOG_1_EXTRA( "------------------------" );
+		A_LOG_M_EXTRA( "READ!!! mLocalRotation = %f, %f, %f", mLocalRotation.Pitch, mLocalRotation.Yaw, mLocalRotation.Roll );
+		A_LOG_1_EXTRA( "------------------------" );
+		A_LOG_M_EXTRA( "READ!!! mLocalActionPawnCameraRotation = %f, %f, %f", mLocalActionPawnCameraRotation.Pitch, mLocalActionPawnCameraRotation.Yaw, mLocalActionPawnCameraRotation.Roll );
+		A_LOG_1_EXTRA( "------------------------" );
+		A_LOG_1_EXTRA( "***************~~~SimulateMovementForRemotePawn**************%After**************%%%%~~~" );
+	}
 
 	SetActorLocation( mLocalLocation );
 	SetLocalVelocity( mLocalVelocity );
 	SetActorRotation( mLocalRotation );
 	ActionPawnCamera->SetWorldRotation( mLocalActionPawnCameraRotation );
-	
 }
 
 //void AActionPawn::SimulateMovementForRemotePawn( float inDeltaTime )
@@ -727,8 +749,6 @@ void AActionPawn::Read( InputMemoryBitStream& inInputStream )
 		SetPlayerId( playerId );
 		readState |= ECRS_PlayerId;
 
-
-
 		if ( GetPlayerId() == NetworkManager::sInstance->GetPlayerId() )
 		{
 			AActionPlayerController* const FirstPC = Cast<AActionPlayerController>( UGameplayStatics::GetPlayerController( GetWorld(), 0 ) );
@@ -736,6 +756,13 @@ void AActionPawn::Read( InputMemoryBitStream& inInputStream )
 			{
 				FirstPC->Possess( this );
 			}
+		}
+		else
+		{
+			mIsTimeToStartSimulateMovementForRemotePawn = 
+				NetworkManager::kTimeBufferStatePackets +
+				ActionTiming::sInstance.GetCurrentGameTime() -
+				NetworkManager::kTimeBetweenStatePackets;
 		}
 	}
 
@@ -838,10 +865,10 @@ void AActionPawn::Read( InputMemoryBitStream& inInputStream )
 		//	InitAfterCreate();
 		//}
 
-		if ( ( readState & ECRS_PlayerId ) != 0 )
-		{
-				InitAfterCreate();
-		}
+		//if ( ( readState & ECRS_PlayerId ) != 0 )
+		//{
+		//		InitAfterCreate();
+		//}
 
 		A_LOG_M( "READ!!! GetRotation() = %f, %f, %f", GetRotation().Pitch, GetRotation().Yaw, GetRotation().Roll );
 

@@ -13,13 +13,13 @@ namespace
 ActionTiming::ActionTiming()
 {
 	kStartTime = GetPlatformTime();
-	mLastFrameStartTime = GetTime();
+	mLastFrameStartTime = GetGameTimeD();
 }
 
 void ActionTiming::Update()
 {
 
-	double currentTime = GetTime();
+	double currentTime = GetGameTimeD();
 
 	mDeltaTime = ( float )( currentTime - mLastFrameStartTime );
 
@@ -28,7 +28,7 @@ void ActionTiming::Update()
 
 }
 
-double ActionTiming::GetTime() const
+double ActionTiming::GetGameTimeD() const
 {
 	double currentTime = GetPlatformTime();
 	return currentTime - kStartTime;

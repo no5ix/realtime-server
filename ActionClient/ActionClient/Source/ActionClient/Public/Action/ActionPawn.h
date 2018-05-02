@@ -204,4 +204,6 @@ protected:
 	float mInterpSpeedToRemotePawnTargetVelocity;
 	float mInterpSpeedToRemotePawnTargetRotation;
 	float mInterpSpeedToRemotePawnTargetCameraRotation;
+
+	float mTimeOfLastUpdateTargetState;
 };

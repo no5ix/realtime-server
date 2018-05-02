@@ -35,6 +35,7 @@ public:
 	static const uint32_t	kInputCC = 'INPT';
 	static const int		kMaxPacketsPerFrameCount = 10;
 
+	static float kTimeBufferStatePackets;
 	static float kTimeBetweenStatePackets;
 
 public:

@@ -47,10 +47,13 @@ public:
 	void			SetLocalVelocity( const FVector& inVelocity ) { mLocalVelocity = inVelocity; }
 	const FVector&	GetLocalVelocity()						const { return mLocalVelocity; }
 
+	const FVector&	GetServerVelocity()						const { return mVelocity; }
+
 
 	UFUNCTION( BlueprintCallable, Category = "ActionServer" )
 		virtual FVector GetVelocity() const override { return GetLocalVelocity(); }
 
+	
 	void SetVelocity(const FVector& inVelocity) { mVelocity = inVelocity; }
 
 	void	SetIndexInWorld( int inIndex ) { mIndexInWorld = inIndex; }
@@ -113,6 +116,8 @@ protected:
 	int					mHealth;
 
 	bool				mIsShooting;
+
+	float mIsTimeToStartSimulateMovementForRemotePawn;
 };
 
 

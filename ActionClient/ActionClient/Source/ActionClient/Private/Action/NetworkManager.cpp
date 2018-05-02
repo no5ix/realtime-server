@@ -10,6 +10,7 @@
 
 std::unique_ptr<NetworkManager> NetworkManager::sInstance;
 
+float NetworkManager::kTimeBufferStatePackets = 0.132f;
 float NetworkManager::kTimeBetweenStatePackets = 0.033f;
 
 namespace
@@ -126,7 +127,7 @@ void NetworkManager::ReadIncomingPacketsIntoQueue()
 			++receivedPackedCount;
 
 			//UGameplayStatics::GetRealTimeSeconds(GetWorld());
-			float simulatedReceivedTime = ActionTiming::sInstance.GetTimef() + mSimulatedLatency;
+			float simulatedReceivedTime = ActionTiming::sInstance.GetCurrentGameTime() + mSimulatedLatency;
 			mPacketQueue.emplace( simulatedReceivedTime, inputStream, fromAddress );
 			//FDateTime::ToUnixTimestamp()
 		}
@@ -145,7 +146,7 @@ void NetworkManager::ProcessQueuedPackets()
 	while (!mPacketQueue.empty())
 	{
 		ReceivedPacket& nextPacket = mPacketQueue.front();
-		if (ActionTiming::sInstance.GetTimef() > nextPacket.GetReceivedTime())
+		if (ActionTiming::sInstance.GetCurrentGameTime() > nextPacket.GetReceivedTime())
 		{
 			ProcessPacket( nextPacket.GetPacketBuffer());
 			mPacketQueue.pop();
@@ -199,7 +200,7 @@ void NetworkManager::SendOutgoingPackets()
 
 void NetworkManager::UpdateSayingHello()
 {
-	float currentTime = ActionTiming::sInstance.GetTimef();
+	float currentTime = ActionTiming::sInstance.GetCurrentGameTime();
 
 	if (currentTime > mTimeOfLastHello + kTimeBetweenHellos)
 	{
@@ -242,7 +243,7 @@ void NetworkManager::HandleWelcomePacket( InputMemoryBitStream& inInputStream )
 
 
 		inInputStream.Read( kTimeBetweenStatePackets );
-		kTimeBetweenStatePackets *= 4.f;
+		kTimeBufferStatePackets = 4.f * kTimeBetweenStatePackets;
 
 		mReplicationManagerClient.Read( inInputStream );
 
@@ -291,12 +292,13 @@ void NetworkManager::ReadLastMoveProcessedOnServerTimestamp( InputMemoryBitStrea
 		//A_LOG_N( "rtt = ", rtt );
 		//A_LOG_N( "ping = ", mAvgRoundTripTime.GetValue() / 2.f );
 
-		float currentTime = ActionTiming::sInstance.GetTimef();
+		float currentTime = ActionTiming::sInstance.GetCurrentGameTime();
 
 		if ( currentTime > mTimeOfLastHello + kTimeBetweenHellos )
 		{
 			//A_MSG_M( 2.f, "ping = %f", mAvgRoundTripTime.GetValue() *1000.f );
-			GEngine->AddOnScreenDebugMessage( -1, 2.f, FColor::Red, FString::Printf( TEXT( "%s  :  %s    %f" ), *STR_CUR_CLASS_FUNC_LINE, *FString( "ping = " ), float( rtt *1000.f ) ) );
+			GEngine->AddOnScreenDebugMessage( -1, 2.f, FColor::Red, FString::Printf( TEXT( "%s    %f" ), *FString( "ping" ), float( mAvgRoundTripTime.GetValue() *1000.f ) ) );
+			//GEngine->AddOnScreenDebugMessage( -1, 2.f, FColor::Red, FString::Printf( TEXT( "%s    %f" ), *FString( "rtt = " ), float( rtt *1000.f ) ) );
 			mTimeOfLastHello = currentTime;
 		}
 	}
@@ -306,7 +308,7 @@ void NetworkManager::ReadLastMoveProcessedOnServerTimestamp( InputMemoryBitStrea
 
 void NetworkManager::UpdateSendingInputPacket()
 {
-	float time = ActionTiming::sInstance.GetTimef();
+	float time = ActionTiming::sInstance.GetCurrentGameTime();
 
 	if (time > mTimeOfLastInputPacket + kTimeBetweenInputPackets)
 	{

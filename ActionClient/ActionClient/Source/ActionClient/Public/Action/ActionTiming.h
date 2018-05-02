@@ -12,13 +12,13 @@ public:
 
 	float GetDeltaTime() const { return mDeltaTime; }
 
-	double GetTime() const;
+	double GetGameTimeD() const;
 
 	static double GetPlatformTime();
 
-	float GetTimef() const
+	float GetCurrentGameTime() const
 	{
-		return static_cast< float >( GetTime() );
+		return static_cast< float >( GetGameTimeD() );
 	}
 
 	float GetFrameStartTime() const { return mFrameStartTimef; }

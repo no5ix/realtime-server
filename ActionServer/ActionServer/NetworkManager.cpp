@@ -89,7 +89,9 @@ void NetworkManager::ReadIncomingPacketsIntoQueue()
 			{
 				float simulatedReceivedTime =
 					Timing::sInstance.GetTimef() +
-					mSimulatedLatency +  GetIsSimulatedJitter() ? ActionServerMath::Clamp( ActionServerMath::GetRandomFloat(), 0.f, 0.06f ) : 0.f;
+					mSimulatedLatency +  
+					( GetIsSimulatedJitter() ? 
+						ActionServerMath::Clamp( ActionServerMath::GetRandomFloat(), 0.f, 0.06f ) : 0.f );
 				mPacketQueue.emplace( simulatedReceivedTime, inputStream, fromAddress );
 			}
 			else

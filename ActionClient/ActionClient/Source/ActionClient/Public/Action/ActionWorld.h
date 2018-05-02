@@ -32,8 +32,5 @@ private:
 
 	std::vector< GameObjectPtr >	mGameObjects;
 
-	float mTimeOfLastUpdateTargetState;
-
-	bool mIsTimeToUpdateTargetState;
 
 };

@@ -15,9 +15,7 @@ void ActionWorld::StaticInit()
 	sInstance.reset( new ActionWorld() );
 }
 
-ActionWorld::ActionWorld() :
-	mTimeOfLastUpdateTargetState( 0.f ),
-	mIsTimeToUpdateTargetState( false )
+ActionWorld::ActionWorld()
 {
 }
 
@@ -50,22 +48,9 @@ void ActionWorld::Update()
 {
 	//update all game objects- sometimes they want to die, so we need to tread carefully...
 
-	float time = ActionTiming::sInstance.GetTimef();
-
-	if ( time > mTimeOfLastUpdateTargetState + NetworkManager::kTimeBetweenStatePackets )
-	{
-		mTimeOfLastUpdateTargetState = time;
-		mIsTimeToUpdateTargetState = true;
-	}
-
 	for ( int i = 0, c = mGameObjects.size(); i < c; ++i )
 	{
 		GameObjectPtr go = mGameObjects[i];
-
-		if ( mIsTimeToUpdateTargetState )
-		{
-			go->UpdateTargetState();
-		}
 
 		if ( !go->DoesWantToDie() )
 		{
