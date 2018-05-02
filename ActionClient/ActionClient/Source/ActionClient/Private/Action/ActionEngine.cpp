@@ -9,6 +9,7 @@
 #include "ActionWorld.h"
 #include "ActionPlayerController.h"
 #include "ActionPawn.h"
+#include "ActionEntityFactory.h"
 
 
 // Sets default values for this component's properties
@@ -45,13 +46,15 @@ void UActionEngine::BeginPlay()
 
 	ActionWorld::StaticInit();
 	InputManager::StaticInit();
+	ActionEntityFactory::StaticInit( GetWorld() );
 	NetworkManager::StaticInit( ip, port, player_name );
 
 
 	//NetworkManager::sInstance->SetGameObjectRegistryUObj( NewObject<UGameObjectRegistryUObj>( this ), GetWorld() );
 
 	//NetworkManager::sInstance->GetReplicationManagerClient()->SetDefaultCharacterClasses( DefaultCharacterClasses );
-	NetworkManager::sInstance->GetGameObjectRegistryUObj()->SetDefaultCharacterClasses( DefaultCharacterClasses );
+	//NetworkManager::sInstance->GetGameObjectRegistryUObj()->SetDefaultCharacterClasses( DefaultCharacterClasses );
+	ActionEntityFactory::sInstance->SetDefaultCharacterClasses( DefaultCharacterClasses );
 }
 
 void UActionEngine::UpdateLocalPlayer(float inDeltaTime)

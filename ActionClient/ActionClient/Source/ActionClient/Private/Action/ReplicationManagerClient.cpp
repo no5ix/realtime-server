@@ -56,7 +56,8 @@ void ReplicationManagerClient::ReadAndDoCreateAction( InputMemoryBitStream& inIn
 	if (!gameObject)
 	{
 		//UGameObjectRegistryUObj* gameObjRegistry =  NetworkManager::sInstance->GetGameObjectRegistryUObj();
-		gameObject = NetworkManager::sInstance->GetGameObjectRegistryUObj()->CreateGameObject( fourCCName );
+		//gameObject = NetworkManager::sInstance->GetGameObjectRegistryUObj()->CreateGameObject( fourCCName );
+		gameObject = ActionEntityFactory::sInstance->CreateGameObject( fourCCName );
 	
 		check( gameObject );
 		gameObject->SetNetworkId( inNetworkId );

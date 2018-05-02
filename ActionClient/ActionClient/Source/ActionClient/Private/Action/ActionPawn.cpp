@@ -904,6 +904,11 @@ void AActionPawn::InitAfterCreate()
 	mLocalRotation = mRotation;
 	mLocalActionPawnCameraRotation = mRotation;
 
+	mRemotePawnTargetLocation = mLocation;
+	mRemotePawnTargetVelocity = mVelocity;
+	mRemotePawnTargetRotation = mRotation;
+	mRemotePawnTargetCameraRotation = mRotation;
+
 	SetActorLocation( mLocalLocation );
 	SetLocalVelocity( mLocalVelocity );
 	SetActorRotation( mLocalRotation );

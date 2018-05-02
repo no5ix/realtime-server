@@ -122,13 +122,13 @@ void Server::SpawnCharacterForPlayer( int inPlayerId )
 	character->SetPlayerId( inPlayerId );
 
 	character->SetLocation( Vector3(
-		-1000.f + ( static_cast< float >( inPlayerId ) * ActionServerMath::GetRandomFloat() * 400.f ),
-		static_cast< float >( inPlayerId  * ActionServerMath::GetRandomFloat() * 100 ),
+		ActionServerMath::Clamp( ActionServerMath::GetRandomFloat() * -1500.f, -1500.f, -600.f ),
+		-1500.f + ( ActionServerMath::GetRandomFloat() * 3000.f ),
 		0.f ) );
 
 	character->SetRotation( Vector3(
 		0.f,
-		ActionServerMath::Clamp( static_cast< float >( inPlayerId ) * ActionServerMath::GetRandomFloat() * 200.f, 0.f, 180.f ),
+		ActionServerMath::GetRandomFloat() * 180.f,
 		0.f ) );
 
 	//character->SetRotation( Vector3( -1000.f + static_cast< float >( inPlayerId ), static_cast< float >( inPlayerId ), 40.f ) );
