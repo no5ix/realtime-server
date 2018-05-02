@@ -1,8 +1,8 @@
-#include "ActionServerPCH.h"
+#include "RealTimeServerPCH.h"
 
 
 
-NetworkManager::NetworkManager() :
+NetworkMgr::NetworkMgr() :
 	mDropPacketChance( 0.f ),
 	mSimulatedLatency( 0.f ),
 	mIsSimulatedJitter( false )
@@ -10,18 +10,18 @@ NetworkManager::NetworkManager() :
 
 }
 
-NetworkManager::~NetworkManager()
+NetworkMgr::~NetworkMgr()
 {
 
 }
 
-bool NetworkManager::Init(uint16_t inPort)
+bool NetworkMgr::Init(uint16_t inPort)
 {
 #if _WIN32
-	UDPSocket::StaticInit(); 
+	UDPSocketInterface::StaticInit(); 
 #endif
 
-	mSocket = UDPSocket::CreateUDPSocket();
+	mSocket = UDPSocketInterface::CreateUDPSocket();
 	SocketAddress ownAddress(INADDR_ANY, inPort);
 	mSocket->Bind(ownAddress);
 
@@ -47,7 +47,7 @@ bool NetworkManager::Init(uint16_t inPort)
 
 
 
-void NetworkManager::ProcessIncomingPackets()
+void NetworkMgr::ProcessIncomingPackets()
 {
 	ReadIncomingPacketsIntoQueue();
 
@@ -57,11 +57,11 @@ void NetworkManager::ProcessIncomingPackets()
 
 }
 
-void NetworkManager::ReadIncomingPacketsIntoQueue()
+void NetworkMgr::ReadIncomingPacketsIntoQueue()
 {
 	char packetMem[1500];
 	int packetSize = sizeof( packetMem );
-	InputMemoryBitStream inputStream( packetMem, packetSize * 8 );
+	InputBitStream inputStream( packetMem, packetSize * 8 );
 	SocketAddress fromAddress;
 
 	int receivedPackedCount = 0;
@@ -85,13 +85,13 @@ void NetworkManager::ReadIncomingPacketsIntoQueue()
 			++receivedPackedCount;
 			totalReadByteCount += readByteCount;
 
-			if (ActionServerMath::GetRandomFloat() >= mDropPacketChance)
+			if (RealTimeSrvMath::GetRandomFloat() >= mDropPacketChance)
 			{
 				float simulatedReceivedTime =
 					Timing::sInstance.GetTimef() +
 					mSimulatedLatency +  
 					( GetIsSimulatedJitter() ? 
-						ActionServerMath::Clamp( ActionServerMath::GetRandomFloat(), 0.f, 0.06f ) : 0.f );
+						RealTimeSrvMath::Clamp( RealTimeSrvMath::GetRandomFloat(), 0.f, 0.06f ) : 0.f );
 				mPacketQueue.emplace( simulatedReceivedTime, inputStream, fromAddress );
 			}
 			else
@@ -110,7 +110,7 @@ void NetworkManager::ReadIncomingPacketsIntoQueue()
 	}
 }
 
-void NetworkManager::ProcessQueuedPackets()
+void NetworkMgr::ProcessQueuedPackets()
 {
 	//look at the front packet...
 	while (!mPacketQueue.empty())
@@ -130,7 +130,7 @@ void NetworkManager::ProcessQueuedPackets()
 
 }
 
-void NetworkManager::SendPacket( const OutputMemoryBitStream& inOutputStream, const SocketAddress& inFromAddress )
+void NetworkMgr::SendPacket( const OutputBitStream& inOutputStream, const SocketAddress& inFromAddress )
 {
 	int sentByteCount = mSocket->SendTo( inOutputStream.GetBufferPtr(), inOutputStream.GetByteLength(), inFromAddress );
 	if (sentByteCount > 0)

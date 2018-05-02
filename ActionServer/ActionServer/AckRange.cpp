@@ -1,6 +1,6 @@
-#include "ActionServerPCH.h"
+#include "RealTimeServerPCH.h"
 
-void AckRange::Write( OutputMemoryBitStream& inOutputStream ) const
+void AckRange::Write( OutputBitStream& inOutputStream ) const
 {
 	inOutputStream.Write( mStart );
 	bool hasCount = mCount > 1;
@@ -14,7 +14,7 @@ void AckRange::Write( OutputMemoryBitStream& inOutputStream ) const
 	}
 }
 
-void AckRange::Read( InputMemoryBitStream& inInputStream )
+void AckRange::Read( InputBitStream& inInputStream )
 {
 	inInputStream.Read( mStart );
 	bool hasCount;

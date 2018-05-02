@@ -1,7 +1,7 @@
-#include "ActionServerShared.h"
+#include "RealTimeServerShared.h"
 
 
-bool Move::Write( OutputMemoryBitStream& inOutputStream ) const
+bool Action::Write( OutputBitStream& inOutputStream ) const
 {
 	mInputState.Write( inOutputStream );
 	inOutputStream.Write( mTimestamp );
@@ -9,7 +9,7 @@ bool Move::Write( OutputMemoryBitStream& inOutputStream ) const
 	return true;
 }
 
-bool Move::Read( InputMemoryBitStream& inInputStream )
+bool Action::Read( InputBitStream& inInputStream )
 {
 	mInputState.Read( inInputStream );
 	inInputStream.Read( mTimestamp );

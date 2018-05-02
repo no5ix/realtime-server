@@ -3,7 +3,7 @@
 class Vector3;
 class Vector2;
 
-namespace ActionServerMath
+namespace RealTimeSrvMath
 {
 	//const float PI = 3.1415926535f;
 	float GetRandomFloat();

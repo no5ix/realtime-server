@@ -1,37 +1,37 @@
-#include "ActionServerPCH.h"
+#include "RealTimeServerPCH.h"
 #include <time.h>
 
 
 
-std::unique_ptr< Server >	Server::sInstance;
+std::unique_ptr< RealTimeServer >	RealTimeServer::sInstance;
 
 
 //uncomment this when you begin working on the server
 
-bool Server::StaticInit()
+bool RealTimeServer::StaticInit()
 {
-	sInstance.reset( new Server() );
+	sInstance.reset( new RealTimeServer() );
 
 	return true;
 }
 
-Server::~Server()
+RealTimeServer::~RealTimeServer()
 {
-	UDPSocket::CleanUp();
+	UDPSocketInterface::CleanUp();
 }
 
-Server::Server()
+RealTimeServer::RealTimeServer()
 {
 
 
 	srand( static_cast< uint32_t >( time( nullptr ) ) );
 
-	GameObjectRegistry::StaticInit();
+	EntityFactory::StaticInit();
 
 
 	World::StaticInit();
 
-	GameObjectRegistry::sInstance->RegisterCreationFunction( 'CHRT', CharacterServer::StaticCreate );
+	EntityFactory::sInstance->RegisterCreationFunction( 'CHRT', CharacterServer::StaticCreate );
 
 	InitNetworkManager();
 
@@ -46,7 +46,7 @@ Server::Server()
 	if (!latencyString.empty())
 	{
 		latency = stof( latencyString );
-		NetworkManagerServer::sInstance->SetSimulatedLatency( latency );
+		NetworkMgrSrv::sInstance->SetSimulatedLatency( latency );
 	}
 
 	// Setup DropPacketChance
@@ -55,7 +55,7 @@ Server::Server()
 	if (!dropPacketChanceString.empty())
 	{
 		dropPacketChance = stof( dropPacketChanceString );
-		NetworkManagerServer::sInstance->SetDropPacketChance( dropPacketChance );
+		NetworkMgrSrv::sInstance->SetDropPacketChance( dropPacketChance );
 	}
 	// Setup Whether Simulate Jitter
 	int IsSimulatedJitter = 0;
@@ -65,22 +65,22 @@ Server::Server()
 		IsSimulatedJitter = stoi( IsSimulatedJitterString );
 		if ( IsSimulatedJitter )
 		{
-			NetworkManagerServer::sInstance->SetIsSimulatedJitter( true );
+			NetworkMgrSrv::sInstance->SetIsSimulatedJitter( true );
 		}
 	}
 
 
 }
 
-bool Server::InitNetworkManager()
+bool RealTimeServer::InitNetworkManager()
 {
 	string portString = Utility::GetCommandLineArg( 1 );
 	uint16_t port = stoi( portString );
 
-	return NetworkManagerServer::StaticInit( port );
+	return NetworkMgrSrv::StaticInit( port );
 }
 
-int Server::Run()
+int RealTimeServer::Run()
 {
 	// Main message loop
 	bool quit = false;
@@ -95,19 +95,19 @@ int Server::Run()
 }
 
 
-void Server::DoFrame()
+void RealTimeServer::DoFrame()
 {
-	NetworkManagerServer::sInstance->ProcessIncomingPackets();
+	NetworkMgrSrv::sInstance->ProcessIncomingPackets();
 
 	//NetworkManagerServer::sInstance->CheckForDisconnects();
 
 	World::sInstance->Update();
 
-	NetworkManagerServer::sInstance->SendOutgoingPackets();
+	NetworkMgrSrv::sInstance->SendOutgoingPackets();
 
 }
 
-void Server::HandleNewClient( ClientProxyPtr inClientProxy )
+void RealTimeServer::HandleNewClient( ClientProxyPtr inClientProxy )
 {
 	int playerId = inClientProxy->GetPlayerId();
 
@@ -115,20 +115,20 @@ void Server::HandleNewClient( ClientProxyPtr inClientProxy )
 	SpawnCharacterForPlayer( playerId );
 }
 
-void Server::SpawnCharacterForPlayer( int inPlayerId )
+void RealTimeServer::SpawnCharacterForPlayer( int inPlayerId )
 {
-	CharacterPtr character = std::static_pointer_cast< Character >( GameObjectRegistry::sInstance->CreateGameObject( 'CHRT' ) );
+	CharacterPtr character = std::static_pointer_cast< Character >( EntityFactory::sInstance->CreateGameObject( 'CHRT' ) );
 
 	character->SetPlayerId( inPlayerId );
 
 	character->SetLocation( Vector3(
-		ActionServerMath::Clamp( ActionServerMath::GetRandomFloat() * -1500.f, -1500.f, -600.f ),
-		-1500.f + ( ActionServerMath::GetRandomFloat() * 3000.f ),
+		RealTimeSrvMath::Clamp( RealTimeSrvMath::GetRandomFloat() * -1500.f, -1500.f, -600.f ),
+		-1500.f + ( RealTimeSrvMath::GetRandomFloat() * 3000.f ),
 		0.f ) );
 
 	character->SetRotation( Vector3(
 		0.f,
-		ActionServerMath::GetRandomFloat() * 180.f,
+		RealTimeSrvMath::GetRandomFloat() * 180.f,
 		0.f ) );
 
 	//character->SetRotation( Vector3( -1000.f + static_cast< float >( inPlayerId ), static_cast< float >( inPlayerId ), 40.f ) );

@@ -17,18 +17,18 @@ inline float ConvertFromFixed( uint32_t inNumber, float inMin, float inPrecision
 }
 
 
-class OutputMemoryBitStream
+class OutputBitStream
 {
 public:
 
-	OutputMemoryBitStream() :
+	OutputBitStream() :
 		mBitHead(0),
 		mBuffer(nullptr)
 	{
 		ReallocBuffer( 1500 * 8 );
 	}
 
-	~OutputMemoryBitStream()	{ std::free( mBuffer ); }
+	~OutputBitStream()	{ std::free( mBuffer ); }
 
 	void		WriteBits( uint8_t inData, uint32_t inBitCount );
 	void		WriteBits( const void* inData, uint32_t inBitCount );
@@ -82,17 +82,17 @@ private:
 	uint32_t	mBitCapacity;
 };
 
-class InputMemoryBitStream
+class InputBitStream
 {
 public:
 	
-	InputMemoryBitStream( char* inBuffer, uint32_t inBitCount ) :
+	InputBitStream( char* inBuffer, uint32_t inBitCount ) :
 	mBuffer( inBuffer ),
 	mBitCapacity( inBitCount ),
 	mBitHead( 0 ),
 	mIsBufferOwner( false ) {}
 	
-	InputMemoryBitStream( const InputMemoryBitStream& inOther ) :
+	InputBitStream( const InputBitStream& inOther ) :
 	mBitCapacity( inOther.mBitCapacity ),
 	mBitHead( inOther.mBitHead ),
 	mIsBufferOwner( true )
@@ -104,7 +104,7 @@ public:
 		memcpy( mBuffer, inOther.mBuffer, byteCount );
 	}
 	
-	~InputMemoryBitStream()	{ if( mIsBufferOwner ) { free( mBuffer ); }; }
+	~InputBitStream()	{ if( mIsBufferOwner ) { free( mBuffer ); }; }
 	
 	const 	char*	GetBufferPtr()		const	{ return mBuffer; }
 	uint32_t	GetRemainingBitCount() 	const { return mBitCapacity - mBitHead; }

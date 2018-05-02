@@ -4,7 +4,7 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include "Macro.h"
-#include "ActionServerMath.h"
+#include "RealTimeSrvMath.h"
 
 class Quaternion;
 
@@ -404,16 +404,16 @@ Vector3 Vector3::GetSafeNormal( float Tolerance ) const
 	{
 		return Vector3::Zero();
 	}
-	const float Scale = ActionServerMath::InvSqrt( SquareSum );
+	const float Scale = RealTimeSrvMath::InvSqrt( SquareSum );
 	return Vector3( X*Scale, Y*Scale, Z*Scale );
 }
 
 bool Vector3::IsNearlyZero( float Tolerance ) const
 {
 	return
-		ActionServerMath::Abs( X ) <= Tolerance
-		&&	ActionServerMath::Abs( Y ) <= Tolerance
-		&&	ActionServerMath::Abs( Z ) <= Tolerance;
+		RealTimeSrvMath::Abs( X ) <= Tolerance
+		&&	RealTimeSrvMath::Abs( Y ) <= Tolerance
+		&&	RealTimeSrvMath::Abs( Z ) <= Tolerance;
 }
 
 
@@ -425,9 +425,9 @@ Vector3 Vector3::GetClampedToMaxSize( float MaxSize ) const
 	}
 
 	const float VSq = SizeSquared();
-	if (VSq > ActionServerMath::Square( MaxSize ))
+	if (VSq > RealTimeSrvMath::Square( MaxSize ))
 	{
-		const float Scale = MaxSize * ActionServerMath::InvSqrt( VSq );
+		const float Scale = MaxSize * RealTimeSrvMath::InvSqrt( VSq );
 		return Vector3( X*Scale, Y*Scale, Z*Scale );
 	}
 	else
@@ -457,7 +457,7 @@ float Vector3::ClampAxis( float Angle )
 
 float Vector3::Size() const
 {
-	return ActionServerMath::Sqrt( X*X + Y*Y + Z*Z );
+	return RealTimeSrvMath::Sqrt( X*X + Y*Y + Z*Z );
 }
 
 ////////////////////////////////

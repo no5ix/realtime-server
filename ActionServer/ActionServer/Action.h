@@ -1,12 +1,12 @@
 #pragma once
 
-class Move
+class Action
 {
 public:
 
-	Move() {}
+	Action() {}
 
-	Move( const InputState& inInputState, float inTimestamp, float inDeltaTime ) :
+	Action( const InputState& inInputState, float inTimestamp, float inDeltaTime ) :
 		mInputState( inInputState ),
 		mTimestamp( inTimestamp ),
 		mDeltaTime( inDeltaTime )
@@ -17,8 +17,8 @@ public:
 	float				GetTimestamp()	const { return mTimestamp; }
 	float				GetDeltaTime()	const { return mDeltaTime; }
 
-	bool Write( OutputMemoryBitStream& inOutputStream ) const;
-	bool Read( InputMemoryBitStream& inInputStream );
+	bool Write( OutputBitStream& inOutputStream ) const;
+	bool Read( InputBitStream& inInputStream );
 
 private:
 	InputState	mInputState;

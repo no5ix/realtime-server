@@ -49,36 +49,36 @@ using std::unordered_map;
 using std::string;
 using std::unordered_set;
 
-class GameObject;
+class Entity;
 
 #include "Vector3.h"
 #include "Quaternion.h"
 #include "Matrix3x3.h"
 #include "Vector2.h"
 
-#include "ActionServerMath.h"
+#include "RealTimeSrvMath.h"
 
 #include "Utility.h"
 
 #include "SocketAddress.h"
-#include "UDPSocket.h"
+#include "UDPSocketInterface.h"
 
 #include "Macro.h"
 
 
-#include "MemoryBitStream.h"
+#include "BitStream.h"
 
 #include "TransmissionData.h"
 #include "InFlightPacket.h"
 #include "AckRange.h"
-#include "DeliveryNotificationManager.h"
+#include "DeliveryNotificationMgr.h"
 
 #include "InputState.h"
-#include "Move.h"
-#include "MoveList.h"
+#include "Action.h"
+#include "ActionList.h"
 
-#include "GameObject.h"
-#include "GameObjectRegistry.h"
+#include "Entity.h"
+#include "EntityFactory.h"
 #include "Character.h"
 #include "World.h"
 #include "Timing.h"
@@ -86,16 +86,16 @@ class GameObject;
 #include "WeightedTimedMovingAverage.h"
 
 #include "ReplicationCommand.h"
-#include "NetworkManager.h"
+#include "NetworkMgr.h"
 
 
-#include "ReplicationManagerTransmissionData.h"
-#include "ReplicationManagerServer.h"
+#include "TransmissionDataHandler.h"
+#include "ReplicationMgr.h"
 
 #include "ClientProxy.h"
 
 
-#include "NetworkManagerServer.h"
-#include "Server.h"
+#include "NetworkMgrSrv.h"
+#include "RealTimeServer.h"
 
 #include "CharacterServer.h"

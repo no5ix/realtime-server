@@ -3,17 +3,17 @@
 #define CLASS_IDENTIFICATION( inCode, inClass ) \
 enum { kClassId = inCode }; \
 virtual uint32_t GetClassId() const { return kClassId; } \
-static GameObject* CreateInstance() { return static_cast< GameObject* >( new inClass() ); } \
+static inClass* CreateInstance() { return static_cast< inClass* >( new inClass() ); } \
 
-class GameObject
+class Entity
 {
 public:
 	// 'GOBJ' = 1196376650;
-	CLASS_IDENTIFICATION( 'GOBJ', GameObject )
+	CLASS_IDENTIFICATION( 'GOBJ', Entity )
 
-	GameObject();
+	Entity();
 //
-	virtual ~GameObject() {}
+	virtual ~Entity() {}
 //
 //	virtual	RoboCat*	GetAsCat() { return nullptr; }
 //
@@ -52,8 +52,8 @@ public:
 	int			GetNetworkId()				const { return mNetworkId; }
 	void		SetNetworkId( int inNetworkId );
 
-	virtual uint32_t	Write( OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState ) const { ( void )inOutputStream; ( void )inDirtyState; return 0; }
-	virtual void		Read( InputMemoryBitStream& inInputStream ) { ( void )inInputStream; }
+	virtual uint32_t	Write( OutputBitStream& inOutputStream, uint32_t inDirtyState ) const { ( void )inOutputStream; ( void )inDirtyState; return 0; }
+	virtual void		Read( InputBitStream& inInputStream ) { ( void )inInputStream; }
 
 protected:
 
@@ -73,4 +73,4 @@ protected:
 
 };
 
-typedef shared_ptr< GameObject >	GameObjectPtr;
+typedef shared_ptr< Entity >	GameObjectPtr;

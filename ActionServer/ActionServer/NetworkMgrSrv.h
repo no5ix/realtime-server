@@ -1,20 +1,20 @@
-class NetworkManagerServer : public NetworkManager
+class NetworkMgrSrv : public NetworkMgr
 {
 public:
-	static NetworkManagerServer*	sInstance;
+	static NetworkMgrSrv*	sInstance;
 
 
 	static bool				StaticInit( uint16_t inPort );
 //
-	virtual void			ProcessPacket( InputMemoryBitStream& inInputStream, const SocketAddress& inFromAddress ) override;
+	virtual void			ProcessPacket( InputBitStream& inInputStream, const SocketAddress& inFromAddress ) override;
 //	virtual void			HandleConnectionReset( const SocketAddress& inFromAddress ) override;
 //
 	void			SendOutgoingPackets();
 //	void			CheckForDisconnects();
 //
 	void			RegisterGameObject( GameObjectPtr inGameObject );
-	inline	GameObjectPtr	RegisterAndReturn( GameObject* inGameObject );
-	void			UnregisterGameObject( GameObject* inGameObject );
+	inline	GameObjectPtr	RegisterAndReturn( Entity* inGameObject );
+	void			UnregisterGameObject( Entity* inGameObject );
 	void			SetStateDirty( int inNetworkId, uint32_t inDirtyState );
 //
 //	void			RespawnCats();
@@ -22,10 +22,10 @@ public:
 	ClientProxyPtr	GetClientProxy( int inPlayerId ) const;
 //
 private:
-	NetworkManagerServer();
+	NetworkMgrSrv();
 //
-	void	HandlePacketFromNewClient( InputMemoryBitStream& inInputStream, const SocketAddress& inFromAddress );
-	void	ProcessPacket( ClientProxyPtr inClientProxy, InputMemoryBitStream& inInputStream );
+	void	HandlePacketFromNewClient( InputBitStream& inInputStream, const SocketAddress& inFromAddress );
+	void	ProcessPacket( ClientProxyPtr inClientProxy, InputBitStream& inInputStream );
 //
 	void	SendWelcomePacket( ClientProxyPtr inClientProxy );
 //	void	UpdateAllClients();
@@ -34,9 +34,9 @@ private:
 //	void	AddScoreBoardStateToPacket( OutputMemoryBitStream& inOutputStream );
 //
 	void	SendStatePacketToClient( ClientProxyPtr inClientProxy );
-	void	WriteLastMoveTimestampIfDirty( OutputMemoryBitStream& inOutputStream, ClientProxyPtr inClientProxy );
+	void	WriteLastMoveTimestampIfDirty( OutputBitStream& inOutputStream, ClientProxyPtr inClientProxy );
 //
-	void	HandleInputPacket( ClientProxyPtr inClientProxy, InputMemoryBitStream& inInputStream );
+	void	HandleInputPacket( ClientProxyPtr inClientProxy, InputBitStream& inInputStream );
 //
 //	void	HandleClientDisconnected( ClientProxyPtr inClientProxy );
 //
@@ -58,7 +58,7 @@ private:
 };
 
 
-inline GameObjectPtr NetworkManagerServer::RegisterAndReturn( GameObject* inGameObject )
+inline GameObjectPtr NetworkMgrSrv::RegisterAndReturn( Entity* inGameObject )
 {
 	GameObjectPtr toRet( inGameObject );
 	RegisterGameObject( toRet );

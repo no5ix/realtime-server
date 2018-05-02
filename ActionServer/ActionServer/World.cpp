@@ -1,4 +1,4 @@
-#include "ActionServerPCH.h"
+#include "RealTimeServerPCH.h"
 
 
 
@@ -42,7 +42,6 @@ void World::RemoveGameObject( GameObjectPtr inGameObject )
 
 void World::Update()
 {
-	//update all game objects- sometimes they want to die, so we need to tread carefully...
 
 	for (int i = 0, c = mGameObjects.size(); i < c; ++i)
 	{
@@ -53,7 +52,6 @@ void World::Update()
 		{
 			go->Update();
 		}
-		//you might suddenly want to die after your update, so check again
 		if (go->DoesWantToDie())
 		{
 			RemoveGameObject( go );

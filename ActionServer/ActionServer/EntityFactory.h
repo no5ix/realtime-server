@@ -3,13 +3,13 @@
 
 typedef GameObjectPtr( *GameObjectCreationFunc )( );
 
-class GameObjectRegistry
+class EntityFactory
 {
 public:
 
 	static void StaticInit();
 
-	static std::unique_ptr< GameObjectRegistry >		sInstance;
+	static std::unique_ptr< EntityFactory >		sInstance;
 
 	void RegisterCreationFunction( uint32_t inFourCCName, GameObjectCreationFunc inCreationFunction );
 
@@ -17,7 +17,7 @@ public:
 
 private:
 
-	GameObjectRegistry();
+	EntityFactory();
 
 	unordered_map< uint32_t, GameObjectCreationFunc >	mNameToGameObjectCreationFunctionMap;
 

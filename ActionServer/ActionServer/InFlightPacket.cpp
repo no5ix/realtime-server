@@ -1,4 +1,4 @@
-#include "ActionServerPCH.h"
+#include "RealTimeServerPCH.h"
 
 InFlightPacket::InFlightPacket( PacketSequenceNumber inSequenceNumber ) :
 mSequenceNumber( inSequenceNumber ),
@@ -8,7 +8,7 @@ mTimeDispatched( Timing::sInstance.GetTimef() )
 }
 
 
-void InFlightPacket::HandleDeliveryFailure( DeliveryNotificationManager* inDeliveryNotificationManager ) const
+void InFlightPacket::HandleDeliveryFailure( DeliveryNotificationMgr* inDeliveryNotificationManager ) const
 {
 	for( const auto& pair : mTransmissionDataMap )
 	{
@@ -16,7 +16,7 @@ void InFlightPacket::HandleDeliveryFailure( DeliveryNotificationManager* inDeliv
 	}
 }
 
-void InFlightPacket::HandleDeliverySuccess( DeliveryNotificationManager* inDeliveryNotificationManager ) const
+void InFlightPacket::HandleDeliverySuccess( DeliveryNotificationMgr* inDeliveryNotificationManager ) const
 {
 	for( const auto& pair : mTransmissionDataMap )
 	{

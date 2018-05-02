@@ -1,14 +1,14 @@
 
-class DeliveryNotificationManager
+class DeliveryNotificationMgr
 {
 public:
 	
 	
-	DeliveryNotificationManager( bool inShouldSendAcks, bool inShouldProcessAcks );
-	~DeliveryNotificationManager();
+	DeliveryNotificationMgr( bool inShouldSendAcks, bool inShouldProcessAcks );
+	~DeliveryNotificationMgr();
 	
-	inline	InFlightPacket*		WriteState( OutputMemoryBitStream& inOutputStream );
-	inline	bool				ReadAndProcessState( InputMemoryBitStream& inInputStream );
+	inline	InFlightPacket*		WriteState( OutputBitStream& inOutputStream );
+	inline	bool				ReadAndProcessState( InputBitStream& inInputStream );
 	
 	void				ProcessTimedOutPackets();
 	
@@ -22,12 +22,11 @@ private:
 	
 	
 	
-	InFlightPacket*		WriteSequenceNumber( OutputMemoryBitStream& inOutputStream );
-	void				WriteAckData( OutputMemoryBitStream& inOutputStream );
+	InFlightPacket*		WriteSequenceNumber( OutputBitStream& inOutputStream );
+	void				WriteAckData( OutputBitStream& inOutputStream );
 	
-	//returns wether to drop the packet- if sequence number is too low!
-	bool				ProcessSequenceNumber( InputMemoryBitStream& inInputStream );
-	void				ProcessAcks( InputMemoryBitStream& inInputStream );
+	bool				ProcessSequenceNumber( InputBitStream& inInputStream );
+	void				ProcessAcks( InputBitStream& inInputStream );
 	
 	
 	void				AddPendingAck( PacketSequenceNumber inSequenceNumber );
@@ -51,7 +50,7 @@ private:
 
 
 
-inline InFlightPacket* DeliveryNotificationManager::WriteState( OutputMemoryBitStream& inOutputStream )
+inline InFlightPacket* DeliveryNotificationMgr::WriteState( OutputBitStream& inOutputStream )
 {
 	InFlightPacket* toRet = WriteSequenceNumber( inOutputStream );
 	if( mShouldSendAcks )
@@ -61,7 +60,7 @@ inline InFlightPacket* DeliveryNotificationManager::WriteState( OutputMemoryBitS
 	return toRet;
 }
 
-inline bool	DeliveryNotificationManager::ReadAndProcessState( InputMemoryBitStream& inInputStream )
+inline bool	DeliveryNotificationMgr::ReadAndProcessState( InputBitStream& inInputStream )
 {
 	bool toRet = ProcessSequenceNumber( inInputStream );
 	if( mShouldProcessAcks )

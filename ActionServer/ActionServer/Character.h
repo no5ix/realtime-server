@@ -1,10 +1,10 @@
 #pragma once
 
-class Character : public GameObject
+class Character : public Entity
 {
 public:
 	// 'CHRT' = 1128813140;
-	CLASS_IDENTIFICATION( 'CHRT', GameObject )
+	CLASS_IDENTIFICATION( 'CHRT', Entity )
 
 	enum ECharacterReplicationState
 	{
@@ -20,7 +20,7 @@ public:
 	};
 
 
-	static	GameObject*	StaticCreate() { return new Character(); }
+	static	Entity*	StaticCreate() { return new Character(); }
 
 	virtual uint32_t GetAllStateMask()	const override { return ECRS_AllState; }
 
@@ -37,7 +37,7 @@ public:
 	void		SetPlayerId( uint32_t inPlayerId ) { mPlayerId = inPlayerId; }
 	uint32_t	GetPlayerId()						const { return mPlayerId; }
 
-	virtual uint32_t	Write( OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState ) const override;
+	virtual uint32_t	Write( OutputBitStream& inOutputStream, uint32_t inDirtyState ) const override;
 
 
 	bool IsExceedingMaxSpeed( float inMaxSpeed ) const;

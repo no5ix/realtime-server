@@ -1,4 +1,4 @@
-class DeliveryNotificationManager;
+class DeliveryNotificationMgr;
 
 //in case we decide to change the type of the sequence number to use fewer or more bits
 typedef uint16_t	PacketSequenceNumber;
@@ -22,8 +22,8 @@ public:
 		return ( it != mTransmissionDataMap.end() ) ? it->second : nullptr;
 	}
 	
-	void			HandleDeliveryFailure( DeliveryNotificationManager* inDeliveryNotificationManager ) const;
-	void			HandleDeliverySuccess( DeliveryNotificationManager* inDeliveryNotificationManager ) const;
+	void			HandleDeliveryFailure( DeliveryNotificationMgr* inDeliveryNotificationManager ) const;
+	void			HandleDeliverySuccess( DeliveryNotificationMgr* inDeliveryNotificationManager ) const;
 	
 private:
 	PacketSequenceNumber	mSequenceNumber;

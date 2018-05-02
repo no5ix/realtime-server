@@ -1,4 +1,4 @@
-#include "ActionServerPCH.h"
+#include "RealTimeServerPCH.h"
 #include "Vector2.h"
 #include "Vector3.h"
 
@@ -12,7 +12,7 @@
 //const Vector3 Vector3::UnitY( 0.0f, 1.0f, 0.0f );
 //const Vector3 Vector3::UnitZ( 0.0f, 0.0f, 1.0f );
 
-float ActionServerMath::GetRandomFloat()
+float RealTimeSrvMath::GetRandomFloat()
 {
 	static std::random_device rd;
 	static std::mt19937 gen( rd() );
@@ -27,12 +27,12 @@ float ActionServerMath::GetRandomFloat()
 //}
 
 
-bool	ActionServerMath::Is3DVectorEqual( const Vector3& inA, const Vector3& inB ) 
+bool	RealTimeSrvMath::Is3DVectorEqual( const Vector3& inA, const Vector3& inB ) 
 {
 	return ( inA.X == inB.X && inA.Y == inB.Y && inA.Z == inB.Z );
 }
 
-bool	ActionServerMath::Is2DVectorEqual( const Vector2& inA, const Vector2& inB )
+bool	RealTimeSrvMath::Is2DVectorEqual( const Vector2& inA, const Vector2& inB )
 {
 	return ( inA.X == inB.X && inA.Y == inB.Y );
 }

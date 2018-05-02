@@ -1,10 +1,10 @@
 
 
-class UDPSocket
+class UDPSocketInterface
 {
 public:
 
-	~UDPSocket();
+	~UDPSocketInterface();
 
 
 
@@ -14,7 +14,7 @@ public:
 	static void			ReportError(const char* inOperationDesc);
 	static int			GetLastError();
 
-	static shared_ptr< UDPSocket > CreateUDPSocket();
+	static shared_ptr< UDPSocketInterface > CreateUDPSocket();
 
 	int Bind(const SocketAddress& inToAddress);
 	int SendTo(const void* inToSend, int inLength, const SocketAddress& inToAddress);
@@ -29,9 +29,9 @@ public:
 
 private:
 	friend class SocketUtil;
-	UDPSocket(SOCKET inSocket) : mSocket(inSocket) {}
+	UDPSocketInterface(SOCKET inSocket) : mSocket(inSocket) {}
 	SOCKET mSocket;
 
 };
 
-typedef shared_ptr< UDPSocket >	UDPSocketPtr;
+typedef shared_ptr< UDPSocketInterface >	UDPSocketPtr;

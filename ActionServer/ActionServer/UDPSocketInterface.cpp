@@ -1,7 +1,7 @@
-#include "ActionServerPCH.h"
+#include "RealTimeServerPCH.h"
 
 
-bool UDPSocket::StaticInit()
+bool UDPSocketInterface::StaticInit()
 {
 #if _WIN32
 	WSADATA wsaData;
@@ -15,7 +15,7 @@ bool UDPSocket::StaticInit()
 	return true;
 }
 
-void UDPSocket::CleanUp()
+void UDPSocketInterface::CleanUp()
 {
 #if _WIN32
 	WSACleanup();
@@ -23,7 +23,7 @@ void UDPSocket::CleanUp()
 }
 
 
-void UDPSocket::ReportError(const char* inOperationDesc)
+void UDPSocketInterface::ReportError(const char* inOperationDesc)
 {
 #if _WIN32
 	LPVOID lpMsgBuf;
@@ -46,7 +46,7 @@ void UDPSocket::ReportError(const char* inOperationDesc)
 #endif
 }
 
-int UDPSocket::GetLastError()
+int UDPSocketInterface::GetLastError()
 {
 #if _WIN32
 	return WSAGetLastError();
@@ -56,13 +56,13 @@ int UDPSocket::GetLastError()
 
 }
 
-UDPSocketPtr UDPSocket::CreateUDPSocket()
+UDPSocketPtr UDPSocketInterface::CreateUDPSocket()
 {
 	SOCKET s = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
 
 	if (s != INVALID_SOCKET)
 	{
-		return UDPSocketPtr(new UDPSocket(s));
+		return UDPSocketPtr(new UDPSocketInterface(s));
 	}
 	else
 	{
@@ -71,7 +71,7 @@ UDPSocketPtr UDPSocket::CreateUDPSocket()
 	}
 }
 
-int UDPSocket::Bind(const SocketAddress& inBindAddress)
+int UDPSocketInterface::Bind(const SocketAddress& inBindAddress)
 {
 	int error = bind(mSocket, &inBindAddress.mSockAddr, inBindAddress.GetSize());
 	if (error != 0)
@@ -83,7 +83,7 @@ int UDPSocket::Bind(const SocketAddress& inBindAddress)
 	return NO_ERROR;
 }
 
-int UDPSocket::SendTo(const void* inToSend, int inLength, const SocketAddress& inToAddress)
+int UDPSocketInterface::SendTo(const void* inToSend, int inLength, const SocketAddress& inToAddress)
 {
 	int byteSentCount = sendto(mSocket,
 		static_cast<const char*>(inToSend),
@@ -102,7 +102,7 @@ int UDPSocket::SendTo(const void* inToSend, int inLength, const SocketAddress& i
 	}
 }
 
-int UDPSocket::ReceiveFrom(void* inToReceive, int inMaxLength, SocketAddress& outFromAddress)
+int UDPSocketInterface::ReceiveFrom(void* inToReceive, int inMaxLength, SocketAddress& outFromAddress)
 {
 	socklen_t fromLength = outFromAddress.GetSize();
 
@@ -137,7 +137,7 @@ int UDPSocket::ReceiveFrom(void* inToReceive, int inMaxLength, SocketAddress& ou
 	}
 }
 
-UDPSocket::~UDPSocket()
+UDPSocketInterface::~UDPSocketInterface()
 {
 #if _WIN32
 	closesocket(mSocket);
@@ -147,7 +147,7 @@ UDPSocket::~UDPSocket()
 }
 
 
-int UDPSocket::SetNonBlockingMode(bool inShouldBeNonBlocking)
+int UDPSocketInterface::SetNonBlockingMode(bool inShouldBeNonBlocking)
 {
 #if _WIN32
 	u_long arg = inShouldBeNonBlocking ? 1 : 0;

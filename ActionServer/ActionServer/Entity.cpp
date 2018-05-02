@@ -1,9 +1,9 @@
-#include "ActionServerPCH.h"
+#include "RealTimeServerPCH.h"
 
 
 
 
-GameObject::GameObject() :
+Entity::Entity() :
 	mIndexInWorld( -1 ),
 	mCollisionRadius( 0.5f ),
 	mDoesWantToDie( false ),
@@ -14,7 +14,7 @@ GameObject::GameObject() :
 {
 }
 
-void GameObject::Update()
+void Entity::Update()
 {
 	//object don't do anything by default...	
 }
@@ -26,7 +26,7 @@ void GameObject::Update()
 //	return Vector3( sinf( mRotation ), -cosf( mRotation ), 0.f );
 //}
 
-void GameObject::SetNetworkId( int inNetworkId )
+void Entity::SetNetworkId( int inNetworkId )
 {
 	//this doesn't put you in the map or remove you from it
 	mNetworkId = inNetworkId;

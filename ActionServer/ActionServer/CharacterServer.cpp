@@ -1,4 +1,4 @@
-#include "ActionServerPCH.h"
+#include "RealTimeServerPCH.h"
 
 
 CharacterServer::CharacterServer() :
@@ -9,7 +9,7 @@ CharacterServer::CharacterServer() :
 
 void CharacterServer::HandleDying()
 {
-	NetworkManagerServer::sInstance->UnregisterGameObject( this );
+	NetworkMgrSrv::sInstance->UnregisterGameObject( this );
 }
 
 void CharacterServer::Update()
@@ -20,11 +20,11 @@ void CharacterServer::Update()
 	Vector3 oldVelocity = GetVelocity();
 	Vector3 oldRotation = GetRotation();
 
-	ClientProxyPtr client = NetworkManagerServer::sInstance->GetClientProxy( GetPlayerId() );
+	ClientProxyPtr client = NetworkMgrSrv::sInstance->GetClientProxy( GetPlayerId() );
 	if ( client )
 	{
-		MoveList& moveList = client->GetUnprocessedMoveList();
-		for ( const Move& unprocessedMove : moveList )
+		ActionList& moveList = client->GetUnprocessedMoveList();
+		for ( const Action& unprocessedMove : moveList )
 		{
 			const InputState& currentState = unprocessedMove.GetInputState();
 			float deltaTime = unprocessedMove.GetDeltaTime();
@@ -44,13 +44,13 @@ void CharacterServer::Update()
 	//LOG( "GetRotation = %f, %f, %f", GetRotation().X, GetRotation().Y, GetRotation().Z );
 	//LOG( "GetVelocity = %f, %f, %f", GetVelocity().X, GetVelocity().Y, GetVelocity().Z );
 
-	if ( !ActionServerMath::Is3DVectorEqual( oldLocation, GetLocation() ) ||
-		!ActionServerMath::Is3DVectorEqual( oldVelocity, GetVelocity() ) ||
-		!ActionServerMath::Is3DVectorEqual( oldRotation, GetRotation() )
+	if ( !RealTimeSrvMath::Is3DVectorEqual( oldLocation, GetLocation() ) ||
+		!RealTimeSrvMath::Is3DVectorEqual( oldVelocity, GetVelocity() ) ||
+		!RealTimeSrvMath::Is3DVectorEqual( oldRotation, GetRotation() )
 		)
 	{
 		//LOG( " NetworkManagerServer::sInstance->SetStateDirty( GetNetworkId(), ECRS_Pose );  GetPlayerId = %d", GetPlayerId() );
-		NetworkManagerServer::sInstance->SetStateDirty( GetNetworkId(), ECRS_Pose );
+		NetworkMgrSrv::sInstance->SetStateDirty( GetNetworkId(), ECRS_Pose );
 	}
 }
 

@@ -1,10 +1,10 @@
 
 
 
-#include "ActionServerShared.h"
+#include "RealTimeServerShared.h"
 
 
-bool InputState::Write( OutputMemoryBitStream& inOutputStream ) const
+bool InputState::Write( OutputBitStream& inOutputStream ) const
 {
 	inOutputStream.Write( mDesiredMoveForwardAmount );
 	inOutputStream.Write( mDesiredMoveRightAmount );
@@ -22,7 +22,7 @@ bool InputState::Write( OutputMemoryBitStream& inOutputStream ) const
 	return true;
 }
 
-bool InputState::Read( InputMemoryBitStream& inInputStream )
+bool InputState::Read( InputBitStream& inInputStream )
 {
 	inInputStream.Read( mDesiredMoveForwardAmount );
 	inInputStream.Read( mDesiredMoveRightAmount );

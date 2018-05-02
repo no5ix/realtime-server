@@ -1,6 +1,6 @@
 typedef unordered_map< int, GameObjectPtr > IntToGameObjectMap;
 
-class NetworkManager
+class NetworkMgr
 {
 public:
 	static const uint32_t	kHelloCC = 'HELO';
@@ -9,16 +9,16 @@ public:
 	static const uint32_t	kInputCC = 'INPT';
 	static const int		kMaxPacketsPerFrameCount = 10;
 
-	NetworkManager();
-	virtual ~NetworkManager();
+	NetworkMgr();
+	virtual ~NetworkMgr();
 
 	bool	Init( uint16_t inPort );
 	void	ProcessIncomingPackets();
 
-	virtual void	ProcessPacket( InputMemoryBitStream& inInputStream, const SocketAddress& inFromAddress ) = 0;
+	virtual void	ProcessPacket( InputBitStream& inInputStream, const SocketAddress& inFromAddress ) = 0;
 	virtual void HandleConnectionReset( const SocketAddress& inFromAddress ) {}
 
-	void	SendPacket( const OutputMemoryBitStream& inOutputStream, const SocketAddress& inFromAddress );
+	void	SendPacket( const OutputBitStream& inOutputStream, const SocketAddress& inFromAddress );
 
 	void	SetDropPacketChance( float inChance ) { mDropPacketChance = inChance; }
 	void	SetSimulatedLatency( float inLatency ) { mSimulatedLatency = inLatency; }
@@ -37,7 +37,7 @@ private:
 	class ReceivedPacket
 	{
 	public:
-		ReceivedPacket( float inReceivedTime, InputMemoryBitStream& ioInputMemoryBitStream, const SocketAddress& inFromAddress ) :
+		ReceivedPacket( float inReceivedTime, InputBitStream& ioInputMemoryBitStream, const SocketAddress& inFromAddress ) :
 		mReceivedTime( inReceivedTime ),
 		mFromAddress( inFromAddress ),
 		mPacketBuffer( ioInputMemoryBitStream )
@@ -46,12 +46,12 @@ private:
 
 		const	SocketAddress&			GetFromAddress()	const { return mFromAddress; }
 		float					GetReceivedTime()	const { return mReceivedTime; }
-		InputMemoryBitStream&	GetPacketBuffer() { return mPacketBuffer; }
+		InputBitStream&	GetPacketBuffer() { return mPacketBuffer; }
 
 	private:
 
 		float					mReceivedTime;
-		InputMemoryBitStream	mPacketBuffer;
+		InputBitStream	mPacketBuffer;
 		SocketAddress			mFromAddress;
 
 	};
@@ -74,7 +74,7 @@ private:
 	bool						mIsSimulatedJitter;
 };
 
-inline	GameObjectPtr NetworkManager::GetGameObject( int inNetworkId ) const
+inline	GameObjectPtr NetworkMgr::GetGameObject( int inNetworkId ) const
 {
 	auto gameObjectIt = mNetworkIdToGameObjectMap.find( inNetworkId );
 	if (gameObjectIt != mNetworkIdToGameObjectMap.end())

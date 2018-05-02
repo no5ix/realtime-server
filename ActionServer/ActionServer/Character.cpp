@@ -1,11 +1,11 @@
-#include "ActionServerPCH.h"
+#include "RealTimeServerPCH.h"
 
 //zoom hardcoded at 100...if we want to lock players on screen, this could be calculated from zoom
 const float HALF_WORLD_HEIGHT = 3.6f;
 const float HALF_WORLD_WIDTH = 6.4f;
 
 Character::Character() :
-	GameObject(),
+	Entity(),
 	mPlayerId( 0 ),
 	mIsShooting( false ),
 	mHealth( 10 )
@@ -63,8 +63,8 @@ void Character::SimulateMovement( float inDeltaTime )
 
 bool Character::IsExceedingMaxSpeed( float inMaxSpeed ) const
 {
-	inMaxSpeed = ActionServerMath::Max( 0.f, inMaxSpeed );
-	const float MaxSpeedSquared = ActionServerMath::Square( inMaxSpeed );
+	inMaxSpeed = RealTimeSrvMath::Max( 0.f, inMaxSpeed );
+	const float MaxSpeedSquared = RealTimeSrvMath::Square( inMaxSpeed );
 
 	// Allow 1% error tolerance, to account for numeric imprecision.
 	const float OverVelocityPercent = 1.01f;
@@ -103,7 +103,7 @@ void Character::ApplyControlInputToVelocity( float DeltaTime )
 		if (Velocity.SizeSquared() > 0.f)
 		{
 			// Change direction faster than only using acceleration, but never increase velocity magnitude.
-			const float TimeScale = ActionServerMath::Clamp( DeltaTime * TurningBoost, 0.f, 1.f );
+			const float TimeScale = RealTimeSrvMath::Clamp( DeltaTime * TurningBoost, 0.f, 1.f );
 			Velocity = Velocity + ( ControlAcceleration * Velocity.Size() - Velocity ) * TimeScale;
 		}
 	}
@@ -113,11 +113,11 @@ void Character::ApplyControlInputToVelocity( float DeltaTime )
 		if (Velocity.SizeSquared() > 0.f)
 		{
 			const Vector3 OldVelocity = Velocity;
-			const float VelSize = ActionServerMath::Max( Velocity.Size() - ActionServerMath::Abs( Deceleration ) * DeltaTime, 0.f );
+			const float VelSize = RealTimeSrvMath::Max( Velocity.Size() - RealTimeSrvMath::Abs( Deceleration ) * DeltaTime, 0.f );
 			Velocity = Velocity.GetSafeNormal() * VelSize;
 
 			// Don't allow braking to lower us below max speed if we started above it.
-			if (bExceedingMaxSpeed && Velocity.SizeSquared() < ActionServerMath::Square( MaxPawnSpeed ))
+			if (bExceedingMaxSpeed && Velocity.SizeSquared() < RealTimeSrvMath::Square( MaxPawnSpeed ))
 			{
 				Velocity = OldVelocity.GetSafeNormal() * MaxPawnSpeed;
 			}
@@ -126,7 +126,7 @@ void Character::ApplyControlInputToVelocity( float DeltaTime )
 
 	// Apply acceleration and clamp velocity magnitude.
 	const float NewMaxSpeed = ( IsExceedingMaxSpeed( MaxPawnSpeed ) ) ? Velocity.Size() : MaxPawnSpeed;
-	Velocity += ControlAcceleration * ActionServerMath::Abs( Acceleration ) * DeltaTime;
+	Velocity += ControlAcceleration * RealTimeSrvMath::Abs( Acceleration ) * DeltaTime;
 	Velocity = Velocity.GetClampedToMaxSize( NewMaxSpeed );
 
 	Velocity.Z = 0.f;
@@ -140,7 +140,7 @@ void Character::Update()
 
 }
 
-uint32_t Character::Write( OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState ) const
+uint32_t Character::Write( OutputBitStream& inOutputStream, uint32_t inDirtyState ) const
 {
 	uint32_t writtenState = 0;
 

@@ -55,7 +55,7 @@ public:
 	}
 
 private:
-	friend class UDPSocket;
+	friend class UDPSocketInterface;
 	friend class TCPSocket;
 
 	sockaddr mSockAddr;

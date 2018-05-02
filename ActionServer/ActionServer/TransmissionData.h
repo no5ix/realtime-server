@@ -1,9 +1,9 @@
-class DeliveryNotificationManager;
+class DeliveryNotificationMgr;
 
 class TransmissionData
 {
 public:
-	virtual void HandleDeliveryFailure( DeliveryNotificationManager* inDeliveryNotificationManager ) const = 0;
-	virtual void HandleDeliverySuccess( DeliveryNotificationManager* inDeliveryNotificationManager ) const = 0;
+	virtual void HandleDeliveryFailure( DeliveryNotificationMgr* inDeliveryNotificationManager ) const = 0;
+	virtual void HandleDeliverySuccess( DeliveryNotificationMgr* inDeliveryNotificationManager ) const = 0;
 };
 typedef shared_ptr< TransmissionData > TransmissionDataPtr;

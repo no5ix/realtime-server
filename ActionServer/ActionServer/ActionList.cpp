@@ -1,11 +1,10 @@
-#include "ActionServerShared.h"
+#include "RealTimeServerShared.h"
 
 
 
 
-const Move& MoveList::AddMove( const InputState& inInputState, float inTimestamp )
+const Action& ActionList::AddMove( const InputState& inInputState, float inTimestamp )
 {
-	//first move has 0 time. it's okay, it only happens once
 	float deltaTime = mLastMoveTimestamp >= 0.f ? inTimestamp - mLastMoveTimestamp : 0.f;
 
 	mMoves.emplace_back( inInputState, inTimestamp, deltaTime );
@@ -15,7 +14,7 @@ const Move& MoveList::AddMove( const InputState& inInputState, float inTimestamp
 	return mMoves.back();
 }
 
-bool MoveList::AddMoveIfNew( const Move& inMove )
+bool ActionList::AddMoveIfNew( const Action& inMove )
 {
 	float timeStamp = inMove.GetTimestamp();
 
@@ -32,7 +31,7 @@ bool MoveList::AddMoveIfNew( const Move& inMove )
 	return false;
 }
 
-void	MoveList::RemovedProcessedMoves( float inLastMoveProcessedOnServerTimestamp )
+void	ActionList::RemovedProcessedMoves( float inLastMoveProcessedOnServerTimestamp )
 {
 	while (!mMoves.empty() && mMoves.front().GetTimestamp() <= inLastMoveProcessedOnServerTimestamp)
 	{

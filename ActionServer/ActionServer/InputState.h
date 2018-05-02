@@ -43,8 +43,8 @@ public:
 
 	bool  IsShooting()					const { return mIsShooting; }
 
-	bool Write( OutputMemoryBitStream& inOutputStream ) const;
-	bool Read( InputMemoryBitStream& inInputStream );
+	bool Write( OutputBitStream& inOutputStream ) const;
+	bool Read( InputBitStream& inInputStream );
 
 private:
 	friend class InputManager;

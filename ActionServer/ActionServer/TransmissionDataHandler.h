@@ -1,11 +1,11 @@
 
-class ReplicationManagerServer;
+class ReplicationMgr;
 
-class ReplicationManagerTransmissionData : public TransmissionData
+class TransmissionDataHandler : public TransmissionData
 {
 public:
 
-	ReplicationManagerTransmissionData( ReplicationManagerServer* inReplicationManagerServer ) :
+	TransmissionDataHandler( ReplicationMgr* inReplicationManagerServer ) :
 	mReplicationManagerServer( inReplicationManagerServer )
 	{}
 
@@ -30,22 +30,22 @@ public:
 
 	void AddTransmission( int inNetworkId, ReplicationAction inAction, uint32_t inState );
 
-	virtual void HandleDeliveryFailure( DeliveryNotificationManager* inDeliveryNotificationManager ) const override;
-	virtual void HandleDeliverySuccess( DeliveryNotificationManager* inDeliveryNotificationManager ) const override;
+	virtual void HandleDeliveryFailure( DeliveryNotificationMgr* inDeliveryNotificationManager ) const override;
+	virtual void HandleDeliverySuccess( DeliveryNotificationMgr* inDeliveryNotificationManager ) const override;
 
 
 private:
 
 	void HandleCreateDeliveryFailure( int inNetworkId ) const;
-	void HandleUpdateStateDeliveryFailure( int inNetworkId, uint32_t inState, DeliveryNotificationManager* inDeliveryNotificationManager ) const;
+	void HandleUpdateStateDeliveryFailure( int inNetworkId, uint32_t inState, DeliveryNotificationMgr* inDeliveryNotificationManager ) const;
 	void HandleDestroyDeliveryFailure( int inNetworkId ) const;
 	void HandleCreateDeliverySuccess( int inNetworkId ) const;
 	void HandleDestroyDeliverySuccess( int inNetworkId ) const;
 
-	ReplicationManagerServer*	mReplicationManagerServer;
+	ReplicationMgr*	mReplicationManagerServer;
 	
 	vector< ReplicationTransmission >		mTransmissions;
 
 };
 
-typedef shared_ptr< ReplicationManagerTransmissionData > ReplicationManagerTransmissionDataPtr;
+typedef shared_ptr< TransmissionDataHandler > ReplicationManagerTransmissionDataPtr;

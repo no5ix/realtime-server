@@ -14,11 +14,11 @@ public:
 	void			UpdateLastPacketTime();
 	float			GetLastPacketFromClientTime()	const { return mLastPacketFromClientTime; }
 
-	DeliveryNotificationManager&	GetDeliveryNotificationManager() { return mDeliveryNotificationManager; }
-	ReplicationManagerServer&		GetReplicationManagerServer() { return mReplicationManagerServer; }
+	DeliveryNotificationMgr&	GetDeliveryNotificationManager() { return mDeliveryNotificationManager; }
+	ReplicationMgr&		GetReplicationManagerServer() { return mReplicationManagerServer; }
 
- 	const	MoveList&				GetUnprocessedMoveList() const { return mUnprocessedMoveList; }
- 	MoveList&				GetUnprocessedMoveList() { return mUnprocessedMoveList; }
+ 	const	ActionList&				GetUnprocessedMoveList() const { return mUnprocessedMoveList; }
+ 	ActionList&				GetUnprocessedMoveList() { return mUnprocessedMoveList; }
 
 	void	SetIsLastMoveTimestampDirty( bool inIsDirty ) { mIsLastMoveTimestampDirty = inIsDirty; }
 	bool	IsLastMoveTimestampDirty()						const { return mIsLastMoveTimestampDirty; }
@@ -26,8 +26,8 @@ public:
 
 private:
 
-	DeliveryNotificationManager	mDeliveryNotificationManager;
-	ReplicationManagerServer	mReplicationManagerServer;
+	DeliveryNotificationMgr	mDeliveryNotificationManager;
+	ReplicationMgr	mReplicationManagerServer;
 
 	SocketAddress	mSocketAddress;
 	string			mName;
@@ -39,7 +39,7 @@ private:
 	float			mLastPacketFromClientTime;
 	float			mTimeToRespawn;
 
-	MoveList		mUnprocessedMoveList;
+	ActionList		mUnprocessedMoveList;
 	bool			mIsLastMoveTimestampDirty;
 
 
