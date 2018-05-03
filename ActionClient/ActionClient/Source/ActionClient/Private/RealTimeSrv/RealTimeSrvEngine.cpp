@@ -3,7 +3,7 @@
 #include "ActionClient.h"
 #include "RealTimeSrvEngine.h"
 #include "NetworkMgr.h"
-#include "InputManager.h"
+#include "InputMgr.h"
 #include "RealTimeSrvTiming.h"
 #include "RealTimeSrvHelper.h"
 #include "RealTimeSrvWorld.h"
@@ -22,15 +22,15 @@ URealTimeSrvEngine::URealTimeSrvEngine( const FObjectInitializer& ObjectInitiali
 
 	// ...
 
-	ip = TEXT( "127.0.0.1" );
-	port = 44444;
-	player_name = TEXT( "RealTimeSrvTestPlayerName" );
+	IP = TEXT( "127.0.0.1" );
+	Port = 44444;
+	Player_Name = TEXT( "RealTimeSrvTestPlayerName" );
 
 	// set default pawn class to our Blueprinted character
 	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnBPClass( TEXT( "/Game/RealTimeSrv/Script/BP_RealTimeSrvPawn" ) );
 	if ( PlayerPawnBPClass.Class != NULL )
 	{
-		DefaultCharacterClasses = PlayerPawnBPClass.Class;
+		DefaultPawnClass = PlayerPawnBPClass.Class;
 	}
 }
 
@@ -39,23 +39,13 @@ void URealTimeSrvEngine::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// ...
-
-	//int32 testFloatPrint = 88;
-	//A_LOG_N( "testFloatPrint : ", testFloatPrint );
-	//A_LOG_N( "( float )testFloatPrint : ", ( float )testFloatPrint );
-
-	////A_SCREENMSG_F
-	//A_SCREENMSG_F( "testFloatPrint : ", testFloatPrint );
-	//A_SCREENMSG_F( "( float )testFloatPrint : ", ( float )testFloatPrint );
-
 	RealTimeSrvWorld::StaticInit();
-	InputManager::StaticInit();
+	InputMgr::StaticInit();
 	RealTimeSrvEntityFactory::StaticInit( GetWorld() );
-	NetworkMgr::StaticInit( ip, port, player_name );
+	NetworkMgr::StaticInit( IP, Port, Player_Name );
 
 
-	RealTimeSrvEntityFactory::sInstance->SetDefaultCharacterClasses( DefaultCharacterClasses );
+	RealTimeSrvEntityFactory::sInstance->SetDefaultPawnClass( DefaultPawnClass );
 }
 
 
@@ -70,7 +60,7 @@ void URealTimeSrvEngine::TickComponent(float DeltaTime, ELevelTick TickType, FAc
 	// ...
 	RealTimeSrvTiming::sInstance.Update();
 
-	InputManager::sInstance->Update();
+	InputMgr::sInstance->Update();
 
 	RealTimeSrvWorld::sInstance->Update();
 

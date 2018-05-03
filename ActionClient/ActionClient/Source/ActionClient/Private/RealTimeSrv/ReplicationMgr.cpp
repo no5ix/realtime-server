@@ -51,7 +51,7 @@ void ReplicationMgr::ReadAndDoCreateAction( InputBitStream& inInputStream, int i
 	uint32_t fourCCName;
 	inInputStream.Read( fourCCName );
 
-	GameObjectPtr gameObject = NetworkMgr::sInstance->GetGameObject( inNetworkId );
+	RealTimeSrvEntityPtr gameObject = NetworkMgr::sInstance->GetGameObject( inNetworkId );
 	if (!gameObject)
 	{
 		gameObject = RealTimeSrvEntityFactory::sInstance->CreateGameObject( fourCCName );
@@ -73,7 +73,7 @@ void ReplicationMgr::ReadAndDoCreateAction( InputBitStream& inInputStream, int i
 
 void ReplicationMgr::ReadAndDoUpdateAction( InputBitStream& inInputStream, int inNetworkId )
 {
-	GameObjectPtr gameObject = NetworkMgr::sInstance->GetGameObject( inNetworkId );
+	RealTimeSrvEntityPtr gameObject = NetworkMgr::sInstance->GetGameObject( inNetworkId );
 
 	gameObject->Read( inInputStream );
 

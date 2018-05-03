@@ -14,7 +14,7 @@
 #include "WeightedTimedMovingAverage.h"
 
 
-typedef std::unordered_map< int, GameObjectPtr > IntToGameObjectMap;
+typedef std::unordered_map< int, RealTimeSrvEntityPtr > IntToGameObjectMap;
 
 /**
  * 
@@ -57,9 +57,9 @@ public:
 	void	SetSimulatedLatency( float inLatency ) { mSimulatedLatency = inLatency; }
 	int		GetPlayerId() const	{ return mPlayerId; }
 
-	GameObjectPtr	GetGameObject( int inNetworkId ) const;
-	void	AddToNetworkIdToGameObjectMap( GameObjectPtr inGameObject );
-	void	RemoveFromNetworkIdToGameObjectMap( GameObjectPtr inGameObject );
+	RealTimeSrvEntityPtr	GetGameObject( int inNetworkId ) const;
+	void	AddToNetworkIdToGameObjectMap( RealTimeSrvEntityPtr inGameObject );
+	void	RemoveFromNetworkIdToGameObjectMap( RealTimeSrvEntityPtr inGameObject );
 
 	ReplicationMgr GetReplicationManagerClient() { return mReplicationManagerClient; }
 

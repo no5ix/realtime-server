@@ -16,21 +16,21 @@ public:
 
 	static std::unique_ptr< RealTimeSrvWorld >		sInstance;
 
-	void AddGameObject( GameObjectPtr inGameObject );
-	void RemoveGameObject( GameObjectPtr inGameObject );
+	void AddGameObject( RealTimeSrvEntityPtr inGameObject );
+	void RemoveGameObject( RealTimeSrvEntityPtr inGameObject );
 
 	void Update();
 
-	const std::vector< GameObjectPtr >&	GetGameObjects()	const { return mGameObjects; }
+	const std::vector< RealTimeSrvEntityPtr >&	GetGameObjects()	const { return mGameObjects; }
 
 private:
 
 
 	RealTimeSrvWorld();
 
-	int	GetIndexOfGameObject( GameObjectPtr inGameObject );
+	int	GetIndexOfGameObject( RealTimeSrvEntityPtr inGameObject );
 
-	std::vector< GameObjectPtr >	mGameObjects;
+	std::vector< RealTimeSrvEntityPtr >	mGameObjects;
 
 
 };

@@ -20,14 +20,14 @@ RealTimeSrvWorld::RealTimeSrvWorld()
 }
 
 
-void RealTimeSrvWorld::AddGameObject( GameObjectPtr inGameObject )
+void RealTimeSrvWorld::AddGameObject( RealTimeSrvEntityPtr inGameObject )
 {
 	mGameObjects.push_back( inGameObject );
 	inGameObject->SetIndexInWorld( mGameObjects.size() - 1 );
 }
 
 
-void RealTimeSrvWorld::RemoveGameObject( GameObjectPtr inGameObject )
+void RealTimeSrvWorld::RemoveGameObject( RealTimeSrvEntityPtr inGameObject )
 {
 	int index = inGameObject->GetIndexInWorld();
 
@@ -46,17 +46,16 @@ void RealTimeSrvWorld::RemoveGameObject( GameObjectPtr inGameObject )
 
 void RealTimeSrvWorld::Update()
 {
-	//update all game objects- sometimes they want to die, so we need to tread carefully...
 
 	for ( int i = 0, c = mGameObjects.size(); i < c; ++i )
 	{
-		GameObjectPtr go = mGameObjects[i];
+		RealTimeSrvEntityPtr go = mGameObjects[i];
 
 		if ( !go->DoesWantToDie() )
 		{
 			go->Update();
 		}
-		//you might suddenly want to die after your update, so check again
+
 		if ( go->DoesWantToDie() )
 		{
 			RemoveGameObject( go );

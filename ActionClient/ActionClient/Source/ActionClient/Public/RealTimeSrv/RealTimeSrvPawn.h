@@ -51,28 +51,12 @@ public:
 	//////////////////////////////////////////////////////////////////////////
 	// Input handlers
 
-	/** setup pawn specific input handlers */
 	virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
 
-	/**
-	* Move forward/back
-	*
-	* @param Val Movment input to apply
-	*/
 	void MoveForward(float Val);
 
-	/**
-	* Strafe right/left
-	*
-	* @param Val Movment input to apply
-	*/
 	void MoveRight(float Val);
 
-	/**
-	* Move Up/Down in allowed movement modes.
-	*
-	* @param Val Movment input to apply
-	*/
 	//void MoveUp(float Val);
 
 	void Turn( float Val );
@@ -87,17 +71,6 @@ public:
 
 	FVector ActionGetPendingInputVector() const;
 
-	/**
-	* Add camera pitch to first person mesh.
-	*
-	*	@param	CameraLocation	Location of the Camera.
-	*	@param	CameraRotation	Rotation of the Camera.
-	*/
-	void OnCameraUpdate( const FVector& CameraLocation, const FRotator& CameraRotation );
-
-	/** get camera view type */
-	UFUNCTION( BlueprintCallable, Category = RealTimeSrvPawn )
-		virtual bool IsFirstPerson() const;
 
 	const FRotator& GetActionPawnCameraRotation() const { return mCameraRotation; }
 
@@ -117,10 +90,6 @@ public:
 	void ReplayForRemotePawn( uint32_t inReadState );
 
 
-	void PrepareForInterpolate( const FRotator& inOldRotation, const FRotator& inOldActionPawnCameraRotation, const FVector& inOldLocation, const FVector& inOldVelocity, bool inIsForRemotePawn );
-private:
-
-	void InterpolateClientSidePrediction( const FRotator& inOldRotation, const FRotator& inOldActionPawnCameraRotation, const FVector& inOldLocation, const FVector& inOldVelocity, bool inIsForRemotePawn );
 
 public:
 
@@ -145,6 +114,7 @@ private:
 	/** pawn mesh: 1st person view */
 	UPROPERTY( VisibleDefaultsOnly, Category = Mesh )
 		USkeletalMeshComponent* Mesh3P;
+
 private:
 
 	FVector ActionControlInputVector;
@@ -179,19 +149,9 @@ protected:
 
 	bool bIsPlayerLocationOutOfSync;
 
-	bool bIsRemotePlayerRotationOutOfSync;
-	bool bIsRemotePlayerCameraRotationOutOfSync;
-	bool bIsRemotePlayerVelocityOutOfSync;
-
 
 
 protected:
-
-	float	mLastDragTimestamp;
-
-	float	mTimeLocationBecameOutOfSync;
-	float	mTimeVelocityBecameOutOfSync;
-	float	mTimeRotationBecameOutOfSync;
 
 	StateQueue mStateBuffer;
 
@@ -200,10 +160,10 @@ protected:
 	FRotator mRemotePawnTargetRotation;
 	FRotator mRemotePawnTargetCameraRotation;
 
-	float mInterpSpeedToRemotePawnTargetLocation;
-	float mInterpSpeedToRemotePawnTargetVelocity;
-	float mInterpSpeedToRemotePawnTargetRotation;
-	float mInterpSpeedToRemotePawnTargetCameraRotation;
+	//float mInterpSpeedToRemotePawnTargetLocation;
+	//float mInterpSpeedToRemotePawnTargetVelocity;
+	//float mInterpSpeedToRemotePawnTargetRotation;
+	//float mInterpSpeedToRemotePawnTargetCameraRotation;
 
 	float mTimeOfLastUpdateTargetState;
 };

@@ -4,7 +4,7 @@
 #include "NetworkMgr.h"
 #include "RealTimeSrvTiming.h"
 #include "RealTimeSrvSocketUtil.h"
-#include "InputManager.h"
+#include "InputMgr.h"
 #include "RealTimeSrvHelper.h"
 #include "ActionList.h"
 
@@ -265,7 +265,7 @@ void NetworkMgr::ReadLastMoveProcessedOnServerTimestamp( InputBitStream& inInput
 		mLastRoundTripTime = rtt;
 		mAvgRoundTripTime.Update( rtt );
 
-		InputManager::sInstance->GetActionList().RemovedProcessedActions( mLastMoveProcessedByServerTimestamp );
+		InputMgr::sInstance->GetActionList().RemovedProcessedActions( mLastMoveProcessedByServerTimestamp );
 
 		//A_LOG();
 		//A_LOG_N( "rtt = ", rtt );
@@ -298,7 +298,7 @@ void NetworkMgr::UpdateSendingInputPacket()
 
 void NetworkMgr::SendInputPacket()
 {
-	const ActionList& moveList = InputManager::sInstance->GetActionList();
+	const ActionList& moveList = InputMgr::sInstance->GetActionList();
 
 	if ( moveList.HasActions() )
 	{
@@ -344,7 +344,7 @@ void NetworkMgr::SendInputPacket()
 	}
 }
 
-GameObjectPtr NetworkMgr::GetGameObject( int inNetworkId ) const
+RealTimeSrvEntityPtr NetworkMgr::GetGameObject( int inNetworkId ) const
 {
 	auto gameObjectIt = mNetworkIdToGameObjectMap.find( inNetworkId );
 	if (gameObjectIt != mNetworkIdToGameObjectMap.end())
@@ -353,16 +353,16 @@ GameObjectPtr NetworkMgr::GetGameObject( int inNetworkId ) const
 	}
 	else
 	{
-		return GameObjectPtr();
+		return RealTimeSrvEntityPtr();
 	}
 }
 
-void NetworkMgr::AddToNetworkIdToGameObjectMap( GameObjectPtr inGameObject )
+void NetworkMgr::AddToNetworkIdToGameObjectMap( RealTimeSrvEntityPtr inGameObject )
 {
 	mNetworkIdToGameObjectMap[inGameObject->GetNetworkId()] = inGameObject;
 }
 
-void NetworkMgr::RemoveFromNetworkIdToGameObjectMap( GameObjectPtr inGameObject )
+void NetworkMgr::RemoveFromNetworkIdToGameObjectMap( RealTimeSrvEntityPtr inGameObject )
 {
 	mNetworkIdToGameObjectMap.erase( inGameObject->GetNetworkId() );
 }

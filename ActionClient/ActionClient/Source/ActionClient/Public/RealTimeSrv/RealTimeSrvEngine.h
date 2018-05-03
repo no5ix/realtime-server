@@ -27,16 +27,16 @@ public:
 	
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = RealTimeSrvEngine)
-		FString ip;
+		FString IP;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = RealTimeSrvEngine)
-		int port;
+		int Port;
 
 	UPROPERTY( EditAnywhere, BlueprintReadWrite, Category = RealTimeSrvEngine )
-		FString player_name;
+		FString Player_Name;
 
 public:
 	/** default inventory list */
 	UPROPERTY( EditAnywhere, Category = RealTimeSrvEngine )
-		TSubclassOf<class ARealTimeSrvPawn> DefaultCharacterClasses;
+		TSubclassOf<class ARealTimeSrvPawn> DefaultPawnClass;
 };

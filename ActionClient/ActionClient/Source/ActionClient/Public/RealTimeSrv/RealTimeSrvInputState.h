@@ -48,7 +48,7 @@ public:
 	bool Read( InputBitStream& inInputStream );
 
 private:
-	friend class InputManager;
+	friend class InputMgr;
 
 	float	mDesiredTurnAmountX;
 	float	mDesiredTurnAmountY;

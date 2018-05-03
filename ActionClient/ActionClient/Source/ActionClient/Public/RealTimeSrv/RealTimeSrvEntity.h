@@ -119,6 +119,4 @@ protected:
 	float mIsTimeToStartSimulateMovementForRemotePawn;
 };
 
-
-//typedef std::shared_ptr< AActionEntity >	GameObjectPtr;
-typedef ARealTimeSrvEntity*	GameObjectPtr;
+typedef ARealTimeSrvEntity*	RealTimeSrvEntityPtr;

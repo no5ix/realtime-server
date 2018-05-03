@@ -28,7 +28,7 @@ UWorld* RealTimeSrvEntityFactory::GetWorld() const
 
 
 
-GameObjectPtr RealTimeSrvEntityFactory::CreateGameObject( uint32_t inFourCCName )
+RealTimeSrvEntityPtr RealTimeSrvEntityFactory::CreateGameObject( uint32_t inFourCCName )
 {
 
 	switch ( inFourCCName )
@@ -39,10 +39,10 @@ GameObjectPtr RealTimeSrvEntityFactory::CreateGameObject( uint32_t inFourCCName 
 		break;
 	}
 
-	return GameObjectPtr();
+	return RealTimeSrvEntityPtr();
 }
 
-GameObjectPtr RealTimeSrvEntityFactory::CreateActionPawn()
+RealTimeSrvEntityPtr RealTimeSrvEntityFactory::CreateActionPawn()
 {
 	check( GetWorld() );
 
@@ -60,8 +60,8 @@ GameObjectPtr RealTimeSrvEntityFactory::CreateActionPawn()
 		{
 			RealTimeSrvWorld::sInstance->AddGameObject( newActionPawn );
 		}
-		return GameObjectPtr( newActionPawn );
+		return RealTimeSrvEntityPtr( newActionPawn );
 
 	}
-	return GameObjectPtr();
+	return RealTimeSrvEntityPtr();
 }

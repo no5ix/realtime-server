@@ -1,12 +1,11 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "ActionClient.h"
-//#include "Action.h"
-#include "InputManager.h"
+#include "InputMgr.h"
 #include "RealTimeSrvTiming.h"
 #include "RealTimeSrvHelper.h"
 
-std::unique_ptr< InputManager >	InputManager::sInstance;
+std::unique_ptr< InputMgr >	InputMgr::sInstance;
 
 
 namespace
@@ -15,20 +14,20 @@ namespace
 }
 
 
-void InputManager::StaticInit()
+void InputMgr::StaticInit()
 {
-	sInstance.reset( new InputManager() );
+	sInstance.reset( new InputMgr() );
 }
 
 
-InputManager::InputManager() :
+InputMgr::InputMgr() :
 	mNextTimeToSampleInput( 0.f ),
 	mPendingAction( nullptr )
 {
 
 }
 
-void InputManager::HandleTurnInput( EInputAction inTurnInputAction, float inX /*Pitch*/, float inY /*Yaw*/, float inZ /*Roll*/)
+void InputMgr::HandleTurnInput( EInputAction inTurnInputAction, float inX /*Pitch*/, float inY /*Yaw*/, float inZ /*Roll*/)
 {
 
 	switch ( inTurnInputAction )
@@ -54,7 +53,7 @@ void InputManager::HandleTurnInput( EInputAction inTurnInputAction, float inX /*
 	}
 }
 
-void InputManager::HandleMoveInput( EInputAction inMoveInputAction, float inValue )
+void InputMgr::HandleMoveInput( EInputAction inMoveInputAction, float inValue )
 {
 	switch (inMoveInputAction)
 	{
@@ -81,7 +80,7 @@ void InputManager::HandleMoveInput( EInputAction inMoveInputAction, float inValu
 
 
 
-const Action& InputManager::SampleInputAsAction()
+const Action& InputMgr::SampleInputAsAction()
 {
 
 	return mActionList.AddAction( GetState(), RealTimeSrvTiming::sInstance.GetFrameStartTime() );
@@ -91,7 +90,7 @@ const Action& InputManager::SampleInputAsAction()
 	//return testAction;
 }
 
-bool InputManager::IsTimeToSampleInput()
+bool InputMgr::IsTimeToSampleInput()
 {
 	//float time = ActionTiming::sInstance.GetFrameStartTime();
 	//if (time > mNextTimeToSampleInput)
@@ -105,7 +104,7 @@ bool InputManager::IsTimeToSampleInput()
 	return true;
 }
 
-void InputManager::Update()
+void InputMgr::Update()
 {
 	if (IsTimeToSampleInput())
 	{

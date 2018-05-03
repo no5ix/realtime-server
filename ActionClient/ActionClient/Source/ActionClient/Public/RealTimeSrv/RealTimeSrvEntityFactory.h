@@ -10,7 +10,7 @@
  * 
  */
 
-typedef GameObjectPtr( *GameObjectCreationFunc )( );
+typedef RealTimeSrvEntityPtr( *GameObjectCreationFunc )( );
 
 class RealTimeSrvEntityFactory
 {
@@ -20,10 +20,10 @@ public:
 
 	UWorld* GetWorld() const;
 
-	GameObjectPtr CreateGameObject( uint32_t inFourCCName );
+	RealTimeSrvEntityPtr CreateGameObject( uint32_t inFourCCName );
 
 
-	void SetDefaultCharacterClasses( TSubclassOf<class ARealTimeSrvPawn> inDefaultCharacterClasses ) { DefaultCharacterClasses = inDefaultCharacterClasses; }
+	void SetDefaultPawnClass( TSubclassOf<class ARealTimeSrvPawn> inDefaultCharacterClasses ) { DefaultCharacterClasses = inDefaultCharacterClasses; }
 
 
 public:
@@ -31,7 +31,7 @@ public:
 
 private:
 	RealTimeSrvEntityFactory();
-	GameObjectPtr CreateActionPawn();
+	RealTimeSrvEntityPtr CreateActionPawn();
 
 
 private:

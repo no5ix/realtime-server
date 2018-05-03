@@ -6,7 +6,7 @@
 #include "Action.h"
 #include "ActionList.h"
 
-class InputManager
+class InputMgr
 {
 public:
 	enum EInputAction
@@ -25,7 +25,7 @@ public:
 
 
 	static void StaticInit();
-	static std::unique_ptr< InputManager >	sInstance;
+	static std::unique_ptr< InputMgr >	sInstance;
 
 	void HandleMoveInput( EInputAction inMoveInputAction, float inValue );
 	void HandleTurnInput( EInputAction inTurnInputAction, float inX /*Pitch*/, float inY /*Yaw*/, float inZ /*Roll*/ );
@@ -42,7 +42,7 @@ private:
 	const Action*		mPendingAction;
 	RealTimeSrvInputState mCurrentState;
 
-	InputManager();
+	InputMgr();
 
 	bool				IsTimeToSampleInput();
 	const Action&			SampleInputAsAction();
