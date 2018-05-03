@@ -178,8 +178,8 @@ ActionClient/ActionClient/Source/ActionClient/*
 
 !ActionClient/ActionClient/Source/ActionClient/Public/
 ActionClient/ActionClient/Source/ActionClient/Public/*
-!ActionClient/ActionClient/Source/ActionClient/Public/Action/
+!ActionClient/ActionClient/Source/ActionClient/Public/RealTimeSrv/
 
 !ActionClient/ActionClient/Source/ActionClient/Private/
 ActionClient/ActionClient/Source/ActionClient/Private/*
-!ActionClient/ActionClient/Source/ActionClient/Private/Action/
+!ActionClient/ActionClient/Source/ActionClient/Private/RealTimeSrv/
