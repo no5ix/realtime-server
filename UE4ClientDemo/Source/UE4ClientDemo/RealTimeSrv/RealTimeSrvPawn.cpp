@@ -6,7 +6,6 @@
 #include "RealTimeSrvHelper.h"
 #include "RealTimeSrvTiming.h"
 #include "NetworkMgr.h"
-#include "Kismet/KismetMathLibrary.h"
 #include "kismet/GameplayStatics.h"
 
 
@@ -330,7 +329,8 @@ void ARealTimeSrvPawn::SimulateMovementForRemotePawn( float inDeltaTime )
 	//mLocalVelocity = mRemotePawnTargetVelocity;
 
 	//A_LOG_N_EXTRA( "VInterpTo_Constant start ActionTiming::sInstance.GetCurrentGameTime() = ", ActionTiming::sInstance.GetCurrentGameTime() );
-	mLocalLocation = UKismetMathLibrary::VInterpTo_Constant(
+	//mLocalLocation = UKismetMathLibrary::VInterpTo_Constant(
+	mLocalLocation = FMath::VInterpConstantTo(
 		GetActorLocation(),
 		mRemotePawnTargetLocation,
 		inDeltaTime,
@@ -339,7 +339,8 @@ void ARealTimeSrvPawn::SimulateMovementForRemotePawn( float inDeltaTime )
 	//A_LOG_N_EXTRA( "VInterpTo_Constant end ActionTiming::sInstance.GetCurrentGameTime() = ", ActionTiming::sInstance.GetCurrentGameTime() );
 
 
-	mLocalVelocity = UKismetMathLibrary::VInterpTo_Constant(
+	//mLocalVelocity = UKismetMathLibrary::VInterpTo_Constant(
+	mLocalLocation = FMath::VInterpConstantTo(
 		GetLocalVelocity(),
 		mRemotePawnTargetVelocity,
 		inDeltaTime,
@@ -354,7 +355,8 @@ void ARealTimeSrvPawn::SimulateMovementForRemotePawn( float inDeltaTime )
 	//}
 
 
-	mLocalRotation = UKismetMathLibrary::RInterpTo(
+	//mLocalRotation = UKismetMathLibrary::RInterpTo(
+	mLocalRotation = FMath::RInterpTo(
 		GetActorRotation(),
 		mRemotePawnTargetRotation,
 		inDeltaTime,
@@ -362,8 +364,9 @@ void ARealTimeSrvPawn::SimulateMovementForRemotePawn( float inDeltaTime )
 	);
 	
 
-	mLocalActionPawnCameraRotation = UKismetMathLibrary::RInterpTo(
-		ActionPawnCamera->GetComponentRotation(),
+	//mLocalActionPawnCameraRotation = UKismetMathLibrary::RInterpTo(
+	mLocalRotation = FMath::RInterpTo(
+			ActionPawnCamera->GetComponentRotation(),
 		mRemotePawnTargetCameraRotation,
 		inDeltaTime,
 		BaseLookUpRate * 8.f
