@@ -9,7 +9,7 @@ A real time game server and a UE4 demo for it.
 # Download & Play
 
  
-- Client Side : [UE4ClientDemo.exe (Win32)](https://pan.baidu.com/s/1nopKSBXH1bqrE-c5DaSyxw)
+- Client Side : [UE4ClientDemo.exe (Win32)](https://pan.baidu.com/s/15IRP6l9-VzccupK7Qvhrhw)
 
 - Server Side : A server instance is running on my VPS, so just double click the UE4ClientDemo.exe that will connect to my server automatically
 
