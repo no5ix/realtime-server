@@ -2,12 +2,13 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
+
 #include "GameFramework/Actor.h"
+#include "RealTimeSrvEngine.h"
 #include "PutMeInTheMap.generated.h"
 
 UCLASS()
-class UE4CLIENTDEMO_API APutMeInTheMap : public AActor
+class APutMeInTheMap : public AActor
 {
 	GENERATED_BODY()
 	
@@ -15,14 +16,17 @@ public:
 	// Sets default values for this actor's properties
 	APutMeInTheMap();
 
-protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
+//protected:
+//	// Called when the game starts or when spawned
+//	virtual void BeginPlay() override;
+//
+//public:	
+//	// Called every frame
+//	virtual void Tick(float DeltaTime) override;
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+public:
 
-	
+	UPROPERTY( EditAnywhere, BlueprintReadWrite, Category = RealTimeSrvEngine )
+		URealTimeSrvEngine* RealTimeSrvEngine;
 	
 };

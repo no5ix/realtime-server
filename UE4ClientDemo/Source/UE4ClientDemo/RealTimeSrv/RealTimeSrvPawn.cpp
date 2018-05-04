@@ -329,7 +329,7 @@ void ARealTimeSrvPawn::SimulateMovementForRemotePawn( float inDeltaTime )
 	//mLocalVelocity = mRemotePawnTargetVelocity;
 
 	//A_LOG_N_EXTRA( "VInterpTo_Constant start ActionTiming::sInstance.GetCurrentGameTime() = ", ActionTiming::sInstance.GetCurrentGameTime() );
-	//mLocalLocation = UKismetMathLibrary::VInterpTo_Constant(
+	// mLocalLocation = UKismetMathLibrary::VInterpTo_Constant(
 	mLocalLocation = FMath::VInterpConstantTo(
 		GetActorLocation(),
 		mRemotePawnTargetLocation,
@@ -339,8 +339,8 @@ void ARealTimeSrvPawn::SimulateMovementForRemotePawn( float inDeltaTime )
 	//A_LOG_N_EXTRA( "VInterpTo_Constant end ActionTiming::sInstance.GetCurrentGameTime() = ", ActionTiming::sInstance.GetCurrentGameTime() );
 
 
-	//mLocalVelocity = UKismetMathLibrary::VInterpTo_Constant(
-	mLocalLocation = FMath::VInterpConstantTo(
+	// mLocalVelocity = UKismetMathLibrary::VInterpTo_Constant(
+	mLocalVelocity = FMath::VInterpConstantTo(
 		GetLocalVelocity(),
 		mRemotePawnTargetVelocity,
 		inDeltaTime,
@@ -355,7 +355,7 @@ void ARealTimeSrvPawn::SimulateMovementForRemotePawn( float inDeltaTime )
 	//}
 
 
-	//mLocalRotation = UKismetMathLibrary::RInterpTo(
+	// mLocalRotation = UKismetMathLibrary::RInterpTo(
 	mLocalRotation = FMath::RInterpTo(
 		GetActorRotation(),
 		mRemotePawnTargetRotation,
@@ -365,8 +365,8 @@ void ARealTimeSrvPawn::SimulateMovementForRemotePawn( float inDeltaTime )
 	
 
 	//mLocalActionPawnCameraRotation = UKismetMathLibrary::RInterpTo(
-	mLocalRotation = FMath::RInterpTo(
-			ActionPawnCamera->GetComponentRotation(),
+	mLocalActionPawnCameraRotation = FMath::RInterpTo(
+		ActionPawnCamera->GetComponentRotation(),
 		mRemotePawnTargetCameraRotation,
 		inDeltaTime,
 		BaseLookUpRate * 8.f
@@ -532,7 +532,8 @@ void ARealTimeSrvPawn::Read( InputBitStream& inInputStream )
 		if ( GetPlayerId() == NetworkMgr::sInstance->GetPlayerId() )
 		{
 			APlayerController* const FirstPC =  UGameplayStatics::GetPlayerController( GetWorld(), 0 );
-			if ( FirstPC != nullptr && !( FirstPC->GetPawn() ) )
+			//if ( FirstPC != nullptr && !( FirstPC->GetPawn() ) )
+			if ( FirstPC != nullptr )
 			{
 				FirstPC->Possess( this );
 			}
