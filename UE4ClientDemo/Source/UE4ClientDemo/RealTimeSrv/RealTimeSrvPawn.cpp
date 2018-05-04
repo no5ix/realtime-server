@@ -52,6 +52,11 @@ ARealTimeSrvPawn::ARealTimeSrvPawn( const FObjectInitializer& ObjectInitializer 
 	FTransform Mesh3PTransform( FRotator( 0.f, -90.f, 0.f ), FVector( 0.f, 0.f, -86.f ) );
 	Mesh3P->SetRelativeTransform( Mesh3PTransform );
 
+
+	// MovementComponent = CreateDefaultSubobject<UFloatingPawnMovement>( "MovementComponent" );
+	// MovementComponent->UpdatedComponent = RootComponent;
+
+
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
@@ -210,6 +215,9 @@ void ARealTimeSrvPawn::ProcessInputBaseOnLocalState( float inDeltaTime, const Re
 		//SetActorLocation( GetActorLocation() + Delta );
 		mLocalLocation = GetActorLocation() + Delta;
 	}
+
+	// AddMovementInput( mLocalActionPawnCameraRotation.Quaternion().GetForwardVector(), inInputState.GetDesiredMoveForwardAmount() );
+	// AddMovementInput( mLocalActionPawnCameraRotation.Quaternion().GetRightVector(), inInputState.GetDesiredMoveRightAmount() );
 }
 
 void ARealTimeSrvPawn::ProcessInputBaseOnServerState( float inDeltaTime, const RealTimeSrvInputState& inInputState )
@@ -416,6 +424,7 @@ void ARealTimeSrvPawn::SimulateMovementForLocalPawn(float inDeltaTime)
 		if ( !GetActorLocation().Equals( mLocation, 100.f ) )
 		{
 			mLocalLocation = mLocation;
+			// SetActorLocation( mLocation );
 			
 			A_MSG_1( 5.f, "drawwwwwwwwwwwwwwwww" );
 			A_LOG_1("drawwwwwwwwwwwwwwwww" );
@@ -510,7 +519,7 @@ void ARealTimeSrvPawn::ApplyControlInputToVelocity( float DeltaTime )
 	mVelocity += ControlAcceleration * FMath::Abs( Acceleration ) * DeltaTime;
 	mVelocity = mVelocity.GetClampedToMaxSize( NewMaxSpeed );
 
-	mVelocity.Z = 0.f;
+	 mVelocity.Z = 0.f;
 
 	ActionConsumeMovementInputVector();
 }

@@ -7,6 +7,7 @@
 #include "RealTimeSrvEntity.h"
 #include "RealTimeSrvInputState.h"
 #include "StateQueue.h"
+// #include "GameFramework/FloatingPawnMovement.h"
 #include "RealTimeSrvPawn.generated.h"
 
 UCLASS()
@@ -115,6 +116,12 @@ private:
 	/** pawn mesh: 1st person view */
 	UPROPERTY( VisibleDefaultsOnly, Category = Mesh )
 		USkeletalMeshComponent* Mesh3P;
+
+
+// private:
+// 	/** DefaultPawn movement component */
+// 	UPROPERTY( Category = Pawn, VisibleAnywhere, BlueprintReadOnly, meta = ( AllowPrivateAccess = "true" ) )
+// 		UFloatingPawnMovement* MovementComponent;
 
 private:
 
