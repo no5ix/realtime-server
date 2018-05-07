@@ -51,16 +51,16 @@
 
 ///////// UE LOG!
 
-// Example usage: A_LOG( "Action!" );
+// Example usage: A_LOG();
 #define	A_LOG() 		           					if (ACTION_SHOW_DEBUG_OUTPUT_LOG) UE_LOG(LogTemp, Warning, TEXT("%s"), *STR_CUR_CLASS_FUNC_LINE )
 
-// Example usage: A_LOG( "Action!" );
+// Example usage: A_LOG_1( "Action!" );
 #define A_LOG_1(StringParam1) 		           				if (ACTION_SHOW_DEBUG_OUTPUT_LOG) UE_LOG(LogTemp, Warning, TEXT("%s  :  %s"), *STR_CUR_CLASS_FUNC_LINE, *FString(StringParam1))
 
-// Example usage: A_LOG2("Action!", "Cut!");
+// Example usage: A_LOG_2("Action!", "Cut!");
 #define A_LOG_2(StringParam1, StringParam2) 	       				if (ACTION_SHOW_DEBUG_OUTPUT_LOG) UE_LOG(LogTemp, Warning, TEXT("%s  :  %s     %s"), *STR_CUR_CLASS_FUNC_LINE, *FString(StringParam1), *FString(StringParam2))
 
-// Example usage: A_LOGF("Action!", 88.f);
+// Example usage: A_LOG_N("Action!", 88.f);
 #define A_LOG_N(StringParam1, NumericalParam2) 	       		if (ACTION_SHOW_DEBUG_OUTPUT_LOG) UE_LOG(LogTemp, Warning, TEXT("%s  :  %s    %f"), *STR_CUR_CLASS_FUNC_LINE, *FString(StringParam1), float(NumericalParam2) )
 
 // 
@@ -69,16 +69,12 @@
 
 ///////// UE LOG_EXTRA!
 
-// Example usage: A_LOG( "Action!" );
 #define	A_LOG_EXTRA() 		           					if (ACTION_SHOW_DEBUG_OUTPUT_LOG_EXTRA) UE_LOG(LogTemp, Warning, TEXT("%s"), *STR_CUR_CLASS_FUNC_LINE )
 
-// Example usage: A_LOG( "Action!" );
 #define A_LOG_1_EXTRA(StringParam1) 		           				if (ACTION_SHOW_DEBUG_OUTPUT_LOG_EXTRA) UE_LOG(LogTemp, Warning, TEXT("%s  :  %s"), *STR_CUR_CLASS_FUNC_LINE, *FString(StringParam1))
 
-// Example usage: A_LOG2("Action!", "Cut!");
 #define A_LOG_2_EXTRA(StringParam1, StringParam2) 	       				if (ACTION_SHOW_DEBUG_OUTPUT_LOG_EXTRA) UE_LOG(LogTemp, Warning, TEXT("%s  :  %s     %s"), *STR_CUR_CLASS_FUNC_LINE, *FString(StringParam1), *FString(StringParam2))
 
-// Example usage: A_LOGF("Action!", 88.f);
 #define A_LOG_N_EXTRA(StringParam1, NumericalParam2) 	       		if (ACTION_SHOW_DEBUG_OUTPUT_LOG_EXTRA) UE_LOG(LogTemp, Warning, TEXT("%s  :  %s    %f"), *STR_CUR_CLASS_FUNC_LINE, *FString(StringParam1), float(NumericalParam2) )
 
 // 

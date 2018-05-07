@@ -8,6 +8,9 @@
 typedef int socklen_t;
 //typedef char* receiveBufer_t;
 #else
+#include <pthread.h>
+#include <arpa/inet.h>
+#include <sys/epoll.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <sys/types.h>
@@ -60,8 +63,10 @@ class Entity;
 
 #include "Utility.h"
 
-#include "SocketAddress.h"
+#include "SocketAddressInterface.h"
 #include "UDPSocketInterface.h"
+
+//#include "EpollInterface.h"
 
 #include "Macro.h"
 
@@ -85,7 +90,7 @@ class Entity;
 
 #include "WeightedTimedMovingAverage.h"
 
-#include "ReplicationCommand.h"
+#include "ReplicationCmd.h"
 #include "NetworkMgr.h"
 
 

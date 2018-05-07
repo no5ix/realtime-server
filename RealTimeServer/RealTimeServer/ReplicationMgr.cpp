@@ -1,10 +1,10 @@
-#include "RealTimeServerShared.h"
+#include "RealTimeServerPCH.h"
 
 
 
 void ReplicationMgr::ReplicateCreate( int inNetworkId, uint32_t inInitialDirtyState )
 {
-	mNetworkIdToReplicationCommand[inNetworkId] = ReplicationCommand( inInitialDirtyState );
+	mNetworkIdToReplicationCommand[inNetworkId] = ReplicationCmd( inInitialDirtyState );
 }
 
 void ReplicationMgr::ReplicateDestroy( int inNetworkId )
@@ -34,7 +34,7 @@ void ReplicationMgr::Write( OutputBitStream& inOutputStream, TransmissionDataHan
 	
 	for (auto& pair : mNetworkIdToReplicationCommand)
 	{
-		ReplicationCommand& replicationCommand = pair.second;
+		ReplicationCmd& replicationCommand = pair.second;
 		if (replicationCommand.HasDirtyState())
 		{
 			int networkId = pair.first;

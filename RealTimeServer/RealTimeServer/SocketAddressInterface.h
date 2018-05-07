@@ -1,28 +1,28 @@
 
 
-class SocketAddress
+class SocketAddressInterface
 {
 public:
-	SocketAddress( uint32_t inAddress, uint16_t inPort )
+	SocketAddressInterface( uint32_t inAddress, uint16_t inPort )
 	{
 		GetAsSockAddrIn()->sin_family = AF_INET;
 		GetIP4Ref() = htonl( inAddress );
 		GetAsSockAddrIn()->sin_port = htons( inPort );
 	}
 
-	SocketAddress( const sockaddr& inSockAddr )
+	SocketAddressInterface( const sockaddr& inSockAddr )
 	{
 		memcpy( &mSockAddr, &inSockAddr, sizeof( sockaddr ) );
 	}
 
-	SocketAddress()
+	SocketAddressInterface()
 	{
 		GetAsSockAddrIn()->sin_family = AF_INET;
 		GetIP4Ref() = INADDR_ANY;
 		GetAsSockAddrIn()->sin_port = 0;
 	}
 
-	bool operator==( const SocketAddress& inOther ) const
+	bool operator==( const SocketAddressInterface& inOther ) const
 	{
 		return ( mSockAddr.sa_family == AF_INET &&
 			GetAsSockAddrIn()->sin_port == inOther.GetAsSockAddrIn()->sin_port ) &&
@@ -49,8 +49,12 @@ public:
 			destinationBuffer,
 			ntohs( s->sin_port ) );
 #else
-		//not implement on mac for now...
-		return string( "not implemented on linux for now" );
+		const sockaddr_in* s = GetAsSockAddrIn();
+		char destinationBuffer[128];
+		inet_ntop( s->sin_family, &s->sin_addr, destinationBuffer, sizeof( destinationBuffer ) );
+		return Utility::Sprintf( "%s:%d",
+			destinationBuffer,
+			ntohs( s->sin_port ) );
 #endif
 	}
 
@@ -72,13 +76,13 @@ private:
 
 };
 
-typedef shared_ptr< SocketAddress > SocketAddressPtr;
+typedef shared_ptr< SocketAddressInterface > SocketAddressPtr;
 
 namespace std
 {
-	template<> struct hash< SocketAddress >
+	template<> struct hash< SocketAddressInterface >
 	{
-		size_t operator()( const SocketAddress& inAddress ) const
+		size_t operator()( const SocketAddressInterface& inAddress ) const
 		{
 			return inAddress.GetHash();
 		}

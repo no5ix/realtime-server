@@ -16,7 +16,7 @@ Character::Character() :
 	BaseTurnRate = 2.f;
 	BaseLookUpRate = 2.f;
 
-	MaxSpeed = 440;
+	MaxSpeed = 440.f;
 	Acceleration = 1000.f;
 	Deceleration = 2000.f;
 	TurningBoost = 8.0f;

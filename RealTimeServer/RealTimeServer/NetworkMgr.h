@@ -15,10 +15,10 @@ public:
 	bool	Init( uint16_t inPort );
 	void	ProcessIncomingPackets();
 
-	virtual void	ProcessPacket( InputBitStream& inInputStream, const SocketAddress& inFromAddress ) = 0;
-	virtual void HandleConnectionReset( const SocketAddress& inFromAddress ) {}
+	virtual void	ProcessPacket( InputBitStream& inInputStream, const SocketAddressInterface& inFromAddress ) = 0;
+	virtual void HandleConnectionReset( const SocketAddressInterface& inFromAddress ) {}
 
-	void	SendPacket( const OutputBitStream& inOutputStream, const SocketAddress& inFromAddress );
+	void	SendPacket( const OutputBitStream& inOutputStream, const SocketAddressInterface& inFromAddress );
 
 	void	SetDropPacketChance( float inChance ) { mDropPacketChance = inChance; }
 	void	SetSimulatedLatency( float inLatency ) { mSimulatedLatency = inLatency; }
@@ -37,14 +37,14 @@ private:
 	class ReceivedPacket
 	{
 	public:
-		ReceivedPacket( float inReceivedTime, InputBitStream& ioInputMemoryBitStream, const SocketAddress& inFromAddress ) :
+		ReceivedPacket( float inReceivedTime, InputBitStream& ioInputMemoryBitStream, const SocketAddressInterface& inFromAddress ) :
 		mReceivedTime( inReceivedTime ),
 		mFromAddress( inFromAddress ),
 		mPacketBuffer( ioInputMemoryBitStream )
 		{
 		}
 
-		const	SocketAddress&			GetFromAddress()	const { return mFromAddress; }
+		const	SocketAddressInterface&			GetFromAddress()	const { return mFromAddress; }
 		float					GetReceivedTime()	const { return mReceivedTime; }
 		InputBitStream&	GetPacketBuffer() { return mPacketBuffer; }
 
@@ -52,7 +52,7 @@ private:
 
 		float					mReceivedTime;
 		InputBitStream	mPacketBuffer;
-		SocketAddress			mFromAddress;
+		SocketAddressInterface			mFromAddress;
 
 	};
 

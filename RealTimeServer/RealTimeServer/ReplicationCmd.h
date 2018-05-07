@@ -10,14 +10,13 @@ enum ReplicationAction
 };
 
 
-struct ReplicationCommand
+struct ReplicationCmd
 {
 public:
 
-	ReplicationCommand() {}
-	ReplicationCommand( uint32_t inInitialDirtyState ) : mAction( RA_Create ), mDirtyState( inInitialDirtyState ) {}
+	ReplicationCmd() {}
+	ReplicationCmd( uint32_t inInitialDirtyState ) : mAction( RA_Create ), mDirtyState( inInitialDirtyState ) {}
 
-	//if the create is ack'd, we can demote to just an update...
 	void HandleCreateAckd() { if (mAction == RA_Create) { mAction = RA_Update; } }
 	void AddDirtyState( uint32_t inState ) { mDirtyState |= inState; }
 	void SetDestroy() { mAction = RA_Destroy; }
@@ -35,7 +34,7 @@ private:
 	ReplicationAction		mAction;
 };
 
-inline void	 ReplicationCommand::ClearDirtyState( uint32_t inStateToClear )
+inline void	 ReplicationCmd::ClearDirtyState( uint32_t inStateToClear )
 {
 	mDirtyState &= ~inStateToClear;
 

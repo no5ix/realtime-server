@@ -22,7 +22,14 @@ bool NetworkMgr::Init(uint16_t inPort)
 #endif
 
 	mSocket = UDPSocketInterface::CreateUDPSocket();
-	SocketAddress ownAddress(INADDR_ANY, inPort);
+
+	//did we bind okay?
+	if ( mSocket == nullptr )
+	{
+		return false;
+	}
+
+	SocketAddressInterface ownAddress(INADDR_ANY, inPort);
 	mSocket->Bind(ownAddress);
 
 	LOG("Initializing NetworkManager at port %d", inPort);
@@ -30,11 +37,6 @@ bool NetworkMgr::Init(uint16_t inPort)
 	//mBytesReceivedPerSecond = WeightedTimedMovingAverage(1.f);
 	//mBytesSentPerSecond = WeightedTimedMovingAverage(1.f);
 
-	//did we bind okay?
-	if (mSocket == nullptr)
-	{
-		return false;
-	}
 
 	if (mSocket->SetNonBlockingMode(true) != NO_ERROR)
 	{
@@ -62,7 +64,7 @@ void NetworkMgr::ReadIncomingPacketsIntoQueue()
 	char packetMem[1500];
 	int packetSize = sizeof( packetMem );
 	InputBitStream inputStream( packetMem, packetSize * 8 );
-	SocketAddress fromAddress;
+	SocketAddressInterface fromAddress;
 
 	int receivedPackedCount = 0;
 	int totalReadByteCount = 0;
@@ -130,7 +132,7 @@ void NetworkMgr::ProcessQueuedPackets()
 
 }
 
-void NetworkMgr::SendPacket( const OutputBitStream& inOutputStream, const SocketAddress& inFromAddress )
+void NetworkMgr::SendPacket( const OutputBitStream& inOutputStream, const SocketAddressInterface& inFromAddress )
 {
 	int sentByteCount = mSocket->SendTo( inOutputStream.GetBufferPtr(), inOutputStream.GetByteLength(), inFromAddress );
 	if (sentByteCount > 0)

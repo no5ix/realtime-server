@@ -9,6 +9,7 @@ add_definitions(-std=c++11)
 
 # 项目信息
 set (PROJ_NAME RealTimeServer)
+set (BIN_NAME rts)
 project (${PROJ_NAME})
 
 
@@ -41,15 +42,16 @@ file(
 source_group("Include" FILES ${CURRENT_HEADERS}) 
 
 
-# 指定生成目标
-add_executable(${PROJ_NAME} ${DIR_SRCS} ${CURRENT_HEADERS})
 
 
 IF(WIN32) # Check if we are on Windows
-	if(MSVC) # Check if we are using the Visual Studio compiler
-		# set_target_properties(${PROJ_NAME} PROPERTIES LINK_FLAGS "/SUBSYSTEM:WINDOWS") # works for all build modes
-		set_target_properties(${PROJ_NAME} PROPERTIES LINK_FLAGS "/SUBSYSTEM:CONSOLE") # works for all build modes
-		target_link_libraries(${PROJ_NAME} wsock32 ws2_32)
+    # 指定生成目标
+    add_executable(${PROJ_NAME} ${DIR_SRCS} ${CURRENT_HEADERS})
+    
+  	if(MSVC) # Check if we are using the Visual Studio compiler
+    		# set_target_properties(${PROJ_NAME} PROPERTIES LINK_FLAGS "/SUBSYSTEM:WINDOWS") # works for all build modes
+    		set_target_properties(${PROJ_NAME} PROPERTIES LINK_FLAGS "/SUBSYSTEM:CONSOLE") # works for all build modes
+    		target_link_libraries(${PROJ_NAME} wsock32 ws2_32)
         set_target_properties(${PROJ_NAME}
             PROPERTIES
             COMPILE_FLAGS /wd"4819"
@@ -59,16 +61,22 @@ IF(WIN32) # Check if we are on Windows
   	else()
 	  	message(SEND_ERROR "You are using an unsupported Windows compiler! (Not MSVC or GCC)")
   	endif()
+
 elseif(UNIX)
+    # 指定生成目标
+    add_executable(${BIN_NAME} ${DIR_SRCS} ${CURRENT_HEADERS})
+
     # Inhibit all warning messages.
     if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
         # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wno-long-long -pedantic")
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w")
     endif()
+
   	# For gdb
     set(CMAKE_BUILD_TYPE "Debug")
     set(CMAKE_CXX_FLAGS_DEBUG "$ENV{CXXFLAGS} -O0 -Wall -g -ggdb")
     set(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall")
+
 else()
   	message(SEND_ERROR "You are on an unsupported platform! (Not Win32 or Unix)")
 ENDIF()

@@ -22,7 +22,7 @@ bool NetworkMgrSrv::StaticInit( uint16_t inPort )
 	return sInstance->Init( inPort );
 }
 
-void NetworkMgrSrv::ProcessPacket( InputBitStream& inInputStream, const SocketAddress& inFromAddress )
+void NetworkMgrSrv::ProcessPacket( InputBitStream& inInputStream, const SocketAddressInterface& inFromAddress )
 {
 	auto it = mAddressToClientMap.find( inFromAddress );
 	if ( it == mAddressToClientMap.end() )
@@ -80,7 +80,7 @@ void NetworkMgrSrv::HandleInputPacket( ClientProxyPtr inClientProxy, InputBitStr
 }
 
 
-void NetworkMgrSrv::HandlePacketFromNewClient( InputBitStream& inInputStream, const SocketAddress& inFromAddress )
+void NetworkMgrSrv::HandlePacketFromNewClient( InputBitStream& inInputStream, const SocketAddressInterface& inFromAddress )
 {
 	uint32_t	packetType;
 	inInputStream.Read( packetType );

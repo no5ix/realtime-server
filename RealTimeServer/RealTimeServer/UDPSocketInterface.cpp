@@ -71,7 +71,7 @@ UDPSocketPtr UDPSocketInterface::CreateUDPSocket()
 	}
 }
 
-int UDPSocketInterface::Bind(const SocketAddress& inBindAddress)
+int UDPSocketInterface::Bind(const SocketAddressInterface& inBindAddress)
 {
 	int error = bind(mSocket, &inBindAddress.mSockAddr, inBindAddress.GetSize());
 	if (error != 0)
@@ -83,7 +83,7 @@ int UDPSocketInterface::Bind(const SocketAddress& inBindAddress)
 	return NO_ERROR;
 }
 
-int UDPSocketInterface::SendTo(const void* inToSend, int inLength, const SocketAddress& inToAddress)
+int UDPSocketInterface::SendTo(const void* inToSend, int inLength, const SocketAddressInterface& inToAddress)
 {
 	int byteSentCount = sendto(mSocket,
 		static_cast<const char*>(inToSend),
@@ -102,7 +102,7 @@ int UDPSocketInterface::SendTo(const void* inToSend, int inLength, const SocketA
 	}
 }
 
-int UDPSocketInterface::ReceiveFrom(void* inToReceive, int inMaxLength, SocketAddress& outFromAddress)
+int UDPSocketInterface::ReceiveFrom(void* inToReceive, int inMaxLength, SocketAddressInterface& outFromAddress)
 {
 	socklen_t fromLength = outFromAddress.GetSize();
 
