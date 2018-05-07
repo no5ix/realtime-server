@@ -7,10 +7,10 @@ enum ECatControlType
 };
 
 // CharacterServer
-class CharacterServer : public Character
+class CharacterSrv : public Character
 {
 public:
-	static GameObjectPtr	StaticCreate() { return NetworkMgrSrv::sInstance->RegisterAndReturn( new CharacterServer() ); }
+	static GameObjectPtr	StaticCreate() { return NetworkMgrSrv::sInst->RegisterAndReturn( new CharacterSrv() ); }
 	virtual void HandleDying() override;
 
 	virtual void Update() override;
@@ -20,7 +20,7 @@ public:
 	void TakeDamage( int inDamagingPlayerId );
 
 protected:
-	CharacterServer();
+	CharacterSrv();
 
 private:
 

@@ -1,4 +1,4 @@
-#include "RealTimeServerPCH.h"
+#include "RealTimeSrvPCH.h"
 
 //
 //#if _WIN32
@@ -34,9 +34,9 @@ int main( int argc, const char** argv )
 	__argc = argc;
 	__argv = argv;
 #endif
-	if (RealTimeServer::StaticInit())
+	if (RealTimeSrv::StaticInit())
 	{
-		return RealTimeServer::sInstance->Run();
+		return RealTimeSrv::sInstance->Run();
 	}
 	else
 	{

@@ -1,14 +1,14 @@
-#include "RealTimeServerPCH.h"
+#include "RealTimeSrvPCH.h"
 
 
 
 
 
-std::unique_ptr< World >	World::sInstance;
+std::unique_ptr< World >	World::sInst;
 
 void World::StaticInit()
 {
-	sInstance.reset( new World() );
+	sInst.reset( new World() );
 }
 
 World::World()

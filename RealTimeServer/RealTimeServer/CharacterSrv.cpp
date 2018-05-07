@@ -1,18 +1,18 @@
-#include "RealTimeServerPCH.h"
+#include "RealTimeSrvPCH.h"
 
 
-CharacterServer::CharacterServer() :
+CharacterSrv::CharacterSrv() :
 	mCatControlType( ESCT_Human ),
 	mTimeOfNextShot( 0.f ),
 	mTimeBetweenShots( 0.2f )
 {}
 
-void CharacterServer::HandleDying()
+void CharacterSrv::HandleDying()
 {
-	NetworkMgrSrv::sInstance->UnregisterGameObject( this );
+	NetworkMgrSrv::sInst->UnregisterGameObject( this );
 }
 
-void CharacterServer::Update()
+void CharacterSrv::Update()
 {
 	Character::Update();
 
@@ -20,7 +20,7 @@ void CharacterServer::Update()
 	Vector3 oldVelocity = GetVelocity();
 	Vector3 oldRotation = GetRotation();
 
-	ClientProxyPtr client = NetworkMgrSrv::sInstance->GetClientProxy( GetPlayerId() );
+	ClientProxyPtr client = NetworkMgrSrv::sInst->GetClientProxy( GetPlayerId() );
 	if ( client )
 	{
 		ActionList& moveList = client->GetUnprocessedMoveList();
@@ -50,15 +50,15 @@ void CharacterServer::Update()
 		)
 	{
 		//LOG( " NetworkManagerServer::sInstance->SetStateDirty( GetNetworkId(), ECRS_Pose );  GetPlayerId = %d", GetPlayerId() );
-		NetworkMgrSrv::sInstance->SetStateDirty( GetNetworkId(), ECRS_Pose );
+		NetworkMgrSrv::sInst->SetStateDirty( GetNetworkId(), ECRS_Pose );
 	}
 }
 
-void CharacterServer::HandleShooting()
+void CharacterSrv::HandleShooting()
 {
 }
 
-void CharacterServer::TakeDamage( int inDamagingPlayerId )
+void CharacterSrv::TakeDamage( int inDamagingPlayerId )
 {
 }
 

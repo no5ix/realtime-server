@@ -63,7 +63,7 @@ class Entity;
 
 #include "Utility.h"
 
-#include "SocketAddressInterface.h"
+#include "SocketAddrInterface.h"
 #include "UDPSocketInterface.h"
 
 #include "EpollInterface.h"
@@ -101,6 +101,6 @@ class Entity;
 
 
 #include "NetworkMgrSrv.h"
-#include "RealTimeServer.h"
+#include "RealTimeSrv.h"
 
-#include "CharacterServer.h"
+#include "CharacterSrv.h"

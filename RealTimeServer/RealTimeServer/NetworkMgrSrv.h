@@ -1,12 +1,12 @@
 class NetworkMgrSrv : public NetworkMgr
 {
 public:
-	static NetworkMgrSrv*	sInstance;
+	static NetworkMgrSrv*	sInst;
 
 
 	static bool				StaticInit( uint16_t inPort );
 //
-	virtual void			ProcessPacket( InputBitStream& inInputStream, const SocketAddressInterface& inFromAddress ) override;
+	virtual void			ProcessPacket( InputBitStream& inInputStream, const SocketAddrInterface& inFromAddress, const UDPSocketPtr& inUDPSocket  ) override;
 //	virtual void			HandleConnectionReset( const SocketAddress& inFromAddress ) override;
 //
 	void			SendOutgoingPackets();
@@ -24,8 +24,8 @@ public:
 private:
 	NetworkMgrSrv();
 //
-	void	HandlePacketFromNewClient( InputBitStream& inInputStream, const SocketAddressInterface& inFromAddress );
-	void	ProcessPacket( ClientProxyPtr inClientProxy, InputBitStream& inInputStream );
+	void HandlePacketFromNewClient( InputBitStream& inInputStream, const SocketAddrInterface& inFromAddress, const UDPSocketPtr& inUDPSocket );
+	void	ProcessPacket( ClientProxyPtr inClientProxy, InputBitStream& inInputStream);
 //
 	void	SendWelcomePacket( ClientProxyPtr inClientProxy );
 //	void	UpdateAllClients();
@@ -43,7 +43,7 @@ private:
 	int		GetNewNetworkId();
 
 	typedef unordered_map< int, ClientProxyPtr >	IntToClientMap;
-	typedef unordered_map< SocketAddressInterface, ClientProxyPtr >	AddressToClientMap;
+	typedef unordered_map< SocketAddrInterface, ClientProxyPtr >	AddressToClientMap;
 
 	AddressToClientMap		mAddressToClientMap;
 	IntToClientMap			mPlayerIdToClientMap;

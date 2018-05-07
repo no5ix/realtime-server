@@ -1,28 +1,28 @@
 
 
-class SocketAddressInterface
+class SocketAddrInterface
 {
 public:
-	SocketAddressInterface( uint32_t inAddress, uint16_t inPort )
+	SocketAddrInterface( uint32_t inAddress, uint16_t inPort )
 	{
 		GetAsSockAddrIn()->sin_family = AF_INET;
 		GetIP4Ref() = htonl( inAddress );
 		GetAsSockAddrIn()->sin_port = htons( inPort );
 	}
 
-	SocketAddressInterface( const sockaddr& inSockAddr )
+	SocketAddrInterface( const sockaddr& inSockAddr )
 	{
 		memcpy( &mSockAddr, &inSockAddr, sizeof( sockaddr ) );
 	}
 
-	SocketAddressInterface()
+	SocketAddrInterface()
 	{
 		GetAsSockAddrIn()->sin_family = AF_INET;
 		GetIP4Ref() = INADDR_ANY;
 		GetAsSockAddrIn()->sin_port = 0;
 	}
 
-	bool operator==( const SocketAddressInterface& inOther ) const
+	bool operator==( const SocketAddrInterface& inOther ) const
 	{
 		return ( mSockAddr.sa_family == AF_INET &&
 			GetAsSockAddrIn()->sin_port == inOther.GetAsSockAddrIn()->sin_port ) &&
@@ -71,13 +71,13 @@ private:
 
 };
 
-typedef shared_ptr< SocketAddressInterface > SocketAddressPtr;
+typedef shared_ptr< SocketAddrInterface > SocketAddressPtr;
 
 namespace std
 {
-	template<> struct hash< SocketAddressInterface >
+	template<> struct hash< SocketAddrInterface >
 	{
-		size_t operator()( const SocketAddressInterface& inAddress ) const
+		size_t operator()( const SocketAddrInterface& inAddress ) const
 		{
 			return inAddress.GetHash();
 		}

@@ -1,4 +1,4 @@
-#include "RealTimeServerPCH.h"
+#include "RealTimeSrvPCH.h"
 
 void TransmissionDataHandler::AddTransmission( int inNetworkId, ReplicationAction inAction, uint32_t inState )
 {
@@ -54,7 +54,7 @@ void TransmissionDataHandler::HandleDeliverySuccess( DeliveryNotificationMgr* in
 
 void TransmissionDataHandler::HandleCreateDeliveryFailure( int inNetworkId ) const
 {
-	GameObjectPtr gameObject = NetworkMgrSrv::sInstance->GetGameObject( inNetworkId );
+	GameObjectPtr gameObject = NetworkMgrSrv::sInst->GetGameObject( inNetworkId );
 	if ( gameObject )
 	{
 		mReplicationManagerServer->ReplicateCreate( inNetworkId, gameObject->GetAllStateMask() );
@@ -68,7 +68,7 @@ void TransmissionDataHandler::HandleDestroyDeliveryFailure( int inNetworkId ) co
 
 void TransmissionDataHandler::HandleUpdateStateDeliveryFailure( int inNetworkId, uint32_t inState, DeliveryNotificationMgr* inDeliveryNotificationManager ) const
 {
-	if ( NetworkMgrSrv::sInstance->GetGameObject( inNetworkId ) )
+	if ( NetworkMgrSrv::sInst->GetGameObject( inNetworkId ) )
 	{
 		for ( const auto& inFlightPacket : inDeliveryNotificationManager->GetInFlightPackets() )
 		{

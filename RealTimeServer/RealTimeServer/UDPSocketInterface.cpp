@@ -1,4 +1,4 @@
-#include "RealTimeServerPCH.h"
+#include "RealTimeSrvPCH.h"
 
 
 bool UDPSocketInterface::StaticInit()
@@ -71,7 +71,7 @@ UDPSocketPtr UDPSocketInterface::CreateUDPSocket()
 	}
 }
 
-int UDPSocketInterface::Bind(const SocketAddressInterface& inBindAddress)
+int UDPSocketInterface::Bind(const SocketAddrInterface& inBindAddress)
 {
 	int error = bind(mSocket, &inBindAddress.mSockAddr, inBindAddress.GetSize());
 	if (error != 0)
@@ -83,7 +83,7 @@ int UDPSocketInterface::Bind(const SocketAddressInterface& inBindAddress)
 	return NO_ERROR;
 }
 
-int UDPSocketInterface::SendTo(const void* inToSend, int inLength, const SocketAddressInterface& inToAddress)
+int UDPSocketInterface::SendTo(const void* inToSend, int inLength, const SocketAddrInterface& inToAddress)
 {
 	int byteSentCount = sendto(mSocket,
 		static_cast<const char*>(inToSend),
@@ -101,7 +101,7 @@ int UDPSocketInterface::SendTo(const void* inToSend, int inLength, const SocketA
 	}
 }
 
-int UDPSocketInterface::ReceiveFrom(void* inToReceive, int inMaxLength, SocketAddressInterface& outFromAddress)
+int UDPSocketInterface::ReceiveFrom(void* inToReceive, int inMaxLength, SocketAddrInterface& outFromAddress)
 {
 	socklen_t fromLength = outFromAddress.GetSize();
 
@@ -168,7 +168,7 @@ int UDPSocketInterface::SetNonBlockingMode(bool inShouldBeNonBlocking)
 
 
 
-int UDPSocketInterface::Connect( const SocketAddressInterface& inAddress )
+int UDPSocketInterface::Connect( const SocketAddrInterface& inAddress )
 {
 	int err = connect( mSocket, &inAddress.mSockAddr, inAddress.GetSize() );
 	if ( err < 0 )

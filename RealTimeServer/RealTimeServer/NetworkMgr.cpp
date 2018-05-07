@@ -1,4 +1,4 @@
-#include "RealTimeServerPCH.h"
+#include "RealTimeSrvPCH.h"
 
 
 
@@ -36,7 +36,7 @@ bool NetworkMgr::Init(uint16_t inPort)
 	}
 #endif
 
-	SocketAddressInterface ownAddress(INADDR_ANY, inPort);
+	SocketAddrInterface ownAddress(INADDR_ANY, inPort);
 	mSocket->Bind(ownAddress);
 
 	LOG("Initializing NetworkManager at port %d", inPort);
@@ -63,34 +63,62 @@ bool NetworkMgr::Init(uint16_t inPort)
 
 }
 
-void NetworkMgr::WaitForIncomingPackets()
+
+void NetworkMgr::ProcessIncomingPackets()
 {
 #ifdef HAS_EPOLL
-	EpollInterface::sInst->Wait( -1.f );
+	WaitForIncomingPackets();
+#else
+	ReadIncomingPacketsIntoQueue();
 #endif
+
+	ProcessQueuedPackets();
+
+	//UpdateBytesSentLastFrame();
+
+}
+
+void NetworkMgr::ProcessQueuedPackets()
+{
+	//look at the front packet...
+	while ( !mPacketQueue.empty() )
+	{
+		ReceivedPacket& nextPacket = mPacketQueue.front();
+		if ( Timing::sInstance.GetTimef() > nextPacket.GetReceivedTime() )
+		{
+			ProcessPacket( nextPacket.GetPacketBuffer(), nextPacket.GetFromAddress(), nextPacket.GetUDPSocket() );
+			mPacketQueue.pop();
+		}
+		else
+		{
+			break;
+		}
+
+	}
 }
 
 
-void NetworkMgr::msg_process( UDPSocketPtr inUDPSocketPtr, SocketAddressInterface infromAddress )
+#ifdef HAS_EPOLL
+void NetworkMgr::WaitForIncomingPackets()
+{
+	EpollInterface::sInst->Wait( -1.f );
+}
+
+void NetworkMgr::RecvIncomingPacketsIntoQueue( UDPSocketPtr inUDPSocketPtr, SocketAddrInterface infromAddress )
 {
 	char packetMem[1500];
 	int packetSize = sizeof( packetMem );
 	InputBitStream inputStream( packetMem, packetSize * 8 );
-	//SocketAddressInterface fromAddress;
 
 	int receivedPackedCount = 0;
 	int totalReadByteCount = 0;
 
 	while ( receivedPackedCount < kMaxPacketsPerFrameCount )
 	{
-
-
 		int readByteCount = inUDPSocketPtr->Recv( packetMem, packetSize );
 		if ( readByteCount == 0 )
 		{
-			//LOG( "ReadIncomingPacketsIntoQueue readByteCount = %d ", 0 );
-			//break;
-			return;
+			break;
 		}
 		else if ( readByteCount == -WSAECONNRESET )
 		{
@@ -109,7 +137,7 @@ void NetworkMgr::msg_process( UDPSocketPtr inUDPSocketPtr, SocketAddressInterfac
 					mSimulatedLatency +
 					( GetIsSimulatedJitter() ?
 						RealTimeSrvMath::Clamp( RealTimeSrvMath::GetRandomFloat(), 0.f, 0.06f ) : 0.f );
-				mPacketQueue.emplace( simulatedReceivedTime, inputStream, infromAddress );
+				mPacketQueue.emplace( simulatedReceivedTime, inputStream, infromAddress, inUDPSocketPtr );
 			}
 			else
 			{
@@ -122,26 +150,27 @@ void NetworkMgr::msg_process( UDPSocketPtr inUDPSocketPtr, SocketAddressInterfac
 	}
 }
 
-void NetworkMgr::ProcessIncomingPackets()
+void NetworkMgr::SendPacket( const OutputBitStream& inOutputStream, ClientProxyPtr inClientProxy )
 {
-#ifdef HAS_EPOLL
-	WaitForIncomingPackets();
-#else
-	ReadIncomingPacketsIntoQueue();
-#endif
+	
+	int sentByteCount = inClientProxy->GetUDPSocket()->Send( inOutputStream.GetBufferPtr(), inOutputStream.GetByteLength() );
+	if ( sentByteCount > 0 )
+	{
+		mBytesSentThisFrame += sentByteCount;
+	}
 
-	ProcessQueuedPackets();
-
-	//UpdateBytesSentLastFrame();
 
 }
+
+
+#else
 
 void NetworkMgr::ReadIncomingPacketsIntoQueue()
 {
 	char packetMem[1500];
 	int packetSize = sizeof( packetMem );
 	InputBitStream inputStream( packetMem, packetSize * 8 );
-	SocketAddressInterface fromAddress;
+	SocketAddrInterface fromAddress;
 
 	int receivedPackedCount = 0;
 	int totalReadByteCount = 0;
@@ -189,32 +218,14 @@ void NetworkMgr::ReadIncomingPacketsIntoQueue()
 	}
 }
 
-void NetworkMgr::ProcessQueuedPackets()
+
+void NetworkMgr::SendPacket( const OutputBitStream& inOutputStream, ClientProxyPtr inClientProxy )
 {
-	//look at the front packet...
-	while (!mPacketQueue.empty())
-	{
-		ReceivedPacket& nextPacket = mPacketQueue.front();
-		if (Timing::sInstance.GetTimef() > nextPacket.GetReceivedTime())
-		{
-			ProcessPacket( nextPacket.GetPacketBuffer(), nextPacket.GetFromAddress() );
-			mPacketQueue.pop();
-		}
-		else
-		{
-			break;
-		}
-
-	}
-
-}
-
-void NetworkMgr::SendPacket( const OutputBitStream& inOutputStream, const SocketAddressInterface& inFromAddress )
-{
-	int sentByteCount = mSocket->SendTo( inOutputStream.GetBufferPtr(), inOutputStream.GetByteLength(), inFromAddress );
+	int sentByteCount = mSocket->SendTo( inOutputStream.GetBufferPtr(), inOutputStream.GetByteLength(), inClientProxy->GetSocketAddress() );
 	if (sentByteCount > 0)
 	{
 		mBytesSentThisFrame += sentByteCount;
 	}
 }
 
+#endif

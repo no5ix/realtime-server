@@ -16,10 +16,10 @@ public:
 
 	static shared_ptr< UDPSocketInterface > CreateUDPSocket();
 
-	int Bind(const SocketAddressInterface& inToAddress);
-	int SendTo(const void* inToSend, int inLength, const SocketAddressInterface& inToAddress);
-	int ReceiveFrom(void* inToReceive, int inMaxLength, SocketAddressInterface& outFromAddress);
-	int Connect( const SocketAddressInterface& inAddress );
+	int Bind(const SocketAddrInterface& inToAddress);
+	int SendTo(const void* inToSend, int inLength, const SocketAddrInterface& inToAddress);
+	int ReceiveFrom(void* inToReceive, int inMaxLength, SocketAddrInterface& outFromAddress);
+	int Connect( const SocketAddrInterface& inAddress );
 
 	int SetReUse();
 	int32_t Send( const void* inData, size_t inLen );

@@ -2,11 +2,12 @@ class ClientProxy
 {
 public:
 
-	ClientProxy( const SocketAddressInterface& inSocketAddress, const string& inName, int inPlayerId );
+	ClientProxy( const SocketAddrInterface& inSocketAddress, const string& inName, int inPlayerId, const UDPSocketPtr& inUDPSocket );
 
-	const	SocketAddressInterface&	GetSocketAddress()	const { return mSocketAddress; }
+	const	SocketAddrInterface&	GetSocketAddress()	const { return mSocketAddress; }
 	int				GetPlayerId()		const { return mPlayerId; }
 	const	string&		GetName()			const { return mName; }
+	UDPSocketPtr		GetUDPSocket()			const { return mUDPSocket; }
 
 	void			SetInputState( const InputState& inInputState ) { mInputState = inInputState; }
 	const	InputState&		GetInputState()		const { return mInputState; }
@@ -29,9 +30,10 @@ private:
 	DeliveryNotificationMgr	mDeliveryNotificationManager;
 	ReplicationMgr	mReplicationManagerServer;
 
-	SocketAddressInterface	mSocketAddress;
+	SocketAddrInterface	mSocketAddress;
 	string			mName;
 	int				mPlayerId;
+	UDPSocketPtr	mUDPSocket;
 
 	//going away!
 	InputState		mInputState;

@@ -1,7 +1,7 @@
-#include "RealTimeServerPCH.h"
+#include "RealTimeSrvPCH.h"
 
 
-NetworkMgrSrv*	NetworkMgrSrv::sInstance;
+NetworkMgrSrv*	NetworkMgrSrv::sInst;
 
 namespace
 {
@@ -18,16 +18,16 @@ NetworkMgrSrv::NetworkMgrSrv() :
 
 bool NetworkMgrSrv::StaticInit( uint16_t inPort )
 {
-	sInstance = new NetworkMgrSrv();
-	return sInstance->Init( inPort );
+	sInst = new NetworkMgrSrv();
+	return sInst->Init( inPort );
 }
 
-void NetworkMgrSrv::ProcessPacket( InputBitStream& inInputStream, const SocketAddressInterface& inFromAddress )
+void NetworkMgrSrv::ProcessPacket( InputBitStream& inInputStream, const SocketAddrInterface& inFromAddress, const UDPSocketPtr& inUDPSocket )
 {
 	auto it = mAddressToClientMap.find( inFromAddress );
 	if ( it == mAddressToClientMap.end() )
 	{
-		HandlePacketFromNewClient( inInputStream, inFromAddress );
+		HandlePacketFromNewClient( inInputStream, inFromAddress, inUDPSocket);
 	}
 	else
 	{
@@ -80,7 +80,7 @@ void NetworkMgrSrv::HandleInputPacket( ClientProxyPtr inClientProxy, InputBitStr
 }
 
 
-void NetworkMgrSrv::HandlePacketFromNewClient( InputBitStream& inInputStream, const SocketAddressInterface& inFromAddress )
+void NetworkMgrSrv::HandlePacketFromNewClient( InputBitStream& inInputStream, const SocketAddrInterface& inFromAddress, const UDPSocketPtr& inUDPSocket )
 {
 	uint32_t	packetType;
 	inInputStream.Read( packetType );
@@ -89,11 +89,11 @@ void NetworkMgrSrv::HandlePacketFromNewClient( InputBitStream& inInputStream, co
 		string name;
 		inInputStream.Read( name );	
 		
-		ClientProxyPtr newClientProxy = std::make_shared< ClientProxy >( inFromAddress, name, mNewPlayerId++ );
+		ClientProxyPtr newClientProxy = std::make_shared< ClientProxy >( inFromAddress, name, mNewPlayerId++, inUDPSocket );
 		mAddressToClientMap[inFromAddress] = newClientProxy;
 		mPlayerIdToClientMap[newClientProxy->GetPlayerId()] = newClientProxy;
 
-		RealTimeServer::sInstance.get()->HandleNewClient( newClientProxy );
+		RealTimeSrv::sInstance.get()->HandleNewClient( newClientProxy );
 
 
 		for ( const auto& pair : mNetworkIdToGameObjectMap )
@@ -121,23 +121,9 @@ void NetworkMgrSrv::SendWelcomePacket( ClientProxyPtr inClientProxy )
 
 	LOG( "Server Welcoming, new client '%s' as player %d", inClientProxy->GetName().c_str(), inClientProxy->GetPlayerId() );
 
-	
-
-
-	
-
-	
-
-
 	TransmissionDataHandler* rmtd = new TransmissionDataHandler( &inClientProxy->GetReplicationManagerServer() );
 	inClientProxy->GetReplicationManagerServer().Write( welcomePacket, rmtd );
-	
-
-	
-
-	SendPacket( welcomePacket, inClientProxy->GetSocketAddress() );
-
-	
+	SendPacket( welcomePacket, inClientProxy );
 }
 
 void NetworkMgrSrv::RegisterGameObject( GameObjectPtr inGameObject )
@@ -210,35 +196,20 @@ void NetworkMgrSrv::SendOutgoingPackets()
 
 void NetworkMgrSrv::SendStatePacketToClient( ClientProxyPtr inClientProxy )
 {
-	
+
 	OutputBitStream	statePacket;
 
-	
-	
-	
-	
-	
+	statePacket.Write( kStateCC );
 
+	InFlightPacket* ifp = inClientProxy->GetDeliveryNotificationManager().WriteState( statePacket );
 
-		
-		statePacket.Write( kStateCC );
+	WriteLastMoveTimestampIfDirty( statePacket, inClientProxy );
 
+	TransmissionDataHandler* rmtd = new TransmissionDataHandler( &inClientProxy->GetReplicationManagerServer() );
+	inClientProxy->GetReplicationManagerServer().Write( statePacket, rmtd );
+	ifp->SetTransmissionData( 'RPLM', TransmissionDataPtr( rmtd ) );
 
-		InFlightPacket* ifp = inClientProxy->GetDeliveryNotificationManager().WriteState( statePacket );
-
-		WriteLastMoveTimestampIfDirty( statePacket, inClientProxy );
-
-
-		TransmissionDataHandler* rmtd = new TransmissionDataHandler( &inClientProxy->GetReplicationManagerServer() );
-		inClientProxy->GetReplicationManagerServer().Write( statePacket, rmtd );
-		ifp->SetTransmissionData( 'RPLM', TransmissionDataPtr( rmtd ) );
-
-		SendPacket( statePacket, inClientProxy->GetSocketAddress() );
-
-		
-
-
-	
+	SendPacket( statePacket, inClientProxy );
 }
 
 void NetworkMgrSrv::WriteLastMoveTimestampIfDirty( OutputBitStream& inOutputStream, ClientProxyPtr inClientProxy )

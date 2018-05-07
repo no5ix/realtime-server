@@ -1,4 +1,4 @@
-#include "RealTimeServerPCH.h"
+#include "RealTimeSrvPCH.h"
 
 
 
@@ -27,7 +27,7 @@ GameObjectPtr EntityFactory::CreateGameObject( uint32_t inFourCCName )
 
 	
 	
-	World::sInstance->AddGameObject( gameObject );
+	World::sInst->AddGameObject( gameObject );
 
 	return gameObject;
 }

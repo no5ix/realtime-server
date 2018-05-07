@@ -1,4 +1,4 @@
-#include "RealTimeServerPCH.h"
+#include "RealTimeSrvPCH.h"
 
 
 
@@ -80,7 +80,7 @@ void ReplicationMgr::Write( OutputBitStream& inOutputStream, TransmissionDataHan
 uint32_t ReplicationMgr::WriteCreateAction( OutputBitStream& inOutputStream, int inNetworkId, uint32_t inDirtyState )
 {
 	
-	GameObjectPtr gameObject = NetworkMgrSrv::sInstance->GetGameObject( inNetworkId );
+	GameObjectPtr gameObject = NetworkMgrSrv::sInst->GetGameObject( inNetworkId );
 	
 	inOutputStream.Write( gameObject->GetClassId() );
 	return gameObject->Write( inOutputStream, inDirtyState );
@@ -89,7 +89,7 @@ uint32_t ReplicationMgr::WriteCreateAction( OutputBitStream& inOutputStream, int
 uint32_t ReplicationMgr::WriteUpdateAction( OutputBitStream& inOutputStream, int inNetworkId, uint32_t inDirtyState )
 {
 	
-	GameObjectPtr gameObject = NetworkMgrSrv::sInstance->GetGameObject( inNetworkId );
+	GameObjectPtr gameObject = NetworkMgrSrv::sInst->GetGameObject( inNetworkId );
 
 	
 	

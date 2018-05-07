@@ -1,4 +1,4 @@
-#include "RealTimeServerPCH.h"
+#include "RealTimeSrvPCH.h"
 
 
 
@@ -68,11 +68,6 @@ void EpollInterface::Wait( float inMaxWait )
 			{
 				HandleInputEvent( events[i].data.fd );
 			}
-
-			if ( events[i].events & EPOLLOUT )
-			{
-				HandleOutputEvent( events[i].data.fd );
-			}
 		}
 	}
 }
@@ -100,31 +95,24 @@ void EpollInterface::HandleInputEvent( SOCKET inFd )
 			return;
 		}
 
-		//int readByteCount = ->Recv( packetMem, packetSize );
-		NetworkMgrSrv::sInstance->msg_process( iter->second, it->second );
+		NetworkMgrSrv::sInst->RecvIncomingPacketsIntoQueue( iter->second, it->second );
 	}
 }
-
-
-
-void EpollInterface::HandleOutputEvent( SOCKET inFd )
-{
-
-}
-
 
 void EpollInterface::AcceptClient()
 {
 	char packetMem[1500];
 	int packetSize = sizeof( packetMem );
-	SocketAddressInterface fromAddress;
+	SocketAddrInterface fromAddress;
 
-	int readByteCount = mListener->ReceiveFrom( packetMem, packetSize, fromAddress );
-	SOCKET new_sock = UdpConnect( fromAddress);
+	if ( mListener->ReceiveFrom( packetMem, packetSize, fromAddress ) >= 0 )
+	{
+		UdpConnect( fromAddress );
+	}
 
 }
 
-SOCKET EpollInterface::UdpConnect( const SocketAddressInterface& inAddress )
+SOCKET EpollInterface::UdpConnect( const SocketAddrInterface& inAddress )
 {
 
 	UDPSocketPtr s = UDPSocketInterface::CreateUDPSocket();
@@ -132,7 +120,6 @@ SOCKET EpollInterface::UdpConnect( const SocketAddressInterface& inAddress )
 	{
 		if ( s->SetReUse() == NO_ERROR )
 		{
-			//SocketAddressInterface ownAddress( INADDR_ANY, inPort );
 			if ( s->Bind( mListenerAddr ) == NO_ERROR  )
 			{
 				if ( s->Connect( inAddress ) == NO_ERROR  )
@@ -156,7 +143,7 @@ SOCKET EpollInterface::UdpConnect( const SocketAddressInterface& inAddress )
 }
 
 
-void EpollInterface::SetListener( UDPSocketPtr inListener, SocketAddressInterface inSocketAddr )
+void EpollInterface::SetListener( UDPSocketPtr inListener, SocketAddrInterface inSocketAddr )
 {
 	mListener = inListener;
 	mListenerAddr = inSocketAddr;

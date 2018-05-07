@@ -1,7 +1,7 @@
-class RealTimeServer
+class RealTimeSrv
 {
 public:
-	static std::unique_ptr< RealTimeServer >	sInstance;
+	static std::unique_ptr< RealTimeSrv >	sInstance;
 
 	static bool StaticInit();
 
@@ -15,10 +15,10 @@ public:
 	//RoboCatPtr	GetCatForPlayer( int inPlayerId );
 	void	SpawnCharacterForPlayer( int inPlayerId );
 
-	virtual ~RealTimeServer();
+	virtual ~RealTimeSrv();
 
 private:
-	RealTimeServer();
+	RealTimeSrv();
 
 	bool	InitNetworkMgr();
 
