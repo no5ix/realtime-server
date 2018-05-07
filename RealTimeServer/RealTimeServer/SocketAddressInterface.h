@@ -41,21 +41,16 @@ public:
 
 	string	ToString() const
 	{
+		const sockaddr_in* s = GetAsSockAddrIn();
+		char destinationBuffer[128];
 #if _WIN32
-		const sockaddr_in* s = GetAsSockAddrIn();
-		char destinationBuffer[128];
 		InetNtop( s->sin_family, const_cast< in_addr* >( &s->sin_addr ), destinationBuffer, sizeof( destinationBuffer ) );
-		return Utility::Sprintf( "%s:%d",
-			destinationBuffer,
-			ntohs( s->sin_port ) );
 #else
-		const sockaddr_in* s = GetAsSockAddrIn();
-		char destinationBuffer[128];
 		inet_ntop( s->sin_family, &s->sin_addr, destinationBuffer, sizeof( destinationBuffer ) );
+#endif
 		return Utility::Sprintf( "%s:%d",
 			destinationBuffer,
 			ntohs( s->sin_port ) );
-#endif
 	}
 
 private:

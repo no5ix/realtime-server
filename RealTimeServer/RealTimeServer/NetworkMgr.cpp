@@ -29,6 +29,13 @@ bool NetworkMgr::Init(uint16_t inPort)
 		return false;
 	}
 
+#ifdef HAS_EPOLL
+	if ( mSocket->SetReUse())
+	{
+		return false;
+	}
+#endif
+
 	SocketAddressInterface ownAddress(INADDR_ANY, inPort);
 	mSocket->Bind(ownAddress);
 
@@ -43,15 +50,85 @@ bool NetworkMgr::Init(uint16_t inPort)
 		return false;
 	}
 
+#ifdef HAS_EPOLL
+	EpollInterface::StaticInit();
+	if ( !EpollInterface::sInst->Add( mSocket->GetSocket() ) )
+	{
+		return false;
+	}
+	EpollInterface::sInst->SetListener( mSocket, ownAddress );
+#endif
+
 	return true;
 
 }
 
+void NetworkMgr::WaitForIncomingPackets()
+{
+#ifdef HAS_EPOLL
+	EpollInterface::sInst->Wait( -1.f );
+#endif
+}
 
+
+void NetworkMgr::msg_process( UDPSocketPtr inUDPSocketPtr, SocketAddressInterface infromAddress )
+{
+	char packetMem[1500];
+	int packetSize = sizeof( packetMem );
+	InputBitStream inputStream( packetMem, packetSize * 8 );
+	//SocketAddressInterface fromAddress;
+
+	int receivedPackedCount = 0;
+	int totalReadByteCount = 0;
+
+	while ( receivedPackedCount < kMaxPacketsPerFrameCount )
+	{
+
+
+		int readByteCount = inUDPSocketPtr->Recv( packetMem, packetSize );
+		if ( readByteCount == 0 )
+		{
+			//LOG( "ReadIncomingPacketsIntoQueue readByteCount = %d ", 0 );
+			//break;
+			return;
+		}
+		else if ( readByteCount == -WSAECONNRESET )
+		{
+			HandleConnectionReset( infromAddress );
+		}
+		else if ( readByteCount > 0 )
+		{
+			inputStream.ResetToCapacity( readByteCount );
+			++receivedPackedCount;
+			totalReadByteCount += readByteCount;
+
+			if ( RealTimeSrvMath::GetRandomFloat() >= mDropPacketChance )
+			{
+				float simulatedReceivedTime =
+					Timing::sInstance.GetTimef() +
+					mSimulatedLatency +
+					( GetIsSimulatedJitter() ?
+						RealTimeSrvMath::Clamp( RealTimeSrvMath::GetRandomFloat(), 0.f, 0.06f ) : 0.f );
+				mPacketQueue.emplace( simulatedReceivedTime, inputStream, infromAddress );
+			}
+			else
+			{
+				//LOG( "Dropped packet!", 0 );
+			}
+		}
+		else
+		{
+		}
+	}
+}
 
 void NetworkMgr::ProcessIncomingPackets()
 {
+#ifdef HAS_EPOLL
+	WaitForIncomingPackets();
+#else
 	ReadIncomingPacketsIntoQueue();
+#endif
 
 	ProcessQueuedPackets();
 
@@ -98,7 +175,7 @@ void NetworkMgr::ReadIncomingPacketsIntoQueue()
 			}
 			else
 			{
-				LOG( "Dropped packet!", 0 );
+				//LOG( "Dropped packet!", 0 );
 			}
 		}
 		else

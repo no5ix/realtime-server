@@ -76,7 +76,7 @@ int UDPSocketInterface::Bind(const SocketAddressInterface& inBindAddress)
 	int error = bind(mSocket, &inBindAddress.mSockAddr, inBindAddress.GetSize());
 	if (error != 0)
 	{
-		ReportError("UDPSocket::Bind");
+		ReportError("UDPSocketInterface::Bind");
 		return GetLastError();
 	}
 
@@ -92,8 +92,7 @@ int UDPSocketInterface::SendTo(const void* inToSend, int inLength, const SocketA
 
 	if (byteSentCount <= 0)
 	{
-		//we'll return error as negative number to indicate less than requested amount of bytes sent...
-		ReportError("UDPSocket::SendTo");
+		ReportError("UDPSocketInterface::SendTo");
 		return -GetLastError();
 	}
 	else
@@ -124,14 +123,12 @@ int UDPSocketInterface::ReceiveFrom(void* inToReceive, int inMaxLength, SocketAd
 		}
 		else if (error == WSAECONNRESET)
 		{
-			//this can happen if a client closed and we haven't DC'd yet.
-			//this is the ICMP message being sent back saying the port on that computer is closed
 			LOG("Connection reset from %s", outFromAddress.ToString().c_str());
 			return -WSAECONNRESET;
 		}
 		else
 		{
-			ReportError("UDPSocket::ReceiveFrom");
+			ReportError("UDPSocketInterface::ReceiveFrom");
 			return -error;
 		}
 	}
@@ -160,7 +157,7 @@ int UDPSocketInterface::SetNonBlockingMode(bool inShouldBeNonBlocking)
 
 	if (result == SOCKET_ERROR)
 	{
-		ReportError("UDPSocket::SetNonBlockingMode");
+		ReportError("UDPSocketInterface::SetNonBlockingMode");
 		return GetLastError();
 	}
 	else
@@ -169,3 +166,87 @@ int UDPSocketInterface::SetNonBlockingMode(bool inShouldBeNonBlocking)
 	}
 }
 
+
+
+int UDPSocketInterface::Connect( const SocketAddressInterface& inAddress )
+{
+	int err = connect( mSocket, &inAddress.mSockAddr, inAddress.GetSize() );
+	if ( err < 0 )
+	{
+		ReportError( "TCPSocket::Connect" );
+		return GetLastError();
+	}
+	return NO_ERROR;
+}
+
+
+
+int UDPSocketInterface::SetReUse()
+{
+
+#ifndef _WIN32
+	int reuse = 1;
+	int err = setsockopt( mSocket, SOL_SOCKET, SO_REUSEADDR, &reuse, sizeof( reuse ) );
+	if ( err < 0 )
+	{
+		ReportError( "UDPSocketInterface::SetReUse SO_REUSEADDR" );
+		return GetLastError();
+	}
+
+	err = setsockopt( mSocket, SOL_SOCKET, SO_REUSEPORT, &reuse, sizeof( reuse ) );
+	if ( err < 0 )
+	{
+		ReportError( "UDPSocketInterface::SetReUse SO_REUSEPORT" );
+		return GetLastError();
+	}
+#endif
+
+	return NO_ERROR;
+}
+
+
+
+
+int32_t	UDPSocketInterface::Send( const void* inData, size_t inLen )
+{
+	int byteSentCount = send( mSocket, static_cast< const char* >( inData ), inLen, 0 );
+
+	if ( byteSentCount <= 0 )
+	{
+		ReportError( "UDPSocketInterface::Send" );
+		return -GetLastError();
+	}
+	else
+	{
+		return byteSentCount;
+	}
+}
+
+int32_t	UDPSocketInterface::Recv( void* inData, size_t inLen )
+{
+	int bytesReceivedCount = recv( mSocket, static_cast< char* >( inData ), inLen, 0 );
+
+	if ( bytesReceivedCount >= 0 )
+	{
+		return bytesReceivedCount;
+	}
+	else
+	{
+		int error = GetLastError();
+
+		if ( error == WSAEWOULDBLOCK )
+		{
+			return 0;
+		}
+		else if ( error == WSAECONNRESET )
+		{
+			//LOG( "Connection reset from %s", outFromAddress.ToString().c_str() );
+			return -WSAECONNRESET;
+		}
+		else
+		{
+			ReportError( "UDPSocketInterface::Recv" );
+			return -error;
+		}
+	}
+}

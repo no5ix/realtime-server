@@ -20,7 +20,7 @@ public:
 private:
 	RealTimeServer();
 
-	bool	InitNetworkManager();
+	bool	InitNetworkMgr();
 
 private:
 

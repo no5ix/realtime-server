@@ -19,8 +19,13 @@ public:
 	int Bind(const SocketAddressInterface& inToAddress);
 	int SendTo(const void* inToSend, int inLength, const SocketAddressInterface& inToAddress);
 	int ReceiveFrom(void* inToReceive, int inMaxLength, SocketAddressInterface& outFromAddress);
+	int Connect( const SocketAddressInterface& inAddress );
 
-	int SetNonBlockingMode(bool inShouldBeNonBlocking);
+	int SetReUse();
+	int32_t Send( const void* inData, size_t inLen );
+	int32_t Recv( void* inData, size_t inLen );
+	int SetNonBlockingMode( bool inShouldBeNonBlocking );
+	SOCKET GetSocket() { return mSocket; }
 
 private:
 	UDPSocketInterface(SOCKET inSocket) : mSocket(inSocket) {}

@@ -13,6 +13,8 @@ public:
 	virtual ~NetworkMgr();
 
 	bool	Init( uint16_t inPort );
+	void	WaitForIncomingPackets();
+	void	msg_process( UDPSocketPtr inUDPSocketPtr, SocketAddressInterface infromAddress );
 	void	ProcessIncomingPackets();
 
 	virtual void	ProcessPacket( InputBitStream& inInputStream, const SocketAddressInterface& inFromAddress ) = 0;

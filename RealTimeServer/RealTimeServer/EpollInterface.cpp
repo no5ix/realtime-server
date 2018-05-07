@@ -1,0 +1,166 @@
+#include "RealTimeServerPCH.h"
+
+
+
+
+#ifdef HAS_EPOLL
+
+std::unique_ptr<EpollInterface> EpollInterface::sInst;
+
+EpollInterface::EpollInterface( int inSize ) :
+	mEqfd( epoll_create( inSize ) )
+{
+	if ( mEqfd == -1 )
+	{
+		LOG( "Error: %hs", "epoll_create failed" );
+	}
+}
+
+EpollInterface::~EpollInterface()
+{
+	if ( mEqfd != -1 )
+	{
+		close( mEqfd );
+	}
+}
+
+
+bool EpollInterface::Add( SOCKET inFd )
+{
+	struct epoll_event ev;
+	memset( &ev, 0, sizeof( ev ) );
+	int op;
+
+	ev.data.fd = inFd;
+
+
+	ev.events = EPOLLIN | EPOLLET;
+
+	if ( epoll_ctl( mEqfd, EPOLL_CTL_ADD, inFd, &ev ) < 0 )
+	{
+		LOG( "Error: %hs", "epoll_ctl failed" );
+		return false;
+	}
+	return true;
+}
+
+void EpollInterface::Wait( float inMaxWait )
+{
+	const int MAX_EVENTS = 10;
+	struct epoll_event events[MAX_EVENTS];
+	int maxWaitInMilliseconds = inMaxWait == -1.f ? -1 : int( ceil( inMaxWait * 1000 ) );
+
+	int nfds = epoll_wait( mEqfd, events, MAX_EVENTS, maxWaitInMilliseconds );
+
+	for ( int i = 0; i < nfds; ++i )
+	{
+		if ( events[i].events & ( EPOLLERR | EPOLLHUP ) )
+		{
+			if ( close( events[i].data.fd ) == -1 )
+			{
+				LOG( "Error: %hs", "close" );
+				mSocketToUDPSocketPtrMap.erase( events[i].data.fd );
+			}
+		}
+		else
+		{
+			if ( events[i].events & EPOLLIN )
+			{
+				HandleInputEvent( events[i].data.fd );
+			}
+
+			if ( events[i].events & EPOLLOUT )
+			{
+				HandleOutputEvent( events[i].data.fd );
+			}
+		}
+	}
+}
+
+void EpollInterface::HandleInputEvent( SOCKET inFd )
+{
+	if ( inFd == mListener->GetSocket() )
+	{
+		AcceptClient();
+	}
+	else
+	{
+
+		SocketToUDPSocketPtrMap::iterator iter = mSocketToUDPSocketPtrMap.find( inFd );
+
+		if ( iter == mSocketToUDPSocketPtrMap.end() )
+		{
+			return;
+		}
+
+		SocketToSocketAddrMap::iterator it = mSocketToSocketAddrMap.find( inFd );
+
+		if ( it == mSocketToSocketAddrMap.end() )
+		{
+			return;
+		}
+
+		//int readByteCount = ->Recv( packetMem, packetSize );
+		NetworkMgrSrv::sInstance->msg_process( iter->second, it->second );
+	}
+}
+
+
+
+void EpollInterface::HandleOutputEvent( SOCKET inFd )
+{
+
+}
+
+
+void EpollInterface::AcceptClient()
+{
+	char packetMem[1500];
+	int packetSize = sizeof( packetMem );
+	SocketAddressInterface fromAddress;
+
+	int readByteCount = mListener->ReceiveFrom( packetMem, packetSize, fromAddress );
+	SOCKET new_sock = UdpConnect( fromAddress);
+
+}
+
+SOCKET EpollInterface::UdpConnect( const SocketAddressInterface& inAddress )
+{
+
+	UDPSocketPtr s = UDPSocketInterface::CreateUDPSocket();
+	if (s)
+	{
+		if ( s->SetReUse() == NO_ERROR )
+		{
+			//SocketAddressInterface ownAddress( INADDR_ANY, inPort );
+			if ( s->Bind( mListenerAddr ) == NO_ERROR  )
+			{
+				if ( s->Connect( inAddress ) == NO_ERROR  )
+				{
+
+					if ( s->SetNonBlockingMode( true ) == NO_ERROR )
+					{
+						if ( Add( s->GetSocket() ) )
+						{
+							mSocketToUDPSocketPtrMap[s->GetSocket()] = s;
+							mSocketToSocketAddrMap[s->GetSocket()] = inAddress;
+
+							return s->GetSocket();
+						}
+					}
+				}
+			}
+		}
+	}
+	return -1;
+}
+
+
+void EpollInterface::SetListener( UDPSocketPtr inListener, SocketAddressInterface inSocketAddr )
+{
+	mListener = inListener;
+	mListenerAddr = inSocketAddr;
+}
+
+#endif // HAS_EPOLL
+

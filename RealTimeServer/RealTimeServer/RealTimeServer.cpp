@@ -33,12 +33,7 @@ RealTimeServer::RealTimeServer()
 
 	EntityFactory::sInstance->RegisterCreationFunction( 'CHRT', CharacterServer::StaticCreate );
 
-	InitNetworkManager();
-
-	//NetworkManagerServer::sInstance->SetDropPacketChance( 0.8f );
-	//NetworkManagerServer::sInstance->SetSimulatedLatency( 0.25f );
-	//NetworkManagerServer::sInstance->SetSimulatedLatency( 0.5f );
-	//NetworkManagerServer::sInstance->SetSimulatedLatency( 0.1f );
+	InitNetworkMgr();
 
 	// Setup latency
 	float latency = 0.0f;
@@ -57,7 +52,7 @@ RealTimeServer::RealTimeServer()
 		dropPacketChance = stof( dropPacketChanceString );
 		NetworkMgrSrv::sInstance->SetDropPacketChance( dropPacketChance );
 	}
-	// Setup Whether Simulate Jitter
+	// Setup SimulateJitter
 	int IsSimulatedJitter = 0;
 	string IsSimulatedJitterString = Utility::GetCommandLineArg( 4 );
 	if ( !IsSimulatedJitterString.empty() )
@@ -72,7 +67,7 @@ RealTimeServer::RealTimeServer()
 
 }
 
-bool RealTimeServer::InitNetworkManager()
+bool RealTimeServer::InitNetworkMgr()
 {
 	string portString = Utility::GetCommandLineArg( 1 );
 	uint16_t port = stoi( portString );
