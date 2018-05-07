@@ -6,7 +6,6 @@
 std::unique_ptr< RealTimeSrv >	RealTimeSrv::sInstance;
 
 
-//uncomment this when you begin working on the server
 
 bool RealTimeSrv::StaticInit()
 {
@@ -22,8 +21,6 @@ RealTimeSrv::~RealTimeSrv()
 
 RealTimeSrv::RealTimeSrv()
 {
-
-
 	srand( static_cast< uint32_t >( time( nullptr ) ) );
 
 	EntityFactory::StaticInit();
@@ -35,7 +32,6 @@ RealTimeSrv::RealTimeSrv()
 
 	InitNetworkMgr();
 
-	// Setup latency
 	float latency = 0.0f;
 	string latencyString = Utility::GetCommandLineArg( 2 );
 	if (!latencyString.empty())
@@ -44,7 +40,6 @@ RealTimeSrv::RealTimeSrv()
 		NetworkMgrSrv::sInst->SetSimulatedLatency( latency );
 	}
 
-	// Setup DropPacketChance
 	float dropPacketChance = 0.0f;
 	string dropPacketChanceString = Utility::GetCommandLineArg( 3 );
 	if (!dropPacketChanceString.empty())
@@ -52,7 +47,7 @@ RealTimeSrv::RealTimeSrv()
 		dropPacketChance = stof( dropPacketChanceString );
 		NetworkMgrSrv::sInst->SetDropPacketChance( dropPacketChance );
 	}
-	// Setup SimulateJitter
+
 	int IsSimulatedJitter = 0;
 	string IsSimulatedJitterString = Utility::GetCommandLineArg( 4 );
 	if ( !IsSimulatedJitterString.empty() )
@@ -63,21 +58,22 @@ RealTimeSrv::RealTimeSrv()
 			NetworkMgrSrv::sInst->SetIsSimulatedJitter( true );
 		}
 	}
-
-
 }
 
 bool RealTimeSrv::InitNetworkMgr()
 {
+	uint16_t port = 44444;
 	string portString = Utility::GetCommandLineArg( 1 );
-	uint16_t port = stoi( portString );
+	if (portString != string())
+	{
+		port = stoi( portString );
+	}
 
 	return NetworkMgrSrv::StaticInit( port );
 }
 
 int RealTimeSrv::Run()
 {
-	// Main message loop
 	bool quit = false;
 
 	while (!quit)
@@ -92,9 +88,10 @@ int RealTimeSrv::Run()
 
 void RealTimeSrv::DoFrame()
 {
+
 	NetworkMgrSrv::sInst->ProcessIncomingPackets();
 
-	//NetworkMgrSrv::sInst->CheckForDisconnects();
+	NetworkMgrSrv::sInst->CheckForDisconnects();
 
 	World::sInst->Update();
 
@@ -106,7 +103,6 @@ void RealTimeSrv::HandleNewClient( ClientProxyPtr inClientProxy )
 {
 	int playerId = inClientProxy->GetPlayerId();
 
-	//ScoreBoardManager::sInstance->AddEntry( playerId, inClientProxy->GetName() );
 	SpawnCharacterForPlayer( playerId );
 }
 

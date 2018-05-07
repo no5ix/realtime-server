@@ -16,5 +16,5 @@ ClientProxy::ClientProxy( const SocketAddrInterface& inSocketAddress, const stri
 
 void ClientProxy::UpdateLastPacketTime()
 {
-	mLastPacketFromClientTime = Timing::sInstance.GetTimef();
+	mLastPacketFromClientTime = Timing::sInstance.GetCurrentGameTime();
 }

@@ -30,14 +30,14 @@ public:
 
 	void AddTransmission( int inNetworkId, ReplicationAction inAction, uint32_t inState );
 
-	virtual void HandleDeliveryFailure( DeliveryNotificationMgr* inDeliveryNotificationManager ) const override;
-	virtual void HandleDeliverySuccess( DeliveryNotificationMgr* inDeliveryNotificationManager ) const override;
+	virtual void HandleDeliveryFailure( DeliveryNotifyMgr* inDeliveryNotificationManager ) const override;
+	virtual void HandleDeliverySuccess( DeliveryNotifyMgr* inDeliveryNotificationManager ) const override;
 
 
 private:
 
 	void HandleCreateDeliveryFailure( int inNetworkId ) const;
-	void HandleUpdateStateDeliveryFailure( int inNetworkId, uint32_t inState, DeliveryNotificationMgr* inDeliveryNotificationManager ) const;
+	void HandleUpdateStateDeliveryFailure( int inNetworkId, uint32_t inState, DeliveryNotifyMgr* inDeliveryNotificationManager ) const;
 	void HandleDestroyDeliveryFailure( int inNetworkId ) const;
 	void HandleCreateDeliverySuccess( int inNetworkId ) const;
 	void HandleDestroyDeliverySuccess( int inNetworkId ) const;

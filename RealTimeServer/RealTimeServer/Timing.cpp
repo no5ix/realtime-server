@@ -27,7 +27,7 @@ Timing::Timing()
 
 	QueryPerformanceCounter( &sStartTime );
 
-	mLastFrameStartTime = GetTime();
+	mLastFrameStartTime = GetGameTimeD();
 #else
 	sStartTime = high_resolution_clock::now();
 #endif
@@ -36,7 +36,7 @@ Timing::Timing()
 void Timing::Update()
 {
 
-	double currentTime = GetTime();
+	double currentTime = GetGameTimeD();
 
 	mDeltaTime = ( float )( currentTime - mLastFrameStartTime );
 
@@ -45,7 +45,7 @@ void Timing::Update()
 
 }
 
-double Timing::GetTime() const
+double Timing::GetGameTimeD() const
 {
 #if _WIN32
 	LARGE_INTEGER curTime, timeSinceStart;

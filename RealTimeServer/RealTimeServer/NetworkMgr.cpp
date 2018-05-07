@@ -84,7 +84,7 @@ void NetworkMgr::ProcessQueuedPackets()
 	while ( !mPacketQueue.empty() )
 	{
 		ReceivedPacket& nextPacket = mPacketQueue.front();
-		if ( Timing::sInstance.GetTimef() > nextPacket.GetReceivedTime() )
+		if ( Timing::sInstance.GetCurrentGameTime() > nextPacket.GetReceivedTime() )
 		{
 			ProcessPacket( nextPacket.GetPacketBuffer(), nextPacket.GetFromAddress(), nextPacket.GetUDPSocket() );
 			mPacketQueue.pop();
@@ -133,7 +133,7 @@ void NetworkMgr::RecvIncomingPacketsIntoQueue( UDPSocketPtr inUDPSocketPtr, Sock
 			if ( RealTimeSrvMath::GetRandomFloat() >= mDropPacketChance )
 			{
 				float simulatedReceivedTime =
-					Timing::sInstance.GetTimef() +
+					Timing::sInstance.GetCurrentGameTime() +
 					mSimulatedLatency +
 					( GetIsSimulatedJitter() ?
 						RealTimeSrvMath::Clamp( RealTimeSrvMath::GetRandomFloat(), 0.f, 0.06f ) : 0.f );
@@ -152,14 +152,11 @@ void NetworkMgr::RecvIncomingPacketsIntoQueue( UDPSocketPtr inUDPSocketPtr, Sock
 
 void NetworkMgr::SendPacket( const OutputBitStream& inOutputStream, ClientProxyPtr inClientProxy )
 {
-	
 	int sentByteCount = inClientProxy->GetUDPSocket()->Send( inOutputStream.GetBufferPtr(), inOutputStream.GetByteLength() );
 	if ( sentByteCount > 0 )
 	{
 		mBytesSentThisFrame += sentByteCount;
 	}
-
-
 }
 
 
@@ -196,7 +193,7 @@ void NetworkMgr::ReadIncomingPacketsIntoQueue()
 			if (RealTimeSrvMath::GetRandomFloat() >= mDropPacketChance)
 			{
 				float simulatedReceivedTime =
-					Timing::sInstance.GetTimef() +
+					Timing::sInstance.GetCurrentGameTime() +
 					mSimulatedLatency +  
 					( GetIsSimulatedJitter() ? 
 						RealTimeSrvMath::Clamp( RealTimeSrvMath::GetRandomFloat(), 0.f, 0.06f ) : 0.f );

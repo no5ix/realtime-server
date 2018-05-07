@@ -5,7 +5,7 @@ namespace
 	const float kDelayBeforeAckTimeout = 2.5f;
 }
 
-DeliveryNotificationMgr::DeliveryNotificationMgr( bool inShouldSendAcks, bool inShouldProcessAcks ) :
+DeliveryNotifyMgr::DeliveryNotifyMgr( bool inShouldSendAcks, bool inShouldProcessAcks ) :
 mNextOutgoingSequenceNumber( 0 ),
 mNextExpectedSequenceNumber( 0 ),
 //everybody starts at 0...
@@ -19,7 +19,7 @@ mDispatchedPacketCount( 0 )
 
 
 
-DeliveryNotificationMgr::~DeliveryNotificationMgr()
+DeliveryNotifyMgr::~DeliveryNotifyMgr()
 {
 	LOG( "DNM destructor. Delivery rate %d%%, Drop rate %d%%",
 		( 100 * mDeliveredPacketCount ) / mDispatchedPacketCount,
@@ -28,7 +28,7 @@ DeliveryNotificationMgr::~DeliveryNotificationMgr()
 
 
 
-InFlightPacket* DeliveryNotificationMgr::WriteSequenceNumber( OutputBitStream& inOutputStream )
+InFlightPacket* DeliveryNotifyMgr::WriteSequenceNumber( OutputBitStream& inOutputStream )
 {
 	
 	PacketSequenceNumber sequenceNumber = mNextOutgoingSequenceNumber++;
@@ -48,7 +48,7 @@ InFlightPacket* DeliveryNotificationMgr::WriteSequenceNumber( OutputBitStream& i
 	}
 }
 
-void DeliveryNotificationMgr::WriteAckData( OutputBitStream& inOutputStream )
+void DeliveryNotifyMgr::WriteAckData( OutputBitStream& inOutputStream )
 {
 	
 	
@@ -72,7 +72,7 @@ void DeliveryNotificationMgr::WriteAckData( OutputBitStream& inOutputStream )
 
 
 
-bool DeliveryNotificationMgr::ProcessSequenceNumber( InputBitStream& inInputStream )
+bool DeliveryNotifyMgr::ProcessSequenceNumber( InputBitStream& inInputStream )
 {
 	PacketSequenceNumber	sequenceNumber;
 
@@ -117,7 +117,7 @@ bool DeliveryNotificationMgr::ProcessSequenceNumber( InputBitStream& inInputStre
 
 
 
-void DeliveryNotificationMgr::ProcessAcks( InputBitStream& inInputStream )
+void DeliveryNotifyMgr::ProcessAcks( InputBitStream& inInputStream )
 {
 
 	bool hasAcks;
@@ -160,9 +160,9 @@ void DeliveryNotificationMgr::ProcessAcks( InputBitStream& inInputStream )
 	}
 }
 
-void DeliveryNotificationMgr::ProcessTimedOutPackets()
+void DeliveryNotifyMgr::ProcessTimedOutPackets()
 {
-	float timeoutTime = Timing::sInstance.GetTimef() - kDelayBeforeAckTimeout;
+	float timeoutTime = Timing::sInstance.GetCurrentGameTime() - kDelayBeforeAckTimeout;
 
 	while( !mInFlightPackets.empty() )
 	{
@@ -183,7 +183,7 @@ void DeliveryNotificationMgr::ProcessTimedOutPackets()
 	}
 }
 
-void DeliveryNotificationMgr::AddPendingAck( PacketSequenceNumber inSequenceNumber )
+void DeliveryNotifyMgr::AddPendingAck( PacketSequenceNumber inSequenceNumber )
 {
 	
 	
@@ -194,7 +194,7 @@ void DeliveryNotificationMgr::AddPendingAck( PacketSequenceNumber inSequenceNumb
 }
 
 
-void DeliveryNotificationMgr::HandlePacketDeliveryFailure( const InFlightPacket& inFlightPacket )
+void DeliveryNotifyMgr::HandlePacketDeliveryFailure( const InFlightPacket& inFlightPacket )
 {
 	++mDroppedPacketCount;
 	inFlightPacket.HandleDeliveryFailure( this );
@@ -202,7 +202,7 @@ void DeliveryNotificationMgr::HandlePacketDeliveryFailure( const InFlightPacket&
 }
 
 
-void DeliveryNotificationMgr::HandlePacketDeliverySuccess( const InFlightPacket& inFlightPacket )
+void DeliveryNotifyMgr::HandlePacketDeliverySuccess( const InFlightPacket& inFlightPacket )
 {
 	++mDeliveredPacketCount;
 	inFlightPacket.HandleDeliverySuccess( this );

@@ -44,6 +44,16 @@ bool EpollInterface::Add( SOCKET inFd )
 	return true;
 }
 
+void EpollInterface::CloseSocket(SOCKET inFd)
+{
+	if ( close( inFd ) == -1 )
+	{
+		LOG( "EpollInterface::CloseSocket, Error: %hs", "close socket" );
+	}
+	mSocketToUDPSocketPtrMap.erase( inFd );
+	mSocketToSocketAddrMap.erase( inFd );
+}
+
 void EpollInterface::Wait( float inMaxWait )
 {
 	const int MAX_EVENTS = 10;
@@ -54,20 +64,13 @@ void EpollInterface::Wait( float inMaxWait )
 
 	for ( int i = 0; i < nfds; ++i )
 	{
-		if ( events[i].events & ( EPOLLERR | EPOLLHUP ) )
+		if ( events[i].events & EPOLLIN )
 		{
-			if ( close( events[i].data.fd ) == -1 )
-			{
-				LOG( "Error: %hs", "close" );
-				mSocketToUDPSocketPtrMap.erase( events[i].data.fd );
-			}
+			HandleInputEvent( events[i].data.fd );
 		}
-		else
+		else if ( events[i].events & ( EPOLLERR | EPOLLHUP ) )
 		{
-			if ( events[i].events & EPOLLIN )
-			{
-				HandleInputEvent( events[i].data.fd );
-			}
+			CloseSocket( events[i].data.fd );
 		}
 	}
 }

@@ -6,13 +6,13 @@ NetworkMgrSrv*	NetworkMgrSrv::sInst;
 namespace
 {
 	const float kTimeBetweenStatePackets = 0.033f;
+	const float kClientDisconnectTimeout = 3.f;
 }
 
 NetworkMgrSrv::NetworkMgrSrv() :
 	mNewPlayerId( 1 ),
 	mNewNetworkId( 1 ),
-	mTimeBetweenStatePackets( 0.033f ),
-	mClientDisconnectTimeout( 3.f )
+	mTimeBetweenStatePackets( 0.033f )
 {
 }
 
@@ -171,7 +171,7 @@ int NetworkMgrSrv::GetNewNetworkId()
 void NetworkMgrSrv::SendOutgoingPackets()
 {
 
-	float time = Timing::sInstance.GetTimef();
+	float time = Timing::sInstance.GetCurrentGameTime();
 
 	if ( time < mTimeOfLastStatePacket + kTimeBetweenStatePackets )
 	{
@@ -243,5 +243,44 @@ void NetworkMgrSrv::SetStateDirty( int inNetworkId, uint32_t inDirtyState )
 	for ( const auto& pair : mAddressToClientMap )
 	{
 		pair.second->GetReplicationManagerServer().SetStateDirty( inNetworkId, inDirtyState );
+	}
+}
+
+
+
+void NetworkMgrSrv::CheckForDisconnects()
+{
+	float curTime = Timing::sInstance.GetCurrentGameTime();
+
+	if (curTime - mLastCheckDCTime < kClientDisconnectTimeout)
+	{
+		return;
+	}
+	mLastCheckDCTime = curTime;
+
+	float minAllowedLastPacketFromClientTime =
+		Timing::sInstance.GetCurrentGameTime() - kClientDisconnectTimeout;
+
+	for (
+		AddressToClientMap::iterator it = mAddressToClientMap.begin();
+		it != mAddressToClientMap.end();
+		//++it
+	)
+	{
+		if ( it->second->GetLastPacketFromClientTime() < minAllowedLastPacketFromClientTime )
+		{
+			mPlayerIdToClientMap.erase( it->second->GetPlayerId() );
+
+#ifdef HAS_EPOLL
+			EpollInterface::sInst->CloseSocket( it->second->GetUDPSocket()->GetSocket() );
+#endif
+
+			mAddressToClientMap.erase( it++ );
+			//it = mAddressToClientMap.erase( it );
+		}
+		else
+		{
+			++it;
+		}
 	}
 }

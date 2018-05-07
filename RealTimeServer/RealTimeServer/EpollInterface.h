@@ -18,7 +18,8 @@ public:
 	~EpollInterface();
 
 	bool Add( SOCKET inFd );
-	void Wait(float inMaxWait);
+	void CloseSocket( SOCKET inFd );
+	void Wait( float inMaxWait );
 	
 	void HandleInputEvent( SOCKET inFd );
 	void AcceptClient();

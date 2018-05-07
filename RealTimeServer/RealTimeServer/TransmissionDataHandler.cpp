@@ -11,7 +11,7 @@ void TransmissionDataHandler::AddTransmission( int inNetworkId, ReplicationActio
 	mTransmissions.emplace_back( inNetworkId, inAction, inState );
 }
 
-void TransmissionDataHandler::HandleDeliveryFailure( DeliveryNotificationMgr* inDeliveryNotificationManager ) const
+void TransmissionDataHandler::HandleDeliveryFailure( DeliveryNotifyMgr* inDeliveryNotificationManager ) const
 {
 	for ( const ReplicationTransmission& rt : mTransmissions )
 	{
@@ -33,7 +33,7 @@ void TransmissionDataHandler::HandleDeliveryFailure( DeliveryNotificationMgr* in
 	}
 }
 
-void TransmissionDataHandler::HandleDeliverySuccess( DeliveryNotificationMgr* inDeliveryNotificationManager ) const
+void TransmissionDataHandler::HandleDeliverySuccess( DeliveryNotifyMgr* inDeliveryNotificationManager ) const
 {
 	for ( const ReplicationTransmission& rt : mTransmissions )
 	{
@@ -66,7 +66,7 @@ void TransmissionDataHandler::HandleDestroyDeliveryFailure( int inNetworkId ) co
 	mReplicationManagerServer->ReplicateDestroy( inNetworkId );
 }
 
-void TransmissionDataHandler::HandleUpdateStateDeliveryFailure( int inNetworkId, uint32_t inState, DeliveryNotificationMgr* inDeliveryNotificationManager ) const
+void TransmissionDataHandler::HandleUpdateStateDeliveryFailure( int inNetworkId, uint32_t inState, DeliveryNotifyMgr* inDeliveryNotificationManager ) const
 {
 	if ( NetworkMgrSrv::sInst->GetGameObject( inNetworkId ) )
 	{
