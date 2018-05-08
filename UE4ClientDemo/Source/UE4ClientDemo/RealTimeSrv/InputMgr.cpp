@@ -92,8 +92,8 @@ const Action& InputMgr::SampleInputAsAction()
 
 bool InputMgr::IsTimeToSampleInput()
 {
-	//float time = ActionTiming::sInstance.GetFrameStartTime();
-	//if (time > mNextTimeToSampleInput)
+	//float time = RealTimeSrvTiming::sInstance.GetFrameStartTime();
+	//if ( time > mNextTimeToSampleInput )
 	//{
 	//	mNextTimeToSampleInput = mNextTimeToSampleInput + kTimeBetweenInputSamples;
 	//	return true;

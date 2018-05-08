@@ -24,14 +24,18 @@ class NetworkMgr
 	enum NetworkClientState
 	{
 		NCS_Uninitialized,
+		NCS_Resetting,
+		NCS_Reseted,
 		NCS_SayingHello,
 		NCS_Welcomed
 	};
 public:
-	static const uint32_t	kHelloCC = 'HELO';
-	static const uint32_t	kWelcomeCC = 'WLCM';
-	static const uint32_t	kStateCC = 'STAT';
-	static const uint32_t	kInputCC = 'INPT';
+	static const uint32_t	kHelloCC	= 'HELO';
+	static const uint32_t	kWelcomeCC	= 'WLCM';
+	static const uint32_t	kResetCC	= 'RSET';
+	static const uint32_t	kStateCC	= 'STAT';
+	static const uint32_t	kInputCC	= 'INPT';
+
 	static const int		kMaxPacketsPerFrameCount = 10;
 
 	static float kTimeBufferStatePackets;
@@ -82,7 +86,7 @@ private:
 		const int32 inPort,
 		const FString& inPlayerName );
 
-
+	void	HandleResetPacket();
 	void	HandleWelcomePacket( InputBitStream& inInputStream );
 
 	void	UpdateBytesSentLastFrame();
@@ -99,22 +103,23 @@ private:
 
 private:
 
-	DeliveryNotificationMgr	mDeliveryNotificationManager;
-	ReplicationMgr	mReplicationManagerClient;
+	DeliveryNotificationMgr		mDeliveryNotificationManager;
+	ReplicationMgr				mReplicationManagerClient;
 
 
 	TSharedPtr<FInternetAddr>	mRemoteAddr;
-	FSocket* mSocket;
+	FSocket*					mSocket;
 
-	FString mPlayerName;
+	FString						mPlayerName;
 
-	NetworkClientState mState;
+	NetworkClientState			mState;
 
-	float	mTimeOfLastHello;
-	float				mTimeOfLastInputPacket;
+	float						mTimeOfLastHello;
+	float						mTimeOfLastInputPacket;
 
-	int mPlayerId;
-	float				mLastMoveProcessedByServerTimestamp;
+	int							mPlayerId;
+	int							mResetedPlayerId;
+	float						mLastMoveProcessedByServerTimestamp;
 	float						mLastRoundTripTime;
 
 	float						mDropPacketChance;

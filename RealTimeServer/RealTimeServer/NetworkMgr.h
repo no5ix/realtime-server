@@ -7,6 +7,7 @@ class NetworkMgr
 public:
 	static const uint32_t	kHelloCC = 'HELO';
 	static const uint32_t	kWelcomeCC = 'WLCM';
+	static const uint32_t	kResetCC = 'RSET';
 	static const uint32_t	kStateCC = 'STAT';
 	static const uint32_t	kInputCC = 'INPT';
 	static const int		kMaxPacketsPerFrameCount = 10;
@@ -78,7 +79,6 @@ private:
 
 	queue< ReceivedPacket, list< ReceivedPacket > >	mPacketQueue;
 
-	UDPSocketPtr	mSocket;
 
 	WeightedTimedMovingAverage	mBytesReceivedPerSecond;
 	WeightedTimedMovingAverage	mBytesSentPerSecond;
@@ -88,6 +88,10 @@ private:
 	float						mDropPacketChance;
 	float						mSimulatedLatency;
 	bool						mIsSimulatedJitter;
+
+protected:
+	UDPSocketPtr	mSocket;
+
 };
 
 inline	GameObjectPtr NetworkMgr::GetGameObject( int inNetworkId ) const

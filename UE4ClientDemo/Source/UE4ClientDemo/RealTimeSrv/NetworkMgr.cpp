@@ -26,6 +26,7 @@ NetworkMgr::NetworkMgr() :
 	mDropPacketChance( 0.f ),
 	mSimulatedLatency( 0.f ),
 	mPlayerId( -1.f ),
+	mResetedPlayerId( -1.f ),
 	mDeliveryNotificationManager( true, false ),
 	mState( NCS_Uninitialized ),
 	mLastCheckDCTime( 0.f ),
@@ -173,6 +174,9 @@ void NetworkMgr::ProcessPacket( InputBitStream& inInputStream )
 
 	switch (packetType)
 	{
+	case kResetCC:
+		HandleResetPacket();
+		break;
 	case kWelcomeCC:
 		HandleWelcomePacket( inInputStream );
 		break;
@@ -190,9 +194,11 @@ void NetworkMgr::SendOutgoingPackets()
 {
 	switch (mState)
 	{
+	case NCS_Resetting:
 	case NCS_SayingHello:
 		UpdateSayingHello();
 		break;
+	case NCS_Reseted:
 	case NCS_Welcomed:
 		UpdateSendingInputPacket();
 		break;
@@ -223,8 +229,6 @@ void NetworkMgr::CheckForDisconnects()
 
 	if ( mLastPacketFromSrvTime < curTime - kClientDisconnectTimeout )
 	{
-		mState = NCS_SayingHello;
-
 		GEngine->AddOnScreenDebugMessage( -1, 2.f, FColor::Red,
 			FString::Printf( TEXT( "%s" ),
 				*FString( "Connecting ..." ) )
@@ -244,14 +248,33 @@ void NetworkMgr::ResetForNewGame()
 	InputMgr::sInstance->GetActionList().Clear();
 }
 
+void NetworkMgr::HandleResetPacket()
+{
+	if (mState == NCS_Welcomed)
+	{
+		mState = NCS_Resetting;
+
+		GEngine->AddOnScreenDebugMessage( -1, 6.f, FColor::Red,
+			FString::Printf( TEXT( "%s" ),
+			*FString( "Resetting ..." ))
+		);
+	}
+}
+
 void NetworkMgr::HandleWelcomePacket( InputBitStream& inInputStream )
 {
-	if (mState == NCS_SayingHello)
+	if (mState == NCS_SayingHello || mState == NCS_Resetting)
 	{
-		inInputStream.Read( mPlayerId );
-		mState = NCS_Welcomed;
-
-		ResetForNewGame();
+		if ( mState == NCS_Resetting )
+		{
+			mState = NCS_Reseted;
+			inInputStream.Read( mResetedPlayerId );
+		}
+		else
+		{
+			mState = NCS_Welcomed;
+			inInputStream.Read( mPlayerId );
+		}
 
 		inInputStream.Read( kTimeBetweenStatePackets );
 		kTimeBufferStatePackets = 4.f * kTimeBetweenStatePackets;
@@ -271,7 +294,13 @@ void NetworkMgr::HandleWelcomePacket( InputBitStream& inInputStream )
 
 void NetworkMgr::HandleStatePacket( InputBitStream& inInputStream )
 {
-	if (mState == NCS_Welcomed)
+	if ( mState == NCS_Reseted )
+	{
+		ResetForNewGame();
+		mState = NCS_Welcomed;
+		mPlayerId = mResetedPlayerId;
+	}
+	if ( mState == NCS_Welcomed )
 	{
 		ReadLastMoveProcessedOnServerTimestamp( inInputStream );
 

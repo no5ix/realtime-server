@@ -110,10 +110,24 @@ void NetworkMgrSrv::HandlePacketFromNewClient( InputBitStream& inInputStream, co
 			newClientProxy->GetPlayerId() 
 		);
 	}
+	else if ( packetType == kInputCC )
+	{
+		// Server reset
+		SendResetPacket( inFromAddress );
+	}
 	else
 	{
 		LOG( "Bad incoming packet from unknown client at socket %s - we're under attack!!", inFromAddress.ToString().c_str() );
 	}
+}
+
+void NetworkMgrSrv::SendResetPacket(const SocketAddrInterface& inFromAddress)
+{
+	OutputBitStream resetPacket;
+
+	resetPacket.Write( kResetCC );
+
+	int sentByteCount = mSocket->SendTo( resetPacket.GetBufferPtr(), resetPacket.GetByteLength(), inFromAddress );
 }
 
 void NetworkMgrSrv::SendWelcomePacket( ClientProxyPtr inClientProxy )

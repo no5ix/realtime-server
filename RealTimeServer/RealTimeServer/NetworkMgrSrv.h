@@ -7,19 +7,20 @@ public:
 	static bool				StaticInit( uint16_t inPort );
 	virtual void			ProcessPacket( InputBitStream& inInputStream, const SocketAddrInterface& inFromAddress, const UDPSocketPtr& inUDPSocket  ) override;
 	virtual void			HandleConnectionReset( const SocketAddrInterface& inFromAddress ) override;
-	void			SendOutgoingPackets();
-	void			RegisterGameObject( GameObjectPtr inGameObject );
+	void					SendOutgoingPackets();
+	void					RegisterGameObject( GameObjectPtr inGameObject );
 	inline	GameObjectPtr	RegisterAndReturn( Entity* inGameObject );
-	void			UnregisterGameObject( Entity* inGameObject );
-	void			SetStateDirty( int inNetworkId, uint32_t inDirtyState );
+	void					UnregisterGameObject( Entity* inGameObject );
+	void					SetStateDirty( int inNetworkId, uint32_t inDirtyState );
 	virtual void			CheckForDisconnects();
-	ClientProxyPtr	GetClientProxy( int inPlayerId ) const;
+	ClientProxyPtr			GetClientProxy( int inPlayerId ) const;
+	void SendResetPacket	( const SocketAddrInterface& inFromAddress );
 
 private:
 	NetworkMgrSrv();
 
-	void HandlePacketFromNewClient( InputBitStream& inInputStream, const SocketAddrInterface& inFromAddress, const UDPSocketPtr& inUDPSocket );
-	void	ProcessPacket( ClientProxyPtr inClientProxy, InputBitStream& inInputStream);
+	void	HandlePacketFromNewClient( InputBitStream& inInputStream, const SocketAddrInterface& inFromAddress, const UDPSocketPtr& inUDPSocket );
+	void	ProcessPacket( ClientProxyPtr inClientProxy, InputBitStream& inInputStream );
 
 	void	SendWelcomePacket( ClientProxyPtr inClientProxy );
 
