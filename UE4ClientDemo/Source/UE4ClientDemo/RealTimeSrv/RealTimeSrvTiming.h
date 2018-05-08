@@ -2,34 +2,52 @@
 
 #pragma once
 
+#include <memory>
+#include "Engine/World.h"
+
 class RealTimeSrvTiming
 {
 public:
 
-	RealTimeSrvTiming();
 
-	void Update();
+	static void StaticInit( UWorld * inWorld ) 
+	{ 
+		sInstance.reset( new RealTimeSrvTiming() ); 	
+		check( sInstance );
+		if ( sInstance )
+		{
+			sInstance->mWorld = inWorld;
+		}
+	}
+
+	void Update( float inCurGameTime, float inDeltaTime );
 
 	float GetDeltaTime() const { return mDeltaTime; }
 
-	double GetGameTimeD() const;
+	//double GetGameTimeD() const;
 
-	static double GetPlatformTime();
+	//static double GetUETime();
 
 	float GetCurrentGameTime() const
 	{
-		return static_cast< float >( GetGameTimeD() );
+		//return static_cast< float >( GetGameTimeD() );
+		return mWorld->GetTimeSeconds();
 	}
 
 	float GetFrameStartTime() const { return mFrameStartTimef; }
 
 
-	static RealTimeSrvTiming sInstance;
+	static std::unique_ptr< RealTimeSrvTiming > sInstance;
+
+private:
+	RealTimeSrvTiming() {}
 
 private:
 	float		mDeltaTime;
 
 	double		mLastFrameStartTime;
 	float		mFrameStartTimef;
+
+	UWorld*		mWorld;
 
 };

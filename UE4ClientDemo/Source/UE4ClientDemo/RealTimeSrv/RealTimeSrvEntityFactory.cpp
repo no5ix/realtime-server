@@ -34,7 +34,7 @@ RealTimeSrvEntityPtr RealTimeSrvEntityFactory::CreateGameObject( uint32_t inFour
 	switch ( inFourCCName )
 	{
 	case 'CHRT':
-		return CreateActionPawn();
+		return CreateRealTimeSrvPawn();
 	default:
 		break;
 	}
@@ -42,7 +42,7 @@ RealTimeSrvEntityPtr RealTimeSrvEntityFactory::CreateGameObject( uint32_t inFour
 	return RealTimeSrvEntityPtr();
 }
 
-RealTimeSrvEntityPtr RealTimeSrvEntityFactory::CreateActionPawn()
+RealTimeSrvEntityPtr RealTimeSrvEntityFactory::CreateRealTimeSrvPawn()
 {
 	check( GetWorld() );
 

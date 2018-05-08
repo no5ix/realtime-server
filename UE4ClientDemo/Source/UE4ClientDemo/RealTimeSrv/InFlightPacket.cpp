@@ -8,7 +8,7 @@
 
 InFlightPacket::InFlightPacket( PacketSequenceNumber inSequenceNumber ) :
 	mSequenceNumber( inSequenceNumber ),
-	mTimeDispatched( RealTimeSrvTiming::sInstance.GetCurrentGameTime() )
+	mTimeDispatched( RealTimeSrvTiming::sInstance->GetCurrentGameTime() )
 {
 	//null out other transmision data params...
 }

@@ -46,6 +46,8 @@ public:
 
 	static void StaticInit( const FString& inIP, int inPort, const FString& inPlayerName );
 	
+	void	Update();
+
 	void	SendPacket( const OutputBitStream& inOutputStream );
 
 	void	ProcessIncomingPackets();

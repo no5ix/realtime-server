@@ -14,8 +14,7 @@ public:
 		mLastActionTimestamp( -1.f )
 	{}
 
-	const	Action&	AddAction( const RealTimeSrvInputState& inInputState, float inTimestamp );
-	bool	AddActionIfNew( const Action& inAction );
+	const Action& AddAction( const RealTimeSrvInputState& inInputState );
 
 	void	RemovedProcessedActions( float inLastActionProcessedOnServerTimestamp );
 

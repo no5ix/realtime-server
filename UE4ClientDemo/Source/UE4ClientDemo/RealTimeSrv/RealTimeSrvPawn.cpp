@@ -194,7 +194,7 @@ void ARealTimeSrvPawn::Update()
 	}
 	else
 	{
-		SimulateMovementForRemotePawn( RealTimeSrvTiming::sInstance.GetDeltaTime() );
+		SimulateMovementForRemotePawn( RealTimeSrvTiming::sInstance->GetDeltaTime() );
 	}
 }
 
@@ -319,13 +319,13 @@ void ARealTimeSrvPawn::SimulateMovementForRemotePawn( float inDeltaTime )
 
 	//A_LOG_N_EXTRA( "ActionTiming::sInstance.GetCurrentGameTime() = ", ActionTiming::sInstance.GetCurrentGameTime() );
 
-	if ( RealTimeSrvTiming::sInstance.GetCurrentGameTime() < mIsTimeToStartSimulateMovementForRemotePawn )
+	if ( RealTimeSrvTiming::sInstance->GetCurrentGameTime() < mIsTimeToStartSimulateMovementForRemotePawn )
 	{
 		A_LOG_1_EXTRA( "ActionTiming::sInstance.GetCurrentGameTime() < mIsTimeToStartSimulateMovementForRemotePawn" );
 		return;
 	}
 
-	float time = RealTimeSrvTiming::sInstance.GetCurrentGameTime();
+	float time = RealTimeSrvTiming::sInstance->GetCurrentGameTime();
 
 	if ( time > mTimeOfLastUpdateTargetState + NetworkMgr::kTimeBetweenStatePackets )
 	{
@@ -552,7 +552,7 @@ void ARealTimeSrvPawn::Read( InputBitStream& inInputStream )
 		{
 			mIsTimeToStartSimulateMovementForRemotePawn = 
 				NetworkMgr::kTimeBufferStatePackets +
-				RealTimeSrvTiming::sInstance.GetCurrentGameTime() -
+				RealTimeSrvTiming::sInstance->GetCurrentGameTime() -
 				NetworkMgr::kTimeBetweenStatePackets;
 		}
 	}

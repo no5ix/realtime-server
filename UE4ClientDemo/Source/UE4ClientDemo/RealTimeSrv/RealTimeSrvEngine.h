@@ -39,4 +39,5 @@ public:
 	/** default inventory list */
 	UPROPERTY( EditAnywhere, Category = RealTimeSrvEngine )
 		TSubclassOf<class ARealTimeSrvPawn> DefaultPawnClass;
+
 };

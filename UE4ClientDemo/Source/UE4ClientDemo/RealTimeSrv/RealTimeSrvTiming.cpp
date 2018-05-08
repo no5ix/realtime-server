@@ -2,39 +2,55 @@
 
 
 #include "RealTimeSrvTiming.h"
+#include "RealTimeSrvHelper.h"
 
-RealTimeSrvTiming RealTimeSrvTiming::sInstance;
+std::unique_ptr< RealTimeSrvTiming >	RealTimeSrvTiming::sInstance;
 
-namespace
+//namespace
+//{
+//	double kStartTime = 0;
+//}
+
+//RealTimeSrvTiming::RealTimeSrvTiming()
+//{
+	//kStartTime = GetUETime();
+	//mLastFrameStartTime = GetGameTimeD();
+//}
+
+void RealTimeSrvTiming::Update(float inCurGameTime, float inDeltaTime)
 {
-	double kStartTime = 0;
-}
 
-RealTimeSrvTiming::RealTimeSrvTiming()
-{
-	kStartTime = GetPlatformTime();
-	mLastFrameStartTime = GetGameTimeD();
-}
+	//double currentTime = GetGameTimeD();
 
-void RealTimeSrvTiming::Update()
-{
+	//mDeltaTime = ( float )( currentTime - mLastFrameStartTime );
 
-	double currentTime = GetGameTimeD();
+	//mLastFrameStartTime = currentTime;
+	//mFrameStartTimef = static_cast< float > ( mLastFrameStartTime );
 
-	mDeltaTime = ( float )( currentTime - mLastFrameStartTime );
+	//A_LOG_1( "$$$$$$$$$$$$$$$ RealTimeSrvTiming::Update $$$$$$$$$$$$$$$$$$$$" );
+	//A_LOG_N( "inDeltaTime = ", inDeltaTime );
+	//A_LOG_N( "inCurGameTime = ", inCurGameTime );
+	//A_LOG_N( "mLastFrameStartTime = ", mLastFrameStartTime );
+	//A_LOG_N( "inCurGameTime - mLastFrameStartTime = ", inCurGameTime - mLastFrameStartTime );
+	//A_LOG_1( "$$$$$$$$$$$$$$$$ RealTimeSrvTiming::Update $$$$$$$$$$$$$$$$$$$" );
+
+
+	double currentTime = inCurGameTime;
+
+	mDeltaTime = inDeltaTime;
 
 	mLastFrameStartTime = currentTime;
-	mFrameStartTimef = static_cast< float > ( mLastFrameStartTime );
+	mFrameStartTimef = mLastFrameStartTime;
 
 }
 
-double RealTimeSrvTiming::GetGameTimeD() const
-{
-	double currentTime = GetPlatformTime();
-	return currentTime - kStartTime;
-}
-
-double RealTimeSrvTiming::GetPlatformTime()
-{
-	return FPlatformTime::Seconds();
-}
+//double RealTimeSrvTiming::GetGameTimeD() const
+//{
+//	double currentTime = GetUETime();
+//	return currentTime - kStartTime;
+//}
+//
+//double RealTimeSrvTiming::GetUETime()
+//{
+//	return FPlatformTime::Seconds();
+//}

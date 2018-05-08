@@ -83,7 +83,8 @@ void InputMgr::HandleMoveInput( EInputAction inMoveInputAction, float inValue )
 const Action& InputMgr::SampleInputAsAction()
 {
 
-	return mActionList.AddAction( GetState(), RealTimeSrvTiming::sInstance.GetFrameStartTime() );
+	//return mActionList.AddAction( GetState(), RealTimeSrvTiming::sInstance->GetFrameStartTime() );
+	return mActionList.AddAction( GetState() );
 
 	//const Action& testAction = mActionList.AddAction( GetState(), ActionTiming::sInstance.GetFrameStartTime() );
 	//A_LOG_N( "mActionList.GetActionCount() : ", float( mActionList.GetActionCount() ) );
@@ -92,7 +93,7 @@ const Action& InputMgr::SampleInputAsAction()
 
 bool InputMgr::IsTimeToSampleInput()
 {
-	//float time = RealTimeSrvTiming::sInstance.GetFrameStartTime();
+	//float time = RealTimeSrvTiming::sInstance->GetFrameStartTime();
 	//if ( time > mNextTimeToSampleInput )
 	//{
 	//	mNextTimeToSampleInput = mNextTimeToSampleInput + kTimeBetweenInputSamples;

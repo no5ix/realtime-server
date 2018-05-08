@@ -41,6 +41,15 @@ void NetworkMgr::StaticInit( const FString& inIP, int inPort, const FString& inP
 	return sInstance->Init("ActionUDPSocket", inIP, inPort, inPlayerName );
 }
 
+void NetworkMgr::Update()
+{
+	ProcessIncomingPackets();
+
+	CheckForDisconnects();
+
+	SendOutgoingPackets();
+}
+
 void NetworkMgr::Init( const FString& inYourChosenSocketName, const FString& inIP, const int32 inPort, const FString& inPlayerName )
 {
 
@@ -76,7 +85,7 @@ void NetworkMgr::SendPacket( const OutputBitStream& inOutputStream )
 
 void NetworkMgr::UpdateLastPacketFromSrvTime()
 {
-	mLastPacketFromSrvTime = RealTimeSrvTiming::sInstance.GetCurrentGameTime();
+	mLastPacketFromSrvTime = RealTimeSrvTiming::sInstance->GetCurrentGameTime();
 }
 
 void NetworkMgr::SendHelloPacket()
@@ -130,7 +139,7 @@ void NetworkMgr::ReadIncomingPacketsIntoQueue()
 			inputStream.ResetToCapacity( refReadByteCount );
 			++receivedPackedCount;
 
-			float simulatedReceivedTime = RealTimeSrvTiming::sInstance.GetCurrentGameTime() + mSimulatedLatency;
+			float simulatedReceivedTime = RealTimeSrvTiming::sInstance->GetCurrentGameTime() + mSimulatedLatency;
 			mPacketQueue.emplace( simulatedReceivedTime, inputStream, fromAddress );
 		}
 		else
@@ -145,7 +154,7 @@ void NetworkMgr::ProcessQueuedPackets()
 	while (!mPacketQueue.empty())
 	{
 		ReceivedPacket& nextPacket = mPacketQueue.front();
-		if (RealTimeSrvTiming::sInstance.GetCurrentGameTime() > nextPacket.GetReceivedTime())
+		if (RealTimeSrvTiming::sInstance->GetCurrentGameTime() > nextPacket.GetReceivedTime())
 		{
 			ProcessPacket( nextPacket.GetPacketBuffer());
 			mPacketQueue.pop();
@@ -207,19 +216,24 @@ void NetworkMgr::SendOutgoingPackets()
 
 void NetworkMgr::UpdateSayingHello()
 {
-	float currentTime = RealTimeSrvTiming::sInstance.GetCurrentGameTime();
+	float currentTime = RealTimeSrvTiming::sInstance->GetCurrentGameTime();
 
 	if (currentTime > mTimeOfLastHello + kTimeBetweenHellos)
 	{
 		SendHelloPacket();
 		mTimeOfLastHello = currentTime;
+
+		GEngine->AddOnScreenDebugMessage( -1, 2.5f, FColor::Red,
+			FString::Printf( TEXT( "%s" ),
+				*FString( "Connecting ..." ) )
+		);
 	}
 }
 
 void NetworkMgr::CheckForDisconnects()
 {
 
-	float curTime = RealTimeSrvTiming::sInstance.GetCurrentGameTime();
+	float curTime = RealTimeSrvTiming::sInstance->GetCurrentGameTime();
 
 	if ( curTime - mLastCheckDCTime < kClientDisconnectTimeout )
 	{
@@ -229,16 +243,16 @@ void NetworkMgr::CheckForDisconnects()
 
 	if ( mLastPacketFromSrvTime < curTime - kClientDisconnectTimeout )
 	{
-		GEngine->AddOnScreenDebugMessage( -1, 2.f, FColor::Red,
+		GEngine->AddOnScreenDebugMessage( -1, 2.5f, FColor::Red,
 			FString::Printf( TEXT( "%s" ),
-				*FString( "Connecting ..." ) )
+				*FString( "ReConnecting ..." ) )
 		);
 	}
 }
 
 void NetworkMgr::ResetForNewGame()
 {
-	float curTime = RealTimeSrvTiming::sInstance.GetCurrentGameTime();
+	float curTime = RealTimeSrvTiming::sInstance->GetCurrentGameTime();
 
 	mLastCheckDCTime = curTime;
 	mLastPacketFromSrvTime = curTime;
@@ -316,7 +330,7 @@ void NetworkMgr::ReadLastMoveProcessedOnServerTimestamp( InputBitStream& inInput
 	{
 		inInputStream.Read( mLastMoveProcessedByServerTimestamp );
 
-		float rtt = RealTimeSrvTiming::sInstance.GetFrameStartTime() - mLastMoveProcessedByServerTimestamp;
+		float rtt = RealTimeSrvTiming::sInstance->GetFrameStartTime() - mLastMoveProcessedByServerTimestamp;
 		mLastRoundTripTime = rtt;
 		mAvgRoundTripTime.Update( rtt );
 
@@ -326,7 +340,7 @@ void NetworkMgr::ReadLastMoveProcessedOnServerTimestamp( InputBitStream& inInput
 		//A_LOG_N( "rtt = ", rtt );
 		//A_LOG_N( "ping = ", mAvgRoundTripTime.GetValue() / 2.f );
 
-		float currentTime = RealTimeSrvTiming::sInstance.GetCurrentGameTime();
+		float currentTime = RealTimeSrvTiming::sInstance->GetCurrentGameTime();
 
 		if ( currentTime > mTimeOfLastHello + kTimeBetweenHellos )
 		{
@@ -346,7 +360,7 @@ void NetworkMgr::ReadLastMoveProcessedOnServerTimestamp( InputBitStream& inInput
 
 void NetworkMgr::UpdateSendingInputPacket()
 {
-	float time = RealTimeSrvTiming::sInstance.GetCurrentGameTime();
+	float time = RealTimeSrvTiming::sInstance->GetCurrentGameTime();
 
 	if (time > mTimeOfLastInputPacket + kTimeBetweenInputPackets)
 	{

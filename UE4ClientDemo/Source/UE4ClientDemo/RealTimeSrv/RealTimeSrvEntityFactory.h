@@ -31,7 +31,7 @@ public:
 
 private:
 	RealTimeSrvEntityFactory();
-	RealTimeSrvEntityPtr CreateActionPawn();
+	RealTimeSrvEntityPtr CreateRealTimeSrvPawn();
 
 
 private:

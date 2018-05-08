@@ -39,34 +39,26 @@ void URealTimeSrvEngine::BeginPlay()
 {
 	Super::BeginPlay();
 
+	RealTimeSrvTiming::StaticInit( GetWorld() );
 	RealTimeSrvWorld::StaticInit();
 	InputMgr::StaticInit();
+
 	RealTimeSrvEntityFactory::StaticInit( GetWorld() );
 	RealTimeSrvEntityFactory::sInstance->SetDefaultPawnClass( DefaultPawnClass );
 
 	NetworkMgr::StaticInit( IP, Port, Player_Name );
-
 }
 
-
-
-
-
-// Called every frame
 void URealTimeSrvEngine::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	// ...
-	RealTimeSrvTiming::sInstance.Update();
+	RealTimeSrvTiming::sInstance->Update( GetWorld()->GetTimeSeconds(), DeltaTime );
 
 	InputMgr::sInstance->Update();
 
 	RealTimeSrvWorld::sInstance->Update();
 
-	NetworkMgr::sInstance->ProcessIncomingPackets();
-
-	NetworkMgr::sInstance->CheckForDisconnects();
-
-	NetworkMgr::sInstance->SendOutgoingPackets();
+	NetworkMgr::sInstance->Update();
 }
