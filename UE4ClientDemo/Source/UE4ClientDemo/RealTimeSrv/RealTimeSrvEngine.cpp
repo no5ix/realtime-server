@@ -66,5 +66,7 @@ void URealTimeSrvEngine::TickComponent(float DeltaTime, ELevelTick TickType, FAc
 
 	NetworkMgr::sInstance->ProcessIncomingPackets();
 
+	NetworkMgr::sInstance->CheckForDisconnects();
+
 	NetworkMgr::sInstance->SendOutgoingPackets();
 }

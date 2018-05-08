@@ -6,13 +6,13 @@ public:
 
 	static bool				StaticInit( uint16_t inPort );
 	virtual void			ProcessPacket( InputBitStream& inInputStream, const SocketAddrInterface& inFromAddress, const UDPSocketPtr& inUDPSocket  ) override;
-//	virtual void			HandleConnectionReset( const SocketAddress& inFromAddress ) override;
+	virtual void			HandleConnectionReset( const SocketAddrInterface& inFromAddress ) override;
 	void			SendOutgoingPackets();
 	void			RegisterGameObject( GameObjectPtr inGameObject );
 	inline	GameObjectPtr	RegisterAndReturn( Entity* inGameObject );
 	void			UnregisterGameObject( Entity* inGameObject );
 	void			SetStateDirty( int inNetworkId, uint32_t inDirtyState );
-	void			CheckForDisconnects();
+	virtual void			CheckForDisconnects();
 	ClientProxyPtr	GetClientProxy( int inPlayerId ) const;
 
 private:

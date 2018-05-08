@@ -55,7 +55,6 @@ void ReplicationMgr::Write( OutputBitStream& inOutputStream, TransmissionDataHan
 			switch (action)
 			{
 			case RA_Create:
-				
 				writtenState = WriteCreateAction( inOutputStream, networkId, dirtyState );
 				break;
 			case RA_Update:
@@ -90,12 +89,6 @@ uint32_t ReplicationMgr::WriteUpdateAction( OutputBitStream& inOutputStream, int
 {
 	
 	GameObjectPtr gameObject = NetworkMgrSrv::sInst->GetGameObject( inNetworkId );
-
-	
-	
-
-
-	
 
 	uint32_t writtenState = gameObject->Write( inOutputStream, inDirtyState );
 

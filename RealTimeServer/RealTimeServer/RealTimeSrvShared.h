@@ -86,7 +86,7 @@ class Entity;
 #include "EntityFactory.h"
 #include "Character.h"
 #include "World.h"
-#include "Timing.h"
+#include "RealTimeSrvTiming.h"
 
 #include "WeightedTimedMovingAverage.h"
 

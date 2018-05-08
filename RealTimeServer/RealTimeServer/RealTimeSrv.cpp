@@ -78,7 +78,7 @@ int RealTimeSrv::Run()
 
 	while (!quit)
 	{
-		Timing::sInstance.Update();
+		RealTimeSrvTiming::sInstance.Update();
 
 		DoFrame();
 	}

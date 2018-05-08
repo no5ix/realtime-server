@@ -7,7 +7,7 @@
 using namespace std::chrono;
 #endif
 
-Timing	Timing::sInstance;
+RealTimeSrvTiming	RealTimeSrvTiming::sInstance;
 
 namespace
 {
@@ -18,7 +18,7 @@ namespace
 #endif
 }
 
-Timing::Timing()
+RealTimeSrvTiming::RealTimeSrvTiming()
 {
 #if _WIN32
 	LARGE_INTEGER perfFreq;
@@ -33,7 +33,7 @@ Timing::Timing()
 #endif
 }
 
-void Timing::Update()
+void RealTimeSrvTiming::Update()
 {
 
 	double currentTime = GetGameTimeD();
@@ -45,7 +45,7 @@ void Timing::Update()
 
 }
 
-double Timing::GetGameTimeD() const
+double RealTimeSrvTiming::GetGameTimeD() const
 {
 #if _WIN32
 	LARGE_INTEGER curTime, timeSinceStart;

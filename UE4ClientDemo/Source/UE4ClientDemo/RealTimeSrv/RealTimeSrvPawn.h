@@ -79,7 +79,7 @@ public:
 	void SetActionPawnCameraRotation( const FRotator& inActionPawnCameraRotation ) { mCameraRotation = inActionPawnCameraRotation; }
 
 
-	UFUNCTION( BlueprintCallable, Category = "ActionServer" )
+	UFUNCTION( BlueprintCallable, Category = "RealTimeSrv" )
 		const FRotator& GetLocalActionPawnCameraRotation() const { return mLocalActionPawnCameraRotation; }
 
 	void SetLocalActionPawnCameraRotation( const FRotator& inActionPawnCameraRotation ) { mLocalActionPawnCameraRotation = inActionPawnCameraRotation; }
@@ -167,11 +167,6 @@ protected:
 	FVector mRemotePawnTargetVelocity;
 	FRotator mRemotePawnTargetRotation;
 	FRotator mRemotePawnTargetCameraRotation;
-
-	//float mInterpSpeedToRemotePawnTargetLocation;
-	//float mInterpSpeedToRemotePawnTargetVelocity;
-	//float mInterpSpeedToRemotePawnTargetRotation;
-	//float mInterpSpeedToRemotePawnTargetCameraRotation;
 
 	float mTimeOfLastUpdateTargetState;
 };

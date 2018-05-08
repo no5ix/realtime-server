@@ -41,7 +41,9 @@ public:
 
 
 	void		SetPlayerId( uint32_t inPlayerId ) { mPlayerId = inPlayerId; }
-	uint32_t	GetPlayerId()						const { return mPlayerId; }
+
+	UFUNCTION( BlueprintCallable, Category = "RealTimeSrv" )
+		int	GetPlayerId() const { return mPlayerId; }
 
 	void			SetLocalVelocity( const FVector& inVelocity ) { mLocalVelocity = inVelocity; }
 	const FVector&	GetLocalVelocity()						const { return mLocalVelocity; }
@@ -49,7 +51,7 @@ public:
 	const FVector&	GetServerVelocity()						const { return mVelocity; }
 
 
-	UFUNCTION( BlueprintCallable, Category = "ActionServer" )
+	UFUNCTION( BlueprintCallable, Category = "RealTimeSrv" )
 		virtual FVector GetVelocity() const override { return GetLocalVelocity(); }
 
 	
@@ -60,7 +62,7 @@ public:
 
 	bool DoesWantToDie() const { return false; }
 
-	virtual void	HandleDying() {}
+	virtual void	HandleDying() { Destroy(); }
 
 	const FVector&		GetLocation()				const { return mLocation; }
 	void		SetLocation( const FVector& inLocation ) { mLocation = inLocation; }

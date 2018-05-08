@@ -11,12 +11,12 @@ public:
 		mDuration( inDuration ),
 		mValue( 0.f )
 	{
-		mTimeLastEntryMade = Timing::sInstance.GetCurrentGameTime();
+		mTimeLastEntryMade = RealTimeSrvTiming::sInstance.GetCurrentGameTime();
 	}
 
 	void UpdatePerSecond( float inValue )
 	{
-		float time = Timing::sInstance.GetCurrentGameTime();
+		float time = RealTimeSrvTiming::sInstance.GetCurrentGameTime();
 		float timeSinceLastEntry = time - mTimeLastEntryMade;
 
 		float valueOverTime = inValue / timeSinceLastEntry;
@@ -32,7 +32,7 @@ public:
 
 	void Update( float inValue )
 	{
-		float time = Timing::sInstance.GetCurrentGameTime();
+		float time = RealTimeSrvTiming::sInstance.GetCurrentGameTime();
 		float timeSinceLastEntry = time - mTimeLastEntryMade;
 
 		//now update our value by whatever amount of the duration that was..

@@ -17,6 +17,7 @@ public:
 	static std::unique_ptr< RealTimeSrvWorld >		sInstance;
 
 	void AddGameObject( RealTimeSrvEntityPtr inGameObject );
+	void ResetRealTimeSrvWorld();
 	void RemoveGameObject( RealTimeSrvEntityPtr inGameObject );
 
 	void Update();
@@ -28,7 +29,6 @@ private:
 
 	RealTimeSrvWorld();
 
-	int	GetIndexOfGameObject( RealTimeSrvEntityPtr inGameObject );
 
 	std::vector< RealTimeSrvEntityPtr >	mGameObjects;
 

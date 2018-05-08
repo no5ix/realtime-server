@@ -7,6 +7,8 @@
 #include "InputMgr.h"
 #include "RealTimeSrvHelper.h"
 #include "ActionList.h"
+#include "RealTimeSrvWorld.h"
+
 
 std::unique_ptr<NetworkMgr> NetworkMgr::sInstance;
 
@@ -17,17 +19,19 @@ namespace
 {
 	const float kTimeBetweenHellos = 1.f;
 	const float kTimeBetweenInputPackets = 0.033f;
+	const float kClientDisconnectTimeout = 3.f;
 }
 
 NetworkMgr::NetworkMgr() :
 	mDropPacketChance( 0.f ),
 	mSimulatedLatency( 0.f ),
-	mPlayerId(-1.f),
+	mPlayerId( -1.f ),
 	mDeliveryNotificationManager( true, false ),
-	mState( NCS_Uninitialized )
+	mState( NCS_Uninitialized ),
+	mLastCheckDCTime( 0.f ),
+	mLastPacketFromSrvTime( 0.f )
 {
 	mSocket = NULL;
-	//mReplicationManagerClient = NewObject<UReplicationManagerClientObj>();
 }
 
 void NetworkMgr::StaticInit( const FString& inIP, int inPort, const FString& inPlayerName )
@@ -69,6 +73,11 @@ void NetworkMgr::SendPacket( const OutputBitStream& inOutputStream )
 	}
 }
 
+void NetworkMgr::UpdateLastPacketFromSrvTime()
+{
+	mLastPacketFromSrvTime = RealTimeSrvTiming::sInstance.GetCurrentGameTime();
+}
+
 void NetworkMgr::SendHelloPacket()
 {
 	OutputBitStream helloPacket;
@@ -105,10 +114,6 @@ void NetworkMgr::ReadIncomingPacketsIntoQueue()
 
 	TSharedRef<FInternetAddr> fromAddress = ISocketSubsystem::Get( PLATFORM_SOCKETSUBSYSTEM )->CreateInternetAddr();
 
-
-
-
-	//keep reading until we don't have anything to read ( or we hit a max number that we'll process per frame )
 	int receivedPackedCount = 0;
 
 	while (receivedPackedCount < kMaxPacketsPerFrameCount)
@@ -117,7 +122,6 @@ void NetworkMgr::ReadIncomingPacketsIntoQueue()
 
 		if (refReadByteCount == 0)
 		{
-			//nothing to read
 			break;
 		}
 		else if (refReadByteCount > 0)
@@ -125,10 +129,8 @@ void NetworkMgr::ReadIncomingPacketsIntoQueue()
 			inputStream.ResetToCapacity( refReadByteCount );
 			++receivedPackedCount;
 
-			//UGameplayStatics::GetRealTimeSeconds(GetWorld());
 			float simulatedReceivedTime = RealTimeSrvTiming::sInstance.GetCurrentGameTime() + mSimulatedLatency;
 			mPacketQueue.emplace( simulatedReceivedTime, inputStream, fromAddress );
-			//FDateTime::ToUnixTimestamp()
 		}
 		else
 		{
@@ -137,11 +139,8 @@ void NetworkMgr::ReadIncomingPacketsIntoQueue()
 	
 }
 
-
-
 void NetworkMgr::ProcessQueuedPackets()
 {
-	//look at the front packet...
 	while (!mPacketQueue.empty())
 	{
 		ReceivedPacket& nextPacket = mPacketQueue.front();
@@ -169,6 +168,9 @@ void NetworkMgr::ProcessPacket( InputBitStream& inInputStream )
 {
 	uint32_t	packetType;
 	inInputStream.Read( packetType );
+
+	UpdateLastPacketFromSrvTime();
+
 	switch (packetType)
 	{
 	case kWelcomeCC:
@@ -208,30 +210,62 @@ void NetworkMgr::UpdateSayingHello()
 	}
 }
 
+void NetworkMgr::CheckForDisconnects()
+{
 
+	float curTime = RealTimeSrvTiming::sInstance.GetCurrentGameTime();
 
+	if ( curTime - mLastCheckDCTime < kClientDisconnectTimeout )
+	{
+		return;
+	}
+	mLastCheckDCTime = curTime;
+
+	if ( mLastPacketFromSrvTime < curTime - kClientDisconnectTimeout )
+	{
+		mState = NCS_SayingHello;
+
+		GEngine->AddOnScreenDebugMessage( -1, 2.f, FColor::Red,
+			FString::Printf( TEXT( "%s" ),
+				*FString( "Connecting ..." ) )
+		);
+	}
+}
+
+void NetworkMgr::ResetForNewGame()
+{
+	float curTime = RealTimeSrvTiming::sInstance.GetCurrentGameTime();
+
+	mLastCheckDCTime = curTime;
+	mLastPacketFromSrvTime = curTime;
+	mNetworkIdToGameObjectMap.clear();
+
+	RealTimeSrvWorld::sInstance->ResetRealTimeSrvWorld();
+	InputMgr::sInstance->GetActionList().Clear();
+}
 
 void NetworkMgr::HandleWelcomePacket( InputBitStream& inInputStream )
 {
 	if (mState == NCS_SayingHello)
 	{
-		//if we got a player id, we've been welcomed!
-
 		inInputStream.Read( mPlayerId );
 		mState = NCS_Welcomed;
 
+		ResetForNewGame();
 
 		inInputStream.Read( kTimeBetweenStatePackets );
 		kTimeBufferStatePackets = 4.f * kTimeBetweenStatePackets;
 
-		mReplicationManagerClient.Read( inInputStream );
+		//mReplicationManagerClient.Read( inInputStream );
 
-		RealTimeSrvHelper::ScreenMsg( "welcome on client as playerID = ", mPlayerId );
+		GEngine->AddOnScreenDebugMessage( -1, 6.f, FColor::Red,
+			FString::Printf( TEXT( "%s    %d" ),
+				*FString( "Welcome on client as PlayerID     = " ), mPlayerId )
+		);
 
 		A_LOG_1( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" );
 		A_LOG_1( "****UDP**** HandleWelcomePacket Successfully!!!" );
 		A_LOG_1( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" );
-
 	}
 }
 
@@ -241,14 +275,6 @@ void NetworkMgr::HandleStatePacket( InputBitStream& inInputStream )
 	{
 		ReadLastMoveProcessedOnServerTimestamp( inInputStream );
 
-		//A_LOG();
-
-		//old
-		//HandleGameObjectState( inPacketBuffer );
-		//HandleScoreBoardState( inInputStream );
-
-
-		//tell the replication manager to handle the rest...
 		mReplicationManagerClient.Read( inInputStream );
 	}
 }
@@ -277,7 +303,11 @@ void NetworkMgr::ReadLastMoveProcessedOnServerTimestamp( InputBitStream& inInput
 		{
 			//A_MSG_M( 2.f, "ping = %f", mAvgRoundTripTime.GetValue() *1000.f );
 			//GEngine->AddOnScreenDebugMessage( -1, 2.f, FColor::Red, FString::Printf( TEXT( "%s    %f" ), *FString( "ping" ), float( mAvgRoundTripTime.GetValue() *1000.f ) ) );
-			GEngine->AddOnScreenDebugMessage( -1, 2.f, FColor::Red, FString::Printf( TEXT( "%s    %f" ), *FString( "ping" ), float( rtt *1000.f ) ) );
+
+			GEngine->AddOnScreenDebugMessage( -1, 2.f, FColor::Red, 
+				FString::Printf( TEXT( "%s    %f" ), 
+				*FString( "ping" ), float( rtt *1000.f ) ) 
+			);
 			mTimeOfLastHello = currentTime;
 		}
 	}
@@ -316,29 +346,17 @@ void NetworkMgr::SendInputPacket()
 			firstMoveIndex = 0;
 		}
 
-		// 		int firstMoveIndex = moveCount > 3 ? moveCount - 3 - 1 : 0;
-
-		//int hlhTestfirstMoveIndex = firstMoveIndex;
 
 		auto move = moveList.begin() + firstMoveIndex;
 
 
-		//only need two bits to write the move count, because it's 0, 1, 2 or 3
 		inputPacket.Write( moveCount - firstMoveIndex, 2 );
 
-		//int hlhTestSendTimes = 0;
 
 		for ( ; firstMoveIndex < moveCount; ++firstMoveIndex, ++move )
 		{
-			///would be nice to optimize the time stamp...
 			move->Write( inputPacket );
-			//hlhTestSendTimes++;
 		}
-
-		// 		if ( hlhTestSendTimes > 3 )
-		// 		{
-		//A_LOG_M( "moveCount = %d, hlhTestfirstMoveIndex = %d, hlhTestSendTimes = %d", moveCount, hlhTestfirstMoveIndex, hlhTestSendTimes );
-		// 		}
 
 		SendPacket( inputPacket );
 	}

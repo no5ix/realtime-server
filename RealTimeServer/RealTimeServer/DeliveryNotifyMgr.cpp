@@ -21,9 +21,9 @@ mDispatchedPacketCount( 0 )
 
 DeliveryNotifyMgr::~DeliveryNotifyMgr()
 {
-	LOG( "DNM destructor. Delivery rate %d%%, Drop rate %d%%",
-		( 100 * mDeliveredPacketCount ) / mDispatchedPacketCount,
-		( 100 * mDroppedPacketCount ) / mDispatchedPacketCount );
+	//LOG( "DNM destructor. Delivery rate %d%%, Drop rate %d%%",
+	//	( 100 * mDeliveredPacketCount ) / mDispatchedPacketCount,
+	//	( 100 * mDroppedPacketCount ) / mDispatchedPacketCount );
 }
 
 
@@ -50,14 +50,6 @@ InFlightPacket* DeliveryNotifyMgr::WriteSequenceNumber( OutputBitStream& inOutpu
 
 void DeliveryNotifyMgr::WriteAckData( OutputBitStream& inOutputStream )
 {
-	
-	
-	
-	
-
-	
-	
-	
 	bool hasAcks = ( mPendingAcks.size() > 0 );
 
 	inOutputStream.Write( hasAcks );
@@ -162,7 +154,7 @@ void DeliveryNotifyMgr::ProcessAcks( InputBitStream& inInputStream )
 
 void DeliveryNotifyMgr::ProcessTimedOutPackets()
 {
-	float timeoutTime = Timing::sInstance.GetCurrentGameTime() - kDelayBeforeAckTimeout;
+	float timeoutTime = RealTimeSrvTiming::sInstance.GetCurrentGameTime() - kDelayBeforeAckTimeout;
 
 	while( !mInFlightPackets.empty() )
 	{

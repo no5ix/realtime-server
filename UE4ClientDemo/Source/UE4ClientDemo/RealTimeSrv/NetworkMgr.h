@@ -63,6 +63,12 @@ public:
 
 	ReplicationMgr GetReplicationManagerClient() { return mReplicationManagerClient; }
 
+	void	UpdateLastPacketFromSrvTime();
+	float	GetLastPacketFromClientTime()	const { return mLastPacketFromSrvTime; }
+	void	CheckForDisconnects();
+	void	ResetForNewGame();
+
+
 protected:
 
 	IntToGameObjectMap		mNetworkIdToGameObjectMap;
@@ -115,6 +121,9 @@ private:
 	float						mSimulatedLatency;
 
 	WeightedTimedMovingAverage	mAvgRoundTripTime;
+
+	float						mLastCheckDCTime;
+	float						mLastPacketFromSrvTime;
 
 private:
 	class ReceivedPacket

@@ -415,6 +415,7 @@ void ARealTimeSrvPawn::SimulateMovementForLocalPawn(float inDeltaTime)
 
 	SetActorRotation( mLocalRotation );
 	ActionPawnCamera->SetWorldRotation( mLocalActionPawnCameraRotation );
+
 	if ( bIsPlayerLocationOutOfSync )
 	{
 		A_LOG_M( "GetActorLocation() = %f, %f, %f", GetActorLocation().X, GetActorLocation().Y, GetActorLocation().Z );
@@ -439,7 +440,6 @@ void ARealTimeSrvPawn::SimulateMovementForLocalPawn(float inDeltaTime)
 
 	SetActorLocation( mLocalLocation );
 	SetLocalVelocity( mVelocity );
-	 // need to do some lerp
 }
 
 void ARealTimeSrvPawn::DR( float inDeltaTime )
@@ -538,10 +538,11 @@ void ARealTimeSrvPawn::Read( InputBitStream& inInputStream )
 		SetPlayerId( playerId );
 		readState |= ECRS_PlayerId;
 
+		A_LOG_M( "READ!!! GetPlayerId() = %d", GetPlayerId() );
+
 		if ( GetPlayerId() == NetworkMgr::sInstance->GetPlayerId() )
 		{
 			APlayerController* const FirstPC =  UGameplayStatics::GetPlayerController( GetWorld(), 0 );
-			//if ( FirstPC != nullptr && !( FirstPC->GetPawn() ) )
 			if ( FirstPC != nullptr )
 			{
 				FirstPC->Possess( this );
@@ -563,6 +564,7 @@ void ARealTimeSrvPawn::Read( InputBitStream& inInputStream )
 
 
 	A_LOG_1( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" );
+
 
 	A_LOG_M( "READ!!! GetActorRotation() = %f, %f, %f", GetActorRotation().Pitch, GetActorRotation().Yaw, GetActorRotation().Roll );
 	A_LOG_M( "READ!!! mLocalRotation = %f, %f, %f", mLocalRotation.Pitch, mLocalRotation.Yaw, mLocalRotation.Roll );

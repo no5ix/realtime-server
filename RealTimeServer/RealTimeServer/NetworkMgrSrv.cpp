@@ -12,7 +12,8 @@ namespace
 NetworkMgrSrv::NetworkMgrSrv() :
 	mNewPlayerId( 1 ),
 	mNewNetworkId( 1 ),
-	mTimeBetweenStatePackets( 0.033f )
+	mTimeBetweenStatePackets( 0.033f ),
+	mLastCheckDCTime( 0.f )
 {
 }
 
@@ -103,7 +104,11 @@ void NetworkMgrSrv::HandlePacketFromNewClient( InputBitStream& inInputStream, co
 
 		SendWelcomePacket( newClientProxy );
 
-		LOG( "a new client at socket %s", inFromAddress.ToString().c_str() );
+		LOG( "a new client at socket %s, named '%s' as PlayerID %d ", 
+			inFromAddress.ToString().c_str(), 
+			newClientProxy->GetName().c_str(), 
+			newClientProxy->GetPlayerId() 
+		);
 	}
 	else
 	{
@@ -119,10 +124,9 @@ void NetworkMgrSrv::SendWelcomePacket( ClientProxyPtr inClientProxy )
 	welcomePacket.Write( inClientProxy->GetPlayerId() );
 	welcomePacket.Write( kTimeBetweenStatePackets );
 
-	LOG( "Server Welcoming, new client '%s' as player %d", inClientProxy->GetName().c_str(), inClientProxy->GetPlayerId() );
+	//TransmissionDataHandler* rmtd = new TransmissionDataHandler( &inClientProxy->GetReplicationManagerServer() );
+	//inClientProxy->GetReplicationManagerServer().Write( welcomePacket, rmtd );
 
-	TransmissionDataHandler* rmtd = new TransmissionDataHandler( &inClientProxy->GetReplicationManagerServer() );
-	inClientProxy->GetReplicationManagerServer().Write( welcomePacket, rmtd );
 	SendPacket( welcomePacket, inClientProxy );
 }
 
@@ -171,7 +175,7 @@ int NetworkMgrSrv::GetNewNetworkId()
 void NetworkMgrSrv::SendOutgoingPackets()
 {
 
-	float time = Timing::sInstance.GetCurrentGameTime();
+	float time = RealTimeSrvTiming::sInstance.GetCurrentGameTime();
 
 	if ( time < mTimeOfLastStatePacket + kTimeBetweenStatePackets )
 	{
@@ -248,9 +252,26 @@ void NetworkMgrSrv::SetStateDirty( int inNetworkId, uint32_t inDirtyState )
 
 
 
+void NetworkMgrSrv::HandleConnectionReset( const SocketAddrInterface& inFromAddress )
+{
+	//just dc the client right away...
+	auto it = mAddressToClientMap.find( inFromAddress );
+	if ( it != mAddressToClientMap.end() )
+	{
+		mPlayerIdToClientMap.erase( it->second->GetPlayerId() );
+
+#ifdef HAS_EPOLL
+		EpollInterface::sInst->CloseSocket( it->second->GetUDPSocket()->GetSocket() );
+#endif
+
+		mAddressToClientMap.erase( it );
+	}
+}
+
 void NetworkMgrSrv::CheckForDisconnects()
 {
-	float curTime = Timing::sInstance.GetCurrentGameTime();
+
+	float curTime = RealTimeSrvTiming::sInstance.GetCurrentGameTime();
 
 	if (curTime - mLastCheckDCTime < kClientDisconnectTimeout)
 	{
@@ -258,8 +279,8 @@ void NetworkMgrSrv::CheckForDisconnects()
 	}
 	mLastCheckDCTime = curTime;
 
-	float minAllowedLastPacketFromClientTime =
-		Timing::sInstance.GetCurrentGameTime() - kClientDisconnectTimeout;
+	float minAllowedTime =
+		RealTimeSrvTiming::sInstance.GetCurrentGameTime() - kClientDisconnectTimeout;
 
 	for (
 		AddressToClientMap::iterator it = mAddressToClientMap.begin();
@@ -267,7 +288,7 @@ void NetworkMgrSrv::CheckForDisconnects()
 		//++it
 	)
 	{
-		if ( it->second->GetLastPacketFromClientTime() < minAllowedLastPacketFromClientTime )
+		if ( it->second->GetLastPacketFromClientTime() < minAllowedTime )
 		{
 			mPlayerIdToClientMap.erase( it->second->GetPlayerId() );
 

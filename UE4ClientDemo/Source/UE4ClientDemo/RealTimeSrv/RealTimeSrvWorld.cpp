@@ -26,6 +26,18 @@ void RealTimeSrvWorld::AddGameObject( RealTimeSrvEntityPtr inGameObject )
 	inGameObject->SetIndexInWorld( mGameObjects.size() - 1 );
 }
 
+void RealTimeSrvWorld::ResetRealTimeSrvWorld()
+{
+	for ( int i = 0, c = mGameObjects.size(); i < c; ++i )
+	{
+		RealTimeSrvEntityPtr go = mGameObjects[i];
+
+		RemoveGameObject( go );
+		go->HandleDying();
+		--i;
+		--c;
+	}
+}
 
 void RealTimeSrvWorld::RemoveGameObject( RealTimeSrvEntityPtr inGameObject )
 {

@@ -12,19 +12,14 @@
 void ReplicationMgr::Read( InputBitStream& inInputStream )
 {
 	//A_LOG_1( "ReplicationManagerClient::Read, start" );
-	//int countForTest = 0;
 
 	while (inInputStream.GetRemainingBitCount() >= 32)
 	{
-		//read the network id...
 		int networkId;
 		inInputStream.Read( networkId );
 
-		//only need 2 bits for action...
 		uint8_t action;
 		inInputStream.Read( action, 2 );
-
-		//A_LOG_1( "into while" );
 
 		switch (action)
 		{
@@ -38,8 +33,6 @@ void ReplicationMgr::Read( InputBitStream& inInputStream )
 			ReadAndDoDestroyAction( inInputStream, networkId );
 			break;
 		}
-
-		//++countForTest;
 	}
 
 	//A_LOG_N( "ReplicationManagerClient::Read, end with countForTest = ", countForTest );
@@ -47,6 +40,8 @@ void ReplicationMgr::Read( InputBitStream& inInputStream )
 
 void ReplicationMgr::ReadAndDoCreateAction( InputBitStream& inInputStream, int inNetworkId )
 {
+
+	A_LOG_1( "= = == = = == = ReadAndDoCreateAction = = = == = = = = =" );
 
 	uint32_t fourCCName;
 	inInputStream.Read( fourCCName );
@@ -65,9 +60,8 @@ void ReplicationMgr::ReadAndDoCreateAction( InputBitStream& inInputStream, int i
 
 	gameObject->Read( inInputStream );
 
-	A_LOG_1( "= = == = = == = = = = == = = = = =" );
 	A_LOG();
-	A_LOG_1( "= = == = = == = = = = == = = = = =" );
+	A_LOG_1( "= = == = = == = ReadAndDoCreateAction = = = == = = = = =" );
 	
 }
 
