@@ -23,7 +23,8 @@ public:
 protected:
 
 	/** Update Velocity based on input. Also applies gravity. */
-	void ApplyControlInputToVelocity(float DeltaTime);
+	//void ApplyControlInputToVelocity( float DeltaTime );
+	void ApplyControlInputToVelocity( float DeltaTime, FVector& inVelocity );
 
 public:
 

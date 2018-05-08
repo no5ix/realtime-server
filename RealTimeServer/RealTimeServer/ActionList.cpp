@@ -16,29 +16,15 @@ const Action& ActionList::AddMove( const InputState& inInputState, float inTimes
 
 bool ActionList::AddMoveIfNew( const Action& inMove )
 {
-	//float timeStamp = inMove.GetTimestamp();
-
-	//if ( timeStamp > mLastMoveTimestamp )
-	//{
-	//	float deltaTime = mLastMoveTimestamp >= 0.f ? timeStamp - mLastMoveTimestamp : 0.f;
-
-	//	mLastMoveTimestamp = timeStamp;
-
-	//	mMoves.emplace_back( inMove.GetInputState(), timeStamp, deltaTime );
-	//	return true;
-	//}
-
-	//return false;
-
 	float timeStamp = inMove.GetTimestamp();
 
 	if ( timeStamp > mLastMoveTimestamp )
 	{
-		//float deltaTime = mLastMoveTimestamp >= 0.f ? timeStamp - mLastMoveTimestamp : 0.f;
+		float deltaTime = mLastMoveTimestamp >= 0.f ? timeStamp - mLastMoveTimestamp : 0.f;
 
 		mLastMoveTimestamp = timeStamp;
 
-		mMoves.emplace_back( inMove.GetInputState(), timeStamp, inMove.GetDeltaTime() );
+		mMoves.emplace_back( inMove.GetInputState(), timeStamp, deltaTime );
 		return true;
 	}
 

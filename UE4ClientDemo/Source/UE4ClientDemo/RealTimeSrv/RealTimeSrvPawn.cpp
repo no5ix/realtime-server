@@ -147,8 +147,20 @@ void ARealTimeSrvPawn::MoveRight( float Val )
 
 void ARealTimeSrvPawn::Turn( float Val )
 {
-	mLocalRotation = GetActorRotation();
-	mLocalRotation.Yaw += ( BaseTurnRate * Val );
+	//mLocalRotation = GetActorRotation();
+	//mLocalRotation.Yaw += ( BaseTurnRate * Val );
+
+	//InputMgr::sInstance->HandleTurnInput(
+	//	InputMgr::EIA_Turn,
+	//	mLocalRotation.Pitch,
+	//	mLocalRotation.Yaw,
+	//	mLocalRotation.Roll
+	//);
+
+
+	APawn::AddControllerYawInput( Val );
+	mLocalRotation = GetControlRotation();
+	//mLocalRotation.Yaw += ( BaseTurnRate * Val );
 
 	InputMgr::sInstance->HandleTurnInput(
 		InputMgr::EIA_Turn,
@@ -160,13 +172,32 @@ void ARealTimeSrvPawn::Turn( float Val )
 
 void ARealTimeSrvPawn::LookUp( float Val )
 {
+	//if ( ActionPawnCamera )
+	//{
+	//	mLocalActionPawnCameraRotation.Yaw = GetActorRotation().Yaw;
+	//	mLocalActionPawnCameraRotation.Roll = GetActorRotation().Roll;
+
+	//	mLocalActionPawnCameraRotation.Pitch = FMath::Clamp( ( mLocalActionPawnCameraRotation.Pitch + ( -1 * BaseLookUpRate * Val ) ), -89.f, 89.f );
+
+	//	InputMgr::sInstance->HandleTurnInput(
+	//		InputMgr::EIA_LookUp,
+	//		mLocalActionPawnCameraRotation.Pitch,
+	//		mLocalActionPawnCameraRotation.Yaw,
+	//		mLocalActionPawnCameraRotation.Roll
+	//	);
+
+	//	//A_LOG_N("Val = ", Val);
+	//}
+
+
+	APawn::AddControllerPitchInput( Val );
 	if ( ActionPawnCamera )
 	{
-		mLocalActionPawnCameraRotation.Yaw = GetActorRotation().Yaw;
-		mLocalActionPawnCameraRotation.Roll = GetActorRotation().Roll;
+		//mLocalActionPawnCameraRotation.Yaw = GetActorRotation().Yaw;
+		//mLocalActionPawnCameraRotation.Roll = GetActorRotation().Roll;
+		//mLocalActionPawnCameraRotation.Pitch = FMath::Clamp( ( mLocalActionPawnCameraRotation.Pitch + ( -1 * BaseLookUpRate * Val ) ), -89.f, 89.f );
 
-		mLocalActionPawnCameraRotation.Pitch = FMath::Clamp( ( mLocalActionPawnCameraRotation.Pitch + ( -1 * BaseLookUpRate * Val ) ), -89.f, 89.f );
-
+		mLocalActionPawnCameraRotation = GetControlRotation();
 		InputMgr::sInstance->HandleTurnInput(
 			InputMgr::EIA_LookUp,
 			mLocalActionPawnCameraRotation.Pitch,
@@ -204,11 +235,12 @@ void ARealTimeSrvPawn::ProcessInputBaseOnLocalState( float inDeltaTime, const Re
 	ActionAddMovementInput( mLocalActionPawnCameraRotation.Quaternion().GetForwardVector(), inInputState.GetDesiredMoveForwardAmount() );
 	ActionAddMovementInput( mLocalActionPawnCameraRotation.Quaternion().GetRightVector(), inInputState.GetDesiredMoveRightAmount() );
 
-	ApplyControlInputToVelocity( inDeltaTime );
+	//ApplyControlInputToVelocity( inDeltaTime );
+	ApplyControlInputToVelocity( inDeltaTime, mLocalVelocity );
 
 	//SetVelocity();
 
-	FVector Delta = mVelocity * inDeltaTime;
+	FVector Delta = mLocalVelocity * inDeltaTime;
 
 	if ( !Delta.IsNearlyZero( 1e-6f ) )
 	{
@@ -235,7 +267,8 @@ void ARealTimeSrvPawn::ProcessInputBaseOnServerState( float inDeltaTime, const R
 	ActionAddMovementInput( mCameraRotation.Quaternion().GetForwardVector(), inInputState.GetDesiredMoveForwardAmount() );
 	ActionAddMovementInput( mCameraRotation.Quaternion().GetRightVector(), inInputState.GetDesiredMoveRightAmount() );
 
-	ApplyControlInputToVelocity( inDeltaTime );
+	//ApplyControlInputToVelocity( inDeltaTime );
+	ApplyControlInputToVelocity( inDeltaTime, mVelocity );
 
 	FVector Delta = mVelocity * inDeltaTime;
 
@@ -319,17 +352,18 @@ void ARealTimeSrvPawn::SimulateMovementForRemotePawn( float inDeltaTime )
 
 	//A_LOG_N_EXTRA( "ActionTiming::sInstance.GetCurrentGameTime() = ", ActionTiming::sInstance.GetCurrentGameTime() );
 
-	if ( RealTimeSrvTiming::sInstance->GetCurrentGameTime() < mIsTimeToStartSimulateMovementForRemotePawn )
+	float currentGameTime = RealTimeSrvTiming::sInstance->GetCurrentGameTime();
+
+	if ( currentGameTime < mIsTimeToStartSimulateMovementForRemotePawn )
 	{
 		A_LOG_1_EXTRA( "ActionTiming::sInstance.GetCurrentGameTime() < mIsTimeToStartSimulateMovementForRemotePawn" );
 		return;
 	}
 
-	float time = RealTimeSrvTiming::sInstance->GetCurrentGameTime();
 
-	if ( time > mTimeOfLastUpdateTargetState + NetworkMgr::kTimeBetweenStatePackets )
+	if ( currentGameTime > mTimeOfLastUpdateTargetState + NetworkMgr::kTimeBetweenStatePackets )
 	{
-		mTimeOfLastUpdateTargetState = time;
+		mTimeOfLastUpdateTargetState = currentGameTime;
 		UpdateTargetState();
 	}
 
@@ -401,45 +435,86 @@ void ARealTimeSrvPawn::SimulateMovementForRemotePawn( float inDeltaTime )
 
 void ARealTimeSrvPawn::SimulateMovementForLocalPawn(float inDeltaTime)
 {
-	A_LOG_1( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" );
+	//A_LOG_1( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" );
 
-	A_LOG_M( "READ!!! GetActorRotation() = %f, %f, %f", GetActorRotation().Pitch, GetActorRotation().Yaw, GetActorRotation().Roll );
-	A_LOG_M( "READ!!! mLocalRotation = %f, %f, %f", mLocalRotation.Pitch, mLocalRotation.Yaw, mLocalRotation.Roll );
-	A_LOG_M( "READ!!! GetRotation() = %f, %f, %f", GetRotation().Pitch, GetRotation().Yaw, GetRotation().Roll );
-	A_LOG_1( "------------------------" );
+	//A_LOG_M( "READ!!! GetActorRotation() = %f, %f, %f", GetActorRotation().Pitch, GetActorRotation().Yaw, GetActorRotation().Roll );
+	//A_LOG_M( "READ!!! mLocalRotation = %f, %f, %f", mLocalRotation.Pitch, mLocalRotation.Yaw, mLocalRotation.Roll );
+	//A_LOG_M( "READ!!! GetRotation() = %f, %f, %f", GetRotation().Pitch, GetRotation().Yaw, GetRotation().Roll );
+	//A_LOG_1( "------------------------" );
 
-	A_LOG_M( "READ!!! mLocalActionPawnCameraRotation = %f, %f, %f", mLocalActionPawnCameraRotation.Pitch, mLocalActionPawnCameraRotation.Yaw, mLocalActionPawnCameraRotation.Roll );
-	A_LOG_M( "READ!!! ActionPawnCamera->GetComponentRotation() = %f, %f, %f", ActionPawnCamera->GetComponentRotation().Pitch, ActionPawnCamera->GetComponentRotation().Yaw, ActionPawnCamera->GetComponentRotation().Roll );
+	//A_LOG_M( "READ!!! mLocalActionPawnCameraRotation = %f, %f, %f", mLocalActionPawnCameraRotation.Pitch, mLocalActionPawnCameraRotation.Yaw, mLocalActionPawnCameraRotation.Roll );
+	//A_LOG_M( "READ!!! ActionPawnCamera->GetComponentRotation() = %f, %f, %f", ActionPawnCamera->GetComponentRotation().Pitch, ActionPawnCamera->GetComponentRotation().Yaw, ActionPawnCamera->GetComponentRotation().Roll );
 
-	A_LOG_1( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" );
+	//A_LOG_1( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" );
 
 	SetActorRotation( mLocalRotation );
 	ActionPawnCamera->SetWorldRotation( mLocalActionPawnCameraRotation );
 
 	if ( bIsPlayerLocationOutOfSync )
 	{
-		A_LOG_M( "GetActorLocation() = %f, %f, %f", GetActorLocation().X, GetActorLocation().Y, GetActorLocation().Z );
-		A_LOG_1( "serverrrrrrrrrrrrrrrrrrr" );
+		{
+			A_LOG_1( "serverrrrrrrrrrrrrrrrrrr before" );
+
+			A_LOG_M( "GetActorLocation() = %f, %f, %f", GetActorLocation().X, GetActorLocation().Y, GetActorLocation().Z );
+			A_LOG_M( "mLocalLocation = %f, %f, %f", mLocalLocation.X, mLocalLocation.Y, mLocalLocation.Z );
+			A_LOG_M( "GetLocation() = %f, %f, %f", GetLocation().X, GetLocation().Y, GetLocation().Z );
+			A_LOG_1( "------------------------" );
+
+			A_LOG_M( "mVelocity = %f, %f, %f", mVelocity.X, mVelocity.Y, mVelocity.Z );
+			A_LOG_M( "mLocalVelocity = %f, %f, %f", mLocalVelocity.X, mLocalVelocity.Y, mLocalVelocity.Z );
+
+			A_LOG_1( "serverrrrrrrrrrrrrrrrrrr before" );
+		}
 
 		bIsPlayerLocationOutOfSync = false;
 		if ( !GetActorLocation().Equals( mLocation, 100.f ) )
 		{
 			mLocalLocation = mLocation;
+			mLocalVelocity = mVelocity;
 			// SetActorLocation( mLocation );
 			
 			A_MSG_1( 5.f, "drawwwwwwwwwwwwwwwww" );
 			A_LOG_1("drawwwwwwwwwwwwwwwww" );
+
+			GEngine->AddOnScreenDebugMessage( -1, 3.f, FColor::Red,
+				FString::Printf( TEXT( "%s" ),
+					*FString( "drawwwwwwwwwwwwwwwww" ) )
+			);
+		}
+		else
+		{
+			//mLocalLocation = FMath::VInterpConstantTo(
+			//	GetActorLocation(),
+			//	mLocation,
+			//	inDeltaTime,
+			//	mVelocity.Size() * 0.1f
+			//);
+
+			//mLocalVelocity = FMath::VInterpConstantTo(
+			//	GetLocalVelocity(),
+			//	mVelocity,
+			//	inDeltaTime,
+			//	Acceleration * 0.1f
+			//);
+		}
+
+		{
+			A_LOG_1( "serverrrrrrrrrrrrrrrrrrr after" );
+			A_LOG_M( "mLocalLocation = %f, %f, %f", mLocalLocation.X, mLocalLocation.Y, mLocalLocation.Z );
+			A_LOG_1( "------------------------" );
+			A_LOG_M( "mLocalVelocity = %f, %f, %f", mLocalVelocity.X, mLocalVelocity.Y, mLocalVelocity.Z );
+			A_LOG_1( "serverrrrrrrrrrrrrrrrrrr after" );
 		}
 	}
 	else
 	{
-		A_LOG_1( "localllllllllllll" );
+		//A_LOG_1( "localllllllllllll" );
 		//SetActorLocation( mLocalLocation );
-		A_LOG_M( "GetActorLocation() = %f, %f, %f", GetActorLocation().X, GetActorLocation().Y, GetActorLocation().Z );
+		//A_LOG_M( "GetActorLocation() = %f, %f, %f", GetActorLocation().X, GetActorLocation().Y, GetActorLocation().Z );
 	}
 
 	SetActorLocation( mLocalLocation );
-	SetLocalVelocity( mVelocity );
+	//SetLocalVelocity( mLocalVelocity );
 }
 
 void ARealTimeSrvPawn::DR( float inDeltaTime )
@@ -479,7 +554,52 @@ FVector ARealTimeSrvPawn::ActionGetPendingInputVector() const
 	return ActionControlInputVector;
 }
 
-void ARealTimeSrvPawn::ApplyControlInputToVelocity( float DeltaTime )
+//void ARealTimeSrvPawn::ApplyControlInputToVelocity( float DeltaTime )
+//{
+//	const FVector ControlAcceleration = ActionGetPendingInputVector().GetClampedToMaxSize( 1.f );
+//
+//	const float AnalogInputModifier = ( ControlAcceleration.SizeSquared() > 0.f ? ControlAcceleration.Size() : 0.f );
+//	const float MaxPawnSpeed = GetMaxSpeed() * AnalogInputModifier;
+//	const bool bExceedingMaxSpeed = IsExceedingMaxSpeed( MaxPawnSpeed );
+//
+//	if ( AnalogInputModifier > 0.f && !bExceedingMaxSpeed )
+//	{
+//		// Apply change in velocity direction
+//		if ( mVelocity.SizeSquared() > 0.f )
+//		{
+//			// Change direction faster than only using acceleration, but never increase velocity magnitude.
+//			const float TimeScale = FMath::Clamp( DeltaTime * TurningBoost, 0.f, 1.f );
+//			mVelocity = mVelocity + ( ControlAcceleration * mVelocity.Size() - mVelocity ) * TimeScale;
+//		}
+//	}
+//	else
+//	{
+//		// Dampen velocity magnitude based on deceleration.
+//		if ( mVelocity.SizeSquared() > 0.f )
+//		{
+//			const FVector OldVelocity = mVelocity;
+//			const float VelSize = FMath::Max( mVelocity.Size() - FMath::Abs( Deceleration ) * DeltaTime, 0.f );
+//			mVelocity = mVelocity.GetSafeNormal() * VelSize;
+//
+//			// Don't allow braking to lower us below max speed if we started above it.
+//			if ( bExceedingMaxSpeed && mVelocity.SizeSquared() < FMath::Square( MaxPawnSpeed ) )
+//			{
+//				mVelocity = OldVelocity.GetSafeNormal() * MaxPawnSpeed;
+//			}
+//		}
+//	}
+//
+//	// Apply acceleration and clamp velocity magnitude.
+//	const float NewMaxSpeed = ( IsExceedingMaxSpeed( MaxPawnSpeed ) ) ? mVelocity.Size() : MaxPawnSpeed;
+//	mVelocity += ControlAcceleration * FMath::Abs( Acceleration ) * DeltaTime;
+//	mVelocity = mVelocity.GetClampedToMaxSize( NewMaxSpeed );
+//
+//	 mVelocity.Z = 0.f;
+//
+//	ActionConsumeMovementInputVector();
+//}
+
+void ARealTimeSrvPawn::ApplyControlInputToVelocity( float DeltaTime, FVector& refVelocity )
 {
 	const FVector ControlAcceleration = ActionGetPendingInputVector().GetClampedToMaxSize( 1.f );
 
@@ -490,36 +610,36 @@ void ARealTimeSrvPawn::ApplyControlInputToVelocity( float DeltaTime )
 	if ( AnalogInputModifier > 0.f && !bExceedingMaxSpeed )
 	{
 		// Apply change in velocity direction
-		if ( mVelocity.SizeSquared() > 0.f )
+		if ( refVelocity.SizeSquared() > 0.f )
 		{
 			// Change direction faster than only using acceleration, but never increase velocity magnitude.
 			const float TimeScale = FMath::Clamp( DeltaTime * TurningBoost, 0.f, 1.f );
-			mVelocity = mVelocity + ( ControlAcceleration * mVelocity.Size() - mVelocity ) * TimeScale;
+			refVelocity = refVelocity + ( ControlAcceleration * refVelocity.Size() - refVelocity ) * TimeScale;
 		}
 	}
 	else
 	{
 		// Dampen velocity magnitude based on deceleration.
-		if ( mVelocity.SizeSquared() > 0.f )
+		if ( refVelocity.SizeSquared() > 0.f )
 		{
-			const FVector OldVelocity = mVelocity;
-			const float VelSize = FMath::Max( mVelocity.Size() - FMath::Abs( Deceleration ) * DeltaTime, 0.f );
-			mVelocity = mVelocity.GetSafeNormal() * VelSize;
+			const FVector OldVelocity = refVelocity;
+			const float VelSize = FMath::Max( refVelocity.Size() - FMath::Abs( Deceleration ) * DeltaTime, 0.f );
+			refVelocity = refVelocity.GetSafeNormal() * VelSize;
 
 			// Don't allow braking to lower us below max speed if we started above it.
-			if ( bExceedingMaxSpeed && mVelocity.SizeSquared() < FMath::Square( MaxPawnSpeed ) )
+			if ( bExceedingMaxSpeed && refVelocity.SizeSquared() < FMath::Square( MaxPawnSpeed ) )
 			{
-				mVelocity = OldVelocity.GetSafeNormal() * MaxPawnSpeed;
+				refVelocity = OldVelocity.GetSafeNormal() * MaxPawnSpeed;
 			}
 		}
 	}
 
 	// Apply acceleration and clamp velocity magnitude.
-	const float NewMaxSpeed = ( IsExceedingMaxSpeed( MaxPawnSpeed ) ) ? mVelocity.Size() : MaxPawnSpeed;
-	mVelocity += ControlAcceleration * FMath::Abs( Acceleration ) * DeltaTime;
-	mVelocity = mVelocity.GetClampedToMaxSize( NewMaxSpeed );
+	const float NewMaxSpeed = ( IsExceedingMaxSpeed( MaxPawnSpeed ) ) ? refVelocity.Size() : MaxPawnSpeed;
+	refVelocity += ControlAcceleration * FMath::Abs( Acceleration ) * DeltaTime;
+	refVelocity = refVelocity.GetClampedToMaxSize( NewMaxSpeed );
 
-	 mVelocity.Z = 0.f;
+	 refVelocity.Z = 0.f;
 
 	ActionConsumeMovementInputVector();
 }
