@@ -112,8 +112,8 @@ void NetworkMgrSrv::HandlePacketFromNewClient( InputBitStream& inInputStream, co
 	}
 	else if ( packetType == kInputCC )
 	{
-		// Server reset
-		SendResetPacket( inFromAddress );
+		// Server reset, Deprecated!
+		//SendResetPacket( inFromAddress );
 	}
 	else
 	{
@@ -121,13 +121,14 @@ void NetworkMgrSrv::HandlePacketFromNewClient( InputBitStream& inInputStream, co
 	}
 }
 
+// Deprecated
 void NetworkMgrSrv::SendResetPacket(const SocketAddrInterface& inFromAddress)
 {
 	OutputBitStream resetPacket;
 
 	resetPacket.Write( kResetCC );
 
-	int sentByteCount = mSocket->SendTo( resetPacket.GetBufferPtr(), resetPacket.GetByteLength(), inFromAddress );
+	//int sentByteCount = mSocket->SendTo( resetPacket.GetBufferPtr(), resetPacket.GetByteLength(), inFromAddress );
 }
 
 void NetworkMgrSrv::SendWelcomePacket( ClientProxyPtr inClientProxy )

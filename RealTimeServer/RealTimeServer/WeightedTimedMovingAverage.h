@@ -39,7 +39,7 @@ public:
 		float fractionOfDuration = ( timeSinceLastEntry / mDuration );
 		if ( fractionOfDuration > 1.f ) { fractionOfDuration = 1.f; }
 
-		LOG( "fractionOfDuration = %f", fractionOfDuration );
+		//LOG( "fractionOfDuration = %f", fractionOfDuration );
 
 		mValue = mValue * ( 1.f - fractionOfDuration ) + inValue * fractionOfDuration;
 

@@ -107,7 +107,7 @@ void NetworkMgr::ProcessOutcomingPacket(
 	uint8_t slicedPacketIndex = 0;
 
 	bool isSliced = false;
-	LOG( "inOutputStream.GetByteLength() = %d", inOutputStream.GetByteLength() );
+	//LOG( "inOutputStream.GetByteLength() = %d", inOutputStream.GetByteLength() );
 	if ( inOutputStream.GetByteLength() > 1024 )
 	{
 		isSliced = true;
