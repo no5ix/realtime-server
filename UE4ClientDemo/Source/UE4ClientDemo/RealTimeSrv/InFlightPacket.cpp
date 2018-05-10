@@ -14,7 +14,7 @@ InFlightPacket::InFlightPacket( PacketSequenceNumber inSequenceNumber ) :
 }
 
 
-void InFlightPacket::HandleDeliveryFailure( DeliveryNotificationMgr* inDeliveryNotificationManager ) const
+void InFlightPacket::HandleDeliveryFailure( DeliveryNotifyMgr* inDeliveryNotificationManager ) const
 {
 	for ( const auto& pair : mTransmissionDataMap )
 	{
@@ -22,7 +22,7 @@ void InFlightPacket::HandleDeliveryFailure( DeliveryNotificationMgr* inDeliveryN
 	}
 }
 
-void InFlightPacket::HandleDeliverySuccess( DeliveryNotificationMgr* inDeliveryNotificationManager ) const
+void InFlightPacket::HandleDeliverySuccess( DeliveryNotifyMgr* inDeliveryNotificationManager ) const
 {
 	for ( const auto& pair : mTransmissionDataMap )
 	{

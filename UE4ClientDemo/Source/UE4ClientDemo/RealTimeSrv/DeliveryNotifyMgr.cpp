@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "DeliveryNotificationMgr.h"
+#include "DeliveryNotifyMgr.h"
 #include "RealTimeSrvHelper.h"
 
 
@@ -11,7 +11,7 @@ namespace
 	const float kDelayBeforeAckTimeout = 0.5f;
 }
 
-DeliveryNotificationMgr::DeliveryNotificationMgr( bool inShouldSendAcks, bool inShouldProcessAcks ) :
+DeliveryNotifyMgr::DeliveryNotifyMgr( bool inShouldSendAcks, bool inShouldProcessAcks ) :
 	mNextOutgoingSequenceNumber( 0 ),
 	mNextExpectedSequenceNumber( 0 ),
 	mShouldSendAcks( inShouldSendAcks ),
@@ -23,12 +23,12 @@ DeliveryNotificationMgr::DeliveryNotificationMgr( bool inShouldSendAcks, bool in
 }
 
 
-DeliveryNotificationMgr::~DeliveryNotificationMgr()
+DeliveryNotifyMgr::~DeliveryNotifyMgr()
 {
 }
 
 
-InFlightPacket* DeliveryNotificationMgr::WriteSequenceNumber( OutputBitStream& inOutputStream )
+InFlightPacket* DeliveryNotifyMgr::WriteSequenceNumber( OutputBitStream& inOutputStream )
 {
 	PacketSequenceNumber sequenceNumber = mNextOutgoingSequenceNumber++;
 	inOutputStream.Write( sequenceNumber );
@@ -47,7 +47,7 @@ InFlightPacket* DeliveryNotificationMgr::WriteSequenceNumber( OutputBitStream& i
 	}
 }
 
-void DeliveryNotificationMgr::WriteAckData( OutputBitStream& inOutputStream )
+void DeliveryNotifyMgr::WriteAckData( OutputBitStream& inOutputStream )
 {
 	bool hasAcks = ( mPendingAcks.size() > 0 );
 
@@ -59,7 +59,7 @@ void DeliveryNotificationMgr::WriteAckData( OutputBitStream& inOutputStream )
 	}
 }
 
-bool DeliveryNotificationMgr::ProcessSequenceNumber( InputBitStream& inInputStream, bool inIsSliced )
+bool DeliveryNotifyMgr::ProcessSequenceNumber( InputBitStream& inInputStream, bool inIsSliced )
 {
 	PacketSequenceNumber	sequenceNumber;
 	inInputStream.Read( sequenceNumber );
@@ -110,7 +110,7 @@ bool DeliveryNotificationMgr::ProcessSequenceNumber( InputBitStream& inInputStre
 }
 
 
-void DeliveryNotificationMgr::AddPendingAck( PacketSequenceNumber inSequenceNumber )
+void DeliveryNotifyMgr::AddPendingAck( PacketSequenceNumber inSequenceNumber )
 {
 	if ( mPendingAcks.size() == 0 || !mPendingAcks.back().ExtendIfShould( inSequenceNumber ) )
 	{

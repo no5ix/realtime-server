@@ -7,13 +7,13 @@
 #include "InFlightPacket.h"
 
 
-class DeliveryNotificationMgr
+class DeliveryNotifyMgr
 {
 public:
 
 
-	DeliveryNotificationMgr( bool inShouldSendAcks, bool inShouldProcessAcks );
-	~DeliveryNotificationMgr();
+	DeliveryNotifyMgr( bool inShouldSendAcks, bool inShouldProcessAcks );
+	~DeliveryNotifyMgr();
 
 	inline	InFlightPacket*		WriteState( OutputBitStream& inOutputStream );
  	inline bool ReadAndProcessState( InputBitStream& inInputStream, bool inIsSliced );
@@ -58,7 +58,7 @@ private:
 };
 
 
-inline InFlightPacket* DeliveryNotificationMgr::WriteState( OutputBitStream& inOutputStream )
+inline InFlightPacket* DeliveryNotifyMgr::WriteState( OutputBitStream& inOutputStream )
 {
 	InFlightPacket* toRet = WriteSequenceNumber( inOutputStream );
 	if ( mShouldSendAcks )
@@ -68,7 +68,7 @@ inline InFlightPacket* DeliveryNotificationMgr::WriteState( OutputBitStream& inO
 	return toRet;
 }
 
- inline bool DeliveryNotificationMgr::ReadAndProcessState( InputBitStream& inInputStream, bool inIsSliced )
+ inline bool DeliveryNotifyMgr::ReadAndProcessState( InputBitStream& inInputStream, bool inIsSliced )
  {
  	bool toRet = ProcessSequenceNumber( inInputStream, inIsSliced );
  	if ( mShouldProcessAcks )

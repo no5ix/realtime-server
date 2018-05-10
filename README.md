@@ -24,7 +24,7 @@ A real time game server and a UE4 demo for it.
 
 - 虚幻引擎版本 : 兼容 4.16 - 4.19
 
-- (Old)Checkout branch 4.15 for UE4.15 version of the client and the corresponding server
+- (Old) Checkout branch 4.15 for UE4.15 version of the client and the corresponding server
 
-- (老版本的)切到 4.15 的 Git 分支上查看虚幻引擎4.15版本的客户端以及对应的服务器
+- (老版本的) 切到 4.15 的 Git 分支上查看虚幻引擎4.15版本的客户端以及对应的服务器
 

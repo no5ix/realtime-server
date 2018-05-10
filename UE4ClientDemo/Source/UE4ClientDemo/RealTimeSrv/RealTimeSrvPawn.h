@@ -81,9 +81,9 @@ public:
 
 
 	UFUNCTION( BlueprintCallable, Category = "RealTimeSrv" )
-		const FRotator& GetLocalActionPawnCameraRotation() const { return mLocalActionPawnCameraRotation; }
+		const FRotator& GetLocalActionPawnCameraRotation() const { return mLocalCameraRotation; }
 
-	void SetLocalActionPawnCameraRotation( const FRotator& inActionPawnCameraRotation ) { mLocalActionPawnCameraRotation = inActionPawnCameraRotation; }
+	void SetLocalActionPawnCameraRotation( const FRotator& inActionPawnCameraRotation ) { mLocalCameraRotation = inActionPawnCameraRotation; }
 
 	virtual void	UpdateTargetState() override;
 
@@ -100,15 +100,15 @@ public:
 
 	FORCEINLINE class USkeletalMeshComponent* GetMesh3P() const { return Mesh3P; }
 
-	FORCEINLINE class UCameraComponent* GetCamera() const { return ActionPawnCamera; }
+	FORCEINLINE class UCameraComponent* GetCamera() const { return RealTimeSrvPawnCamera; }
 
 
 	float GetMaxSpeed() const { return MaxSpeed; }
 private:
 
 	/** Camera component that will be our viewpoint */
-	UPROPERTY( VisibleDefaultsOnly, Category = ActionPawnCamera )
-		class UCameraComponent* ActionPawnCamera;
+	UPROPERTY( VisibleDefaultsOnly, Category = RealTimeSrvPawnCamera )
+		class UCameraComponent* RealTimeSrvPawnCamera;
 
 	/** pawn mesh: 1st person view */
 	UPROPERTY( VisibleDefaultsOnly, Category = Mesh )
@@ -154,7 +154,7 @@ protected:
 
 protected:
 	FRotator mCameraRotation;
-	FRotator mLocalActionPawnCameraRotation;
+	FRotator mLocalCameraRotation;
 
 	bool bIsPlayerLocationOutOfSync;
 

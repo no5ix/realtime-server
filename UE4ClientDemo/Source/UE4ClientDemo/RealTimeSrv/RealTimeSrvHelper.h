@@ -7,7 +7,7 @@
 
 #define ACTION_SHOW_DEBUG_SCREEN_MSG					false
 #define ACTION_SHOW_DEBUG_OUTPUT_LOG					false
-#define ACTION_SHOW_DEBUG_OUTPUT_LOG_EXTRA				false
+#define ACTION_SHOW_DEBUG_OUTPUT_LOG_EXTRA				true
 
 
 //Current Class Name + Function Name where this is called!

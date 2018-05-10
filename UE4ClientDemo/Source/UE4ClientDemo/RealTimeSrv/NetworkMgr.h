@@ -10,7 +10,7 @@
 #include "BitStream.h"
 #include "ReplicationMgr.h"
 #include "RealTimeSrvEntity.h"
-#include "DeliveryNotificationMgr.h"
+#include "DeliveryNotifyMgr.h"
 #include "WeightedTimedMovingAverage.h"
 
 
@@ -106,7 +106,7 @@ private:
 
 private:
 
-	DeliveryNotificationMgr		mDeliveryNotificationManager;
+	DeliveryNotifyMgr		mDeliveryNotificationManager;
 	ReplicationMgr				mReplicationManagerClient;
 
 
