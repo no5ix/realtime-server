@@ -138,10 +138,13 @@ void NetworkMgrSrv::SendWelcomePacket( ClientProxyPtr inClientProxy )
 	welcomePacket.Write( inClientProxy->GetPlayerId() );
 	welcomePacket.Write( kTimeBetweenStatePackets );
 
-	//TransmissionDataHandler* rmtd = new TransmissionDataHandler( &inClientProxy->GetReplicationManagerServer() );
-	//inClientProxy->GetReplicationManagerServer().Write( welcomePacket, rmtd );
+	TransmissionDataHandler* rmtd = new TransmissionDataHandler( &inClientProxy->GetReplicationManagerServer() );
+	inClientProxy->GetReplicationManagerServer().Write( welcomePacket, rmtd );
 
-	SendPacket( welcomePacket, inClientProxy );
+	//SendPacket( welcomePacket, inClientProxy );
+	ProcessOutcomingPacket( welcomePacket, inClientProxy, rmtd );
+
+
 }
 
 void NetworkMgrSrv::RegisterGameObject( GameObjectPtr inGameObject )
@@ -219,15 +222,16 @@ void NetworkMgrSrv::SendStatePacketToClient( ClientProxyPtr inClientProxy )
 
 	statePacket.Write( kStateCC );
 
-	InFlightPacket* ifp = inClientProxy->GetDeliveryNotificationManager().WriteState( statePacket );
+	//InFlightPacket* ifp = inClientProxy->GetDeliveryNotificationManager().WriteState( statePacket );
 
 	WriteLastMoveTimestampIfDirty( statePacket, inClientProxy );
 
 	TransmissionDataHandler* rmtd = new TransmissionDataHandler( &inClientProxy->GetReplicationManagerServer() );
 	inClientProxy->GetReplicationManagerServer().Write( statePacket, rmtd );
-	ifp->SetTransmissionData( 'RPLM', TransmissionDataPtr( rmtd ) );
+	//ifp->SetTransmissionData( 'RPLM', TransmissionDataPtr( rmtd ) );
 
-	SendPacket( statePacket, inClientProxy );
+	//SendPacket( statePacket, inClientProxy );
+	ProcessOutcomingPacket( statePacket, inClientProxy, rmtd );
 }
 
 void NetworkMgrSrv::WriteLastMoveTimestampIfDirty( OutputBitStream& inOutputStream, ClientProxyPtr inClientProxy )

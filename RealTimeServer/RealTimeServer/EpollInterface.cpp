@@ -46,12 +46,12 @@ bool EpollInterface::Add( SOCKET inFd )
 
 void EpollInterface::CloseSocket(SOCKET inFd)
 {
+	mSocketToUDPSocketPtrMap.erase( inFd );
+	mSocketToSocketAddrMap.erase( inFd );
 	if ( close( inFd ) == -1 )
 	{
 		LOG( "EpollInterface::CloseSocket, Error: %hs", "close socket" );
 	}
-	mSocketToUDPSocketPtrMap.erase( inFd );
-	mSocketToSocketAddrMap.erase( inFd );
 }
 
 void EpollInterface::Wait( float inMaxWait )
@@ -104,7 +104,7 @@ void EpollInterface::HandleInputEvent( SOCKET inFd )
 
 void EpollInterface::AcceptClient()
 {
-	char packetMem[1500];
+	char packetMem[1024];
 	int packetSize = sizeof( packetMem );
 	SocketAddrInterface fromAddress;
 

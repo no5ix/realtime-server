@@ -22,13 +22,18 @@ class OutputBitStream
 public:
 
 	OutputBitStream() :
-		mBitHead(0),
-		mBuffer(nullptr)
+		mBitHead( 0 ),
+		mBuffer( nullptr ),
+		mSlicePoint( 0 )
 	{
-		ReallocBuffer( 1500 * 8 );
+		ReallocBuffer( 1024 * 8 );
 	}
 
 	~OutputBitStream()	{ std::free( mBuffer ); }
+
+	void ResetBS();
+	bool SliceTo( OutputBitStream& refOutputBitStream );
+	void SliceTo( OutputBitStream& refOutputBitStream, uint8_t inData, uint32_t inBitCount );
 
 	void		WriteBits( uint8_t inData, uint32_t inBitCount );
 	void		WriteBits( const void* inData, uint32_t inBitCount );
@@ -73,11 +78,13 @@ public:
 			Write( element );
 		}
 	}
-	
-private:
+
 	void		ReallocBuffer( uint32_t inNewBitCapacity );
 
+private:
+
 	char*		mBuffer;
+	uint32_t	mSlicePoint;
 	uint32_t	mBitHead;
 	uint32_t	mBitCapacity;
 };
@@ -87,15 +94,16 @@ class InputBitStream
 public:
 	
 	InputBitStream( char* inBuffer, uint32_t inBitCount ) :
-	mBuffer( inBuffer ),
-	mBitCapacity( inBitCount ),
-	mBitHead( 0 ),
-	mIsBufferOwner( false ) {}
+		mBuffer( inBuffer ),
+		mBitCapacity( inBitCount ),
+		mBitHead( 0 ),
+		mIsBufferOwner( false ) 
+	{}
 	
 	InputBitStream( const InputBitStream& inOther ) :
-	mBitCapacity( inOther.mBitCapacity ),
-	mBitHead( inOther.mBitHead ),
-	mIsBufferOwner( true )
+		mBitCapacity( inOther.mBitCapacity ),
+		mBitHead( inOther.mBitHead ),
+		mIsBufferOwner( true )
 	{
 		//allocate buffer of right size
 		int byteCount = mBitCapacity / 8;

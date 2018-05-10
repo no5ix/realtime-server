@@ -132,6 +132,11 @@ private:
 	float						mLastCheckDCTime;
 	float						mLastPacketFromSrvTime;
 
+	bool						mIsReceivingSlicePacket;
+	uint8_t						mNextExpectedSlicedPacketIndex;
+
+	InputBitStream				mChunkInputStream;
+
 private:
 	class ReceivedPacket
 	{

@@ -1,7 +1,64 @@
 #include "RealTimeSrvPCH.h"
 
-void OutputBitStream::WriteBits( uint8_t inData,
-	uint32_t inBitCount )
+void OutputBitStream::ResetBS()
+{
+	mBitHead = 0;
+	//mBuffer = nullptr;
+	mSlicePoint = 0;
+	ReallocBuffer( GetBitLength() );
+}
+
+void OutputBitStream::SliceTo( OutputBitStream& refOutputBitStream, uint8_t inData, uint32_t inBitCount  )
+{
+	uint32_t byteOffset = refOutputBitStream.mBitHead >> 3;
+	uint32_t bitOffset = refOutputBitStream.mBitHead & 0x7;
+
+	uint8_t currentMask = ~( 0xff << bitOffset );
+
+	refOutputBitStream.mBuffer[byteOffset] = 
+		( refOutputBitStream.mBuffer[byteOffset] & currentMask ) | ( inData << bitOffset );
+
+
+	uint32_t bitsFreeThisByte = 8 - bitOffset;
+
+	if ( bitsFreeThisByte < inBitCount )
+	{
+		refOutputBitStream.mBuffer[byteOffset + 1] = inData >> bitsFreeThisByte;
+	}
+
+	this->mSlicePoint += inBitCount;
+	refOutputBitStream.mBitHead += inBitCount;
+}
+
+bool OutputBitStream::SliceTo( OutputBitStream& refOutputBitStream )
+{
+	char * srcByte = this->mBuffer + (mSlicePoint >> 3);
+
+	bool outIsReachTheEnd = false;
+
+	uint32_t refOutputBitStreamSurplusBitLen = refOutputBitStream.mBitCapacity - refOutputBitStream.mBitHead;
+	uint32_t sliceSize =
+		mBitHead - mSlicePoint <= refOutputBitStreamSurplusBitLen
+		?
+		( outIsReachTheEnd = true, mBitHead - mSlicePoint )
+		:
+		refOutputBitStreamSurplusBitLen;
+
+	while ( sliceSize > 8 )
+	{
+		SliceTo( refOutputBitStream, *srcByte, 8 );
+		++srcByte;
+		sliceSize -= 8;
+	}
+	if ( sliceSize > 0 )
+	{
+		SliceTo( refOutputBitStream, *srcByte, sliceSize );
+	}
+
+	return outIsReachTheEnd;
+}
+
+void OutputBitStream::WriteBits( uint8_t inData, uint32_t inBitCount )
 {
 	uint32_t nextBitHead = mBitHead + static_cast< uint32_t >( inBitCount );
 
@@ -64,8 +121,6 @@ void OutputBitStream::Write( const Quaternion& inQuat )
 	Write( inQuat.W < 0 );
 }
 
-
-
 void OutputBitStream::ReallocBuffer( uint32_t inNewBitLength )
 {
 	if ( mBuffer == nullptr )
@@ -81,7 +136,6 @@ void OutputBitStream::ReallocBuffer( uint32_t inNewBitLength )
 		std::free( mBuffer );
 		mBuffer = tempBuffer;
 	}
-
 	mBitCapacity = inNewBitLength;
 }
 

@@ -97,6 +97,40 @@ void NetworkMgr::ProcessQueuedPackets()
 	}
 }
 
+void NetworkMgr::ProcessOutcomingPacket(
+	OutputBitStream& inOutputStream,
+	shared_ptr< ClientProxy > inClientProxy,
+	TransmissionDataHandler* inTransmissionDataHandler)
+{
+	bool isReachTheEnd = false;
+	uint8_t slicedPacketIndex = 0;
+	uint8_t slicedPacketCount = ( inOutputStream.GetByteLength() + 1023 ) >> 10;
+
+	bool isSliced = false;
+	if ( inOutputStream.GetByteLength() > 1024 )
+	{
+		isSliced = true;
+	}
+
+	while ( !isReachTheEnd )
+	{
+		OutputBitStream slicedPacket;
+
+		InFlightPacket* ifp = inClientProxy->GetDeliveryNotificationManager().WriteState( slicedPacket );
+		slicedPacket.Write( isSliced );
+
+		if ( isSliced )
+		{
+			slicedPacket.Write( slicedPacketCount );
+			slicedPacket.Write( slicedPacketIndex++ );
+		}
+		isReachTheEnd = inOutputStream.SliceTo( slicedPacket );
+		ifp->SetTransmissionData( 'RPLM', TransmissionDataPtr( inTransmissionDataHandler ) );
+
+		SendPacket( slicedPacket, inClientProxy );
+		//slicedWelcomePacket.ResetBS();
+	}
+}
 
 #ifdef HAS_EPOLL
 void NetworkMgr::WaitForIncomingPackets()
@@ -106,7 +140,7 @@ void NetworkMgr::WaitForIncomingPackets()
 
 void NetworkMgr::RecvIncomingPacketsIntoQueue( UDPSocketPtr inUDPSocketPtr, SocketAddrInterface infromAddress )
 {
-	char packetMem[1500];
+	char packetMem[1024];
 	int packetSize = sizeof( packetMem );
 	InputBitStream inputStream( packetMem, packetSize * 8 );
 
@@ -164,7 +198,7 @@ void NetworkMgr::SendPacket( const OutputBitStream& inOutputStream, ClientProxyP
 
 void NetworkMgr::ReadIncomingPacketsIntoQueue()
 {
-	char packetMem[1500];
+	char packetMem[1024];
 	int packetSize = sizeof( packetMem );
 	InputBitStream inputStream( packetMem, packetSize * 8 );
 	SocketAddrInterface fromAddress;

@@ -159,8 +159,7 @@ void ARealTimeSrvPawn::Turn( float Val )
 
 
 	APawn::AddControllerYawInput( Val );
-	mLocalRotation = GetControlRotation();
-	//mLocalRotation.Yaw += ( BaseTurnRate * Val );
+	mLocalRotation.Yaw = GetControlRotation().Yaw;
 
 	InputMgr::sInstance->HandleTurnInput(
 		InputMgr::EIA_Turn,
@@ -785,15 +784,15 @@ void ARealTimeSrvPawn::InitAfterCreate()
 	mLocalLocation = mLocation;
 	mLocalVelocity = mVelocity;
 	mLocalRotation = mRotation;
-	mLocalActionPawnCameraRotation = mRotation;
+	mLocalActionPawnCameraRotation = mCameraRotation;
 
 	mRemotePawnTargetLocation = mLocation;
 	mRemotePawnTargetVelocity = mVelocity;
 	mRemotePawnTargetRotation = mRotation;
-	mRemotePawnTargetCameraRotation = mRotation;
+	mRemotePawnTargetCameraRotation = mCameraRotation;
 
 	SetActorLocation( mLocalLocation );
-	SetLocalVelocity( mLocalVelocity );
+	//SetLocalVelocity( mLocalVelocity );
 	SetActorRotation( mLocalRotation );
 	ActionPawnCamera->SetWorldRotation( mLocalActionPawnCameraRotation );
 }

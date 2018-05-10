@@ -14,7 +14,6 @@ namespace
 DeliveryNotificationMgr::DeliveryNotificationMgr( bool inShouldSendAcks, bool inShouldProcessAcks ) :
 	mNextOutgoingSequenceNumber( 0 ),
 	mNextExpectedSequenceNumber( 0 ),
-	//everybody starts at 0...
 	mShouldSendAcks( inShouldSendAcks ),
 	mShouldProcessAcks( inShouldProcessAcks ),
 	mDeliveredPacketCount( 0 ),
@@ -31,7 +30,6 @@ DeliveryNotificationMgr::~DeliveryNotificationMgr()
 
 InFlightPacket* DeliveryNotificationMgr::WriteSequenceNumber( OutputBitStream& inOutputStream )
 {
-	//write the sequence number, but also create an inflight packet for this...
 	PacketSequenceNumber sequenceNumber = mNextOutgoingSequenceNumber++;
 	inOutputStream.Write( sequenceNumber );
 
@@ -56,13 +54,10 @@ void DeliveryNotificationMgr::WriteAckData( OutputBitStream& inOutputStream )
 	inOutputStream.Write( hasAcks );
 	if ( hasAcks )
 	{
-		//note, we could write all the acks
 		mPendingAcks.front().Write( inOutputStream );
 		mPendingAcks.pop_front();
 	}
 }
-
-
 
 bool DeliveryNotificationMgr::ProcessSequenceNumber( InputBitStream& inInputStream )
 {

@@ -30,7 +30,10 @@ NetworkMgr::NetworkMgr() :
 	mDeliveryNotificationManager( true, false ),
 	mState( NCS_Uninitialized ),
 	mLastCheckDCTime( 0.f ),
-	mLastPacketFromSrvTime( 0.f )
+	mLastPacketFromSrvTime( 0.f ),
+	mIsReceivingSlicePacket( false ),
+	mNextExpectedSlicedPacketIndex( 0 ),
+	mChunkInputStream( nullptr, 0 )
 {
 	mSocket = NULL;
 }
@@ -117,7 +120,7 @@ void NetworkMgr::ProcessIncomingPackets()
 void NetworkMgr::ReadIncomingPacketsIntoQueue()
 {
 
-	char ReceivedDataPacketMem[1500];
+	char ReceivedDataPacketMem[1024];
 	int32 packetSize = sizeof( ReceivedDataPacketMem );
 	InputBitStream inputStream( ReceivedDataPacketMem, packetSize * 8 );
 	int32 refReadByteCount = 0;
@@ -176,25 +179,69 @@ void NetworkMgr::UpdateBytesSentLastFrame()
 
 void NetworkMgr::ProcessPacket( InputBitStream& inInputStream )
 {
-	uint32_t	packetType;
-	inInputStream.Read( packetType );
+	bool DeliveryNotificationManagerRet;
+	DeliveryNotificationManagerRet =
+		mDeliveryNotificationManager.ReadAndProcessState( inInputStream );
 
-	UpdateLastPacketFromSrvTime();
+	bool isSliced;
+	inInputStream.Read( isSliced );
 
-	switch (packetType)
+	if (isSliced)
 	{
-	case kResetCC:
-		HandleResetPacket();
-		break;
-	case kWelcomeCC:
-		HandleWelcomePacket( inInputStream );
-		break;
-	case kStateCC:
- 		if (mDeliveryNotificationManager.ReadAndProcessState( inInputStream ))
- 		{
+		uint8_t slicedPacketIndex;
+		uint8_t slicedPacketCount;
+		inInputStream.Read( slicedPacketCount );
+		inInputStream.Read( slicedPacketIndex );
+
+		if ( slicedPacketIndex == mNextExpectedSlicedPacketIndex )
+		{
+			++mNextExpectedSlicedPacketIndex;
+
+			if ( !mIsReceivingSlicePacket )
+			{
+				mIsReceivingSlicePacket = true;
+
+				mChunkInputStream.Reinit( slicedPacketCount * 1024 * 8 );
+
+				inInputStream.RecombineTo( mChunkInputStream );
+			}
+			else
+			{
+				inInputStream.RecombineTo( mChunkInputStream );
+			}
+		}
+
+		if (mNextExpectedSlicedPacketIndex == slicedPacketCount)
+		{
+			mIsReceivingSlicePacket = false;
+			mNextExpectedSlicedPacketIndex = 0;
+			mChunkInputStream.ResetToCapacityFromBit( mChunkInputStream.GetRecombinePoint() );
+			inInputStream = mChunkInputStream;
+		}
+	}
+
+	if ( DeliveryNotificationManagerRet && !mIsReceivingSlicePacket )
+	{
+		uint32_t	packetType;
+		inInputStream.Read( packetType );
+
+		UpdateLastPacketFromSrvTime();
+
+		switch ( packetType )
+		{
+		case kResetCC:
+			HandleResetPacket();
+			break;
+		case kWelcomeCC:
+			HandleWelcomePacket( inInputStream );
+			break;
+		case kStateCC:
+			//if (mDeliveryNotificationManager.ReadAndProcessState( inInputStream ))
+			//{
 			HandleStatePacket( inInputStream );
- 		}
- 		break;
+			//}
+			break;
+		}
 	}
 }
 
@@ -293,7 +340,7 @@ void NetworkMgr::HandleWelcomePacket( InputBitStream& inInputStream )
 		inInputStream.Read( kTimeBetweenStatePackets );
 		kTimeBufferStatePackets = 4.f * kTimeBetweenStatePackets;
 
-		//mReplicationManagerClient.Read( inInputStream );
+		mReplicationManagerClient.Read( inInputStream );
 
 		GEngine->AddOnScreenDebugMessage( -1, 6.f, FColor::Red,
 			FString::Printf( TEXT( "%s    %d" ),

@@ -113,8 +113,8 @@ void RealTimeSrv::SpawnCharacterForPlayer( int inPlayerId )
 	character->SetPlayerId( inPlayerId );
 
 	character->SetLocation( Vector3(
-		RealTimeSrvMath::Clamp( RealTimeSrvMath::GetRandomFloat() * -1500.f, -1500.f, -600.f ),
-		-1500.f + ( RealTimeSrvMath::GetRandomFloat() * 3000.f ),
+		RealTimeSrvMath::Clamp( RealTimeSrvMath::GetRandomFloat() * -1024.f, -1024.f, -600.f ),
+		-1024.f + ( RealTimeSrvMath::GetRandomFloat() * 3000.f ),
 		0.f ) );
 
 	character->SetRotation( Vector3(
@@ -122,7 +122,22 @@ void RealTimeSrv::SpawnCharacterForPlayer( int inPlayerId )
 		RealTimeSrvMath::GetRandomFloat() * 180.f,
 		0.f ) );
 
-	//character->SetRotation( Vector3( -1000.f + static_cast< float >( inPlayerId ), static_cast< float >( inPlayerId ), 40.f ) );
 
-	//character->SetRotation( Vector3( 0.f, 180.f, 0.f ) );
+	for ( int count = inPlayerId * 100; count < inPlayerId * 100 + 115; ++count )
+	{
+		CharacterPtr character = std::static_pointer_cast< Character >( EntityFactory::sInstance->CreateGameObject( 'CHRT' ) );
+
+		character->SetPlayerId( inPlayerId + count );
+
+		character->SetLocation( Vector3(
+			RealTimeSrvMath::Clamp( RealTimeSrvMath::GetRandomFloat() * -1024.f, -1024.f, -600.f ),
+			-1024.f + ( RealTimeSrvMath::GetRandomFloat() * 3000.f ),
+			0.f ) );
+
+		character->SetRotation( Vector3(
+			0.f,
+			RealTimeSrvMath::GetRandomFloat() * 180.f,
+			0.f ) );
+
+	}
 }

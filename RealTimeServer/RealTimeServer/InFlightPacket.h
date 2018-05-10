@@ -1,6 +1,5 @@
 class DeliveryNotifyMgr;
 
-//in case we decide to change the type of the sequence number to use fewer or more bits
 typedef uint16_t	PacketSequenceNumber;
 
 class InFlightPacket

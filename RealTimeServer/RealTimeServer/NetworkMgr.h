@@ -1,6 +1,7 @@
 typedef unordered_map< int, GameObjectPtr > IntToGameObjectMap;
 
 class ClientProxy;
+class TransmissionDataHandler;
 
 class NetworkMgr
 {
@@ -41,6 +42,7 @@ public:
 protected:
 
 	IntToGameObjectMap		mNetworkIdToGameObjectMap;
+	void ProcessOutcomingPacket( OutputBitStream& inOutputStream, shared_ptr< ClientProxy > inClientProxy, TransmissionDataHandler* inTransmissionDataHandler );
 
 private:
 
@@ -49,13 +51,13 @@ private:
 	public:
 		ReceivedPacket(
 			float inReceivedTime,
-			InputBitStream& ioInputMemoryBitStream,
+			InputBitStream& inInputMemoryBitStream,
 			const SocketAddrInterface& inFromAddress,
 			UDPSocketPtr  inUDPSocket = nullptr
 		) :
 			mReceivedTime( inReceivedTime ),
 			mFromAddress( inFromAddress ),
-			mPacketBuffer( ioInputMemoryBitStream ),
+			mPacketBuffer( inInputMemoryBitStream ),
 			mUDPSocket( inUDPSocket )
 		{
 		}
