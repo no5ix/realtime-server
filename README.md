@@ -9,9 +9,9 @@ A real time game server and a UE4 demo for it.
 # Download & Play
 
  
-- Client : [UE4ClientDemo.exe (Win32)](https://pan.baidu.com/s/1K_awyaTzjMsIGUawswf_yA) , just check it out !
+- Client : [UE4ClientDemo.exe (Win32)](https://pan.baidu.com/s/1B0pMYls7JVYqEWyKH4gkXg) , just check it out !
 
-- 客户端 : 下载 [UE4ClientDemo.exe (Win32)](https://pan.baidu.com/s/1K_awyaTzjMsIGUawswf_yA) 玩一下 !
+- 客户端 : 下载 [UE4ClientDemo.exe (Win32)](https://pan.baidu.com/s/1B0pMYls7JVYqEWyKH4gkXg) 玩一下 !
 
 - Server : A server instance is running on my VPS, so just double click the UE4ClientDemo.exe that will connect to my server automatically, enjoy !
 
