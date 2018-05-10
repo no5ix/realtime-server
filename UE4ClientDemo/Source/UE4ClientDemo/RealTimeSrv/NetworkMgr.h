@@ -92,6 +92,7 @@ private:
 	void	HandleWelcomePacket( InputBitStream& inInputStream );
 
 	void	UpdateBytesSentLastFrame();
+	void	RecombineSlicesToChunk( InputBitStream& inInputStream );
 	void	ReadIncomingPacketsIntoQueue();
 	void	ProcessQueuedPackets();
 	void	HandleStatePacket( InputBitStream& inInputStream );

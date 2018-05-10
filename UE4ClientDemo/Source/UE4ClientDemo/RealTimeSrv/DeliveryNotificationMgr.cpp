@@ -59,32 +59,51 @@ void DeliveryNotificationMgr::WriteAckData( OutputBitStream& inOutputStream )
 	}
 }
 
-bool DeliveryNotificationMgr::ProcessSequenceNumber( InputBitStream& inInputStream )
+bool DeliveryNotificationMgr::ProcessSequenceNumber( InputBitStream& inInputStream, bool inIsSliced )
 {
 	PacketSequenceNumber	sequenceNumber;
-
 	inInputStream.Read( sequenceNumber );
-	if ( sequenceNumber == mNextExpectedSequenceNumber )
+
+	if (inIsSliced)
 	{
-		mNextExpectedSequenceNumber = sequenceNumber + 1;
-		if ( mShouldSendAcks )
+		if ( sequenceNumber == mNextExpectedSequenceNumber )
 		{
-			AddPendingAck( sequenceNumber );
+			mNextExpectedSequenceNumber = sequenceNumber + 1;
+			if ( mShouldSendAcks )
+			{
+				AddPendingAck( sequenceNumber );
+			}
+			return true;
 		}
-		return true;
-	}
-	else if ( sequenceNumber < mNextExpectedSequenceNumber )
-	{
-		return false;
-	}
-	else if ( sequenceNumber > mNextExpectedSequenceNumber )
-	{
-		mNextExpectedSequenceNumber = sequenceNumber + 1;
-		if ( mShouldSendAcks )
+		else
 		{
-			AddPendingAck( sequenceNumber );
+			return false;
 		}
-		return true;
+	}
+	else
+	{
+		if ( sequenceNumber == mNextExpectedSequenceNumber )
+		{
+			mNextExpectedSequenceNumber = sequenceNumber + 1;
+			if ( mShouldSendAcks )
+			{
+				AddPendingAck( sequenceNumber );
+			}
+			return true;
+		}
+		else if ( sequenceNumber < mNextExpectedSequenceNumber )
+		{
+			return false;
+		}
+		else if ( sequenceNumber > mNextExpectedSequenceNumber )
+		{
+			mNextExpectedSequenceNumber = sequenceNumber + 1;
+			if ( mShouldSendAcks )
+			{
+				AddPendingAck( sequenceNumber );
+			}
+			return true;
+		}
 	}
 
 	return false;

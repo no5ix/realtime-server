@@ -29,7 +29,7 @@ void ReplicationMgr::HandleCreateAckd( int inNetworkId )
 }
 
 
-void ReplicationMgr::Write( OutputBitStream& inOutputStream, TransmissionDataHandler* ioTransmissinData )
+void ReplicationMgr::Write( OutputBitStream& inOutputStream, TransmissionDataHandler* inTransmissinData )
 {
 	
 	for (auto& pair : mNetworkIdToReplicationCommand)
@@ -67,7 +67,7 @@ void ReplicationMgr::Write( OutputBitStream& inOutputStream, TransmissionDataHan
 				break;
 			}
 
-			ioTransmissinData->AddTransmission( networkId, action, writtenState );
+			inTransmissinData->AddTransmission( networkId, action, writtenState );
 
 			replicationCommand.ClearDirtyState( writtenState );
 

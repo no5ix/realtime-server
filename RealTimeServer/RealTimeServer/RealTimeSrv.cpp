@@ -123,11 +123,11 @@ void RealTimeSrv::SpawnCharacterForPlayer( int inPlayerId )
 		0.f ) );
 
 
-	for ( int count = inPlayerId * 100; count < inPlayerId * 100 + 115; ++count )
+	for ( int count = inPlayerId * 100; count < inPlayerId * 100 + 15; ++count )
 	{
 		CharacterPtr character = std::static_pointer_cast< Character >( EntityFactory::sInstance->CreateGameObject( 'CHRT' ) );
 
-		character->SetPlayerId( inPlayerId + count );
+		character->SetPlayerId( inPlayerId * count );
 
 		character->SetLocation( Vector3(
 			RealTimeSrvMath::Clamp( RealTimeSrvMath::GetRandomFloat() * -1024.f, -1024.f, -600.f ),

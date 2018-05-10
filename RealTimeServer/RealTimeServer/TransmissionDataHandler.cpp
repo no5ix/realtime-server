@@ -72,7 +72,8 @@ void TransmissionDataHandler::HandleUpdateStateDeliveryFailure( int inNetworkId,
 	{
 		for ( const auto& inFlightPacket : inDeliveryNotificationManager->GetInFlightPackets() )
 		{
-			ReplicationManagerTransmissionDataPtr rmtdp = std::static_pointer_cast< TransmissionDataHandler >( inFlightPacket.GetTransmissionData( 'RPLM' ) );
+			//ReplicationManagerTransmissionDataPtr rmtdp = std::static_pointer_cast< TransmissionDataHandler >( inFlightPacket.GetTransmissionData( 'RPLM' ) );
+			const TransmissionDataHandler* rmtdp = static_cast< const TransmissionDataHandler* >( inFlightPacket.GetTransmissionData( 'RPLM' ) );
 
 			for ( const ReplicationTransmission& otherRT : rmtdp->mTransmissions )
 			{

@@ -31,7 +31,6 @@ public:
 
 	~OutputBitStream()	{ std::free( mBuffer ); }
 
-	void ResetBS();
 	bool SliceTo( OutputBitStream& refOutputBitStream );
 	void SliceTo( OutputBitStream& refOutputBitStream, uint8_t inData, uint32_t inBitCount );
 

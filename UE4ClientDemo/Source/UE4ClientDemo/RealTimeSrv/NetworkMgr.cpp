@@ -176,48 +176,52 @@ void NetworkMgr::UpdateBytesSentLastFrame()
 
 }
 
+void NetworkMgr::RecombineSlicesToChunk(InputBitStream& refInputStream)
+{
+	uint8_t slicedPacketIndex;
+	uint8_t slicedPacketCount;
+	refInputStream.Read( slicedPacketCount );
+	refInputStream.Read( slicedPacketIndex );
+
+	if ( slicedPacketIndex == mNextExpectedSlicedPacketIndex )
+	{
+		++mNextExpectedSlicedPacketIndex;
+
+		if ( !mIsReceivingSlicePacket )
+		{
+			mIsReceivingSlicePacket = true;
+
+			mChunkInputStream.Reinit( slicedPacketCount * 1024 * 8 );
+
+			refInputStream.RecombineTo( mChunkInputStream );
+		}
+		else
+		{
+			refInputStream.RecombineTo( mChunkInputStream );
+		}
+	}
+
+	if ( mNextExpectedSlicedPacketIndex == slicedPacketCount )
+	{
+		mIsReceivingSlicePacket = false;
+		mNextExpectedSlicedPacketIndex = 0;
+		mChunkInputStream.ResetToCapacityFromBit( mChunkInputStream.GetRecombinePoint() );
+		refInputStream = mChunkInputStream;
+	}
+}
 
 void NetworkMgr::ProcessPacket( InputBitStream& inInputStream )
 {
-	bool DeliveryNotificationManagerRet;
-	DeliveryNotificationManagerRet =
-		mDeliveryNotificationManager.ReadAndProcessState( inInputStream );
-
 	bool isSliced;
 	inInputStream.Read( isSliced );
 
+	bool DeliveryNotificationManagerRet =
+		mDeliveryNotificationManager.ReadAndProcessState( inInputStream, isSliced );
+		//true;
+
 	if (isSliced)
 	{
-		uint8_t slicedPacketIndex;
-		uint8_t slicedPacketCount;
-		inInputStream.Read( slicedPacketCount );
-		inInputStream.Read( slicedPacketIndex );
-
-		if ( slicedPacketIndex == mNextExpectedSlicedPacketIndex )
-		{
-			++mNextExpectedSlicedPacketIndex;
-
-			if ( !mIsReceivingSlicePacket )
-			{
-				mIsReceivingSlicePacket = true;
-
-				mChunkInputStream.Reinit( slicedPacketCount * 1024 * 8 );
-
-				inInputStream.RecombineTo( mChunkInputStream );
-			}
-			else
-			{
-				inInputStream.RecombineTo( mChunkInputStream );
-			}
-		}
-
-		if (mNextExpectedSlicedPacketIndex == slicedPacketCount)
-		{
-			mIsReceivingSlicePacket = false;
-			mNextExpectedSlicedPacketIndex = 0;
-			mChunkInputStream.ResetToCapacityFromBit( mChunkInputStream.GetRecombinePoint() );
-			inInputStream = mChunkInputStream;
-		}
+		RecombineSlicesToChunk( inInputStream );
 	}
 
 	if ( DeliveryNotificationManagerRet && !mIsReceivingSlicePacket )

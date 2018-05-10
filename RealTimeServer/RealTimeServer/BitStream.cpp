@@ -1,12 +1,6 @@
 #include "RealTimeSrvPCH.h"
 
-void OutputBitStream::ResetBS()
-{
-	mBitHead = 0;
-	//mBuffer = nullptr;
-	mSlicePoint = 0;
-	ReallocBuffer( GetBitLength() );
-}
+
 
 void OutputBitStream::SliceTo( OutputBitStream& refOutputBitStream, uint8_t inData, uint32_t inBitCount  )
 {

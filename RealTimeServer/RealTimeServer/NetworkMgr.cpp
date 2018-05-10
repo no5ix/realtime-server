@@ -97,6 +97,7 @@ void NetworkMgr::ProcessQueuedPackets()
 	}
 }
 
+
 void NetworkMgr::ProcessOutcomingPacket(
 	OutputBitStream& inOutputStream,
 	shared_ptr< ClientProxy > inClientProxy,
@@ -104,9 +105,9 @@ void NetworkMgr::ProcessOutcomingPacket(
 {
 	bool isReachTheEnd = false;
 	uint8_t slicedPacketIndex = 0;
-	uint8_t slicedPacketCount = ( inOutputStream.GetByteLength() + 1023 ) >> 10;
 
 	bool isSliced = false;
+	LOG( "inOutputStream.GetByteLength() = %d", inOutputStream.GetByteLength() );
 	if ( inOutputStream.GetByteLength() > 1024 )
 	{
 		isSliced = true;
@@ -116,19 +117,21 @@ void NetworkMgr::ProcessOutcomingPacket(
 	{
 		OutputBitStream slicedPacket;
 
-		InFlightPacket* ifp = inClientProxy->GetDeliveryNotificationManager().WriteState( slicedPacket );
 		slicedPacket.Write( isSliced );
+		InFlightPacket* ifp = 
+			inClientProxy->GetDeliveryNotificationManager().WriteState( slicedPacket );
 
 		if ( isSliced )
 		{
+			uint8_t slicedPacketCount = ( inOutputStream.GetByteLength() + 1023 ) >> 10;
 			slicedPacket.Write( slicedPacketCount );
 			slicedPacket.Write( slicedPacketIndex++ );
 		}
 		isReachTheEnd = inOutputStream.SliceTo( slicedPacket );
-		ifp->SetTransmissionData( 'RPLM', TransmissionDataPtr( inTransmissionDataHandler ) );
+		//ifp->SetTransmissionData( 'RPLM', TransmissionDataPtr( inTransmissionDataHandler ) );
+		ifp->SetTransmissionData( 'RPLM', inTransmissionDataHandler );
 
 		SendPacket( slicedPacket, inClientProxy );
-		//slicedWelcomePacket.ResetBS();
 	}
 }
 

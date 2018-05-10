@@ -16,7 +16,7 @@ public:
 	~DeliveryNotificationMgr();
 
 	inline	InFlightPacket*		WriteState( OutputBitStream& inOutputStream );
- 	inline	bool				ReadAndProcessState( InputBitStream& inInputStream );
+ 	inline bool ReadAndProcessState( InputBitStream& inInputStream, bool inIsSliced );
 
 	//void				ProcessTimedOutPackets();
 
@@ -34,7 +34,7 @@ private:
 	void				WriteAckData( OutputBitStream& inOutputStream );
 
  	//returns wether to drop the packet- if sequence number is too low!
- 	bool				ProcessSequenceNumber( InputBitStream& inInputStream );
+ 	bool ProcessSequenceNumber( InputBitStream& inInputStream, bool inIsSliced );
  	//void				ProcessAcks( InputMemoryBitStream& inInputStream );
  
  
@@ -68,9 +68,9 @@ inline InFlightPacket* DeliveryNotificationMgr::WriteState( OutputBitStream& inO
 	return toRet;
 }
 
- inline bool	DeliveryNotificationMgr::ReadAndProcessState( InputBitStream& inInputStream )
+ inline bool DeliveryNotificationMgr::ReadAndProcessState( InputBitStream& inInputStream, bool inIsSliced )
  {
- 	bool toRet = ProcessSequenceNumber( inInputStream );
+ 	bool toRet = ProcessSequenceNumber( inInputStream, inIsSliced );
  	if ( mShouldProcessAcks )
  	{
  		//ProcessAcks( inInputStream );
