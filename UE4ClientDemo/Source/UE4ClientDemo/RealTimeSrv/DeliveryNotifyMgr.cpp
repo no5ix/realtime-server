@@ -59,7 +59,7 @@ void DeliveryNotifyMgr::WriteAckData( OutputBitStream& inOutputStream )
 	}
 }
 
-bool DeliveryNotifyMgr::ProcessSequenceNumber( InputBitStream& inInputStream, bool inIsSliced )
+bool DeliveryNotifyMgr::ProcessSequenceNumber( InputBitStream& inInputStream, bool inIsSliced /*= false*/ )
 {
 	PacketSequenceNumber	sequenceNumber;
 	inInputStream.Read( sequenceNumber );
@@ -82,27 +82,20 @@ bool DeliveryNotifyMgr::ProcessSequenceNumber( InputBitStream& inInputStream, bo
 	}
 	else
 	{
-		if ( sequenceNumber == mNextExpectedSequenceNumber )
+		if ( SequenceGreaterThanOrEqual( sequenceNumber, mNextExpectedSequenceNumber ) )
 		{
 			mNextExpectedSequenceNumber = sequenceNumber + 1;
+
 			if ( mShouldSendAcks )
 			{
 				AddPendingAck( sequenceNumber );
 			}
+
 			return true;
 		}
-		else if ( sequenceNumber < mNextExpectedSequenceNumber )
+		else
 		{
 			return false;
-		}
-		else if ( sequenceNumber > mNextExpectedSequenceNumber )
-		{
-			mNextExpectedSequenceNumber = sequenceNumber + 1;
-			if ( mShouldSendAcks )
-			{
-				AddPendingAck( sequenceNumber );
-			}
-			return true;
 		}
 	}
 

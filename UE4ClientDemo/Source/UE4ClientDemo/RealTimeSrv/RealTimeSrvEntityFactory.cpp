@@ -53,14 +53,14 @@ RealTimeSrvEntityPtr RealTimeSrvEntityFactory::CreateRealTimeSrvPawn()
 		
 		FActorSpawnParameters SpawnParams;
 		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-		ARealTimeSrvPawn* const newActionPawn = world->SpawnActor<ARealTimeSrvPawn>( DefaultCharacterClasses, FTransform::Identity, SpawnParams );
+		ARealTimeSrvPawn* const newPawn = world->SpawnActor<ARealTimeSrvPawn>( DefaultCharacterClasses, FTransform::Identity, SpawnParams );
 
 
-		if ( newActionPawn )
+		if ( newPawn )
 		{
-			RealTimeSrvWorld::sInstance->AddGameObject( newActionPawn );
+			RealTimeSrvWorld::sInstance->AddGameObject( newPawn );
 		}
-		return RealTimeSrvEntityPtr( newActionPawn );
+		return RealTimeSrvEntityPtr( newPawn );
 
 	}
 	return RealTimeSrvEntityPtr();

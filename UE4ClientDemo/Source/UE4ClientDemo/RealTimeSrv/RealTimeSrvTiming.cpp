@@ -27,12 +27,12 @@ void RealTimeSrvTiming::Update(float inCurGameTime, float inDeltaTime)
 	//mLastFrameStartTime = currentTime;
 	//mFrameStartTimef = static_cast< float > ( mLastFrameStartTime );
 
-	//A_LOG_1( "$$$$$$$$$$$$$$$ RealTimeSrvTiming::Update $$$$$$$$$$$$$$$$$$$$" );
-	//A_LOG_N( "inDeltaTime = ", inDeltaTime );
-	//A_LOG_N( "inCurGameTime = ", inCurGameTime );
-	//A_LOG_N( "mLastFrameStartTime = ", mLastFrameStartTime );
-	//A_LOG_N( "inCurGameTime - mLastFrameStartTime = ", inCurGameTime - mLastFrameStartTime );
-	//A_LOG_1( "$$$$$$$$$$$$$$$$ RealTimeSrvTiming::Update $$$$$$$$$$$$$$$$$$$" );
+	//R_LOG_1( "$$$$$$$$$$$$$$$ RealTimeSrvTiming::Update $$$$$$$$$$$$$$$$$$$$" );
+	//R_LOG_N( "inDeltaTime = ", inDeltaTime );
+	//R_LOG_N( "inCurGameTime = ", inCurGameTime );
+	//R_LOG_N( "mLastFrameStartTime = ", mLastFrameStartTime );
+	//R_LOG_N( "inCurGameTime - mLastFrameStartTime = ", inCurGameTime - mLastFrameStartTime );
+	//R_LOG_1( "$$$$$$$$$$$$$$$$ RealTimeSrvTiming::Update $$$$$$$$$$$$$$$$$$$" );
 
 
 	double currentTime = inCurGameTime;

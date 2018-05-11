@@ -64,45 +64,46 @@ void DeliveryNotifyMgr::WriteAckData( OutputBitStream& inOutputStream )
 
 
 
-bool DeliveryNotifyMgr::ProcessSequenceNumber( InputBitStream& inInputStream )
+bool DeliveryNotifyMgr::ProcessSequenceNumber( InputBitStream& inInputStream, bool inIsSliced /*= false*/ )
 {
 	PacketSequenceNumber	sequenceNumber;
 
 	inInputStream.Read( sequenceNumber );
-	if( sequenceNumber == mNextExpectedSequenceNumber )
-	{
-		mNextExpectedSequenceNumber = sequenceNumber + 1;
-		
-		if( mShouldSendAcks )
-		{
-			AddPendingAck( sequenceNumber );
-		}
-		
-		return true;
-	}
-	
-	
-	
-	else if( sequenceNumber < mNextExpectedSequenceNumber )
-	{
-		return false;
-	}
-	else if( sequenceNumber > mNextExpectedSequenceNumber )
-	{
-		
-		
-		mNextExpectedSequenceNumber = sequenceNumber + 1;
-		
-		
-		
-		if( mShouldSendAcks )
-		{
-			AddPendingAck( sequenceNumber );
-		}
-		return true;
-	}
 
-	
+	if ( inIsSliced )
+	{
+		if ( sequenceNumber == mNextExpectedSequenceNumber )
+		{
+			mNextExpectedSequenceNumber = sequenceNumber + 1;
+			if ( mShouldSendAcks )
+			{
+				AddPendingAck( sequenceNumber );
+			}
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	else
+	{
+		if ( SequenceGreaterThanOrEqual( sequenceNumber, mNextExpectedSequenceNumber ) )
+		{
+			mNextExpectedSequenceNumber = sequenceNumber + 1;
+
+			if ( mShouldSendAcks )
+			{
+				AddPendingAck( sequenceNumber );
+			}
+
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
 	return false;
 }
 
@@ -127,14 +128,13 @@ void DeliveryNotifyMgr::ProcessAcks( InputBitStream& inInputStream )
 			const auto& nextInFlightPacket = mInFlightPackets.front();
 			
 			PacketSequenceNumber nextInFlightPacketSequenceNumber = nextInFlightPacket.GetSequenceNumber();
-			if( nextInFlightPacketSequenceNumber < nextAckdSequenceNumber )
+			if ( SequenceGreaterThan(nextAckdSequenceNumber, nextInFlightPacketSequenceNumber) )
 			{
-				
 				auto copyOfInFlightPacket = nextInFlightPacket;
 				mInFlightPackets.pop_front();
 				HandlePacketDeliveryFailure( copyOfInFlightPacket );
 			}
-			else if( nextInFlightPacketSequenceNumber == nextAckdSequenceNumber )
+			else if( nextAckdSequenceNumber == nextInFlightPacketSequenceNumber )
 			{
 				HandlePacketDeliverySuccess( nextInFlightPacket );
 				
@@ -142,11 +142,9 @@ void DeliveryNotifyMgr::ProcessAcks( InputBitStream& inInputStream )
 				
 				++nextAckdSequenceNumber;
 			}
-			else if( nextInFlightPacketSequenceNumber > nextAckdSequenceNumber )
+			else if ( SequenceGreaterThan( nextInFlightPacketSequenceNumber, nextAckdSequenceNumber ) )
 			{
-				
-				
-				++nextAckdSequenceNumber;
+				nextAckdSequenceNumber = nextInFlightPacketSequenceNumber;
 			}
 		}
 	}

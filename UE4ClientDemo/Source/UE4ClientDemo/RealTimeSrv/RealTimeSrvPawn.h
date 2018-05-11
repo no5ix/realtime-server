@@ -7,7 +7,6 @@
 #include "RealTimeSrvEntity.h"
 #include "RealTimeSrvInputState.h"
 #include "StateQueue.h"
-// #include "GameFramework/FloatingPawnMovement.h"
 #include "RealTimeSrvPawn.generated.h"
 
 UCLASS()
@@ -22,8 +21,6 @@ public:
 
 protected:
 
-	/** Update Velocity based on input. Also applies gravity. */
-	//void ApplyControlInputToVelocity( float DeltaTime );
 	void ApplyControlInputToVelocity( float DeltaTime, FVector& inVelocity );
 
 public:
@@ -74,25 +71,12 @@ public:
 
 	FVector ActionGetPendingInputVector() const;
 
-
-	const FRotator& GetActionPawnCameraRotation() const { return mCameraRotation; }
-
-	void SetActionPawnCameraRotation( const FRotator& inActionPawnCameraRotation ) { mCameraRotation = inActionPawnCameraRotation; }
-
-
-	UFUNCTION( BlueprintCallable, Category = "RealTimeSrv" )
-		const FRotator& GetLocalActionPawnCameraRotation() const { return mLocalCameraRotation; }
-
-	void SetLocalActionPawnCameraRotation( const FRotator& inActionPawnCameraRotation ) { mLocalCameraRotation = inActionPawnCameraRotation; }
-
 	virtual void	UpdateTargetState() override;
 
 public:
 
 	void ReplayForLocalPawn( uint32_t inReadState );
 	void ReplayForRemotePawn( uint32_t inReadState );
-
-
 
 public:
 
@@ -106,23 +90,14 @@ public:
 	float GetMaxSpeed() const { return MaxSpeed; }
 private:
 
-	/** Camera component that will be our viewpoint */
 	UPROPERTY( VisibleDefaultsOnly, Category = RealTimeSrvPawnCamera )
 		class UCameraComponent* RealTimeSrvPawnCamera;
 
-	/** pawn mesh: 1st person view */
 	UPROPERTY( VisibleDefaultsOnly, Category = Mesh )
 		USkeletalMeshComponent* Mesh1P;
 
-	/** pawn mesh: 1st person view */
 	UPROPERTY( VisibleDefaultsOnly, Category = Mesh )
 		USkeletalMeshComponent* Mesh3P;
-
-
-// private:
-// 	/** DefaultPawn movement component */
-// 	UPROPERTY( Category = Pawn, VisibleAnywhere, BlueprintReadOnly, meta = ( AllowPrivateAccess = "true" ) )
-// 		UFloatingPawnMovement* MovementComponent;
 
 private:
 

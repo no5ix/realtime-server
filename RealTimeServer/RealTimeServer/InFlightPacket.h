@@ -1,6 +1,5 @@
 class DeliveryNotifyMgr;
 
-typedef uint16_t	PacketSequenceNumber;
 
 class InFlightPacket
 {

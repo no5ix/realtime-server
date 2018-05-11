@@ -87,7 +87,7 @@ const Action& InputMgr::SampleInputAsAction()
 	return mActionList.AddAction( GetState() );
 
 	//const Action& testAction = mActionList.AddAction( GetState(), ActionTiming::sInstance.GetFrameStartTime() );
-	//A_LOG_N( "mActionList.GetActionCount() : ", float( mActionList.GetActionCount() ) );
+	//R_LOG_N( "mActionList.GetActionCount() : ", float( mActionList.GetActionCount() ) );
 	//return testAction;
 }
 

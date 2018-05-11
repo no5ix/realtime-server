@@ -91,28 +91,55 @@ private:
 class InputBitStream
 {
 public:
-	
+
 	InputBitStream( char* inBuffer, uint32_t inBitCount ) :
 		mBuffer( inBuffer ),
 		mBitCapacity( inBitCount ),
 		mBitHead( 0 ),
-		mIsBufferOwner( false ) 
+		mRecombinePoint( 0 ),
+		mIsBufferOwner( false )
 	{}
-	
+
 	InputBitStream( const InputBitStream& inOther ) :
 		mBitCapacity( inOther.mBitCapacity ),
 		mBitHead( inOther.mBitHead ),
+		mRecombinePoint( inOther.mRecombinePoint ),
 		mIsBufferOwner( true )
 	{
-		//allocate buffer of right size
 		int byteCount = mBitCapacity / 8;
 		mBuffer = static_cast< char* >( malloc( byteCount ) );
-		//copy
 		memcpy( mBuffer, inOther.mBuffer, byteCount );
 	}
-	
-	~InputBitStream()	{ if( mIsBufferOwner ) { free( mBuffer ); }; }
-	
+
+	InputBitStream& operator=( const InputBitStream& inOther )
+	{
+		if ( this == &inOther )
+		{
+			return *this;
+		}
+
+		mBitCapacity = inOther.mBitCapacity;
+		mBitHead = inOther.mBitHead;
+		mRecombinePoint = inOther.mRecombinePoint;
+		if ( mIsBufferOwner && mBuffer )
+		{
+			free( mBuffer );
+		}
+		int byteCount = mBitCapacity / 8;
+		mBuffer = static_cast< char* >( malloc( byteCount ) );
+		memcpy( mBuffer, inOther.mBuffer, byteCount );
+		mIsBufferOwner = true;
+		return *this;
+	}
+
+	~InputBitStream()
+	{
+		if ( mIsBufferOwner && mBuffer )
+		{
+			free( mBuffer );
+			mBuffer = nullptr;
+		}
+	}
 	const 	char*	GetBufferPtr()		const	{ return mBuffer; }
 	uint32_t	GetRemainingBitCount() 	const { return mBitCapacity - mBitHead; }
 
@@ -142,7 +169,25 @@ public:
 
 	void		Read( Quaternion& outQuat );
 
-	void		ResetToCapacity( uint32_t inByteCapacity )				{ mBitCapacity = inByteCapacity << 3; mBitHead = 0; }
+	void		ResetToCapacity( uint32_t inByteCapacity ) { mBitCapacity = inByteCapacity << 3; mBitHead = 0; }
+
+	void		RecombineTo( InputBitStream& refInputBitStream );
+
+	void Reinit( uint32_t inBitCount )
+	{
+		if ( mIsBufferOwner && mBuffer )
+		{
+			free( mBuffer );
+		}
+		int byteCount = inBitCount / 8;
+		mBuffer = static_cast< char* >( malloc( byteCount ) );
+		mBitCapacity = inBitCount;
+		mBitHead = 0;
+		mRecombinePoint = 0;
+		mIsBufferOwner = true;
+	}
+
+	uint32_t	GetRecombinePoint() const { return mRecombinePoint; }
 
 
 	void Read( std::string& inString )
@@ -162,6 +207,7 @@ private:
 	char*		mBuffer;
 	uint32_t	mBitHead;
 	uint32_t	mBitCapacity;
+	uint32_t	mRecombinePoint;
 	bool		mIsBufferOwner;
 
 };

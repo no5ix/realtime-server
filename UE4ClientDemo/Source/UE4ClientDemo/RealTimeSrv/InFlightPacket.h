@@ -9,8 +9,10 @@
 
 class DeliveryNotifyMgr;
 
-//in case we decide to change the type of the sequence number to use fewer or more bits
 typedef uint16_t	PacketSequenceNumber;
+#define MAX_PACKET_SEQUENCE_NUMBER			(65535)
+#define HALF_MAX_PACKET_SEQUENCE_NUMBER     (32768)
+
 
 class InFlightPacket
 {

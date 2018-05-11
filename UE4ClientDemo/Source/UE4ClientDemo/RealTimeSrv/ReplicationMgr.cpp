@@ -11,7 +11,7 @@
 
 void ReplicationMgr::Read( InputBitStream& inInputStream )
 {
-	//A_LOG_1( "ReplicationManagerClient::Read, start" );
+	//R_LOG_1( "ReplicationManagerClient::Read, start" );
 
 	while (inInputStream.GetRemainingBitCount() >= 32)
 	{
@@ -35,13 +35,13 @@ void ReplicationMgr::Read( InputBitStream& inInputStream )
 		}
 	}
 
-	//A_LOG_N( "ReplicationManagerClient::Read, end with countForTest = ", countForTest );
+	//R_LOG_N( "ReplicationManagerClient::Read, end with countForTest = ", countForTest );
 }
 
 void ReplicationMgr::ReadAndDoCreateAction( InputBitStream& inInputStream, int inNetworkId )
 {
 
-	A_LOG_1( "= = == = = == = ReadAndDoCreateAction = = = == = = = = =" );
+	R_LOG_1( "= = == = = == = ReadAndDoCreateAction = = = == = = = = =" );
 
 	uint32_t fourCCName;
 	inInputStream.Read( fourCCName );
@@ -60,8 +60,8 @@ void ReplicationMgr::ReadAndDoCreateAction( InputBitStream& inInputStream, int i
 
 	gameObject->Read( inInputStream );
 
-	A_LOG();
-	A_LOG_1( "= = == = = == = ReadAndDoCreateAction = = = == = = = = =" );
+	R_LOG();
+	R_LOG_1( "= = == = = == = ReadAndDoCreateAction = = = == = = = = =" );
 	
 }
 
@@ -71,9 +71,9 @@ void ReplicationMgr::ReadAndDoUpdateAction( InputBitStream& inInputStream, int i
 
 	gameObject->Read( inInputStream );
 
-	//A_LOG_1( "= = == = = == = = = = == = = = = =" );
-	//A_LOG();
-	//A_LOG_1( "= = == = = == = = = = == = = = = =" );
+	//R_LOG_1( "= = == = = == = = = = == = = = = =" );
+	//R_LOG();
+	//R_LOG_1( "= = == = = == = = = = == = = = = =" );
 }
 
 void ReplicationMgr::ReadAndDoDestroyAction( InputBitStream& inInputStream, int inNetworkId )

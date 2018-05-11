@@ -15,7 +15,7 @@ StateQueue::~StateQueue()
 void StateQueue::AddStateData( const FRotator& inRotation, const FVector& inVelocity, const FVector& inLocation, const FRotator& inCameraRotation )
 {
 	mStateQueue.emplace_back( inRotation, inVelocity, inLocation, inCameraRotation );
-	A_LOG_EXTRA();
+	R_LOG_EXTRA();
 }
 
 bool StateQueue::GetStateData(StateData& outStateData)

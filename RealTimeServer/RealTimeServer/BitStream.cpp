@@ -200,3 +200,15 @@ void InputBitStream::Read( Quaternion& outQuat )
 		outQuat.W *= -1;
 	}
 }
+
+
+void InputBitStream::RecombineTo( InputBitStream& refInputBitStream )
+{
+	char * destByte = refInputBitStream.mBuffer + ( refInputBitStream.mRecombinePoint >> 3 );
+
+	uint32_t SurplusBitLen = mBitCapacity - mBitHead;
+
+	ReadBits( destByte, SurplusBitLen );
+
+	refInputBitStream.mRecombinePoint += SurplusBitLen;
+}

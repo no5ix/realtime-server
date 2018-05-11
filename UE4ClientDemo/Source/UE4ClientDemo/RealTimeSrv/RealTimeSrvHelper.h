@@ -5,9 +5,9 @@
 
 
 
-#define ACTION_SHOW_DEBUG_SCREEN_MSG					false
-#define ACTION_SHOW_DEBUG_OUTPUT_LOG					false
-#define ACTION_SHOW_DEBUG_OUTPUT_LOG_EXTRA				false
+#define RTS_SHOW_DEBUG_SCREEN_MSG					false
+#define RTS_SHOW_DEBUG_OUTPUT_LOG					false
+#define RTS_SHOW_DEBUG_OUTPUT_LOG_EXTRA				false
 
 
 //Current Class Name + Function Name where this is called!
@@ -36,49 +36,47 @@
 // 	Gives you the Class name and exact line number where you print a message to yourself!
 
 
-#define A_MSG(TimeToDisplay )								if (ACTION_SHOW_DEBUG_SCREEN_MSG) (GEngine->AddOnScreenDebugMessage(-1, (float)TimeToDisplay, FColor::Red, *(STR_CUR_CLASS_FUNC_LINE )) )
+#define R_MSG(TimeToDisplay )											if (RTS_SHOW_DEBUG_SCREEN_MSG) (GEngine->AddOnScreenDebugMessage(-1, (float)TimeToDisplay, FColor::Red, *(STR_CUR_CLASS_FUNC_LINE )) )
 
-#define A_MSG_1(TimeToDisplay, StringParam1)                        if (ACTION_SHOW_DEBUG_SCREEN_MSG) (GEngine->AddOnScreenDebugMessage(-1, (float)TimeToDisplay, FColor::Red, *(STR_CUR_CLASS_FUNC_LINE + "  :  " + StringParam1)) )
+#define R_MSG_1(TimeToDisplay, StringParam1)							if (RTS_SHOW_DEBUG_SCREEN_MSG) (GEngine->AddOnScreenDebugMessage(-1, (float)TimeToDisplay, FColor::Red, *(STR_CUR_CLASS_FUNC_LINE + "  :  " + StringParam1)) )
 
-#define A_MSG_2(TimeToDisplay, StringParam1, StringParam2)     			if (ACTION_SHOW_DEBUG_SCREEN_MSG) (GEngine->AddOnScreenDebugMessage(-1, (float)TimeToDisplay, FColor::Red, *(STR_CUR_CLASS_FUNC_LINE + "  :  " + StringParam1 + "      " + StringParam2)) )
+#define R_MSG_2(TimeToDisplay, StringParam1, StringParam2)     			if (RTS_SHOW_DEBUG_SCREEN_MSG) (GEngine->AddOnScreenDebugMessage(-1, (float)TimeToDisplay, FColor::Red, *(STR_CUR_CLASS_FUNC_LINE + "  :  " + StringParam1 + "      " + StringParam2)) )
 
-//#define A_SCREENMSG_F(StringParam1, NumericalParam2)     		if (ACTION_SHOW_DEBUG_SCREEN_MSG) (GEngine->AddOnScreenDebugMessage(-1, (float)TimeToDisplay, FColor::Red, *(STR_CUR_CLASS_FUNC_LINE + "  :  " + StringParam1 + "      " + FString::SanitizeFloat(NumericalParam2))) )
-#define A_MSG_N(TimeToDisplay, StringParam1, NumericalParam2)     		if (ACTION_SHOW_DEBUG_SCREEN_MSG) (GEngine->AddOnScreenDebugMessage(-1, (float)TimeToDisplay, FColor::Red, FString::Printf( TEXT("%s  :  %s    %f"), *STR_CUR_CLASS_FUNC_LINE, *FString(StringParam1), float(NumericalParam2) ) ) )
+#define R_MSG_N(TimeToDisplay, StringParam1, NumericalParam2)     		if (RTS_SHOW_DEBUG_SCREEN_MSG) (GEngine->AddOnScreenDebugMessage(-1, (float)TimeToDisplay, FColor::Red, FString::Printf( TEXT("%s  :  %s    %f"), *STR_CUR_CLASS_FUNC_LINE, *FString(StringParam1), float(NumericalParam2) ) ) )
 
-#define A_MSG_M(TimeToDisplay, FormatString, ...)     		if (ACTION_SHOW_DEBUG_SCREEN_MSG) (GEngine->AddOnScreenDebugMessage(-1, (float)TimeToDisplay, FColor::Red, FString::Printf( TEXT("%s  :  %s"), *STR_CUR_CLASS_FUNC_LINE, *FString::Printf(TEXT(FormatString), ##__VA_ARGS__ ) ) ) )
+#define R_MSG_M(TimeToDisplay, FormatString, ...)     					if (RTS_SHOW_DEBUG_SCREEN_MSG) (GEngine->AddOnScreenDebugMessage(-1, (float)TimeToDisplay, FColor::Red, FString::Printf( TEXT("%s  :  %s"), *STR_CUR_CLASS_FUNC_LINE, *FString::Printf(TEXT(FormatString), ##__VA_ARGS__ ) ) ) )
 
 
 
 ///////// UE LOG!
 
-// Example usage: A_LOG();
-#define	A_LOG() 		           					if (ACTION_SHOW_DEBUG_OUTPUT_LOG) UE_LOG(LogTemp, Warning, TEXT("%s"), *STR_CUR_CLASS_FUNC_LINE )
+// Example usage: R_LOG();
+#define	R_LOG() 		           										if (RTS_SHOW_DEBUG_OUTPUT_LOG) UE_LOG(LogTemp, Warning, TEXT("%s"), *STR_CUR_CLASS_FUNC_LINE )
 
-// Example usage: A_LOG_1( "Action!" );
-#define A_LOG_1(StringParam1) 		           				if (ACTION_SHOW_DEBUG_OUTPUT_LOG) UE_LOG(LogTemp, Warning, TEXT("%s  :  %s"), *STR_CUR_CLASS_FUNC_LINE, *FString(StringParam1))
+// Example usage: R_LOG_1( "Action!" );
+#define R_LOG_1(StringParam1) 		           							if (RTS_SHOW_DEBUG_OUTPUT_LOG) UE_LOG(LogTemp, Warning, TEXT("%s  :  %s"), *STR_CUR_CLASS_FUNC_LINE, *FString(StringParam1))
 
-// Example usage: A_LOG_2("Action!", "Cut!");
-#define A_LOG_2(StringParam1, StringParam2) 	       				if (ACTION_SHOW_DEBUG_OUTPUT_LOG) UE_LOG(LogTemp, Warning, TEXT("%s  :  %s     %s"), *STR_CUR_CLASS_FUNC_LINE, *FString(StringParam1), *FString(StringParam2))
+// Example usage: R_LOG_2("Action!", "Cut!");
+#define R_LOG_2(StringParam1, StringParam2) 	       					if (RTS_SHOW_DEBUG_OUTPUT_LOG) UE_LOG(LogTemp, Warning, TEXT("%s  :  %s     %s"), *STR_CUR_CLASS_FUNC_LINE, *FString(StringParam1), *FString(StringParam2))
 
-// Example usage: A_LOG_N("Action!", 88.f);
-#define A_LOG_N(StringParam1, NumericalParam2) 	       		if (ACTION_SHOW_DEBUG_OUTPUT_LOG) UE_LOG(LogTemp, Warning, TEXT("%s  :  %s    %f"), *STR_CUR_CLASS_FUNC_LINE, *FString(StringParam1), float(NumericalParam2) )
+// Example usage: R_LOG_N("Action!", 88.f);
+#define R_LOG_N(StringParam1, NumericalParam2) 	       					if (RTS_SHOW_DEBUG_OUTPUT_LOG) UE_LOG(LogTemp, Warning, TEXT("%s  :  %s    %f"), *STR_CUR_CLASS_FUNC_LINE, *FString(StringParam1), float(NumericalParam2) )
 
 // 
-#define A_LOG_M(FormatString, ...)     				if (ACTION_SHOW_DEBUG_OUTPUT_LOG) UE_LOG(LogTemp, Warning, TEXT("%s  :  %s"), *STR_CUR_CLASS_FUNC_LINE, *FString::Printf(TEXT(FormatString), ##__VA_ARGS__ ) )
+#define R_LOG_M(FormatString, ...)     									if (RTS_SHOW_DEBUG_OUTPUT_LOG) UE_LOG(LogTemp, Warning, TEXT("%s  :  %s"), *STR_CUR_CLASS_FUNC_LINE, *FString::Printf(TEXT(FormatString), ##__VA_ARGS__ ) )
 
 
 ///////// UE LOG_EXTRA!
 
-#define	A_LOG_EXTRA() 		           					if (ACTION_SHOW_DEBUG_OUTPUT_LOG_EXTRA) UE_LOG(LogTemp, Warning, TEXT("%s"), *STR_CUR_CLASS_FUNC_LINE )
+#define	R_LOG_EXTRA() 		           									if (RTS_SHOW_DEBUG_OUTPUT_LOG_EXTRA) UE_LOG(LogTemp, Warning, TEXT("%s"), *STR_CUR_CLASS_FUNC_LINE )
 
-#define A_LOG_1_EXTRA(StringParam1) 		           				if (ACTION_SHOW_DEBUG_OUTPUT_LOG_EXTRA) UE_LOG(LogTemp, Warning, TEXT("%s  :  %s"), *STR_CUR_CLASS_FUNC_LINE, *FString(StringParam1))
+#define R_LOG_1_EXTRA(StringParam1) 		           					if (RTS_SHOW_DEBUG_OUTPUT_LOG_EXTRA) UE_LOG(LogTemp, Warning, TEXT("%s  :  %s"), *STR_CUR_CLASS_FUNC_LINE, *FString(StringParam1))
 
-#define A_LOG_2_EXTRA(StringParam1, StringParam2) 	       				if (ACTION_SHOW_DEBUG_OUTPUT_LOG_EXTRA) UE_LOG(LogTemp, Warning, TEXT("%s  :  %s     %s"), *STR_CUR_CLASS_FUNC_LINE, *FString(StringParam1), *FString(StringParam2))
+#define R_LOG_2_EXTRA(StringParam1, StringParam2) 	       				if (RTS_SHOW_DEBUG_OUTPUT_LOG_EXTRA) UE_LOG(LogTemp, Warning, TEXT("%s  :  %s     %s"), *STR_CUR_CLASS_FUNC_LINE, *FString(StringParam1), *FString(StringParam2))
 
-#define A_LOG_N_EXTRA(StringParam1, NumericalParam2) 	       		if (ACTION_SHOW_DEBUG_OUTPUT_LOG_EXTRA) UE_LOG(LogTemp, Warning, TEXT("%s  :  %s    %f"), *STR_CUR_CLASS_FUNC_LINE, *FString(StringParam1), float(NumericalParam2) )
+#define R_LOG_N_EXTRA(StringParam1, NumericalParam2) 	       			if (RTS_SHOW_DEBUG_OUTPUT_LOG_EXTRA) UE_LOG(LogTemp, Warning, TEXT("%s  :  %s    %f"), *STR_CUR_CLASS_FUNC_LINE, *FString(StringParam1), float(NumericalParam2) )
 
-// 
-#define A_LOG_M_EXTRA(FormatString, ...)     				if (ACTION_SHOW_DEBUG_OUTPUT_LOG_EXTRA) UE_LOG(LogTemp, Warning, TEXT("%s  :  %s"), *STR_CUR_CLASS_FUNC_LINE, *FString::Printf(TEXT(FormatString), ##__VA_ARGS__ ) )
+#define R_LOG_M_EXTRA(FormatString, ...)     							if (RTS_SHOW_DEBUG_OUTPUT_LOG_EXTRA) UE_LOG(LogTemp, Warning, TEXT("%s  :  %s"), *STR_CUR_CLASS_FUNC_LINE, *FString::Printf(TEXT(FormatString), ##__VA_ARGS__ ) )
 
 
 

@@ -62,9 +62,9 @@ void NetworkMgr::Init( const FString& inYourChosenSocketName, const FString& inI
 
 	if ( RealTimeSrvSocketUtil::CreateInternetAddress( mRemoteAddr, inIP, inPort ) )
 	{
-		A_LOG_1( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" );
-		A_LOG_1( "ActionUDPSocket Initialized Successfully!!!" );
-		A_LOG_1( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" );
+		R_LOG_1( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" );
+		R_LOG_1( "ActionUDPSocket Initialized Successfully!!!" );
+		R_LOG_1( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" );
 	}
 
 	mState = NCS_SayingHello;
@@ -101,9 +101,9 @@ void NetworkMgr::SendHelloPacket()
 	SendPacket( helloPacket );
 	
 	
-	A_LOG_1( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" );
-	A_LOG_1( "****UDP**** Send Hello Packet Successfully!!!" );
-	A_LOG_1( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" );
+	R_LOG_1( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" );
+	R_LOG_1( "****UDP**** Send Hello Packet Successfully!!!" );
+	R_LOG_1( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" );
 	
 }
 
@@ -274,7 +274,7 @@ void NetworkMgr::UpdateSayingHello()
 		SendHelloPacket();
 		mTimeOfLastHello = currentTime;
 
-		GEngine->AddOnScreenDebugMessage( -1, 2.5f, FColor::Red,
+		GEngine->AddOnScreenDebugMessage( -1, 1.f, FColor::Red,
 			FString::Printf( TEXT( "%s" ),
 				*FString( "Connecting ..." ) )
 		);
@@ -283,6 +283,10 @@ void NetworkMgr::UpdateSayingHello()
 
 void NetworkMgr::CheckForDisconnects()
 {
+	if (mState != NCS_Welcomed)
+	{
+		return;
+	}
 
 	float curTime = RealTimeSrvTiming::sInstance->GetCurrentGameTime();
 
@@ -298,6 +302,7 @@ void NetworkMgr::CheckForDisconnects()
 			FString::Printf( TEXT( "%s" ),
 				*FString( "ReConnecting ..." ) )
 		);
+		R_LOG_1_EXTRA("ReConnecting ...");
 	}
 }
 
@@ -351,9 +356,9 @@ void NetworkMgr::HandleWelcomePacket( InputBitStream& inInputStream )
 				*FString( "Welcome on client as PlayerID     = " ), mPlayerId )
 		);
 
-		A_LOG_1( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" );
-		A_LOG_1( "****UDP**** HandleWelcomePacket Successfully!!!" );
-		A_LOG_1( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" );
+		R_LOG_1( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" );
+		R_LOG_1( "****UDP**** HandleWelcomePacket Successfully!!!" );
+		R_LOG_1( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" );
 	}
 }
 
@@ -387,18 +392,18 @@ void NetworkMgr::ReadLastMoveProcessedOnServerTimestamp( InputBitStream& inInput
 
 		InputMgr::sInstance->GetActionList().RemovedProcessedActions( mLastMoveProcessedByServerTimestamp );
 
-		//A_LOG();
-		//A_LOG_N( "rtt = ", rtt );
-		//A_LOG_N( "ping = ", mAvgRoundTripTime.GetValue() / 2.f );
+		//R_LOG();
+		//R_LOG_N( "rtt = ", rtt );
+		//R_LOG_N( "ping = ", mAvgRoundTripTime.GetValue() / 2.f );
 
 		float currentTime = RealTimeSrvTiming::sInstance->GetCurrentGameTime();
 
 		if ( currentTime > mTimeOfLastHello + kTimeBetweenHellos )
 		{
-			//A_MSG_M( 2.f, "ping = %f", mAvgRoundTripTime.GetValue() *1000.f );
+			//R_MSG_M( 2.f, "ping = %f", mAvgRoundTripTime.GetValue() *1000.f );
 			//GEngine->AddOnScreenDebugMessage( -1, 2.f, FColor::Red, FString::Printf( TEXT( "%s    %f" ), *FString( "ping" ), float( mAvgRoundTripTime.GetValue() *1000.f ) ) );
 
-			GEngine->AddOnScreenDebugMessage( -1, 2.f, FColor::Red, 
+			GEngine->AddOnScreenDebugMessage( -1, 1.f, FColor::Red, 
 				FString::Printf( TEXT( "%s    %f" ), 
 				*FString( "ping" ), float( rtt *1000.f ) ) 
 			);

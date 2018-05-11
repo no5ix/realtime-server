@@ -10,10 +10,10 @@
 #endif
 
 
-#define SMALL_NUMBER		(1.e-8f)
-#define KINDA_SMALL_NUMBER	(1.e-4f)
-#define BIG_NUMBER			(3.4e+38f)
-#define EULERS_NUMBER       (2.71828182845904523536f)
+#define SMALL_NUMBER						(1.e-8f)
+#define KINDA_SMALL_NUMBER					(1.e-4f)
+#define BIG_NUMBER							(3.4e+38f)
+#define EULERS_NUMBER						(2.71828182845904523536f)
 
 
 #ifdef _WIN32
@@ -30,4 +30,10 @@ typedef unsigned long long uint64_t;
 typedef unsigned int size_t;
 
 #endif
+
+
+// PacketSequenceNumber
+typedef uint16_t	PacketSequenceNumber;
+#define MAX_PACKET_SEQUENCE_NUMBER			(65535)
+#define HALF_MAX_PACKET_SEQUENCE_NUMBER     (32768)
 
