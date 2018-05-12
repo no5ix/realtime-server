@@ -3,9 +3,6 @@
 #include <cstdlib>
 #include <string>
 
-//class GameObject;
-//class LinkingContext;
-
 inline uint32_t ConvertToFixed( float inNumber, float inMin, float inPrecision )
 {
 	return static_cast< int > ( ( inNumber - inMin ) / inPrecision );

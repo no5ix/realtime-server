@@ -20,11 +20,18 @@ DeliveryNotifyMgr::DeliveryNotifyMgr( bool inShouldSendAcks, bool inShouldProces
 	mDroppedPacketCount( 0 ),
 	mDispatchedPacketCount( 0 )
 {
+	if ( mShouldSendAcks )
+	{
+		mAckBitField = new AckBitField();
+	}
 }
-
 
 DeliveryNotifyMgr::~DeliveryNotifyMgr()
 {
+	if ( mShouldSendAcks && mAckBitField )
+	{
+		delete mAckBitField;
+	}
 }
 
 
@@ -47,17 +54,6 @@ InFlightPacket* DeliveryNotifyMgr::WriteSequenceNumber( OutputBitStream& inOutpu
 	}
 }
 
-void DeliveryNotifyMgr::WriteAckData( OutputBitStream& inOutputStream )
-{
-	bool hasAcks = ( mPendingAcks.size() > 0 );
-
-	inOutputStream.Write( hasAcks );
-	if ( hasAcks )
-	{
-		mPendingAcks.front().Write( inOutputStream );
-		mPendingAcks.pop_front();
-	}
-}
 
 bool DeliveryNotifyMgr::ProcessSequenceNumber( InputBitStream& inInputStream )
 {
@@ -65,11 +61,13 @@ bool DeliveryNotifyMgr::ProcessSequenceNumber( InputBitStream& inInputStream )
 	inInputStream.Read( sequenceNumber );
 	if ( RealTimeSrvHelper::SequenceGreaterThanOrEqual( sequenceNumber, mNextExpectedSequenceNumber ) )
 	{
+		PacketSequenceNumber lastSN = mNextExpectedSequenceNumber - 1;
 		mNextExpectedSequenceNumber = sequenceNumber + 1;
 
 		if ( mShouldSendAcks )
 		{
-			AddPendingAck( sequenceNumber );
+			//AddPendingAck( sequenceNumber );
+			mAckBitField->AddToAckBitField( sequenceNumber, lastSN );
 		}
 
 		return true;
@@ -82,12 +80,4 @@ bool DeliveryNotifyMgr::ProcessSequenceNumber( InputBitStream& inInputStream )
 	return false;
 }
 
-
-void DeliveryNotifyMgr::AddPendingAck( PacketSequenceNumber inSequenceNumber )
-{
-	if ( mPendingAcks.size() == 0 || !mPendingAcks.back().ExtendIfShould( inSequenceNumber ) )
-	{
-		mPendingAcks.emplace_back( inSequenceNumber );
-	}
-}
 

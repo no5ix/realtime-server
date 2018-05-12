@@ -3,9 +3,9 @@
 #pragma once
 #include <deque>
 #include "BitStream.h"
-#include "AckRange.h"
 #include "InFlightPacket.h"
 #include "RealTimeSrvHelper.h"
+#include "AckBitField.h"
 
 class DeliveryNotifyMgr
 {
@@ -26,21 +26,14 @@ public:
 
 private:
 
-
-
 	InFlightPacket*		WriteSequenceNumber( OutputBitStream& inOutputStream );
-	void				WriteAckData( OutputBitStream& inOutputStream );
 
  	bool ProcessSequenceNumber( InputBitStream& inInputStream );
- 
- 
- 	void				AddPendingAck( PacketSequenceNumber inSequenceNumber );
 
 	PacketSequenceNumber	mNextOutgoingSequenceNumber;
 	PacketSequenceNumber	mNextExpectedSequenceNumber;
 
 	std::deque< InFlightPacket >	mInFlightPackets;
-	std::deque< AckRange >		mPendingAcks;
 
 	bool					mShouldSendAcks;
 	bool					mShouldProcessAcks;
@@ -48,6 +41,9 @@ private:
 	uint32_t		mDeliveredPacketCount;
 	uint32_t		mDroppedPacketCount;
 	uint32_t		mDispatchedPacketCount;
+
+protected:
+	AckBitField*			mAckBitField;
 
 };
 
@@ -57,17 +53,17 @@ inline InFlightPacket* DeliveryNotifyMgr::WriteState( OutputBitStream& inOutputS
 	InFlightPacket* toRet = WriteSequenceNumber( inOutputStream );
 	if ( mShouldSendAcks )
 	{
-		WriteAckData( inOutputStream );
+		mAckBitField->Write( inOutputStream );
 	}
 	return toRet;
 }
 
- inline bool DeliveryNotifyMgr::ReadAndProcessState( InputBitStream& inInputStream )
- {
- 	bool toRet = ProcessSequenceNumber( inInputStream);
- 	if ( mShouldProcessAcks )
- 	{
- 		//ProcessAcks( inInputStream );
- 	}
- 	return toRet;
- }
+inline bool DeliveryNotifyMgr::ReadAndProcessState( InputBitStream& inInputStream )
+{
+	bool toRet = ProcessSequenceNumber( inInputStream );
+	//if ( mShouldProcessAcks )
+	//{
+	//	ProcessAckBitField( inInputStream );
+	//}
+	return toRet;
+}

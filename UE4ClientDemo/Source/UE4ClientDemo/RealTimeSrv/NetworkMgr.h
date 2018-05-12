@@ -109,7 +109,7 @@ private:
 
 private:
 
-	DeliveryNotifyMgr		mDeliveryNotificationManager;
+	DeliveryNotifyMgr			mDeliveryNotificationManager;
 	ReplicationMgr				mReplicationManagerClient;
 
 

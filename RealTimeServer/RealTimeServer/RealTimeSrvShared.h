@@ -75,7 +75,7 @@ class Entity;
 
 #include "TransmissionData.h"
 #include "InFlightPacket.h"
-#include "AckRange.h"
+#include "AckBitField.h"
 #include "DeliveryNotifyMgr.h"
 
 #include "InputState.h"

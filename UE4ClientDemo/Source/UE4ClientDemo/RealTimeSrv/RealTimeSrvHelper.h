@@ -93,6 +93,9 @@ typedef unsigned int													ChunkPacketID;
 
 #define MAX_PACKET_BYTE_LENGTH											(1024)
 
+#define ACK_BIT_FIELD_BYTE_LEN											(4)
+
+
 
 namespace RealTimeSrvHelper
 {
