@@ -17,9 +17,10 @@ float NetworkMgr::kTimeBetweenStatePackets = 0.033f;
 
 namespace
 {
-	const float kTimeBetweenHellos = 1.f;
+	const float kTimeBetweenHellos = 0.06f;
 	const float kTimeBetweenInputPackets = 0.033f;
-	const float kClientDisconnectTimeout = 3.f;
+	const float kClientDisconnectTimeout = 0.6f;
+	const float kTimeBetweenPrintPing = 1.f;
 }
 
 NetworkMgr::NetworkMgr() :
@@ -413,12 +414,12 @@ void NetworkMgr::ReadLastMoveProcessedOnServerTimestamp( InputBitStream& inInput
 
 		float currentTime = RealTimeSrvTiming::sInstance->GetCurrentGameTime();
 
-		if ( currentTime > mTimeOfLastHello + kTimeBetweenHellos )
+		if ( currentTime > mTimeOfLastHello + kTimeBetweenPrintPing )
 		{
 			//R_MSG_M( 2.f, "ping = %f", mAvgRoundTripTime.GetValue() *1000.f );
 			//GEngine->AddOnScreenDebugMessage( -1, 2.f, FColor::Red, FString::Printf( TEXT( "%s    %f" ), *FString( "ping" ), float( mAvgRoundTripTime.GetValue() *1000.f ) ) );
 
-			GEngine->AddOnScreenDebugMessage( -1, 1.f, FColor::Red, 
+			GEngine->AddOnScreenDebugMessage( -1, kTimeBetweenPrintPing, FColor::Red, 
 				FString::Printf( TEXT( "%s    %f" ), 
 				*FString( "ping" ), float( rtt *1000.f ) ) 
 			);

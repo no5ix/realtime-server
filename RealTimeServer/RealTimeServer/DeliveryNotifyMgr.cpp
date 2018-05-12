@@ -128,7 +128,10 @@ void DeliveryNotifyMgr::ProcessAckBitField( InputBitStream& inInputStream )
 		recvedAckBitField.GetLastAckSN() - ( ACK_BIT_FIELD_BYTE_LEN << 3 );
 
 	uint32_t LastAckdSequenceNumber = recvedAckBitField.GetLastAckSN();
-	while ( nextAckdSequenceNumber <= LastAckdSequenceNumber && !mInFlightPackets.empty() )
+	while ( 
+		RealTimeSrvHelper::SequenceGreaterThanOrEqual( LastAckdSequenceNumber, nextAckdSequenceNumber ) 
+		&& !mInFlightPackets.empty() 
+	)
 	{
 		const auto& nextInFlightPacket = mInFlightPackets.front();
 

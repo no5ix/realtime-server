@@ -6,11 +6,6 @@
 
 
 
-namespace
-{
-	const float kDelayBeforeAckTimeout = 0.5f;
-}
-
 DeliveryNotifyMgr::DeliveryNotifyMgr( bool inShouldSendAcks, bool inShouldProcessAcks ) :
 	mNextOutgoingSequenceNumber( 0 ),
 	mNextExpectedSequenceNumber( 0 ),
