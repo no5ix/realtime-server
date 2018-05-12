@@ -33,7 +33,7 @@ RealTimeSrv::RealTimeSrv()
 	InitNetworkMgr();
 
 	float latency = 0.0f;
-	string latencyString = Utility::GetCommandLineArg( 2 );
+	string latencyString = RealTimeSrvHelper::GetCommandLineArg( 2 );
 	if (!latencyString.empty())
 	{
 		latency = stof( latencyString );
@@ -41,7 +41,7 @@ RealTimeSrv::RealTimeSrv()
 	}
 
 	float dropPacketChance = 0.0f;
-	string dropPacketChanceString = Utility::GetCommandLineArg( 3 );
+	string dropPacketChanceString = RealTimeSrvHelper::GetCommandLineArg( 3 );
 	if (!dropPacketChanceString.empty())
 	{
 		dropPacketChance = stof( dropPacketChanceString );
@@ -49,7 +49,7 @@ RealTimeSrv::RealTimeSrv()
 	}
 
 	int IsSimulatedJitter = 0;
-	string IsSimulatedJitterString = Utility::GetCommandLineArg( 4 );
+	string IsSimulatedJitterString = RealTimeSrvHelper::GetCommandLineArg( 4 );
 	if ( !IsSimulatedJitterString.empty() )
 	{
 		IsSimulatedJitter = stoi( IsSimulatedJitterString );
@@ -63,7 +63,7 @@ RealTimeSrv::RealTimeSrv()
 bool RealTimeSrv::InitNetworkMgr()
 {
 	uint16_t port = 44444;
-	string portString = Utility::GetCommandLineArg( 1 );
+	string portString = RealTimeSrvHelper::GetCommandLineArg( 1 );
 	if (portString != string())
 	{
 		port = stoi( portString );
@@ -123,15 +123,16 @@ void RealTimeSrv::SpawnCharacterForPlayer( int inPlayerId )
 		0.f ) );
 
 
-	//for ( int count = inPlayerId * 100; count < inPlayerId * 100 + 50; ++count )
+	//for ( int count = inPlayerId * 100; count < inPlayerId * 100 + 561; ++count )
 	//{
 	//	CharacterPtr character = std::static_pointer_cast< Character >( EntityFactory::sInstance->CreateGameObject( 'CHRT' ) );
 
 	//	character->SetPlayerId( inPlayerId * count );
 
+
 	//	character->SetLocation( Vector3(
-	//		RealTimeSrvMath::Clamp( RealTimeSrvMath::GetRandomFloat() * -1024.f, -1024.f, -600.f ),
-	//		-1024.f + ( RealTimeSrvMath::GetRandomFloat() * 3000.f ),
+	//		2500.f + RealTimeSrvMath::GetRandomFloat() * -5000.f,
+	//		2500.f + RealTimeSrvMath::GetRandomFloat() * -5000.f,
 	//		0.f ) );
 
 	//	character->SetRotation( Vector3(

@@ -71,7 +71,10 @@ public:
 
 	FVector ActionGetPendingInputVector() const;
 
-	virtual void	UpdateTargetState() override;
+	virtual void UpdateTargetState() override;
+
+	UFUNCTION( BlueprintCallable, Category = RealTimeSrvPawn )
+		virtual FRotator GetRealTimeSrvPawnCameraRotation() const { return mLocalCameraRotation; }
 
 public:
 

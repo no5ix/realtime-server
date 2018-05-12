@@ -80,11 +80,30 @@
 
 
 
-class RealTimeSrvHelper
-{
-public:
+// PacketSequenceNumber
+typedef unsigned short													PacketSequenceNumber;
+#define PACKET_SEQUENCE_NUMBER_BIT_WIDE									(16)
+#define MAX_PACKET_SEQUENCE_NUMBER										(65535)
+#define HALF_MAX_PACKET_SEQUENCE_NUMBER									(32768)
+				
+typedef unsigned int													ChunkPacketID;
+#define CHUNK_PACKET_ID_BIT_WIDE										(32)
+#define MAX_CHUNK_PACKET_ID												(4294967296)
+#define HALF_MAX_CHUNK_PACKET_ID										(2147483648)
 
-	static void ScreenMsg( const FString& Msg );
-	static void ScreenMsg( const FString& Msg, const FString& Msg2 );
-	static void ScreenMsg( const FString& Msg, const float FloatValue );
+#define MAX_PACKET_BYTE_LENGTH											(1024)
+
+
+namespace RealTimeSrvHelper
+{
+	void ScreenMsg( const FString& Msg );
+	void ScreenMsg( const FString& Msg, const FString& Msg2 );
+	void ScreenMsg( const FString& Msg, const float FloatValue );
+
+
+	bool SequenceGreaterThanOrEqual( PacketSequenceNumber s1, PacketSequenceNumber s2 );
+	bool SequenceGreaterThan( PacketSequenceNumber s1, PacketSequenceNumber s2 );
+
+	bool ChunkPacketIDGreaterThanOrEqual( ChunkPacketID s1, ChunkPacketID s2 );
+	bool ChunkPacketIDGreaterThan( ChunkPacketID s1, ChunkPacketID s2 );
 };

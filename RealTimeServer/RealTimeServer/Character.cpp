@@ -22,7 +22,7 @@ Character::Character() :
 	TurningBoost = 8.0f;
 
 	Velocity = Vector3::Zero();
-	ActionPawnCameraRotation = Vector3::Zero();
+	CameraRotation = Vector3::Zero();
 }
 
 void Character::ProcessInput( float inDeltaTime, const InputState& inInputState )
@@ -40,10 +40,10 @@ void Character::ProcessInput( float inDeltaTime, const InputState& inInputState 
 	//	( ActionPawnCameraRotation.X + ( -1 * BaseLookUpRate * inInputState.GetDesiredLookUpAmount() ) ),
 	//	-89.f, 
 	//	89.f );
-	ActionPawnCameraRotation = inInputState.GetDesiredLookUpRot();
+	CameraRotation = inInputState.GetDesiredLookUpRot();
 
-	ActionAddMovementInput( ActionPawnCameraRotation.ToQuaternion() * Vector3::Forward(), inInputState.GetDesiredMoveForwardAmount() );
-	ActionAddMovementInput( ActionPawnCameraRotation.ToQuaternion() * Vector3::Right(), inInputState.GetDesiredMoveRightAmount() );
+	ActionAddMovementInput( CameraRotation.ToQuaternion() * Vector3::Forward(), inInputState.GetDesiredMoveForwardAmount() );
+	ActionAddMovementInput( CameraRotation.ToQuaternion() * Vector3::Right(), inInputState.GetDesiredMoveRightAmount() );
 
 
 	ApplyControlInputToVelocity( inDeltaTime );
@@ -161,25 +161,21 @@ uint32_t Character::Write( OutputBitStream& inOutputStream, uint32_t inDirtyStat
 	{
 		inOutputStream.Write( ( bool )true );
 
-		//Vector3 velocity = Velocity;
 		inOutputStream.Write( Velocity.X );
 		inOutputStream.Write( Velocity.Y );
 		inOutputStream.Write( Velocity.Z );
 
-		//Vector3 location = GetLocation();
 		inOutputStream.Write( GetLocation().X );
 		inOutputStream.Write( GetLocation().Y );
 		inOutputStream.Write( GetLocation().Z );
 
-		//Vector3 rotation = GetRotation();
 		inOutputStream.Write( GetRotation().X );
 		inOutputStream.Write( GetRotation().Y );
 		inOutputStream.Write( GetRotation().Z );
 
-		//Vector3 rotation = GetActionPawnCameraRotation();
-		inOutputStream.Write( GetActionPawnCameraRotation().X );
-		inOutputStream.Write( GetActionPawnCameraRotation().Y );
-		inOutputStream.Write( GetActionPawnCameraRotation().Z );
+		inOutputStream.Write( GetCameraRotation().X );
+		inOutputStream.Write( GetCameraRotation().Y );
+		inOutputStream.Write( GetCameraRotation().Z );
 
 		writtenState |= ECRS_Pose;
 	}

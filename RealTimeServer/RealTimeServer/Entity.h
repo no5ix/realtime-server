@@ -12,15 +12,10 @@ public:
 	CLASS_IDENTIFICATION( 'GOBJ', Entity )
 
 	Entity();
-//
 	virtual ~Entity() {}
-//
-//	virtual	RoboCat*	GetAsCat() { return nullptr; }
-//
 	virtual uint32_t GetAllStateMask()	const { return 0; }
-//
-//	//return whether to keep processing collision
-//	virtual bool	HandleCollisionWithCat( RoboCat* inCat ) { ( void )inCat; return true; }
+
+	virtual uint32_t GetMaxSerializeSize() const{ return 0; }
 
 	virtual void	Update();
 
@@ -37,14 +32,6 @@ public:
 
 	const Vector3&		GetLocation()				const { return mLocation; }
 	void		SetLocation( const Vector3& inLocation ) { mLocation = inLocation; }
-
-
-//	float		GetCollisionRadius()		const { return mCollisionRadius; }
-//	void		SetCollisionRadius( float inRadius ) { mCollisionRadius = inRadius; }
-//
-//	Vector3		GetForwardVector()			const;
-//
-//
 
 	bool		DoesWantToDie()				const { return mDoesWantToDie; }
 	void		SetDoesWantToDie( bool inWants ) { mDoesWantToDie = inWants; }

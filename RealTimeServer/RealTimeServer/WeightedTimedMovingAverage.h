@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Utility.h"
+#include "RealTimeSrvHelper.h"
 
 
 class WeightedTimedMovingAverage

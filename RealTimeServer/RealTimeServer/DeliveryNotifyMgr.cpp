@@ -2,18 +2,18 @@
 
 namespace
 {
-	const float kDelayBeforeAckTimeout = 2.5f;
+	const float kDelayBeforeAckTimeout = 0.7f;
 }
 
 DeliveryNotifyMgr::DeliveryNotifyMgr( bool inShouldSendAcks, bool inShouldProcessAcks ) :
-mNextOutgoingSequenceNumber( 0 ),
-mNextExpectedSequenceNumber( 0 ),
-//everybody starts at 0...
-mShouldSendAcks( inShouldSendAcks ),
-mShouldProcessAcks( inShouldProcessAcks ),
-mDeliveredPacketCount( 0 ),
-mDroppedPacketCount( 0 ),
-mDispatchedPacketCount( 0 )
+	mNextOutgoingSequenceNumber( 0 ),
+	mNextExpectedSequenceNumber( 0 ),
+	//everybody starts at 0...
+	mShouldSendAcks( inShouldSendAcks ),
+	mShouldProcessAcks( inShouldProcessAcks ),
+	mDeliveredPacketCount( 0 ),
+	mDroppedPacketCount( 0 ),
+	mDispatchedPacketCount( 0 )
 {
 }
 
@@ -30,13 +30,13 @@ DeliveryNotifyMgr::~DeliveryNotifyMgr()
 
 InFlightPacket* DeliveryNotifyMgr::WriteSequenceNumber( OutputBitStream& inOutputStream )
 {
-	
+
 	PacketSequenceNumber sequenceNumber = mNextOutgoingSequenceNumber++;
 	inOutputStream.Write( sequenceNumber );
 
 	++mDispatchedPacketCount;
 
-	if( mShouldProcessAcks )
+	if ( mShouldProcessAcks )
 	{
 		mInFlightPackets.emplace_back( sequenceNumber );
 
@@ -53,9 +53,9 @@ void DeliveryNotifyMgr::WriteAckData( OutputBitStream& inOutputStream )
 	bool hasAcks = ( mPendingAcks.size() > 0 );
 
 	inOutputStream.Write( hasAcks );
-	if( hasAcks )
+	if ( hasAcks )
 	{
-		
+
 		mPendingAcks.front().Write( inOutputStream );
 		mPendingAcks.pop_front();
 	}
@@ -64,46 +64,27 @@ void DeliveryNotifyMgr::WriteAckData( OutputBitStream& inOutputStream )
 
 
 
-bool DeliveryNotifyMgr::ProcessSequenceNumber( InputBitStream& inInputStream, bool inIsSliced /*= false*/ )
+bool DeliveryNotifyMgr::ProcessSequenceNumber( InputBitStream& inInputStream )
 {
 	PacketSequenceNumber	sequenceNumber;
 
 	inInputStream.Read( sequenceNumber );
-
-	if ( inIsSliced )
+	if ( RealTimeSrvHelper::SequenceGreaterThanOrEqual( sequenceNumber, mNextExpectedSequenceNumber ) )
 	{
-		if ( sequenceNumber == mNextExpectedSequenceNumber )
+		mNextExpectedSequenceNumber = sequenceNumber + 1;
+
+		if ( mShouldSendAcks )
 		{
-			mNextExpectedSequenceNumber = sequenceNumber + 1;
-			if ( mShouldSendAcks )
-			{
-				AddPendingAck( sequenceNumber );
-			}
-			return true;
+			AddPendingAck( sequenceNumber );
 		}
-		else
-		{
-			return false;
-		}
+
+		return true;
 	}
 	else
 	{
-		if ( SequenceGreaterThanOrEqual( sequenceNumber, mNextExpectedSequenceNumber ) )
-		{
-			mNextExpectedSequenceNumber = sequenceNumber + 1;
-
-			if ( mShouldSendAcks )
-			{
-				AddPendingAck( sequenceNumber );
-			}
-
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+		return false;
 	}
+
 	return false;
 }
 
@@ -115,34 +96,34 @@ void DeliveryNotifyMgr::ProcessAcks( InputBitStream& inInputStream )
 
 	bool hasAcks;
 	inInputStream.Read( hasAcks );
-	if( hasAcks )
+	if ( hasAcks )
 	{
 		AckRange ackRange;
 		ackRange.Read( inInputStream );
 
-		
+
 		PacketSequenceNumber nextAckdSequenceNumber = ackRange.GetStart();
 		uint32_t onePastAckdSequenceNumber = nextAckdSequenceNumber + ackRange.GetCount();
-		while( nextAckdSequenceNumber < onePastAckdSequenceNumber && !mInFlightPackets.empty() )
+		while ( nextAckdSequenceNumber < onePastAckdSequenceNumber && !mInFlightPackets.empty() )
 		{
 			const auto& nextInFlightPacket = mInFlightPackets.front();
-			
+
 			PacketSequenceNumber nextInFlightPacketSequenceNumber = nextInFlightPacket.GetSequenceNumber();
-			if ( SequenceGreaterThan(nextAckdSequenceNumber, nextInFlightPacketSequenceNumber) )
+			if ( RealTimeSrvHelper::SequenceGreaterThan( nextAckdSequenceNumber, nextInFlightPacketSequenceNumber ) )
 			{
 				auto copyOfInFlightPacket = nextInFlightPacket;
 				mInFlightPackets.pop_front();
 				HandlePacketDeliveryFailure( copyOfInFlightPacket );
 			}
-			else if( nextAckdSequenceNumber == nextInFlightPacketSequenceNumber )
+			else if ( nextAckdSequenceNumber == nextInFlightPacketSequenceNumber )
 			{
 				HandlePacketDeliverySuccess( nextInFlightPacket );
-				
+
 				mInFlightPackets.pop_front();
-				
+
 				++nextAckdSequenceNumber;
 			}
-			else if ( SequenceGreaterThan( nextInFlightPacketSequenceNumber, nextAckdSequenceNumber ) )
+			else if ( RealTimeSrvHelper::SequenceGreaterThan( nextInFlightPacketSequenceNumber, nextAckdSequenceNumber ) )
 			{
 				nextAckdSequenceNumber = nextInFlightPacketSequenceNumber;
 			}
@@ -154,20 +135,20 @@ void DeliveryNotifyMgr::ProcessTimedOutPackets()
 {
 	float timeoutTime = RealTimeSrvTiming::sInstance.GetCurrentGameTime() - kDelayBeforeAckTimeout;
 
-	while( !mInFlightPackets.empty() )
+	while ( !mInFlightPackets.empty() )
 	{
 		const auto& nextInFlightPacket = mInFlightPackets.front();
 
-		
-		if( nextInFlightPacket.GetTimeDispatched() < timeoutTime )
+
+		if ( nextInFlightPacket.GetTimeDispatched() < timeoutTime )
 		{
-			
+
 			HandlePacketDeliveryFailure( nextInFlightPacket );
 			mInFlightPackets.pop_front();
 		}
 		else
 		{
-			
+
 			break;
 		}
 	}
@@ -175,9 +156,9 @@ void DeliveryNotifyMgr::ProcessTimedOutPackets()
 
 void DeliveryNotifyMgr::AddPendingAck( PacketSequenceNumber inSequenceNumber )
 {
-	
-	
-	if( mPendingAcks.size() == 0 || !mPendingAcks.back().ExtendIfShould( inSequenceNumber ) )
+
+
+	if ( mPendingAcks.size() == 0 || !mPendingAcks.back().ExtendIfShould( inSequenceNumber ) )
 	{
 		mPendingAcks.emplace_back( inSequenceNumber );
 	}

@@ -85,8 +85,7 @@ private:
 class InputBitStream
 {
 public:
-
-	InputBitStream( char* inBuffer, uint32_t inBitCount ) :
+	InputBitStream( char* inBuffer = nullptr, uint32_t inBitCount = 0 ) :
 		mBuffer( inBuffer ),
 		mBitCapacity( inBitCount ),
 		mBitHead( 0 ),

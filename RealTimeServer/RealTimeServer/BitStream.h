@@ -26,7 +26,7 @@ public:
 		mBuffer( nullptr ),
 		mSlicePoint( 0 )
 	{
-		ReallocBuffer( 1024 * 8 );
+		ReallocBuffer( MAX_PACKET_BYTE_LENGTH * 8 );
 	}
 
 	~OutputBitStream()	{ std::free( mBuffer ); }
@@ -92,7 +92,7 @@ class InputBitStream
 {
 public:
 
-	InputBitStream( char* inBuffer, uint32_t inBitCount ) :
+	InputBitStream( char* inBuffer = nullptr, uint32_t inBitCount = 0 ) :
 		mBuffer( inBuffer ),
 		mBitCapacity( inBitCount ),
 		mBitHead( 0 ),
@@ -170,6 +170,7 @@ public:
 	void		Read( Quaternion& outQuat );
 
 	void		ResetToCapacity( uint32_t inByteCapacity ) { mBitCapacity = inByteCapacity << 3; mBitHead = 0; }
+	void		ResetToCapacityFromBit( uint32_t inBitCapacity ) { mBitCapacity = inBitCapacity; mBitHead = 0; }
 
 	void		RecombineTo( InputBitStream& refInputBitStream );
 

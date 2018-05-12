@@ -61,7 +61,7 @@ class Entity;
 
 #include "RealTimeSrvMath.h"
 
-#include "Utility.h"
+#include "RealTimeSrvHelper.h"
 
 #include "SocketAddrInterface.h"
 #include "UDPSocketInterface.h"

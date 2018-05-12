@@ -33,7 +33,7 @@ NetworkMgr::NetworkMgr() :
 	mLastPacketFromSrvTime( 0.f ),
 	mIsReceivingSlicePacket( false ),
 	mNextExpectedSlicedPacketIndex( 0 ),
-	mChunkInputStream( nullptr, 0 )
+	mChunkPacketID( 0 )
 {
 	mSocket = NULL;
 }
@@ -176,55 +176,66 @@ void NetworkMgr::UpdateBytesSentLastFrame()
 
 }
 
+// not complete, deprecated. can not calc slicedPacketCount.
 void NetworkMgr::RecombineSlicesToChunk(InputBitStream& refInputStream)
 {
-	uint8_t slicedPacketIndex;
-	uint8_t slicedPacketCount;
-	refInputStream.Read( slicedPacketCount );
-	refInputStream.Read( slicedPacketIndex );
+	//uint8_t slicedPacketIndex;
+	//uint8_t slicedPacketCount;
+	//ChunkPacketID recvedChunkPacketID;
 
-	if ( slicedPacketIndex == mNextExpectedSlicedPacketIndex )
-	{
-		++mNextExpectedSlicedPacketIndex;
+	//refInputStream.Read( recvedChunkPacketID );
+	//refInputStream.Read( slicedPacketCount );
+	//refInputStream.Read( slicedPacketIndex );
 
-		if ( !mIsReceivingSlicePacket )
-		{
-			mIsReceivingSlicePacket = true;
+	//if ( RealTimeSrvHelper::ChunkPacketIDGreaterThanOrEqual( recvedChunkPacketID, mChunkPacketID ) )
+	//{
+	//	mChunkPacketID = recvedChunkPacketID;
 
-			mChunkInputStream.Reinit( slicedPacketCount * 1024 * 8 );
+	//	if ( slicedPacketIndex == 0 )
+	//	{
+	//		++mNextExpectedSlicedPacketIndex;
+	//		mIsReceivingSlicePacket = true;
+	//		mChunkInputStream.Reinit( slicedPacketCount * 1024 * 8 );
+	//		refInputStream.RecombineTo( mChunkInputStream );
+	//	}
+	//	else if ( slicedPacketIndex == mNextExpectedSlicedPacketIndex )
+	//	{
+	//		++mNextExpectedSlicedPacketIndex;
+	//		refInputStream.RecombineTo( mChunkInputStream );
+	//	}
 
-			refInputStream.RecombineTo( mChunkInputStream );
-		}
-		else
-		{
-			refInputStream.RecombineTo( mChunkInputStream );
-		}
-	}
-
-	if ( mNextExpectedSlicedPacketIndex == slicedPacketCount )
-	{
-		mIsReceivingSlicePacket = false;
-		mNextExpectedSlicedPacketIndex = 0;
-		mChunkInputStream.ResetToCapacityFromBit( mChunkInputStream.GetRecombinePoint() );
-		refInputStream = mChunkInputStream;
-	}
+	//	if ( mNextExpectedSlicedPacketIndex == slicedPacketCount )
+	//	{
+	//		mIsReceivingSlicePacket = false;
+	//		mNextExpectedSlicedPacketIndex = 0;
+	//		mChunkInputStream.ResetToCapacityFromBit( mChunkInputStream.GetRecombinePoint() );
+	//		refInputStream = mChunkInputStream;
+	//	}
+	//}
 }
 
 void NetworkMgr::ProcessPacket( InputBitStream& inInputStream )
 {
-	bool isSliced;
-	inInputStream.Read( isSliced );
 
-	bool DeliveryNotificationManagerRet =
-		mDeliveryNotificationManager.ReadAndProcessState( inInputStream, isSliced );
+	//bool DeliveryNotificationManagerRet =
+	//	mDeliveryNotificationManager.ReadAndProcessState( inInputStream);
 		//true;
 
-	if (isSliced)
-	{
-		RecombineSlicesToChunk( inInputStream );
-	}
+	//bool isSliced;
+	//inInputStream.Read( isSliced );
 
-	if ( DeliveryNotificationManagerRet && !mIsReceivingSlicePacket )
+	//if (isSliced)
+	//{
+	//	RecombineSlicesToChunk( inInputStream );
+	//}
+
+	//if ( 
+		//DeliveryNotificationManagerRet 
+		//&& 
+		//( 
+		//	!isSliced || ( isSliced && !mIsReceivingSlicePacket ) 
+		//)
+	//)
 	{
 		uint32_t	packetType;
 		inInputStream.Read( packetType );
@@ -235,15 +246,15 @@ void NetworkMgr::ProcessPacket( InputBitStream& inInputStream )
 		{
 		case kResetCC:
 			HandleResetPacket();
-			break;
+			//break;
 		case kWelcomeCC:
 			HandleWelcomePacket( inInputStream );
 			break;
 		case kStateCC:
-			//if (mDeliveryNotificationManager.ReadAndProcessState( inInputStream ))
-			//{
-			HandleStatePacket( inInputStream );
-			//}
+			if ( mDeliveryNotificationManager.ReadAndProcessState( inInputStream ) )
+			{
+				HandleStatePacket( inInputStream );
+			}
 			break;
 		}
 	}
@@ -254,11 +265,12 @@ void NetworkMgr::SendOutgoingPackets()
 {
 	switch (mState)
 	{
-	case NCS_Resetting:
+	//case NCS_Resetting:
+	//	break;
 	case NCS_SayingHello:
 		UpdateSayingHello();
 		break;
-	case NCS_Reseted:
+	//case NCS_Reseted:
 	case NCS_Welcomed:
 		UpdateSendingInputPacket();
 		break;
@@ -274,7 +286,7 @@ void NetworkMgr::UpdateSayingHello()
 		SendHelloPacket();
 		mTimeOfLastHello = currentTime;
 
-		GEngine->AddOnScreenDebugMessage( -1, 1.f, FColor::Red,
+		GEngine->AddOnScreenDebugMessage( -1, 2.5f, FColor::Red,
 			FString::Printf( TEXT( "%s" ),
 				*FString( "Connecting ..." ) )
 		);
@@ -283,7 +295,7 @@ void NetworkMgr::UpdateSayingHello()
 
 void NetworkMgr::CheckForDisconnects()
 {
-	if (mState != NCS_Welcomed)
+	if (mState == NCS_SayingHello )
 	{
 		return;
 	}
@@ -337,8 +349,11 @@ void NetworkMgr::HandleWelcomePacket( InputBitStream& inInputStream )
 	{
 		if ( mState == NCS_Resetting )
 		{
-			mState = NCS_Reseted;
-			inInputStream.Read( mResetedPlayerId );
+			//mState = NCS_Reseted;
+			//inInputStream.Read( mResetedPlayerId );
+			ResetForNewGame();
+			mState = NCS_Welcomed;
+			inInputStream.Read( mPlayerId );
 		}
 		else
 		{
@@ -364,12 +379,12 @@ void NetworkMgr::HandleWelcomePacket( InputBitStream& inInputStream )
 
 void NetworkMgr::HandleStatePacket( InputBitStream& inInputStream )
 {
-	if ( mState == NCS_Reseted )
-	{
-		ResetForNewGame();
-		mState = NCS_Welcomed;
-		mPlayerId = mResetedPlayerId;
-	}
+	//if ( mState == NCS_Reseted )
+	//{
+	//	ResetForNewGame();
+	//	mState = NCS_Welcomed;
+	//	mPlayerId = mResetedPlayerId;
+	//}
 	if ( mState == NCS_Welcomed )
 	{
 		ReadLastMoveProcessedOnServerTimestamp( inInputStream );

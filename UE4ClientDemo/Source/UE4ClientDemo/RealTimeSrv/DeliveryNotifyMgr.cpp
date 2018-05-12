@@ -35,7 +35,7 @@ InFlightPacket* DeliveryNotifyMgr::WriteSequenceNumber( OutputBitStream& inOutpu
 
 	++mDispatchedPacketCount;
 
-	if ( mShouldProcessAcks ) 
+	if ( mShouldProcessAcks )
 	{
 		mInFlightPackets.emplace_back( sequenceNumber );
 
@@ -59,44 +59,24 @@ void DeliveryNotifyMgr::WriteAckData( OutputBitStream& inOutputStream )
 	}
 }
 
-bool DeliveryNotifyMgr::ProcessSequenceNumber( InputBitStream& inInputStream, bool inIsSliced /*= false*/ )
+bool DeliveryNotifyMgr::ProcessSequenceNumber( InputBitStream& inInputStream )
 {
 	PacketSequenceNumber	sequenceNumber;
 	inInputStream.Read( sequenceNumber );
-
-	if (inIsSliced)
+	if ( RealTimeSrvHelper::SequenceGreaterThanOrEqual( sequenceNumber, mNextExpectedSequenceNumber ) )
 	{
-		if ( sequenceNumber == mNextExpectedSequenceNumber )
+		mNextExpectedSequenceNumber = sequenceNumber + 1;
+
+		if ( mShouldSendAcks )
 		{
-			mNextExpectedSequenceNumber = sequenceNumber + 1;
-			if ( mShouldSendAcks )
-			{
-				AddPendingAck( sequenceNumber );
-			}
-			return true;
+			AddPendingAck( sequenceNumber );
 		}
-		else
-		{
-			return false;
-		}
+
+		return true;
 	}
 	else
 	{
-		if ( SequenceGreaterThanOrEqual( sequenceNumber, mNextExpectedSequenceNumber ) )
-		{
-			mNextExpectedSequenceNumber = sequenceNumber + 1;
-
-			if ( mShouldSendAcks )
-			{
-				AddPendingAck( sequenceNumber );
-			}
-
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+		return false;
 	}
 
 	return false;

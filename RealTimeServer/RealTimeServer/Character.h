@@ -49,7 +49,7 @@ public:
 
 	float GetMaxSpeed() const { return MaxSpeed; }
 
-	Vector3 GetActionPawnCameraRotation() const { return ActionPawnCameraRotation; }
+	Vector3 GetCameraRotation() const { return CameraRotation; }
 
 //public:
 protected:
@@ -79,7 +79,7 @@ protected:
 
 	bool				mIsShooting;
 
-	Vector3             ActionPawnCameraRotation;
+	Vector3             CameraRotation;
 
 protected:
 

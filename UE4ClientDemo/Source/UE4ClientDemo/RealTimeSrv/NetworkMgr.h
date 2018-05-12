@@ -92,7 +92,10 @@ private:
 	void	HandleWelcomePacket( InputBitStream& inInputStream );
 
 	void	UpdateBytesSentLastFrame();
+
+	// not complete, deprecated. can not calc slicedPacketCount.
 	void	RecombineSlicesToChunk( InputBitStream& inInputStream );
+
 	void	ReadIncomingPacketsIntoQueue();
 	void	ProcessQueuedPackets();
 	void	HandleStatePacket( InputBitStream& inInputStream );
@@ -137,6 +140,7 @@ private:
 	uint8_t						mNextExpectedSlicedPacketIndex;
 
 	InputBitStream				mChunkInputStream;
+	ChunkPacketID				mChunkPacketID;
 
 private:
 	class ReceivedPacket

@@ -5,7 +5,8 @@
 NetworkMgr::NetworkMgr() :
 	mDropPacketChance( 0.f ),
 	mSimulatedLatency( 0.f ),
-	mIsSimulatedJitter( false )
+	mIsSimulatedJitter( false ),
+	mChunkPacketID( 1 )
 {
 
 }
@@ -97,42 +98,83 @@ void NetworkMgr::ProcessQueuedPackets()
 	}
 }
 
+// not complete, deprecated.
+void NetworkMgr::RecombineSlicesToChunk( InputBitStream& refInputStream )
+{
+	//uint8_t slicedPacketIndex;
+	//uint8_t slicedPacketCount;
+	//refInputStream.Read( slicedPacketCount );
+	//refInputStream.Read( slicedPacketIndex );
 
+	//if ( slicedPacketIndex == mNextExpectedSlicedPacketIndex )
+	//{
+	//	++mNextExpectedSlicedPacketIndex;
+
+	//	if ( !mIsReceivingSlicePacket )
+	//	{
+	//		mIsReceivingSlicePacket = true;
+
+	//		mChunkInputStream.Reinit( slicedPacketCount * MAX_PACKET_BYTE_LENGTH * 8 );
+
+	//		refInputStream.RecombineTo( mChunkInputStream );
+	//	}
+	//	else
+	//	{
+	//		refInputStream.RecombineTo( mChunkInputStream );
+	//	}
+	//}
+
+	//if ( mNextExpectedSlicedPacketIndex == slicedPacketCount )
+	//{
+	//	mIsReceivingSlicePacket = false;
+	//	mNextExpectedSlicedPacketIndex = 0;
+	//	mChunkInputStream.ResetToCapacityFromBit( mChunkInputStream.GetRecombinePoint() );
+	//	refInputStream = mChunkInputStream;
+	//}
+}
+
+// not complete, deprecated. can not calc slicedPacketCount
 void NetworkMgr::ProcessOutcomingPacket(
 	OutputBitStream& inOutputStream,
 	shared_ptr< ClientProxy > inClientProxy,
 	TransmissionDataHandler* inTransmissionDataHandler)
 {
-	bool isReachTheEnd = false;
-	uint8_t slicedPacketIndex = 0;
+	//bool isReachTheEnd = false;
+	//uint8_t slicedPacketIndex = 0;
 
-	bool isSliced = false;
-	//LOG( "inOutputStream.GetByteLength() = %d", inOutputStream.GetByteLength() );
-	if ( inOutputStream.GetByteLength() > 1024 )
-	{
-		isSliced = true;
-	}
+	//uint32_t ByteLenInOutputSteam =
+	//	( ( ( inOutputStream.GetBitLength() + PACKET_SEQUENCE_NUMBER_BIT_WIDE + 1 ) + 7 ) >> 3 );
 
-	while ( !isReachTheEnd )
-	{
-		OutputBitStream slicedPacket;
+	//bool isSliced = false;
+	//if ( ByteLenInOutputSteam > MAX_PACKET_BYTE_LENGTH )
+	//{
+	//	isSliced = true;
+	//	++mChunkPacketID;
+	//}
 
-		slicedPacket.Write( isSliced );
-		InFlightPacket* ifp = 
-			inClientProxy->GetDeliveryNotificationManager().WriteState( slicedPacket );
+	//while ( !isReachTheEnd )
+	//{
+	//	OutputBitStream slicedPacket;
 
-		if ( isSliced )
-		{
-			uint8_t slicedPacketCount = ( inOutputStream.GetByteLength() + 1023 ) >> 10;
-			slicedPacket.Write( slicedPacketCount );
-			slicedPacket.Write( slicedPacketIndex++ );
-		}
-		isReachTheEnd = inOutputStream.SliceTo( slicedPacket );
-		//ifp->SetTransmissionData( 'RPLM', TransmissionDataPtr( inTransmissionDataHandler ) );
-		ifp->SetTransmissionData( 'RPLM', inTransmissionDataHandler );
+	//	InFlightPacket* ifp = 
+	//		inClientProxy->GetDeliveryNotificationManager().WriteState( slicedPacket );
 
-		SendPacket( slicedPacket, inClientProxy );
-	}
+	//	slicedPacket.Write( isSliced );
+
+	//	if ( isSliced )
+	//	{
+	//		slicedPacket.Write( mChunkPacketID );
+
+	//		uint8_t slicedPacketCount = ( ByteLenInOutputSteam + 1023 ) >> 10;
+	//		slicedPacket.Write( slicedPacketCount );
+	//		slicedPacket.Write( slicedPacketIndex++ );
+	//	}
+	//	isReachTheEnd = inOutputStream.SliceTo( slicedPacket );
+	//	//ifp->SetTransmissionData( 'RPLM', TransmissionDataPtr( inTransmissionDataHandler ) );
+	//	ifp->SetTransmissionData( 'RPLM', inTransmissionDataHandler );
+
+	//	SendPacket( slicedPacket, inClientProxy );
+	//}
 }
 
 #ifdef HAS_EPOLL
@@ -143,7 +185,7 @@ void NetworkMgr::WaitForIncomingPackets()
 
 void NetworkMgr::RecvIncomingPacketsIntoQueue( UDPSocketPtr inUDPSocketPtr, SocketAddrInterface infromAddress )
 {
-	char packetMem[1024];
+	char packetMem[MAX_PACKET_BYTE_LENGTH];
 	int packetSize = sizeof( packetMem );
 	InputBitStream inputStream( packetMem, packetSize * 8 );
 
@@ -201,7 +243,7 @@ void NetworkMgr::SendPacket( const OutputBitStream& inOutputStream, ClientProxyP
 
 void NetworkMgr::ReadIncomingPacketsIntoQueue()
 {
-	char packetMem[1024];
+	char packetMem[MAX_PACKET_BYTE_LENGTH];
 	int packetSize = sizeof( packetMem );
 	InputBitStream inputStream( packetMem, packetSize * 8 );
 	SocketAddrInterface fromAddress;

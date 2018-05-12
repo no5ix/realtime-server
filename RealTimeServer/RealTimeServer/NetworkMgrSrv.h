@@ -14,7 +14,7 @@ public:
 	void					SetStateDirty( int inNetworkId, uint32_t inDirtyState );
 	virtual void			CheckForDisconnects();
 	ClientProxyPtr			GetClientProxy( int inPlayerId ) const;
-	void SendResetPacket	( const SocketAddrInterface& inFromAddress );
+	void SendResetPacket ( ClientProxyPtr inClientProxy );
 
 private:
 	NetworkMgrSrv();

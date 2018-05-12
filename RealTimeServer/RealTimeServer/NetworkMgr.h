@@ -42,7 +42,11 @@ public:
 protected:
 
 	IntToGameObjectMap		mNetworkIdToGameObjectMap;
+
+	// not complete, deprecated. can not calc slicedPacketCount.
 	void ProcessOutcomingPacket( OutputBitStream& inOutputStream, shared_ptr< ClientProxy > inClientProxy, TransmissionDataHandler* inTransmissionDataHandler );
+	// not complete, deprecated.
+	void RecombineSlicesToChunk( InputBitStream& refInputStream );
 
 private:
 
@@ -93,6 +97,11 @@ private:
 
 protected:
 	UDPSocketPtr	mSocket;
+
+	bool						mIsReceivingSlicePacket;
+	uint8_t						mNextExpectedSlicedPacketIndex;
+	InputBitStream				mChunkInputStream;
+	uint32_t					mChunkPacketID;
 
 };
 

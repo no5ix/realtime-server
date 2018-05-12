@@ -3,16 +3,12 @@
 #pragma once
 #include <unordered_map>
 #include "TransmissionData.h"
+#include "RealTimeSrvHelper.h"
 /**
  * 
  */
 
 class DeliveryNotifyMgr;
-
-typedef uint16_t	PacketSequenceNumber;
-#define MAX_PACKET_SEQUENCE_NUMBER			(65535)
-#define HALF_MAX_PACKET_SEQUENCE_NUMBER     (32768)
-
 
 class InFlightPacket
 {

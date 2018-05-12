@@ -24,8 +24,8 @@ ARealTimeSrvPawn::ARealTimeSrvPawn( const FObjectInitializer& ObjectInitializer 
 	RealTimeSrvPawnCamera = ObjectInitializer.CreateDefaultSubobject<UCameraComponent>( this, TEXT( "RealTimeSrvPawnCamera" ) );
 	RealTimeSrvPawnCamera->SetupAttachment( RootComponent );
 
-	FTransform ActionPawnCameraTransform( FRotator::ZeroRotator, FVector( 0.f, 0.f, 70.f ) );
-	RealTimeSrvPawnCamera->SetRelativeTransform( ActionPawnCameraTransform );
+	FTransform CameraTransform( FRotator::ZeroRotator, FVector( 0.f, 0.f, 70.f ) );
+	RealTimeSrvPawnCamera->SetRelativeTransform( CameraTransform );
 
 	Mesh1P = ObjectInitializer.CreateDefaultSubobject<USkeletalMeshComponent>( this, TEXT( "PawnMesh1P" ) );
 	Mesh1P->SetupAttachment( RealTimeSrvPawnCamera );

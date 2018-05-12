@@ -85,7 +85,9 @@ void NetworkMgrSrv::HandlePacketFromNewClient( InputBitStream& inInputStream, co
 {
 	uint32_t	packetType;
 	inInputStream.Read( packetType );
-	if ( packetType == kHelloCC )
+	if ( packetType == kHelloCC 
+		|| packetType == kInputCC	
+	)
 	{
 		string name;
 		inInputStream.Read( name );	
@@ -102,7 +104,15 @@ void NetworkMgrSrv::HandlePacketFromNewClient( InputBitStream& inInputStream, co
 			newClientProxy->GetReplicationManagerServer().ReplicateCreate( pair.first, pair.second->GetAllStateMask() );
 		}
 
-		SendWelcomePacket( newClientProxy );
+		if ( packetType == kHelloCC )
+		{
+			SendWelcomePacket( newClientProxy );
+		}
+		else
+		{
+			// Server reset
+			SendResetPacket( newClientProxy );
+		}
 
 		LOG( "a new client at socket %s, named '%s' as PlayerID %d ", 
 			inFromAddress.ToString().c_str(), 
@@ -110,23 +120,32 @@ void NetworkMgrSrv::HandlePacketFromNewClient( InputBitStream& inInputStream, co
 			newClientProxy->GetPlayerId() 
 		);
 	}
-	else if ( packetType == kInputCC )
-	{
-		// Server reset, Deprecated!
-		//SendResetPacket( inFromAddress );
-	}
+	//else if ( packetType == kInputCC )
+	//{
+	//	// Server reset
+	//	SendResetPacket( inFromAddress );
+	//}
 	else
 	{
 		LOG( "Bad incoming packet from unknown client at socket %s - we're under attack!!", inFromAddress.ToString().c_str() );
 	}
 }
 
-// Deprecated
-void NetworkMgrSrv::SendResetPacket(const SocketAddrInterface& inFromAddress)
+void NetworkMgrSrv::SendResetPacket(ClientProxyPtr inClientProxy)
 {
 	OutputBitStream resetPacket;
 
 	resetPacket.Write( kResetCC );
+
+	resetPacket.Write( inClientProxy->GetPlayerId() );
+	resetPacket.Write( kTimeBetweenStatePackets );
+
+
+	TransmissionDataHandler* rmtd = new TransmissionDataHandler( &inClientProxy->GetReplicationManagerServer() );
+	inClientProxy->GetReplicationManagerServer().Write( resetPacket, rmtd );
+
+
+	SendPacket( resetPacket, inClientProxy );
 
 	//int sentByteCount = mSocket->SendTo( resetPacket.GetBufferPtr(), resetPacket.GetByteLength(), inFromAddress );
 }
@@ -139,13 +158,17 @@ void NetworkMgrSrv::SendWelcomePacket( ClientProxyPtr inClientProxy )
 	welcomePacket.Write( inClientProxy->GetPlayerId() );
 	welcomePacket.Write( kTimeBetweenStatePackets );
 
+	//InFlightPacket* ifp =
+		//inClientProxy->GetDeliveryNotificationManager().WriteState( welcomePacket );
+
 	TransmissionDataHandler* rmtd = new TransmissionDataHandler( &inClientProxy->GetReplicationManagerServer() );
 	inClientProxy->GetReplicationManagerServer().Write( welcomePacket, rmtd );
 
-	//SendPacket( welcomePacket, inClientProxy );
-	ProcessOutcomingPacket( welcomePacket, inClientProxy, rmtd );
+	//ifp->SetTransmissionData( 'RPLM', TransmissionDataPtr( rmtd ) );
+	//ifp->SetTransmissionData( 'RPLM', rmtd );
 
-
+	SendPacket( welcomePacket, inClientProxy );
+	//ProcessOutcomingPacket( welcomePacket, inClientProxy, rmtd );
 }
 
 void NetworkMgrSrv::RegisterGameObject( GameObjectPtr inGameObject )
@@ -223,16 +246,17 @@ void NetworkMgrSrv::SendStatePacketToClient( ClientProxyPtr inClientProxy )
 
 	statePacket.Write( kStateCC );
 
-	//InFlightPacket* ifp = inClientProxy->GetDeliveryNotificationManager().WriteState( statePacket );
+	InFlightPacket* ifp = inClientProxy->GetDeliveryNotificationManager().WriteState( statePacket );
 
 	WriteLastMoveTimestampIfDirty( statePacket, inClientProxy );
 
 	TransmissionDataHandler* rmtd = new TransmissionDataHandler( &inClientProxy->GetReplicationManagerServer() );
 	inClientProxy->GetReplicationManagerServer().Write( statePacket, rmtd );
-	//ifp->SetTransmissionData( 'RPLM', TransmissionDataPtr( rmtd ) );
+	ifp->SetTransmissionData( 'RPLM', TransmissionDataPtr( rmtd ) );
+	//ifp->SetTransmissionData( 'RPLM', rmtd );
 
-	//SendPacket( statePacket, inClientProxy );
-	ProcessOutcomingPacket( statePacket, inClientProxy, rmtd );
+	SendPacket( statePacket, inClientProxy );
+	//ProcessOutcomingPacket( statePacket, inClientProxy, rmtd );
 }
 
 void NetworkMgrSrv::WriteLastMoveTimestampIfDirty( OutputBitStream& inOutputStream, ClientProxyPtr inClientProxy )
@@ -244,8 +268,6 @@ void NetworkMgrSrv::WriteLastMoveTimestampIfDirty( OutputBitStream& inOutputStre
 	{
 		inOutputStream.Write( inClientProxy->GetUnprocessedMoveList().GetLastMoveTimestamp() );
 		inClientProxy->SetIsLastMoveTimestampDirty( false );
-
-		
 	}
 }
 

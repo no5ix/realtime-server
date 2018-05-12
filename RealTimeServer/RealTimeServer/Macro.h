@@ -18,22 +18,31 @@
 
 #ifdef _WIN32
 
-typedef signed char int8_t;
-typedef unsigned char uint8_t;
-typedef signed short int16_t;
-typedef unsigned short uint16_t;
-typedef signed int int32_t;
-typedef unsigned int uint32_t;
-typedef signed long long int64_t;
-typedef unsigned long long uint64_t;
+typedef signed char							int8_t;
+typedef unsigned char						uint8_t;
+typedef signed short						int16_t;
+typedef unsigned short						uint16_t;
+typedef signed int							int32_t;
+typedef unsigned int						uint32_t;
+typedef signed long long					int64_t;
+typedef unsigned long long					uint64_t;
 
-typedef unsigned int size_t;
+typedef unsigned int						size_t;
 
 #endif
 
 
 // PacketSequenceNumber
-typedef uint16_t	PacketSequenceNumber;
+typedef unsigned short						PacketSequenceNumber;
+#define PACKET_SEQUENCE_NUMBER_BIT_WIDE		(16)
 #define MAX_PACKET_SEQUENCE_NUMBER			(65535)
 #define HALF_MAX_PACKET_SEQUENCE_NUMBER     (32768)
 
+#define MAX_PACKET_BYTE_LENGTH				(888)
+
+
+
+typedef unsigned int													ChunkPacketID;
+#define CHUNK_PACKET_ID_BIT_WIDE										(32)
+#define MAX_CHUNK_PACKET_ID												(4294967296)
+#define HALF_MAX_CHUNK_PACKET_ID										(2147483648)

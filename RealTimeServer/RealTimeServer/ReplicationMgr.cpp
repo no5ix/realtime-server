@@ -38,19 +38,14 @@ void ReplicationMgr::Write( OutputBitStream& inOutputStream, TransmissionDataHan
 		if (replicationCommand.HasDirtyState())
 		{
 			int networkId = pair.first;
-
 			
 			inOutputStream.Write( networkId );
-
 			
 			ReplicationAction action = replicationCommand.GetAction();
 			inOutputStream.Write( action, 2 );
 
 			uint32_t writtenState = 0;
 			uint32_t dirtyState = replicationCommand.GetDirtyState();
-
-
-
 			
 			switch (action)
 			{
@@ -71,6 +66,10 @@ void ReplicationMgr::Write( OutputBitStream& inOutputStream, TransmissionDataHan
 
 			replicationCommand.ClearDirtyState( writtenState );
 
+			if (inOutputStream.GetByteLength() > MAX_PACKET_BYTE_LENGTH )
+			{
+				break;
+			}
 		}
 	}
 }

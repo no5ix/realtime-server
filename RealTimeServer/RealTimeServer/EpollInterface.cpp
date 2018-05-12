@@ -104,7 +104,7 @@ void EpollInterface::HandleInputEvent( SOCKET inFd )
 
 void EpollInterface::AcceptClient()
 {
-	char packetMem[1024];
+	char packetMem[MAX_PACKET_BYTE_LENGTH];
 	int packetSize = sizeof( packetMem );
 	SocketAddrInterface fromAddress;
 

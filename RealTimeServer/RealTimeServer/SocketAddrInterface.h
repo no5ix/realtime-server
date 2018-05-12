@@ -48,7 +48,7 @@ public:
 #else
 		inet_ntop( s->sin_family, &s->sin_addr, destinationBuffer, sizeof( destinationBuffer ) );
 #endif
-		return Utility::Sprintf( "%s:%d",
+		return RealTimeSrvHelper::Sprintf( "%s:%d",
 			destinationBuffer,
 			ntohs( s->sin_port ) );
 	}
