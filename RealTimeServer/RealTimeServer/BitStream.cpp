@@ -133,15 +133,6 @@ void OutputBitStream::ReallocBuffer( uint32_t inNewBitLength )
 	mBitCapacity = inNewBitLength;
 }
 
-
-void test1()
-{
-	OutputBitStream mbs;
-
-	mbs.WriteBits( 11, 5 );
-	mbs.WriteBits( 52, 6 );
-}
-
 void InputBitStream::ReadBits( uint8_t& outData, uint32_t inBitCount )
 {
 	uint32_t byteOffset = mBitHead >> 3;

@@ -32,7 +32,7 @@ DeliveryNotifyMgr::~DeliveryNotifyMgr()
 
 InFlightPacket* DeliveryNotifyMgr::WriteSequenceNumber( OutputBitStream& inOutputStream )
 {
-	PacketSequenceNumber sequenceNumber = mNextOutgoingSequenceNumber++;
+	PacketSN sequenceNumber = mNextOutgoingSequenceNumber++;
 	inOutputStream.Write( sequenceNumber );
 
 	++mDispatchedPacketCount;
@@ -52,11 +52,11 @@ InFlightPacket* DeliveryNotifyMgr::WriteSequenceNumber( OutputBitStream& inOutpu
 
 bool DeliveryNotifyMgr::ProcessSequenceNumber( InputBitStream& inInputStream )
 {
-	PacketSequenceNumber	sequenceNumber;
+	PacketSN	sequenceNumber;
 	inInputStream.Read( sequenceNumber );
 	if ( RealTimeSrvHelper::SequenceGreaterThanOrEqual( sequenceNumber, mNextExpectedSequenceNumber ) )
 	{
-		PacketSequenceNumber lastSN = mNextExpectedSequenceNumber - 1;
+		PacketSN lastSN = mNextExpectedSequenceNumber - 1;
 		mNextExpectedSequenceNumber = sequenceNumber + 1;
 
 		if ( mShouldSendAcks )

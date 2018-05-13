@@ -5,10 +5,7 @@ class Vector2;
 
 namespace RealTimeSrvMath
 {
-	//const float PI = 3.1415926535f;
 	float GetRandomFloat();
-
-	//Vector3 GetRandomVector( const Vector3& inMin, const Vector3& inMax );
 
 	bool	Is3DVectorEqual( const Vector3& inA, const Vector3& inB );
 	
@@ -61,11 +58,11 @@ namespace RealTimeSrvMath
 
 		x2 = number * 0.5F;
 		y = number;
-		i = *( long * )&y;                       // evil floating point bit level hacking（对浮点数的邪恶位元hack）
-		i = 0x5f3759df - ( i >> 1 );               // what the fuck?（这他妈的是怎么回事？）
+		i = *( long * )&y;                       
+		i = 0x5f3759df - ( i >> 1 );               
 		y = *( float * )&i;
-		y = y * ( threehalfs - ( x2 * y * y ) );   // 1st iteration （第一次迭代）
-													//      y  = y * ( threehalfs - ( x2 * y * y ) );   // 2nd iteration, this can be removed（第二次迭代，可以删除）
+		y = y * ( threehalfs - ( x2 * y * y ) );   
+													
 
 		return y;
 	}

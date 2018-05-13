@@ -30,8 +30,8 @@ private:
 	void				HandlePacketDeliverySuccess( const InFlightPacket& inFlightPacket );
 	
 	
-	PacketSequenceNumber	mNextOutgoingSequenceNumber;
-	PacketSequenceNumber	mNextExpectedSequenceNumber;
+	PacketSN	mNextOutgoingSequenceNumber;
+	PacketSN	mNextExpectedSequenceNumber;
 	
 	deque< InFlightPacket >	mInFlightPackets;
 	

@@ -30,8 +30,8 @@ private:
 
  	bool ProcessSequenceNumber( InputBitStream& inInputStream );
 
-	PacketSequenceNumber	mNextOutgoingSequenceNumber;
-	PacketSequenceNumber	mNextExpectedSequenceNumber;
+	PacketSN	mNextOutgoingSequenceNumber;
+	PacketSN	mNextExpectedSequenceNumber;
 
 	std::deque< InFlightPacket >	mInFlightPackets;
 

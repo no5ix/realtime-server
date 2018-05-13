@@ -14,9 +14,9 @@ class InFlightPacket
 {
 public:
 
-	InFlightPacket( PacketSequenceNumber inSequenceNumber );
+	InFlightPacket( PacketSN inSequenceNumber );
 
-	PacketSequenceNumber GetSequenceNumber() const { return mSequenceNumber; }
+	PacketSN GetSequenceNumber() const { return mSequenceNumber; }
 	float				 GetTimeDispatched() const { return mTimeDispatched; }
 
 	void 				 SetTransmissionData( int inKey, TransmissionDataPtr	inTransmissionData )
@@ -33,7 +33,7 @@ public:
 	void			HandleDeliverySuccess( DeliveryNotifyMgr* inDeliveryNotificationManager ) const;
 
 private:
-	PacketSequenceNumber	mSequenceNumber;
+	PacketSN	mSequenceNumber;
 	float			mTimeDispatched;
 
 	std::unordered_map< int, TransmissionDataPtr >	mTransmissionDataMap;

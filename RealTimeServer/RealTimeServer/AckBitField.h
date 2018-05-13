@@ -3,7 +3,7 @@
 class AckBitField
 {
 public:
-	AckBitField() : mLastAckSN( 0 ) 
+	AckBitField() : mLatestAckSN( 0 ) 
 	{
 		mAckBitField = ( char * )malloc( ACK_BIT_FIELD_BYTE_LEN );
 		memset( mAckBitField, 0, ACK_BIT_FIELD_BYTE_LEN );
@@ -17,15 +17,16 @@ public:
 		}
 	}
 
-	void					AddToAckBitField( PacketSequenceNumber inSequenceNumber, PacketSequenceNumber inLastSN );
+	void					AddToAckBitField( PacketSN inSequenceNumber, PacketSN inLastSN );
+	bool					IsSetCorrespondingAckBit( PacketSN inAckSN );
 
 	void					Write( OutputBitStream& inOutputStream );
 	void					Read( InputBitStream& inInputStream );
 
-	char *					GetAckBitField()	const { return mAckBitField; }
-	PacketSequenceNumber 	GetLastAckSN()		const { return mLastAckSN; }
+	char *					GetAckBitField()		const { return mAckBitField; }
+	PacketSN 				GetLatestAckSN()		const { return mLatestAckSN; }
 
 private:
 	char* 					mAckBitField;
-	PacketSequenceNumber	mLastAckSN;
+	PacketSN	mLatestAckSN;
 };

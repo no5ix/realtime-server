@@ -231,6 +231,11 @@ void NetworkMgr::RecvIncomingPacketsIntoQueue( UDPSocketPtr inUDPSocketPtr, Sock
 
 void NetworkMgr::SendPacket( const OutputBitStream& inOutputStream, ClientProxyPtr inClientProxy )
 {
+	if ( RealTimeSrvMath::GetRandomFloat() < mDropPacketChance )
+	{
+		return;
+	}
+
 	int sentByteCount = inClientProxy->GetUDPSocket()->Send( inOutputStream.GetBufferPtr(), inOutputStream.GetByteLength() );
 	if ( sentByteCount > 0 )
 	{
@@ -297,6 +302,11 @@ void NetworkMgr::ReadIncomingPacketsIntoQueue()
 
 void NetworkMgr::SendPacket( const OutputBitStream& inOutputStream, ClientProxyPtr inClientProxy )
 {
+	if ( RealTimeSrvMath::GetRandomFloat() < mDropPacketChance )
+	{
+		return;
+	}
+
 	int sentByteCount = mSocket->SendTo( inOutputStream.GetBufferPtr(), inOutputStream.GetByteLength(), inClientProxy->GetSocketAddress() );
 	if (sentByteCount > 0)
 	{

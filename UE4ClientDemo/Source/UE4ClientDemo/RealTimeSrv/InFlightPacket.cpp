@@ -6,7 +6,7 @@
 
 
 
-InFlightPacket::InFlightPacket( PacketSequenceNumber inSequenceNumber ) :
+InFlightPacket::InFlightPacket( PacketSN inSequenceNumber ) :
 	mSequenceNumber( inSequenceNumber ),
 	mTimeDispatched( RealTimeSrvTiming::sInstance->GetCurrentGameTime() )
 {

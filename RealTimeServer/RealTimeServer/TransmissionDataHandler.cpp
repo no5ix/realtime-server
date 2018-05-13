@@ -33,30 +33,13 @@ void TransmissionDataHandler::HandleDeliveryFailure( DeliveryNotifyMgr* inDelive
 	}
 }
 
-void TransmissionDataHandler::HandleDeliverySuccess( DeliveryNotifyMgr* inDeliveryNotificationManager ) const
-{
-	for ( const ReplicationTransmission& rt : mTransmissions )
-	{
-		switch ( rt.GetAction() )
-		{
-		case RA_Create:
-			HandleCreateDeliverySuccess( rt.GetNetworkId() );
-			break;
-		case RA_Destroy:
-			HandleDestroyDeliverySuccess( rt.GetNetworkId() );
-			break;
-		}
-	}
-}
-
-
-
-
 void TransmissionDataHandler::HandleCreateDeliveryFailure( int inNetworkId ) const
 {
 	GameObjectPtr gameObject = NetworkMgrSrv::sInst->GetGameObject( inNetworkId );
 	if ( gameObject )
 	{
+		LOG( "inNetworkId = %d", inNetworkId );
+
 		mReplicationManagerServer->ReplicateCreate( inNetworkId, gameObject->GetAllStateMask() );
 	}
 }
@@ -84,6 +67,22 @@ void TransmissionDataHandler::HandleUpdateStateDeliveryFailure( int inNetworkId,
 		if ( inState )
 		{
 			mReplicationManagerServer->SetStateDirty( inNetworkId, inState );
+		}
+	}
+}
+
+void TransmissionDataHandler::HandleDeliverySuccess( DeliveryNotifyMgr* inDeliveryNotificationManager ) const
+{
+	for ( const ReplicationTransmission& rt : mTransmissions )
+	{
+		switch ( rt.GetAction() )
+		{
+		case RA_Create:
+			HandleCreateDeliverySuccess( rt.GetNetworkId() );
+			break;
+		case RA_Destroy:
+			HandleDestroyDeliverySuccess( rt.GetNetworkId() );
+			break;
 		}
 	}
 }

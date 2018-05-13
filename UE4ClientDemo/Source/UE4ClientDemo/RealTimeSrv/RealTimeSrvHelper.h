@@ -7,7 +7,7 @@
 
 #define RTS_SHOW_DEBUG_SCREEN_MSG					false
 #define RTS_SHOW_DEBUG_OUTPUT_LOG					false
-#define RTS_SHOW_DEBUG_OUTPUT_LOG_EXTRA				false
+#define RTS_SHOW_DEBUG_OUTPUT_LOG_EXTRA				true
 
 
 //Current Class Name + Function Name where this is called!
@@ -81,7 +81,7 @@
 
 
 // PacketSequenceNumber
-typedef unsigned short													PacketSequenceNumber;
+typedef unsigned short													PacketSN;
 #define PACKET_SEQUENCE_NUMBER_BIT_WIDE									(16)
 #define MAX_PACKET_SEQUENCE_NUMBER										(65535)
 #define HALF_MAX_PACKET_SEQUENCE_NUMBER									(32768)
@@ -104,8 +104,8 @@ namespace RealTimeSrvHelper
 	void ScreenMsg( const FString& Msg, const float FloatValue );
 
 
-	bool SequenceGreaterThanOrEqual( PacketSequenceNumber s1, PacketSequenceNumber s2 );
-	bool SequenceGreaterThan( PacketSequenceNumber s1, PacketSequenceNumber s2 );
+	bool SequenceGreaterThanOrEqual( PacketSN s1, PacketSN s2 );
+	bool SequenceGreaterThan( PacketSN s1, PacketSN s2 );
 
 	bool ChunkPacketIDGreaterThanOrEqual( ChunkPacketID s1, ChunkPacketID s2 );
 	bool ChunkPacketIDGreaterThan( ChunkPacketID s1, ChunkPacketID s2 );

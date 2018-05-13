@@ -24,14 +24,14 @@ void RealTimeSrvHelper::ScreenMsg( const FString& Msg, const float Value )
 	GEngine->AddOnScreenDebugMessage( -1, 55.f, FColor::Red, FString::Printf( TEXT( "%s %f" ), *Msg, Value ) );
 }
 
-bool RealTimeSrvHelper::SequenceGreaterThanOrEqual( PacketSequenceNumber s1, PacketSequenceNumber s2 )
+bool RealTimeSrvHelper::SequenceGreaterThanOrEqual( PacketSN s1, PacketSN s2 )
 {
 	return ( ( s1 >= s2 ) && ( s1 - s2 <= HALF_MAX_PACKET_SEQUENCE_NUMBER ) ) ||
 		( ( s1 < s2 ) && ( s2 - s1 > HALF_MAX_PACKET_SEQUENCE_NUMBER ) );
 }
 
 
-bool RealTimeSrvHelper::SequenceGreaterThan( PacketSequenceNumber s1, PacketSequenceNumber s2 )
+bool RealTimeSrvHelper::SequenceGreaterThan( PacketSN s1, PacketSN s2 )
 {
 	return ( ( s1 > s2 ) && ( s1 - s2 <= HALF_MAX_PACKET_SEQUENCE_NUMBER ) ) ||
 		( ( s1 < s2 ) && ( s2 - s1 > HALF_MAX_PACKET_SEQUENCE_NUMBER ) );

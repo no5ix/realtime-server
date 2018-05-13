@@ -33,7 +33,7 @@ typedef unsigned int						size_t;
 
 
 // PacketSequenceNumber
-typedef unsigned short						PacketSequenceNumber;
+typedef unsigned short						PacketSN;
 #define PACKET_SEQUENCE_NUMBER_BIT_WIDE		(16)
 #define MAX_PACKET_SEQUENCE_NUMBER			(65535)
 #define HALF_MAX_PACKET_SEQUENCE_NUMBER     (32768)

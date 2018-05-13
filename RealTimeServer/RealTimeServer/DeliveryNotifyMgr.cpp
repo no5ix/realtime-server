@@ -39,7 +39,7 @@ DeliveryNotifyMgr::~DeliveryNotifyMgr()
 InFlightPacket* DeliveryNotifyMgr::WriteSequenceNumber( OutputBitStream& inOutputStream )
 {
 
-	PacketSequenceNumber sequenceNumber = mNextOutgoingSequenceNumber++;
+	PacketSN sequenceNumber = mNextOutgoingSequenceNumber++;
 	inOutputStream.Write( sequenceNumber );
 
 	++mDispatchedPacketCount;
@@ -58,12 +58,12 @@ InFlightPacket* DeliveryNotifyMgr::WriteSequenceNumber( OutputBitStream& inOutpu
 
 bool DeliveryNotifyMgr::ProcessSequenceNumber( InputBitStream& inInputStream )
 {
-	PacketSequenceNumber	sequenceNumber;
+	PacketSN	sequenceNumber;
 
 	inInputStream.Read( sequenceNumber );
 	if ( RealTimeSrvHelper::SequenceGreaterThanOrEqual( sequenceNumber, mNextExpectedSequenceNumber ) )
 	{
-		PacketSequenceNumber lastSN = mNextExpectedSequenceNumber - 1;
+		PacketSN lastSN = mNextExpectedSequenceNumber - 1;
 		mNextExpectedSequenceNumber = sequenceNumber + 1;
 
 		if ( mShouldSendAcks )
@@ -93,6 +93,8 @@ void DeliveryNotifyMgr::ProcessTimedOutPackets()
 
 		if ( nextInFlightPacket.GetTimeDispatched() < timeoutTime )
 		{
+			LOG( "DeliveryNotifyMgr::ProcessTimedOutPackets", 0 );
+			LOG( "nextInFlightPacket.GetSequenceNumber() = %d", nextInFlightPacket.GetSequenceNumber() );
 
 			HandlePacketDeliveryFailure( nextInFlightPacket );
 			mInFlightPackets.pop_front();
@@ -124,33 +126,56 @@ void DeliveryNotifyMgr::ProcessAckBitField( InputBitStream& inInputStream )
 	AckBitField recvedAckBitField;
 	recvedAckBitField.Read( inInputStream );
 
-	PacketSequenceNumber nextAckdSequenceNumber = 
-		recvedAckBitField.GetLastAckSN() - ( ACK_BIT_FIELD_BYTE_LEN << 3 );
+	PacketSN nextAckdSequenceNumber =
+		recvedAckBitField.GetLatestAckSN() - ( ACK_BIT_FIELD_BYTE_LEN << 3 );
 
-	uint32_t LastAckdSequenceNumber = recvedAckBitField.GetLastAckSN();
-	while ( 
-		RealTimeSrvHelper::SequenceGreaterThanOrEqual( LastAckdSequenceNumber, nextAckdSequenceNumber ) 
-		&& !mInFlightPackets.empty() 
-	)
+	uint32_t LastAckdSequenceNumber = recvedAckBitField.GetLatestAckSN();
+
+
+	while (
+		RealTimeSrvHelper::SequenceGreaterThanOrEqual( LastAckdSequenceNumber, nextAckdSequenceNumber )
+		//LastAckdSequenceNumber >= nextAckdSequenceNumber
+		&& !mInFlightPackets.empty()
+		)
 	{
 		const auto& nextInFlightPacket = mInFlightPackets.front();
+		PacketSN nextInFlightPacketSequenceNumber = nextInFlightPacket.GetSequenceNumber();
 
-		PacketSequenceNumber nextInFlightPacketSequenceNumber = nextInFlightPacket.GetSequenceNumber();
 		if ( RealTimeSrvHelper::SequenceGreaterThan( nextAckdSequenceNumber, nextInFlightPacketSequenceNumber ) )
 		{
 			auto copyOfInFlightPacket = nextInFlightPacket;
 			mInFlightPackets.pop_front();
 			HandlePacketDeliveryFailure( copyOfInFlightPacket );
+			LOG( "DeliveryNotifyMgr::RealTimeSrvHelper::SequenceGreaterThan( nextAckdSequenceNumber, nextInFlightPacketSequenceNumber )", 0 );
 		}
 		else if ( nextAckdSequenceNumber == nextInFlightPacketSequenceNumber )
 		{
-			HandlePacketDeliverySuccess( nextInFlightPacket );
-			mInFlightPackets.pop_front();
-			++nextAckdSequenceNumber;
+			if ( recvedAckBitField.IsSetCorrespondingAckBit( nextAckdSequenceNumber ) )
+			{
+				HandlePacketDeliverySuccess( nextInFlightPacket );
+				mInFlightPackets.pop_front();
+				++nextAckdSequenceNumber;
+				LOG( "DeliveryNotifyMgr::IsSetCorrespondingAckBit", 0 );
+			}
+			else
+			{
+				auto copyOfInFlightPacket = nextInFlightPacket;
+				mInFlightPackets.pop_front();
+				HandlePacketDeliveryFailure( copyOfInFlightPacket );
+				++nextAckdSequenceNumber;
+
+				LOG( "DeliveryNotifyMgr::nnnIsSetCorrespondingAckBit", 0 );
+			}
 		}
 		else if ( RealTimeSrvHelper::SequenceGreaterThan( nextInFlightPacketSequenceNumber, nextAckdSequenceNumber ) )
 		{
 			nextAckdSequenceNumber = nextInFlightPacketSequenceNumber;
+			LOG( "GreaterThan( nextInFlightPacketSequenceNumber, nextAc", 0 );
 		}
+
+
+		LOG( "LastAckdSequenceNumber = %d", LastAckdSequenceNumber );
+		LOG( "nextAckdSequenceNumber = %d", nextAckdSequenceNumber );
+
 	}
 }

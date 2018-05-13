@@ -11,8 +11,8 @@ namespace RealTimeSrvHelper
 	void	Log( const char* inFormat );
 	void	Log( const char* inFormat, ... );
 
-	bool	SequenceGreaterThanOrEqual( PacketSequenceNumber s1, PacketSequenceNumber s2 );
-	bool	SequenceGreaterThan( PacketSequenceNumber s1, PacketSequenceNumber s2 );
+	bool	SequenceGreaterThanOrEqual( PacketSN s1, PacketSN s2 );
+	bool	SequenceGreaterThan( PacketSN s1, PacketSN s2 );
 
 	bool ChunkPacketIDGreaterThanOrEqual( ChunkPacketID s1, ChunkPacketID s2 );
 	bool ChunkPacketIDGreaterThan( ChunkPacketID s1, ChunkPacketID s2 );
