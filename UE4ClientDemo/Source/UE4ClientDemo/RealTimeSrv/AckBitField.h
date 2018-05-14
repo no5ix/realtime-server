@@ -21,6 +21,8 @@ public:
 	}
 
 	void					AddToAckBitField( PacketSN inSequenceNumber, PacketSN inLastSN );
+	void					DoAddToAckBitField( uint32_t inDifference );
+	void					AddLastBit( uint32_t inTotalDifference );
 
 	void					Write( OutputBitStream& inOutputStream );
 	void					Read( InputBitStream& inInputStream );

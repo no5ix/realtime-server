@@ -75,6 +75,11 @@ public:
 		}
 	}
 
+	//void Write( const PacketSN& inPacketSN )
+	//{
+	//	inPacketSN.Write( *this );
+	//}
+
 	void		ReallocBuffer( uint32_t inNewBitCapacity );
 
 private:
@@ -200,6 +205,11 @@ public:
 	}
 
 	void Read( Vector3& inVector );
+
+	//void Read( PacketSN& inPacketSN )
+	//{
+	//	inPacketSN.Read( *this );
+	//}
 
 private:
 	char*		mBuffer;

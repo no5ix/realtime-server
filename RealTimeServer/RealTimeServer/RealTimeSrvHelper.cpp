@@ -70,6 +70,7 @@ bool RealTimeSrvHelper::SequenceGreaterThanOrEqual( PacketSN s1, PacketSN s2 )
 {
 	return ( ( s1 >= s2 ) && ( s1 - s2 <= HALF_MAX_PACKET_SEQUENCE_NUMBER ) ) ||
 		( ( s1 < s2 ) && ( s2 - s1 > HALF_MAX_PACKET_SEQUENCE_NUMBER ) );
+	//return s1 >= s2;
 }
 
 
@@ -77,6 +78,7 @@ bool RealTimeSrvHelper::SequenceGreaterThan( PacketSN s1, PacketSN s2 )
 {
 	return ( ( s1 > s2 ) && ( s1 - s2 <= HALF_MAX_PACKET_SEQUENCE_NUMBER ) ) ||
 		( ( s1 < s2 ) && ( s2 - s1 > HALF_MAX_PACKET_SEQUENCE_NUMBER ) );
+	//return s1 > s2;
 }
 
 bool RealTimeSrvHelper::ChunkPacketIDGreaterThanOrEqual( ChunkPacketID s1, ChunkPacketID s2 )

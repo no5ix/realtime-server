@@ -18,6 +18,9 @@ public:
 	}
 
 	void					AddToAckBitField( PacketSN inSequenceNumber, PacketSN inLastSN );
+	void					DoAddToAckBitField( uint32_t inDifference );
+	void					AddLastBit( uint32_t inTotalDifference );
+
 	bool					IsSetCorrespondingAckBit( PacketSN inAckSN );
 
 	void					Write( OutputBitStream& inOutputStream );
@@ -28,5 +31,5 @@ public:
 
 private:
 	char* 					mAckBitField;
-	PacketSN	mLatestAckSN;
+	PacketSN				mLatestAckSN;
 };

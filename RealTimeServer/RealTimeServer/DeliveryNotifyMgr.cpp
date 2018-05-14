@@ -2,7 +2,7 @@
 
 namespace
 {
-	const float kDelayBeforeAckTimeout = 0.7f;
+	const float kDelayBeforeAckTimeout = 0.6f;
 }
 
 DeliveryNotifyMgr::DeliveryNotifyMgr( bool inShouldSendAcks, bool inShouldProcessAcks ) :
@@ -62,6 +62,7 @@ bool DeliveryNotifyMgr::ProcessSequenceNumber( InputBitStream& inInputStream )
 
 	inInputStream.Read( sequenceNumber );
 	if ( RealTimeSrvHelper::SequenceGreaterThanOrEqual( sequenceNumber, mNextExpectedSequenceNumber ) )
+	//if ( sequenceNumber >= mNextExpectedSequenceNumber )
 	{
 		PacketSN lastSN = mNextExpectedSequenceNumber - 1;
 		mNextExpectedSequenceNumber = sequenceNumber + 1;
@@ -126,35 +127,37 @@ void DeliveryNotifyMgr::ProcessAckBitField( InputBitStream& inInputStream )
 	AckBitField recvedAckBitField;
 	recvedAckBitField.Read( inInputStream );
 
-	PacketSN nextAckdSequenceNumber =
+	PacketSN nextAckedSN =
 		recvedAckBitField.GetLatestAckSN() - ( ACK_BIT_FIELD_BYTE_LEN << 3 );
 
-	uint32_t LastAckdSequenceNumber = recvedAckBitField.GetLatestAckSN();
+	PacketSN LastAckedSN = recvedAckBitField.GetLatestAckSN();
 
 
 	while (
-		RealTimeSrvHelper::SequenceGreaterThanOrEqual( LastAckdSequenceNumber, nextAckdSequenceNumber )
-		//LastAckdSequenceNumber >= nextAckdSequenceNumber
+		RealTimeSrvHelper::SequenceGreaterThanOrEqual( LastAckedSN, nextAckedSN )
+		//LastAckedSN >= nextAckdSequenceNumber
 		&& !mInFlightPackets.empty()
 		)
 	{
 		const auto& nextInFlightPacket = mInFlightPackets.front();
-		PacketSN nextInFlightPacketSequenceNumber = nextInFlightPacket.GetSequenceNumber();
+		PacketSN nextInFlightPacketSN = nextInFlightPacket.GetSequenceNumber();
 
-		if ( RealTimeSrvHelper::SequenceGreaterThan( nextAckdSequenceNumber, nextInFlightPacketSequenceNumber ) )
+		if ( RealTimeSrvHelper::SequenceGreaterThan( nextAckedSN, nextInFlightPacketSN ) )
+		//if ( nextAckedSN > nextInFlightPacketSN )
 		{
 			auto copyOfInFlightPacket = nextInFlightPacket;
 			mInFlightPackets.pop_front();
 			HandlePacketDeliveryFailure( copyOfInFlightPacket );
-			LOG( "DeliveryNotifyMgr::RealTimeSrvHelper::SequenceGreaterThan( nextAckdSequenceNumber, nextInFlightPacketSequenceNumber )", 0 );
+			LOG( "DeliveryNotifyMgr::RealTimeSrvHelper::SequenceGreaterThan( nextAckedSN, nextInFlightPacketSN )", 0 );
 		}
-		else if ( nextAckdSequenceNumber == nextInFlightPacketSequenceNumber )
+		else if ( nextAckedSN == nextInFlightPacketSN )
 		{
-			if ( recvedAckBitField.IsSetCorrespondingAckBit( nextAckdSequenceNumber ) )
+			if ( nextAckedSN == LastAckedSN
+				|| recvedAckBitField.IsSetCorrespondingAckBit( nextAckedSN ) )
 			{
 				HandlePacketDeliverySuccess( nextInFlightPacket );
 				mInFlightPackets.pop_front();
-				++nextAckdSequenceNumber;
+				++nextAckedSN;
 				LOG( "DeliveryNotifyMgr::IsSetCorrespondingAckBit", 0 );
 			}
 			else
@@ -162,20 +165,21 @@ void DeliveryNotifyMgr::ProcessAckBitField( InputBitStream& inInputStream )
 				auto copyOfInFlightPacket = nextInFlightPacket;
 				mInFlightPackets.pop_front();
 				HandlePacketDeliveryFailure( copyOfInFlightPacket );
-				++nextAckdSequenceNumber;
+				++nextAckedSN;
 
 				LOG( "DeliveryNotifyMgr::nnnIsSetCorrespondingAckBit", 0 );
 			}
 		}
-		else if ( RealTimeSrvHelper::SequenceGreaterThan( nextInFlightPacketSequenceNumber, nextAckdSequenceNumber ) )
+		else if ( RealTimeSrvHelper::SequenceGreaterThan( nextInFlightPacketSN, nextAckedSN ) )
+		//else if ( nextAckedSN < nextInFlightPacketSN )
 		{
-			nextAckdSequenceNumber = nextInFlightPacketSequenceNumber;
-			LOG( "GreaterThan( nextInFlightPacketSequenceNumber, nextAc", 0 );
+			nextAckedSN = nextInFlightPacketSN;
+			LOG( "GreaterThan( nextInFlightPacketSN, nextAc", 0 );
 		}
 
 
-		LOG( "LastAckdSequenceNumber = %d", LastAckdSequenceNumber );
-		LOG( "nextAckdSequenceNumber = %d", nextAckdSequenceNumber );
+		LOG( "LastAckedSN = %d", LastAckedSN );
+		LOG( "nextAckedSN = %d", nextAckedSN );
 
 	}
 }
