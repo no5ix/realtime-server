@@ -24,6 +24,8 @@ public:
 	void	SetIsLastMoveTimestampDirty( bool inIsDirty ) { mIsLastMoveTimestampDirty = inIsDirty; }
 	bool	IsLastMoveTimestampDirty()						const { return mIsLastMoveTimestampDirty; }
 
+	bool	GetRecvingServerResetFlag() const { return mRecvingServerResetFlag; }
+	void	SetRecvingServerResetFlag(bool inRecvingServerResetFlag)		 { mRecvingServerResetFlag = inRecvingServerResetFlag; }
 
 private:
 
@@ -44,6 +46,7 @@ private:
 	ActionList		mUnprocessedMoveList;
 	bool			mIsLastMoveTimestampDirty;
 
+	bool			mRecvingServerResetFlag;
 
 
 };

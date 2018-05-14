@@ -3,6 +3,7 @@
 
 #include "RealTimeSrvEntityFactory.h"
 #include "RealTimeSrvWorld.h"
+#include "RealTimeSrvHelper.h"
 
 std::unique_ptr<RealTimeSrvEntityFactory> RealTimeSrvEntityFactory::sInstance;
 
@@ -39,6 +40,7 @@ RealTimeSrvEntityPtr RealTimeSrvEntityFactory::CreateGameObject( uint32_t inFour
 		break;
 	}
 
+	R_LOG_N_EXTRA( "inFourCCName", inFourCCName );
 	return RealTimeSrvEntityPtr();
 }
 

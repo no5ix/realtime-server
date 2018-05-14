@@ -15,8 +15,9 @@ public:
 	DeliveryNotifyMgr( bool inShouldSendAcks, bool inShouldProcessAcks );
 	~DeliveryNotifyMgr();
 
+	void						Reset();
 	inline	InFlightPacket*		WriteState( OutputBitStream& inOutputStream );
- 	inline bool ReadAndProcessState( InputBitStream& inInputStream );
+	inline bool					ReadAndProcessState( InputBitStream& inInputStream );
 
 	uint32_t			GetDroppedPacketCount()		const { return mDroppedPacketCount; }
 	uint32_t			GetDeliveredPacketCount()	const { return mDeliveredPacketCount; }
@@ -28,7 +29,7 @@ private:
 
 	InFlightPacket*		WriteSequenceNumber( OutputBitStream& inOutputStream );
 
- 	bool ProcessSequenceNumber( InputBitStream& inInputStream );
+	bool ProcessSequenceNumber( InputBitStream& inInputStream );
 
 	PacketSN	mNextOutgoingSequenceNumber;
 	PacketSN	mNextExpectedSequenceNumber;

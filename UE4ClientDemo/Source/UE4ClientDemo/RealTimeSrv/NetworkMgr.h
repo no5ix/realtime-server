@@ -33,6 +33,7 @@ public:
 	static const uint32_t	kHelloCC	= 'HELO';
 	static const uint32_t	kWelcomeCC	= 'WLCM';
 	static const uint32_t	kResetCC	= 'RSET';
+	static const uint32_t	kResetedCC	= 'RSTD';
 	static const uint32_t	kStateCC	= 'STAT';
 	static const uint32_t	kInputCC	= 'INPT';
 
@@ -74,6 +75,11 @@ public:
 	void	CheckForDisconnects();
 	void	ResetForNewGame();
 
+//	bool	GetRecvingServerResetFlag() const { return mRecvingServerResetFlag; }
+//	bool	SetRecvingServerResetFlag( bool inRecvingServerResetFlag ) { mRecvingServerResetFlag = inRecvingServerResetFlag; }
+//
+//private:
+//	bool			mRecvingServerResetFlag;
 
 protected:
 

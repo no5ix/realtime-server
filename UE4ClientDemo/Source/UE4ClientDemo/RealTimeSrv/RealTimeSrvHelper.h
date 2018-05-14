@@ -7,7 +7,7 @@
 
 #define RTS_SHOW_DEBUG_SCREEN_MSG					false
 #define RTS_SHOW_DEBUG_OUTPUT_LOG					false
-#define RTS_SHOW_DEBUG_OUTPUT_LOG_EXTRA				true
+#define RTS_SHOW_DEBUG_OUTPUT_LOG_EXTRA				false
 
 
 //Current Class Name + Function Name where this is called!

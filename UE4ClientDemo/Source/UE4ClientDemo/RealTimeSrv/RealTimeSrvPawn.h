@@ -83,6 +83,14 @@ public:
 
 public:
 
+	void		SetPlayerId( uint32_t inPlayerId ) { mPlayerId = inPlayerId; }
+	bool		IsAlreadySetPlayerID() { return mPlayerIDAlreadySetFlag ? true : false; }
+
+	UFUNCTION( BlueprintCallable, Category = "RealTimeSrv" )
+		int	GetPlayerId() const { return mPlayerId; }
+
+public:
+
 	FORCEINLINE class USkeletalMeshComponent* GetMesh1P() const { return Mesh1P; }
 
 	FORCEINLINE class USkeletalMeshComponent* GetMesh3P() const { return Mesh3P; }
@@ -101,6 +109,10 @@ private:
 
 	UPROPERTY( VisibleDefaultsOnly, Category = Mesh )
 		USkeletalMeshComponent* Mesh3P;
+
+protected:
+	uint32_t			mPlayerId;
+	bool				mPlayerIDAlreadySetFlag;
 
 private:
 

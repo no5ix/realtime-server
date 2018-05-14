@@ -3,7 +3,6 @@ class NetworkMgrSrv : public NetworkMgr
 public:
 	static NetworkMgrSrv*	sInst;
 
-
 	static bool				StaticInit( uint16_t inPort );
 	virtual void			ProcessPacket( InputBitStream& inInputStream, const SocketAddrInterface& inFromAddress, const UDPSocketPtr& inUDPSocket  ) override;
 	virtual void			HandleConnectionReset( const SocketAddrInterface& inFromAddress ) override;
@@ -14,7 +13,9 @@ public:
 	void					SetStateDirty( int inNetworkId, uint32_t inDirtyState );
 	virtual void			CheckForDisconnects();
 	ClientProxyPtr			GetClientProxy( int inPlayerId ) const;
-	void SendResetPacket ( ClientProxyPtr inClientProxy );
+
+	void					SendResetPacket ( ClientProxyPtr inClientProxy );
+	uint32_t				HandleServerReset( ClientProxyPtr inClientProxy, InputBitStream& inInputStream );
 
 private:
 	NetworkMgrSrv();

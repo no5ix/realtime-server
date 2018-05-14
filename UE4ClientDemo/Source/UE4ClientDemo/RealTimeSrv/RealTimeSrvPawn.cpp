@@ -53,6 +53,7 @@ ARealTimeSrvPawn::ARealTimeSrvPawn( const FObjectInitializer& ObjectInitializer 
 	PrimaryActorTick.bCanEverTick = true;
 
 	mPlayerId = 0;
+	mPlayerIDAlreadySetFlag = false;
 
 	BaseTurnRate = 2.f;
 	BaseLookUpRate = 2.f;
@@ -646,25 +647,34 @@ void ARealTimeSrvPawn::Read( InputBitStream& inInputStream )
 	{
 		uint32_t playerId;
 		inInputStream.Read( playerId );
-		SetPlayerId( playerId );
-		readState |= ECRS_PlayerId;
-
-		R_LOG_M( "READ!!! GetPlayerId() = %d", GetPlayerId() );
-
-		if ( GetPlayerId() == NetworkMgr::sInstance->GetPlayerId() )
+		if ( !IsAlreadySetPlayerID() )
 		{
-			APlayerController* const FirstPC =  UGameplayStatics::GetPlayerController( GetWorld(), 0 );
-			if ( FirstPC != nullptr )
+			SetPlayerId( playerId );
+			mPlayerIDAlreadySetFlag = true;
+			readState |= ECRS_PlayerId;
+
+			R_LOG_M( "READ!!! GetPlayerId() = %d", GetPlayerId() );
+
+			if ( GetPlayerId() == NetworkMgr::sInstance->GetPlayerId() )
 			{
-				FirstPC->Possess( this );
+				APlayerController* const FirstPC = UGameplayStatics::GetPlayerController( GetWorld(), 0 );
+				if ( FirstPC != nullptr )
+				{
+					FirstPC->Possess( this );
+
+					GEngine->AddOnScreenDebugMessage( -1, 6.f, FColor::Red,
+						FString::Printf( TEXT( "%s    %d" ),
+							*FString( "Welcome on client as PlayerID     = " ), mPlayerId )
+					);
+				}
 			}
-		}
-		else
-		{
-			mIsTimeToStartSimulateMovementForRemotePawn = 
-				NetworkMgr::kTimeBufferStatePackets +
-				RealTimeSrvTiming::sInstance->GetCurrentGameTime() -
-				NetworkMgr::kTimeBetweenStatePackets;
+			else
+			{
+				mIsTimeToStartSimulateMovementForRemotePawn =
+					NetworkMgr::kTimeBufferStatePackets +
+					RealTimeSrvTiming::sInstance->GetCurrentGameTime() -
+					NetworkMgr::kTimeBetweenStatePackets;
+			}
 		}
 	}
 
@@ -733,13 +743,15 @@ void ARealTimeSrvPawn::Read( InputBitStream& inInputStream )
 		readState |= ECRS_Pose;
 	}
 
-	if ( GetPlayerId() == NetworkMgr::sInstance->GetPlayerId() )
+	if ( ( readState & ECRS_PlayerId ) != 0 )
 	{
-
-		if ( ( readState & ECRS_PlayerId ) == 0 )
+		InitAfterCreate();
+	}
+	else
+	{
+		if ( GetPlayerId() == NetworkMgr::sInstance->GetPlayerId() )
 		{
 			ReplayForLocalPawn( readState );
-
 			if ( oldLocation != GetLocation() )
 			{
 				bIsPlayerLocationOutOfSync = true;
@@ -747,27 +759,15 @@ void ARealTimeSrvPawn::Read( InputBitStream& inInputStream )
 		}
 		else
 		{
-			InitAfterCreate();
-		}
-	}
-	else
-	{
-
-		if ( ( readState & ECRS_PlayerId ) != 0 )
-		{
-			InitAfterCreate();
-		}
-		else
-		{
 			mStateBuffer.AddStateData( mRotation, mVelocity, mLocation, mCameraRotation );
-		}
 
-		R_LOG_1_EXTRA( "===================mStateBuffer.AddStateData=======start===================" );
-		R_LOG_M_EXTRA( "mStateBuffer.AddStateData.mLocation = %f, %f, %f", mLocation.X, mLocation.Y, mLocation.Z );
-		R_LOG_M_EXTRA( "mStateBuffer.AddStateData.mVelocity = %f, %f, %f", mVelocity.X, mVelocity.Y, mVelocity.Z );
-		R_LOG_M_EXTRA( "mRotation = %f, %f, %f", mRotation.Pitch, mRotation.Yaw, mRotation.Roll );
-		R_LOG_M_EXTRA( "mCameraRotation = %f, %f, %f", mCameraRotation.Pitch, mCameraRotation.Yaw, mCameraRotation.Roll );
-		R_LOG_1_EXTRA( "======end=============mStateBuffer.AddStateData==========================" );
+			R_LOG_1_EXTRA( "===================mStateBuffer.AddStateData=======start===================" );
+			R_LOG_M_EXTRA( "mStateBuffer.AddStateData.mLocation = %f, %f, %f", mLocation.X, mLocation.Y, mLocation.Z );
+			R_LOG_M_EXTRA( "mStateBuffer.AddStateData.mVelocity = %f, %f, %f", mVelocity.X, mVelocity.Y, mVelocity.Z );
+			R_LOG_M_EXTRA( "mRotation = %f, %f, %f", mRotation.Pitch, mRotation.Yaw, mRotation.Roll );
+			R_LOG_M_EXTRA( "mCameraRotation = %f, %f, %f", mCameraRotation.Pitch, mCameraRotation.Yaw, mCameraRotation.Roll );
+			R_LOG_1_EXTRA( "======end=============mStateBuffer.AddStateData==========================" );
+		}
 	}
 
 }

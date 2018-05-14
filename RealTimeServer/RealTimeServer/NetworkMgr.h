@@ -6,9 +6,11 @@ class TransmissionDataHandler;
 class NetworkMgr
 {
 public:
+	static const uint32_t	kNullCC = 0;
 	static const uint32_t	kHelloCC = 'HELO';
 	static const uint32_t	kWelcomeCC = 'WLCM';
 	static const uint32_t	kResetCC = 'RSET';
+	static const uint32_t	kResetedCC = 'RSTD';
 	static const uint32_t	kStateCC = 'STAT';
 	static const uint32_t	kInputCC = 'INPT';
 	static const int		kMaxPacketsPerFrameCount = 10;

@@ -29,6 +29,20 @@ DeliveryNotifyMgr::~DeliveryNotifyMgr()
 	}
 }
 
+void DeliveryNotifyMgr::Reset()
+{
+	if ( mShouldSendAcks && mAckBitField )
+	{
+		delete mAckBitField;
+		mAckBitField = new AckBitField();
+	}
+	mNextOutgoingSequenceNumber = 0;
+	mNextExpectedSequenceNumber = 0;
+	mDeliveredPacketCount = 0;
+	mDroppedPacketCount = 0;
+	mDispatchedPacketCount = 0;
+	mInFlightPackets.clear();
+}
 
 InFlightPacket* DeliveryNotifyMgr::WriteSequenceNumber( OutputBitStream& inOutputStream )
 {
@@ -61,7 +75,6 @@ bool DeliveryNotifyMgr::ProcessSequenceNumber( InputBitStream& inInputStream )
 
 		if ( mShouldSendAcks )
 		{
-			//AddPendingAck( sequenceNumber );
 			mAckBitField->AddToAckBitField( sequenceNumber, lastSN );
 		}
 

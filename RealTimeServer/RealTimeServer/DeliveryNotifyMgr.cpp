@@ -94,8 +94,8 @@ void DeliveryNotifyMgr::ProcessTimedOutPackets()
 
 		if ( nextInFlightPacket.GetTimeDispatched() < timeoutTime )
 		{
-			LOG( "DeliveryNotifyMgr::ProcessTimedOutPackets", 0 );
-			LOG( "nextInFlightPacket.GetSequenceNumber() = %d", nextInFlightPacket.GetSequenceNumber() );
+			//LOG( "DeliveryNotifyMgr::ProcessTimedOutPackets", 0 );
+			//LOG( "nextInFlightPacket.GetSequenceNumber() = %d", nextInFlightPacket.GetSequenceNumber() );
 
 			HandlePacketDeliveryFailure( nextInFlightPacket );
 			mInFlightPackets.pop_front();
@@ -148,7 +148,7 @@ void DeliveryNotifyMgr::ProcessAckBitField( InputBitStream& inInputStream )
 			auto copyOfInFlightPacket = nextInFlightPacket;
 			mInFlightPackets.pop_front();
 			HandlePacketDeliveryFailure( copyOfInFlightPacket );
-			LOG( "DeliveryNotifyMgr::RealTimeSrvHelper::SequenceGreaterThan( nextAckedSN, nextInFlightPacketSN )", 0 );
+			// LOG( "DeliveryNotifyMgr::RealTimeSrvHelper::SequenceGreaterThan( nextAckedSN, nextInFlightPacketSN )", 0 );
 		}
 		else if ( nextAckedSN == nextInFlightPacketSN )
 		{
@@ -158,7 +158,7 @@ void DeliveryNotifyMgr::ProcessAckBitField( InputBitStream& inInputStream )
 				HandlePacketDeliverySuccess( nextInFlightPacket );
 				mInFlightPackets.pop_front();
 				++nextAckedSN;
-				LOG( "DeliveryNotifyMgr::IsSetCorrespondingAckBit", 0 );
+				// LOG( "DeliveryNotifyMgr::IsSetCorrespondingAckBit", 0 );
 			}
 			else
 			{
@@ -167,19 +167,19 @@ void DeliveryNotifyMgr::ProcessAckBitField( InputBitStream& inInputStream )
 				HandlePacketDeliveryFailure( copyOfInFlightPacket );
 				++nextAckedSN;
 
-				LOG( "DeliveryNotifyMgr::nnnIsSetCorrespondingAckBit", 0 );
+				// LOG( "DeliveryNotifyMgr::nnnIsSetCorrespondingAckBit", 0 );
 			}
 		}
 		else if ( RealTimeSrvHelper::SequenceGreaterThan( nextInFlightPacketSN, nextAckedSN ) )
 		//else if ( nextAckedSN < nextInFlightPacketSN )
 		{
 			nextAckedSN = nextInFlightPacketSN;
-			LOG( "GreaterThan( nextInFlightPacketSN, nextAc", 0 );
+			// LOG( "GreaterThan( nextInFlightPacketSN, nextAc", 0 );
 		}
 
 
-		LOG( "LastAckedSN = %d", LastAckedSN );
-		LOG( "nextAckedSN = %d", nextAckedSN );
+		// LOG( "LastAckedSN = %d", LastAckedSN );
+		// LOG( "nextAckedSN = %d", nextAckedSN );
 
 	}
 }

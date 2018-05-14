@@ -97,7 +97,7 @@ void NetworkMgr::SendHelloPacket()
 	OutputBitStream helloPacket;
 
 	helloPacket.Write( kHelloCC );
-	helloPacket.Write( std::string( TCHAR_TO_UTF8( *mPlayerName ) ) );
+	//helloPacket.Write( std::string( TCHAR_TO_UTF8( *mPlayerName ) ) );
 
 	SendPacket( helloPacket );
 	
@@ -238,26 +238,30 @@ void NetworkMgr::ProcessPacket( InputBitStream& inInputStream )
 		//)
 	//)
 	{
-		uint32_t	packetType;
-		inInputStream.Read( packetType );
 
 		UpdateLastPacketFromSrvTime();
-
-		switch ( packetType )
-		{
-		case kResetCC:
-			HandleResetPacket();
-			//break;
-		case kWelcomeCC:
-			HandleWelcomePacket( inInputStream );
-			break;
-		case kStateCC:
-			if ( mDeliveryNotificationManager.ReadAndProcessState( inInputStream ) )
+		//if ( mDeliveryNotificationManager.ReadAndProcessState( inInputStream ) )
+		//{
+			uint32_t	packetType;
+			inInputStream.Read( packetType );
+			switch ( packetType )
 			{
-				HandleStatePacket( inInputStream );
+			case kResetCC:
+				HandleResetPacket();
+			case kWelcomeCC:
+				if ( mDeliveryNotificationManager.ReadAndProcessState( inInputStream ) )
+				{
+					HandleWelcomePacket( inInputStream );
+				}
+				break;
+			case kStateCC:
+				if ( mDeliveryNotificationManager.ReadAndProcessState( inInputStream ) )
+				{
+					HandleStatePacket( inInputStream );
+				}
+				break;
 			}
-			break;
-		}
+		//}
 	}
 }
 
@@ -271,7 +275,7 @@ void NetworkMgr::SendOutgoingPackets()
 	case NCS_SayingHello:
 		UpdateSayingHello();
 		break;
-	//case NCS_Reseted:
+	case NCS_Reseted:
 	case NCS_Welcomed:
 		UpdateSendingInputPacket();
 		break;
@@ -329,18 +333,23 @@ void NetworkMgr::ResetForNewGame()
 
 	RealTimeSrvWorld::sInstance->ResetRealTimeSrvWorld();
 	InputMgr::sInstance->GetActionList().Clear();
+	
+	mDeliveryNotificationManager.Reset();
 }
 
 void NetworkMgr::HandleResetPacket()
 {
 	if (mState == NCS_Welcomed)
 	{
+		ResetForNewGame();
+
 		mState = NCS_Resetting;
 
 		GEngine->AddOnScreenDebugMessage( -1, 6.f, FColor::Red,
 			FString::Printf( TEXT( "%s" ),
 			*FString( "Resetting ..." ))
 		);
+		R_LOG_1_EXTRA("Resetting ...");
 	}
 }
 
@@ -350,10 +359,10 @@ void NetworkMgr::HandleWelcomePacket( InputBitStream& inInputStream )
 	{
 		if ( mState == NCS_Resetting )
 		{
-			//mState = NCS_Reseted;
 			//inInputStream.Read( mResetedPlayerId );
-			ResetForNewGame();
-			mState = NCS_Welcomed;
+			//ResetForNewGame();
+			mState = NCS_Reseted;
+			//mState = NCS_Welcomed;
 			inInputStream.Read( mPlayerId );
 		}
 		else
@@ -367,11 +376,6 @@ void NetworkMgr::HandleWelcomePacket( InputBitStream& inInputStream )
 
 		mReplicationManagerClient.Read( inInputStream );
 
-		GEngine->AddOnScreenDebugMessage( -1, 6.f, FColor::Red,
-			FString::Printf( TEXT( "%s    %d" ),
-				*FString( "Welcome on client as PlayerID     = " ), mPlayerId )
-		);
-
 		R_LOG_1( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" );
 		R_LOG_1( "****UDP**** HandleWelcomePacket Successfully!!!" );
 		R_LOG_1( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" );
@@ -380,12 +384,12 @@ void NetworkMgr::HandleWelcomePacket( InputBitStream& inInputStream )
 
 void NetworkMgr::HandleStatePacket( InputBitStream& inInputStream )
 {
-	//if ( mState == NCS_Reseted )
-	//{
-	//	ResetForNewGame();
-	//	mState = NCS_Welcomed;
-	//	mPlayerId = mResetedPlayerId;
-	//}
+	if ( mState == NCS_Reseted )
+	{
+		//ResetForNewGame();
+		mState = NCS_Welcomed;
+		//mPlayerId = mResetedPlayerId;
+	}
 	if ( mState == NCS_Welcomed )
 	{
 		ReadLastMoveProcessedOnServerTimestamp( inInputStream );
@@ -448,7 +452,10 @@ void NetworkMgr::SendInputPacket()
 	if ( moveList.HasActions() )
 	{
 		OutputBitStream inputPacket;
-
+		if (mState == NCS_Reseted)
+		{
+			inputPacket.Write( kResetedCC );
+		}
 		inputPacket.Write( kInputCC );
 
 		mDeliveryNotificationManager.WriteState( inputPacket );

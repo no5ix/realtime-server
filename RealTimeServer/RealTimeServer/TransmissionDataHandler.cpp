@@ -38,7 +38,7 @@ void TransmissionDataHandler::HandleCreateDeliveryFailure( int inNetworkId ) con
 	GameObjectPtr gameObject = NetworkMgrSrv::sInst->GetGameObject( inNetworkId );
 	if ( gameObject )
 	{
-		LOG( "inNetworkId = %d", inNetworkId );
+		//LOG( "inNetworkId = %d", inNetworkId );
 
 		mReplicationManagerServer->ReplicateCreate( inNetworkId, gameObject->GetAllStateMask() );
 	}

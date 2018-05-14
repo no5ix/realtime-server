@@ -13,6 +13,8 @@ void ReplicationMgr::Read( InputBitStream& inInputStream )
 {
 	//R_LOG_1( "ReplicationManagerClient::Read, start" );
 
+	//R_LOG_N_EXTRA( "inInputStream.GetRemainingBitCount()", inInputStream.GetRemainingBitCount() );
+
 	while (inInputStream.GetRemainingBitCount() >= 32)
 	{
 		int networkId;

@@ -6,7 +6,7 @@ NetworkMgrSrv*	NetworkMgrSrv::sInst;
 namespace
 {
 	const float kTimeBetweenStatePackets = 0.033f;
-	const float kClientDisconnectTimeout = 3.f;
+	const float kClientDisconnectTimeout = 66.f;
 }
 
 NetworkMgrSrv::NetworkMgrSrv() :
@@ -28,7 +28,7 @@ void NetworkMgrSrv::ProcessPacket( InputBitStream& inInputStream, const SocketAd
 	auto it = mAddressToClientMap.find( inFromAddress );
 	if ( it == mAddressToClientMap.end() )
 	{
-		HandlePacketFromNewClient( inInputStream, inFromAddress, inUDPSocket);
+		HandlePacketFromNewClient( inInputStream, inFromAddress, inUDPSocket );
 	}
 	else
 	{
@@ -41,8 +41,8 @@ void NetworkMgrSrv::ProcessPacket( ClientProxyPtr inClientProxy, InputBitStream&
 {
 	inClientProxy->UpdateLastPacketTime();
 
-	uint32_t	packetType;
-	inInputStream.Read( packetType );
+	uint32_t packetType = HandleServerReset( inClientProxy, inInputStream );
+
 	switch ( packetType )
 	{
 	case kHelloCC:
@@ -54,9 +54,35 @@ void NetworkMgrSrv::ProcessPacket( ClientProxyPtr inClientProxy, InputBitStream&
 			HandleInputPacket( inClientProxy, inInputStream );
 		}
 		break;
+	case kNullCC:
+		break;
 	default:
 		LOG( "Unknown packet type received from %s", inClientProxy->GetSocketAddress().ToString().c_str() );
 		break;
+	}
+}
+
+uint32_t NetworkMgrSrv::HandleServerReset( ClientProxyPtr inClientProxy, InputBitStream& inInputStream )
+{
+	uint32_t packetType;
+	inInputStream.Read( packetType );
+
+	if ( packetType == kResetedCC )
+	{
+		//LOG( " packetType == kResetedCC )", 0 );
+		inClientProxy->SetRecvingServerResetFlag( false );
+		inInputStream.Read( packetType );
+	}
+
+	if ( inClientProxy->GetRecvingServerResetFlag() == true )
+	{
+		SendResetPacket( inClientProxy );
+		//LOG( "SendResetPacket 22222222", 0 );
+		return kNullCC;
+	}
+	else
+	{
+		return packetType;
 	}
 }
 
@@ -74,30 +100,29 @@ void NetworkMgrSrv::HandleInputPacket( ClientProxyPtr inClientProxy, InputBitStr
 			{
 				inClientProxy->SetIsLastMoveTimestampDirty( true );
 
-				
+
 			}
 		}
 	}
 }
 
-
 void NetworkMgrSrv::HandlePacketFromNewClient( InputBitStream& inInputStream, const SocketAddrInterface& inFromAddress, const UDPSocketPtr& inUDPSocket )
 {
 	uint32_t	packetType;
 	inInputStream.Read( packetType );
-	if ( packetType == kHelloCC 
-		|| packetType == kInputCC	
-	)
+	if ( packetType == kHelloCC
+		|| packetType == kInputCC
+		|| packetType == kResetedCC
+		)
 	{
-		string name;
-		inInputStream.Read( name );	
-		
-		ClientProxyPtr newClientProxy = std::make_shared< ClientProxy >( inFromAddress, name, mNewPlayerId++, inUDPSocket );
+		string playerName = "RealTimeSrvTestPlayerName";
+		//inInputStream.Read( playerName );	
+
+		ClientProxyPtr newClientProxy = std::make_shared< ClientProxy >( inFromAddress, playerName, mNewPlayerId++, inUDPSocket );
 		mAddressToClientMap[inFromAddress] = newClientProxy;
 		mPlayerIdToClientMap[newClientProxy->GetPlayerId()] = newClientProxy;
 
 		RealTimeSrv::sInstance.get()->HandleNewClient( newClientProxy );
-
 
 		for ( const auto& pair : mNetworkIdToGameObjectMap )
 		{
@@ -111,13 +136,15 @@ void NetworkMgrSrv::HandlePacketFromNewClient( InputBitStream& inInputStream, co
 		else
 		{
 			// Server reset
+			newClientProxy->SetRecvingServerResetFlag( true );
 			SendResetPacket( newClientProxy );
+			LOG( "SendResetPacket", 0 );
 		}
 
-		LOG( "a new client at socket %s, named '%s' as PlayerID %d ", 
-			inFromAddress.ToString().c_str(), 
-			newClientProxy->GetName().c_str(), 
-			newClientProxy->GetPlayerId() 
+		LOG( "a new client at socket %s, named '%s' as PlayerID %d ",
+			inFromAddress.ToString().c_str(),
+			newClientProxy->GetName().c_str(),
+			newClientProxy->GetPlayerId()
 		);
 	}
 	//else if ( packetType == kInputCC )
@@ -131,19 +158,23 @@ void NetworkMgrSrv::HandlePacketFromNewClient( InputBitStream& inInputStream, co
 	}
 }
 
-void NetworkMgrSrv::SendResetPacket(ClientProxyPtr inClientProxy)
+void NetworkMgrSrv::SendResetPacket( ClientProxyPtr inClientProxy )
 {
 	OutputBitStream resetPacket;
-
 	resetPacket.Write( kResetCC );
+
+	InFlightPacket* ifp =
+		inClientProxy->GetDeliveryNotificationManager().WriteState( resetPacket );
 
 	resetPacket.Write( inClientProxy->GetPlayerId() );
 	resetPacket.Write( kTimeBetweenStatePackets );
 
+	TransmissionDataHandler* rmtd =
+		new TransmissionDataHandler( &inClientProxy->GetReplicationManagerServer() );
 
-	TransmissionDataHandler* rmtd = new TransmissionDataHandler( &inClientProxy->GetReplicationManagerServer() );
 	inClientProxy->GetReplicationManagerServer().Write( resetPacket, rmtd );
 
+	ifp->SetTransmissionData( 'RPLM', TransmissionDataPtr( rmtd ) );
 
 	SendPacket( resetPacket, inClientProxy );
 
@@ -153,18 +184,19 @@ void NetworkMgrSrv::SendResetPacket(ClientProxyPtr inClientProxy)
 void NetworkMgrSrv::SendWelcomePacket( ClientProxyPtr inClientProxy )
 {
 	OutputBitStream welcomePacket;
-
 	welcomePacket.Write( kWelcomeCC );
+
+	InFlightPacket* ifp =
+		inClientProxy->GetDeliveryNotificationManager().WriteState( welcomePacket );
+
 	welcomePacket.Write( inClientProxy->GetPlayerId() );
 	welcomePacket.Write( kTimeBetweenStatePackets );
 
-	//InFlightPacket* ifp =
-		//inClientProxy->GetDeliveryNotificationManager().WriteState( welcomePacket );
-
-	TransmissionDataHandler* rmtd = new TransmissionDataHandler( &inClientProxy->GetReplicationManagerServer() );
+	TransmissionDataHandler* rmtd =
+		new TransmissionDataHandler( &inClientProxy->GetReplicationManagerServer() );
 	inClientProxy->GetReplicationManagerServer().Write( welcomePacket, rmtd );
 
-	//ifp->SetTransmissionData( 'RPLM', TransmissionDataPtr( rmtd ) );
+	ifp->SetTransmissionData( 'RPLM', TransmissionDataPtr( rmtd ) );
 	//ifp->SetTransmissionData( 'RPLM', rmtd );
 
 	SendPacket( welcomePacket, inClientProxy );
@@ -173,14 +205,14 @@ void NetworkMgrSrv::SendWelcomePacket( ClientProxyPtr inClientProxy )
 
 void NetworkMgrSrv::RegisterGameObject( GameObjectPtr inGameObject )
 {
-	
+
 	int newNetworkId = GetNewNetworkId();
 	inGameObject->SetNetworkId( newNetworkId );
 
-	
+
 	mNetworkIdToGameObjectMap[newNetworkId] = inGameObject;
 
-	
+
 	for ( const auto& pair : mAddressToClientMap )
 	{
 		pair.second->GetReplicationManagerServer().ReplicateCreate( newNetworkId, inGameObject->GetAllStateMask() );
@@ -193,8 +225,8 @@ void NetworkMgrSrv::UnregisterGameObject( Entity* inGameObject )
 	int networkId = inGameObject->GetNetworkId();
 	mNetworkIdToGameObjectMap.erase( networkId );
 
-	
-	
+
+
 	for ( const auto& pair : mAddressToClientMap )
 	{
 		pair.second->GetReplicationManagerServer().ReplicateDestroy( networkId );
@@ -225,7 +257,7 @@ void NetworkMgrSrv::SendOutgoingPackets()
 
 	mTimeOfLastStatePacket = time;
 
-	
+
 	for ( auto it = mAddressToClientMap.begin(), end = mAddressToClientMap.end(); it != end; ++it )
 	{
 		ClientProxyPtr clientProxy = it->second;
@@ -243,15 +275,18 @@ void NetworkMgrSrv::SendStatePacketToClient( ClientProxyPtr inClientProxy )
 {
 
 	OutputBitStream	statePacket;
-
 	statePacket.Write( kStateCC );
 
-	InFlightPacket* ifp = inClientProxy->GetDeliveryNotificationManager().WriteState( statePacket );
+	InFlightPacket* ifp =
+		inClientProxy->GetDeliveryNotificationManager().WriteState( statePacket );
 
 	WriteLastMoveTimestampIfDirty( statePacket, inClientProxy );
 
-	TransmissionDataHandler* rmtd = new TransmissionDataHandler( &inClientProxy->GetReplicationManagerServer() );
+	TransmissionDataHandler* rmtd =
+		new TransmissionDataHandler( &inClientProxy->GetReplicationManagerServer() );
+
 	inClientProxy->GetReplicationManagerServer().Write( statePacket, rmtd );
+
 	ifp->SetTransmissionData( 'RPLM', TransmissionDataPtr( rmtd ) );
 	//ifp->SetTransmissionData( 'RPLM', rmtd );
 
@@ -261,7 +296,7 @@ void NetworkMgrSrv::SendStatePacketToClient( ClientProxyPtr inClientProxy )
 
 void NetworkMgrSrv::WriteLastMoveTimestampIfDirty( OutputBitStream& inOutputStream, ClientProxyPtr inClientProxy )
 {
-	
+
 	bool isTimestampDirty = inClientProxy->IsLastMoveTimestampDirty();
 	inOutputStream.Write( isTimestampDirty );
 	if ( isTimestampDirty )
@@ -284,7 +319,7 @@ ClientProxyPtr NetworkMgrSrv::GetClientProxy( int inPlayerId ) const
 
 void NetworkMgrSrv::SetStateDirty( int inNetworkId, uint32_t inDirtyState )
 {
-	
+
 	for ( const auto& pair : mAddressToClientMap )
 	{
 		pair.second->GetReplicationManagerServer().SetStateDirty( inNetworkId, inDirtyState );
@@ -295,7 +330,6 @@ void NetworkMgrSrv::SetStateDirty( int inNetworkId, uint32_t inDirtyState )
 
 void NetworkMgrSrv::HandleConnectionReset( const SocketAddrInterface& inFromAddress )
 {
-	//just dc the client right away...
 	auto it = mAddressToClientMap.find( inFromAddress );
 	if ( it != mAddressToClientMap.end() )
 	{
@@ -314,7 +348,7 @@ void NetworkMgrSrv::CheckForDisconnects()
 
 	float curTime = RealTimeSrvTiming::sInstance.GetCurrentGameTime();
 
-	if (curTime - mLastCheckDCTime < kClientDisconnectTimeout)
+	if ( curTime - mLastCheckDCTime < kClientDisconnectTimeout )
 	{
 		return;
 	}
@@ -327,10 +361,12 @@ void NetworkMgrSrv::CheckForDisconnects()
 		AddressToClientMap::iterator it = mAddressToClientMap.begin();
 		it != mAddressToClientMap.end();
 		//++it
-	)
+		)
 	{
 		if ( it->second->GetLastPacketFromClientTime() < minAllowedTime )
 		{
+			LOG( "Player %d disconnect", it->second->GetPlayerId() );
+
 			mPlayerIdToClientMap.erase( it->second->GetPlayerId() );
 
 #ifdef HAS_EPOLL

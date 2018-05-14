@@ -39,12 +39,6 @@ public:
 	virtual uint32_t	Write( OutputBitStream& inOutputStream, uint32_t inDirtyState ) const { return 0; }
 	virtual void		Read( InputBitStream& inInputStream ) {}
 
-
-	void		SetPlayerId( uint32_t inPlayerId ) { mPlayerId = inPlayerId; }
-
-	UFUNCTION( BlueprintCallable, Category = "RealTimeSrv" )
-		int	GetPlayerId() const { return mPlayerId; }
-
 	void			SetLocalVelocity( const FVector& inVelocity ) { mLocalVelocity = inVelocity; }
 	const FVector&	GetLocalVelocity()						const { return mLocalVelocity; }
 
@@ -98,15 +92,6 @@ protected:
 
 	int												mNetworkId;
 
-	//float				mMaxLinearSpeed;
-	//float				mMaxRotationSpeed;
-
-	////bounce fraction when hitting various things
-	//float				mWallRestitution;
-	//float				mCatRestitution;
-
-
-	uint32_t			mPlayerId;
 protected:
 
 	///move down here for padding reasons...

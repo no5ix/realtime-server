@@ -8,7 +8,8 @@ ClientProxy::ClientProxy( const SocketAddrInterface& inSocketAddress, const stri
 	mUDPSocket( inUDPSocket ),
 	mDeliveryNotificationManager( false, true ),
 	mIsLastMoveTimestampDirty( false ),
-	mTimeToRespawn( 0.f )
+	mTimeToRespawn( 0.f ),
+	mRecvingServerResetFlag( false )
 {
 	UpdateLastPacketTime();
 }
