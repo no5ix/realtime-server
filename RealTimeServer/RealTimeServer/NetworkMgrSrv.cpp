@@ -1,7 +1,7 @@
 #include "RealTimeSrvPCH.h"
 
 
-NetworkMgrSrv*	NetworkMgrSrv::sInst;
+std::unique_ptr<NetworkMgrSrv> NetworkMgrSrv::sInst;
 
 namespace
 {
@@ -13,13 +13,14 @@ NetworkMgrSrv::NetworkMgrSrv() :
 	mNewPlayerId( 1 ),
 	mNewNetworkId( 1 ),
 	mTimeBetweenStatePackets( 0.033f ),
-	mLastCheckDCTime( 0.f )
+	mLastCheckDCTime( 0.f ),
+	mTimeOfLastStatePacket( 0.f )
 {
 }
 
 bool NetworkMgrSrv::StaticInit( uint16_t inPort )
 {
-	sInst = new NetworkMgrSrv();
+	sInst.reset( new NetworkMgrSrv() );
 	return sInst->Init( inPort );
 }
 

@@ -1,7 +1,7 @@
 class NetworkMgrSrv : public NetworkMgr
 {
 public:
-	static NetworkMgrSrv*	sInst;
+	static std::unique_ptr<NetworkMgrSrv>	sInst;
 
 	static bool				StaticInit( uint16_t inPort );
 	virtual void			ProcessPacket( InputBitStream& inInputStream, const SocketAddrInterface& inFromAddress, const UDPSocketPtr& inUDPSocket  ) override;
