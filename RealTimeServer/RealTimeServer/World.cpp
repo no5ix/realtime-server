@@ -16,14 +16,14 @@ World::World()
 }
 
 
-void World::AddGameObject( GameObjectPtr inGameObject )
+void World::AddGameObject( EntityPtr inGameObject )
 {
 	mGameObjects.push_back( inGameObject );
 	inGameObject->SetIndexInWorld( mGameObjects.size() - 1 );
 }
 
 
-void World::RemoveGameObject( GameObjectPtr inGameObject )
+void World::RemoveGameObject( EntityPtr inGameObject )
 {
 	int index = inGameObject->GetIndexInWorld();
 
@@ -45,7 +45,7 @@ void World::Update()
 
 	for (int i = 0, c = mGameObjects.size(); i < c; ++i)
 	{
-		GameObjectPtr go = mGameObjects[i];
+		EntityPtr go = mGameObjects[i];
 
 
 		if (!go->DoesWantToDie())

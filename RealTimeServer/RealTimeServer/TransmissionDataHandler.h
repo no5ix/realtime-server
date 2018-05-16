@@ -48,4 +48,4 @@ private:
 
 };
 
-typedef shared_ptr< TransmissionDataHandler > ReplicationManagerTransmissionDataPtr;
+typedef shared_ptr< TransmissionDataHandler > TransmissionDataHandlerPtr;

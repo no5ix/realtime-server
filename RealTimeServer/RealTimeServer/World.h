@@ -13,12 +13,12 @@ public:
 
 	static std::unique_ptr< World >		sInst;
 
-	void AddGameObject( GameObjectPtr inGameObject );
-	void RemoveGameObject( GameObjectPtr inGameObject );
+	void AddGameObject( EntityPtr inGameObject );
+	void RemoveGameObject( EntityPtr inGameObject );
 
 	void Update();
 
-	const std::vector< GameObjectPtr >&	GetGameObjects()	const { return mGameObjects; }
+	const std::vector< EntityPtr >&	GetGameObjects()	const { return mGameObjects; }
 
 private:
 
@@ -27,7 +27,7 @@ private:
 
 	//int	GetIndexOfGameObject( GameObjectPtr inGameObject );
 
-	std::vector< GameObjectPtr >	mGameObjects;
+	std::vector< EntityPtr >	mGameObjects;
 
 
 };

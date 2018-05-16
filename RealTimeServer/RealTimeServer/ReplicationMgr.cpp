@@ -29,7 +29,7 @@ void ReplicationMgr::HandleCreateAckd( int inNetworkId )
 }
 
 
-void ReplicationMgr::Write( OutputBitStream& inOutputStream, TransmissionDataHandler* inTransmissinData )
+void ReplicationMgr::Write( OutputBitStream& inOutputStream, TransmissionDataPtr inTransmissinData )
 {
 	
 	for (auto& pair : mNetworkIdToReplicationCommand)
@@ -62,7 +62,8 @@ void ReplicationMgr::Write( OutputBitStream& inOutputStream, TransmissionDataHan
 				break;
 			}
 
-			inTransmissinData->AddTransmission( networkId, action, writtenState );
+			TransmissionDataHandlerPtr tdhp = std::static_pointer_cast< TransmissionDataHandler >( inTransmissinData );
+			tdhp->AddTransmission( networkId, action, writtenState );
 
 			replicationCommand.ClearDirtyState( writtenState );
 
@@ -78,7 +79,7 @@ void ReplicationMgr::Write( OutputBitStream& inOutputStream, TransmissionDataHan
 uint32_t ReplicationMgr::WriteCreateAction( OutputBitStream& inOutputStream, int inNetworkId, uint32_t inDirtyState )
 {
 	
-	GameObjectPtr gameObject = NetworkMgrSrv::sInst->GetGameObject( inNetworkId );
+	EntityPtr gameObject = NetworkMgrSrv::sInst->GetGameObject( inNetworkId );
 	
 	inOutputStream.Write( gameObject->GetClassId() );
 	return gameObject->Write( inOutputStream, inDirtyState );
@@ -87,7 +88,7 @@ uint32_t ReplicationMgr::WriteCreateAction( OutputBitStream& inOutputStream, int
 uint32_t ReplicationMgr::WriteUpdateAction( OutputBitStream& inOutputStream, int inNetworkId, uint32_t inDirtyState )
 {
 	
-	GameObjectPtr gameObject = NetworkMgrSrv::sInst->GetGameObject( inNetworkId );
+	EntityPtr gameObject = NetworkMgrSrv::sInst->GetGameObject( inNetworkId );
 
 	uint32_t writtenState = gameObject->Write( inOutputStream, inDirtyState );
 

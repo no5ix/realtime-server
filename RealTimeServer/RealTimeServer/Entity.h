@@ -60,4 +60,4 @@ protected:
 
 };
 
-typedef shared_ptr< Entity >	GameObjectPtr;
+typedef shared_ptr< Entity >	EntityPtr;

@@ -1,4 +1,4 @@
-typedef unordered_map< int, GameObjectPtr > IntToGameObjectMap;
+typedef unordered_map< int, EntityPtr > IntToGameObjectMap;
 
 class ClientProxy;
 class TransmissionDataHandler;
@@ -38,7 +38,7 @@ public:
 	void	SetIsSimulatedJitter( bool inIsSimulatedJitter ) { mIsSimulatedJitter = inIsSimulatedJitter; }
 	bool	GetIsSimulatedJitter() const { return mIsSimulatedJitter; }
 
-	inline	GameObjectPtr	GetGameObject( int inNetworkId ) const;
+	inline	EntityPtr	GetGameObject( int inNetworkId ) const;
 
 
 protected:
@@ -107,7 +107,7 @@ protected:
 
 };
 
-inline	GameObjectPtr NetworkMgr::GetGameObject( int inNetworkId ) const
+inline	EntityPtr NetworkMgr::GetGameObject( int inNetworkId ) const
 {
 	auto gameObjectIt = mNetworkIdToGameObjectMap.find( inNetworkId );
 	if (gameObjectIt != mNetworkIdToGameObjectMap.end())
@@ -116,6 +116,6 @@ inline	GameObjectPtr NetworkMgr::GetGameObject( int inNetworkId ) const
 	}
 	else
 	{
-		return GameObjectPtr();
+		return EntityPtr();
 	}
 }

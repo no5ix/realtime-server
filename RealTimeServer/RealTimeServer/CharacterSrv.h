@@ -10,7 +10,7 @@ enum ECatControlType
 class CharacterSrv : public Character
 {
 public:
-	static GameObjectPtr	StaticCreate() { return NetworkMgrSrv::sInst->RegisterAndReturn( new CharacterSrv() ); }
+	static EntityPtr	StaticCreate() { return NetworkMgrSrv::sInst->RegisterAndReturn( new CharacterSrv() ); }
 	virtual void HandleDying() override;
 
 	virtual void Update() override;

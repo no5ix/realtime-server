@@ -35,7 +35,7 @@ void TransmissionDataHandler::HandleDeliveryFailure( DeliveryNotifyMgr* inDelive
 
 void TransmissionDataHandler::HandleCreateDeliveryFailure( int inNetworkId ) const
 {
-	GameObjectPtr gameObject = NetworkMgrSrv::sInst->GetGameObject( inNetworkId );
+	EntityPtr gameObject = NetworkMgrSrv::sInst->GetGameObject( inNetworkId );
 	if ( gameObject )
 	{
 		//LOG( "inNetworkId = %d", inNetworkId );
@@ -55,10 +55,10 @@ void TransmissionDataHandler::HandleUpdateStateDeliveryFailure( int inNetworkId,
 	{
 		for ( const auto& inFlightPacket : inDeliveryNotificationManager->GetInFlightPackets() )
 		{
-			ReplicationManagerTransmissionDataPtr rmtdp = std::static_pointer_cast< TransmissionDataHandler >( inFlightPacket.GetTransmissionData( 'RPLM' ) );
-			//const TransmissionDataHandler* rmtdp = static_cast< const TransmissionDataHandler* >( inFlightPacket.GetTransmissionData( 'RPLM' ) );
+			TransmissionDataHandlerPtr tdhp = std::static_pointer_cast< TransmissionDataHandler >( inFlightPacket.GetTransmissionData( 'RPLM' ) );
+			//const TransmissionDataHandler* tdhp = static_cast< const TransmissionDataHandler* >( inFlightPacket.GetTransmissionData( 'RPLM' ) );
 
-			for ( const ReplicationTransmission& otherRT : rmtdp->mTransmissions )
+			for ( const ReplicationTransmission& otherRT : tdhp->mTransmissions )
 			{
 				inState &= ~otherRT.GetState();
 			}

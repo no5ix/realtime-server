@@ -70,7 +70,6 @@ uint32_t NetworkMgrSrv::HandleServerReset( ClientProxyPtr inClientProxy, InputBi
 
 	if ( packetType == kResetedCC )
 	{
-		//LOG( " packetType == kResetedCC )", 0 );
 		inClientProxy->SetRecvingServerResetFlag( false );
 		inInputStream.Read( packetType );
 	}
@@ -78,7 +77,6 @@ uint32_t NetworkMgrSrv::HandleServerReset( ClientProxyPtr inClientProxy, InputBi
 	if ( inClientProxy->GetRecvingServerResetFlag() == true )
 	{
 		SendResetPacket( inClientProxy );
-		//LOG( "SendResetPacket 22222222", 0 );
 		return kNullCC;
 	}
 	else
@@ -170,12 +168,15 @@ void NetworkMgrSrv::SendResetPacket( ClientProxyPtr inClientProxy )
 	resetPacket.Write( inClientProxy->GetPlayerId() );
 	resetPacket.Write( kTimeBetweenStatePackets );
 
-	TransmissionDataHandler* rmtd =
-		new TransmissionDataHandler( &inClientProxy->GetReplicationManagerServer() );
+	//TransmissionDataHandler* rmtd =
+	//	new TransmissionDataHandler( &inClientProxy->GetReplicationManagerServer() );
+
+	TransmissionDataPtr rmtd = std::make_shared<TransmissionDataHandler>( &inClientProxy->GetReplicationManagerServer() );
 
 	inClientProxy->GetReplicationManagerServer().Write( resetPacket, rmtd );
 
-	ifp->SetTransmissionData( 'RPLM', TransmissionDataPtr( rmtd ) );
+	//ifp->SetTransmissionData( 'RPLM', TransmissionDataPtr( rmtd ) );
+	ifp->SetTransmissionData( 'RPLM', rmtd );
 
 	SendPacket( resetPacket, inClientProxy );
 
@@ -193,18 +194,21 @@ void NetworkMgrSrv::SendWelcomePacket( ClientProxyPtr inClientProxy )
 	welcomePacket.Write( inClientProxy->GetPlayerId() );
 	welcomePacket.Write( kTimeBetweenStatePackets );
 
-	TransmissionDataHandler* rmtd =
-		new TransmissionDataHandler( &inClientProxy->GetReplicationManagerServer() );
+	//TransmissionDataHandler* rmtd =
+	//	new TransmissionDataHandler( &inClientProxy->GetReplicationManagerServer() );
+
+	TransmissionDataPtr rmtd = std::make_shared<TransmissionDataHandler>( &inClientProxy->GetReplicationManagerServer() );
+
 	inClientProxy->GetReplicationManagerServer().Write( welcomePacket, rmtd );
 
-	ifp->SetTransmissionData( 'RPLM', TransmissionDataPtr( rmtd ) );
-	//ifp->SetTransmissionData( 'RPLM', rmtd );
+	//ifp->SetTransmissionData( 'RPLM', TransmissionDataPtr( rmtd ) );
+	ifp->SetTransmissionData( 'RPLM', rmtd );
 
 	SendPacket( welcomePacket, inClientProxy );
 	//ProcessOutcomingPacket( welcomePacket, inClientProxy, rmtd );
 }
 
-void NetworkMgrSrv::RegisterGameObject( GameObjectPtr inGameObject )
+void NetworkMgrSrv::RegisterGameObject( EntityPtr inGameObject )
 {
 
 	int newNetworkId = GetNewNetworkId();
@@ -283,12 +287,15 @@ void NetworkMgrSrv::SendStatePacketToClient( ClientProxyPtr inClientProxy )
 
 	WriteLastMoveTimestampIfDirty( statePacket, inClientProxy );
 
-	TransmissionDataHandler* rmtd =
-		new TransmissionDataHandler( &inClientProxy->GetReplicationManagerServer() );
+	//TransmissionDataHandler* rmtd =
+	//	new TransmissionDataHandler( &inClientProxy->GetReplicationManagerServer() );
+
+	TransmissionDataPtr rmtd = std::make_shared<TransmissionDataHandler>( &inClientProxy->GetReplicationManagerServer() );
 
 	inClientProxy->GetReplicationManagerServer().Write( statePacket, rmtd );
 
-	ifp->SetTransmissionData( 'RPLM', TransmissionDataPtr( rmtd ) );
+	//ifp->SetTransmissionData( 'RPLM', TransmissionDataPtr( rmtd ) );
+	ifp->SetTransmissionData( 'RPLM', rmtd );
 	//ifp->SetTransmissionData( 'RPLM', rmtd );
 
 	SendPacket( statePacket, inClientProxy );

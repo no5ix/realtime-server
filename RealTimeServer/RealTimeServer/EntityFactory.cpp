@@ -18,12 +18,12 @@ void EntityFactory::RegisterCreationFunction( uint32_t inFourCCName, GameObjectC
 	mNameToGameObjectCreationFunctionMap[inFourCCName] = inCreationFunction;
 }
 
-GameObjectPtr EntityFactory::CreateGameObject( uint32_t inFourCCName )
+EntityPtr EntityFactory::CreateGameObject( uint32_t inFourCCName )
 {
 	
 	GameObjectCreationFunc creationFunc = mNameToGameObjectCreationFunctionMap[inFourCCName];
 
-	GameObjectPtr gameObject = creationFunc();
+	EntityPtr gameObject = creationFunc();
 
 	
 	

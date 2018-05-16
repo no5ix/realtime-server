@@ -18,7 +18,7 @@ public:
 	};
 
 
-	static	Entity*	StaticCreate() { return new Character(); }
+	static	EntityPtr	StaticCreate() { return EntityPtr( new Character() ); }
 
 	virtual uint32_t GetAllStateMask()	const override { return ECRS_AllState; }
 

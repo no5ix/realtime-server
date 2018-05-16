@@ -31,12 +31,12 @@ void AckBitField::DoAddToAckBitField( uint32_t inDifference )
 	( *mAckBitField ) = ( *mAckBitField ) << inDifference;
 
 	//cout << "*******************\n";
-	//uint8_t tt = *( mAckBitField + 0 );
+	//uint8_t tt0 = *( mAckBitField + 0 );
 	//uint8_t tt1 = *( mAckBitField + 1 );
 	//uint8_t tt2 = *( mAckBitField + 2 );
 	//uint8_t tt3 = *( mAckBitField + 3 );
 
-	//printf( "tt = %d \n", tt );
+	//printf( "tt0 = %d \n", tt0 );
 	//printf( "tt1 = %d \n", tt1 );
 	//printf( "tt2 = %d \n", tt2 );
 	//printf( "tt3 = %d \n", tt3 );

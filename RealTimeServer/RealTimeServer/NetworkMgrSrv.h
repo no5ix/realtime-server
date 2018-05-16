@@ -7,8 +7,8 @@ public:
 	virtual void			ProcessPacket( InputBitStream& inInputStream, const SocketAddrInterface& inFromAddress, const UDPSocketPtr& inUDPSocket  ) override;
 	virtual void			HandleConnectionReset( const SocketAddrInterface& inFromAddress ) override;
 	void					SendOutgoingPackets();
-	void					RegisterGameObject( GameObjectPtr inGameObject );
-	inline	GameObjectPtr	RegisterAndReturn( Entity* inGameObject );
+	void					RegisterGameObject( EntityPtr inGameObject );
+	inline	EntityPtr	RegisterAndReturn( Entity* inGameObject );
 	void					UnregisterGameObject( Entity* inGameObject );
 	void					SetStateDirty( int inNetworkId, uint32_t inDirtyState );
 	virtual void			CheckForDisconnects();
@@ -50,9 +50,9 @@ private:
 };
 
 
-inline GameObjectPtr NetworkMgrSrv::RegisterAndReturn( Entity* inGameObject )
+inline EntityPtr NetworkMgrSrv::RegisterAndReturn( Entity* inGameObject )
 {
-	GameObjectPtr toRet( inGameObject );
+	EntityPtr toRet( inGameObject );
 	RegisterGameObject( toRet );
 	return toRet;
 }
