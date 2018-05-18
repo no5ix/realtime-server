@@ -5,7 +5,7 @@
 NetworkMgr::NetworkMgr() :
 	mDropPacketChance( 0.f ),
 	mSimulatedLatency( 0.f ),
-	mIsSimulatedJitter( false ),
+	mWhetherToSimulateJitter( false ),
 	mChunkPacketID( 1 )
 {
 
@@ -24,7 +24,6 @@ bool NetworkMgr::Init(uint16_t inPort)
 
 	mSocket = UDPSocketInterface::CreateUDPSocket();
 
-	//did we bind okay?
 	if ( mSocket == nullptr )
 	{
 		return false;

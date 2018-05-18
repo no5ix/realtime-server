@@ -24,16 +24,12 @@ EpollInterface::~EpollInterface()
 	}
 }
 
-
 bool EpollInterface::Add( SOCKET inFd )
 {
 	struct epoll_event ev;
 	memset( &ev, 0, sizeof( ev ) );
-	int op;
 
 	ev.data.fd = inFd;
-
-
 	ev.events = EPOLLIN | EPOLLET;
 
 	if ( epoll_ctl( mEqfd, EPOLL_CTL_ADD, inFd, &ev ) < 0 )
@@ -83,21 +79,16 @@ void EpollInterface::HandleInputEvent( SOCKET inFd )
 	}
 	else
 	{
-
 		SocketToUDPSocketPtrMap::iterator iter = mSocketToUDPSocketPtrMap.find( inFd );
-
 		if ( iter == mSocketToUDPSocketPtrMap.end() )
 		{
 			return;
 		}
-
 		SocketToSocketAddrMap::iterator it = mSocketToSocketAddrMap.find( inFd );
-
 		if ( it == mSocketToSocketAddrMap.end() )
 		{
 			return;
 		}
-
 		NetworkMgrSrv::sInst->RecvIncomingPacketsIntoQueue( iter->second, it->second );
 	}
 }
@@ -112,30 +103,27 @@ void EpollInterface::AcceptClient()
 	{
 		UdpConnect( fromAddress );
 	}
-
 }
 
 SOCKET EpollInterface::UdpConnect( const SocketAddrInterface& inAddress )
 {
-
-	UDPSocketPtr s = UDPSocketInterface::CreateUDPSocket();
-	if (s)
+	UDPSocketPtr usp = UDPSocketInterface::CreateUDPSocket();
+	if (usp)
 	{
-		if ( s->SetReUse() == NO_ERROR )
+		if ( usp->SetReUse() == NO_ERROR )
 		{
-			if ( s->Bind( mListenerAddr ) == NO_ERROR  )
+			if ( usp->Bind( mListenerAddr ) == NO_ERROR  )
 			{
-				if ( s->Connect( inAddress ) == NO_ERROR  )
+				if ( usp->Connect( inAddress ) == NO_ERROR  )
 				{
-
-					if ( s->SetNonBlockingMode( true ) == NO_ERROR )
+					if ( usp->SetNonBlockingMode( true ) == NO_ERROR )
 					{
-						if ( Add( s->GetSocket() ) )
+						if ( Add( usp->GetSocket() ) )
 						{
-							mSocketToUDPSocketPtrMap[s->GetSocket()] = s;
-							mSocketToSocketAddrMap[s->GetSocket()] = inAddress;
+							mSocketToUDPSocketPtrMap[usp->GetSocket()] = usp;
+							mSocketToSocketAddrMap[usp->GetSocket()] = inAddress;
 
-							return s->GetSocket();
+							return usp->GetSocket();
 						}
 					}
 				}
@@ -144,7 +132,6 @@ SOCKET EpollInterface::UdpConnect( const SocketAddrInterface& inAddress )
 	}
 	return -1;
 }
-
 
 void EpollInterface::SetListener( UDPSocketPtr inListener, SocketAddrInterface inSocketAddr )
 {

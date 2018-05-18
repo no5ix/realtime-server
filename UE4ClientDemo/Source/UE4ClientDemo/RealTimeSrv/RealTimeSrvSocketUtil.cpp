@@ -7,9 +7,6 @@ void RealTimeSrvSocketUtil::CreateUDPSocket( FSocket*& inSocket, const FString& 
 		.WithBroadcast()
 	;
 
-
-
-
 	int32 SendSize = 2 * 1024 * 1024;
 	inSocket->SetSendBufferSize( SendSize, SendSize );
 	inSocket->SetReceiveBufferSize( SendSize, SendSize );
@@ -61,6 +58,4 @@ bool RealTimeSrvSocketUtil::RecvFrom( FSocket*& inSocket, char * inData, int32 i
 	inSocket->RecvFrom( ( uint8* )inData, inBufferSize, inRefReadByteCount, *inFromAddress );
 
 	return true;
-
-
 }

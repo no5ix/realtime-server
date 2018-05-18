@@ -4,15 +4,15 @@
 #define HAS_EPOLL
 #endif
 
-
 #ifdef HAS_EPOLL
-
 
 typedef std::unordered_map<SOCKET, UDPSocketPtr> SocketToUDPSocketPtrMap;
 typedef std::unordered_map<SOCKET, SocketAddrInterface> SocketToSocketAddrMap;
 
 class EpollInterface
 {
+public:
+	static std::unique_ptr<EpollInterface> sInst;
 public:
 	static void StaticInit() { sInst.reset( new EpollInterface ); }
 	~EpollInterface();
@@ -22,14 +22,14 @@ public:
 	void Wait( float inMaxWait );
 	
 	void HandleInputEvent( SOCKET inFd );
+
 	void AcceptClient();
 	SOCKET UdpConnect( const SocketAddrInterface& inAddress );
 	void SetListener( UDPSocketPtr inListener, SocketAddrInterface inSocketAddr );
 
 protected:
 	EpollInterface( int inSize = 256 );
-public:
-	static std::unique_ptr<EpollInterface> sInst;
+
 private:
 	int mEqfd;
 	UDPSocketPtr mListener;

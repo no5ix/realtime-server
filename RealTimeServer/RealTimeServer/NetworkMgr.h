@@ -13,6 +13,7 @@ public:
 	static const uint32_t	kResetedCC = 'RSTD';
 	static const uint32_t	kStateCC = 'STAT';
 	static const uint32_t	kInputCC = 'INPT';
+
 	static const int		kMaxPacketsPerFrameCount = 10;
 
 	NetworkMgr();
@@ -35,8 +36,8 @@ public:
 	void	SetDropPacketChance( float inChance ) { mDropPacketChance = inChance; }
 	void	SetSimulatedLatency( float inLatency ) { mSimulatedLatency = inLatency; }
 
-	void	SetIsSimulatedJitter( bool inIsSimulatedJitter ) { mIsSimulatedJitter = inIsSimulatedJitter; }
-	bool	GetIsSimulatedJitter() const { return mIsSimulatedJitter; }
+	void	SetIsSimulatedJitter( bool inIsSimulatedJitter ) { mWhetherToSimulateJitter = inIsSimulatedJitter; }
+	bool	GetIsSimulatedJitter() const { return mWhetherToSimulateJitter; }
 
 	inline	EntityPtr	GetGameObject( int inNetworkId ) const;
 
@@ -95,7 +96,7 @@ private:
 
 	float						mDropPacketChance;
 	float						mSimulatedLatency;
-	bool						mIsSimulatedJitter;
+	bool						mWhetherToSimulateJitter;
 
 protected:
 	UDPSocketPtr	mSocket;
