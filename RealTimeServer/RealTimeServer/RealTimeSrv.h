@@ -10,12 +10,16 @@ public:
 	int Run();
 
 	void HandleNewClient( ClientProxyPtr inClientProxy );
-	//void HandleLostClient( ClientProxyPtr inClientProxy );
 
-	//RoboCatPtr	GetCatForPlayer( int inPlayerId );
 	void	SpawnCharacterForPlayer( int inPlayerId );
 
 	virtual ~RealTimeSrv();
+
+	void Simulate();
+
+#ifndef _WIN32
+	static int BecomeDaemon();
+#endif
 
 private:
 	RealTimeSrv();

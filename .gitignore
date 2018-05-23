@@ -4,6 +4,4 @@
 .vs/
   
 # VisualStudioCode  
-.vscode  
-
-RealTimeServer/tool
+.vscode

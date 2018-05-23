@@ -27,7 +27,6 @@ int __argc;
 #endif
 
 
-
 int main( int argc, const char** argv )
 {
 #ifndef _WIN32
@@ -44,4 +43,3 @@ int main( int argc, const char** argv )
 		return 1;
 	}
 }
-//#endif

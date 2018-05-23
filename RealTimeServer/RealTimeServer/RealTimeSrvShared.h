@@ -8,6 +8,8 @@
 	typedef int socklen_t;
 	//typedef char* receiveBufer_t;
 #else
+	#include <signal.h>
+	#include <sys/stat.h>
 	#include <pthread.h>
 	#include <arpa/inet.h>
 	#include <sys/epoll.h>
