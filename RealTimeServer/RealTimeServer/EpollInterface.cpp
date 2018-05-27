@@ -10,7 +10,7 @@ std::unique_ptr<EpollInterface> EpollInterface::sInst;
 EpollInterface::EpollInterface( int inSize ) :
 	mEqfd( epoll_create( inSize ) )
 {
-	if ( mEqfd == -1 )
+	if ( mEqfd < 0 )
 	{
 		LOG( "Error: %hs", "epoll_create failed" );
 	}

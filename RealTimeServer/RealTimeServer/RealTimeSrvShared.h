@@ -30,7 +30,8 @@
 	const int SOCKET_ERROR = -1;
 #endif
 
-#include "memory"
+#include <stdint.h>
+#include <memory>
 
 #include <cstring>
 #include <cmath>
