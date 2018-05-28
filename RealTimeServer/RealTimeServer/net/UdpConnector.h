@@ -21,7 +21,6 @@ namespace muduo
 {
 	namespace net
 	{
-
 		class Channel;
 		class EventLoop;
 
@@ -31,7 +30,7 @@ namespace muduo
 		public:
 			typedef std::function<void( int sockfd )> NewConnectionCallback;
 
-			UdpConnector( EventLoop* loop, const InetAddress& serverAddr );
+			UdpConnector( EventLoop* loop, const InetAddress& serverAddr, const uint16_t localPort );
 			~UdpConnector();
 
 			void setNewConnectionCallback( const NewConnectionCallback& cb )
@@ -59,8 +58,12 @@ namespace muduo
 			int removeAndResetChannel();
 			void resetChannel();
 
+			/////////// new : for UDP
+			void connected( int sockfd );
+
 			EventLoop* loop_;
 			InetAddress serverAddr_;
+			uint16_t localPort_;
 			bool connect_; // atomic
 			States state_;  // FIXME: use atomic variable
 			std::unique_ptr<Channel> channel_;

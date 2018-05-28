@@ -41,6 +41,7 @@ namespace muduo
 			Channel acceptChannel_;
 			NewConnectionCallback newConnectionCallback_;
 			bool listenning_;
+			uint16_t listenPort_;
 		};
 
 	}

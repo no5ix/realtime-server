@@ -38,10 +38,10 @@ UdpServer::~UdpServer()
 
 	for ( auto& item : connections_ )
 	{
-		//UdpConnectionPtr conn( item.second );
-		//item.second.reset();
-		//conn->getLoop()->runInLoop(
-		//	std::bind( &UdpConnection::connectDestroyed, conn ) );
+		UdpConnectionPtr conn( item.second );
+		item.second.reset();
+		conn->getLoop()->runInLoop(
+			std::bind( &UdpConnection::connectDestroyed, conn ) );
 	}
 }
 

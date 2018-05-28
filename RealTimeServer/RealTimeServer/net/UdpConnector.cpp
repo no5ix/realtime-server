@@ -15,9 +15,10 @@ using namespace muduo::net;
 
 const int UdpConnector::kMaxRetryDelayMs;
 
-UdpConnector::UdpConnector( EventLoop* loop, const InetAddress& serverAddr )
+UdpConnector::UdpConnector( EventLoop* loop, const InetAddress& serverAddr, const uint16_t localPort )
 	: loop_( loop ),
 	serverAddr_( serverAddr ),
+	localPort_( localPort ),
 	connect_( false ),
 	state_( kDisconnected ),
 	retryDelayMs_( kInitRetryDelayMs )
@@ -76,7 +77,8 @@ void UdpConnector::connect()
 	Socket connectSocket(sockfd);
 	connectSocket.setReuseAddr( true );
 	connectSocket.setReusePort( true );
-	connectSocket.bindAddress( serverAddr_ );
+	if (localPort_ != 0)
+		connectSocket.bindAddress( InetAddress(localPort_) );
 
 	int ret = sockets::connect( sockfd, serverAddr_.getSockAddr() );
 	int savedErrno = ( ret == 0 ) ? 0 : errno;
@@ -86,7 +88,8 @@ void UdpConnector::connect()
 	case EINPROGRESS:
 	case EINTR:
 	case EISCONN:
-		connecting( sockfd );
+		//connecting( sockfd );
+		connected( sockfd );
 		break;
 
 	case EAGAIN:
@@ -125,9 +128,25 @@ void UdpConnector::restart()
 	startInLoop();
 }
 
+void UdpConnector::connected( int sockfd )
+{
+	/////////// new : for UDP
+	setState( kConnecting );
+	setState( kConnected );
+	if ( connect_ )
+	{
+		newConnectionCallback_( sockfd );
+	}
+	else
+	{
+		sockets::close( sockfd );
+	}
+}
+
 void UdpConnector::connecting( int sockfd )
 {
 	setState( kConnecting );
+
 	assert( !channel_ );
 	channel_.reset( new Channel( loop_, sockfd ) );
 	channel_->setWriteCallback(

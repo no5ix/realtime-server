@@ -14,6 +14,7 @@
 #include <muduo/base/StringPiece.h>
 #include <muduo/base/Types.h>
 #include <net/UdpCallbacks.h>
+#include <muduo/net/Callbacks.h>
 #include <muduo/net/Buffer.h>
 #include <muduo/net/InetAddress.h>
 

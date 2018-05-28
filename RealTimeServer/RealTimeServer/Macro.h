@@ -32,6 +32,6 @@ typedef unsigned int						ChunkPacketID;
 #define HALF_MAX_CHUNK_PACKET_ID			(2147483648)
 
 
-#define MAX_PACKET_BYTE_LENGTH				(888)
+#define MAX_PACKET_BYTE_LENGTH				(512)
 
 #define ACK_BIT_FIELD_BYTE_LEN				(4)

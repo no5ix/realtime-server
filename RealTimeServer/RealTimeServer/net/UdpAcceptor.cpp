@@ -21,6 +21,7 @@ UdpAcceptor::UdpAcceptor( EventLoop* loop, const InetAddress& listenAddr, bool r
 	: loop_( loop ),
 	acceptSocket_( sockets::createUdpNonblockingOrDie( listenAddr.family() ) ),
 	acceptChannel_( loop, acceptSocket_.fd() ),
+	listenPort_( listenAddr.toPort() ),
 	listenning_( false )
 {
 	acceptSocket_.setReuseAddr( true );
@@ -57,7 +58,7 @@ void UdpAcceptor::handleRead()
 	{
 		peerAddr.setSockAddrInet6( addr );
 
-		UdpConnectorPtr tempConnector( new UdpConnector( loop_, peerAddr ) );
+		UdpConnectorPtr tempConnector( new UdpConnector( loop_, peerAddr, listenPort_ ) );
 		tempConnector->setNewConnectionCallback(
 			std::bind( &UdpAcceptor::newConnection, this, _1, peerAddr ) );
 		tempConnector->start();
