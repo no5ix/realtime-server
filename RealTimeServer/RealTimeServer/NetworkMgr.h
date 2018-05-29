@@ -1,7 +1,30 @@
+#ifdef NEW_EPOLL_INTERFACE
+#include <muduo/base/Logging.h>
+#include <muduo/base/Mutex.h>
+#include <muduo/base/ThreadLocalSingleton.h>
+#include <muduo/net/EventLoop.h>
+#include <net/UdpServer.h>
+
+#include <muduo/net/Buffer.h>
+#include <muduo/net/Endian.h>
+#include <net/UdpConnection.h>
+
+#include <set>
+#include <stdio.h>
+#include <unistd.h>
+
+class UdpConnection;
+
+using namespace muduo;
+using namespace muduo::net;
+#endif //NEW_EPOLL_INTERFACE
+
+
 typedef unordered_map< int, EntityPtr > IntToGameObjectMap;
 
 class ClientProxy;
 class TransmissionDataHandler;
+
 
 class NetworkMgr
 {
@@ -17,16 +40,12 @@ public:
 	static const int		kMaxPacketsPerFrameCount = 10;
 
 	NetworkMgr();
-	virtual ~NetworkMgr();
+	virtual ~NetworkMgr() {}
 
 	bool	Init( uint16_t inPort );
-
-#ifdef HAS_EPOLL
-	void	WaitForIncomingPackets();
-	void	RecvIncomingPacketsIntoQueue( UDPSocketPtr inUDPSocketPtr, SocketAddrInterface infromAddress );
-#endif
-
 	void	ProcessIncomingPackets();
+	virtual void			CheckForDisconnects() {}
+	virtual void			SendOutgoingPackets() {}
 
 	virtual void	ProcessPacket( InputBitStream& inInputStream, const SocketAddrInterface& inFromAddress, const UDPSocketPtr& inUDPSocket ) = 0;
 	virtual void HandleConnectionReset( const SocketAddrInterface& inFromAddress ) {}
@@ -61,11 +80,15 @@ private:
 			InputBitStream& inInputMemoryBitStream,
 			const SocketAddrInterface& inFromAddress,
 			UDPSocketPtr  inUDPSocket = nullptr
-		) :
+			//,
+			//std::shared_ptr<UdpConnection> inUdpConnection = nullptr
+			) :
 			mReceivedTime( inReceivedTime ),
 			mFromAddress( inFromAddress ),
 			mPacketBuffer( inInputMemoryBitStream ),
 			mUDPSocket( inUDPSocket )
+			//,
+			//mUdpConnection( inUdpConnection )
 		{
 		}
 
@@ -73,6 +96,7 @@ private:
 		float					GetReceivedTime()	const { return mReceivedTime; }
 		InputBitStream&	GetPacketBuffer() { return mPacketBuffer; }
 		UDPSocketPtr	GetUDPSocket() const { return mUDPSocket; }
+		//std::shared_ptr<UdpConnection>	GetUdpConnection() const { return mUdpConnection; }
 
 	private:
 
@@ -80,6 +104,7 @@ private:
 		InputBitStream			mPacketBuffer;
 		SocketAddrInterface		mFromAddress;
 		UDPSocketPtr			mUDPSocket;
+		//std::shared_ptr<UdpConnection>			mUdpConnection;
 	};
 
 	//void	UpdateBytesSentLastFrame();
@@ -106,6 +131,37 @@ protected:
 	InputBitStream				mChunkInputStream;
 	uint32_t					mChunkPacketID;
 
+
+#ifdef DEPRECATED_EPOLL_INTERFACE
+	void	WaitForIncomingPackets();
+	void	RecvIncomingPacketsIntoQueue( UDPSocketPtr inUDPSocketPtr, SocketAddrInterface infromAddress );
+#endif
+
+#ifdef NEW_EPOLL_INTERFACE
+public:
+	void setWorldUpdateCallback( const std::function<void()>& cb )
+	{ WorldUpdateCB_ = cb; }
+
+	void Start();
+	void threadInit( EventLoop* loop );
+	void onConnection( const UdpConnectionPtr& conn );
+	void onMessage( 
+		const muduo::net::UdpConnectionPtr& conn, 
+		muduo::net::Buffer* buf, 
+		muduo::Timestamp receiveTime 
+	);
+
+private:
+	typedef std::set<UdpConnectionPtr> ConnectionList;
+	EventLoop loop_;
+	std::shared_ptr<UdpServer> server_;
+	typedef ThreadLocalSingleton<ConnectionList> LocalConnections;
+
+	MutexLock mutex_;
+	std::set<EventLoop*> loops_;
+
+	std::function<void()> WorldUpdateCB_;
+#endif
 };
 
 inline	EntityPtr NetworkMgr::GetGameObject( int inNetworkId ) const

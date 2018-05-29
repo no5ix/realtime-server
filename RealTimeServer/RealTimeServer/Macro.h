@@ -35,3 +35,5 @@ typedef unsigned int						ChunkPacketID;
 #define MAX_PACKET_BYTE_LENGTH				(512)
 
 #define ACK_BIT_FIELD_BYTE_LEN				(4)
+
+#define THREAD_NUM							(8)

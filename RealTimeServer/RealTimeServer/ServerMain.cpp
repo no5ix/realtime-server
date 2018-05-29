@@ -27,19 +27,19 @@ int __argc;
 #endif
 
 
-//int main( int argc, const char** argv )
-//{
-//#ifndef _WIN32
-//	__argc = argc;
-//	__argv = argv;
-//#endif
-//	if (RealTimeSrv::StaticInit())
-//	{
-//		return RealTimeSrv::sInstance->Run();
-//	}
-//	else
-//	{
-//		//error
-//		return 1;
-//	}
-//}
+int main( int argc, const char** argv )
+{
+#ifndef _WIN32
+	__argc = argc;
+	__argv = argv;
+#endif
+	if (RealTimeSrv::StaticInit())
+	{
+		return RealTimeSrv::sInstance->Run();
+	}
+	else
+	{
+		//error
+		return 1;
+	}
+}

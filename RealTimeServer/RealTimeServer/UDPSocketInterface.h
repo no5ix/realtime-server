@@ -12,7 +12,7 @@ public:
 	static void			ReportError(const char* inOperationDesc);
 	static int			GetLastError();
 
-	static shared_ptr< UDPSocketInterface > CreateUDPSocket();
+	static shared_ptr< UDPSocketInterface > CreateUDPSocket( SOCKET s = 0 );
 
 	int Bind(const SocketAddrInterface& inToAddress);
 	int SendTo(const void* inToSend, int inLength, const SocketAddrInterface& inToAddress);

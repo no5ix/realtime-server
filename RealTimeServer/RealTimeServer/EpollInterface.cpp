@@ -3,7 +3,7 @@
 
 
 
-#ifdef HAS_EPOLL
+#ifdef DEPRECATED_EPOLL_INTERFACE
 
 std::unique_ptr<EpollInterface> EpollInterface::sInst;
 
@@ -139,5 +139,5 @@ void EpollInterface::SetListener( UDPSocketPtr inListener, SocketAddrInterface i
 	mListenerAddr = inSocketAddr;
 }
 
-#endif // HAS_EPOLL
+#endif // DEPRECATED_EPOLL_INTERFACE
 

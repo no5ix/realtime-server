@@ -24,12 +24,24 @@ bool NetworkMgrSrv::StaticInit( uint16_t inPort )
 	return sInst->Init( inPort );
 }
 
-void NetworkMgrSrv::ProcessPacket( InputBitStream& inInputStream, const SocketAddrInterface& inFromAddress, const UDPSocketPtr& inUDPSocket )
+void NetworkMgrSrv::ProcessPacket( 
+	InputBitStream& inInputStream, 
+	const SocketAddrInterface& inFromAddress, 
+	const UDPSocketPtr& inUDPSocket
+	// ,
+	// const std::shared_ptr<UdpConnection>& inUdpConnetction
+)
 {
 	auto it = mAddressToClientMap.find( inFromAddress );
 	if ( it == mAddressToClientMap.end() )
 	{
-		HandlePacketFromNewClient( inInputStream, inFromAddress, inUDPSocket );
+		HandlePacketFromNewClient( 
+			inInputStream, 
+			inFromAddress, 
+			inUDPSocket
+			// , 
+			// inUdpConnetction 
+		);
 	}
 	else
 	{
@@ -105,7 +117,13 @@ void NetworkMgrSrv::HandleInputPacket( ClientProxyPtr inClientProxy, InputBitStr
 	}
 }
 
-void NetworkMgrSrv::HandlePacketFromNewClient( InputBitStream& inInputStream, const SocketAddrInterface& inFromAddress, const UDPSocketPtr& inUDPSocket )
+void NetworkMgrSrv::HandlePacketFromNewClient( 
+	InputBitStream& inInputStream, 
+	const SocketAddrInterface& inFromAddress, 
+	const UDPSocketPtr& inUDPSocket
+	// ,
+	// const std::shared_ptr<UdpConnection>& inUdpConnetction
+)
 {
 	uint32_t	packetType;
 	inInputStream.Read( packetType );
@@ -114,10 +132,18 @@ void NetworkMgrSrv::HandlePacketFromNewClient( InputBitStream& inInputStream, co
 		|| packetType == kResetedCC
 		)
 	{
-		string playerName = "RealTimeSrvTestPlayerName";
+		std::string playerName = "RealTimeSrvTestPlayerName";
 		//inInputStream.Read( playerName );	
 
-		ClientProxyPtr newClientProxy = std::make_shared< ClientProxy >( inFromAddress, playerName, mNewPlayerId++, inUDPSocket );
+		ClientProxyPtr newClientProxy = 
+			std::make_shared< ClientProxy >( 
+				inFromAddress,
+				playerName, 
+				mNewPlayerId++, 
+				inUDPSocket
+				// ,
+				// inUdpConnetction
+			);
 		mAddressToClientMap[inFromAddress] = newClientProxy;
 		mPlayerIdToClientMap[newClientProxy->GetPlayerId()] = newClientProxy;
 
@@ -343,7 +369,7 @@ void NetworkMgrSrv::HandleConnectionReset( const SocketAddrInterface& inFromAddr
 	{
 		mPlayerIdToClientMap.erase( it->second->GetPlayerId() );
 
-#ifdef HAS_EPOLL
+#ifdef DEPRECATED_EPOLL_INTERFACE
 		EpollInterface::sInst->CloseSocket( it->second->GetUDPSocket()->GetSocket() );
 #endif
 
@@ -377,7 +403,7 @@ void NetworkMgrSrv::CheckForDisconnects()
 
 			mPlayerIdToClientMap.erase( it->second->GetPlayerId() );
 
-#ifdef HAS_EPOLL
+#ifdef DEPRECATED_EPOLL_INTERFACE
 			EpollInterface::sInst->CloseSocket( it->second->GetUDPSocket()->GetSocket() );
 #endif
 

@@ -56,9 +56,12 @@ int UDPSocketInterface::GetLastError()
 
 }
 
-UDPSocketPtr UDPSocketInterface::CreateUDPSocket()
+UDPSocketPtr UDPSocketInterface::CreateUDPSocket( SOCKET s )
 {
-	SOCKET s = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+	if ( s == 0)
+	{
+		SOCKET s = socket( AF_INET, SOCK_DGRAM, IPPROTO_UDP );
+	}
 
 	if (s != INVALID_SOCKET)
 	{

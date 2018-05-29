@@ -12,11 +12,11 @@ bool RealTimeSrv::StaticInit()
 
 #ifndef _WIN32
 	::signal( SIGPIPE, SIG_IGN );
-	if ( RealTimeSrv::BecomeDaemon() == -1 )
-	{
-		LOG( "BecomeDaemon failed", 0 );
-		return false;
-	}
+	//if ( RealTimeSrv::BecomeDaemon() == -1 )
+	//{
+	//	LOG( "BecomeDaemon failed", 0 );
+	//	return false;
+	//}
 #endif
 
 	sInstance.reset( new RealTimeSrv() );
@@ -101,7 +101,7 @@ RealTimeSrv::RealTimeSrv()
 void RealTimeSrv::Simulate()
 {
 	float latency = 0.0f;
-	string latencyString = RealTimeSrvHelper::GetCommandLineArg( 2 );
+	std::string latencyString = RealTimeSrvHelper::GetCommandLineArg( 2 );
 	if ( !latencyString.empty() )
 	{
 		latency = stof( latencyString );
@@ -109,7 +109,7 @@ void RealTimeSrv::Simulate()
 	}
 
 	float dropPacketChance = 0.0f;
-	string dropPacketChanceString = RealTimeSrvHelper::GetCommandLineArg( 3 );
+	std::string dropPacketChanceString = RealTimeSrvHelper::GetCommandLineArg( 3 );
 	if ( !dropPacketChanceString.empty() )
 	{
 		dropPacketChance = stof( dropPacketChanceString );
@@ -117,7 +117,7 @@ void RealTimeSrv::Simulate()
 	}
 
 	int IsSimulatedJitter = 0;
-	string IsSimulatedJitterString = RealTimeSrvHelper::GetCommandLineArg( 4 );
+	std::string IsSimulatedJitterString = RealTimeSrvHelper::GetCommandLineArg( 4 );
 	if ( !IsSimulatedJitterString.empty() )
 	{
 		IsSimulatedJitter = stoi( IsSimulatedJitterString );
@@ -131,8 +131,8 @@ void RealTimeSrv::Simulate()
 bool RealTimeSrv::InitNetworkMgr()
 {
 	uint16_t port = 44444;
-	string portString = RealTimeSrvHelper::GetCommandLineArg( 1 );
-	if ( portString != string() )
+	std::string portString = RealTimeSrvHelper::GetCommandLineArg( 1 );
+	if ( portString != std::string() )
 	{
 		port = stoi( portString );
 	}
@@ -142,17 +142,21 @@ bool RealTimeSrv::InitNetworkMgr()
 
 int RealTimeSrv::Run()
 {
+#ifdef NEW_EPOLL_INTERFACE
+	NetworkMgrSrv::sInst->setWorldUpdateCallback( 
+		std::bind( &World::Update, World::sInst.get() ) 
+	);
+	NetworkMgrSrv::sInst->Start();
+#else
 	bool quit = false;
-
 	while ( !quit )
 	{
-		RealTimeSrvTiming::sInstance.Update();
-
+		//RealTimeSrvTiming::sInstance.Update();
 		DoFrame();
 	}
+#endif
 	return 0;
 }
-
 
 void RealTimeSrv::DoFrame()
 {

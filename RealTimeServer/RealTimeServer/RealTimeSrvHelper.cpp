@@ -10,18 +10,18 @@ void OutputDebugString( const char* inString )
 }
 #endif
 
-string RealTimeSrvHelper::GetCommandLineArg( int inIndex )
+std::string RealTimeSrvHelper::GetCommandLineArg( int inIndex )
 {
 	if (inIndex < __argc)
 	{
-		return string( __argv[inIndex] );
+		return std::string( __argv[inIndex] );
 	}
 
-	return string();
+	return std::string();
 }
 
 
-string RealTimeSrvHelper::Sprintf( const char* inFormat, ... )
+std::string RealTimeSrvHelper::Sprintf( const char* inFormat, ... )
 {
 	//not thread safe...
 	static char temp[4096];
@@ -34,7 +34,7 @@ string RealTimeSrvHelper::Sprintf( const char* inFormat, ... )
 #else
 	vsnprintf( temp, 4096, inFormat, args );
 #endif
-	return string( temp );
+	return std::string( temp );
 }
 
 // void RealTimeSrvHelper::Log( const char* inFormat )

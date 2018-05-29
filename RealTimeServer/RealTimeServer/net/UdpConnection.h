@@ -102,6 +102,7 @@ namespace muduo
 										 // called when TcpServer has removed me from its map
 			void connectDestroyed();  // should be called only once
 
+			int GetSocketFd() const;
 		private:
 			enum StateE { kDisconnected, kConnecting, kConnected, kDisconnecting };
 			void handleRead( Timestamp receiveTime );

@@ -1,14 +1,24 @@
+// class UdpConnection;
+
 class NetworkMgrSrv : public NetworkMgr
 {
 public:
 	static std::unique_ptr<NetworkMgrSrv>	sInst;
 
 	static bool				StaticInit( uint16_t inPort );
-	virtual void			ProcessPacket( InputBitStream& inInputStream, const SocketAddrInterface& inFromAddress, const UDPSocketPtr& inUDPSocket  ) override;
+
+	virtual void			ProcessPacket( 
+		InputBitStream& inInputStream, 
+		const SocketAddrInterface& inFromAddress, 
+		const UDPSocketPtr& inUDPSocket
+		// ,
+		// const std::shared_ptr<UdpConnection>& inUdpConnetction
+	) override;
+
 	virtual void			HandleConnectionReset( const SocketAddrInterface& inFromAddress ) override;
-	void					SendOutgoingPackets();
+	virtual void			SendOutgoingPackets();
 	void					RegisterGameObject( EntityPtr inGameObject );
-	inline	EntityPtr	RegisterAndReturn( Entity* inGameObject );
+	inline	EntityPtr		RegisterAndReturn( Entity* inGameObject );
 	void					UnregisterGameObject( Entity* inGameObject );
 	void					SetStateDirty( int inNetworkId, uint32_t inDirtyState );
 	virtual void			CheckForDisconnects();
@@ -20,7 +30,14 @@ public:
 private:
 	NetworkMgrSrv();
 
-	void	HandlePacketFromNewClient( InputBitStream& inInputStream, const SocketAddrInterface& inFromAddress, const UDPSocketPtr& inUDPSocket );
+	void	HandlePacketFromNewClient( 
+		InputBitStream& inInputStream, 
+		const SocketAddrInterface& inFromAddress, 
+		const UDPSocketPtr& inUDPSocket
+		// ,
+		// const std::shared_ptr<UdpConnection>& inUdpConnetction
+	);
+
 	void	ProcessPacket( ClientProxyPtr inClientProxy, InputBitStream& inInputStream );
 
 	void	SendWelcomePacket( ClientProxyPtr inClientProxy );

@@ -61,7 +61,7 @@ UdpConnection::UdpConnection( EventLoop* loop,
 		std::bind( &UdpConnection::handleError, this ) );
 	LOG_DEBUG << "UdpConnection::ctor[" << name_ << "] at " << this
 		<< " fd=" << sockfd;
-	socket_->setKeepAlive( true );
+	//socket_->setKeepAlive( true );
 }
 
 UdpConnection::~UdpConnection()
@@ -385,4 +385,7 @@ void UdpConnection::handleError()
 	LOG_ERROR << "UdpConnection::handleError [" << name_
 		<< "] - SO_ERROR = " << err << " " << strerror_tl( err );
 }
+
+int UdpConnection::GetSocketFd() const 
+{ return socket_->fd(); }
 

@@ -7,66 +7,11 @@ NetworkMgr::NetworkMgr() :
 	mSimulatedLatency( 0.f ),
 	mWhetherToSimulateJitter( false ),
 	mChunkPacketID( 1 )
-{
-
-}
-
-NetworkMgr::~NetworkMgr()
-{
-
-}
-
-bool NetworkMgr::Init(uint16_t inPort)
-{
-#if _WIN32
-	UDPSocketInterface::StaticInit(); 
-#endif
-
-	mSocket = UDPSocketInterface::CreateUDPSocket();
-
-	if ( mSocket == nullptr )
-	{
-		return false;
-	}
-
-#ifdef HAS_EPOLL
-	if ( mSocket->SetReUse())
-	{
-		return false;
-	}
-#endif
-
-	SocketAddrInterface ownAddress(INADDR_ANY, inPort);
-	mSocket->Bind(ownAddress);
-
-	LOG("Initializing NetworkManager at port %d", inPort);
-
-	//mBytesReceivedPerSecond = WeightedTimedMovingAverage(1.f);
-	//mBytesSentPerSecond = WeightedTimedMovingAverage(1.f);
-
-
-	if (mSocket->SetNonBlockingMode(true) != NO_ERROR)
-	{
-		return false;
-	}
-
-#ifdef HAS_EPOLL
-	EpollInterface::StaticInit();
-	if ( !EpollInterface::sInst->Add( mSocket->GetSocket() ) )
-	{
-		return false;
-	}
-	EpollInterface::sInst->SetListener( mSocket, ownAddress );
-#endif
-
-	return true;
-
-}
-
+{}
 
 void NetworkMgr::ProcessIncomingPackets()
 {
-#ifdef HAS_EPOLL
+#ifdef DEPRECATED_EPOLL_INTERFACE
 	WaitForIncomingPackets();
 #else
 	ReadIncomingPacketsIntoQueue();
@@ -80,20 +25,24 @@ void NetworkMgr::ProcessIncomingPackets()
 
 void NetworkMgr::ProcessQueuedPackets()
 {
-	//look at the front packet...
 	while ( !mPacketQueue.empty() )
 	{
 		ReceivedPacket& nextPacket = mPacketQueue.front();
 		if ( RealTimeSrvTiming::sInstance.GetCurrentGameTime() > nextPacket.GetReceivedTime() )
 		{
-			ProcessPacket( nextPacket.GetPacketBuffer(), nextPacket.GetFromAddress(), nextPacket.GetUDPSocket() );
+			ProcessPacket(
+				nextPacket.GetPacketBuffer(),
+				nextPacket.GetFromAddress(),
+				nextPacket.GetUDPSocket()
+				// , 
+				// nextPacket.GetUdpConnection() 
+			);
 			mPacketQueue.pop();
 		}
 		else
 		{
 			break;
 		}
-
 	}
 }
 
@@ -136,7 +85,7 @@ void NetworkMgr::RecombineSlicesToChunk( InputBitStream& refInputStream )
 void NetworkMgr::ProcessOutcomingPacket(
 	OutputBitStream& inOutputStream,
 	shared_ptr< ClientProxy > inClientProxy,
-	TransmissionDataHandler* inTransmissionDataHandler)
+	TransmissionDataHandler* inTransmissionDataHandler )
 {
 	//bool isReachTheEnd = false;
 	//uint8_t slicedPacketIndex = 0;
@@ -176,7 +125,7 @@ void NetworkMgr::ProcessOutcomingPacket(
 	//}
 }
 
-#ifdef HAS_EPOLL
+#ifdef DEPRECATED_EPOLL_INTERFACE
 void NetworkMgr::WaitForIncomingPackets()
 {
 	EpollInterface::sInst->Wait( -1.f );
@@ -228,6 +177,67 @@ void NetworkMgr::RecvIncomingPacketsIntoQueue( UDPSocketPtr inUDPSocketPtr, Sock
 	}
 }
 
+
+#else //DEPRECATED_EPOLL_INTERFACE
+
+void NetworkMgr::ReadIncomingPacketsIntoQueue()
+{
+	char packetMem[MAX_PACKET_BYTE_LENGTH];
+	int packetSize = sizeof( packetMem );
+	InputBitStream inputStream( packetMem, packetSize * 8 );
+	SocketAddrInterface fromAddress;
+
+	int receivedPackedCount = 0;
+	int totalReadByteCount = 0;
+
+	while ( receivedPackedCount < kMaxPacketsPerFrameCount )
+	{
+		int readByteCount = mSocket->ReceiveFrom( packetMem, packetSize, fromAddress );
+		if ( readByteCount == 0 )
+		{
+			//LOG( "ReadIncomingPacketsIntoQueue readByteCount = %d ", 0 );
+			break;
+		}
+		else if ( readByteCount == -WSAECONNRESET )
+		{
+			HandleConnectionReset( fromAddress );
+		}
+		else if ( readByteCount > 0 )
+		{
+			inputStream.ResetToCapacity( readByteCount );
+			++receivedPackedCount;
+			totalReadByteCount += readByteCount;
+
+			if ( RealTimeSrvMath::GetRandomFloat() >= mDropPacketChance )
+			{
+				float simulatedReceivedTime =
+					RealTimeSrvTiming::sInstance.GetCurrentGameTime() +
+					mSimulatedLatency +
+					( GetIsSimulatedJitter() ?
+						RealTimeSrvMath::Clamp( RealTimeSrvMath::GetRandomFloat(), 0.f, 0.06f ) : 0.f );
+				mPacketQueue.emplace( simulatedReceivedTime, inputStream, fromAddress );
+			}
+			else
+			{
+				//LOG( "Dropped packet!", 0 );
+			}
+		}
+		else
+		{
+		}
+	}
+
+	if ( totalReadByteCount > 0 )
+	{
+		//mBytesReceivedPerSecond.UpdatePerSecond( static_cast< float >( totalReadByteCount ) );
+	}
+}
+
+#endif //DEPRECATED_EPOLL_INTERFACE
+
+
+#ifdef NEW_EPOLL_INTERFACE
+
 void NetworkMgr::SendPacket( const OutputBitStream& inOutputStream, ClientProxyPtr inClientProxy )
 {
 	if ( RealTimeSrvMath::GetRandomFloat() < mDropPacketChance )
@@ -242,62 +252,142 @@ void NetworkMgr::SendPacket( const OutputBitStream& inOutputStream, ClientProxyP
 	}
 }
 
-
-#else
-
-void NetworkMgr::ReadIncomingPacketsIntoQueue()
+void NetworkMgr::Start()
 {
-	char packetMem[MAX_PACKET_BYTE_LENGTH];
-	int packetSize = sizeof( packetMem );
-	InputBitStream inputStream( packetMem, packetSize * 8 );
-	SocketAddrInterface fromAddress;
+	server_->start();
+	loop_.loop();
+}
 
-	int receivedPackedCount = 0;
-	int totalReadByteCount = 0;
+void NetworkMgr::threadInit( EventLoop* loop )
+{
+	assert( LocalConnections::pointer() == NULL );
+	LocalConnections::instance();
+	assert( LocalConnections::pointer() != NULL );
+	MutexLockGuard lock( mutex_ );
+	loops_.insert( loop );
+}
 
-	while (receivedPackedCount < kMaxPacketsPerFrameCount)
+void NetworkMgr::onConnection( const UdpConnectionPtr& conn )
+{
+	LOG_INFO << conn->localAddress().toIpPort() << " -> "
+		<< conn->peerAddress().toIpPort() << " is "
+		<< ( conn->connected() ? "UP" : "DOWN" );
+
+	if ( conn->connected() )
 	{
-		int readByteCount = mSocket->ReceiveFrom( packetMem, packetSize, fromAddress );
-		if (readByteCount == 0)
-		{
-			//LOG( "ReadIncomingPacketsIntoQueue readByteCount = %d ", 0 );
-			break;
-		}
-		else if (readByteCount == -WSAECONNRESET)
-		{
-			HandleConnectionReset( fromAddress );
-		}
-		else if (readByteCount > 0)
-		{
-			inputStream.ResetToCapacity( readByteCount );
-			++receivedPackedCount;
-			totalReadByteCount += readByteCount;
-
-			if (RealTimeSrvMath::GetRandomFloat() >= mDropPacketChance)
-			{
-				float simulatedReceivedTime =
-					RealTimeSrvTiming::sInstance.GetCurrentGameTime() +
-					mSimulatedLatency +  
-					( GetIsSimulatedJitter() ? 
-						RealTimeSrvMath::Clamp( RealTimeSrvMath::GetRandomFloat(), 0.f, 0.06f ) : 0.f );
-				mPacketQueue.emplace( simulatedReceivedTime, inputStream, fromAddress );
-			}
-			else
-			{
-				//LOG( "Dropped packet!", 0 );
-			}
-		}
-		else
-		{
-		}
+		LocalConnections::instance().insert( conn );
 	}
-
-	if (totalReadByteCount > 0)
+	else
 	{
-		//mBytesReceivedPerSecond.UpdatePerSecond( static_cast< float >( totalReadByteCount ) );
+		LocalConnections::instance().erase( conn );
 	}
 }
 
+void NetworkMgr::onMessage( const muduo::net::UdpConnectionPtr& conn,
+	muduo::net::Buffer* buf,
+	muduo::Timestamp receiveTime )
+{
+	if ( buf->readableBytes() > 0 ) // kHeaderLen == 0
+	{
+		const uint32_t packetSize = buf->readableBytes();
+		char *packetMem =
+			static_cast< char* >( std::malloc( packetSize ) );
+		memcpy( packetMem, buf->peek(), packetSize );
+		buf->retrieve( packetSize );
+
+		InputBitStream inputStream( packetMem, packetSize * 8 );
+
+		if ( RealTimeSrvMath::GetRandomFloat() >= mDropPacketChance )
+		{
+			float simulatedReceivedTime =
+				RealTimeSrvTiming::sInstance.GetCurrentGameTime() +
+				mSimulatedLatency +
+				( GetIsSimulatedJitter() ?
+					RealTimeSrvMath::Clamp( RealTimeSrvMath::GetRandomFloat(), 0.f, 0.06f ) : 0.f );
+
+			mPacketQueue.emplace(
+				simulatedReceivedTime,
+				inputStream,
+				SocketAddrInterface( *( conn->peerAddress().getSockAddr() ) ),
+				UDPSocketInterface::CreateUDPSocket( conn->GetSocketFd() )
+				//,
+				//conn
+			);
+		}
+		else
+		{
+			//LOG( "Dropped packet!", 0 );
+		}
+	}
+
+	ProcessQueuedPackets();
+	CheckForDisconnects();
+	WorldUpdateCB_();
+	SendOutgoingPackets();
+}
+
+bool NetworkMgr::Init( uint16_t inPort )
+{
+	InetAddress serverAddr( inPort );
+	server_.reset( new UdpServer( &loop_, serverAddr, "RealTimeServer" ) );
+
+	server_->setConnectionCallback(
+		std::bind( &NetworkMgr::onConnection, this, _1 ) );
+	server_->setMessageCallback(
+		std::bind( &NetworkMgr::onMessage, this, _1, _2, _3 ) );
+
+	server_->setThreadNum( THREAD_NUM );
+	server_->setThreadInitCallback( std::bind( &NetworkMgr::threadInit, this, _1 ) );
+}
+
+#else //NEW_EPOLL_INTERFACE
+
+bool NetworkMgr::Init( uint16_t inPort )
+{
+#if _WIN32
+	UDPSocketInterface::StaticInit();
+#endif //_WIN32
+
+	mSocket = UDPSocketInterface::CreateUDPSocket();
+
+	if ( mSocket == nullptr )
+	{
+		return false;
+	}
+
+#ifdef DEPRECATED_EPOLL_INTERFACE
+	if ( mSocket->SetReUse() )
+	{
+		return false;
+	}
+#endif //DEPRECATED_EPOLL_INTERFACE
+
+	SocketAddrInterface ownAddress( INADDR_ANY, inPort );
+	mSocket->Bind( ownAddress );
+
+	LOG( "Initializing NetworkManager at port %d", inPort );
+
+	//mBytesReceivedPerSecond = WeightedTimedMovingAverage(1.f);
+	//mBytesSentPerSecond = WeightedTimedMovingAverage(1.f);
+
+
+	if ( mSocket->SetNonBlockingMode( true ) != NO_ERROR )
+	{
+		return false;
+	}
+
+#ifdef DEPRECATED_EPOLL_INTERFACE
+	EpollInterface::StaticInit();
+	if ( !EpollInterface::sInst->Add( mSocket->GetSocket() ) )
+	{
+		return false;
+	}
+	EpollInterface::sInst->SetListener( mSocket, ownAddress );
+#endif //DEPRECATED_EPOLL_INTERFACE
+
+	return true;
+
+}
 
 void NetworkMgr::SendPacket( const OutputBitStream& inOutputStream, ClientProxyPtr inClientProxy )
 {
@@ -307,10 +397,9 @@ void NetworkMgr::SendPacket( const OutputBitStream& inOutputStream, ClientProxyP
 	}
 
 	int sentByteCount = mSocket->SendTo( inOutputStream.GetBufferPtr(), inOutputStream.GetByteLength(), inClientProxy->GetSocketAddress() );
-	if (sentByteCount > 0)
+	if ( sentByteCount > 0 )
 	{
 		mBytesSentThisFrame += sentByteCount;
 	}
 }
-
-#endif
+#endif //NEW_EPOLL_INTERFACE

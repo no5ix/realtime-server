@@ -39,7 +39,7 @@ public:
 
 	uint32_t				GetSize()			const { return sizeof( sockaddr ); }
 
-	string	ToString() const
+	std::string	ToString() const
 	{
 		const sockaddr_in* s = GetAsSockAddrIn();
 		char destinationBuffer[128];

@@ -74,7 +74,7 @@ void UdpServer::newConnection( int sockfd, const InetAddress& peerAddr )
 
 	LOG_INFO << "UdpServer::newConnection [" << name_
 		<< "] - new connection [" << connName
-		<< "] - new sockfd [" << sockfd
+		<< "] - new connection sockfd [" << sockfd
 		<< "] from " << peerAddr.toIpPort();
 	InetAddress localAddr( sockets::getLocalAddr( sockfd ) );
 

@@ -1,10 +1,14 @@
 #pragma once
 
+//#ifndef _WIN32
+//#define DEPRECATED_EPOLL_INTERFACE
+//#endif
+
 #ifndef _WIN32
-#define HAS_EPOLL
+#define NEW_EPOLL_INTERFACE
 #endif
 
-#ifdef HAS_EPOLL
+#ifdef DEPRECATED_EPOLL_INTERFACE
 
 typedef std::unordered_map<SOCKET, UDPSocketPtr> SocketToUDPSocketPtrMap;
 typedef std::unordered_map<SOCKET, SocketAddrInterface> SocketToSocketAddrMap;
@@ -38,4 +42,4 @@ private:
 	SocketToSocketAddrMap mSocketToSocketAddrMap;
 };
 
-#endif // HAS_EPOLL
+#endif // DEPRECATED_EPOLL_INTERFACE
