@@ -3,6 +3,7 @@
 #define UDP_MUDUO_NET_ACCEPTOR_H
 
 #include <functional>
+#include <map>
 
 #include <muduo/net/Channel.h>
 #include <muduo/net/Socket.h>
@@ -42,6 +43,9 @@ namespace muduo
 			NewConnectionCallback newConnectionCallback_;
 			bool listenning_;
 			uint16_t listenPort_;
+
+			typedef std::map<int, UdpConnectorPtr> UdpConnectorMap;
+			UdpConnectorMap udpConnectors_;
 		};
 
 	}

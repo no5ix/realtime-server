@@ -62,6 +62,12 @@ void UdpAcceptor::handleRead()
 		tempConnector->setNewConnectionCallback(
 			std::bind( &UdpAcceptor::newConnection, this, _1, peerAddr ) );
 		tempConnector->start();
+
+		assert( 
+			udpConnectors_.find( tempConnector->GetConnectSocket().fd() ) 
+			== udpConnectors_.end() 
+		);
+		udpConnectors_[tempConnector->GetConnectSocket().fd()] = tempConnector;
 	}
 	else
 	{

@@ -42,6 +42,9 @@ namespace muduo
 
 			const InetAddress& serverAddress() const { return serverAddr_; }
 
+			/////////// new : for UDP
+			const Socket& GetConnectSocket() const { return connectSocket_; }
+
 		private:
 			enum States { kDisconnected, kConnecting, kConnected };
 			static const int kMaxRetryDelayMs = 30 * 1000;
@@ -60,6 +63,8 @@ namespace muduo
 
 			/////////// new : for UDP
 			void connected( int sockfd );
+			Socket connectSocket_;
+
 
 			EventLoop* loop_;
 			InetAddress serverAddr_;
