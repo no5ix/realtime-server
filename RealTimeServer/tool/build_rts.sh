@@ -1,15 +1,18 @@
 #!/bin/sh
 
 
-cd ~/rts/build;
-cmake ../RealTimeServer;
-#make clean
-make
+CUR_DIR=`pwd`
+SOURCE_DIR="${CUR_DIR}/../RealTimeServer"
+BUILD_DIR="${CUR_DIR}/../build"
 
-# lsof -i:44444 | grep rts | awk '{print $2}' | xargs kill -9
+if [ ! -d ${BUILD_DIR} ]; then
+  mkdir ${BUILD_DIR}
+fi
 
-# ./rts
-
-# lsof -i:44444
+if [ -x ${BUILD_DIR} ]; then
+    cd ${BUILD_DIR} \
+        && cmake ${SOURCE_DIR} \
+        && make $*
+fi
 
 exit 0

@@ -1,11 +1,11 @@
 IF(UNIX)
 
     # for tcp
-    add_executable(chat_client_tcp client.cc)
-    target_link_libraries(chat_client_tcp udp_net)
+    add_executable(tcp_chat_client client.cc)
+    target_link_libraries(tcp_chat_client udp_net)
 
-    add_executable(chat_srv_highperformance_tcp server_threaded_highperformance.cc)
-    target_link_libraries(chat_srv_highperformance_tcp udp_net)
+    add_executable(tcp_chat_srv_highperformance server_threaded_highperformance.cc)
+    target_link_libraries(tcp_chat_srv_highperformance udp_net)
 
     # for udp
     add_executable(udp_chat_cli udpChatCli.cpp)

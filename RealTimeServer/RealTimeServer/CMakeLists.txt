@@ -12,12 +12,8 @@ add_definitions(-std=c++11)
 set (PROJ_NAME RealTimeServer)
 project (${PROJ_NAME})
 
-
-# 设置执行文件输出目录
-# SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
-# 设置库输出路径
-# SET(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
-
+set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
+set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 
 # 查找当前目录下的所有源文件
 # 并将名称保存到 DIR_SRCS 变量
