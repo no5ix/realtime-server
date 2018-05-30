@@ -177,7 +177,6 @@ void NetworkMgr::RecvIncomingPacketsIntoQueue( UDPSocketPtr inUDPSocketPtr, Sock
 	}
 }
 
-
 #else //DEPRECATED_EPOLL_INTERFACE
 
 void NetworkMgr::ReadIncomingPacketsIntoQueue()
@@ -289,13 +288,9 @@ void NetworkMgr::onMessage( const muduo::net::UdpConnectionPtr& conn,
 {
 	if ( buf->readableBytes() > 0 ) // kHeaderLen == 0
 	{
-		const uint32_t packetSize = buf->readableBytes();
-		char *packetMem =
-			static_cast< char* >( std::malloc( packetSize ) );
-		memcpy( packetMem, buf->peek(), packetSize );
-		buf->retrieve( packetSize );
 
-		InputBitStream inputStream( packetMem, packetSize * 8 );
+		InputBitStream inputStream( buf->peek(), buf->readableBytes() * 8 );
+		buf->retrieveAll();
 
 		if ( RealTimeSrvMath::GetRandomFloat() >= mDropPacketChance )
 		{

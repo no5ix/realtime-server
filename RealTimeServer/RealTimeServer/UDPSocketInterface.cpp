@@ -1,5 +1,6 @@
 #include "RealTimeSrvPCH.h"
 
+UDPSocketInterface::SocketToUDPSocketPtrMap UDPSocketInterface::SocketToUDPSocketPtrMap_;
 
 bool UDPSocketInterface::StaticInit()
 {
@@ -60,18 +61,37 @@ UDPSocketPtr UDPSocketInterface::CreateUDPSocket( SOCKET s )
 {
 	if ( s == 0)
 	{
-		SOCKET s = socket( AF_INET, SOCK_DGRAM, IPPROTO_UDP );
+		s = socket( AF_INET, SOCK_DGRAM, IPPROTO_UDP );
 	}
 
 	if (s != INVALID_SOCKET)
 	{
-		return UDPSocketPtr(new UDPSocketInterface(s));
+		auto it = SocketToUDPSocketPtrMap_.find( s );
+		if ( it == SocketToUDPSocketPtrMap_.end() )
+		{
+			return SocketToUDPSocketPtrMap_[s] = 
+				UDPSocketPtr( new UDPSocketInterface( s ) );
+		}
+		else
+		{
+			return it->second;
+		}
 	}
 	else
 	{
-		ReportError("CreateUDPSocket");
+		ReportError("UDPSocketInterface::CreateUDPSocket");
 		return nullptr;
 	}
+}
+
+UDPSocketInterface::~UDPSocketInterface()
+{
+	SocketToUDPSocketPtrMap_.erase( mSocket );
+#if _WIN32
+	closesocket( mSocket );
+#else
+	close( mSocket );
+#endif
 }
 
 int UDPSocketInterface::Bind(const SocketAddrInterface& inBindAddress)
@@ -137,16 +157,6 @@ int UDPSocketInterface::ReceiveFrom(void* inToReceive, int inMaxLength, SocketAd
 	}
 }
 
-UDPSocketInterface::~UDPSocketInterface()
-{
-#if _WIN32
-	closesocket(mSocket);
-#else
-	close(mSocket);
-#endif
-}
-
-
 int UDPSocketInterface::SetNonBlockingMode(bool inShouldBeNonBlocking)
 {
 #if _WIN32
@@ -169,8 +179,6 @@ int UDPSocketInterface::SetNonBlockingMode(bool inShouldBeNonBlocking)
 	}
 }
 
-
-
 int UDPSocketInterface::Connect( const SocketAddrInterface& inAddress )
 {
 	int err = connect( mSocket, &inAddress.mSockAddr, inAddress.GetSize() );
@@ -181,8 +189,6 @@ int UDPSocketInterface::Connect( const SocketAddrInterface& inAddress )
 	}
 	return NO_ERROR;
 }
-
-
 
 int UDPSocketInterface::SetReUse()
 {
@@ -206,9 +212,6 @@ int UDPSocketInterface::SetReUse()
 
 	return NO_ERROR;
 }
-
-
-
 
 int32_t	UDPSocketInterface::Send( const void* inData, size_t inLen )
 {

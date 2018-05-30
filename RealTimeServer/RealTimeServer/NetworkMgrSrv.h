@@ -38,7 +38,7 @@ private:
 		// const std::shared_ptr<UdpConnection>& inUdpConnetction
 	);
 
-	void	ProcessPacket( ClientProxyPtr inClientProxy, InputBitStream& inInputStream );
+	void	DoProcessPacket( ClientProxyPtr inClientProxy, InputBitStream& inInputStream );
 
 	void	SendWelcomePacket( ClientProxyPtr inClientProxy );
 

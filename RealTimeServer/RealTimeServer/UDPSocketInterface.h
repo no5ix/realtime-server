@@ -25,10 +25,11 @@ public:
 	int32_t Recv( void* inData, size_t inLen );
 	SOCKET GetSocket() const { return mSocket; }
 
+	typedef std::unordered_map<SOCKET, shared_ptr< UDPSocketInterface >> SocketToUDPSocketPtrMap;
+	static SocketToUDPSocketPtrMap SocketToUDPSocketPtrMap_;
 private:
 	UDPSocketInterface(SOCKET inSocket) : mSocket(inSocket) {}
 	SOCKET mSocket;
-
 };
 
 typedef shared_ptr< UDPSocketInterface >	UDPSocketPtr;

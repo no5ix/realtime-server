@@ -135,7 +135,7 @@ protected:
 #ifdef DEPRECATED_EPOLL_INTERFACE
 	void	WaitForIncomingPackets();
 	void	RecvIncomingPacketsIntoQueue( UDPSocketPtr inUDPSocketPtr, SocketAddrInterface infromAddress );
-#endif
+#endif //DEPRECATED_EPOLL_INTERFACE
 
 #ifdef NEW_EPOLL_INTERFACE
 public:
@@ -152,6 +152,7 @@ public:
 	);
 
 private:
+
 	typedef std::set<UdpConnectionPtr> ConnectionList;
 	EventLoop loop_;
 	std::shared_ptr<UdpServer> server_;
@@ -161,7 +162,7 @@ private:
 	std::set<EventLoop*> loops_;
 
 	std::function<void()> WorldUpdateCB_;
-#endif
+#endif //NEW_EPOLL_INTERFACE
 };
 
 inline	EntityPtr NetworkMgr::GetGameObject( int inNetworkId ) const

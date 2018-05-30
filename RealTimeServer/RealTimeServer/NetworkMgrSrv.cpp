@@ -45,12 +45,12 @@ void NetworkMgrSrv::ProcessPacket(
 	}
 	else
 	{
-		ProcessPacket( ( *it ).second, inInputStream );
+		DoProcessPacket( ( *it ).second, inInputStream );
 	}
 }
 
 
-void NetworkMgrSrv::ProcessPacket( ClientProxyPtr inClientProxy, InputBitStream& inInputStream )
+void NetworkMgrSrv::DoProcessPacket( ClientProxyPtr inClientProxy, InputBitStream& inInputStream )
 {
 	inClientProxy->UpdateLastPacketTime();
 

@@ -94,13 +94,24 @@ class InputBitStream
 {
 public:
 
-	InputBitStream( char* inBuffer = nullptr, uint32_t inBitCount = 0 ) :
-		mBuffer( inBuffer ),
+	InputBitStream( const char* inBuffer = nullptr, const uint32_t inBitCount = 0 ) :
 		mBitCapacity( inBitCount ),
 		mBitHead( 0 ),
-		mRecombinePoint( 0 ),
-		mIsBufferOwner( false )
-	{}
+		mRecombinePoint( 0 )
+	{
+		if ( inBuffer )
+		{
+			int byteCount = mBitCapacity / 8;
+			mBuffer = static_cast< char* >( malloc( inBitCount ) );
+			memcpy( mBuffer, inBuffer, byteCount );
+			mIsBufferOwner = true;
+		}
+		else
+		{
+			mBuffer = nullptr;
+			mIsBufferOwner = false;
+		}
+	}
 
 	InputBitStream( const InputBitStream& inOther ) :
 		mBitCapacity( inOther.mBitCapacity ),
