@@ -1,18 +1,22 @@
-# add_executable(asio_chat_client client.cc)
-# target_link_libraries(asio_chat_client muduo_net)
+IF(UNIX)
 
-# add_executable(asio_chat_loadtest loadtest.cc)
-# target_link_libraries(asio_chat_loadtest muduo_net)
+    # for tcp
+    add_executable(chat_client_tcp client.cc)
+    target_link_libraries(chat_client_tcp udp_net)
 
-# add_executable(asio_chat_server server.cc)
-# target_link_libraries(asio_chat_server muduo_net)
+    add_executable(chat_srv_highperformance_tcp server_threaded_highperformance.cc)
+    target_link_libraries(chat_srv_highperformance_tcp udp_net)
 
-# add_executable(asio_chat_server_threaded server_threaded.cc)
-# target_link_libraries(asio_chat_server_threaded muduo_net)
+    # for udp
+    add_executable(udp_chat_cli udpChatCli.cpp)
+    target_link_libraries(udp_chat_cli udp_net)
 
-# add_executable(asio_chat_server_threaded_efficient server_threaded_efficient.cc)
-# target_link_libraries(asio_chat_server_threaded_efficient muduo_net)
+    add_executable(udp_chat_srv udpChatSrv.cpp)
+    target_link_libraries(udp_chat_srv udp_net)
 
-# add_executable(asio_chat_server_threaded_highperformance server_threaded_highperformance.cc)
-# target_link_libraries(asio_chat_server_threaded_highperformance muduo_net)
-
+    add_executable(udp_chat_srv_highperformance udpChatSrv_highperformance.cpp)
+    target_link_libraries(udp_chat_srv_highperformance udp_net)
+    
+else()
+  	message(SEND_ERROR "You are on an unsupported platform! (Not Win32 or Unix)")
+ENDIF()

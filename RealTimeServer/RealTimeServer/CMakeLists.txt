@@ -1,3 +1,4 @@
+set_property(GLOBAL PROPERTY USE_FOLDERS On)
 
 # CMake 最低版本号要求
 cmake_minimum_required (VERSION 2.8)
@@ -9,7 +10,6 @@ add_definitions(-std=c++11)
 
 # 项目信息
 set (PROJ_NAME RealTimeServer)
-set (BIN_NAME rts)
 project (${PROJ_NAME})
 
 
@@ -44,15 +44,15 @@ project (${PROJ_NAME})
 
 IF(WIN32) # Check if we are on Windows
 
-    file(GLOB_RECURSE project_headers *.h)
-    file(GLOB_RECURSE project_cpps *.c*)
-    set(all_files ${project_headers} ${project_cpps})
-
-    macro(create_filters source_files)
+    macro(create_win_proj win_proj_name)
         if(MSVC)
+            file(GLOB_RECURSE project_headers *.h)
+            file(GLOB_RECURSE project_cpps *.c*)
+            set(all_files ${project_headers} ${project_cpps})
+
             # 获取当前目录
             set(current_dir ${CMAKE_CURRENT_SOURCE_DIR})
-            foreach(src_file ${${source_files}})
+            foreach(src_file ${all_files})
                 # 求出相对路径
                 string(REPLACE ${current_dir}/ "" rel_path_name ${src_file})
                 # 删除相对路径中的文件名部分
@@ -68,41 +68,34 @@ IF(WIN32) # Check if we are on Windows
                 # CMake 命令
                 source_group(${rel_path} FILES ${src_file})
             endforeach(src_file)
-        endif(MSVC)
-    endmacro(create_filters)
-
-    create_filters(all_files)
-    # add_executable(app ${all_files})
-
-    # 指定生成目标
-    add_executable(${PROJ_NAME} ${all_files})
     
-  	if(MSVC) # Check if we are using the Visual Studio compiler
-    		# set_target_properties(${PROJ_NAME} PROPERTIES LINK_FLAGS "/SUBSYSTEM:WINDOWS") # works for all build modes
-    		set_target_properties(${PROJ_NAME} PROPERTIES LINK_FLAGS "/SUBSYSTEM:CONSOLE") # works for all build modes
-    		target_link_libraries(${PROJ_NAME} wsock32 ws2_32)
-        set_target_properties(${PROJ_NAME}
-            PROPERTIES
-            COMPILE_FLAGS /wd"4819"
-        )
-  	elseif(CMAKE_COMPILER_IS_GNUCXX)
-	  	# SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mwindows") # Not tested
-  	else()
-	  	message(SEND_ERROR "You are using an unsupported Windows compiler! (Not MSVC or GCC)")
-  	endif()
+            # 指定生成目标
+            add_executable(${win_proj_name} ${all_files})
 
-elseif(UNIX)
+            if(MSVC) # Check if we are using the Visual Studio compiler
+                # set_target_properties(${win_proj_name} PROPERTIES LINK_FLAGS "/SUBSYSTEM:WINDOWS") # works for all build modes
+                set_target_properties(${win_proj_name} PROPERTIES LINK_FLAGS "/SUBSYSTEM:CONSOLE") # works for all build modes
+                set_target_properties(${win_proj_name} PROPERTIES FOLDER "RealTimeServer")
+                target_link_libraries(${win_proj_name} wsock32 ws2_32)
+                set_target_properties(${win_proj_name}
+                    PROPERTIES
+                    COMPILE_FLAGS /wd"4819"
+                )
+            elseif(CMAKE_COMPILER_IS_GNUCXX)
+                # SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mwindows") # Not tested
+            else()
+                message(SEND_ERROR "You are using an unsupported Windows compiler! (Not MSVC or GCC)")
+            endif()
 
-    file(GLOB_RECURSE all_files "*.*")
+        endif(MSVC)
+    endmacro(create_win_proj)
 
     include_directories(${PROJECT_SOURCE_DIR})
-    # add_subdirectory(muduo/base)
-    # add_subdirectory(muduo/net)
+    add_subdirectory(muduo)
+    add_subdirectory(net)
+    add_subdirectory(game)
 
-    # 指定生成目标
-    add_executable(${BIN_NAME} ${all_files})
-    # 添加链接库
-    target_link_libraries(${BIN_NAME} pthread rt)
+elseif(UNIX)
 
     # Inhibit all warning messages.
     if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
@@ -114,6 +107,12 @@ elseif(UNIX)
     set(CMAKE_BUILD_TYPE "Debug")
     set(CMAKE_CXX_FLAGS_DEBUG "$ENV{CXXFLAGS} -O0 -Wall -g -ggdb")
     set(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall")
+
+    include_directories(${PROJECT_SOURCE_DIR})
+
+    add_subdirectory(muduo)
+    add_subdirectory(net)
+    add_subdirectory(game)
 
 else()
   	message(SEND_ERROR "You are on an unsupported platform! (Not Win32 or Unix)")

@@ -1,6 +1,5 @@
 #include <muduo/net/SocketsOps.h>
 #include "UdpSocketsOps.h"
-#include "Macro.h"
 
 
 
@@ -74,6 +73,8 @@ int sockets::createUdpNonblockingOrDie( sa_family_t family )
 /////////
 int sockets::recvfrom( int sockfd, struct sockaddr_in6* addr )
 {
+	const uint16_t MAX_PACKET_BYTE_LENGTH = 512;
+
 	char packetMem[MAX_PACKET_BYTE_LENGTH];
 	int packetSize = sizeof( packetMem );
 	socklen_t addrlen = static_cast< socklen_t >( sizeof *addr );

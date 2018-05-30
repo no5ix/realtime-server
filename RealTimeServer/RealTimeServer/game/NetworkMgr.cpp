@@ -135,7 +135,6 @@ void NetworkMgr::RecvIncomingPacketsIntoQueue( UDPSocketPtr inUDPSocketPtr, Sock
 {
 	char packetMem[MAX_PACKET_BYTE_LENGTH];
 	int packetSize = sizeof( packetMem );
-	InputBitStream inputStream( packetMem, packetSize * 8 );
 
 	int receivedPackedCount = 0;
 	int totalReadByteCount = 0;
@@ -153,7 +152,7 @@ void NetworkMgr::RecvIncomingPacketsIntoQueue( UDPSocketPtr inUDPSocketPtr, Sock
 		}
 		else if ( readByteCount > 0 )
 		{
-			inputStream.ResetToCapacity( readByteCount );
+			InputBitStream inputStream( packetMem, readByteCount * 8 );
 			++receivedPackedCount;
 			totalReadByteCount += readByteCount;
 
@@ -183,7 +182,6 @@ void NetworkMgr::ReadIncomingPacketsIntoQueue()
 {
 	char packetMem[MAX_PACKET_BYTE_LENGTH];
 	int packetSize = sizeof( packetMem );
-	InputBitStream inputStream( packetMem, packetSize * 8 );
 	SocketAddrInterface fromAddress;
 
 	int receivedPackedCount = 0;
@@ -203,7 +201,7 @@ void NetworkMgr::ReadIncomingPacketsIntoQueue()
 		}
 		else if ( readByteCount > 0 )
 		{
-			inputStream.ResetToCapacity( readByteCount );
+			InputBitStream inputStream( packetMem, readByteCount * 8 );
 			++receivedPackedCount;
 			totalReadByteCount += readByteCount;
 
