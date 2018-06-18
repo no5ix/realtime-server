@@ -14,8 +14,11 @@ IF(UNIX)
     add_library(udp_net ${udp_net_SRCS})
     target_link_libraries(udp_net tcp_net)
 
-
-    add_subdirectory(test/chat)
+    set (test_chat_path "${CMAKE_CURRENT_SOURCE_DIR}/test/chat")
+    if (EXISTS ${test_chat_path})
+  	  message(STATUS "test_chat_path is EXISTS.")
+      add_subdirectory(test/chat)
+    endif()
 
 elseif(WIN32) # Check if we are on Windows
 
