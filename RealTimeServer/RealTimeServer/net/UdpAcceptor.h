@@ -33,6 +33,8 @@ namespace muduo
 			bool listenning() const { return listenning_; }
 			void listen();
 
+			uint16_t GetListenPort() const { return listenPort_; }
+
 		private:
 			void handleRead();
 			void newConnection( int sockfd, const InetAddress& peerAddr );
@@ -44,8 +46,8 @@ namespace muduo
 			bool listenning_;
 			uint16_t listenPort_;
 
-			typedef std::map<int, UdpConnectorPtr> UdpConnectorMap;
-			UdpConnectorMap udpConnectors_;
+			//typedef std::map<int, UdpConnectorPtr> UdpConnectorMap;
+			//UdpConnectorMap udpConnectors_;
 		};
 
 	}

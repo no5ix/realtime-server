@@ -20,12 +20,9 @@ void EntityFactory::RegisterCreationFunction( uint32_t inFourCCName, GameObjectC
 
 EntityPtr EntityFactory::CreateGameObject( uint32_t inFourCCName )
 {
-	
 	GameObjectCreationFunc creationFunc = mNameToGameObjectCreationFunctionMap[inFourCCName];
 
 	EntityPtr gameObject = creationFunc();
-
-	
 	
 	World::sInst->AddGameObject( gameObject );
 

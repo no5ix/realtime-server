@@ -5,8 +5,6 @@ public:
 
 	static bool StaticInit();
 
-	void DoFrame();
-
 	int Run();
 
 	void HandleNewClient( ClientProxyPtr inClientProxy );
@@ -15,19 +13,21 @@ public:
 
 	virtual ~RealTimeSrv();
 
-	void Simulate();
+	void SimulateRealWorld();
 
-#ifndef _WIN32
+
+#ifdef NEW_EPOLL_INTERFACE
 	static int BecomeDaemon();
+#else
+	void DoFrame();
 #endif
+
 
 private:
 	RealTimeSrv();
-
 	bool	InitNetworkMgr();
 
 private:
 
 	bool	mShouldKeepRunning;
-
 };

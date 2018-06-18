@@ -3,12 +3,12 @@ set (PROJ_NAME udp_net)
 IF(UNIX)
 
     set(udp_net_SRCS
-    UdpAcceptor.cpp
-    UdpClient.cpp
-    UdpConnection.cpp
-    UdpConnector.cpp
-    UdpServer.cpp
-    UdpSocketsOps.cpp
+      UdpAcceptor.cpp
+      UdpClient.cpp
+      UdpConnection.cpp
+      UdpConnector.cpp
+      UdpServer.cpp
+      UdpSocketsOps.cpp
     )
 
     add_library(udp_net ${udp_net_SRCS})

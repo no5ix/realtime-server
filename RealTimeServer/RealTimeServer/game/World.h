@@ -1,12 +1,17 @@
 #pragma once
 
+#ifdef NEW_EPOLL_INTERFACE
 
-/*
-* the world tracks all the live game objects. Fairly inefficient for now, but not that much of a problem
-*/
+#include <muduo/base/Mutex.h>
+
+using namespace muduo;
+
+typedef std::unordered_set< EntityPtr > GameObjs;
+typedef std::shared_ptr< GameObjs > GameObjectsPtr;
+#endif //NEW_EPOLL_INTERFACE
+
 class World
 {
-
 public:
 
 	static void StaticInit();
@@ -18,16 +23,28 @@ public:
 
 	void Update();
 
+private:
+	World();
+	//int	GetIndexOfGameObject( GameObjectPtr inGameObject );
+
+#ifdef NEW_EPOLL_INTERFACE
+
+public:
+	GameObjectsPtr GetGameObjects();
+	void GameObjectsCOW();
+
+private:
+	std::shared_ptr< GameObjs > mGameObjects;
+	MutexLock mutex_;
+
+#else //NEW_EPOLL_INTERFACE
+
+public:
 	const std::vector< EntityPtr >&	GetGameObjects()	const { return mGameObjects; }
 
 private:
-
-
-	World();
-
-	//int	GetIndexOfGameObject( GameObjectPtr inGameObject );
-
 	std::vector< EntityPtr >	mGameObjects;
 
+#endif //NEW_EPOLL_INTERFACE
 
 };

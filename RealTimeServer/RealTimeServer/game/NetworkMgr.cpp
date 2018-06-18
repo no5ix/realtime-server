@@ -9,43 +9,6 @@ NetworkMgr::NetworkMgr() :
 	mChunkPacketID( 1 )
 {}
 
-void NetworkMgr::ProcessIncomingPackets()
-{
-#ifdef DEPRECATED_EPOLL_INTERFACE
-	WaitForIncomingPackets();
-#else
-	ReadIncomingPacketsIntoQueue();
-#endif
-
-	ProcessQueuedPackets();
-
-	//UpdateBytesSentLastFrame();
-
-}
-
-void NetworkMgr::ProcessQueuedPackets()
-{
-	while ( !mPacketQueue.empty() )
-	{
-		ReceivedPacket& nextPacket = mPacketQueue.front();
-		if ( RealTimeSrvTiming::sInstance.GetCurrentGameTime() > nextPacket.GetReceivedTime() )
-		{
-			ProcessPacket(
-				nextPacket.GetPacketBuffer(),
-				nextPacket.GetFromAddress(),
-				nextPacket.GetUDPSocket()
-				// , 
-				// nextPacket.GetUdpConnection() 
-			);
-			mPacketQueue.pop();
-		}
-		else
-		{
-			break;
-		}
-	}
-}
-
 // not complete, deprecated.
 void NetworkMgr::RecombineSlicesToChunk( InputBitStream& refInputStream )
 {
@@ -176,7 +139,174 @@ void NetworkMgr::RecvIncomingPacketsIntoQueue( UDPSocketPtr inUDPSocketPtr, Sock
 	}
 }
 
-#else //DEPRECATED_EPOLL_INTERFACE
+
+#endif //DEPRECATED_EPOLL_INTERFACE
+
+
+#ifdef NEW_EPOLL_INTERFACE
+
+void NetworkMgr::SendPacket( const OutputBitStream& inOutputStream, ClientProxyPtr inClientProxy )
+{
+	if ( RealTimeSrvMath::GetRandomFloat() < mDropPacketChance )
+	{
+		return;
+	}
+
+	inClientProxy->GetUdpConnection()->send( 
+		inOutputStream.GetBufferPtr(), inOutputStream.GetByteLength() );
+}
+
+void NetworkMgr::Start()
+{
+	server_->start();
+	loop_.loop();
+}
+
+void NetworkMgr::threadInit( EventLoop* loop )
+{
+	assert( mPacketQueue::pointer() == NULL );
+	mPacketQueue::instance();
+	assert( mPacketQueue::pointer() != NULL );
+
+	MutexLockGuard lock( mutex_ );
+	loops_.insert( loop );
+}
+
+UdpConnToClientMapPtr NetworkMgr::GetUdpConnToClientMap()
+{
+	MutexLockGuard lock( mutex_ );
+	return mUdpConnToClientMap;
+}
+
+void NetworkMgr::UdpConnToClientMapCOW()
+{
+	if ( !mUdpConnToClientMap.unique() )
+	{
+		mUdpConnToClientMap.reset( new UdpConnToClientMap( *mUdpConnToClientMap ) );
+	}
+	assert( mUdpConnToClientMap.unique() );
+}
+
+IntToGameObjectMapPtr NetworkMgr::GetNetworkIdToGameObjectMap()
+{
+	MutexLockGuard lock( mutex_ );
+	return mNetworkIdToGameObjectMap;
+}
+
+void NetworkMgr::NetworkIdToGameObjectMapCOW()
+{
+	if ( !mNetworkIdToGameObjectMap.unique() )
+	{
+		mNetworkIdToGameObjectMap.reset( new IntToGameObjectMap( *mNetworkIdToGameObjectMap ) );
+	}
+	assert( mNetworkIdToGameObjectMap.unique() );
+}
+
+PlayerIdToClientMapPtr NetworkMgr::GetPlayerIdToClientMap()
+{
+	MutexLockGuard lock( mutex_ );
+	return mPlayerIdToClientMap;
+}
+
+void NetworkMgr::PlayerIdToClientMapCOW()
+{
+	if ( !mPlayerIdToClientMap.unique() )
+	{
+		mPlayerIdToClientMap.reset( new IntToClientMap( *mPlayerIdToClientMap ) );
+	}
+	assert( mPlayerIdToClientMap.unique() );
+}
+
+void NetworkMgr::onConnection( const UdpConnectionPtr& conn )
+{
+	LOG_INFO << conn->localAddress().toIpPort() << " -> "
+		<< conn->peerAddress().toIpPort() << " is "
+		<< ( conn->connected() ? "UP" : "DOWN" );
+}
+
+void NetworkMgr::onMessage( const muduo::net::UdpConnectionPtr& conn,
+	muduo::net::Buffer* buf,
+	muduo::Timestamp receiveTime )
+{
+	if ( buf->readableBytes() > 0 ) // kHeaderLen == 0
+	{
+		InputBitStream inputStream( buf->peek(), buf->readableBytes() * 8 );
+		buf->retrieveAll();
+
+		if ( RealTimeSrvMath::GetRandomFloat() >= mDropPacketChance )
+		{
+			float simulatedReceivedTime =
+				RealTimeSrvTiming::sInstance.GetCurrentGameTime() +
+				mSimulatedLatency +
+				( GetIsSimulatedJitter() ?
+					RealTimeSrvMath::Clamp( RealTimeSrvMath::GetRandomFloat(), 0.f, 0.06f ) : 0.f );
+
+			mPacketQueue::instance().emplace(
+				simulatedReceivedTime,
+				inputStream,
+				conn
+			);
+		}
+		else
+		{
+			//LOG( "Dropped packet!", 0 );
+		}
+	}
+
+	ProcessQueuedPackets();
+	CheckForDisconnects();
+	WorldUpdateCB_();
+	SendOutgoingPackets();
+}
+
+void NetworkMgr::ProcessQueuedPackets()
+{
+	while ( !mPacketQueue::instance().empty() )
+	{
+		ReceivedPacket& nextPacket = mPacketQueue::instance().front();
+		if ( RealTimeSrvTiming::sInstance.GetCurrentGameTime() > nextPacket.GetReceivedTime() )
+		{
+			ProcessPacket(
+				nextPacket.GetPacketBuffer(),
+				nextPacket.GetUdpConnection()
+			);
+			mPacketQueue::instance().pop();
+		}
+		else
+		{
+			break;
+		}
+	}
+}
+
+bool NetworkMgr::Init( uint16_t inPort )
+{
+	InetAddress serverAddr( inPort );
+	server_.reset( new UdpServer( &loop_, serverAddr, "RealTimeServer" ) );
+
+	server_->setConnectionCallback(
+		std::bind( &NetworkMgr::onConnection, this, _1 ) );
+	server_->setMessageCallback(
+		std::bind( &NetworkMgr::onMessage, this, _1, _2, _3 ) );
+
+	server_->setThreadNum( THREAD_NUM );
+	server_->setThreadInitCallback( std::bind( &NetworkMgr::threadInit, this, _1 ) );
+}
+
+#else //NEW_EPOLL_INTERFACE
+
+void NetworkMgr::ProcessIncomingPackets()
+{
+#ifdef DEPRECATED_EPOLL_INTERFACE
+	WaitForIncomingPackets();
+#else
+	ReadIncomingPacketsIntoQueue();
+#endif
+
+	ProcessQueuedPackets();
+
+	//UpdateBytesSentLastFrame();
+}
 
 void NetworkMgr::ReadIncomingPacketsIntoQueue()
 {
@@ -230,110 +360,28 @@ void NetworkMgr::ReadIncomingPacketsIntoQueue()
 	}
 }
 
-#endif //DEPRECATED_EPOLL_INTERFACE
-
-
-#ifdef NEW_EPOLL_INTERFACE
-
-void NetworkMgr::SendPacket( const OutputBitStream& inOutputStream, ClientProxyPtr inClientProxy )
+void NetworkMgr::ProcessQueuedPackets()
 {
-	if ( RealTimeSrvMath::GetRandomFloat() < mDropPacketChance )
+	while ( !mPacketQueue.empty() )
 	{
-		return;
-	}
-
-	int sentByteCount = inClientProxy->GetUDPSocket()->Send( inOutputStream.GetBufferPtr(), inOutputStream.GetByteLength() );
-	if ( sentByteCount > 0 )
-	{
-		mBytesSentThisFrame += sentByteCount;
-	}
-}
-
-void NetworkMgr::Start()
-{
-	server_->start();
-	loop_.loop();
-}
-
-void NetworkMgr::threadInit( EventLoop* loop )
-{
-	assert( LocalConnections::pointer() == NULL );
-	LocalConnections::instance();
-	assert( LocalConnections::pointer() != NULL );
-	MutexLockGuard lock( mutex_ );
-	loops_.insert( loop );
-}
-
-void NetworkMgr::onConnection( const UdpConnectionPtr& conn )
-{
-	LOG_INFO << conn->localAddress().toIpPort() << " -> "
-		<< conn->peerAddress().toIpPort() << " is "
-		<< ( conn->connected() ? "UP" : "DOWN" );
-
-	if ( conn->connected() )
-	{
-		LocalConnections::instance().insert( conn );
-	}
-	else
-	{
-		LocalConnections::instance().erase( conn );
-	}
-}
-
-void NetworkMgr::onMessage( const muduo::net::UdpConnectionPtr& conn,
-	muduo::net::Buffer* buf,
-	muduo::Timestamp receiveTime )
-{
-	if ( buf->readableBytes() > 0 ) // kHeaderLen == 0
-	{
-
-		InputBitStream inputStream( buf->peek(), buf->readableBytes() * 8 );
-		buf->retrieveAll();
-
-		if ( RealTimeSrvMath::GetRandomFloat() >= mDropPacketChance )
+		ReceivedPacket& nextPacket = mPacketQueue.front();
+		if ( RealTimeSrvTiming::sInstance.GetCurrentGameTime() > nextPacket.GetReceivedTime() )
 		{
-			float simulatedReceivedTime =
-				RealTimeSrvTiming::sInstance.GetCurrentGameTime() +
-				mSimulatedLatency +
-				( GetIsSimulatedJitter() ?
-					RealTimeSrvMath::Clamp( RealTimeSrvMath::GetRandomFloat(), 0.f, 0.06f ) : 0.f );
-
-			mPacketQueue.emplace(
-				simulatedReceivedTime,
-				inputStream,
-				SocketAddrInterface( *( conn->peerAddress().getSockAddr() ) ),
-				UDPSocketInterface::CreateUDPSocket( conn->GetSocketFd() )
-				//,
-				//conn
+			ProcessPacket(
+				nextPacket.GetPacketBuffer(),
+				nextPacket.GetFromAddress(),
+				nextPacket.GetUDPSocket()
+				// , 
+				// nextPacket.GetUdpConnection() 
 			);
+			mPacketQueue.pop();
 		}
 		else
 		{
-			//LOG( "Dropped packet!", 0 );
+			break;
 		}
 	}
-
-	ProcessQueuedPackets();
-	CheckForDisconnects();
-	WorldUpdateCB_();
-	SendOutgoingPackets();
 }
-
-bool NetworkMgr::Init( uint16_t inPort )
-{
-	InetAddress serverAddr( inPort );
-	server_.reset( new UdpServer( &loop_, serverAddr, "RealTimeServer" ) );
-
-	server_->setConnectionCallback(
-		std::bind( &NetworkMgr::onConnection, this, _1 ) );
-	server_->setMessageCallback(
-		std::bind( &NetworkMgr::onMessage, this, _1, _2, _3 ) );
-
-	server_->setThreadNum( THREAD_NUM );
-	server_->setThreadInitCallback( std::bind( &NetworkMgr::threadInit, this, _1 ) );
-}
-
-#else //NEW_EPOLL_INTERFACE
 
 bool NetworkMgr::Init( uint16_t inPort )
 {
@@ -363,7 +411,6 @@ bool NetworkMgr::Init( uint16_t inPort )
 	//mBytesReceivedPerSecond = WeightedTimedMovingAverage(1.f);
 	//mBytesSentPerSecond = WeightedTimedMovingAverage(1.f);
 
-
 	if ( mSocket->SetNonBlockingMode( true ) != NO_ERROR )
 	{
 		return false;
@@ -379,7 +426,6 @@ bool NetworkMgr::Init( uint16_t inPort )
 #endif //DEPRECATED_EPOLL_INTERFACE
 
 	return true;
-
 }
 
 void NetworkMgr::SendPacket( const OutputBitStream& inOutputStream, ClientProxyPtr inClientProxy )
@@ -393,6 +439,21 @@ void NetworkMgr::SendPacket( const OutputBitStream& inOutputStream, ClientProxyP
 	if ( sentByteCount > 0 )
 	{
 		mBytesSentThisFrame += sentByteCount;
+	}
+}
+
+void NetworkMgr::HandleConnectionReset( const SocketAddrInterface& inFromAddress )
+{
+	auto it = mAddressToClientMap.find( inFromAddress );
+	if ( it != mAddressToClientMap.end() )
+	{
+		mPlayerIdToClientMap.erase( it->second->GetPlayerId() );
+
+#ifdef DEPRECATED_EPOLL_INTERFACE
+		EpollInterface::sInst->CloseSocket( it->second->GetUDPSocket()->GetSocket() );
+#endif
+
+		mAddressToClientMap.erase( it );
 	}
 }
 #endif //NEW_EPOLL_INTERFACE

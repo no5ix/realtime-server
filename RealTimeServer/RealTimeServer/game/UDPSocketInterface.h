@@ -6,30 +6,31 @@ public:
 
 	~UDPSocketInterface();
 
+
+
 	static bool			StaticInit();
 	static void			CleanUp();
 
-	static void			ReportError(const char* inOperationDesc);
+	static void			ReportError( const char* inOperationDesc );
 	static int			GetLastError();
 
-	static shared_ptr< UDPSocketInterface > CreateUDPSocket( SOCKET s = 0 );
+	static shared_ptr< UDPSocketInterface > CreateUDPSocket();
 
-	int Bind(const SocketAddrInterface& inToAddress);
-	int SendTo(const void* inToSend, int inLength, const SocketAddrInterface& inToAddress);
-	int ReceiveFrom(void* inToReceive, int inMaxLength, SocketAddrInterface& outFromAddress);
-	int SetNonBlockingMode( bool inShouldBeNonBlocking );
-
+	int Bind( const SocketAddrInterface& inToAddress );
+	int SendTo( const void* inToSend, int inLength, const SocketAddrInterface& inToAddress );
+	int ReceiveFrom( void* inToReceive, int inMaxLength, SocketAddrInterface& outFromAddress );
 	int Connect( const SocketAddrInterface& inAddress );
+
 	int SetReUse();
 	int32_t Send( const void* inData, size_t inLen );
 	int32_t Recv( void* inData, size_t inLen );
-	SOCKET GetSocket() const { return mSocket; }
+	int SetNonBlockingMode( bool inShouldBeNonBlocking );
+	SOCKET GetSocket() { return mSocket; }
 
-	typedef std::unordered_map<SOCKET, shared_ptr< UDPSocketInterface >> SocketToUDPSocketPtrMap;
-	static SocketToUDPSocketPtrMap SocketToUDPSocketPtrMap_;
 private:
-	UDPSocketInterface(SOCKET inSocket) : mSocket(inSocket) {}
+	UDPSocketInterface( SOCKET inSocket ) : mSocket( inSocket ) {}
 	SOCKET mSocket;
+
 };
 
 typedef shared_ptr< UDPSocketInterface >	UDPSocketPtr;

@@ -1,12 +1,6 @@
 #pragma once
 
-//#ifndef _WIN32
-//#define DEPRECATED_EPOLL_INTERFACE
-//#endif
 
-#ifndef _WIN32
-#define NEW_EPOLL_INTERFACE
-#endif
 
 #ifdef DEPRECATED_EPOLL_INTERFACE
 

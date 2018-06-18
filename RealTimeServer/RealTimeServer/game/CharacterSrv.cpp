@@ -2,7 +2,6 @@
 
 
 CharacterSrv::CharacterSrv() :
-	mCatControlType( ESCT_Human ),
 	mTimeOfNextShot( 0.f ),
 	mTimeBetweenShots( 0.2f )
 {}

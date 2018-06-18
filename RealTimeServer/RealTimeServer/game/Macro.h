@@ -1,4 +1,3 @@
-
 #pragma once
 
 
@@ -37,3 +36,14 @@ typedef unsigned int						ChunkPacketID;
 #define ACK_BIT_FIELD_BYTE_LEN				(4)
 
 #define THREAD_NUM							(8)
+
+#define BECOME_DAEMON						(false)
+
+#define MOVE_COUNT_NUM						(2)
+
+
+
+#ifdef __linux__
+//#define DEPRECATED_EPOLL_INTERFACE
+#define NEW_EPOLL_INTERFACE
+#endif

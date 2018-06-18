@@ -5,22 +5,18 @@
 
 std::unique_ptr< RealTimeSrv >	RealTimeSrv::sInstance;
 
-
-
 bool RealTimeSrv::StaticInit()
 {
-
-#ifndef _WIN32
+#ifdef NEW_EPOLL_INTERFACE
 	::signal( SIGPIPE, SIG_IGN );
-	//if ( RealTimeSrv::BecomeDaemon() == -1 )
-	//{
-	//	LOG( "BecomeDaemon failed", 0 );
-	//	return false;
-	//}
-#endif
+	if ( BECOME_DAEMON && RealTimeSrv::BecomeDaemon() == -1 )
+	{
+		LOG( "BecomeDaemon failed", 0 );
+		return false;
+	}
+#endif //NEW_EPOLL_INTERFACE
 
 	sInstance.reset( new RealTimeSrv() );
-
 	return true;
 }
 
@@ -29,7 +25,7 @@ RealTimeSrv::~RealTimeSrv()
 	UDPSocketInterface::CleanUp();
 }
 
-#ifndef _WIN32
+#ifdef NEW_EPOLL_INTERFACE
 int RealTimeSrv::BecomeDaemon()
 {
 	int maxfd, fd;
@@ -81,7 +77,7 @@ int RealTimeSrv::BecomeDaemon()
 
 	return 0;
 }
-#endif
+#endif //NEW_EPOLL_INTERFACE
 
 RealTimeSrv::RealTimeSrv()
 {
@@ -95,10 +91,10 @@ RealTimeSrv::RealTimeSrv()
 
 	InitNetworkMgr();
 
-	Simulate();
+	SimulateRealWorld();
 }
 
-void RealTimeSrv::Simulate()
+void RealTimeSrv::SimulateRealWorld()
 {
 	float latency = 0.0f;
 	std::string latencyString = RealTimeSrvHelper::GetCommandLineArg( 2 );
@@ -136,40 +132,9 @@ bool RealTimeSrv::InitNetworkMgr()
 	{
 		port = stoi( portString );
 	}
-
 	return NetworkMgrSrv::StaticInit( port );
 }
 
-int RealTimeSrv::Run()
-{
-#ifdef NEW_EPOLL_INTERFACE
-	NetworkMgrSrv::sInst->setWorldUpdateCallback( 
-		std::bind( &World::Update, World::sInst.get() ) 
-	);
-	NetworkMgrSrv::sInst->Start();
-#else
-	bool quit = false;
-	while ( !quit )
-	{
-		//RealTimeSrvTiming::sInstance.Update();
-		DoFrame();
-	}
-#endif
-	return 0;
-}
-
-void RealTimeSrv::DoFrame()
-{
-
-	NetworkMgrSrv::sInst->ProcessIncomingPackets();
-
-	NetworkMgrSrv::sInst->CheckForDisconnects();
-
-	World::sInst->Update();
-
-	NetworkMgrSrv::sInst->SendOutgoingPackets();
-
-}
 
 void RealTimeSrv::HandleNewClient( ClientProxyPtr inClientProxy )
 {
@@ -180,7 +145,8 @@ void RealTimeSrv::HandleNewClient( ClientProxyPtr inClientProxy )
 
 void RealTimeSrv::SpawnCharacterForPlayer( int inPlayerId )
 {
-	CharacterPtr character = std::static_pointer_cast< Character >( EntityFactory::sInstance->CreateGameObject( 'CHRT' ) );
+	CharacterPtr character = std::static_pointer_cast< Character >( 
+		EntityFactory::sInstance->CreateGameObject( 'CHRT' ) );
 
 	character->SetPlayerId( inPlayerId );
 
@@ -214,3 +180,40 @@ void RealTimeSrv::SpawnCharacterForPlayer( int inPlayerId )
 
 	//}
 }
+
+
+#ifdef NEW_EPOLL_INTERFACE
+
+int RealTimeSrv::Run()
+{
+	NetworkMgrSrv::sInst->setWorldUpdateCallback(
+		std::bind( &World::Update, World::sInst.get() )
+	);
+	NetworkMgrSrv::sInst->Start();
+	return 0;
+}
+
+#else
+
+int RealTimeSrv::Run()
+{
+	bool quit = false;
+	while ( !quit )
+	{
+		//RealTimeSrvTiming::sInstance.Update();
+		DoFrame();
+	}
+	return 0;
+}
+
+void RealTimeSrv::DoFrame()
+{
+	NetworkMgrSrv::sInst->ProcessIncomingPackets();
+
+	NetworkMgrSrv::sInst->CheckForDisconnects();
+
+	World::sInst->Update();
+
+	NetworkMgrSrv::sInst->SendOutgoingPackets();
+}
+#endif //NEW_EPOLL_INTERFACE

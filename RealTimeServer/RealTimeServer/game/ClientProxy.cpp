@@ -1,6 +1,25 @@
 #include "RealTimeSrvPCH.h"
 
 
+
+#ifdef NEW_EPOLL_INTERFACE
+ClientProxy::ClientProxy( const std::string& inName, 
+	int inPlayerId, 
+	const UdpConnectionPtr& inUdpConnetction )
+	:
+	mName( inName ),
+	mPlayerId( inPlayerId ),
+	mDeliveryNotificationManager( false, true ),
+	mIsLastMoveTimestampDirty( false ),
+	mTimeToRespawn( 0.f ),
+	mRecvingServerResetFlag( false ),
+	UdpConnetction_( inUdpConnetction )
+{
+	UpdateLastPacketTime();
+}
+
+#else //NEW_EPOLL_INTERFACE
+
 ClientProxy::ClientProxy(
 	const SocketAddrInterface& inSocketAddress,
 	const std::string& inName,
@@ -22,7 +41,7 @@ ClientProxy::ClientProxy(
 {
 	UpdateLastPacketTime();
 }
-
+#endif //NEW_EPOLL_INTERFACE
 
 void ClientProxy::UpdateLastPacketTime()
 {

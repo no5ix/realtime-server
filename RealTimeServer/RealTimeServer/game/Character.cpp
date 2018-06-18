@@ -1,9 +1,5 @@
 #include "RealTimeSrvPCH.h"
 
-//zoom hardcoded at 100...if we want to lock players on screen, this could be calculated from zoom
-const float HALF_WORLD_HEIGHT = 3.6f;
-const float HALF_WORLD_WIDTH = 6.4f;
-
 Character::Character() :
 	Entity(),
 	mPlayerId( 0 ),
@@ -11,8 +7,6 @@ Character::Character() :
 	mHealth( 10 )
 {
 	//SetCollisionRadius( 0.5f );
-
-
 	BaseTurnRate = 2.f;
 	BaseLookUpRate = 2.f;
 
@@ -58,7 +52,6 @@ void Character::SimulateMovement( float inDeltaTime )
 	{
 		SetLocation( GetLocation() + Delta );
 	}
-
 }
 
 bool Character::IsExceedingMaxSpeed( float inMaxSpeed ) const
@@ -134,7 +127,6 @@ void Character::ApplyControlInputToVelocity( float DeltaTime )
 	ActionConsumeMovementInputVector();
 }
 
-
 void Character::Update()
 {
 
@@ -155,7 +147,6 @@ uint32_t Character::Write( OutputBitStream& inOutputStream, uint32_t inDirtyStat
 	{
 		inOutputStream.Write( ( bool )false );
 	}
-
 
 	if (inDirtyState & ECRS_Pose)
 	{
@@ -187,8 +178,6 @@ uint32_t Character::Write( OutputBitStream& inOutputStream, uint32_t inDirtyStat
 	//LOG( " mPlayerId = $d Character::Write finished. writtenState = %d", mPlayerId, writtenState );
 
 	return writtenState;
-
-
 }
 
 

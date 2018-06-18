@@ -1,15 +1,14 @@
 #include "RealTimeSrvPCH.h"
 
-UDPSocketInterface::SocketToUDPSocketPtrMap UDPSocketInterface::SocketToUDPSocketPtrMap_;
 
 bool UDPSocketInterface::StaticInit()
 {
 #if _WIN32
 	WSADATA wsaData;
-	int iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
-	if (iResult != NO_ERROR)
+	int iResult = WSAStartup( MAKEWORD( 2, 2 ), &wsaData );
+	if ( iResult != NO_ERROR )
 	{
-		ReportError("Starting Up");
+		ReportError( "Starting Up" );
 		return false;
 	}
 #endif
@@ -24,7 +23,7 @@ void UDPSocketInterface::CleanUp()
 }
 
 
-void UDPSocketInterface::ReportError(const char* inOperationDesc)
+void UDPSocketInterface::ReportError( const char* inOperationDesc )
 {
 #if _WIN32
 	LPVOID lpMsgBuf;
@@ -36,14 +35,14 @@ void UDPSocketInterface::ReportError(const char* inOperationDesc)
 		FORMAT_MESSAGE_IGNORE_INSERTS,
 		NULL,
 		errorNum,
-		MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-		(LPTSTR)&lpMsgBuf,
-		0, NULL);
+		MAKELANGID( LANG_NEUTRAL, SUBLANG_DEFAULT ),
+		( LPTSTR )&lpMsgBuf,
+		0, NULL );
 
 
-	LOG("Error %s: %d- %s", inOperationDesc, errorNum, lpMsgBuf);
+	LOG( "Error %s: %d- %s", inOperationDesc, errorNum, lpMsgBuf );
 #else
-	LOG("Error: %hs", inOperationDesc);
+	LOG( "Error: %hs", inOperationDesc );
 #endif
 }
 
@@ -57,65 +56,43 @@ int UDPSocketInterface::GetLastError()
 
 }
 
-UDPSocketPtr UDPSocketInterface::CreateUDPSocket( SOCKET s )
+UDPSocketPtr UDPSocketInterface::CreateUDPSocket()
 {
-	if ( s == 0)
-	{
-		s = socket( AF_INET, SOCK_DGRAM, IPPROTO_UDP );
-	}
+	SOCKET s = socket( AF_INET, SOCK_DGRAM, IPPROTO_UDP );
 
-	if (s != INVALID_SOCKET)
+	if ( s != INVALID_SOCKET )
 	{
-		auto it = SocketToUDPSocketPtrMap_.find( s );
-		if ( it == SocketToUDPSocketPtrMap_.end() )
-		{
-			return SocketToUDPSocketPtrMap_[s] = 
-				UDPSocketPtr( new UDPSocketInterface( s ) );
-		}
-		else
-		{
-			return it->second;
-		}
+		return UDPSocketPtr( new UDPSocketInterface( s ) );
 	}
 	else
 	{
-		ReportError("UDPSocketInterface::CreateUDPSocket");
+		ReportError( "CreateUDPSocket" );
 		return nullptr;
 	}
 }
 
-UDPSocketInterface::~UDPSocketInterface()
+int UDPSocketInterface::Bind( const SocketAddrInterface& inBindAddress )
 {
-	SocketToUDPSocketPtrMap_.erase( mSocket );
-#if _WIN32
-	closesocket( mSocket );
-#else
-	close( mSocket );
-#endif
-}
-
-int UDPSocketInterface::Bind(const SocketAddrInterface& inBindAddress)
-{
-	int error = bind(mSocket, &inBindAddress.mSockAddr, inBindAddress.GetSize());
-	if (error != 0)
+	int error = bind( mSocket, &inBindAddress.mSockAddr, inBindAddress.GetSize() );
+	if ( error != 0 )
 	{
-		ReportError("UDPSocketInterface::Bind");
+		ReportError( "UDPSocketInterface::Bind" );
 		return GetLastError();
 	}
 
 	return NO_ERROR;
 }
 
-int UDPSocketInterface::SendTo(const void* inToSend, int inLength, const SocketAddrInterface& inToAddress)
+int UDPSocketInterface::SendTo( const void* inToSend, int inLength, const SocketAddrInterface& inToAddress )
 {
-	int byteSentCount = sendto(mSocket,
-		static_cast<const char*>(inToSend),
+	int byteSentCount = sendto( mSocket,
+		static_cast< const char* >( inToSend ),
 		inLength,
-		0, &inToAddress.mSockAddr, inToAddress.GetSize());
+		0, &inToAddress.mSockAddr, inToAddress.GetSize() );
 
-	if (byteSentCount <= 0)
+	if ( byteSentCount <= 0 )
 	{
-		ReportError("UDPSocketInterface::SendTo");
+		ReportError( "UDPSocketInterface::SendTo" );
 		return -GetLastError();
 	}
 	else
@@ -124,15 +101,15 @@ int UDPSocketInterface::SendTo(const void* inToSend, int inLength, const SocketA
 	}
 }
 
-int UDPSocketInterface::ReceiveFrom(void* inToReceive, int inMaxLength, SocketAddrInterface& outFromAddress)
+int UDPSocketInterface::ReceiveFrom( void* inToReceive, int inMaxLength, SocketAddrInterface& outFromAddress )
 {
 	socklen_t fromLength = outFromAddress.GetSize();
 
-	int readByteCount = recvfrom(mSocket,
-		static_cast<char*>(inToReceive),
+	int readByteCount = recvfrom( mSocket,
+		static_cast< char* >( inToReceive ),
 		inMaxLength,
-		0, &outFromAddress.mSockAddr, &fromLength);
-	if (readByteCount >= 0)
+		0, &outFromAddress.mSockAddr, &fromLength );
+	if ( readByteCount >= 0 )
 	{
 		return readByteCount;
 	}
@@ -140,37 +117,47 @@ int UDPSocketInterface::ReceiveFrom(void* inToReceive, int inMaxLength, SocketAd
 	{
 		int error = GetLastError();
 
-		if (error == WSAEWOULDBLOCK)
+		if ( error == WSAEWOULDBLOCK )
 		{
 			return 0;
 		}
-		else if (error == WSAECONNRESET)
+		else if ( error == WSAECONNRESET )
 		{
-			LOG("Connection reset from %s", outFromAddress.ToString().c_str());
+			LOG( "Connection reset from %s", outFromAddress.ToString().c_str() );
 			return -WSAECONNRESET;
 		}
 		else
 		{
-			ReportError("UDPSocketInterface::ReceiveFrom");
+			ReportError( "UDPSocketInterface::ReceiveFrom" );
 			return -error;
 		}
 	}
 }
 
-int UDPSocketInterface::SetNonBlockingMode(bool inShouldBeNonBlocking)
+UDPSocketInterface::~UDPSocketInterface()
+{
+#if _WIN32
+	closesocket( mSocket );
+#else
+	close( mSocket );
+#endif
+}
+
+
+int UDPSocketInterface::SetNonBlockingMode( bool inShouldBeNonBlocking )
 {
 #if _WIN32
 	u_long arg = inShouldBeNonBlocking ? 1 : 0;
-	int result = ioctlsocket(mSocket, FIONBIO, &arg);
+	int result = ioctlsocket( mSocket, FIONBIO, &arg );
 #else
-	int flags = fcntl(mSocket, F_GETFL, 0);
-	flags = inShouldBeNonBlocking ? (flags | O_NONBLOCK) : (flags & ~O_NONBLOCK);
-	int result = fcntl(mSocket, F_SETFL, flags);
+	int flags = fcntl( mSocket, F_GETFL, 0 );
+	flags = inShouldBeNonBlocking ? ( flags | O_NONBLOCK ) : ( flags & ~O_NONBLOCK );
+	int result = fcntl( mSocket, F_SETFL, flags );
 #endif
 
-	if (result == SOCKET_ERROR)
+	if ( result == SOCKET_ERROR )
 	{
-		ReportError("UDPSocketInterface::SetNonBlockingMode");
+		ReportError( "UDPSocketInterface::SetNonBlockingMode" );
 		return GetLastError();
 	}
 	else
@@ -178,6 +165,8 @@ int UDPSocketInterface::SetNonBlockingMode(bool inShouldBeNonBlocking)
 		return NO_ERROR;
 	}
 }
+
+
 
 int UDPSocketInterface::Connect( const SocketAddrInterface& inAddress )
 {
@@ -189,6 +178,8 @@ int UDPSocketInterface::Connect( const SocketAddrInterface& inAddress )
 	}
 	return NO_ERROR;
 }
+
+
 
 int UDPSocketInterface::SetReUse()
 {
@@ -212,6 +203,9 @@ int UDPSocketInterface::SetReUse()
 
 	return NO_ERROR;
 }
+
+
+
 
 int32_t	UDPSocketInterface::Send( const void* inData, size_t inLen )
 {

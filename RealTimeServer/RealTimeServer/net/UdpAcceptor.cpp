@@ -27,6 +27,7 @@ UdpAcceptor::UdpAcceptor( EventLoop* loop, const InetAddress& listenAddr, bool r
 	acceptSocket_.setReuseAddr( true );
 	acceptSocket_.setReusePort( reuseport );
 	acceptSocket_.bindAddress( listenAddr );
+
 	acceptChannel_.setReadCallback(
 		std::bind( &UdpAcceptor::handleRead, this ) );
 }
@@ -63,11 +64,11 @@ void UdpAcceptor::handleRead()
 			std::bind( &UdpAcceptor::newConnection, this, _1, peerAddr ) );
 		tempConnector->start();
 
-		assert( 
-			udpConnectors_.find( tempConnector->GetConnectSocket().fd() ) 
-			== udpConnectors_.end() 
-		);
-		udpConnectors_[tempConnector->GetConnectSocket().fd()] = tempConnector;
+		//assert( 
+		//	udpConnectors_.find( tempConnector->GetConnectSocket().fd() ) 
+		//	== udpConnectors_.end() 
+		//);
+		//udpConnectors_[tempConnector->GetConnectSocket().fd()] = tempConnector;
 	}
 	else
 	{

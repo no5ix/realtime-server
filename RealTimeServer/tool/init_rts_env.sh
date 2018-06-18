@@ -11,8 +11,9 @@ BUILD_DIR=../build
 
 if [ ! -d ${BUILD_DIR} ]; then
     mkdir ${BUILD_DIR}
+    echo "BUILD_DIR         is created successfully."
 else
-    echo "BUILD_DIR is already exist."
+    echo "BUILD_DIR         is already exist."
 fi
 
 
@@ -21,6 +22,7 @@ RTS_SYMBOLIC_LINK=~/rts
 
 if [ ! -L "$RTS_SYMBOLIC_LINK" ]; then
     ln -s $RTS_PATH $RTS_SYMBOLIC_LINK;
+    echo "RTS_SYMBOLIC_LINK is created successfully."
 else
     echo "RTS_SYMBOLIC_LINK is already exist."
 fi

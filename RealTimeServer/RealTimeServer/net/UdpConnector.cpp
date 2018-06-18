@@ -19,15 +19,15 @@ UdpConnector::UdpConnector( EventLoop* loop, const InetAddress& serverAddr, cons
 	: loop_( loop ),
 	serverAddr_( serverAddr ),
 	localPort_( localPort ),
-	connectSocket_( sockets::createUdpNonblockingOrDie( serverAddr.family() ) ),
+	//connectSocket_( sockets::createUdpNonblockingOrDie( serverAddr.family() ) ),
 	connect_( false ),
 	state_( kDisconnected ),
 	retryDelayMs_( kInitRetryDelayMs )
 {
-	connectSocket_.setReuseAddr( true );
-	connectSocket_.setReusePort( true );
-	if ( localPort_ != 0 ) // not udp client call
-		connectSocket_.bindAddress( InetAddress( localPort_ ) );
+	//connectSocket_.setReuseAddr( true );
+	//connectSocket_.setReusePort( true );
+	//if ( localPort_ != 0 ) // not udp client call
+	//	connectSocket_.bindAddress( InetAddress( localPort_ ) );
 
 	LOG_DEBUG << "ctor[" << this << "]";
 }
@@ -78,7 +78,9 @@ void UdpConnector::stopInLoop()
 
 void UdpConnector::connect()
 {
-	int sockfd = connectSocket_.fd();
+	//int sockfd = connectSocket_.fd();
+	int sockfd = sockets::createUdpNonblockingOrDie( serverAddr_.family() );
+
 
 	int ret = sockets::connect( sockfd, serverAddr_.getSockAddr() );
 	int savedErrno = ( ret == 0 ) ? 0 : errno;

@@ -76,7 +76,8 @@ void UdpServer::newConnection( int sockfd, const InetAddress& peerAddr )
 		<< "] - new connection [" << connName
 		<< "] - new connection sockfd [" << sockfd
 		<< "] from " << peerAddr.toIpPort();
-	InetAddress localAddr( sockets::getLocalAddr( sockfd ) );
+	//InetAddress localAddr( sockets::getLocalAddr( sockfd ) );
+	InetAddress localAddr( acceptor_->GetListenPort() );
 
 	// FIXME poll with zero timeout to double confirm the new connection
 	// FIXME use make_shared if necessary

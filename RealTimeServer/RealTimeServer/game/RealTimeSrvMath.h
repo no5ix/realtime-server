@@ -49,7 +49,6 @@ namespace RealTimeSrvMath
 		return ( A >= B ) ? A : B;
 	}
 
-
 	static inline float InvSqrt( float number  )
 	{
 		long i;
@@ -62,7 +61,6 @@ namespace RealTimeSrvMath
 		i = 0x5f3759df - ( i >> 1 );               
 		y = *( float * )&i;
 		y = y * ( threehalfs - ( x2 * y * y ) );   
-													
 
 		return y;
 	}

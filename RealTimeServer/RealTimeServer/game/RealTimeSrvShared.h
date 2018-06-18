@@ -96,7 +96,6 @@ class Entity;
 #include "WeightedTimedMovingAverage.h"
 
 #include "ReplicationCmd.h"
-#include "NetworkMgr.h"
 
 
 #include "TransmissionDataHandler.h"
@@ -105,6 +104,7 @@ class Entity;
 #include "ClientProxy.h"
 
 
+#include "NetworkMgr.h"
 #include "NetworkMgrSrv.h"
 #include "RealTimeSrv.h"
 
