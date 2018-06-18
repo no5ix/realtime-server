@@ -1,0 +1,9 @@
+.history/
+
+# Visual Studio 2015 user specific files
+.vs/
+  
+# VisualStudioCode  
+.vscode
+
+net/test

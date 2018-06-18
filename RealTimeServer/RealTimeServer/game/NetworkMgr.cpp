@@ -2,12 +2,6 @@
 
 
 
-NetworkMgr::NetworkMgr() :
-	mDropPacketChance( 0.f ),
-	mSimulatedLatency( 0.f ),
-	mWhetherToSimulateJitter( false ),
-	mChunkPacketID( 1 )
-{}
 
 // not complete, deprecated.
 void NetworkMgr::RecombineSlicesToChunk( InputBitStream& refInputStream )
@@ -145,6 +139,16 @@ void NetworkMgr::RecvIncomingPacketsIntoQueue( UDPSocketPtr inUDPSocketPtr, Sock
 
 #ifdef NEW_EPOLL_INTERFACE
 
+NetworkMgr::NetworkMgr() :
+	mDropPacketChance( 0.f ),
+	mSimulatedLatency( 0.f ),
+	mWhetherToSimulateJitter( false ),
+	mChunkPacketID( 1 ),
+	mUdpConnToClientMap( new UdpConnToClientMap ),
+	mNetworkIdToGameObjectMap( new IntToGameObjectMap ),
+	mPlayerIdToClientMap( new IntToClientMap )
+{}
+
 void NetworkMgr::SendPacket( const OutputBitStream& inOutputStream, ClientProxyPtr inClientProxy )
 {
 	if ( RealTimeSrvMath::GetRandomFloat() < mDropPacketChance )
@@ -222,6 +226,18 @@ void NetworkMgr::onConnection( const UdpConnectionPtr& conn )
 	LOG_INFO << conn->localAddress().toIpPort() << " -> "
 		<< conn->peerAddress().toIpPort() << " is "
 		<< ( conn->connected() ? "UP" : "DOWN" );
+
+	if ( !conn->connected() )
+	{
+		MutexLockGuard lock( mutex_ );
+		UdpConnToClientMapCOW();
+		PlayerIdToClientMapCOW();
+
+		LOG( "Player %d disconnect", ( ( *mUdpConnToClientMap )[conn] )->GetPlayerId() );
+
+		mPlayerIdToClientMap->erase( ( ( *mUdpConnToClientMap )[conn] )->GetPlayerId() );
+		mUdpConnToClientMap->erase( conn );
+	}
 }
 
 void NetworkMgr::onMessage( const muduo::net::UdpConnectionPtr& conn,
@@ -294,6 +310,13 @@ bool NetworkMgr::Init( uint16_t inPort )
 }
 
 #else //NEW_EPOLL_INTERFACE
+
+NetworkMgr::NetworkMgr() :
+	mDropPacketChance( 0.f ),
+	mSimulatedLatency( 0.f ),
+	mWhetherToSimulateJitter( false ),
+	mChunkPacketID( 1 )
+{}
 
 void NetworkMgr::ProcessIncomingPackets()
 {

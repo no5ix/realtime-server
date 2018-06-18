@@ -36,6 +36,8 @@ UdpAcceptor::~UdpAcceptor()
 {
 	acceptChannel_.disableAll();
 	acceptChannel_.remove();
+
+	udpConnectors_.empty();
 }
 
 void UdpAcceptor::listen()
@@ -59,16 +61,16 @@ void UdpAcceptor::handleRead()
 	{
 		peerAddr.setSockAddrInet6( addr );
 
-		UdpConnectorPtr tempConnector( new UdpConnector( loop_, peerAddr, listenPort_ ) );
-		tempConnector->setNewConnectionCallback(
-			std::bind( &UdpAcceptor::newConnection, this, _1, peerAddr ) );
-		tempConnector->start();
+		UdpConnectorPtr newUdpConnector( new UdpConnector( loop_, peerAddr, listenPort_ ) );
+		newUdpConnector->setNewConnectionCallback(
+			std::bind( &UdpAcceptor::newConnection, this, _1, peerAddr, newUdpConnector ) );
+		newUdpConnector->start();
 
-		//assert( 
-		//	udpConnectors_.find( tempConnector->GetConnectSocket().fd() ) 
-		//	== udpConnectors_.end() 
-		//);
-		//udpConnectors_[tempConnector->GetConnectSocket().fd()] = tempConnector;
+		assert(
+			udpConnectors_.find( newUdpConnector )
+			== udpConnectors_.end()
+		);
+		udpConnectors_.insert( newUdpConnector );
 	}
 	else
 	{
@@ -76,14 +78,22 @@ void UdpAcceptor::handleRead()
 	}
 }
 
-void UdpAcceptor::newConnection( int connfd, const InetAddress& peerAddr )
+void UdpAcceptor::newConnection( int connfd, 
+	const InetAddress& peerAddr,
+	const UdpConnectorPtr& UdpConnector )
 {
 	if ( newConnectionCallback_ )
 	{
-		newConnectionCallback_( connfd, peerAddr );
+		newConnectionCallback_( connfd, peerAddr, UdpConnector );
 	}
 	else
 	{
 		sockets::close( connfd );
 	}
+}
+
+void UdpAcceptor::RemoveConnector(UdpConnectorPtr udpConn)
+{
+	udpConn->stop();
+	udpConnectors_.erase( udpConn );
 }

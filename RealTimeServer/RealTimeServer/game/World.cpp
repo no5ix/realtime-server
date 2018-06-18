@@ -11,11 +11,12 @@ void World::StaticInit()
 	sInst.reset( new World() );
 }
 
-World::World()
-{}
-
 
 #ifdef NEW_EPOLL_INTERFACE
+
+World::World()
+	: mGameObjects( new GameObjs )
+{}
 
 GameObjectsPtr World::GetGameObjects()
 {
@@ -49,17 +50,20 @@ void World::RemoveGameObject( EntityPtr inGameObject )
 void World::Update()
 {
 	vector< EntityPtr > GameObjsToRem;
-	auto  tempGameObjects = GetGameObjects();
-	for (  auto& go : *tempGameObjects )
+	GameObjectsPtr  tempGameObjects = GetGameObjects();
+
+	for ( GameObjs::iterator go = tempGameObjects->begin();
+		go != tempGameObjects->end(); ++go )
+	//for (  auto& go : *tempGameObjects )
 	{
-		if ( !go->DoesWantToDie() )
+		if ( !( *go )->DoesWantToDie() )
 		{
-			go->Update();
+			( *go )->Update();
 		}
 		else
 		{
-			GameObjsToRem.push_back( go );
-			go->HandleDying();
+			GameObjsToRem.push_back( ( *go ) );
+			( *go )->HandleDying();
 		}
 	}
 
@@ -75,6 +79,9 @@ void World::Update()
 }
 
 #else //NEW_EPOLL_INTERFACE
+
+World::World()
+{}
 
 void World::AddGameObject( EntityPtr inGameObject )
 {

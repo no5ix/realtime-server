@@ -17,6 +17,9 @@ namespace muduo
 		class EventLoop;
 		class EventLoopThreadPool;
 
+		class UdpConnector;
+		typedef std::shared_ptr<UdpConnector> UdpConnectorPtr;
+
 		class UdpServer : noncopyable
 		{
 		public:
@@ -78,11 +81,11 @@ namespace muduo
 
 		private:
 			/// Not thread safe, but in loop
-			void newConnection( int sockfd, const InetAddress& peerAddr );
+			void newConnection( int sockfd, const InetAddress& peerAddr, const UdpConnectorPtr& UdpConnector );
 			/// Thread safe.
-			void removeConnection( const UdpConnectionPtr& conn );
+			void removeConnection( const UdpConnectionPtr& conn, const UdpConnectorPtr& UdpConnector );
 			/// Not thread safe, but in loop
-			void removeConnectionInLoop( const UdpConnectionPtr& conn );
+			void removeConnectionInLoop( const UdpConnectionPtr& conn, const UdpConnectorPtr& UdpConnector );
 
 			typedef std::map<string, UdpConnectionPtr> ConnectionMap;
 

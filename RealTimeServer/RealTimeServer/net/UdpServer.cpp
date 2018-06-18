@@ -8,6 +8,8 @@
 #include <muduo/net/EventLoopThreadPool.h>
 #include <muduo/net/SocketsOps.h>
 
+#include <net/UdpConnector.h>
+
 #include <stdio.h>  // snprintf
 
 
@@ -28,7 +30,7 @@ UdpServer::UdpServer( EventLoop* loop,
 	nextConnId_( 1 )
 {
 	acceptor_->setNewConnectionCallback(
-		std::bind( &UdpServer::newConnection, this, _1, _2 ) );
+		std::bind( &UdpServer::newConnection, this, _1, _2, _3 ) );
 }
 
 UdpServer::~UdpServer()
@@ -63,7 +65,7 @@ void UdpServer::start()
 	}
 }
 
-void UdpServer::newConnection( int sockfd, const InetAddress& peerAddr )
+void UdpServer::newConnection( int sockfd, const InetAddress& peerAddr, const UdpConnectorPtr& UdpConnector )
 {
 	loop_->assertInLoopThread();
 	EventLoop* ioLoop = threadPool_->getNextLoop();
@@ -92,17 +94,17 @@ void UdpServer::newConnection( int sockfd, const InetAddress& peerAddr )
 	conn->setMessageCallback( messageCallback_ );
 	conn->setWriteCompleteCallback( writeCompleteCallback_ );
 	conn->setCloseCallback(
-		std::bind( &UdpServer::removeConnection, this, _1 ) ); // FIXME: unsafe
+		std::bind( &UdpServer::removeConnection, this, _1, UdpConnector ) ); // FIXME: unsafe
 	ioLoop->runInLoop( std::bind( &UdpConnection::connectEstablished, conn ) );
 }
 
-void UdpServer::removeConnection( const UdpConnectionPtr& conn )
+void UdpServer::removeConnection( const UdpConnectionPtr& conn, const UdpConnectorPtr& UdpConnector )
 {
 	// FIXME: unsafe
-	loop_->runInLoop( std::bind( &UdpServer::removeConnectionInLoop, this, conn ) );
+	loop_->runInLoop( std::bind( &UdpServer::removeConnectionInLoop, this, conn, UdpConnector ) );
 }
 
-void UdpServer::removeConnectionInLoop( const UdpConnectionPtr& conn )
+void UdpServer::removeConnectionInLoop( const UdpConnectionPtr& conn, const UdpConnectorPtr& UdpConnector )
 {
 	loop_->assertInLoopThread();
 	LOG_INFO << "UdpServer::removeConnectionInLoop [" << name_
@@ -110,6 +112,9 @@ void UdpServer::removeConnectionInLoop( const UdpConnectionPtr& conn )
 	size_t n = connections_.erase( conn->name() );
 	( void )n;
 	assert( n == 1 );
+
+	acceptor_->RemoveConnector( UdpConnector );
+
 	EventLoop* ioLoop = conn->getLoop();
 	ioLoop->queueInLoop(
 		std::bind( &UdpConnection::connectDestroyed, conn ) );

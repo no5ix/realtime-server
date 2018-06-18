@@ -6,7 +6,7 @@
 
 using namespace muduo;
 
-typedef std::unordered_set< EntityPtr > GameObjs;
+typedef std::set< EntityPtr > GameObjs;
 typedef std::shared_ptr< GameObjs > GameObjectsPtr;
 #endif //NEW_EPOLL_INTERFACE
 
@@ -34,7 +34,7 @@ public:
 	void GameObjectsCOW();
 
 private:
-	std::shared_ptr< GameObjs > mGameObjects;
+	GameObjectsPtr mGameObjects;
 	MutexLock mutex_;
 
 #else //NEW_EPOLL_INTERFACE

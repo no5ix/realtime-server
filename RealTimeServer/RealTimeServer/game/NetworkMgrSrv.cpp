@@ -100,10 +100,10 @@ void NetworkMgrSrv::HandlePacketFromNewClient( InputBitStream& inInputStream,
 			LOG( "SendResetPacket", 0 );
 		}
 
-		LOG_INFO << inUdpConnetction->localAddress().toIpPort() 
-			<< " -> "
-			<< inUdpConnetction->peerAddress().toIpPort() << " is "
-			<< ( inUdpConnetction->connected() ? "UP" : "DOWN" );
+		//LOG_INFO << inUdpConnetction->localAddress().toIpPort() 
+		//	<< " -> "
+		//	<< inUdpConnetction->peerAddress().toIpPort() << " is "
+		//	<< ( inUdpConnetction->connected() ? "UP" : "DOWN" );
 
 		LOG( "a new client named '%s' as PlayerID %d ",
 			newClientProxy->GetName().c_str(),
@@ -186,20 +186,16 @@ void NetworkMgrSrv::CheckForDisconnects()
 	{
 		if ( pair.second->GetLastPacketFromClientTime() < minAllowedTime )
 		{
-			LOG( "Player %d disconnect", pair.second->GetPlayerId() );
+			//LOG( "Player %d disconnect", pair.second->GetPlayerId() );
 			clientsToDisconnect.push_back( pair.second );
 		}
 	}
 
 	if ( clientsToDisconnect.size() > 0 )
 	{
-		MutexLockGuard lock( mutex_ );
-		UdpConnToClientMapCOW();
-		PlayerIdToClientMapCOW();
 		for ( auto cliToDC : clientsToDisconnect )
 		{
-			mUdpConnToClientMap->erase( cliToDC->GetUdpConnection() );
-			mPlayerIdToClientMap->erase( cliToDC->GetPlayerId() );
+			cliToDC->GetUdpConnection()->forceClose(); // -> NetworkMgr::onConnection
 		}
 	}
 }
@@ -216,13 +212,11 @@ void NetworkMgrSrv::SendOutgoingPackets()
 	UdpConnToClientMapPtr tempUdpConnToClientMap = GetUdpConnToClientMap();
 	for ( const auto& pair : *tempUdpConnToClientMap )
 	{
-		ClientProxyPtr clientProxy = pair.second;
+		( pair.second )->GetDeliveryNotificationManager().ProcessTimedOutPackets();
 
-		clientProxy->GetDeliveryNotificationManager().ProcessTimedOutPackets();
-
-		if ( clientProxy->IsLastMoveTimestampDirty() )
+		if ( ( pair.second )->IsLastMoveTimestampDirty() )
 		{
-			SendStatePacketToClient( clientProxy );
+			SendStatePacketToClient( ( pair.second ) );
 		}
 	}
 }

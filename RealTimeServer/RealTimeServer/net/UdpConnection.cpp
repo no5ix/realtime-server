@@ -382,8 +382,16 @@ void UdpConnection::handleClose()
 void UdpConnection::handleError()
 {
 	int err = sockets::getSocketError( channel_->fd() );
-	LOG_ERROR << "UdpConnection::handleError [" << name_
-		<< "] - SO_ERROR = " << err << " " << strerror_tl( err );
+	if ( err == ECONNREFUSED )
+	{
+		LOG_INFO << peerAddr_.toIpPort() << " is disconnected";
+	}
+	else
+	{
+		LOG_ERROR << "UdpConnection::handleError [" << name_
+			<< "] - SO_ERROR = " << err << " " << strerror_tl( err );
+	}
+	handleClose();
 }
 
 int UdpConnection::GetSocketFd() const 

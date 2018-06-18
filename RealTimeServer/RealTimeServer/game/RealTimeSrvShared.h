@@ -37,14 +37,16 @@
 #include <cstring>
 #include <cmath>
 
-#include "vector"
-#include "unordered_map"
-#include "string"
-#include "list"
-#include "queue"
-#include "deque"
-#include "unordered_set"
-#include "cassert"
+#include <vector>
+#include <unordered_map>
+#include <map>
+#include <string>
+#include <list>
+#include <queue>
+#include <deque>
+#include <set>
+#include <unordered_set>
+#include <cassert>
 
 using std::shared_ptr;
 using std::unique_ptr;
@@ -53,7 +55,9 @@ using std::queue;
 using std::list;
 using std::deque;
 using std::unordered_map;
+using std::map;
 using std::string;
+using std::set;
 using std::unordered_set;
 
 class Entity;
