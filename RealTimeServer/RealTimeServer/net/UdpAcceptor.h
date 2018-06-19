@@ -3,7 +3,7 @@
 #define UDP_MUDUO_NET_ACCEPTOR_H
 
 #include <functional>
-#include <unordered_set>
+#include <map>
 
 #include <muduo/net/Channel.h>
 #include <muduo/net/Socket.h>
@@ -22,7 +22,9 @@ namespace muduo
 		class UdpAcceptor : noncopyable
 		{
 		public:
-			typedef std::function<void( int sockfd, const InetAddress&, const UdpConnectorPtr& )> NewConnectionCallback;
+			typedef std::function<void( 
+				std::shared_ptr< Socket > connectedSocket, 
+				const InetAddress& )> NewConnectionCallback;
 
 			UdpAcceptor( EventLoop* loop, const InetAddress& listenAddr, bool reuseport );
 			~UdpAcceptor();
@@ -35,11 +37,12 @@ namespace muduo
 
 			uint16_t GetListenPort() const { return listenPort_; }
 
-			void RemoveConnector( UdpConnectorPtr udpConn );
+			void RemoveConnector( const InetAddress& );
 
 		private:
 			void handleRead();
-			void newConnection( int sockfd, const InetAddress& peerAddr, const UdpConnectorPtr& UdpConnector );
+			void newConnection( std::shared_ptr< Socket > connectedSocket,
+				const InetAddress& peerAddr );
 
 			EventLoop* loop_;
 			Socket acceptSocket_;
@@ -48,8 +51,8 @@ namespace muduo
 			bool listenning_;
 			uint16_t listenPort_;
 
-			typedef std::unordered_set< UdpConnectorPtr > UdpConnectorPtrSet;
-			UdpConnectorPtrSet udpConnectors_;
+			typedef std::map< InetAddress, UdpConnectorPtr > InetAddressToUdpConnectorMap;
+			InetAddressToUdpConnectorMap peerAddrToUdpConnectors_;
 		};
 
 	}

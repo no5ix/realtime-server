@@ -122,21 +122,21 @@ void UdpClient::stop()
 	connector_->stop();
 }
 
-void UdpClient::newConnection( int sockfd )
+void UdpClient::newConnection( std::shared_ptr< Socket > connectedSocket )
 {
 	loop_->assertInLoopThread();
-	InetAddress peerAddr( sockets::getPeerAddr( sockfd ) );
+	InetAddress peerAddr( sockets::getPeerAddr( connectedSocket->fd() ) );
 	char buf[32];
 	snprintf( buf, sizeof buf, ":%s#%d", peerAddr.toIpPort().c_str(), nextConnId_ );
 	++nextConnId_;
 	string connName = name_ + buf;
 
-	InetAddress localAddr( sockets::getLocalAddr( sockfd ) );
+	InetAddress localAddr( sockets::getLocalAddr( connectedSocket->fd() ) );
 	// FIXME poll with zero timeout to double confirm the new connection
 	// FIXME use make_shared if necessary
 	UdpConnectionPtr conn( new UdpConnection( loop_,
 		connName,
-		sockfd,
+		connectedSocket,
 		localAddr,
 		peerAddr ) );
 

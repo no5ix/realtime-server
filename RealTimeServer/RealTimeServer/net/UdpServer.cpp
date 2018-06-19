@@ -30,7 +30,7 @@ UdpServer::UdpServer( EventLoop* loop,
 	nextConnId_( 1 )
 {
 	acceptor_->setNewConnectionCallback(
-		std::bind( &UdpServer::newConnection, this, _1, _2, _3 ) );
+		std::bind( &UdpServer::newConnection, this, _1, _2 ) );
 }
 
 UdpServer::~UdpServer()
@@ -65,7 +65,8 @@ void UdpServer::start()
 	}
 }
 
-void UdpServer::newConnection( int sockfd, const InetAddress& peerAddr, const UdpConnectorPtr& UdpConnector )
+void UdpServer::newConnection( std::shared_ptr< Socket > connectedSocket,
+	const InetAddress& peerAddr )
 {
 	loop_->assertInLoopThread();
 	EventLoop* ioLoop = threadPool_->getNextLoop();
@@ -76,16 +77,16 @@ void UdpServer::newConnection( int sockfd, const InetAddress& peerAddr, const Ud
 
 	LOG_INFO << "UdpServer::newConnection [" << name_
 		<< "] - new connection [" << connName
-		<< "] - new connection sockfd [" << sockfd
+		<< "] - new connection sockfd [" << connectedSocket->fd()
 		<< "] from " << peerAddr.toIpPort();
-	//InetAddress localAddr( sockets::getLocalAddr( sockfd ) );
+	//InetAddress localAddr( sockets::getLocalAddr( connectedSocket->fd() ) );
 	InetAddress localAddr( acceptor_->GetListenPort() );
 
 	// FIXME poll with zero timeout to double confirm the new connection
 	// FIXME use make_shared if necessary
 	UdpConnectionPtr conn( new UdpConnection( ioLoop,
 		connName,
-		sockfd,
+		connectedSocket,
 		localAddr,
 		peerAddr ) );
 
@@ -94,17 +95,17 @@ void UdpServer::newConnection( int sockfd, const InetAddress& peerAddr, const Ud
 	conn->setMessageCallback( messageCallback_ );
 	conn->setWriteCompleteCallback( writeCompleteCallback_ );
 	conn->setCloseCallback(
-		std::bind( &UdpServer::removeConnection, this, _1, UdpConnector ) ); // FIXME: unsafe
+		std::bind( &UdpServer::removeConnection, this, _1 ) ); // FIXME: unsafe
 	ioLoop->runInLoop( std::bind( &UdpConnection::connectEstablished, conn ) );
 }
 
-void UdpServer::removeConnection( const UdpConnectionPtr& conn, const UdpConnectorPtr& UdpConnector )
+void UdpServer::removeConnection( const UdpConnectionPtr& conn )
 {
 	// FIXME: unsafe
-	loop_->runInLoop( std::bind( &UdpServer::removeConnectionInLoop, this, conn, UdpConnector ) );
+	loop_->runInLoop( std::bind( &UdpServer::removeConnectionInLoop, this, conn ) );
 }
 
-void UdpServer::removeConnectionInLoop( const UdpConnectionPtr& conn, const UdpConnectorPtr& UdpConnector )
+void UdpServer::removeConnectionInLoop( const UdpConnectionPtr& conn )
 {
 	loop_->assertInLoopThread();
 	LOG_INFO << "UdpServer::removeConnectionInLoop [" << name_
@@ -113,7 +114,7 @@ void UdpServer::removeConnectionInLoop( const UdpConnectionPtr& conn, const UdpC
 	( void )n;
 	assert( n == 1 );
 
-	acceptor_->RemoveConnector( UdpConnector );
+	acceptor_->RemoveConnector( conn->peerAddress() );
 
 	EventLoop* ioLoop = conn->getLoop();
 	ioLoop->queueInLoop(

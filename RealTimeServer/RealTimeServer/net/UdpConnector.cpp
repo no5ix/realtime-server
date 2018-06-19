@@ -20,15 +20,15 @@ UdpConnector::UdpConnector( EventLoop* loop, const InetAddress& serverAddr, cons
 	loop_( loop ),
 	serverAddr_( serverAddr ),
 	localPort_( localPort ),
-	connectSocket_( sockets::createUdpNonblockingOrDie( serverAddr.family() ) ),
+	//connectSocket_( sockets::createUdpNonblockingOrDie( serverAddr.family() ) ),
 	connect_( false ),
 	state_( kDisconnected ),
 	retryDelayMs_( kInitRetryDelayMs )
 {
-	connectSocket_.setReuseAddr( true );
-	connectSocket_.setReusePort( true );
-	if ( localPort_ != 0 ) // not udp client call
-		connectSocket_.bindAddress( InetAddress( localPort_ ) );
+	//connectSocket_.setReuseAddr( true );
+	//connectSocket_.setReusePort( true );
+	//if ( localPort_ != 0 ) // not udp client call
+	//	connectSocket_.bindAddress( InetAddress( localPort_ ) );
 
 	LOG_DEBUG << "ctor[" << this << "]";
 }
@@ -79,8 +79,14 @@ void UdpConnector::stopInLoop()
 
 void UdpConnector::connect()
 {
-	int sockfd = connectSocket_.fd();
-	//int sockfd = sockets::createUdpNonblockingOrDie( serverAddr_.family() );
+	//int sockfd = connectSocket_.fd();
+	int sockfd = sockets::createUdpNonblockingOrDie( serverAddr_.family() );
+
+	std::shared_ptr< Socket > connectSocket( new Socket( sockfd ) );
+	connectSocket->setReuseAddr( true );
+	connectSocket->setReusePort( true );
+	if ( localPort_ != 0 ) // not udp client call
+		connectSocket->bindAddress( InetAddress( localPort_ ) );
 
 	int ret = sockets::connect( sockfd, serverAddr_.getSockAddr() );
 	int savedErrno = ( ret == 0 ) ? 0 : errno;
@@ -91,7 +97,7 @@ void UdpConnector::connect()
 	case EINTR:
 	case EISCONN:
 		//connecting( sockfd );
-		connected( sockfd );
+		connected( connectSocket );
 		break;
 
 	case EAGAIN:
@@ -110,12 +116,12 @@ void UdpConnector::connect()
 	case EFAULT:
 	case ENOTSOCK:
 		LOG_SYSERR << "connect error in Connector::startInLoop " << savedErrno;
-		sockets::close( sockfd );
+		//sockets::close( sockfd );
 		break;
 
 	default:
 		LOG_SYSERR << "Unexpected error in Connector::startInLoop " << savedErrno;
-		sockets::close( sockfd );
+		//sockets::close( sockfd );
 		// connectErrorCallback_();
 		break;
 	}
@@ -130,18 +136,18 @@ void UdpConnector::restart()
 	startInLoop();
 }
 
-void UdpConnector::connected( int sockfd )
+void UdpConnector::connected( std::shared_ptr< Socket > connectedSocket )
 {
 	/////////// new : for UDP
 	setState( kConnecting );
 	setState( kConnected );
 	if ( connect_ )
 	{
-		newConnectionCallback_( sockfd );
+		newConnectionCallback_( connectedSocket );
 	}
 	else
 	{
-		sockets::close( sockfd );
+		//sockets::close( sockfd );
 	}
 }
 
@@ -200,11 +206,11 @@ void UdpConnector::handleWrite()
 			setState( kConnected );
 			if ( connect_ )
 			{
-				newConnectionCallback_( sockfd );
+				//newConnectionCallback_( sockfd );
 			}
 			else
 			{
-				sockets::close( sockfd );
+				//sockets::close( sockfd );
 			}
 		}
 	}
@@ -229,7 +235,7 @@ void UdpConnector::handleError()
 
 void UdpConnector::retry( int sockfd )
 {
-	sockets::close( sockfd );
+	//sockets::close( sockfd );
 	setState( kDisconnected );
 	if ( connect_ )
 	{

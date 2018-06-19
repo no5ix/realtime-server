@@ -47,7 +47,7 @@ namespace muduo
 			/// User should not create this object.
 			UdpConnection( EventLoop* loop,
 				const string& name,
-				int sockfd,
+				const std::shared_ptr< Socket >& connectedSocket,
 				const InetAddress& localAddr,
 				const InetAddress& peerAddr );
 			~UdpConnection();
@@ -125,7 +125,7 @@ namespace muduo
 			StateE state_;  // FIXME: use atomic variable
 			bool reading_;
 			// we don't expose those classes to client.
-			std::unique_ptr<Socket> socket_;
+			std::shared_ptr<Socket> socket_;
 			std::unique_ptr<Channel> channel_;
 			const InetAddress localAddr_;
 			const InetAddress peerAddr_;

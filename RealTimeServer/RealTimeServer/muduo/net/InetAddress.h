@@ -57,7 +57,7 @@ class InetAddress : public muduo::copyable
 
   // default copy/assignment are Okay
 
-  const struct sockaddr* getSockAddr() const { return sockets::sockaddr_cast(&addr6_); }
+  const struct sockaddr* getSockAddr() const { return sockets::sockaddr_cast( &addr6_ ); }
   void setSockAddrInet6(const struct sockaddr_in6& addr6) { addr6_ = addr6; }
 
   uint32_t ipNetEndian() const;
@@ -68,6 +68,10 @@ class InetAddress : public muduo::copyable
   // thread safe
   static bool resolve(StringArg hostname, InetAddress* result);
   // static std::vector<InetAddress> resolveAll(const char* hostname, uint16_t port = 0);
+
+  // for UdpAcceptor::peerAddrs_
+  const struct sockaddr_in6* getSockAddr6() const { return &addr6_; }
+  bool operator<( const InetAddress& other ) const;
 
  private:
   union

@@ -38,15 +38,16 @@ void muduo::net::UdpDefaultMessageCallback( const UdpConnectionPtr&,
 
 UdpConnection::UdpConnection( EventLoop* loop,
 	const string& nameArg,
-	int sockfd,
+	const std::shared_ptr< Socket >& connectedSocket,
 	const InetAddress& localAddr,
 	const InetAddress& peerAddr )
-	: loop_( CHECK_NOTNULL( loop ) ),
+	: 
+	loop_( CHECK_NOTNULL( loop ) ),
 	name_( nameArg ),
 	state_( kConnecting ),
 	reading_( true ),
-	socket_( new Socket( sockfd ) ),
-	channel_( new Channel( loop, sockfd ) ),
+	socket_( connectedSocket ),
+	channel_( new Channel( loop, socket_->fd() ) ),
 	localAddr_( localAddr ),
 	peerAddr_( peerAddr ),
 	highWaterMark_( 64 * 1024 * 1024 )
@@ -60,7 +61,7 @@ UdpConnection::UdpConnection( EventLoop* loop,
 	channel_->setErrorCallback(
 		std::bind( &UdpConnection::handleError, this ) );
 	LOG_DEBUG << "UdpConnection::ctor[" << name_ << "] at " << this
-		<< " fd=" << sockfd;
+		<< " fd=" << socket_->fd();
 	//socket_->setKeepAlive( true );
 }
 
@@ -394,6 +395,6 @@ void UdpConnection::handleError()
 	handleClose();
 }
 
-int UdpConnection::GetSocketFd() const 
+int UdpConnection::GetSocketFd() const
 { return socket_->fd(); }
 

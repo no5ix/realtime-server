@@ -81,11 +81,12 @@ namespace muduo
 
 		private:
 			/// Not thread safe, but in loop
-			void newConnection( int sockfd, const InetAddress& peerAddr, const UdpConnectorPtr& UdpConnector );
+			void newConnection( std::shared_ptr< Socket > connectedSocket,
+				const InetAddress& peerAddr );
 			/// Thread safe.
-			void removeConnection( const UdpConnectionPtr& conn, const UdpConnectorPtr& UdpConnector );
+			void removeConnection( const UdpConnectionPtr& conn );
 			/// Not thread safe, but in loop
-			void removeConnectionInLoop( const UdpConnectionPtr& conn, const UdpConnectorPtr& UdpConnector );
+			void removeConnectionInLoop( const UdpConnectionPtr& conn );
 
 			typedef std::map<string, UdpConnectionPtr> ConnectionMap;
 
