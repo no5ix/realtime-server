@@ -37,8 +37,9 @@ namespace muduo
 
 			uint16_t GetListenPort() const { return listenPort_; }
 
-			void RemoveConnector( const InetAddress& );
+			void RemoveConnector( const InetAddress& peerAddr );
 
+			void EraseConnector( const InetAddress& peerAddr );
 		private:
 			void handleRead();
 			void newConnection( std::shared_ptr< Socket > connectedSocket,

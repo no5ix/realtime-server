@@ -329,8 +329,8 @@ inline bool operator!=(const Quaternion lhs, const Quaternion rhs);
  */
 
 Quaternion::Quaternion() : X(0), Y(0), Z(0), W(1) {}
-Quaternion::Quaternion(float data[]) : X(data[0]), Y(data[1]), Z(data[2]),
-    W(data[3]) {}
+Quaternion::Quaternion(float inData[]) : X(inData[0]), Y(inData[1]), Z(inData[2]),
+    W(inData[3]) {}
 Quaternion::Quaternion(Vector3 vector, float scalar) : X(vector.X),
     Y(vector.Y), Z(vector.Z), W(scalar) {}
 Quaternion::Quaternion(float x, float y, float z, float w) : X(x), Y(y),

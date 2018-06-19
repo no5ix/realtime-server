@@ -4,19 +4,17 @@ Character::Character() :
 	Entity(),
 	mPlayerId( 0 ),
 	mIsShooting( false ),
-	mHealth( 10 )
+	mHealth( 10 ),
+	BaseTurnRate( 2.f ),
+	BaseLookUpRate( 2.f ),
+	MaxSpeed( 440.f ),
+	Acceleration( 1000.f ),
+	Deceleration( 2000.f ),
+	TurningBoost( 8.0f ),
+	CameraRotation_( Vector3::Zero() ),
+	Velocity( Vector3::Zero() )
 {
 	//SetCollisionRadius( 0.5f );
-	BaseTurnRate = 2.f;
-	BaseLookUpRate = 2.f;
-
-	MaxSpeed = 440.f;
-	Acceleration = 1000.f;
-	Deceleration = 2000.f;
-	TurningBoost = 8.0f;
-
-	Velocity = Vector3::Zero();
-	CameraRotation = Vector3::Zero();
 }
 
 void Character::ProcessInput( float inDeltaTime, const InputState& inInputState )
@@ -34,10 +32,10 @@ void Character::ProcessInput( float inDeltaTime, const InputState& inInputState 
 	//	( ActionPawnCameraRotation.X + ( -1 * BaseLookUpRate * inInputState.GetDesiredLookUpAmount() ) ),
 	//	-89.f, 
 	//	89.f );
-	CameraRotation = inInputState.GetDesiredLookUpRot();
+	CameraRotation_ = inInputState.GetDesiredLookUpRot();
 
-	ActionAddMovementInput( CameraRotation.ToQuaternion() * Vector3::Forward(), inInputState.GetDesiredMoveForwardAmount() );
-	ActionAddMovementInput( CameraRotation.ToQuaternion() * Vector3::Right(), inInputState.GetDesiredMoveRightAmount() );
+	ActionAddMovementInput( CameraRotation_.ToQuaternion() * Vector3::Forward(), inInputState.GetDesiredMoveForwardAmount() );
+	ActionAddMovementInput( CameraRotation_.ToQuaternion() * Vector3::Right(), inInputState.GetDesiredMoveRightAmount() );
 
 
 	ApplyControlInputToVelocity( inDeltaTime );
@@ -48,7 +46,7 @@ void Character::SimulateMovement( float inDeltaTime )
 	// Move actor
 	Vector3 Delta = Velocity * inDeltaTime;
 
-	if (!Delta.IsNearlyZero( 1e-6f ))
+	if ( !Delta.IsNearlyZero( 1e-6f ) )
 	{
 		SetLocation( GetLocation() + Delta );
 	}
@@ -90,10 +88,10 @@ void Character::ApplyControlInputToVelocity( float DeltaTime )
 	const float MaxPawnSpeed = GetMaxSpeed() * AnalogInputModifier;
 	const bool bExceedingMaxSpeed = IsExceedingMaxSpeed( MaxPawnSpeed );
 
-	if (AnalogInputModifier > 0.f && !bExceedingMaxSpeed)
+	if ( AnalogInputModifier > 0.f && !bExceedingMaxSpeed )
 	{
 		// Apply change in velocity direction
-		if (Velocity.SizeSquared() > 0.f)
+		if ( Velocity.SizeSquared() > 0.f )
 		{
 			// Change direction faster than only using acceleration, but never increase velocity magnitude.
 			const float TimeScale = RealTimeSrvMath::Clamp( DeltaTime * TurningBoost, 0.f, 1.f );
@@ -103,14 +101,14 @@ void Character::ApplyControlInputToVelocity( float DeltaTime )
 	else
 	{
 		// Dampen velocity magnitude based on deceleration.
-		if (Velocity.SizeSquared() > 0.f)
+		if ( Velocity.SizeSquared() > 0.f )
 		{
 			const Vector3 OldVelocity = Velocity;
 			const float VelSize = RealTimeSrvMath::Max( Velocity.Size() - RealTimeSrvMath::Abs( Deceleration ) * DeltaTime, 0.f );
 			Velocity = Velocity.GetSafeNormal() * VelSize;
 
 			// Don't allow braking to lower us below max speed if we started above it.
-			if (bExceedingMaxSpeed && Velocity.SizeSquared() < RealTimeSrvMath::Square( MaxPawnSpeed ))
+			if ( bExceedingMaxSpeed && Velocity.SizeSquared() < RealTimeSrvMath::Square( MaxPawnSpeed ) )
 			{
 				Velocity = OldVelocity.GetSafeNormal() * MaxPawnSpeed;
 			}
@@ -136,7 +134,7 @@ uint32_t Character::Write( OutputBitStream& inOutputStream, uint32_t inDirtyStat
 {
 	uint32_t writtenState = 0;
 
-	if (inDirtyState & ECRS_PlayerId)
+	if ( inDirtyState & ECRS_PlayerId )
 	{
 		inOutputStream.Write( ( bool )true );
 		inOutputStream.Write( GetPlayerId() );
@@ -148,7 +146,7 @@ uint32_t Character::Write( OutputBitStream& inOutputStream, uint32_t inDirtyStat
 		inOutputStream.Write( ( bool )false );
 	}
 
-	if (inDirtyState & ECRS_Pose)
+	if ( inDirtyState & ECRS_Pose )
 	{
 		inOutputStream.Write( ( bool )true );
 

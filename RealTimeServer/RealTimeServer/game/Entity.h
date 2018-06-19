@@ -44,20 +44,17 @@ public:
 
 protected:
 
-	Vector3											mLocation;
-	//Vector3											mColor;
-
-	float											mCollisionRadius;
-
-
-	Vector3											mRotation;
-	float											mScale;
-	int												mIndexInWorld;
-
 	bool											mDoesWantToDie;
 
+	int												mIndexInWorld;
 	int												mNetworkId;
 
+	float											mCollisionRadius;
+	float											mScale;
+
+	Vector3											mLocation;
+	Vector3											mRotation;
+	//Vector3										mColor;
 };
 
 typedef shared_ptr< Entity >	EntityPtr;

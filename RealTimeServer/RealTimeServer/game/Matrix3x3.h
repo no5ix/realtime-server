@@ -248,9 +248,9 @@ inline bool operator!=(const Matrix3x3 lhs, const Matrix3x3 rhs);
 
 Matrix3x3::Matrix3x3() : D00(1), D01(0), D02(0), D10(0), D11(1), D12(0), D20(0),
     D21(0), D22(1) {}
-Matrix3x3::Matrix3x3(float data[]) : D00(data[0]), D01(data[1]), D02(data[2]),
-    D10(data[3]), D11(data[4]), D12(data[5]), D20(data[6]), D21(data[7]),
-    D22(data[8]) {}
+Matrix3x3::Matrix3x3(float inData[]) : D00(inData[0]), D01(inData[1]), D02(inData[2]),
+    D10(inData[3]), D11(inData[4]), D12(inData[5]), D20(inData[6]), D21(inData[7]),
+    D22(inData[8]) {}
 Matrix3x3::Matrix3x3(Vector3 row0, Vector3 row1, Vector3 row2) : D00(row0.X),
     D01(row0.Y), D02(row0.Z), D10(row1.X), D11(row1.Y), D12(row1.Z),
     D20(row2.X), D21(row2.Y), D22(row2.Z) {}

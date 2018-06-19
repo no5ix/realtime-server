@@ -114,9 +114,11 @@ void UdpServer::removeConnectionInLoop( const UdpConnectionPtr& conn )
 	( void )n;
 	assert( n == 1 );
 
-	acceptor_->RemoveConnector( conn->peerAddress() );
+	//acceptor_->RemoveConnector( conn->peerAddress() );
 
 	EventLoop* ioLoop = conn->getLoop();
+	ioLoop->queueInLoop(
+		std::bind( &UdpAcceptor::RemoveConnector, get_pointer( acceptor_ ), conn->peerAddress() ) );
 	ioLoop->queueInLoop(
 		std::bind( &UdpConnection::connectDestroyed, conn ) );
 }

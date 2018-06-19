@@ -21,8 +21,8 @@ UdpAcceptor::UdpAcceptor( EventLoop* loop, const InetAddress& listenAddr, bool r
 	: loop_( loop ),
 	acceptSocket_( sockets::createUdpNonblockingOrDie( listenAddr.family() ) ),
 	acceptChannel_( loop, acceptSocket_.fd() ),
-	listenPort_( listenAddr.toPort() ),
-	listenning_( false )
+	listenning_( false ),
+	listenPort_( listenAddr.toPort() )
 {
 	acceptSocket_.setReuseAddr( true );
 	acceptSocket_.setReusePort( reuseport );
@@ -68,7 +68,7 @@ void UdpAcceptor::handleRead()
 			peerAddrToUdpConnectors_[peerAddr] = newUdpConnector;
 
 			newUdpConnector->setNewConnectionCallback(
-				std::bind( &UdpAcceptor::newConnection, this, _1, peerAddr) );
+				std::bind( &UdpAcceptor::newConnection, this, _1, peerAddr ) );
 			newUdpConnector->start();
 		}
 	}
@@ -81,6 +81,7 @@ void UdpAcceptor::handleRead()
 void UdpAcceptor::newConnection( std::shared_ptr< Socket > connectedSocket,
 	const InetAddress& peerAddr )
 {
+	loop_->assertInLoopThread();
 	if ( newConnectionCallback_ )
 	{
 		newConnectionCallback_( connectedSocket, peerAddr );
@@ -93,7 +94,14 @@ void UdpAcceptor::newConnection( std::shared_ptr< Socket > connectedSocket,
 
 void UdpAcceptor::RemoveConnector( const InetAddress& peerAddr )
 {
+	loop_->assertInLoopThread();
 	assert( peerAddrToUdpConnectors_[peerAddr] );
 	( peerAddrToUdpConnectors_[peerAddr] )->stop();
+	loop_->runAfter( 1, std::bind( &UdpAcceptor::EraseConnector, this, peerAddr ) );
+}
+
+void UdpAcceptor::EraseConnector( const InetAddress& peerAddr )
+{
+	loop_->assertInLoopThread();
 	peerAddrToUdpConnectors_.erase( peerAddr );
 }

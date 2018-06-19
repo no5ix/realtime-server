@@ -11,6 +11,7 @@ ClientProxy::ClientProxy( const std::string& inName,
 	mPlayerId( inPlayerId ),
 	mDeliveryNotificationManager( false, true ),
 	mIsLastMoveTimestampDirty( false ),
+	mLastPacketFromClientTime( 0.f ),
 	mTimeToRespawn( 0.f ),
 	mRecvingServerResetFlag( false ),
 	UdpConnetction_( inUdpConnetction )

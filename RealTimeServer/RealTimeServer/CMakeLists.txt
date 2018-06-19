@@ -96,7 +96,31 @@ elseif(UNIX)
     # Inhibit all warning messages.
     if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
         # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wno-long-long -pedantic")
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w")
+        # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w")
+        set(CXX_FLAGS
+            -g
+            # -DVALGRIND
+            # -DMUDUO_STD_STRING
+            -DCHECK_PTHREAD_RETURN_VALUE
+            -D_FILE_OFFSET_BITS=64
+            -Wall
+            -Wextra
+            -Werror
+            # -Wconversion
+            -Wno-unused-parameter
+            # -Wold-style-cast
+            -Wno-multichar
+            -Wno-reorder
+            -Woverloaded-virtual
+            -Wpointer-arith
+            -Wshadow
+            -Wwrite-strings
+            -march=native
+            # -MMD
+            -std=c++0x
+            -rdynamic
+        )
+        string(REPLACE ";" " " CMAKE_CXX_FLAGS "${CXX_FLAGS}")
     endif()
 
   	# For gdb

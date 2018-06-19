@@ -33,11 +33,11 @@ public:
 
 private:
 
-	DeliveryNotifyMgr	mDeliveryNotificationManager;
-	ReplicationMgr	mReplicationManagerServer;
-
 	std::string			mName;
 	int				mPlayerId;
+
+	DeliveryNotifyMgr	mDeliveryNotificationManager;
+	ReplicationMgr	mReplicationManagerServer;
 
 	InputState		mInputState;
 

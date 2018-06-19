@@ -17,23 +17,19 @@ public:
 			//| ECRS_Health
 	};
 
-
 	static	EntityPtr	StaticCreate() { return EntityPtr( new Character() ); }
 
 	virtual uint32_t GetAllStateMask()	const override { return ECRS_AllState; }
-
 
 	virtual void Update() override;
 
 	void ProcessInput( float inDeltaTime, const InputState& inInputState );
 	void SimulateMovement( float inDeltaTime );
 
-
 	void		SetPlayerId( uint32_t inPlayerId ) { mPlayerId = inPlayerId; }
 	uint32_t	GetPlayerId()						const { return mPlayerId; }
 
 	virtual uint32_t	Write( OutputBitStream& inOutputStream, uint32_t inDirtyState ) const override;
-
 
 	bool IsExceedingMaxSpeed( float inMaxSpeed ) const;
 
@@ -49,14 +45,13 @@ public:
 
 	float GetMaxSpeed() const { return MaxSpeed; }
 
-	Vector3 GetCameraRotation() const { return CameraRotation; }
+	Vector3 GetCameraRotation() const { return CameraRotation_; }
 
 //public:
 protected:
 
 	/** Update Velocity based on input. Also applies gravity. */
 	void ApplyControlInputToVelocity( float DeltaTime );
-
 
 	Vector3 ActionControlInputVector;
 
@@ -65,26 +60,12 @@ protected:
 	Character();
 
 private:
-
-
 	uint32_t			mPlayerId;
 
 protected:
 
-	///move down here for padding reasons...
-
-	float				mLastMoveTimestamp;
-
-	int					mHealth;
-
 	bool				mIsShooting;
-
-	Vector3             CameraRotation;
-
-protected:
-
-
-	Vector3 Velocity;
+	int					mHealth;
 
 	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
 
@@ -106,8 +87,11 @@ protected:
 
 	float Deceleration;
 
-
 	float TurningBoost;
+
+	Vector3 CameraRotation_;
+
+	Vector3 Velocity;
 };
 
 typedef shared_ptr< Character >	CharacterPtr;

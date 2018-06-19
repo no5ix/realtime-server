@@ -37,7 +37,7 @@ typedef unsigned int						ChunkPacketID;
 
 #define THREAD_NUM							(8)
 
-#define BECOME_DAEMON						(false)
+#define BECOME_DAEMON						(true)
 
 #define MOVE_COUNT_NUM						(2)
 

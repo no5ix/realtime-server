@@ -4,13 +4,14 @@
 
 
 Entity::Entity() :
-	mIndexInWorld( -1 ),
-	mCollisionRadius( 0.5f ),
 	mDoesWantToDie( false ),
-	mRotation( Vector3::Zero() ),
+	mIndexInWorld( -1 ),
 	mNetworkId( 0 ),
+	mCollisionRadius( 0.5f ),
+	mScale( 1.0f ),
+	mLocation( Vector3::Zero() ),
+	mRotation( Vector3::Zero() )
 	//mColor( Colors::White ),
-	mScale( 1.0f )
 {
 }
 

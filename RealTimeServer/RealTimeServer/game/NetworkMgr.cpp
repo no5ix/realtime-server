@@ -307,6 +307,8 @@ bool NetworkMgr::Init( uint16_t inPort )
 
 	server_->setThreadNum( THREAD_NUM );
 	server_->setThreadInitCallback( std::bind( &NetworkMgr::threadInit, this, _1 ) );
+
+	return true;
 }
 
 #else //NEW_EPOLL_INTERFACE

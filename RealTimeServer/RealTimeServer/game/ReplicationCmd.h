@@ -30,8 +30,8 @@ public:
 
 private:
 
-	uint32_t				mDirtyState;
 	ReplicationAction		mAction;
+	uint32_t				mDirtyState;
 };
 
 inline void	 ReplicationCmd::ClearDirtyState( uint32_t inStateToClear )

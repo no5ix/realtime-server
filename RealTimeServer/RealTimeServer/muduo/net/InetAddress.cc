@@ -180,4 +180,8 @@ bool InetAddress::operator<( const InetAddress& other ) const
 			return false;
 		}
 	}
+	else
+	{
+		return false;
+	}
 }

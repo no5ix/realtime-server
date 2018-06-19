@@ -8,16 +8,13 @@ namespace RealTimeSrvMath
 	float GetRandomFloat();
 
 	bool	Is3DVectorEqual( const Vector3& inA, const Vector3& inB );
-	
 
 	bool	Is2DVectorEqual( const Vector2& inA, const Vector2& inB );
 	
-
 	inline float ToDegrees( float inRadians )
 	{
 		return inRadians * 180.0f / PI;
 	}
-
 
 	/** Computes absolute value in a generic way */
 	template< class T >

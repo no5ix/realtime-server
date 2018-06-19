@@ -21,9 +21,12 @@ public:
 
 		mDesiredTurnRateAmount( 0.f ),
 		mDesiredLookUpRateAmount( 0.f ),
+
 		mDesiredOnStartJumpAmount( 0.f ),
 		mDesiredOnStopJumpAmount( 0.f ),
+
 		mDesiredMoveUpAmount( 0.f ),
+
 		mIsShooting( false )
 	{}
 
@@ -49,6 +52,9 @@ public:
 private:
 	friend class InputManager;
 
+	float	mDesiredMoveForwardAmount;
+	float	mDesiredMoveRightAmount;
+
 	float	mDesiredTurnAmountX;
 	float	mDesiredTurnAmountY;
 	float	mDesiredTurnAmountZ;
@@ -56,9 +62,6 @@ private:
 	float   mDesiredLookUpAmountX;
 	float   mDesiredLookUpAmountY;
 	float   mDesiredLookUpAmountZ;
-
-	float	mDesiredMoveRightAmount;
-	float	mDesiredMoveForwardAmount;
 
 	float	mDesiredTurnRateAmount;
 	float	mDesiredLookUpRateAmount;

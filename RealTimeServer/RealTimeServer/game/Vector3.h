@@ -373,7 +373,7 @@ inline bool operator!=(const Vector3 lhs, const Vector3 rhs);
  */
 
 Vector3::Vector3() : X(0), Y(0), Z(0) {}
-Vector3::Vector3(float data[]) : X(data[0]), Y(data[1]), Z(data[2]) {}
+Vector3::Vector3(float inData[]) : X(inData[0]), Y(inData[1]), Z(inData[2]) {}
 Vector3::Vector3(float value) : X(value), Y(value), Z(value) {}
 Vector3::Vector3(float x, float y) : X(x), Y(y), Z(0) {}
 Vector3::Vector3(float x, float y, float z) : X(x), Y(y), Z(z) {}
@@ -404,8 +404,8 @@ Vector3 Vector3::GetSafeNormal( float Tolerance ) const
 	{
 		return Vector3::Zero();
 	}
-	const float Scale = RealTimeSrvMath::InvSqrt( SquareSum );
-	return Vector3( X*Scale, Y*Scale, Z*Scale );
+	const float tempScale = RealTimeSrvMath::InvSqrt( SquareSum );
+	return Vector3( X*tempScale, Y*tempScale, Z*tempScale );
 }
 
 bool Vector3::IsNearlyZero( float Tolerance ) const
@@ -427,8 +427,8 @@ Vector3 Vector3::GetClampedToMaxSize( float MaxSize ) const
 	const float VSq = SizeSquared();
 	if (VSq > RealTimeSrvMath::Square( MaxSize ))
 	{
-		const float Scale = MaxSize * RealTimeSrvMath::InvSqrt( VSq );
-		return Vector3( X*Scale, Y*Scale, Z*Scale );
+		const float tempScale = MaxSize * RealTimeSrvMath::InvSqrt( VSq );
+		return Vector3( X*tempScale, Y*tempScale, Z*tempScale );
 	}
 	else
 	{

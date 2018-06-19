@@ -19,9 +19,9 @@ class OutputBitStream
 public:
 
 	OutputBitStream() :
-		mBitHead( 0 ),
 		mBuffer( nullptr ),
-		mSlicePoint( 0 )
+		mSlicePoint( 0 ),
+		mBitHead( 0 )
 	{
 		ReallocBuffer( MAX_PACKET_BYTE_LENGTH * 8 );
 	}
@@ -95,8 +95,8 @@ class InputBitStream
 public:
 
 	InputBitStream( const char* inBuffer = nullptr, const uint32_t inBitCount = 0 ) :
-		mBitCapacity( inBitCount ),
 		mBitHead( 0 ),
+		mBitCapacity( inBitCount ),
 		mRecombinePoint( 0 )
 	{
 		if ( inBuffer )
@@ -114,8 +114,8 @@ public:
 	}
 
 	InputBitStream( const InputBitStream& inOther ) :
-		mBitCapacity( inOther.mBitCapacity ),
 		mBitHead( inOther.mBitHead ),
+		mBitCapacity( inOther.mBitCapacity ),
 		mRecombinePoint( inOther.mRecombinePoint ),
 		mIsBufferOwner( true )
 	{

@@ -282,7 +282,7 @@ inline bool operator!=(const Vector2 lhs, const Vector2 rhs);
  */
 
 Vector2::Vector2() : X(0), Y(0) {}
-Vector2::Vector2(float data[]) : X(data[0]), Y(data[1]) {}
+Vector2::Vector2(float inData[]) : X(inData[0]), Y(inData[1]) {}
 Vector2::Vector2(float value) : X(value), Y(value) {}
 Vector2::Vector2(float x, float y) : X(x), Y(y) {}
 

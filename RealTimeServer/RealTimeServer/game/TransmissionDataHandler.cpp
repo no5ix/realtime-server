@@ -28,6 +28,8 @@ void TransmissionDataHandler::HandleDeliveryFailure( DeliveryNotifyMgr* inDelive
 		case RA_Destroy:
 			HandleDestroyDeliveryFailure( networkId );
 			break;
+		default:
+			break;
 		}
 
 	}
@@ -82,6 +84,8 @@ void TransmissionDataHandler::HandleDeliverySuccess( DeliveryNotifyMgr* inDelive
 			break;
 		case RA_Destroy:
 			HandleDestroyDeliverySuccess( rt.GetNetworkId() );
+			break;
+		default:
 			break;
 		}
 	}

@@ -9,7 +9,6 @@ namespace muduo
 {
 	namespace net
 	{
-
 		class UdpConnector;
 		typedef std::shared_ptr<UdpConnector> UdpConnectorPtr;
 

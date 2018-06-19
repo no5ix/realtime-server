@@ -79,10 +79,12 @@ int sockets::recvfrom( int sockfd, struct sockaddr_in6* addr )
 	int packetSize = sizeof( packetMem );
 	socklen_t addrlen = static_cast< socklen_t >( sizeof *addr );
 
-	int readByteCount = ::recvfrom( sockfd,
+	int readByteCount = static_cast< int >( ::recvfrom( sockfd,
 		packetMem,
 		packetSize,
-		0, sockaddr_cast( addr ), &addrlen );
+		0,
+		sockaddr_cast( addr ),
+		&addrlen ) );
 
 	if ( readByteCount < 0 )
 	{

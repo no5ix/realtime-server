@@ -53,12 +53,12 @@ void ReplicationMgr::Write( OutputBitStream& inOutputStream, TransmissionDataPtr
 				writtenState = WriteCreateAction( inOutputStream, networkId, dirtyState );
 				break;
 			case RA_Update:
-				
 				writtenState = WriteUpdateAction( inOutputStream, networkId, dirtyState );
 				break;
 			case RA_Destroy:
-				
 				writtenState = WriteDestroyAction( inOutputStream, networkId, dirtyState );
+				break;
+			default:
 				break;
 			}
 
