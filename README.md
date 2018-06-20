@@ -1,10 +1,10 @@
-# A Realtime Dedicated Game Server From Scratch.
+# A Realtime Dedicated Game Server
 
-从零开始写一个实时的专用游戏服务器
+一个实时的专用游戏服务器
  
 And a UE4 demo for it. 
 
-附一个UE4游戏前端演示Demo
+附一个[UE4游戏前端演示Demo](https://github.com/no5ix/realtime-server-ue4-demo)
 
 
 ![UE4DemoScreenshot.png](./img/UE4DemoScreenshot.png)
@@ -34,12 +34,3 @@ And a UE4 demo for it.
 - Linux/Win
 
 - RUDP
-
-- Unreal Engine Version : 4.16 - 4.19
-
-- 虚幻引擎版本 : 兼容 4.16 - 4.19
-
-- (Old) Checkout branch 4.15 for UE4.15 version of the client and the corresponding server
-
-- (老版本的) 切到 4.15 的 Git 分支上查看虚幻引擎4.15版本的客户端以及对应的服务器
-
