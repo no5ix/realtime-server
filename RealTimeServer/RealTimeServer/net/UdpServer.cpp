@@ -110,15 +110,13 @@ void UdpServer::removeConnectionInLoop( const UdpConnectionPtr& conn )
 	loop_->assertInLoopThread();
 	LOG_INFO << "UdpServer::removeConnectionInLoop [" << name_
 		<< "] - connection " << conn->name();
+
 	size_t n = connections_.erase( conn->name() );
 	( void )n;
 	assert( n == 1 );
 
-	//acceptor_->RemoveConnector( conn->peerAddress() );
-
-	EventLoop* ioLoop = conn->getLoop();
-	ioLoop->queueInLoop(
+	acceptor_->getLoop()->queueInLoop(
 		std::bind( &UdpAcceptor::RemoveConnector, get_pointer( acceptor_ ), conn->peerAddress() ) );
-	ioLoop->queueInLoop(
+	conn->getLoop()->queueInLoop(
 		std::bind( &UdpConnection::connectDestroyed, conn ) );
 }

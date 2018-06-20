@@ -29,7 +29,7 @@ public:
 	bool	IsLastMoveTimestampDirty()						const { return mIsLastMoveTimestampDirty; }
 
 	bool	GetRecvingServerResetFlag() const { return mRecvingServerResetFlag; }
-	void	SetRecvingServerResetFlag(bool inRecvingServerResetFlag)		 { mRecvingServerResetFlag = inRecvingServerResetFlag; }
+	void	SetRecvingServerResetFlag( bool inRecvingServerResetFlag ) { mRecvingServerResetFlag = inRecvingServerResetFlag; }
 
 private:
 
@@ -56,11 +56,11 @@ public:
 	ClientProxy(
 		const std::string& inName,
 		int inPlayerId,
-		const UdpConnectionPtr& inUdpConnetction );
+		const UdpConnectionPtr& inUdpConnection );
 
-	UdpConnectionPtr GetUdpConnection() const { return UdpConnetction_; }
+	UdpConnectionPtr GetUdpConnection() const { return UdpConnection_; }
 private:
-	UdpConnectionPtr UdpConnetction_;
+	UdpConnectionPtr UdpConnection_;
 
 #else //NEW_EPOLL_INTERFACE
 
@@ -72,7 +72,7 @@ public:
 		int inPlayerId,
 		const UDPSocketPtr& inUDPSocket
 		// ,
-		// const std::shared_ptr<UdpConnection>& inUdpConnetction
+		// const std::shared_ptr<UdpConnection>& inUdpConnection	
 	);
 
 	const SocketAddrInterface& GetSocketAddress() const { return mSocketAddress; }

@@ -5,7 +5,7 @@
 #ifdef NEW_EPOLL_INTERFACE
 ClientProxy::ClientProxy( const std::string& inName, 
 	int inPlayerId, 
-	const UdpConnectionPtr& inUdpConnetction )
+	const UdpConnectionPtr& inUdpConnection )
 	:
 	mName( inName ),
 	mPlayerId( inPlayerId ),
@@ -14,7 +14,7 @@ ClientProxy::ClientProxy( const std::string& inName,
 	mLastPacketFromClientTime( 0.f ),
 	mTimeToRespawn( 0.f ),
 	mRecvingServerResetFlag( false ),
-	UdpConnetction_( inUdpConnetction )
+	UdpConnection_( inUdpConnection )
 {
 	UpdateLastPacketTime();
 }

@@ -111,7 +111,7 @@ private:
 		ReceivedPacket(
 			float inReceivedTime,
 			InputBitStream& inInputMemoryBitStream,
-			UdpConnectionPtr inUdpConnection = nullptr )
+			const UdpConnectionPtr& inUdpConnection )
 			:
 			mReceivedTime( inReceivedTime ),
 			mPacketBuffer( inInputMemoryBitStream ),
@@ -125,7 +125,7 @@ private:
 	private:
 		float							mReceivedTime;
 		InputBitStream					mPacketBuffer;
-		UdpConnectionPtr	mUdpConnection;
+		UdpConnectionPtr				mUdpConnection;
 	};
 	typedef ThreadLocalSingleton<
 		queue< ReceivedPacket, list< ReceivedPacket > >
@@ -186,7 +186,7 @@ private:
 			const SocketAddrInterface& inFromAddress,
 			UDPSocketPtr  inUDPSocket = nullptr
 			//,
-			//std::shared_ptr<UdpConnection> inUdpConnection = nullptr
+			//std::shared_ptr<UdpConnection>& inUdpConnection = nullptr
 		) :
 			mReceivedTime( inReceivedTime ),
 			mFromAddress( inFromAddress ),
@@ -200,7 +200,7 @@ private:
 		float					GetReceivedTime()	const { return mReceivedTime; }
 		InputBitStream&	GetPacketBuffer() { return mPacketBuffer; }
 		UDPSocketPtr	GetUDPSocket() const { return mUDPSocket; }
-		//std::shared_ptr<UdpConnection>	GetUdpConnection() const { return mUdpConnection; }
+		//std::shared_ptr<UdpConnection>&	GetUdpConnection() const { return mUdpConnection; }
 
 	private:
 

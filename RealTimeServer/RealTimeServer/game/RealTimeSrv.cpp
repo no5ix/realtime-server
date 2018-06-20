@@ -9,10 +9,21 @@ bool RealTimeSrv::StaticInit()
 {
 #ifdef NEW_EPOLL_INTERFACE
 	::signal( SIGPIPE, SIG_IGN );
-	if ( BECOME_DAEMON && RealTimeSrv::BecomeDaemon() == -1 )
+
+	int willBecomeDaemon = 0;
+	std::string willBecomeDaemonString = RealTimeSrvHelper::GetCommandLineArg(
+		COMMAND_LINE_ARG_DAEMON_INDEX );
+	if ( !willBecomeDaemonString.empty() )
 	{
-		LOG( "BecomeDaemon failed", 0 );
-		return false;
+		willBecomeDaemon = stoi( willBecomeDaemonString );
+		if ( willBecomeDaemon )
+		{
+			if ( RealTimeSrv::BecomeDaemon() == -1 )
+			{
+				LOG( "BecomeDaemon failed", 0 );
+				return false;
+			}
+		}
 	}
 #endif //NEW_EPOLL_INTERFACE
 
@@ -97,7 +108,8 @@ RealTimeSrv::RealTimeSrv()
 void RealTimeSrv::SimulateRealWorld()
 {
 	float latency = 0.0f;
-	std::string latencyString = RealTimeSrvHelper::GetCommandLineArg( 2 );
+	std::string latencyString = RealTimeSrvHelper::GetCommandLineArg(
+		COMMAND_LINE_ARG_LATENCY_INDEX );
 	if ( !latencyString.empty() )
 	{
 		latency = stof( latencyString );
@@ -105,7 +117,8 @@ void RealTimeSrv::SimulateRealWorld()
 	}
 
 	float dropPacketChance = 0.0f;
-	std::string dropPacketChanceString = RealTimeSrvHelper::GetCommandLineArg( 3 );
+	std::string dropPacketChanceString = RealTimeSrvHelper::GetCommandLineArg(
+		COMMAND_LINE_ARG_DROP_PACKET_CHANCE_INDEX );
 	if ( !dropPacketChanceString.empty() )
 	{
 		dropPacketChance = stof( dropPacketChanceString );
@@ -113,7 +126,8 @@ void RealTimeSrv::SimulateRealWorld()
 	}
 
 	int IsSimulatedJitter = 0;
-	std::string IsSimulatedJitterString = RealTimeSrvHelper::GetCommandLineArg( 4 );
+	std::string IsSimulatedJitterString = RealTimeSrvHelper::GetCommandLineArg(
+		COMMAND_LINE_ARG_IS_SIMULATED_JITTER_INDEX );
 	if ( !IsSimulatedJitterString.empty() )
 	{
 		IsSimulatedJitter = stoi( IsSimulatedJitterString );
@@ -127,7 +141,8 @@ void RealTimeSrv::SimulateRealWorld()
 bool RealTimeSrv::InitNetworkMgr()
 {
 	uint16_t port = 44444;
-	std::string portString = RealTimeSrvHelper::GetCommandLineArg( 1 );
+	std::string portString = RealTimeSrvHelper::GetCommandLineArg(
+		COMMAND_LINE_ARG_PORT_INDEX );
 	if ( portString != std::string() )
 	{
 		port = stoi( portString );
@@ -145,7 +160,7 @@ void RealTimeSrv::HandleNewClient( ClientProxyPtr inClientProxy )
 
 void RealTimeSrv::SpawnCharacterForPlayer( int inPlayerId )
 {
-	CharacterPtr character = std::static_pointer_cast< Character >( 
+	CharacterPtr character = std::static_pointer_cast< Character >(
 		EntityFactory::sInstance->CreateGameObject( 'CHRT' ) );
 
 	character->SetPlayerId( inPlayerId );

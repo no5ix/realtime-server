@@ -36,10 +36,10 @@ namespace muduo
 			void listen();
 
 			uint16_t GetListenPort() const { return listenPort_; }
-
+			EventLoop* getLoop() const { return loop_; }
 			void RemoveConnector( const InetAddress& peerAddr );
-
 			void EraseConnector( const InetAddress& peerAddr );
+
 		private:
 			void handleRead();
 			void newConnection( std::shared_ptr< Socket > connectedSocket,

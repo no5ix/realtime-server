@@ -395,6 +395,3 @@ void UdpConnection::handleError()
 	handleClose();
 }
 
-int UdpConnection::GetSocketFd() const
-{ return socket_->fd(); }
-

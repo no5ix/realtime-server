@@ -249,32 +249,36 @@ void NetworkMgr::onMessage( const muduo::net::UdpConnectionPtr& conn,
 		InputBitStream inputStream( buf->peek(), buf->readableBytes() * 8 );
 		buf->retrieveAll();
 
-		if ( RealTimeSrvMath::GetRandomFloat() >= mDropPacketChance )
-		{
-			float simulatedReceivedTime =
-				RealTimeSrvTiming::sInstance.GetCurrentGameTime() +
-				mSimulatedLatency +
-				( GetIsSimulatedJitter() ?
-					RealTimeSrvMath::Clamp( RealTimeSrvMath::GetRandomFloat(), 0.f, 0.06f ) : 0.f );
+		// if ( RealTimeSrvMath::GetRandomFloat() >= mDropPacketChance )
+		// {
+		// 	float simulatedReceivedTime =
+		// 		RealTimeSrvTiming::sInstance.GetCurrentGameTime() +
+		// 		mSimulatedLatency +
+		// 		( GetIsSimulatedJitter() ?
+		// 			RealTimeSrvMath::Clamp( RealTimeSrvMath::GetRandomFloat(), 0.f, 0.06f ) : 0.f );
 
-			mPacketQueue::instance().emplace(
-				simulatedReceivedTime,
-				inputStream,
-				conn
-			);
-		}
-		else
-		{
-			//LOG( "Dropped packet!", 0 );
-		}
+		// 	mPacketQueue::instance().emplace(
+		// 		simulatedReceivedTime,
+		// 		inputStream,
+		// 		conn
+		// 	);
+		// }
+		// else
+		// {
+		// 	//LOG( "Dropped packet!", 0 );
+		// }
+
+		//ProcessQueuedPackets();
+
+		ProcessPacket( inputStream, conn );
+
+		CheckForDisconnects();
+		WorldUpdateCB_();
+		SendOutgoingPackets();
 	}
-
-	ProcessQueuedPackets();
-	CheckForDisconnects();
-	WorldUpdateCB_();
-	SendOutgoingPackets();
 }
 
+// FIXME : not 100% safe, sometimes will not release udpconnection.
 void NetworkMgr::ProcessQueuedPackets()
 {
 	while ( !mPacketQueue::instance().empty() )

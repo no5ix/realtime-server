@@ -1,6 +1,28 @@
 #pragma once
 
 
+#ifdef __linux__
+//#define DEPRECATED_EPOLL_INTERFACE
+#define NEW_EPOLL_INTERFACE
+#endif
+
+#ifdef NEW_EPOLL_INTERFACE
+
+#define COMMAND_LINE_ARG_DAEMON_INDEX					1
+#define COMMAND_LINE_ARG_PORT_INDEX						2
+#define COMMAND_LINE_ARG_LATENCY_INDEX					3
+#define COMMAND_LINE_ARG_DROP_PACKET_CHANCE_INDEX		4	    
+#define COMMAND_LINE_ARG_IS_SIMULATED_JITTER_INDEX		5	    
+
+#else
+
+#define COMMAND_LINE_ARG_PORT_INDEX						1
+#define COMMAND_LINE_ARG_LATENCY_INDEX					2
+#define COMMAND_LINE_ARG_DROP_PACKET_CHANCE_INDEX		3	    
+#define COMMAND_LINE_ARG_IS_SIMULATED_JITTER_INDEX		4	    
+
+#endif //NEW_EPOLL_INTERFACE
+
 #ifdef PI
 # undef PI
 # define PI (3.1415926535897932f)
@@ -37,13 +59,5 @@ typedef unsigned int						ChunkPacketID;
 
 #define THREAD_NUM							(8)
 
-#define BECOME_DAEMON						(true)
-
 #define MOVE_COUNT_NUM						(2)
 
-
-
-#ifdef __linux__
-//#define DEPRECATED_EPOLL_INTERFACE
-#define NEW_EPOLL_INTERFACE
-#endif

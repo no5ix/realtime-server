@@ -69,7 +69,7 @@ void NetworkMgrSrv::HandlePacketFromNewClient( InputBitStream& inInputStream,
 		ClientProxyPtr newClientProxy =
 			std::make_shared< ClientProxy >(
 				playerName,
-				kNewPlayerId.getAndAdd(1),
+				kNewPlayerId.getAndAdd( 1 ),
 				inUdpConnetction );
 
 		{
@@ -124,7 +124,7 @@ void NetworkMgrSrv::HandlePacketFromNewClient( InputBitStream& inInputStream,
 
 int NetworkMgrSrv::GetNewNetworkId()
 {
-	int toRet = kNewNetworkId.getAndAdd(1);
+	int toRet = kNewNetworkId.getAndAdd( 1 );
 	if ( kNewNetworkId.get() < toRet )
 	{
 		LOG( "Network ID Wrap Around!!! You've been playing way too long...", 0 );
