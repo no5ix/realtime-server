@@ -9,7 +9,7 @@ p_id=` ps -ef | grep -w ${SRV_NAME} | grep -v "grep" | awk '{print $2}' `
 if [ "$p_id" = "" ]; then
     echo "[`date '+%x %X'`] No living ${SRV_NAME} to kill, so just run."
 else
-	echo "[`date '+%x %X'`] Restart ${srv} Now."
+	echo "[`date '+%x %X'`] A living ${SRV_NAME} is running, so kill it then run a new one."
     kill -9 $p_id
 fi
 
