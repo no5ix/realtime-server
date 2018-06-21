@@ -2,8 +2,10 @@
 
 # lsof -i:44444 | grep rts | awk '{print $2}' | xargs kill -9
 
-BIN_PATH=~/rts/build/bin/rts
-SRV_NAME=rts
+SRV_NAME=rts_example_for_ue4_demo
+
+CUR_DIR=`pwd`
+BIN_PATH="${CUR_DIR}/../build/bin/${SRV_NAME}"
 
 p_id=` ps -ef | grep -w ${SRV_NAME} | grep -v "grep" | awk '{print $2}' `
 if [ "$p_id" = "" ]; then

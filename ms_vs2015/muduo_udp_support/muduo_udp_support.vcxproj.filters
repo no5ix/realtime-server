@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo_udp_support\UdpAcceptor.cpp" />
+    <ClCompile Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo_udp_support\UdpClient.cpp" />
+    <ClCompile Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo_udp_support\UdpConnection.cpp" />
+    <ClCompile Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo_udp_support\UdpConnector.cpp" />
+    <ClCompile Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo_udp_support\UdpServer.cpp" />
+    <ClCompile Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo_udp_support\UdpSocketsOps.cpp" />
+    <ClCompile Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo_udp_support\test\chat\udpChatCli.cpp">
+      <Filter>test\chat</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo_udp_support\test\chat\udpChatSrv.cpp">
+      <Filter>test\chat</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo_udp_support\test\chat\udpChatSrv_highperformance.cpp">
+      <Filter>test\chat</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo_udp_support\UdpAcceptor.h" />
+    <ClInclude Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo_udp_support\UdpCallbacks.h" />
+    <ClInclude Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo_udp_support\UdpClient.h" />
+    <ClInclude Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo_udp_support\UdpConnection.h" />
+    <ClInclude Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo_udp_support\UdpConnector.h" />
+    <ClInclude Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo_udp_support\UdpServer.h" />
+    <ClInclude Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo_udp_support\UdpSocketsOps.h" />
+    <ClInclude Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo_udp_support\test\chat\udpChatCodec.h">
+      <Filter>test\chat</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo_udp_support\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="test">
+      <UniqueIdentifier>{678CEAE8-9F0D-3386-9FA9-3AABDFC562C6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="test\chat">
+      <UniqueIdentifier>{0792523C-8B3F-34A2-9861-93BF76811887}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

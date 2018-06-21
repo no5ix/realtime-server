@@ -9,7 +9,7 @@ add_definitions(-std=c++11)
 
 
 # 项目信息
-set (PROJ_NAME RealTimeServer)
+set (PROJ_NAME realtime_srv)
 project (${PROJ_NAME})
 
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
@@ -26,7 +26,7 @@ set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 
 
 # 此命令可以用来收集源文件 CURRENT_HEADERS 作为变量保存收集的结果。 
-# 后面为文件过滤器，其中 PROJ_NAME 为起始搜索的文件夹，即在 RealTimeServer 目录下，
+# 后面为文件过滤器，其中 PROJ_NAME 为起始搜索的文件夹，即在 realtime_srv 目录下，
 # 开始收集，而且会遍历子目录
 # file(
 #     GLOB_RECURSE CURRENT_HEADERS 
@@ -41,7 +41,8 @@ set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 IF(WIN32) # Check if we are on Windows
 
     macro(create_win_proj win_proj_name)
-        if(MSVC)
+        if(MSVC) # Check if we are using the Visual Studio compiler
+
             file(GLOB_RECURSE project_headers *.h)
             file(GLOB_RECURSE project_cpps *.c*)
             set(all_files ${project_headers} ${project_cpps})
@@ -68,28 +69,30 @@ IF(WIN32) # Check if we are on Windows
             # 指定生成目标
             add_executable(${win_proj_name} ${all_files})
 
-            if(MSVC) # Check if we are using the Visual Studio compiler
-                # set_target_properties(${win_proj_name} PROPERTIES LINK_FLAGS "/SUBSYSTEM:WINDOWS") # works for all build modes
-                set_target_properties(${win_proj_name} PROPERTIES LINK_FLAGS "/SUBSYSTEM:CONSOLE") # works for all build modes
-                set_target_properties(${win_proj_name} PROPERTIES FOLDER "RealTimeServer")
-                target_link_libraries(${win_proj_name} wsock32 ws2_32)
-                set_target_properties(${win_proj_name}
-                    PROPERTIES
-                    COMPILE_FLAGS /wd"4819"
-                )
-            elseif(CMAKE_COMPILER_IS_GNUCXX)
-                # SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mwindows") # Not tested
-            else()
-                message(SEND_ERROR "You are using an unsupported Windows compiler! (Not MSVC or GCC)")
-            endif()
+            # set_target_properties(${win_proj_name} PROPERTIES LINK_FLAGS "/SUBSYSTEM:WINDOWS") # works for all build modes
+            set_target_properties(${win_proj_name} PROPERTIES LINK_FLAGS "/SUBSYSTEM:CONSOLE") # works for all build modes
+            set_target_properties(${win_proj_name} PROPERTIES FOLDER "realtime_srv")
+            target_link_libraries(${win_proj_name} wsock32 ws2_32)
+            set_target_properties(${win_proj_name}
+                PROPERTIES
+                COMPILE_FLAGS /wd"4819"
+            )
 
+        elseif(CMAKE_COMPILER_IS_GNUCXX)
+            # SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mwindows") # Not tested
+        else()
+            message(SEND_ERROR "You are using an unsupported Windows compiler! (Not MSVC or GCC)")
         endif(MSVC)
     endmacro(create_win_proj)
 
     include_directories(${PROJECT_SOURCE_DIR})
+
     add_subdirectory(muduo)
-    add_subdirectory(net)
-    add_subdirectory(game)
+    add_subdirectory(muduo_udp_support)
+    add_subdirectory(realtime_srv)
+    
+    add_subdirectory(example)
+
 
 elseif(UNIX)
 
@@ -131,8 +134,10 @@ elseif(UNIX)
     include_directories(${PROJECT_SOURCE_DIR})
 
     add_subdirectory(muduo)
-    add_subdirectory(net)
-    add_subdirectory(game)
+    add_subdirectory(muduo_udp_support)
+    add_subdirectory(realtime_srv)
+
+    add_subdirectory(example)
 
 else()
   	message(SEND_ERROR "You are on an unsupported platform! (Not Win32 or Unix)")

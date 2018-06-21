@@ -2,7 +2,7 @@
 
 
 CUR_DIR=`pwd`
-SOURCE_DIR="${CUR_DIR}/../RealTimeServer"
+SOURCE_DIR="${CUR_DIR}/../"
 BUILD_DIR="${CUR_DIR}/../build"
 
 if [ ! -d ${BUILD_DIR} ]; then

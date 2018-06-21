@@ -1,12 +1,12 @@
-set (PROJ_NAME tcp_net)
+set (PROJ_NAME muduo)
 
 IF(UNIX)
 
-  # aux_source_directory(. tcp_net_SRCS)
-  file(GLOB_RECURSE tcp_net_SRCS "./*.*")
+  # aux_source_directory(. muduo_SRCS)
+  file(GLOB_RECURSE muduo_SRCS "./*.*")
 
-  add_library(tcp_net ${tcp_net_SRCS})
-  target_link_libraries(tcp_net pthread rt)
+  add_library(${PROJ_NAME} ${muduo_SRCS})
+  target_link_libraries(${PROJ_NAME} pthread rt)
 
 elseif(WIN32) # Check if we are on Windows
 
