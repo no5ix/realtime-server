@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{DDBFAE08-DC0B-4F80-89C4-5832D9B8A1B5}</ProjectGuid>
+    <ProjectGuid>{8D4A1841-B2A5-48E4-A3EC-B94F4A0EB6AF}</ProjectGuid>
     <RootNamespace>muduo_udp_support</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
@@ -110,29 +110,29 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <Text Include="..\..\..\muduo_udp_support\CMakeLists.txt" />
-    <Text Include="..\..\..\muduo_udp_support\test\chat\CMakeLists.txt" />
+    <Text Include="..\..\muduo_udp_support\CMakeLists.txt" />
+    <Text Include="..\..\muduo_udp_support\test\chat\CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\muduo_udp_support\test\chat\udpChatCli.cpp" />
-    <ClCompile Include="..\..\..\muduo_udp_support\test\chat\udpChatSrv.cpp" />
-    <ClCompile Include="..\..\..\muduo_udp_support\test\chat\udpChatSrv_highperformance.cpp" />
-    <ClCompile Include="..\..\..\muduo_udp_support\UdpAcceptor.cpp" />
-    <ClCompile Include="..\..\..\muduo_udp_support\UdpClient.cpp" />
-    <ClCompile Include="..\..\..\muduo_udp_support\UdpConnection.cpp" />
-    <ClCompile Include="..\..\..\muduo_udp_support\UdpConnector.cpp" />
-    <ClCompile Include="..\..\..\muduo_udp_support\UdpServer.cpp" />
-    <ClCompile Include="..\..\..\muduo_udp_support\UdpSocketsOps.cpp" />
+    <ClCompile Include="..\..\muduo_udp_support\test\chat\udpChatCli.cpp" />
+    <ClCompile Include="..\..\muduo_udp_support\test\chat\udpChatSrv.cpp" />
+    <ClCompile Include="..\..\muduo_udp_support\test\chat\udpChatSrv_highperformance.cpp" />
+    <ClCompile Include="..\..\muduo_udp_support\UdpAcceptor.cpp" />
+    <ClCompile Include="..\..\muduo_udp_support\UdpClient.cpp" />
+    <ClCompile Include="..\..\muduo_udp_support\UdpConnection.cpp" />
+    <ClCompile Include="..\..\muduo_udp_support\UdpConnector.cpp" />
+    <ClCompile Include="..\..\muduo_udp_support\UdpServer.cpp" />
+    <ClCompile Include="..\..\muduo_udp_support\UdpSocketsOps.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\muduo_udp_support\test\chat\udpChatCodec.h" />
-    <ClInclude Include="..\..\..\muduo_udp_support\UdpAcceptor.h" />
-    <ClInclude Include="..\..\..\muduo_udp_support\UdpCallbacks.h" />
-    <ClInclude Include="..\..\..\muduo_udp_support\UdpClient.h" />
-    <ClInclude Include="..\..\..\muduo_udp_support\UdpConnection.h" />
-    <ClInclude Include="..\..\..\muduo_udp_support\UdpConnector.h" />
-    <ClInclude Include="..\..\..\muduo_udp_support\UdpServer.h" />
-    <ClInclude Include="..\..\..\muduo_udp_support\UdpSocketsOps.h" />
+    <ClInclude Include="..\..\muduo_udp_support\test\chat\udpChatCodec.h" />
+    <ClInclude Include="..\..\muduo_udp_support\UdpAcceptor.h" />
+    <ClInclude Include="..\..\muduo_udp_support\UdpCallbacks.h" />
+    <ClInclude Include="..\..\muduo_udp_support\UdpClient.h" />
+    <ClInclude Include="..\..\muduo_udp_support\UdpConnection.h" />
+    <ClInclude Include="..\..\muduo_udp_support\UdpConnector.h" />
+    <ClInclude Include="..\..\muduo_udp_support\UdpServer.h" />
+    <ClInclude Include="..\..\muduo_udp_support\UdpSocketsOps.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
