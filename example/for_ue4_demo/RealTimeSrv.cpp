@@ -8,7 +8,6 @@ std::unique_ptr< RealTimeSrv >	RealTimeSrv::sInstance;
 bool RealTimeSrv::StaticInit()
 {
 #ifdef IS_LINUX
-	::signal( SIGPIPE, SIG_IGN );
 
 	int willBecomeDaemon = 0;
 	std::string willBecomeDaemonString = RealTimeSrvHelper::GetCommandLineArg(
@@ -83,7 +82,7 @@ void RealTimeSrv::SimulateRealWorld()
 }
 #endif // !IS_LINUX
 
-bool RealTimeSrv::InitNetworkMgr()
+void RealTimeSrv::InitNetworkMgr()
 {
 	uint16_t port = DEFAULT_REALTIME_SRV_PORT;
 	std::string portString = RealTimeSrvHelper::GetCommandLineArg(
@@ -92,7 +91,7 @@ bool RealTimeSrv::InitNetworkMgr()
 	{
 		port = stoi( portString );
 	}
-	return NetworkMgrSrv::StaticInit( port );
+	NetworkMgrSrv::StaticInit( port );
 }
 
 

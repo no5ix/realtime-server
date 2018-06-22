@@ -20,17 +20,18 @@ using namespace muduo::net;
 
 typedef unordered_map< UdpConnectionPtr, ClientProxyPtr >	UdpConnToClientMap;
 typedef std::shared_ptr< UdpConnToClientMap > UdpConnToClientMapPtr;
-
 typedef std::shared_ptr< unordered_map< int, ClientProxyPtr > > PlayerIdToClientMapPtr;
-
+typedef std::shared_ptr< unordered_map< int, EntityPtr > > IntToGameObjectMapPtr;
 
 #endif //IS_LINUX
 
+
+typedef unordered_map< int, EntityPtr > IntToGameObjectMap;
 typedef unordered_map< int, ClientProxyPtr >	IntToClientMap;
 
 class ClientProxy;
 
-class NetworkMgrSrv : public NetworkMgr
+class NetworkMgrSrv
 {
 public:
 	static const uint32_t	kNullCC = 0;
@@ -40,6 +41,15 @@ public:
 	static const uint32_t	kResetedCC = 'RSTD';
 	static const uint32_t	kStateCC = 'STAT';
 	static const uint32_t	kInputCC = 'INPT';
+
+public:
+
+	static const int		kMaxPacketsPerFrameCount = 10;
+
+	bool					Init( uint16_t inPort = DEFAULT_REALTIME_SRV_PORT );
+	EntityPtr				GetGameObject( int inNetworkId );
+
+	int						GetNewNetworkId();
 
 public:
 	static std::unique_ptr<NetworkMgrSrv>	sInst;
@@ -76,6 +86,42 @@ private:
 
 #ifdef IS_LINUX
 
+
+public:
+
+	IntToGameObjectMapPtr GetNetworkIdToGameObjectMap();
+	void NetworkIdToGameObjectMapCOW();
+
+	void	SendPacket( const OutputBitStream& inOutputStream,
+		const UdpConnectionPtr& conn );
+
+	//virtual void ProcessPacket( InputBitStream& inInputStream,
+	//	const UdpConnectionPtr& inUdpConnetction ) = 0;
+
+	void setWorldUpdateCallback( const std::function<void()>& cb )
+	{ WorldUpdateCB_ = cb; }
+
+	void Start();
+	void threadInit( EventLoop* loop );
+
+	//virtual void onConnection( const UdpConnectionPtr& conn );
+
+	void onMessage(
+		const muduo::net::UdpConnectionPtr& conn,
+		muduo::net::Buffer* buf,
+		muduo::Timestamp receiveTime
+	);
+private:
+	EventLoop loop_;
+	std::shared_ptr<UdpServer> server_;
+	std::set<EventLoop*> loops_;
+
+	std::function<void()> WorldUpdateCB_;
+
+protected:
+	static AtomicInt32		kNewNetworkId;
+	IntToGameObjectMapPtr	mNetworkIdToGameObjectMap;
+	MutexLock mutex_;
 public:
 	virtual void onConnection( const UdpConnectionPtr& conn ) override;
 
@@ -97,6 +143,66 @@ private:
 	static AtomicInt32		kNewPlayerId;
 
 #else //IS_LINUX
+
+public:
+	virtual ~NetworkMgrSrv() { UDPSocketInterface::CleanUp(); }
+
+
+	void	SendPacket( const OutputBitStream& inOutputStream,
+		const SocketAddrInterface& inSockAddr );
+	void	SetDropPacketChance( float inChance ) { mDropPacketChance = inChance; }
+	void	SetSimulatedLatency( float inLatency ) { mSimulatedLatency = inLatency; }
+
+	void	SetIsSimulatedJitter( bool inIsSimulatedJitter ) { mWhetherToSimulateJitter = inIsSimulatedJitter; }
+	bool	GetIsSimulatedJitter() const { return mWhetherToSimulateJitter; }
+
+	void	HandleConnectionReset( const SocketAddrInterface& inFromAddress );
+	void	ProcessIncomingPackets();
+	//virtual void ProcessPacket( InputBitStream& inInputStream,
+	//	const SocketAddrInterface& inFromAddress,
+	//	const UDPSocketPtr& inUDPSocket ) = 0;
+private:
+	void	ProcessQueuedPackets();
+	void	ReadIncomingPacketsIntoQueue();
+private:
+
+	float						mDropPacketChance;
+	float						mSimulatedLatency;
+	bool						mWhetherToSimulateJitter;
+private:
+	class ReceivedPacket
+	{
+	public:
+		ReceivedPacket(
+			float inReceivedTime,
+			InputBitStream& inInputMemoryBitStream,
+			const SocketAddrInterface& inFromAddress,
+			UDPSocketPtr  inUDPSocket = nullptr
+		) :
+			mReceivedTime( inReceivedTime ),
+			mFromAddress( inFromAddress ),
+			mPacketBuffer( inInputMemoryBitStream ),
+			mUDPSocket( inUDPSocket )
+		{}
+
+		const	SocketAddrInterface&			GetFromAddress()	const { return mFromAddress; }
+		float					GetReceivedTime()	const { return mReceivedTime; }
+		InputBitStream&	GetPacketBuffer() { return mPacketBuffer; }
+		UDPSocketPtr	GetUDPSocket() const { return mUDPSocket; }
+
+	private:
+
+		float					mReceivedTime;
+		InputBitStream			mPacketBuffer;
+		SocketAddrInterface		mFromAddress;
+		UDPSocketPtr			mUDPSocket;
+	};
+	queue< ReceivedPacket, list< ReceivedPacket > >	mPacketQueue;
+
+protected:
+	UDPSocketPtr				mSocket;
+	static int					kNewNetworkId;
+	IntToGameObjectMap			mNetworkIdToGameObjectMap;
 
 public:
 	virtual void ProcessPacket( InputBitStream& inInputStream,

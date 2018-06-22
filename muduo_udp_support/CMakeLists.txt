@@ -20,9 +20,9 @@ IF(UNIX)
       add_subdirectory(test/chat)
     endif()
 
-elseif(WIN32) # Check if we are on Windows
+# elseif(WIN32) # Check if we are on Windows
 
-  create_win_proj(${PROJ_NAME})
+#   create_win_proj(${PROJ_NAME})
     
 else()
   	message(SEND_ERROR "You are on an unsupported platform! (Not Win32 or Unix)")

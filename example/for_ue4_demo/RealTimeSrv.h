@@ -7,14 +7,17 @@ public:
 
 	int Run();
 
-	void SimulateRealWorld();
 
 	void HandleNewClient( ClientProxyPtr inClientProxy );
 	void SpawnCharacterForPlayer( int inPlayerId );
 
+#ifndef IS_LINUX
+	void SimulateRealWorld();
+#endif
+
 private:
 	RealTimeSrv();
-	bool	InitNetworkMgr();
+	void InitNetworkMgr();
 
 private:
 

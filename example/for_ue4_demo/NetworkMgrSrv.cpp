@@ -24,20 +24,157 @@ bool NetworkMgrSrv::StaticInit( uint16_t inPort )
 
 #ifdef IS_LINUX
 
+AtomicInt32 NetworkMgrSrv::kNewNetworkId;
 
 NetworkMgrSrv::NetworkMgrSrv() :
 	mTimeBetweenStatePackets( 0.033f ),
 	mLastCheckDCTime( 0.f ),
 	mTimeOfLastStatePacket( 0.f ),
+	mNetworkIdToGameObjectMap( new IntToGameObjectMap ),
 	mUdpConnToClientMap( new UdpConnToClientMap ),
 	mPlayerIdToClientMap( new IntToClientMap )
 {
+	kNewNetworkId.getAndSet( 1 );
 	kNewPlayerId.getAndSet( 1 );
+}
+
+void NetworkMgrSrv::SendPacket( const OutputBitStream& inOutputStream, const UdpConnectionPtr& conn )
+{
+	conn->send(
+		inOutputStream.GetBufferPtr(), inOutputStream.GetByteLength() );
+}
+
+void NetworkMgrSrv::Start()
+{
+	server_->start();
+	loop_.loop();
+}
+
+void NetworkMgrSrv::threadInit( EventLoop* loop )
+{
+	MutexLockGuard lock( mutex_ );
+	loops_.insert( loop );
+}
+
+IntToGameObjectMapPtr NetworkMgrSrv::GetNetworkIdToGameObjectMap()
+{
+	MutexLockGuard lock( mutex_ );
+	return mNetworkIdToGameObjectMap;
+}
+
+void NetworkMgrSrv::NetworkIdToGameObjectMapCOW()
+{
+	if ( !mNetworkIdToGameObjectMap.unique() )
+	{
+		mNetworkIdToGameObjectMap.reset( new IntToGameObjectMap( *mNetworkIdToGameObjectMap ) );
+	}
+	assert( mNetworkIdToGameObjectMap.unique() );
+}
+
+int NetworkMgrSrv::GetNewNetworkId()
+{
+	int toRet = kNewNetworkId.getAndAdd( 1 );
+	if ( kNewNetworkId.get() < toRet )
+	{
+		LOG( "Network ID Wrap Around!!! You've been playing way too long...", 0 );
+	}
+
+	return toRet;
+}
+
+EntityPtr NetworkMgrSrv::GetGameObject( int inNetworkId )
+{
+	auto tempNetworkIdToGameObjectMap = GetNetworkIdToGameObjectMap();
+	auto gameObjectIt = tempNetworkIdToGameObjectMap->find( inNetworkId );
+	if ( gameObjectIt != tempNetworkIdToGameObjectMap->end() )
+	{
+		return gameObjectIt->second;
+	}
+	else
+	{
+		return EntityPtr();
+	}
+}
+
+//int NetworkMgrSrv::RegistEntityAndRetNetID( EntityPtr inGameObject )
+//{
+//	int newNetworkId = GetNewNetworkId();
+//	inGameObject->SetNetworkId( newNetworkId );
+//	{
+//		MutexLockGuard lock( mutex_ );
+//		NetworkIdToGameObjectMapCOW();
+//		( *mNetworkIdToGameObjectMap )[newNetworkId] = inGameObject;
+//	}
+//	return newNetworkId;
+//	//UdpConnToClientMapPtr tempUdpConnToClientMap = GetUdpConnToClientMap();
+//	//for ( const auto& pair : *tempUdpConnToClientMap )
+//	//{
+//	//	pair.second->GetReplicationManager().ReplicateCreate( newNetworkId, inGameObject->GetAllStateMask() );
+//	//}
+//}
+
+int NetworkMgrSrv::UnregistEntityAndRetNetID( Entity* inGameObject )
+{
+	int networkId = inGameObject->GetNetworkId();
+	{
+		MutexLockGuard lock( mutex_ );
+		NetworkIdToGameObjectMapCOW();
+		mNetworkIdToGameObjectMap->erase( networkId );
+	}
+	return networkId;
+
+	//UdpConnToClientMapPtr tempUdpConnToClientMap = GetUdpConnToClientMap();
+	//for ( const auto& pair : *tempUdpConnToClientMap )
+	//{
+	//	pair.second->GetReplicationManager().ReplicateDestroy( networkId );
+	//}
+}
+
+//void NetworkMgrSrv::onConnection( const UdpConnectionPtr& conn )
+//{
+//	LOG_INFO << conn->localAddress().toIpPort() << " -> "
+//		<< conn->peerAddress().toIpPort() << " is "
+//		<< ( conn->connected() ? "UP" : "DOWN" );
+//}
+
+void NetworkMgrSrv::onMessage( const muduo::net::UdpConnectionPtr& conn,
+	muduo::net::Buffer* buf,
+	muduo::Timestamp receiveTime )
+{
+	if ( buf->readableBytes() > 0 ) // kHeaderLen == 0
+	{
+		InputBitStream inputStream( buf->peek(), buf->readableBytes() * 8 );
+		buf->retrieveAll();
+
+		ProcessPacket( inputStream, conn );
+		CheckForDisconnects();
+		WorldUpdateCB_();
+		SendOutgoingPackets();
+	}
+}
+
+bool NetworkMgrSrv::Init( uint16_t inPort )
+{
+	InetAddress serverAddr( inPort );
+	server_.reset( new UdpServer( &loop_, serverAddr, "realtime_srv" ) );
+
+	server_->setConnectionCallback(
+		std::bind( &NetworkMgrSrv::onConnection, this, _1 ) );
+	server_->setMessageCallback(
+		std::bind( &NetworkMgrSrv::onMessage, this, _1, _2, _3 ) );
+
+	server_->setThreadNum( THREAD_NUM );
+	server_->setThreadInitCallback( std::bind( &NetworkMgrSrv::threadInit, this, _1 ) );
+
+	return true;
 }
 
 void NetworkMgrSrv::onConnection( const UdpConnectionPtr& conn )
 {
-	NetworkMgr::onConnection( conn );
+	//NetworkMgrSrv::onConnection( conn );
+	LOG_INFO << conn->localAddress().toIpPort() << " -> "
+		<< conn->peerAddress().toIpPort() << " is "
+		<< ( conn->connected() ? "UP" : "DOWN" );
 	if ( !conn->connected() )
 	{
 		MutexLockGuard lock( mutex_ );
@@ -125,6 +262,7 @@ void NetworkMgrSrv::HandlePacketFromNewClient( InputBitStream& inInputStream,
 			( *mPlayerIdToClientMap )[newClientProxy->GetPlayerId()] = newClientProxy;
 		}
 
+		// fixme
 		RealTimeSrv::sInstance.get()->HandleNewClient( newClientProxy );
 
 		IntToGameObjectMapPtr tempNetworkIdToGameObjectMap = GetNetworkIdToGameObjectMap();
@@ -171,13 +309,13 @@ void NetworkMgrSrv::HandlePacketFromNewClient( InputBitStream& inInputStream,
 
 int NetworkMgrSrv::RegistEntityAndRetNetID( EntityPtr inGameObject )
 {
-	int newNetworkId = NetworkMgr::RegistEntityAndRetNetID( inGameObject );
-	//inGameObject->SetNetworkId( newNetworkId );
-	//{
-	//	MutexLockGuard lock( mutex_ );
-	//	NetworkIdToGameObjectMapCOW();
-	//	( *mNetworkIdToGameObjectMap )[newNetworkId] = inGameObject;
-	//}
+	int newNetworkId = GetNewNetworkId();
+	inGameObject->SetNetworkId( newNetworkId );
+	{
+		MutexLockGuard lock( mutex_ );
+		NetworkIdToGameObjectMapCOW();
+		( *mNetworkIdToGameObjectMap )[newNetworkId] = inGameObject;
+	}
 
 	UdpConnToClientMapPtr tempUdpConnToClientMap = GetUdpConnToClientMap();
 	for ( const auto& pair : *tempUdpConnToClientMap )
@@ -190,12 +328,12 @@ int NetworkMgrSrv::RegistEntityAndRetNetID( EntityPtr inGameObject )
 
 int NetworkMgrSrv::UnregistEntityAndRetNetID( Entity* inGameObject )
 {
-	int networkId = NetworkMgr::UnregistEntityAndRetNetID( inGameObject );
-	//{
-	//	MutexLockGuard lock( mutex_ );
-	//	NetworkIdToGameObjectMapCOW();
-	//	mNetworkIdToGameObjectMap->erase( networkId );
-	//}
+	int networkId = inGameObject->GetNetworkId();
+	{
+		MutexLockGuard lock( mutex_ );
+		NetworkIdToGameObjectMapCOW();
+		mNetworkIdToGameObjectMap->erase( networkId );
+	}
 
 	UdpConnToClientMapPtr tempUdpConnToClientMap = GetUdpConnToClientMap();
 	for ( const auto& pair : *tempUdpConnToClientMap )
@@ -284,12 +422,199 @@ void NetworkMgrSrv::SetStateDirty( int inNetworkId, uint32_t inDirtyState )
 
 #else
 
+int NetworkMgrSrv::kNewNetworkId = 1;
 
 NetworkMgrSrv::NetworkMgrSrv() :
 	mTimeBetweenStatePackets( 0.033f ),
 	mLastCheckDCTime( 0.f ),
+	mDropPacketChance( 0.f ),
+	mSimulatedLatency( 0.f ),
+	mWhetherToSimulateJitter( false ),
 	mTimeOfLastStatePacket( 0.f )
 {}
+
+void NetworkMgrSrv::ProcessIncomingPackets()
+{
+	ReadIncomingPacketsIntoQueue();
+
+	ProcessQueuedPackets();
+
+	//UpdateBytesSentLastFrame();
+}
+
+void NetworkMgrSrv::ReadIncomingPacketsIntoQueue()
+{
+	char packetMem[MAX_PACKET_BYTE_LENGTH];
+	int packetSize = sizeof( packetMem );
+	SocketAddrInterface fromAddress;
+
+	int receivedPackedCount = 0;
+	int totalReadByteCount = 0;
+
+	while ( receivedPackedCount < kMaxPacketsPerFrameCount )
+	{
+		int readByteCount = mSocket->ReceiveFrom( packetMem, packetSize, fromAddress );
+		if ( readByteCount == 0 )
+		{
+			//LOG( "ReadIncomingPacketsIntoQueue readByteCount = %d ", 0 );
+			break;
+		}
+		else if ( readByteCount == -WSAECONNRESET )
+		{
+			HandleConnectionReset( fromAddress );
+		}
+		else if ( readByteCount > 0 )
+		{
+			InputBitStream inputStream( packetMem, readByteCount * 8 );
+			++receivedPackedCount;
+			totalReadByteCount += readByteCount;
+
+			if ( RealTimeSrvMath::GetRandomFloat() >= mDropPacketChance )
+			{
+				float simulatedReceivedTime =
+					RealTimeSrvTiming::sInstance.GetCurrentGameTime() +
+					mSimulatedLatency +
+					( GetIsSimulatedJitter() ?
+						RealTimeSrvMath::Clamp( RealTimeSrvMath::GetRandomFloat(), 0.f, 0.06f ) : 0.f );
+				mPacketQueue.emplace( simulatedReceivedTime, inputStream, fromAddress );
+			}
+			else
+			{
+				//LOG( "Dropped packet!", 0 );
+			}
+		}
+		else
+		{
+		}
+	}
+
+	if ( totalReadByteCount > 0 )
+	{
+		//mBytesReceivedPerSecond.UpdatePerSecond( static_cast< float >( totalReadByteCount ) );
+	}
+}
+
+int NetworkMgrSrv::GetNewNetworkId()
+{
+	int toRet = kNewNetworkId++;
+	if ( kNewNetworkId < toRet )
+	{
+		LOG( "Network ID Wrap Around!!! You've been playing way too long...", 0 );
+	}
+
+	return toRet;
+}
+
+void NetworkMgrSrv::ProcessQueuedPackets()
+{
+	while ( !mPacketQueue.empty() )
+	{
+		ReceivedPacket& nextPacket = mPacketQueue.front();
+		if ( RealTimeSrvTiming::sInstance.GetCurrentGameTime() > nextPacket.GetReceivedTime() )
+		{
+			ProcessPacket(
+				nextPacket.GetPacketBuffer(),
+				nextPacket.GetFromAddress(),
+				nextPacket.GetUDPSocket()
+				// , 
+				// nextPacket.GetUdpConnection() 
+			);
+			mPacketQueue.pop();
+		}
+		else
+		{
+			break;
+		}
+	}
+}
+
+bool NetworkMgrSrv::Init( uint16_t inPort )
+{
+#if _WIN32
+	UDPSocketInterface::StaticInit();
+#endif //_WIN32
+
+	mSocket = UDPSocketInterface::CreateUDPSocket();
+
+	if ( mSocket == nullptr )
+	{
+		return false;
+	}
+
+	SocketAddrInterface ownAddress( INADDR_ANY, inPort );
+	mSocket->Bind( ownAddress );
+
+	LOG( "Initializing NetworkManager at port %d", inPort );
+
+	if ( mSocket->SetNonBlockingMode( true ) != NO_ERROR )
+	{
+		return false;
+	}
+
+	return true;
+}
+
+void NetworkMgrSrv::SendPacket( const OutputBitStream& inOutputStream,
+	const SocketAddrInterface& inSockAddr )
+{
+	if ( RealTimeSrvMath::GetRandomFloat() < mDropPacketChance )
+	{
+		return;
+	}
+
+	int sentByteCount = mSocket->SendTo( inOutputStream.GetBufferPtr(),
+		inOutputStream.GetByteLength(),
+		inSockAddr );
+}
+
+void NetworkMgrSrv::HandleConnectionReset( const SocketAddrInterface& inFromAddress )
+{
+	//auto it = mAddressToClientMap.find( inFromAddress );
+	//if ( it != mAddressToClientMap.end() )
+	//{
+	//	mPlayerIdToClientMap.erase( it->second->GetPlayerId() );
+	//	mAddressToClientMap.erase( it );
+	//}
+}
+
+//int NetworkMgrSrv::RegistEntityAndRetNetID( EntityPtr inGameObject )
+//{
+//	int newNetworkId = GetNewNetworkId();
+//	inGameObject->SetNetworkId( newNetworkId );
+//
+//	mNetworkIdToGameObjectMap[newNetworkId] = inGameObject;
+//	return newNetworkId;
+//
+//	//for ( const auto& pair : mAddressToClientMap )
+//	//{
+//	//	pair.second->GetReplicationManager().ReplicateCreate( newNetworkId, inGameObject->GetAllStateMask() );
+//	//}
+//}
+//
+//int NetworkMgrSrv::UnregistEntityAndRetNetID( Entity* inGameObject )
+//{
+//	int networkId = inGameObject->GetNetworkId();
+//	mNetworkIdToGameObjectMap.erase( networkId );
+//	return networkId;
+//
+//	//for ( const auto& pair : mAddressToClientMap )
+//	//{
+//	//	pair.second->GetReplicationManager().ReplicateDestroy( networkId );
+//	//}
+//}
+
+EntityPtr NetworkMgrSrv::GetGameObject( int inNetworkId )
+{
+	auto gameObjectIt = mNetworkIdToGameObjectMap.find( inNetworkId );
+	if ( gameObjectIt != mNetworkIdToGameObjectMap.end() )
+	{
+		return gameObjectIt->second;
+	}
+	else
+	{
+		return EntityPtr();
+	}
+}
 
 void NetworkMgrSrv::ProcessPacket(
 	InputBitStream& inInputStream,
@@ -465,10 +790,10 @@ void NetworkMgrSrv::SetStateDirty( int inNetworkId, uint32_t inDirtyState )
 }
 int NetworkMgrSrv::RegistEntityAndRetNetID( EntityPtr inGameObject )
 {
-	int newNetworkId = NetworkMgr::RegistEntityAndRetNetID( inGameObject );
-	//inGameObject->SetNetworkId( newNetworkId );
+	int newNetworkId = GetNewNetworkId();
+	inGameObject->SetNetworkId( newNetworkId );
 
-	//mNetworkIdToGameObjectMap[newNetworkId] = inGameObject;
+	mNetworkIdToGameObjectMap[newNetworkId] = inGameObject;
 
 	for ( const auto& pair : mAddressToClientMap )
 	{
@@ -479,8 +804,7 @@ int NetworkMgrSrv::RegistEntityAndRetNetID( EntityPtr inGameObject )
 
 int NetworkMgrSrv::UnregistEntityAndRetNetID( Entity* inGameObject )
 {
-	int networkId = NetworkMgr::UnregistEntityAndRetNetID( inGameObject );
-	//mNetworkIdToGameObjectMap.erase( networkId );
+	mNetworkIdToGameObjectMap.erase( networkId );
 
 	for ( const auto& pair : mAddressToClientMap )
 	{
@@ -505,6 +829,7 @@ void NetworkMgrSrv::DoProcessPacket( ClientProxyPtr inClientProxy, InputBitStrea
 		SendGamePacket( inClientProxy, kWelcomeCC );
 		break;
 	case kInputCC:
+		// fixme
 		if ( inClientProxy->GetDeliveryNotificationManager().ReadAndProcessState( inInputStream ) )
 		{
 			HandleInputPacket( inClientProxy, inInputStream );
