@@ -1,0 +1,6 @@
+C:/Users/11452/Documents/github/temp/realtime_server/ms_vs2015/CMakeFiles/ALL_BUILD.dir
+C:/Users/11452/Documents/github/temp/realtime_server/ms_vs2015/CMakeFiles/ZERO_CHECK.dir
+C:/Users/11452/Documents/github/temp/realtime_server/ms_vs2015/muduo/CMakeFiles/muduo.dir
+C:/Users/11452/Documents/github/temp/realtime_server/ms_vs2015/muduo_udp_support/CMakeFiles/muduo_udp_support.dir
+C:/Users/11452/Documents/github/temp/realtime_server/ms_vs2015/realtime_srv/CMakeFiles/realtime_srv.dir
+C:/Users/11452/Documents/github/temp/realtime_server/ms_vs2015/example/for_ue4_demo/CMakeFiles/rts_example_for_ue4_demo.dir
