@@ -1,138 +1,141 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <ItemGroup>
-    <ClCompile Include="C:\Users\11452\Documents\github\temp\realtime_server\realtime_srv\common\RealTimeSrvHelper.cpp">
-      <Filter>common</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\11452\Documents\github\temp\realtime_server\realtime_srv\common\RealTimeSrvTiming.cpp">
-      <Filter>common</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\11452\Documents\github\temp\realtime_server\realtime_srv\entity\Action.cpp">
-      <Filter>entity</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\11452\Documents\github\temp\realtime_server\realtime_srv\entity\ActionList.cpp">
-      <Filter>entity</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\11452\Documents\github\temp\realtime_server\realtime_srv\entity\Entity.cpp">
-      <Filter>entity</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\11452\Documents\github\temp\realtime_server\realtime_srv\entity\InputState.cpp">
-      <Filter>entity</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\11452\Documents\github\temp\realtime_server\realtime_srv\math\RealTimeSrvMath.cpp">
-      <Filter>math</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\11452\Documents\github\temp\realtime_server\realtime_srv\math\Vector3.cpp">
-      <Filter>math</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\11452\Documents\github\temp\realtime_server\realtime_srv\net\NetworkMgr.cpp">
-      <Filter>net</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\11452\Documents\github\temp\realtime_server\realtime_srv\net\UDPSocketInterface.cpp">
-      <Filter>net</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\11452\Documents\github\temp\realtime_server\realtime_srv\rep\AckBitField.cpp">
-      <Filter>rep</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\11452\Documents\github\temp\realtime_server\realtime_srv\rep\BitStream.cpp">
-      <Filter>rep</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\11452\Documents\github\temp\realtime_server\realtime_srv\rep\DeliveryNotifyMgr.cpp">
-      <Filter>rep</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\11452\Documents\github\temp\realtime_server\realtime_srv\rep\InFlightPacket.cpp">
-      <Filter>rep</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\11452\Documents\github\temp\realtime_server\realtime_srv\rep\ReplicationMgr.cpp">
-      <Filter>rep</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="C:\Users\11452\Documents\github\temp\realtime_server\realtime_srv\common\Macro.h">
-      <Filter>common</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\11452\Documents\github\temp\realtime_server\realtime_srv\common\RealTimeSrvHelper.h">
-      <Filter>common</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\11452\Documents\github\temp\realtime_server\realtime_srv\common\RealTimeSrvShared.h">
-      <Filter>common</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\11452\Documents\github\temp\realtime_server\realtime_srv\common\RealTimeSrvTiming.h">
-      <Filter>common</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\11452\Documents\github\temp\realtime_server\realtime_srv\entity\Action.h">
-      <Filter>entity</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\11452\Documents\github\temp\realtime_server\realtime_srv\entity\ActionList.h">
-      <Filter>entity</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\11452\Documents\github\temp\realtime_server\realtime_srv\entity\Entity.h">
-      <Filter>entity</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\11452\Documents\github\temp\realtime_server\realtime_srv\entity\InputState.h">
-      <Filter>entity</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\11452\Documents\github\temp\realtime_server\realtime_srv\math\Matrix3x3.h">
-      <Filter>math</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\11452\Documents\github\temp\realtime_server\realtime_srv\math\Quaternion.h">
-      <Filter>math</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\11452\Documents\github\temp\realtime_server\realtime_srv\math\RealTimeSrvMath.h">
-      <Filter>math</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\11452\Documents\github\temp\realtime_server\realtime_srv\math\Vector2.h">
-      <Filter>math</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\11452\Documents\github\temp\realtime_server\realtime_srv\math\Vector3.h">
-      <Filter>math</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\11452\Documents\github\temp\realtime_server\realtime_srv\net\NetworkMgr.h">
-      <Filter>net</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\11452\Documents\github\temp\realtime_server\realtime_srv\net\SocketAddrInterface.h">
-      <Filter>net</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\11452\Documents\github\temp\realtime_server\realtime_srv\net\UDPSocketInterface.h">
-      <Filter>net</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\11452\Documents\github\temp\realtime_server\realtime_srv\rep\AckBitField.h">
-      <Filter>rep</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\11452\Documents\github\temp\realtime_server\realtime_srv\rep\BitStream.h">
-      <Filter>rep</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\11452\Documents\github\temp\realtime_server\realtime_srv\rep\DeliveryNotifyMgr.h">
-      <Filter>rep</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\11452\Documents\github\temp\realtime_server\realtime_srv\rep\InFlightPacket.h">
-      <Filter>rep</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\11452\Documents\github\temp\realtime_server\realtime_srv\rep\ReplicationCmd.h">
-      <Filter>rep</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\11452\Documents\github\temp\realtime_server\realtime_srv\rep\ReplicationMgr.h">
-      <Filter>rep</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <CustomBuild Include="C:\Users\11452\Documents\github\temp\realtime_server\realtime_srv\CMakeLists.txt" />
-  </ItemGroup>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="common">
-      <UniqueIdentifier>{42B7A863-D62B-336C-B65A-D0D723EFD9ED}</UniqueIdentifier>
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
     <Filter Include="entity">
-      <UniqueIdentifier>{500D510C-C21D-3AFE-90AA-7BA901D05310}</UniqueIdentifier>
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
     <Filter Include="math">
-      <UniqueIdentifier>{4060D35F-A9C2-36A7-A4D4-D8DB9DDF27A7}</UniqueIdentifier>
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
     <Filter Include="net">
-      <UniqueIdentifier>{0AAFF446-3796-300F-A0E8-128503A4402D}</UniqueIdentifier>
+      <UniqueIdentifier>{71c65f3b-4c42-4a16-804f-258fee9851bf}</UniqueIdentifier>
     </Filter>
     <Filter Include="rep">
-      <UniqueIdentifier>{DFFCBBF8-0F5A-328F-8B76-0746AF4D1B51}</UniqueIdentifier>
+      <UniqueIdentifier>{484d3a7a-9cec-41f3-9056-e1b6153bfe2e}</UniqueIdentifier>
     </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\realtime_srv\common\Macro.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\realtime_srv\common\RealTimeSrvHelper.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\realtime_srv\common\RealTimeSrvShared.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\realtime_srv\common\RealTimeSrvTiming.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\realtime_srv\entity\Action.h">
+      <Filter>entity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\realtime_srv\entity\ActionList.h">
+      <Filter>entity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\realtime_srv\entity\Entity.h">
+      <Filter>entity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\realtime_srv\entity\InputState.h">
+      <Filter>entity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\realtime_srv\math\Matrix3x3.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\realtime_srv\math\Quaternion.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\realtime_srv\math\RealTimeSrvMath.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\realtime_srv\math\Vector2.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\realtime_srv\math\Vector3.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\realtime_srv\net\NetworkMgr.h">
+      <Filter>net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\realtime_srv\net\SocketAddrInterface.h">
+      <Filter>net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\realtime_srv\net\UDPSocketInterface.h">
+      <Filter>net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\realtime_srv\rep\AckBitField.h">
+      <Filter>rep</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\realtime_srv\rep\BitStream.h">
+      <Filter>rep</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\realtime_srv\rep\DeliveryNotifyMgr.h">
+      <Filter>rep</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\realtime_srv\rep\InFlightPacket.h">
+      <Filter>rep</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\realtime_srv\rep\ReplicationCmd.h">
+      <Filter>rep</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\realtime_srv\rep\ReplicationMgr.h">
+      <Filter>rep</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\realtime_srv\common\RealTimeSrvHelper.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\realtime_srv\common\RealTimeSrvTiming.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\realtime_srv\entity\Action.cpp">
+      <Filter>entity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\realtime_srv\entity\ActionList.cpp">
+      <Filter>entity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\realtime_srv\entity\Entity.cpp">
+      <Filter>entity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\realtime_srv\entity\InputState.cpp">
+      <Filter>entity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\realtime_srv\math\RealTimeSrvMath.cpp">
+      <Filter>math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\realtime_srv\math\Vector3.cpp">
+      <Filter>math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\realtime_srv\net\NetworkMgr.cpp">
+      <Filter>net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\realtime_srv\net\UDPSocketInterface.cpp">
+      <Filter>net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\realtime_srv\rep\AckBitField.cpp">
+      <Filter>rep</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\realtime_srv\rep\BitStream.cpp">
+      <Filter>rep</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\realtime_srv\rep\DeliveryNotifyMgr.cpp">
+      <Filter>rep</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\realtime_srv\rep\InFlightPacket.cpp">
+      <Filter>rep</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\realtime_srv\rep\ReplicationMgr.cpp">
+      <Filter>rep</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\realtime_srv\CMakeLists.txt" />
   </ItemGroup>
 </Project>

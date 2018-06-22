@@ -9,387 +9,180 @@
       <Configuration>Release</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="MinSizeRel|Win32">
-      <Configuration>MinSizeRel</Configuration>
-      <Platform>Win32</Platform>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="RelWithDebInfo|Win32">
-      <Configuration>RelWithDebInfo</Configuration>
-      <Platform>Win32</Platform>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{49E1F652-57D4-3C61-B49C-B0BC023FE6FD}</ProjectGuid>
-    <Keyword>Win32Proj</Keyword>
-    <Platform>Win32</Platform>
-    <ProjectName>muduo</ProjectName>
-    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+    <ProjectGuid>{D90B613D-5912-4D58-A258-367FD1CFCBBB}</ProjectGuid>
+    <RootNamespace>muduo</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <CharacterSet>MultiByte</CharacterSet>
+    <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <CharacterSet>MultiByte</CharacterSet>
+    <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'" Label="Configuration">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <CharacterSet>MultiByte</CharacterSet>
+    <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'" Label="Configuration">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <CharacterSet>MultiByte</CharacterSet>
+    <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
-  <ImportGroup Label="PropertySheets">
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup>
-    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Users\11452\Documents\github\temp\realtime_server\ms_vs2015\bin\Debug\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">muduo.dir\Debug\</IntDir>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">muduo</TargetName>
-    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.exe</TargetExt>
-    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
-    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</GenerateManifest>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Users\11452\Documents\github\temp\realtime_server\ms_vs2015\bin\Release\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">muduo.dir\Release\</IntDir>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">muduo</TargetName>
-    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.exe</TargetExt>
-    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
-    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</GenerateManifest>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:\Users\11452\Documents\github\temp\realtime_server\ms_vs2015\bin\MinSizeRel\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">muduo.dir\MinSizeRel\</IntDir>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">muduo</TargetName>
-    <TargetExt Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">.exe</TargetExt>
-    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkIncremental>
-    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">true</GenerateManifest>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:\Users\11452\Documents\github\temp\realtime_server\ms_vs2015\bin\RelWithDebInfo\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">muduo.dir\RelWithDebInfo\</IntDir>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">muduo</TargetName>
-    <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">.exe</TargetExt>
-    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">true</LinkIncremental>
-    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">true</GenerateManifest>
-  </PropertyGroup>
+  <PropertyGroup />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Users\11452\Documents\github\temp\realtime_server;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <AssemblerListingLocation>Debug/</AssemblerListingLocation>
-      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
-      <CompileAs>CompileAsCpp</CompileAs>
-      <CppLanguageStandard>c++11</CppLanguageStandard>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <DisableSpecificWarnings>4819</DisableSpecificWarnings>
-      <ExceptionHandling>Sync</ExceptionHandling>
-      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
-      <Optimization>Disabled</Optimization>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;CMAKE_INTDIR="Debug";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
     </ClCompile>
-    <ResourceCompile>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;CMAKE_INTDIR=\"Debug\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Users\11452\Documents\github\temp\realtime_server;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-    </ResourceCompile>
-    <Midl>
-      <AdditionalIncludeDirectories>C:\Users\11452\Documents\github\temp\realtime_server;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
-      <HeaderFileName>%(Filename).h</HeaderFileName>
-      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
-      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
-      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
-    </Midl>
-    <Link>
-      <AdditionalDependencies>wsock32.lib;ws2_32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <ImportLibrary>C:/Users/11452/Documents/github/temp/realtime_server/ms_vs2015/bin/Debug/muduo.lib</ImportLibrary>
-      <ProgramDataBaseFile>C:/Users/11452/Documents/github/temp/realtime_server/ms_vs2015/bin/Debug/muduo.pdb</ProgramDataBaseFile>
-      <SubSystem>Console</SubSystem>
-    </Link>
-    <ProjectReference>
-      <LinkLibraryDependencies>false</LinkLibraryDependencies>
-    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Users\11452\Documents\github\temp\realtime_server;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <AssemblerListingLocation>Release/</AssemblerListingLocation>
-      <CompileAs>CompileAsCpp</CompileAs>
-      <CppLanguageStandard>c++11</CppLanguageStandard>
-      <DisableSpecificWarnings>4819</DisableSpecificWarnings>
-      <ExceptionHandling>Sync</ExceptionHandling>
-      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <WarningLevel>Level3</WarningLevel>
       <Optimization>MaxSpeed</Optimization>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <RuntimeTypeInfo>true</RuntimeTypeInfo>
-      <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR="Release";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ObjectFileName>$(IntDir)</ObjectFileName>
-      <DebugInformationFormat>
-      </DebugInformationFormat>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
     </ClCompile>
-    <ResourceCompile>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"Release\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Users\11452\Documents\github\temp\realtime_server;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-    </ResourceCompile>
-    <Midl>
-      <AdditionalIncludeDirectories>C:\Users\11452\Documents\github\temp\realtime_server;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
-      <HeaderFileName>%(Filename).h</HeaderFileName>
-      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
-      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
-      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
-    </Midl>
     <Link>
-      <AdditionalDependencies>wsock32.lib;ws2_32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
-      <GenerateDebugInformation>false</GenerateDebugInformation>
-      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <ImportLibrary>C:/Users/11452/Documents/github/temp/realtime_server/ms_vs2015/bin/Release/muduo.lib</ImportLibrary>
-      <ProgramDataBaseFile>C:/Users/11452/Documents/github/temp/realtime_server/ms_vs2015/bin/Release/muduo.pdb</ProgramDataBaseFile>
-      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
     </Link>
-    <ProjectReference>
-      <LinkLibraryDependencies>false</LinkLibraryDependencies>
-    </ProjectReference>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Users\11452\Documents\github\temp\realtime_server;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <AssemblerListingLocation>MinSizeRel/</AssemblerListingLocation>
-      <CompileAs>CompileAsCpp</CompileAs>
-      <CppLanguageStandard>c++11</CppLanguageStandard>
-      <DisableSpecificWarnings>4819</DisableSpecificWarnings>
-      <ExceptionHandling>Sync</ExceptionHandling>
-      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
-      <Optimization>MinSpace</Optimization>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR="MinSizeRel";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ObjectFileName>$(IntDir)</ObjectFileName>
-      <DebugInformationFormat>
-      </DebugInformationFormat>
-    </ClCompile>
-    <ResourceCompile>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"MinSizeRel\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Users\11452\Documents\github\temp\realtime_server;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-    </ResourceCompile>
-    <Midl>
-      <AdditionalIncludeDirectories>C:\Users\11452\Documents\github\temp\realtime_server;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
-      <HeaderFileName>%(Filename).h</HeaderFileName>
-      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
-      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
-      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
-    </Midl>
-    <Link>
-      <AdditionalDependencies>wsock32.lib;ws2_32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
-      <GenerateDebugInformation>false</GenerateDebugInformation>
-      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <ImportLibrary>C:/Users/11452/Documents/github/temp/realtime_server/ms_vs2015/bin/MinSizeRel/muduo.lib</ImportLibrary>
-      <ProgramDataBaseFile>C:/Users/11452/Documents/github/temp/realtime_server/ms_vs2015/bin/MinSizeRel/muduo.pdb</ProgramDataBaseFile>
-      <SubSystem>Console</SubSystem>
-    </Link>
-    <ProjectReference>
-      <LinkLibraryDependencies>false</LinkLibraryDependencies>
-    </ProjectReference>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">
-    <ClCompile>
-      <AdditionalIncludeDirectories>C:\Users\11452\Documents\github\temp\realtime_server;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <AssemblerListingLocation>RelWithDebInfo/</AssemblerListingLocation>
-      <CompileAs>CompileAsCpp</CompileAs>
-      <CppLanguageStandard>c++11</CppLanguageStandard>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <DisableSpecificWarnings>4819</DisableSpecificWarnings>
-      <ExceptionHandling>Sync</ExceptionHandling>
-      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
       <Optimization>MaxSpeed</Optimization>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <RuntimeTypeInfo>true</RuntimeTypeInfo>
-      <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR="RelWithDebInfo";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
     </ClCompile>
-    <ResourceCompile>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"RelWithDebInfo\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Users\11452\Documents\github\temp\realtime_server;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-    </ResourceCompile>
-    <Midl>
-      <AdditionalIncludeDirectories>C:\Users\11452\Documents\github\temp\realtime_server;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
-      <HeaderFileName>%(Filename).h</HeaderFileName>
-      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
-      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
-      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
-    </Midl>
     <Link>
-      <AdditionalDependencies>wsock32.lib;ws2_32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <ImportLibrary>C:/Users/11452/Documents/github/temp/realtime_server/ms_vs2015/bin/RelWithDebInfo/muduo.lib</ImportLibrary>
-      <ProgramDataBaseFile>C:/Users/11452/Documents/github/temp/realtime_server/ms_vs2015/bin/RelWithDebInfo/muduo.pdb</ProgramDataBaseFile>
-      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
     </Link>
-    <ProjectReference>
-      <LinkLibraryDependencies>false</LinkLibraryDependencies>
-    </ProjectReference>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <CustomBuild Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo\CMakeLists.txt">
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Building Custom Rule C:/Users/11452/Documents/github/temp/realtime_server/muduo/CMakeLists.txt</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
-"D:\Program Files\CMake\bin\cmake.exe" -HC:/Users/11452/Documents/github/temp/realtime_server -BC:/Users/11452/Documents/github/temp/realtime_server/ms_vs2015 --check-stamp-file C:/Users/11452/Documents/github/temp/realtime_server/ms_vs2015/muduo/CMakeFiles/generate.stamp
-if %errorlevel% neq 0 goto :cmEnd
-:cmEnd
-endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
-:cmErrorLevel
-exit /b %1
-:cmDone
-if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:/Users/11452/Documents/github/temp/realtime_server/muduo/CMakeLists.txt;C:\Users\11452\Documents\github\temp\realtime_server\muduo\CMakeLists.txt;C:\Users\11452\Documents\github\temp\realtime_server\muduo\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Users\11452\Documents\github\temp\realtime_server\ms_vs2015\muduo\CMakeFiles\generate.stamp</Outputs>
-      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkObjects>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Building Custom Rule C:/Users/11452/Documents/github/temp/realtime_server/muduo/CMakeLists.txt</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
-"D:\Program Files\CMake\bin\cmake.exe" -HC:/Users/11452/Documents/github/temp/realtime_server -BC:/Users/11452/Documents/github/temp/realtime_server/ms_vs2015 --check-stamp-file C:/Users/11452/Documents/github/temp/realtime_server/ms_vs2015/muduo/CMakeFiles/generate.stamp
-if %errorlevel% neq 0 goto :cmEnd
-:cmEnd
-endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
-:cmErrorLevel
-exit /b %1
-:cmDone
-if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:/Users/11452/Documents/github/temp/realtime_server/muduo/CMakeLists.txt;C:\Users\11452\Documents\github\temp\realtime_server\muduo\CMakeLists.txt;C:\Users\11452\Documents\github\temp\realtime_server\muduo\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Users\11452\Documents\github\temp\realtime_server\ms_vs2015\muduo\CMakeFiles\generate.stamp</Outputs>
-      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkObjects>
-      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">Building Custom Rule C:/Users/11452/Documents/github/temp/realtime_server/muduo/CMakeLists.txt</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">setlocal
-"D:\Program Files\CMake\bin\cmake.exe" -HC:/Users/11452/Documents/github/temp/realtime_server -BC:/Users/11452/Documents/github/temp/realtime_server/ms_vs2015 --check-stamp-file C:/Users/11452/Documents/github/temp/realtime_server/ms_vs2015/muduo/CMakeFiles/generate.stamp
-if %errorlevel% neq 0 goto :cmEnd
-:cmEnd
-endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
-:cmErrorLevel
-exit /b %1
-:cmDone
-if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:/Users/11452/Documents/github/temp/realtime_server/muduo/CMakeLists.txt;C:\Users\11452\Documents\github\temp\realtime_server\muduo\CMakeLists.txt;C:\Users\11452\Documents\github\temp\realtime_server\muduo\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:\Users\11452\Documents\github\temp\realtime_server\ms_vs2015\muduo\CMakeFiles\generate.stamp</Outputs>
-      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkObjects>
-      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">Building Custom Rule C:/Users/11452/Documents/github/temp/realtime_server/muduo/CMakeLists.txt</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">setlocal
-"D:\Program Files\CMake\bin\cmake.exe" -HC:/Users/11452/Documents/github/temp/realtime_server -BC:/Users/11452/Documents/github/temp/realtime_server/ms_vs2015 --check-stamp-file C:/Users/11452/Documents/github/temp/realtime_server/ms_vs2015/muduo/CMakeFiles/generate.stamp
-if %errorlevel% neq 0 goto :cmEnd
-:cmEnd
-endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
-:cmErrorLevel
-exit /b %1
-:cmDone
-if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:/Users/11452/Documents/github/temp/realtime_server/muduo/CMakeLists.txt;C:\Users\11452\Documents\github\temp\realtime_server\muduo\CMakeLists.txt;C:\Users\11452\Documents\github\temp\realtime_server\muduo\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:\Users\11452\Documents\github\temp\realtime_server\ms_vs2015\muduo\CMakeFiles\generate.stamp</Outputs>
-      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">false</LinkObjects>
-    </CustomBuild>
+    <ClInclude Include="..\..\..\muduo\base\Atomic.h" />
+    <ClInclude Include="..\..\..\muduo\base\Condition.h" />
+    <ClInclude Include="..\..\..\muduo\base\copyable.h" />
+    <ClInclude Include="..\..\..\muduo\base\CountDownLatch.h" />
+    <ClInclude Include="..\..\..\muduo\base\CurrentThread.h" />
+    <ClInclude Include="..\..\..\muduo\base\Date.h" />
+    <ClInclude Include="..\..\..\muduo\base\Exception.h" />
+    <ClInclude Include="..\..\..\muduo\base\Logging.h" />
+    <ClInclude Include="..\..\..\muduo\base\LogStream.h" />
+    <ClInclude Include="..\..\..\muduo\base\Mutex.h" />
+    <ClInclude Include="..\..\..\muduo\base\noncopyable.h" />
+    <ClInclude Include="..\..\..\muduo\base\StringPiece.h" />
+    <ClInclude Include="..\..\..\muduo\base\Thread.h" />
+    <ClInclude Include="..\..\..\muduo\base\ThreadLocal.h" />
+    <ClInclude Include="..\..\..\muduo\base\ThreadLocalSingleton.h" />
+    <ClInclude Include="..\..\..\muduo\base\Timestamp.h" />
+    <ClInclude Include="..\..\..\muduo\base\TimeZone.h" />
+    <ClInclude Include="..\..\..\muduo\base\Types.h" />
+    <ClInclude Include="..\..\..\muduo\base\WeakCallback.h" />
+    <ClInclude Include="..\..\..\muduo\net\Acceptor.h" />
+    <ClInclude Include="..\..\..\muduo\net\Buffer.h" />
+    <ClInclude Include="..\..\..\muduo\net\Callbacks.h" />
+    <ClInclude Include="..\..\..\muduo\net\Channel.h" />
+    <ClInclude Include="..\..\..\muduo\net\Connector.h" />
+    <ClInclude Include="..\..\..\muduo\net\Endian.h" />
+    <ClInclude Include="..\..\..\muduo\net\EventLoop.h" />
+    <ClInclude Include="..\..\..\muduo\net\EventLoopThread.h" />
+    <ClInclude Include="..\..\..\muduo\net\EventLoopThreadPool.h" />
+    <ClInclude Include="..\..\..\muduo\net\InetAddress.h" />
+    <ClInclude Include="..\..\..\muduo\net\Poller.h" />
+    <ClInclude Include="..\..\..\muduo\net\poller\EPollPoller.h" />
+    <ClInclude Include="..\..\..\muduo\net\poller\PollPoller.h" />
+    <ClInclude Include="..\..\..\muduo\net\Socket.h" />
+    <ClInclude Include="..\..\..\muduo\net\SocketsOps.h" />
+    <ClInclude Include="..\..\..\muduo\net\TcpClient.h" />
+    <ClInclude Include="..\..\..\muduo\net\TcpConnection.h" />
+    <ClInclude Include="..\..\..\muduo\net\TcpServer.h" />
+    <ClInclude Include="..\..\..\muduo\net\Timer.h" />
+    <ClInclude Include="..\..\..\muduo\net\TimerId.h" />
+    <ClInclude Include="..\..\..\muduo\net\TimerQueue.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo\base\Atomic.h" />
-    <ClInclude Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo\base\Condition.h" />
-    <ClInclude Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo\base\CountDownLatch.h" />
-    <ClInclude Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo\base\CurrentThread.h" />
-    <ClInclude Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo\base\Date.h" />
-    <ClInclude Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo\base\Exception.h" />
-    <ClInclude Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo\base\LogStream.h" />
-    <ClInclude Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo\base\Logging.h" />
-    <ClInclude Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo\base\Mutex.h" />
-    <ClInclude Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo\base\StringPiece.h" />
-    <ClInclude Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo\base\Thread.h" />
-    <ClInclude Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo\base\ThreadLocal.h" />
-    <ClInclude Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo\base\ThreadLocalSingleton.h" />
-    <ClInclude Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo\base\TimeZone.h" />
-    <ClInclude Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo\base\Timestamp.h" />
-    <ClInclude Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo\base\Types.h" />
-    <ClInclude Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo\base\WeakCallback.h" />
-    <ClInclude Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo\base\copyable.h" />
-    <ClInclude Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo\base\noncopyable.h" />
-    <ClInclude Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo\net\Acceptor.h" />
-    <ClInclude Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo\net\Buffer.h" />
-    <ClInclude Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo\net\Callbacks.h" />
-    <ClInclude Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo\net\Channel.h" />
-    <ClInclude Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo\net\Connector.h" />
-    <ClInclude Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo\net\Endian.h" />
-    <ClInclude Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo\net\EventLoop.h" />
-    <ClInclude Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo\net\EventLoopThread.h" />
-    <ClInclude Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo\net\EventLoopThreadPool.h" />
-    <ClInclude Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo\net\InetAddress.h" />
-    <ClInclude Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo\net\Poller.h" />
-    <ClInclude Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo\net\Socket.h" />
-    <ClInclude Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo\net\SocketsOps.h" />
-    <ClInclude Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo\net\TcpClient.h" />
-    <ClInclude Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo\net\TcpConnection.h" />
-    <ClInclude Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo\net\TcpServer.h" />
-    <ClInclude Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo\net\Timer.h" />
-    <ClInclude Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo\net\TimerId.h" />
-    <ClInclude Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo\net\TimerQueue.h" />
-    <ClInclude Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo\net\poller\EPollPoller.h" />
-    <ClInclude Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo\net\poller\PollPoller.h" />
-    <ClCompile Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo\base\Condition.cc" />
-    <ClCompile Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo\base\CountDownLatch.cc" />
-    <ClCompile Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo\base\Date.cc" />
-    <ClCompile Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo\base\Exception.cc" />
-    <ClCompile Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo\base\LogStream.cc" />
-    <ClCompile Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo\base\Logging.cc" />
-    <ClCompile Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo\base\Thread.cc" />
-    <ClCompile Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo\base\TimeZone.cc" />
-    <ClCompile Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo\base\Timestamp.cc" />
-    <ClCompile Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo\net\Acceptor.cc" />
-    <ClCompile Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo\net\Buffer.cc" />
-    <ClCompile Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo\net\Channel.cc" />
-    <ClCompile Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo\net\Connector.cc" />
-    <ClCompile Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo\net\EventLoop.cc" />
-    <ClCompile Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo\net\EventLoopThread.cc" />
-    <ClCompile Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo\net\EventLoopThreadPool.cc" />
-    <ClCompile Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo\net\InetAddress.cc" />
-    <ClCompile Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo\net\Poller.cc" />
-    <ClCompile Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo\net\Socket.cc" />
-    <ClCompile Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo\net\SocketsOps.cc" />
-    <ClCompile Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo\net\TcpClient.cc" />
-    <ClCompile Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo\net\TcpConnection.cc" />
-    <ClCompile Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo\net\TcpServer.cc" />
-    <ClCompile Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo\net\Timer.cc" />
-    <ClCompile Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo\net\TimerQueue.cc" />
-    <ClCompile Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo\net\poller\DefaultPoller.cc" />
-    <ClCompile Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo\net\poller\EPollPoller.cc" />
-    <ClCompile Include="C:\Users\11452\Documents\github\temp\realtime_server\muduo\net\poller\PollPoller.cc" />
+    <ClCompile Include="..\..\..\muduo\base\Condition.cc" />
+    <ClCompile Include="..\..\..\muduo\base\CountDownLatch.cc" />
+    <ClCompile Include="..\..\..\muduo\base\Date.cc" />
+    <ClCompile Include="..\..\..\muduo\base\Exception.cc" />
+    <ClCompile Include="..\..\..\muduo\base\Logging.cc" />
+    <ClCompile Include="..\..\..\muduo\base\LogStream.cc" />
+    <ClCompile Include="..\..\..\muduo\base\Thread.cc" />
+    <ClCompile Include="..\..\..\muduo\base\Timestamp.cc" />
+    <ClCompile Include="..\..\..\muduo\base\TimeZone.cc" />
+    <ClCompile Include="..\..\..\muduo\net\Acceptor.cc" />
+    <ClCompile Include="..\..\..\muduo\net\Buffer.cc" />
+    <ClCompile Include="..\..\..\muduo\net\Channel.cc" />
+    <ClCompile Include="..\..\..\muduo\net\Connector.cc" />
+    <ClCompile Include="..\..\..\muduo\net\EventLoop.cc" />
+    <ClCompile Include="..\..\..\muduo\net\EventLoopThread.cc" />
+    <ClCompile Include="..\..\..\muduo\net\EventLoopThreadPool.cc" />
+    <ClCompile Include="..\..\..\muduo\net\InetAddress.cc" />
+    <ClCompile Include="..\..\..\muduo\net\Poller.cc" />
+    <ClCompile Include="..\..\..\muduo\net\poller\DefaultPoller.cc" />
+    <ClCompile Include="..\..\..\muduo\net\poller\EPollPoller.cc" />
+    <ClCompile Include="..\..\..\muduo\net\poller\PollPoller.cc" />
+    <ClCompile Include="..\..\..\muduo\net\Socket.cc" />
+    <ClCompile Include="..\..\..\muduo\net\SocketsOps.cc" />
+    <ClCompile Include="..\..\..\muduo\net\TcpClient.cc" />
+    <ClCompile Include="..\..\..\muduo\net\TcpConnection.cc" />
+    <ClCompile Include="..\..\..\muduo\net\TcpServer.cc" />
+    <ClCompile Include="..\..\..\muduo\net\Timer.cc" />
+    <ClCompile Include="..\..\..\muduo\net\TimerQueue.cc" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="C:\Users\11452\Documents\github\temp\realtime_server\ms_vs2015\ZERO_CHECK.vcxproj">
-      <Project>{2A56A83E-775A-3B4F-BC97-798EAE5C0571}</Project>
-      <Name>ZERO_CHECK</Name>
-    </ProjectReference>
+    <Text Include="..\..\..\muduo\CMakeLists.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
