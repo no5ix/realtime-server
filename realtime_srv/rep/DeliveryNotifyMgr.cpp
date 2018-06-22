@@ -1,4 +1,4 @@
-#include "realtime_srv/common/RealTimeSrvShared.h"
+#include "realtime_srv/common/RealtimeSrvShared.h"
 
 namespace
 {
@@ -58,7 +58,7 @@ bool DeliveryNotifyMgr::ProcessSequenceNumber( InputBitStream& inInputStream )
 	PacketSN	sequenceNumber;
 
 	inInputStream.Read( sequenceNumber );
-	if ( RealTimeSrvHelper::SequenceGreaterThanOrEqual( sequenceNumber, mNextExpectedSequenceNumber ) )
+	if ( RealtimeSrvHelper::SequenceGreaterThanOrEqual( sequenceNumber, mNextExpectedSequenceNumber ) )
 	//if ( sequenceNumber >= mNextExpectedSequenceNumber )
 	{
 		PacketSN lastSN = mNextExpectedSequenceNumber - 1;
@@ -81,7 +81,7 @@ bool DeliveryNotifyMgr::ProcessSequenceNumber( InputBitStream& inInputStream )
 
 void DeliveryNotifyMgr::ProcessTimedOutPackets()
 {
-	float timeoutTime = RealTimeSrvTiming::sInstance.GetCurrentGameTime() - kDelayBeforeAckTimeout;
+	float timeoutTime = RealtimeSrvTiming::sInstance.GetCurrentGameTime() - kDelayBeforeAckTimeout;
 
 	while ( !mInFlightPackets.empty() )
 	{
@@ -123,7 +123,7 @@ void DeliveryNotifyMgr::ProcessAckBitField( InputBitStream& inInputStream )
 
 
 	while (
-		RealTimeSrvHelper::SequenceGreaterThanOrEqual( LastAckedSN, nextAckedSN )
+		RealtimeSrvHelper::SequenceGreaterThanOrEqual( LastAckedSN, nextAckedSN )
 		//LastAckedSN >= nextAckdSequenceNumber
 		&& !mInFlightPackets.empty()
 		)
@@ -131,7 +131,7 @@ void DeliveryNotifyMgr::ProcessAckBitField( InputBitStream& inInputStream )
 		const auto& nextInFlightPacket = mInFlightPackets.front();
 		PacketSN nextInFlightPacketSN = nextInFlightPacket.GetSequenceNumber();
 
-		if ( RealTimeSrvHelper::SequenceGreaterThan( nextAckedSN, nextInFlightPacketSN ) )
+		if ( RealtimeSrvHelper::SequenceGreaterThan( nextAckedSN, nextInFlightPacketSN ) )
 		//if ( nextAckedSN > nextInFlightPacketSN )
 		{
 			auto copyOfInFlightPacket = nextInFlightPacket;
@@ -155,7 +155,7 @@ void DeliveryNotifyMgr::ProcessAckBitField( InputBitStream& inInputStream )
 				++nextAckedSN;
 			}
 		}
-		else if ( RealTimeSrvHelper::SequenceGreaterThan( nextInFlightPacketSN, nextAckedSN ) )
+		else if ( RealtimeSrvHelper::SequenceGreaterThan( nextInFlightPacketSN, nextAckedSN ) )
 		//else if ( nextAckedSN < nextInFlightPacketSN )
 		{
 			nextAckedSN = nextInFlightPacketSN;

@@ -19,22 +19,23 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\realtime_srv\common\Macro.h" />
-    <ClInclude Include="..\..\realtime_srv\common\RealTimeSrvHelper.h" />
-    <ClInclude Include="..\..\realtime_srv\common\RealTimeSrvShared.h" />
-    <ClInclude Include="..\..\realtime_srv\common\RealTimeSrvTiming.h" />
+    <ClInclude Include="..\..\realtime_srv\common\RealtimeSrvMacro.h" />
+    <ClInclude Include="..\..\realtime_srv\common\RealtimeSrvHelper.h" />
+    <ClInclude Include="..\..\realtime_srv\common\RealtimeSrvShared.h" />
+    <ClInclude Include="..\..\realtime_srv\common\RealtimeSrvTiming.h" />
     <ClInclude Include="..\..\realtime_srv\entity\Action.h" />
     <ClInclude Include="..\..\realtime_srv\entity\ActionList.h" />
     <ClInclude Include="..\..\realtime_srv\entity\Entity.h" />
     <ClInclude Include="..\..\realtime_srv\entity\InputState.h" />
     <ClInclude Include="..\..\realtime_srv\math\Matrix3x3.h" />
     <ClInclude Include="..\..\realtime_srv\math\Quaternion.h" />
-    <ClInclude Include="..\..\realtime_srv\math\RealTimeSrvMath.h" />
+    <ClInclude Include="..\..\realtime_srv\math\RealtimeSrvMath.h" />
     <ClInclude Include="..\..\realtime_srv\math\Vector2.h" />
     <ClInclude Include="..\..\realtime_srv\math\Vector3.h" />
+    <ClInclude Include="..\..\realtime_srv\net\ClientProxy.h" />
     <ClInclude Include="..\..\realtime_srv\net\NetworkMgr.h" />
-    <ClInclude Include="..\..\realtime_srv\net\SocketAddrInterface.h" />
-    <ClInclude Include="..\..\realtime_srv\net\UDPSocketInterface.h" />
+    <ClInclude Include="..\..\realtime_srv\net\SockAddrInterfc.h" />
+    <ClInclude Include="..\..\realtime_srv\net\UdpSockInterfc.h" />
     <ClInclude Include="..\..\realtime_srv\rep\AckBitField.h" />
     <ClInclude Include="..\..\realtime_srv\rep\BitStream.h" />
     <ClInclude Include="..\..\realtime_srv\rep\DeliveryNotifyMgr.h" />
@@ -43,16 +44,17 @@
     <ClInclude Include="..\..\realtime_srv\rep\ReplicationMgr.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\realtime_srv\common\RealTimeSrvHelper.cpp" />
-    <ClCompile Include="..\..\realtime_srv\common\RealTimeSrvTiming.cpp" />
+    <ClCompile Include="..\..\realtime_srv\common\RealtimeSrvHelper.cpp" />
+    <ClCompile Include="..\..\realtime_srv\common\RealtimeSrvTiming.cpp" />
     <ClCompile Include="..\..\realtime_srv\entity\Action.cpp" />
     <ClCompile Include="..\..\realtime_srv\entity\ActionList.cpp" />
     <ClCompile Include="..\..\realtime_srv\entity\Entity.cpp" />
     <ClCompile Include="..\..\realtime_srv\entity\InputState.cpp" />
-    <ClCompile Include="..\..\realtime_srv\math\RealTimeSrvMath.cpp" />
+    <ClCompile Include="..\..\realtime_srv\math\RealtimeSrvMath.cpp" />
     <ClCompile Include="..\..\realtime_srv\math\Vector3.cpp" />
+    <ClCompile Include="..\..\realtime_srv\net\ClientProxy.cpp" />
     <ClCompile Include="..\..\realtime_srv\net\NetworkMgr.cpp" />
-    <ClCompile Include="..\..\realtime_srv\net\UDPSocketInterface.cpp" />
+    <ClCompile Include="..\..\realtime_srv\net\UdpSockInterfc.cpp" />
     <ClCompile Include="..\..\realtime_srv\rep\AckBitField.cpp" />
     <ClCompile Include="..\..\realtime_srv\rep\BitStream.cpp" />
     <ClCompile Include="..\..\realtime_srv\rep\DeliveryNotifyMgr.cpp" />

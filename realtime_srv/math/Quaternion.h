@@ -5,7 +5,7 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include <iostream>
-#include "realtime_srv/common/Macro.h"
+#include "realtime_srv/common/RealtimeSrvMacro.h"
 
 
 #define SMALL_DOUBLE 0.0000000001

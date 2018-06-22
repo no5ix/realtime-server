@@ -3,7 +3,7 @@
 class Vector3;
 class Vector2;
 
-namespace RealTimeSrvMath
+namespace RealtimeSrvMath
 {
 	float GetRandomFloat();
 

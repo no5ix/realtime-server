@@ -30,6 +30,7 @@
 	const int SOCKET_ERROR = -1;
 #endif
 
+
 #include <functional>
 #include <stdint.h>
 #include <memory>
@@ -65,22 +66,20 @@ using std::unordered_set;
 #include "realtime_srv/math/Matrix3x3.h"
 #include "realtime_srv/math/Vector2.h"
 
-#include "realtime_srv/math/RealTimeSrvMath.h"
+#include "realtime_srv/math/RealtimeSrvMath.h"
 
-#include "realtime_srv/common/RealTimeSrvHelper.h"
-#include "realtime_srv/common/Macro.h"
-#include "realtime_srv/common/RealTimeSrvTiming.h"
+#include "realtime_srv/common/RealtimeSrvHelper.h"
+#include "realtime_srv/common/RealtimeSrvMacro.h"
+#include "realtime_srv/common/RealtimeSrvTiming.h"
 
-#include "realtime_srv/net/SocketAddrInterface.h"
-#include "realtime_srv/net/UDPSocketInterface.h"
+#include "realtime_srv/net/SockAddrInterfc.h"
+#include "realtime_srv/net/UdpSockInterfc.h"
 
 
 #include "realtime_srv/rep/BitStream.h"
 
 
 #include "realtime_srv/entity/Entity.h"
-
-#include "realtime_srv/net/NetworkMgr.h"
 
 #include "realtime_srv/rep/ReplicationCmd.h"
 #include "realtime_srv/rep/InFlightPacket.h"
@@ -91,3 +90,7 @@ using std::unordered_set;
 #include "realtime_srv/entity/InputState.h"
 #include "realtime_srv/entity/Action.h"
 #include "realtime_srv/entity/ActionList.h"
+
+
+#include "realtime_srv/net/ClientProxy.h"
+#include "realtime_srv/net/NetworkMgr.h"

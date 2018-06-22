@@ -1,4 +1,4 @@
-#include "realtime_srv/common/RealTimeSrvShared.h"
+#include "realtime_srv/common/RealtimeSrvShared.h"
 
 
 
@@ -58,7 +58,7 @@ void AckBitField::AddToAckBitField( PacketSN inSequenceNumber, PacketSN inLastSN
 	}
 
 	uint32_t totalDifference = 0;
-	for ( ; RealTimeSrvHelper::SequenceGreaterThan( inSequenceNumber, inLastSN++ ); ++totalDifference );
+	for ( ; RealtimeSrvHelper::SequenceGreaterThan( inSequenceNumber, inLastSN++ ); ++totalDifference );
 	//for ( ; inSequenceNumber > inLastSN++ ; ++totalDifference );
 
 	//cout << "totalDifference = " << totalDifference << endl;
@@ -92,7 +92,7 @@ void AckBitField::Read( InputBitStream& inInputStream )
 bool AckBitField::IsSetCorrespondingAckBit( PacketSN inAckSN )
 {
 	uint32_t difference = 0;
-	for ( ; RealTimeSrvHelper::SequenceGreaterThan( mLatestAckSN, inAckSN++ ); ++difference );
+	for ( ; RealtimeSrvHelper::SequenceGreaterThan( mLatestAckSN, inAckSN++ ); ++difference );
 	//for ( ; mLatestAckSN > inAckSN++ ; ++difference );
 
 	assert( difference );

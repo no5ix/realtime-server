@@ -3,21 +3,21 @@
 
 
 
-std::unique_ptr< RealTimeSrv >	RealTimeSrv::sInstance;
+std::unique_ptr< ExampleSrvForUe4Demo >	ExampleSrvForUe4Demo::sInstance;
 
-bool RealTimeSrv::StaticInit()
+bool ExampleSrvForUe4Demo::StaticInit()
 {
 #ifdef IS_LINUX
 
 	int willBecomeDaemon = 0;
-	std::string willBecomeDaemonString = RealTimeSrvHelper::GetCommandLineArg(
+	std::string willBecomeDaemonString = RealtimeSrvHelper::GetCommandLineArg(
 		COMMAND_LINE_ARG_DAEMON_INDEX );
 	if ( !willBecomeDaemonString.empty() )
 	{
 		willBecomeDaemon = stoi( willBecomeDaemonString );
 		if ( willBecomeDaemon )
 		{
-			if ( RealTimeSrvHelper::BecomeDaemon() == -1 )
+			if ( RealtimeSrvHelper::BecomeDaemon() == -1 )
 			{
 				LOG( "BecomeDaemon failed", 0 );
 				return false;
@@ -26,11 +26,11 @@ bool RealTimeSrv::StaticInit()
 	}
 #endif //IS_LINUX
 
-	sInstance.reset( new RealTimeSrv() );
+	sInstance.reset( new ExampleSrvForUe4Demo() );
 	return true;
 }
 
-RealTimeSrv::RealTimeSrv()
+ExampleSrvForUe4Demo::ExampleSrvForUe4Demo()
 {
 	srand( static_cast< uint32_t >( time( nullptr ) ) );
 
@@ -48,61 +48,61 @@ RealTimeSrv::RealTimeSrv()
 }
 
 #ifndef IS_LINUX
-void RealTimeSrv::SimulateRealWorld()
+void ExampleSrvForUe4Demo::SimulateRealWorld()
 {
 	float latency = 0.0f;
-	std::string latencyString = RealTimeSrvHelper::GetCommandLineArg(
+	std::string latencyString = RealtimeSrvHelper::GetCommandLineArg(
 		COMMAND_LINE_ARG_LATENCY_INDEX );
 	if ( !latencyString.empty() )
 	{
 		latency = stof( latencyString );
-		NetworkMgrSrv::sInst->SetSimulatedLatency( latency );
+		NetworkMgr::sInst->SetSimulatedLatency( latency );
 	}
 
 	float dropPacketChance = 0.0f;
-	std::string dropPacketChanceString = RealTimeSrvHelper::GetCommandLineArg(
+	std::string dropPacketChanceString = RealtimeSrvHelper::GetCommandLineArg(
 		COMMAND_LINE_ARG_DROP_PACKET_CHANCE_INDEX );
 	if ( !dropPacketChanceString.empty() )
 	{
 		dropPacketChance = stof( dropPacketChanceString );
-		NetworkMgrSrv::sInst->SetDropPacketChance( dropPacketChance );
+		NetworkMgr::sInst->SetDropPacketChance( dropPacketChance );
 	}
 
 	int IsSimulatedJitter = 0;
-	std::string IsSimulatedJitterString = RealTimeSrvHelper::GetCommandLineArg(
+	std::string IsSimulatedJitterString = RealtimeSrvHelper::GetCommandLineArg(
 		COMMAND_LINE_ARG_IS_SIMULATED_JITTER_INDEX );
 	if ( !IsSimulatedJitterString.empty() )
 	{
 		IsSimulatedJitter = stoi( IsSimulatedJitterString );
 		if ( IsSimulatedJitter )
 		{
-			NetworkMgrSrv::sInst->SetIsSimulatedJitter( true );
+			NetworkMgr::sInst->SetIsSimulatedJitter( true );
 		}
 	}
 }
 #endif // !IS_LINUX
 
-void RealTimeSrv::InitNetworkMgr()
+void ExampleSrvForUe4Demo::InitNetworkMgr()
 {
 	uint16_t port = DEFAULT_REALTIME_SRV_PORT;
-	std::string portString = RealTimeSrvHelper::GetCommandLineArg(
+	std::string portString = RealtimeSrvHelper::GetCommandLineArg(
 		COMMAND_LINE_ARG_PORT_INDEX );
 	if ( portString != std::string() )
 	{
 		port = stoi( portString );
 	}
-	NetworkMgrSrv::StaticInit( port );
+	NetworkMgr::StaticInit( port );
 }
 
 
-void RealTimeSrv::HandleNewClient( ClientProxyPtr inClientProxy )
+void ExampleSrvForUe4Demo::HandleNewClient( ClientProxyPtr inClientProxy )
 {
 	int playerId = inClientProxy->GetPlayerId();
 
 	SpawnCharacterForPlayer( playerId );
 }
 
-void RealTimeSrv::SpawnCharacterForPlayer( int inPlayerId )
+void ExampleSrvForUe4Demo::SpawnCharacterForPlayer( int inPlayerId )
 {
 	CharacterPtr character = std::static_pointer_cast< Character >(
 		EntityFactory::sInstance->CreateGameObject( 'CHRT' ) );
@@ -110,13 +110,13 @@ void RealTimeSrv::SpawnCharacterForPlayer( int inPlayerId )
 	character->SetPlayerId( inPlayerId );
 
 	character->SetLocation( Vector3(
-		2500.f + RealTimeSrvMath::GetRandomFloat() * -5000.f,
-		2500.f + RealTimeSrvMath::GetRandomFloat() * -5000.f,
+		2500.f + RealtimeSrvMath::GetRandomFloat() * -5000.f,
+		2500.f + RealtimeSrvMath::GetRandomFloat() * -5000.f,
 		0.f ) );
 
 	character->SetRotation( Vector3(
 		0.f,
-		RealTimeSrvMath::GetRandomFloat() * 180.f,
+		RealtimeSrvMath::GetRandomFloat() * 180.f,
 		0.f ) );
 
 
@@ -143,30 +143,30 @@ void RealTimeSrv::SpawnCharacterForPlayer( int inPlayerId )
 
 #ifdef IS_LINUX
 
-int RealTimeSrv::Run()
+int ExampleSrvForUe4Demo::Run()
 {
-	NetworkMgrSrv::sInst->setWorldUpdateCallback(
+	NetworkMgr::sInst->setWorldUpdateCallback(
 		std::bind( &World::Update, World::sInst.get() )
 	);
-	NetworkMgrSrv::sInst->Start();
+	NetworkMgr::sInst->Start();
 	return 0;
 }
 
 #else
 
-int RealTimeSrv::Run()
+int ExampleSrvForUe4Demo::Run()
 {
 	bool quit = false;
 	while ( !quit )
 	{
 		//RealTimeSrvTiming::sInstance.Update();
-		NetworkMgrSrv::sInst->ProcessIncomingPackets();
+		NetworkMgr::sInst->ProcessIncomingPackets();
 
-		NetworkMgrSrv::sInst->CheckForDisconnects();
+		NetworkMgr::sInst->CheckForDisconnects();
 
 		World::sInst->Update();
 
-		NetworkMgrSrv::sInst->SendOutgoingPackets();
+		NetworkMgr::sInst->SendOutgoingPackets();
 	}
 	return 0;
 }

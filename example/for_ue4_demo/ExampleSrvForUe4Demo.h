@@ -1,7 +1,7 @@
-class RealTimeSrv
+class ExampleSrvForUe4Demo
 {
 public:
-	static std::unique_ptr< RealTimeSrv >	sInstance;
+	static std::unique_ptr< ExampleSrvForUe4Demo >	sInstance;
 
 	static bool StaticInit();
 
@@ -16,7 +16,7 @@ public:
 #endif
 
 private:
-	RealTimeSrv();
+	ExampleSrvForUe4Demo();
 	void InitNetworkMgr();
 
 private:

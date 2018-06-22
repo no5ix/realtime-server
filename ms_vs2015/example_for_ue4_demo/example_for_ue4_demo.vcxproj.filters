@@ -2,21 +2,17 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="..\..\example\for_ue4_demo\Character.cpp" />
-    <ClCompile Include="..\..\example\for_ue4_demo\ClientProxy.cpp" />
     <ClCompile Include="..\..\example\for_ue4_demo\EntityFactory.cpp" />
-    <ClCompile Include="..\..\example\for_ue4_demo\NetworkMgrSrv.cpp" />
-    <ClCompile Include="..\..\example\for_ue4_demo\RealTimeSrv.cpp" />
     <ClCompile Include="..\..\example\for_ue4_demo\ServerMain.cpp" />
     <ClCompile Include="..\..\example\for_ue4_demo\World.cpp" />
+    <ClCompile Include="..\..\example\for_ue4_demo\ExampleSrvForUe4Demo.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\example\for_ue4_demo\Character.h" />
-    <ClInclude Include="..\..\example\for_ue4_demo\ClientProxy.h" />
     <ClInclude Include="..\..\example\for_ue4_demo\EntityFactory.h" />
     <ClInclude Include="..\..\example\for_ue4_demo\for_ue4_demo_shared.h" />
-    <ClInclude Include="..\..\example\for_ue4_demo\NetworkMgrSrv.h" />
-    <ClInclude Include="..\..\example\for_ue4_demo\RealTimeSrv.h" />
     <ClInclude Include="..\..\example\for_ue4_demo\World.h" />
+    <ClInclude Include="..\..\example\for_ue4_demo\ExampleSrvForUe4Demo.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\..\example\for_ue4_demo\CMakeLists.txt" />

@@ -26,7 +26,7 @@ void Character::Update()
 	Vector3 oldVelocity = GetVelocity();
 	Vector3 oldRotation = GetRotation();
 
-	ClientProxyPtr client = NetworkMgrSrv::sInst->GetClientProxy( GetPlayerId() );
+	ClientProxyPtr client = NetworkMgr::sInst->GetClientProxy( GetPlayerId() );
 	if ( client )
 	{
 		ActionList& moveList = client->GetUnprocessedMoveList();
@@ -44,12 +44,12 @@ void Character::Update()
 	}
 
 	//HandleShooting();
-	if ( !RealTimeSrvMath::Is3DVectorEqual( oldLocation, GetLocation() ) ||
-		!RealTimeSrvMath::Is3DVectorEqual( oldVelocity, GetVelocity() ) ||
-		!RealTimeSrvMath::Is3DVectorEqual( oldRotation, GetRotation() )
+	if ( !RealtimeSrvMath::Is3DVectorEqual( oldLocation, GetLocation() ) ||
+		!RealtimeSrvMath::Is3DVectorEqual( oldVelocity, GetVelocity() ) ||
+		!RealtimeSrvMath::Is3DVectorEqual( oldRotation, GetRotation() )
 		)
 	{
-		NetworkMgrSrv::sInst->SetStateDirty( GetNetworkId(), ECRS_Pose );
+		NetworkMgr::sInst->SetStateDirty( GetNetworkId(), ECRS_Pose );
 	}
 }
 
@@ -90,7 +90,7 @@ uint32_t Character::Write( OutputBitStream& inOutputStream, uint32_t inDirtyStat
 
 void Character::HandleDying()
 {
-	NetworkMgrSrv::sInst->UnregistEntityAndRetNetID( this );
+	NetworkMgr::sInst->UnregistEntityAndRetNetID( this );
 }
 
 void Character::HandleShooting()
@@ -136,8 +136,8 @@ void Character::SimulateMovement( float inDeltaTime )
 
 bool Character::IsExceedingMaxSpeed( float inMaxSpeed ) const
 {
-	inMaxSpeed = RealTimeSrvMath::Max( 0.f, inMaxSpeed );
-	const float MaxSpeedSquared = RealTimeSrvMath::Square( inMaxSpeed );
+	inMaxSpeed = RealtimeSrvMath::Max( 0.f, inMaxSpeed );
+	const float MaxSpeedSquared = RealtimeSrvMath::Square( inMaxSpeed );
 
 	// Allow 1% error tolerance, to account for numeric imprecision.
 	const float OverVelocityPercent = 1.01f;
@@ -176,7 +176,7 @@ void Character::ApplyControlInputToVelocity( float DeltaTime )
 		if ( Velocity.SizeSquared() > 0.f )
 		{
 			// Change direction faster than only using acceleration, but never increase velocity magnitude.
-			const float TimeScale = RealTimeSrvMath::Clamp( DeltaTime * TurningBoost, 0.f, 1.f );
+			const float TimeScale = RealtimeSrvMath::Clamp( DeltaTime * TurningBoost, 0.f, 1.f );
 			Velocity = Velocity + ( ControlAcceleration * Velocity.Size() - Velocity ) * TimeScale;
 		}
 	}
@@ -186,11 +186,11 @@ void Character::ApplyControlInputToVelocity( float DeltaTime )
 		if ( Velocity.SizeSquared() > 0.f )
 		{
 			const Vector3 OldVelocity = Velocity;
-			const float VelSize = RealTimeSrvMath::Max( Velocity.Size() - RealTimeSrvMath::Abs( Deceleration ) * DeltaTime, 0.f );
+			const float VelSize = RealtimeSrvMath::Max( Velocity.Size() - RealtimeSrvMath::Abs( Deceleration ) * DeltaTime, 0.f );
 			Velocity = Velocity.GetSafeNormal() * VelSize;
 
 			// Don't allow braking to lower us below max speed if we started above it.
-			if ( bExceedingMaxSpeed && Velocity.SizeSquared() < RealTimeSrvMath::Square( MaxPawnSpeed ) )
+			if ( bExceedingMaxSpeed && Velocity.SizeSquared() < RealtimeSrvMath::Square( MaxPawnSpeed ) )
 			{
 				Velocity = OldVelocity.GetSafeNormal() * MaxPawnSpeed;
 			}
@@ -199,7 +199,7 @@ void Character::ApplyControlInputToVelocity( float DeltaTime )
 
 	// Apply acceleration and clamp velocity magnitude.
 	const float NewMaxSpeed = ( IsExceedingMaxSpeed( MaxPawnSpeed ) ) ? Velocity.Size() : MaxPawnSpeed;
-	Velocity += ControlAcceleration * RealTimeSrvMath::Abs( Acceleration ) * DeltaTime;
+	Velocity += ControlAcceleration * RealtimeSrvMath::Abs( Acceleration ) * DeltaTime;
 	Velocity = Velocity.GetClampedToMaxSize( NewMaxSpeed );
 
 	Velocity.Z = 0.f;

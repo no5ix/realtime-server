@@ -1,9 +1,9 @@
 
-class RealTimeSrvTiming
+class RealtimeSrvTiming
 {
 public:
 
-	RealTimeSrvTiming();
+	RealtimeSrvTiming();
 
 	void Update();
 
@@ -19,7 +19,7 @@ public:
 	float GetFrameStartTime() const { return mFrameStartTimef; }
 
 
-	static RealTimeSrvTiming sInstance;
+	static RealtimeSrvTiming sInstance;
 
 private:
 	float		mDeltaTime;

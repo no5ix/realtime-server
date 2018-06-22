@@ -3,8 +3,8 @@
 
 #define _USE_MATH_DEFINES
 #include <math.h>
-#include "realtime_srv/common/Macro.h"
-#include "realtime_srv/math/RealTimeSrvMath.h"
+#include "realtime_srv/common/RealtimeSrvMacro.h"
+#include "realtime_srv/math/RealtimeSrvMath.h"
 
 
 class Quaternion;
@@ -405,16 +405,16 @@ Vector3 Vector3::GetSafeNormal( float Tolerance ) const
 	{
 		return Vector3::Zero();
 	}
-	const float tempScale = RealTimeSrvMath::InvSqrt( SquareSum );
+	const float tempScale = RealtimeSrvMath::InvSqrt( SquareSum );
 	return Vector3( X*tempScale, Y*tempScale, Z*tempScale );
 }
 
 bool Vector3::IsNearlyZero( float Tolerance ) const
 {
 	return
-		RealTimeSrvMath::Abs( X ) <= Tolerance
-		&&	RealTimeSrvMath::Abs( Y ) <= Tolerance
-		&&	RealTimeSrvMath::Abs( Z ) <= Tolerance;
+		RealtimeSrvMath::Abs( X ) <= Tolerance
+		&&	RealtimeSrvMath::Abs( Y ) <= Tolerance
+		&&	RealtimeSrvMath::Abs( Z ) <= Tolerance;
 }
 
 
@@ -426,9 +426,9 @@ Vector3 Vector3::GetClampedToMaxSize( float MaxSize ) const
 	}
 
 	const float VSq = SizeSquared();
-	if (VSq > RealTimeSrvMath::Square( MaxSize ))
+	if (VSq > RealtimeSrvMath::Square( MaxSize ))
 	{
-		const float tempScale = MaxSize * RealTimeSrvMath::InvSqrt( VSq );
+		const float tempScale = MaxSize * RealtimeSrvMath::InvSqrt( VSq );
 		return Vector3( X*tempScale, Y*tempScale, Z*tempScale );
 	}
 	else
@@ -458,7 +458,7 @@ float Vector3::ClampAxis( float Angle )
 
 float Vector3::Size() const
 {
-	return RealTimeSrvMath::Sqrt( X*X + Y*Y + Z*Z );
+	return RealtimeSrvMath::Sqrt( X*X + Y*Y + Z*Z );
 }
 
 ////////////////////////////////

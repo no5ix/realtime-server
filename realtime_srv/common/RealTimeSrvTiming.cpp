@@ -1,4 +1,4 @@
-#include "realtime_srv/common/RealTimeSrvShared.h"
+#include "realtime_srv/common/RealtimeSrvShared.h"
 
 
 
@@ -7,7 +7,7 @@
 using namespace std::chrono;
 #endif
 
-RealTimeSrvTiming	RealTimeSrvTiming::sInstance;
+RealtimeSrvTiming	RealtimeSrvTiming::sInstance;
 
 namespace
 {
@@ -18,7 +18,7 @@ namespace
 #endif
 }
 
-RealTimeSrvTiming::RealTimeSrvTiming()
+RealtimeSrvTiming::RealtimeSrvTiming()
 {
 #if _WIN32
 	LARGE_INTEGER perfFreq;
@@ -33,7 +33,7 @@ RealTimeSrvTiming::RealTimeSrvTiming()
 #endif
 }
 
-void RealTimeSrvTiming::Update()
+void RealtimeSrvTiming::Update()
 {
 
 	double currentTime = GetGameTimeD();
@@ -45,7 +45,7 @@ void RealTimeSrvTiming::Update()
 
 }
 
-double RealTimeSrvTiming::GetGameTimeD() const
+double RealtimeSrvTiming::GetGameTimeD() const
 {
 #if _WIN32
 	LARGE_INTEGER curTime, timeSinceStart;

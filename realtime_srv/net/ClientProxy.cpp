@@ -1,10 +1,10 @@
-#include "for_ue4_demo_shared.h"
+#include "realtime_srv/common/RealtimeSrvShared.h"
 
 
 
 #ifdef IS_LINUX
-ClientProxy::ClientProxy( const std::string& inName, 
-	int inPlayerId, 
+ClientProxy::ClientProxy( const std::string& inName,
+	int inPlayerId,
 	const UdpConnectionPtr& inUdpConnection )
 	:
 	mName( inName ),
@@ -22,7 +22,7 @@ ClientProxy::ClientProxy( const std::string& inName,
 #else //IS_LINUX
 
 ClientProxy::ClientProxy(
-	const SocketAddrInterface& inSocketAddress,
+	const SockAddrInterfc& inSocketAddress,
 	const std::string& inName,
 	int inPlayerId,
 	const UDPSocketPtr& inUDPSocket
@@ -46,5 +46,5 @@ ClientProxy::ClientProxy(
 
 void ClientProxy::UpdateLastPacketTime()
 {
-	mLastPacketFromClientTime = RealTimeSrvTiming::sInstance.GetCurrentGameTime();
+	mLastPacketFromClientTime = RealtimeSrvTiming::sInstance.GetCurrentGameTime();
 }

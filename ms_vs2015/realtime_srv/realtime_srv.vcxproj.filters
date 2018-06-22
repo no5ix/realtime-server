@@ -21,18 +21,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\realtime_srv\common\Macro.h">
-      <Filter>common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\realtime_srv\common\RealTimeSrvHelper.h">
-      <Filter>common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\realtime_srv\common\RealTimeSrvShared.h">
-      <Filter>common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\realtime_srv\common\RealTimeSrvTiming.h">
-      <Filter>common</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\realtime_srv\entity\Action.h">
       <Filter>entity</Filter>
     </ClInclude>
@@ -51,9 +39,6 @@
     <ClInclude Include="..\..\realtime_srv\math\Quaternion.h">
       <Filter>math</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\realtime_srv\math\RealTimeSrvMath.h">
-      <Filter>math</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\realtime_srv\math\Vector2.h">
       <Filter>math</Filter>
     </ClInclude>
@@ -61,12 +46,6 @@
       <Filter>math</Filter>
     </ClInclude>
     <ClInclude Include="..\..\realtime_srv\net\NetworkMgr.h">
-      <Filter>net</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\realtime_srv\net\SocketAddrInterface.h">
-      <Filter>net</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\realtime_srv\net\UDPSocketInterface.h">
       <Filter>net</Filter>
     </ClInclude>
     <ClInclude Include="..\..\realtime_srv\rep\AckBitField.h">
@@ -87,14 +66,32 @@
     <ClInclude Include="..\..\realtime_srv\rep\ReplicationMgr.h">
       <Filter>rep</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\realtime_srv\net\ClientProxy.h">
+      <Filter>net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\realtime_srv\net\UdpSockInterfc.h">
+      <Filter>net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\realtime_srv\net\SockAddrInterfc.h">
+      <Filter>net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\realtime_srv\common\RealtimeSrvHelper.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\realtime_srv\common\RealtimeSrvTiming.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\realtime_srv\common\RealtimeSrvMacro.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\realtime_srv\common\RealtimeSrvShared.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\realtime_srv\math\RealtimeSrvMath.h">
+      <Filter>math</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\realtime_srv\common\RealTimeSrvHelper.cpp">
-      <Filter>common</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\realtime_srv\common\RealTimeSrvTiming.cpp">
-      <Filter>common</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\realtime_srv\entity\Action.cpp">
       <Filter>entity</Filter>
     </ClCompile>
@@ -107,16 +104,10 @@
     <ClCompile Include="..\..\realtime_srv\entity\InputState.cpp">
       <Filter>entity</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\realtime_srv\math\RealTimeSrvMath.cpp">
-      <Filter>math</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\realtime_srv\math\Vector3.cpp">
       <Filter>math</Filter>
     </ClCompile>
     <ClCompile Include="..\..\realtime_srv\net\NetworkMgr.cpp">
-      <Filter>net</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\realtime_srv\net\UDPSocketInterface.cpp">
       <Filter>net</Filter>
     </ClCompile>
     <ClCompile Include="..\..\realtime_srv\rep\AckBitField.cpp">
@@ -133,6 +124,21 @@
     </ClCompile>
     <ClCompile Include="..\..\realtime_srv\rep\ReplicationMgr.cpp">
       <Filter>rep</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\realtime_srv\net\ClientProxy.cpp">
+      <Filter>net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\realtime_srv\net\UdpSockInterfc.cpp">
+      <Filter>net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\realtime_srv\math\RealtimeSrvMath.cpp">
+      <Filter>math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\realtime_srv\common\RealtimeSrvHelper.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\realtime_srv\common\RealtimeSrvTiming.cpp">
+      <Filter>common</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

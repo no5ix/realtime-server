@@ -1,4 +1,4 @@
-#include <realtime_srv/common/RealTimeSrvShared.h>
+#include <realtime_srv/common/RealtimeSrvShared.h>
 
 
 
@@ -19,12 +19,12 @@
 
 #endif //IS_LINUX
 
-#include "ClientProxy.h"
+//#include "ClientProxy.h"
 
-#include "NetworkMgrSrv.h"
+//#include "NetworkMgr.h"
 
 #include "World.h"
 #include "EntityFactory.h"
-#include "RealTimeSrv.h"
+#include "ExampleSrvForUe4Demo.h"
 
 #include "Character.h"

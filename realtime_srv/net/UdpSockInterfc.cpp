@@ -1,7 +1,7 @@
-#include "realtime_srv/common/RealTimeSrvShared.h"
+#include "realtime_srv/common/RealtimeSrvShared.h"
 
 
-bool UDPSocketInterface::StaticInit()
+bool UdpSockInterfc::StaticInit()
 {
 #if _WIN32
 	WSADATA wsaData;
@@ -15,7 +15,7 @@ bool UDPSocketInterface::StaticInit()
 	return true;
 }
 
-void UDPSocketInterface::CleanUp()
+void UdpSockInterfc::CleanUp()
 {
 #if _WIN32
 	WSACleanup();
@@ -23,7 +23,7 @@ void UDPSocketInterface::CleanUp()
 }
 
 
-void UDPSocketInterface::ReportError( const char* inOperationDesc )
+void UdpSockInterfc::ReportError( const char* inOperationDesc )
 {
 #if _WIN32
 	LPVOID lpMsgBuf;
@@ -46,7 +46,7 @@ void UDPSocketInterface::ReportError( const char* inOperationDesc )
 #endif
 }
 
-int UDPSocketInterface::GetLastError()
+int UdpSockInterfc::GetLastError()
 {
 #if _WIN32
 	return WSAGetLastError();
@@ -56,13 +56,13 @@ int UDPSocketInterface::GetLastError()
 
 }
 
-UDPSocketPtr UDPSocketInterface::CreateUDPSocket()
+UDPSocketPtr UdpSockInterfc::CreateUDPSocket()
 {
 	SOCKET s = socket( AF_INET, SOCK_DGRAM, IPPROTO_UDP );
 
 	if ( s != INVALID_SOCKET )
 	{
-		return UDPSocketPtr( new UDPSocketInterface( s ) );
+		return UDPSocketPtr( new UdpSockInterfc( s ) );
 	}
 	else
 	{
@@ -71,7 +71,7 @@ UDPSocketPtr UDPSocketInterface::CreateUDPSocket()
 	}
 }
 
-int UDPSocketInterface::Bind( const SocketAddrInterface& inBindAddress )
+int UdpSockInterfc::Bind( const SockAddrInterfc& inBindAddress )
 {
 	int error = bind( mSocket, &inBindAddress.mSockAddr, inBindAddress.GetSize() );
 	if ( error != 0 )
@@ -83,7 +83,7 @@ int UDPSocketInterface::Bind( const SocketAddrInterface& inBindAddress )
 	return NO_ERROR;
 }
 
-int UDPSocketInterface::SendTo( const void* inToSend, int inLength, const SocketAddrInterface& inToAddress )
+int UdpSockInterfc::SendTo( const void* inToSend, int inLength, const SockAddrInterfc& inToAddress )
 {
 	int byteSentCount = sendto( mSocket,
 		static_cast< const char* >( inToSend ),
@@ -101,7 +101,7 @@ int UDPSocketInterface::SendTo( const void* inToSend, int inLength, const Socket
 	}
 }
 
-int UDPSocketInterface::ReceiveFrom( void* inToReceive, int inMaxLength, SocketAddrInterface& outFromAddress )
+int UdpSockInterfc::ReceiveFrom( void* inToReceive, int inMaxLength, SockAddrInterfc& outFromAddress )
 {
 	socklen_t fromLength = outFromAddress.GetSize();
 
@@ -134,7 +134,7 @@ int UDPSocketInterface::ReceiveFrom( void* inToReceive, int inMaxLength, SocketA
 	}
 }
 
-UDPSocketInterface::~UDPSocketInterface()
+UdpSockInterfc::~UdpSockInterfc()
 {
 #if _WIN32
 	closesocket( mSocket );
@@ -144,7 +144,7 @@ UDPSocketInterface::~UDPSocketInterface()
 }
 
 
-int UDPSocketInterface::SetNonBlockingMode( bool inShouldBeNonBlocking )
+int UdpSockInterfc::SetNonBlockingMode( bool inShouldBeNonBlocking )
 {
 #if _WIN32
 	u_long arg = inShouldBeNonBlocking ? 1 : 0;
@@ -168,7 +168,7 @@ int UDPSocketInterface::SetNonBlockingMode( bool inShouldBeNonBlocking )
 
 
 
-int UDPSocketInterface::Connect( const SocketAddrInterface& inAddress )
+int UdpSockInterfc::Connect( const SockAddrInterfc& inAddress )
 {
 	int err = connect( mSocket, &inAddress.mSockAddr, inAddress.GetSize() );
 	if ( err < 0 )
@@ -181,7 +181,7 @@ int UDPSocketInterface::Connect( const SocketAddrInterface& inAddress )
 
 
 
-int UDPSocketInterface::SetReUse()
+int UdpSockInterfc::SetReUse()
 {
 
 #ifndef _WIN32
@@ -207,7 +207,7 @@ int UDPSocketInterface::SetReUse()
 
 
 
-int32_t	UDPSocketInterface::Send( const void* inData, size_t inLen )
+int32_t	UdpSockInterfc::Send( const void* inData, size_t inLen )
 {
 	int byteSentCount = send( mSocket, static_cast< const char* >( inData ), inLen, 0 );
 
@@ -222,7 +222,7 @@ int32_t	UDPSocketInterface::Send( const void* inData, size_t inLen )
 	}
 }
 
-int32_t	UDPSocketInterface::Recv( void* inData, size_t inLen )
+int32_t	UdpSockInterfc::Recv( void* inData, size_t inLen )
 {
 	int bytesReceivedCount = recv( mSocket, static_cast< char* >( inData ), inLen, 0 );
 

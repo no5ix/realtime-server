@@ -1,4 +1,4 @@
-#include "realtime_srv/common/RealTimeSrvShared.h"
+#include "realtime_srv/common/RealtimeSrvShared.h"
 
 InFlightPacket::InFlightPacket( PacketSN inSequenceNumber, 
 	ReplicationMgr* inRepMgr,
@@ -6,7 +6,7 @@ InFlightPacket::InFlightPacket( PacketSN inSequenceNumber,
 	mSequenceNumber( inSequenceNumber ),
 	mReplicationManager( inRepMgr ),
 	NetworkMgr_( inNetworkMgr ),
-	mTimeDispatched( RealTimeSrvTiming::sInstance.GetCurrentGameTime() )
+	mTimeDispatched( RealtimeSrvTiming::sInstance.GetCurrentGameTime() )
 {}
 
 void InFlightPacket::AddTransmission( int inNetworkId, ReplicationAction inAction, uint32_t inState )

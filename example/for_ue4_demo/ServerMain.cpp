@@ -33,9 +33,9 @@ int main( int argc, const char** argv )
 	__argc = argc;
 	__argv = argv;
 #endif
-	if (RealTimeSrv::StaticInit())
+	if (ExampleSrvForUe4Demo::StaticInit())
 	{
-		return RealTimeSrv::sInstance->Run();
+		return ExampleSrvForUe4Demo::sInstance->Run();
 	}
 	else
 	{

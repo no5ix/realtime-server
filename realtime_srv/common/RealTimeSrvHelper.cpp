@@ -1,4 +1,4 @@
-#include "realtime_srv/common/RealTimeSrvShared.h"
+#include "realtime_srv/common/RealtimeSrvShared.h"
 
 
 #if !_WIN32
@@ -10,7 +10,7 @@ void OutputDebugString( const char* inString )
 }
 #endif
 
-std::string RealTimeSrvHelper::GetCommandLineArg( int inIndex )
+std::string RealtimeSrvHelper::GetCommandLineArg( int inIndex )
 {
 	if (inIndex < __argc)
 	{
@@ -21,7 +21,7 @@ std::string RealTimeSrvHelper::GetCommandLineArg( int inIndex )
 }
 
 
-std::string RealTimeSrvHelper::Sprintf( const char* inFormat, ... )
+std::string RealtimeSrvHelper::Sprintf( const char* inFormat, ... )
 {
 	//not thread safe...
 	static char temp[4096];
@@ -43,7 +43,7 @@ std::string RealTimeSrvHelper::Sprintf( const char* inFormat, ... )
 // 	OutputDebugString( "\n" );
 // }
 
-void RealTimeSrvHelper::Log( const char* inFormat, ... )
+void RealtimeSrvHelper::Log( const char* inFormat, ... )
 {
 	if ( !REAL_TIME_SRV_SHOW_DEBUG_MESSAGE )
 		return;
@@ -66,7 +66,7 @@ void RealTimeSrvHelper::Log( const char* inFormat, ... )
 
 
 
-bool RealTimeSrvHelper::SequenceGreaterThanOrEqual( PacketSN s1, PacketSN s2 )
+bool RealtimeSrvHelper::SequenceGreaterThanOrEqual( PacketSN s1, PacketSN s2 )
 {
 	return ( ( s1 >= s2 ) && ( s1 - s2 <= HALF_MAX_PACKET_SEQUENCE_NUMBER ) ) ||
 		( ( s1 < s2 ) && ( s2 - s1 > HALF_MAX_PACKET_SEQUENCE_NUMBER ) );
@@ -74,28 +74,28 @@ bool RealTimeSrvHelper::SequenceGreaterThanOrEqual( PacketSN s1, PacketSN s2 )
 }
 
 
-bool RealTimeSrvHelper::SequenceGreaterThan( PacketSN s1, PacketSN s2 )
+bool RealtimeSrvHelper::SequenceGreaterThan( PacketSN s1, PacketSN s2 )
 {
 	return ( ( s1 > s2 ) && ( s1 - s2 <= HALF_MAX_PACKET_SEQUENCE_NUMBER ) ) ||
 		( ( s1 < s2 ) && ( s2 - s1 > HALF_MAX_PACKET_SEQUENCE_NUMBER ) );
 	//return s1 > s2;
 }
 
-bool RealTimeSrvHelper::ChunkPacketIDGreaterThanOrEqual( ChunkPacketID s1, ChunkPacketID s2 )
+bool RealtimeSrvHelper::ChunkPacketIDGreaterThanOrEqual( ChunkPacketID s1, ChunkPacketID s2 )
 {
 	return ( ( s1 >= s2 ) && ( s1 - s2 <= HALF_MAX_CHUNK_PACKET_ID ) ) ||
 		( ( s1 < s2 ) && ( s2 - s1 > HALF_MAX_CHUNK_PACKET_ID ) );
 }
 
 
-bool RealTimeSrvHelper::ChunkPacketIDGreaterThan( ChunkPacketID s1, ChunkPacketID s2 )
+bool RealtimeSrvHelper::ChunkPacketIDGreaterThan( ChunkPacketID s1, ChunkPacketID s2 )
 {
 	return ( ( s1 > s2 ) && ( s1 - s2 <= HALF_MAX_CHUNK_PACKET_ID ) ) ||
 		( ( s1 < s2 ) && ( s2 - s1 > HALF_MAX_CHUNK_PACKET_ID ) );
 }
 
 #ifdef IS_LINUX
-int RealTimeSrvHelper::BecomeDaemon()
+int RealtimeSrvHelper::BecomeDaemon()
 {
 	int maxfd, fd;
 

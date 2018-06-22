@@ -22,8 +22,8 @@ public:
 	DeliveryNotifyMgr&	GetDeliveryNotificationManager() { return mDeliveryNotificationManager; }
 	ReplicationMgr&		GetReplicationManager() { return mReplicationManagerServer; }
 
- 	const	ActionList&				GetUnprocessedMoveList() const { return mUnprocessedMoveList; }
- 	ActionList&				GetUnprocessedMoveList() { return mUnprocessedMoveList; }
+	const	ActionList&				GetUnprocessedMoveList() const { return mUnprocessedMoveList; }
+	ActionList&				GetUnprocessedMoveList() { return mUnprocessedMoveList; }
 
 	void	SetIsLastMoveTimestampDirty( bool inIsDirty ) { mIsLastMoveTimestampDirty = inIsDirty; }
 	bool	IsLastMoveTimestampDirty()						const { return mIsLastMoveTimestampDirty; }
@@ -67,7 +67,7 @@ private:
 public:
 
 	ClientProxy(
-		const SocketAddrInterface& inSocketAddress,
+		const SockAddrInterfc& inSocketAddress,
 		const std::string& inName,
 		int inPlayerId,
 		const UDPSocketPtr& inUDPSocket
@@ -75,12 +75,12 @@ public:
 		// const std::shared_ptr<UdpConnection>& inUdpConnection	
 	);
 
-	const SocketAddrInterface& GetSocketAddress() const { return mSocketAddress; }
+	const SockAddrInterfc& GetSocketAddress() const { return mSocketAddress; }
 	UDPSocketPtr GetUDPSocket() const { return mUDPSocket; }
 
 private:
 
-	SocketAddrInterface	mSocketAddress;
+	SockAddrInterfc	mSocketAddress;
 	UDPSocketPtr	mUDPSocket;
 
 #endif //IS_LINUX

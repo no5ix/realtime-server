@@ -22,7 +22,7 @@ public:
 
 public:
 	static EntityPtr	StaticCreate()
-	{ return NetworkMgrSrv::sInst->RegisterAndReturn( new Character() ); }
+	{ return NetworkMgr::sInst->RegisterAndReturn( new Character() ); }
 
 	virtual void HandleDying() override;
 

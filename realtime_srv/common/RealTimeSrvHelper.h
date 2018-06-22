@@ -2,7 +2,7 @@
 // 是否要显示调试打印信息
 #define REAL_TIME_SRV_SHOW_DEBUG_MESSAGE					true
 
-namespace RealTimeSrvHelper
+namespace RealtimeSrvHelper
 {
 	string GetCommandLineArg( int inIndex );
 
@@ -20,4 +20,4 @@ namespace RealTimeSrvHelper
 	int BecomeDaemon();
 }
 
-#define LOG( ... ) RealTimeSrvHelper::Log( __VA_ARGS__ );
+#define LOG( ... ) RealtimeSrvHelper::Log( __VA_ARGS__ );
