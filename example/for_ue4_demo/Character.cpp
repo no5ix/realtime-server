@@ -2,7 +2,7 @@
 
 
 Character::Character() :
-	Entity(),
+	GameObj(),
 	mPlayerId( 0 ),
 	mIsShooting( false ),
 	mHealth( 10 ),
@@ -90,7 +90,7 @@ uint32_t Character::Write( OutputBitStream& inOutputStream, uint32_t inDirtyStat
 
 void Character::HandleDying()
 {
-	NetworkMgr::sInst->UnregistEntityAndRetNetID( this );
+	NetworkMgr::sInst->UnregistGameObjAndRetNetID( this );
 }
 
 void Character::HandleShooting()

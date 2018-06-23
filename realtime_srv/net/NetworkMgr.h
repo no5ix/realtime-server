@@ -24,10 +24,9 @@ class ClientProxy;
 
 class NetworkMgr
 {
-
 	typedef unordered_map< int, ClientProxyPtr > PlayerIdToClientMap;
-
-	typedef unordered_map< int, EntityPtr > NetIdToEntityMap;
+	typedef unordered_map< int, GameObjPtr > NetIdToGameObjMap;
+	typedef std::function<void( ClientProxyPtr inClientProxy )> NewPlayerCB;
 public:
 
 	static const uint32_t	kNullCC = 0;
@@ -41,7 +40,7 @@ public:
 
 	static const int		kMaxPacketsPerFrameCount = 10;
 
-	EntityPtr				GetGameObject( int inNetworkId );
+	GameObjPtr				GetGameObject( int inNetworkId );
 
 	int						GetNewNetworkId();
 
@@ -51,7 +50,7 @@ public:
 	static bool				StaticInit( uint16_t inPort = DEFAULT_REALTIME_SRV_PORT );
 
 	virtual void			SendOutgoingPackets();
-	inline	EntityPtr		RegisterAndReturn( Entity* inGameObject );
+	inline	GameObjPtr		RegisterAndReturn( GameObj* inGameObject );
 	void					SetStateDirty( int inNetworkId, uint32_t inDirtyState );
 	virtual void			CheckForDisconnects();
 	ClientProxyPtr			GetClientProxy( int inPlayerId );
@@ -59,11 +58,13 @@ public:
 	uint32_t				HandleServerReset( ClientProxyPtr inClientProxy, InputBitStream& inInputStream );
 	void					SendGamePacket( ClientProxyPtr inClientProxy, const uint32_t inConnFlag );
 
-	virtual int RegistEntityAndRetNetID( EntityPtr inGameObject );
-	virtual int UnregistEntityAndRetNetID( Entity* inGameObject );
+	virtual int RegistGameObjAndRetNetID( GameObjPtr inGameObject );
+	virtual int UnregistGameObjAndRetNetID( GameObj* inGameObject );
+
+	void SetNewPlayerCallBack( const NewPlayerCB& cb ) { newPlayerCB_ = cb; }
 private:
 	NetworkMgr();
-	bool					Init( uint16_t inPort);
+	bool					Init( uint16_t inPort );
 
 	void	DoProcessPacket( ClientProxyPtr inClientProxy, InputBitStream& inInputStream );
 
@@ -71,12 +72,12 @@ private:
 
 	void	HandleInputPacket( ClientProxyPtr inClientProxy, InputBitStream& inInputStream );
 
-
 	float			mTimeOfLastSatePacket;
 	float			mTimeBetweenStatePackets;
 	float			mTimeOfLastStatePacket;
-
 	float			mLastCheckDCTime;
+
+	NewPlayerCB newPlayerCB_;
 
 
 #ifdef IS_LINUX
@@ -89,16 +90,15 @@ public:
 
 	typedef std::shared_ptr< PlayerIdToClientMap > PlayerIdToClientMapPtr;
 
-	typedef std::shared_ptr< unordered_map< int, EntityPtr > > NetIdToEntityMapPtr;
+	typedef std::shared_ptr< unordered_map< int, GameObjPtr > > NetIdToGameObjMapPtr;
 
 	void	SendPacket( const OutputBitStream& inOutputStream,
 		const UdpConnectionPtr& conn );
 
 	void setWorldUpdateCallback( const std::function<void()>& cb )
-	{ WorldUpdateCB_ = cb; }
+	{ worldUpdateCB_ = cb; }
 
 	void Start();
-	void threadInit( EventLoop* loop );
 
 	void onMessage(
 		const muduo::net::UdpConnectionPtr& conn,
@@ -108,9 +108,8 @@ public:
 private:
 	EventLoop loop_;
 	std::shared_ptr<UdpServer> server_;
-	std::set<EventLoop*> loops_;
 
-	std::function<void()> WorldUpdateCB_;
+	std::function<void()> worldUpdateCB_;
 
 protected:
 	static AtomicInt32		kNewNetworkId;
@@ -124,9 +123,9 @@ private:
 	void	HandlePacketFromNewClient( InputBitStream& inInputStream,
 		const UdpConnectionPtr& inUdpConnetction );
 protected:
-	THREAD_SHARED_VAR_DEF( protected, UdpConnToClientMap, UdpConnToClientMap_, mutex_ );
-	THREAD_SHARED_VAR_DEF( protected, PlayerIdToClientMap, PlayerIdToClientMap_, mutex_ );
-	THREAD_SHARED_VAR_DEF( protected, NetIdToEntityMap, NetIdToEntityMap_, mutex_ );
+	THREAD_SHARED_VAR_DEF( protected, UdpConnToClientMap, udpConnToClientMap_, mutex_ );
+	THREAD_SHARED_VAR_DEF( protected, PlayerIdToClientMap, playerIdToClientMap_, mutex_ );
+	THREAD_SHARED_VAR_DEF( protected, NetIdToGameObjMap, netIdToGameObjMap_, mutex_ );
 
 private:
 	static AtomicInt32		kNewPlayerId;
@@ -188,7 +187,7 @@ private:
 protected:
 	UDPSocketPtr				mSocket;
 	static int					kNewNetworkId;
-	NetIdToEntityMap			NetIdToEntityMap_;
+	NetIdToGameObjMap			netIdToGameObjMap_;
 
 public:
 	virtual void ProcessPacket( InputBitStream& inInputStream,
@@ -203,18 +202,18 @@ private:
 private:
 	static int				kNewPlayerId;
 
-	typedef unordered_map< SockAddrInterfc, ClientProxyPtr >	AddressToClientMap;
-	AddressToClientMap		mAddressToClientMap;
+	typedef unordered_map< SockAddrInterfc, ClientProxyPtr >	AddrToClientMap;
+	AddrToClientMap		addrToClientMap_;
 
-	PlayerIdToClientMap			PlayerIdToClientMap_;
+	PlayerIdToClientMap			playerIdToClientMap_;
 #endif //IS_LINUX
 
 };
 
 
-inline EntityPtr NetworkMgr::RegisterAndReturn( Entity* inGameObject )
+inline GameObjPtr NetworkMgr::RegisterAndReturn( GameObj* inGameObject )
 {
-	EntityPtr toRet( inGameObject );
-	RegistEntityAndRetNetID( toRet );
+	GameObjPtr toRet( inGameObject );
+	RegistGameObjAndRetNetID( toRet );
 	return toRet;
 }

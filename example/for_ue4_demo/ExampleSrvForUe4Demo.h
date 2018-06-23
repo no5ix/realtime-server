@@ -1,7 +1,7 @@
 class ExampleSrvForUe4Demo
 {
 public:
-	static std::unique_ptr< ExampleSrvForUe4Demo >	sInstance;
+	static std::unique_ptr< ExampleSrvForUe4Demo >	sInst;
 
 	static bool StaticInit();
 

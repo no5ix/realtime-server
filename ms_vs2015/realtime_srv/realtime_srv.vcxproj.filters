@@ -5,10 +5,6 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
-    <Filter Include="entity">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
     <Filter Include="math">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
@@ -19,20 +15,12 @@
     <Filter Include="rep">
       <UniqueIdentifier>{484d3a7a-9cec-41f3-9056-e1b6153bfe2e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="gameObj">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\realtime_srv\entity\Action.h">
-      <Filter>entity</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\realtime_srv\entity\ActionList.h">
-      <Filter>entity</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\realtime_srv\entity\Entity.h">
-      <Filter>entity</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\realtime_srv\entity\InputState.h">
-      <Filter>entity</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\realtime_srv\math\Matrix3x3.h">
       <Filter>math</Filter>
     </ClInclude>
@@ -90,20 +78,20 @@
     <ClInclude Include="..\..\realtime_srv\math\RealtimeSrvMath.h">
       <Filter>math</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\realtime_srv\gameObj\Action.h">
+      <Filter>gameObj</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\realtime_srv\gameObj\ActionList.h">
+      <Filter>gameObj</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\realtime_srv\gameObj\GameObj.h">
+      <Filter>gameObj</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\realtime_srv\gameObj\InputState.h">
+      <Filter>gameObj</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\realtime_srv\entity\Action.cpp">
-      <Filter>entity</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\realtime_srv\entity\ActionList.cpp">
-      <Filter>entity</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\realtime_srv\entity\Entity.cpp">
-      <Filter>entity</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\realtime_srv\entity\InputState.cpp">
-      <Filter>entity</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\realtime_srv\math\Vector3.cpp">
       <Filter>math</Filter>
     </ClCompile>
@@ -139,6 +127,18 @@
     </ClCompile>
     <ClCompile Include="..\..\realtime_srv\common\RealtimeSrvTiming.cpp">
       <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\realtime_srv\gameObj\Action.cpp">
+      <Filter>gameObj</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\realtime_srv\gameObj\ActionList.cpp">
+      <Filter>gameObj</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\realtime_srv\gameObj\GameObj.cpp">
+      <Filter>gameObj</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\realtime_srv\gameObj\InputState.cpp">
+      <Filter>gameObj</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -6,7 +6,7 @@
 
 using namespace muduo;
 
-typedef std::set< EntityPtr > GameObjs;
+typedef std::set< GameObjPtr > GameObjs;
 typedef std::shared_ptr< GameObjs > GameObjectsPtr;
 #endif //IS_LINUX
 
@@ -18,8 +18,8 @@ public:
 
 	static std::unique_ptr< World >		sInst;
 
-	void AddGameObject( EntityPtr inGameObject );
-	void RemoveGameObject( EntityPtr inGameObject );
+	void AddGameObject( GameObjPtr inGameObject );
+	void RemoveGameObject( GameObjPtr inGameObject );
 
 	void Update();
 
@@ -40,10 +40,10 @@ private:
 #else //IS_LINUX
 
 public:
-	const std::vector< EntityPtr >&	GetGameObjects()	const { return mGameObjects; }
+	const std::vector< GameObjPtr >&	GetGameObjects()	const { return mGameObjects; }
 
 private:
-	std::vector< EntityPtr >	mGameObjects;
+	std::vector< GameObjPtr >	mGameObjects;
 
 #endif //IS_LINUX
 

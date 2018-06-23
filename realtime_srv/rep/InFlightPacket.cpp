@@ -40,7 +40,7 @@ void InFlightPacket::HandleDeliveryFailure( DeliveryNotifyMgr* inDeliveryNotific
 
 void InFlightPacket::HandleCreateDeliveryFailure( int inNetworkId ) const
 {
-	EntityPtr gameObject = getNetworkMgr()->GetGameObject( inNetworkId );
+	GameObjPtr gameObject = getNetworkMgr()->GetGameObject( inNetworkId );
 	if ( gameObject )
 	{
 		mReplicationManager->ReplicateCreate( inNetworkId, gameObject->GetAllStateMask() );

@@ -33,14 +33,14 @@ void World::GameObjectsCOW()
 	assert( mGameObjects.unique() );
 }
 
-void World::AddGameObject( EntityPtr inGameObject )
+void World::AddGameObject( GameObjPtr inGameObject )
 {
 	MutexLockGuard lock( mutex_ );
 	GameObjectsCOW();
 	mGameObjects->insert( inGameObject );
 }
 
-void World::RemoveGameObject( EntityPtr inGameObject )
+void World::RemoveGameObject( GameObjPtr inGameObject )
 {
 	MutexLockGuard lock( mutex_ );
 	GameObjectsCOW();
@@ -49,7 +49,7 @@ void World::RemoveGameObject( EntityPtr inGameObject )
 
 void World::Update()
 {
-	vector< EntityPtr > GameObjsToRem;
+	vector< GameObjPtr > GameObjsToRem;
 	GameObjectsPtr  tempGameObjects = GetGameObjects();
 
 	for ( GameObjs::iterator go = tempGameObjects->begin();
@@ -83,14 +83,14 @@ void World::Update()
 World::World()
 {}
 
-void World::AddGameObject( EntityPtr inGameObject )
+void World::AddGameObject( GameObjPtr inGameObject )
 {
 	mGameObjects.push_back( inGameObject );
 	inGameObject->SetIndexInWorld( mGameObjects.size() - 1 );
 }
 
 
-void World::RemoveGameObject( EntityPtr inGameObject )
+void World::RemoveGameObject( GameObjPtr inGameObject )
 {
 	int index = inGameObject->GetIndexInWorld();
 
@@ -111,7 +111,7 @@ void World::Update()
 {
 	for ( int i = 0, c = mGameObjects.size(); i < c; ++i )
 	{
-		EntityPtr go = mGameObjects[i];
+		GameObjPtr go = mGameObjects[i];
 		if ( !go->DoesWantToDie() )
 		{
 			go->Update();

@@ -5,14 +5,14 @@ enum { kClassId = inCode }; \
 virtual uint32_t GetClassId() const { return kClassId; } \
 static inClass* CreateInstance() { return static_cast< inClass* >( new inClass() ); } \
 
-class Entity
+class GameObj
 {
 public:
 	// 'GOBJ' = 1196376650;
-	CLASS_IDENTIFICATION( 'GOBJ', Entity )
+	CLASS_IDENTIFICATION( 'GOBJ', GameObj )
 
-	Entity();
-	virtual ~Entity() {}
+	GameObj();
+	virtual ~GameObj() {}
 	virtual uint32_t GetAllStateMask()	const { return 0; }
 
 	virtual uint32_t GetMaxSerializeSize() const{ return 0; }
@@ -27,8 +27,6 @@ public:
 	void	SetRotation( Vector3 inRotation ) { mRotation = inRotation; }
 	const Vector3&	GetRotation()					const { return mRotation; }
 
-	void	SetScale( float inScale ) { mScale = inScale; }
-	float	GetScale()						const { return mScale; }
 
 	const Vector3&		GetLocation()				const { return mLocation; }
 	void		SetLocation( const Vector3& inLocation ) { mLocation = inLocation; }
@@ -49,11 +47,9 @@ protected:
 	int												mIndexInWorld;
 	int												mNetworkId;
 
-	float											mCollisionRadius;
-	float											mScale;
 
 	Vector3											mLocation;
 	Vector3											mRotation;
 };
 
-typedef shared_ptr< Entity >	EntityPtr;
+typedef shared_ptr< GameObj >	GameObjPtr;

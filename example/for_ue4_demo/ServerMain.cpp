@@ -35,7 +35,7 @@ int main( int argc, const char** argv )
 #endif
 	if (ExampleSrvForUe4Demo::StaticInit())
 	{
-		return ExampleSrvForUe4Demo::sInstance->Run();
+		return ExampleSrvForUe4Demo::sInst->Run();
 	}
 	else
 	{

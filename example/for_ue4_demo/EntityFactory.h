@@ -1,7 +1,7 @@
 #pragma once
 
 
-typedef EntityPtr( *GameObjectCreationFunc )( );
+typedef GameObjPtr( *GameObjectCreationFunc )( );
 
 class EntityFactory
 {
@@ -9,11 +9,11 @@ public:
 
 	static void StaticInit();
 
-	static std::unique_ptr< EntityFactory >		sInstance;
+	static std::unique_ptr< EntityFactory >		sInst;
 
 	void RegisterCreationFunction( uint32_t inFourCCName, GameObjectCreationFunc inCreationFunction );
 
-	EntityPtr CreateGameObject( uint32_t inFourCCName );
+	GameObjPtr CreateGameObject( uint32_t inFourCCName );
 
 private:
 

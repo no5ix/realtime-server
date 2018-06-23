@@ -3,7 +3,7 @@
 
 
 
-std::unique_ptr< ExampleSrvForUe4Demo >	ExampleSrvForUe4Demo::sInstance;
+std::unique_ptr< ExampleSrvForUe4Demo >	ExampleSrvForUe4Demo::sInst;
 
 bool ExampleSrvForUe4Demo::StaticInit()
 {
@@ -26,7 +26,7 @@ bool ExampleSrvForUe4Demo::StaticInit()
 	}
 #endif //IS_LINUX
 
-	sInstance.reset( new ExampleSrvForUe4Demo() );
+	sInst.reset( new ExampleSrvForUe4Demo() );
 	return true;
 }
 
@@ -38,13 +38,26 @@ ExampleSrvForUe4Demo::ExampleSrvForUe4Demo()
 
 	World::StaticInit();
 
-	EntityFactory::sInstance->RegisterCreationFunction( 'CHRT', Character::StaticCreate );
+	EntityFactory::sInst->RegisterCreationFunction( 'CHRT', Character::StaticCreate );
 
 	InitNetworkMgr();
 
 #ifndef IS_LINUX
 	SimulateRealWorld();
 #endif
+}
+void ExampleSrvForUe4Demo::InitNetworkMgr()
+{
+	uint16_t port = DEFAULT_REALTIME_SRV_PORT;
+	std::string portString = RealtimeSrvHelper::GetCommandLineArg(
+		COMMAND_LINE_ARG_PORT_INDEX );
+	if ( portString != std::string() )
+	{
+		port = stoi( portString );
+	}
+	NetworkMgr::StaticInit( port );
+	NetworkMgr::sInst->SetNewPlayerCallBack( std::bind(
+		&ExampleSrvForUe4Demo::HandleNewClient, ExampleSrvForUe4Demo::sInst.get(), _1 ) );
 }
 
 #ifndef IS_LINUX
@@ -82,19 +95,6 @@ void ExampleSrvForUe4Demo::SimulateRealWorld()
 }
 #endif // !IS_LINUX
 
-void ExampleSrvForUe4Demo::InitNetworkMgr()
-{
-	uint16_t port = DEFAULT_REALTIME_SRV_PORT;
-	std::string portString = RealtimeSrvHelper::GetCommandLineArg(
-		COMMAND_LINE_ARG_PORT_INDEX );
-	if ( portString != std::string() )
-	{
-		port = stoi( portString );
-	}
-	NetworkMgr::StaticInit( port );
-}
-
-
 void ExampleSrvForUe4Demo::HandleNewClient( ClientProxyPtr inClientProxy )
 {
 	int playerId = inClientProxy->GetPlayerId();
@@ -105,7 +105,10 @@ void ExampleSrvForUe4Demo::HandleNewClient( ClientProxyPtr inClientProxy )
 void ExampleSrvForUe4Demo::SpawnCharacterForPlayer( int inPlayerId )
 {
 	CharacterPtr character = std::static_pointer_cast< Character >(
-		EntityFactory::sInstance->CreateGameObject( 'CHRT' ) );
+		EntityFactory::sInst->CreateGameObject( 'CHRT' ) );
+
+	//CharacterPtr character = std::static_pointer_cast< Character >(
+	//	Character::StaticCreate());
 
 	character->SetPlayerId( inPlayerId );
 
@@ -118,26 +121,6 @@ void ExampleSrvForUe4Demo::SpawnCharacterForPlayer( int inPlayerId )
 		0.f,
 		RealtimeSrvMath::GetRandomFloat() * 180.f,
 		0.f ) );
-
-
-	//for ( int count = inPlayerId * 100; count < inPlayerId * 100 + 561; ++count )
-	//{
-	//	CharacterPtr character = std::static_pointer_cast< Character >( EntityFactory::sInstance->CreateGameObject( 'CHRT' ) );
-
-	//	character->SetPlayerId( inPlayerId * count );
-
-
-	//	character->SetLocation( Vector3(
-	//		2500.f + RealTimeSrvMath::GetRandomFloat() * -5000.f,
-	//		2500.f + RealTimeSrvMath::GetRandomFloat() * -5000.f,
-	//		0.f ) );
-
-	//	character->SetRotation( Vector3(
-	//		0.f,
-	//		RealTimeSrvMath::GetRandomFloat() * 180.f,
-	//		0.f ) );
-
-	//}
 }
 
 

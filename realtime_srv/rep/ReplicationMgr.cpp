@@ -79,7 +79,7 @@ void ReplicationMgr::Write( OutputBitStream& inOutputStream, InFlightPacket* inI
 uint32_t ReplicationMgr::WriteCreateAction( OutputBitStream& inOutputStream, 
 	int inNetworkId, uint32_t inDirtyState, NetworkMgr* inNetworkMgr )
 {
-	EntityPtr gameObject = inNetworkMgr->GetGameObject( inNetworkId );
+	GameObjPtr gameObject = inNetworkMgr->GetGameObject( inNetworkId );
 	
 	inOutputStream.Write( gameObject->GetClassId() );
 	return gameObject->Write( inOutputStream, inDirtyState );
@@ -88,7 +88,7 @@ uint32_t ReplicationMgr::WriteCreateAction( OutputBitStream& inOutputStream,
 uint32_t ReplicationMgr::WriteUpdateAction( OutputBitStream& inOutputStream, 
 	int inNetworkId, uint32_t inDirtyState, NetworkMgr* inNetworkMgr )
 {
-	EntityPtr gameObject = inNetworkMgr->GetGameObject( inNetworkId );
+	GameObjPtr gameObject = inNetworkMgr->GetGameObject( inNetworkId );
 
 	uint32_t writtenState = gameObject->Write( inOutputStream, inDirtyState );
 

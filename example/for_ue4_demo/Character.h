@@ -1,10 +1,10 @@
 #pragma once
 
-class Character : public Entity
+class Character : public GameObj
 {
 public:
 	// 'CHRT' = 1128813140;
-	CLASS_IDENTIFICATION( 'CHRT', Entity )
+	CLASS_IDENTIFICATION( 'CHRT', GameObj )
 
 		enum ECharacterReplicationState
 	{
@@ -21,7 +21,7 @@ public:
 	virtual uint32_t	Write( OutputBitStream& inOutputStream, uint32_t inDirtyState ) const override;
 
 public:
-	static EntityPtr	StaticCreate()
+	static GameObjPtr	StaticCreate()
 	{ return NetworkMgr::sInst->RegisterAndReturn( new Character() ); }
 
 	virtual void HandleDying() override;

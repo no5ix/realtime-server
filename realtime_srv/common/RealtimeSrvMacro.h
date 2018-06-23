@@ -5,6 +5,7 @@
 #define IS_LINUX
 #endif
 
+
 #define DEFAULT_REALTIME_SRV_PORT			(44444)
 
 
@@ -47,11 +48,12 @@ typedef unsigned int						ChunkPacketID;
 
 // thread shared var util begin
 
-#define THREAD_SHARED_VAR_DEF( AccessSpecifier, OriginalVarType, VarName, Mutex )   	\
+// thread shared var declaration & definition
+#define THREAD_SHARED_VAR_DEF( AccessSpecifier, OriginalVarType, VarName, Mutex )   \
 AccessSpecifier:																	\
-	std::shared_ptr<OriginalVarType> VarName;									\
+	std::shared_ptr<OriginalVarType> VarName;										\
 public:																				\
-	std::shared_ptr<OriginalVarType> Get##VarName()							\
+	std::shared_ptr<OriginalVarType> Get##VarName()									\
 	{																				\
 		MutexLockGuard lock( Mutex );												\
 		return VarName;																\
@@ -66,8 +68,20 @@ public:																				\
 	}																				\
 AccessSpecifier:																	\
 
+
+// thread shared var read
 #define GET_THREAD_VAR( VarName ) Get##VarName()
+
+// thread shared var copy on write
 #define THREAD_VAR_COW( VarName ) VarName##COW()
+
+// thread shared var write
+#define SET_THREAD_VAR( VarName, Mutex, WriteOperation ) \
+	{												\
+		MutexLockGuard lock( Mutex );				\
+		VarName##COW();								\
+		WriteOperation();								\
+	}												\
 
 // thread shared var util end
 

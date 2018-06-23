@@ -2,11 +2,11 @@
 
 
 
-std::unique_ptr< EntityFactory >	EntityFactory::sInstance;
+std::unique_ptr< EntityFactory >	EntityFactory::sInst;
 
 void EntityFactory::StaticInit()
 {
-	sInstance.reset( new EntityFactory() );
+	sInst.reset( new EntityFactory() );
 }
 
 EntityFactory::EntityFactory()
@@ -18,11 +18,11 @@ void EntityFactory::RegisterCreationFunction( uint32_t inFourCCName, GameObjectC
 	mNameToGameObjectCreationFunctionMap[inFourCCName] = inCreationFunction;
 }
 
-EntityPtr EntityFactory::CreateGameObject( uint32_t inFourCCName )
+GameObjPtr EntityFactory::CreateGameObject( uint32_t inFourCCName )
 {
 	GameObjectCreationFunc creationFunc = mNameToGameObjectCreationFunctionMap[inFourCCName];
 
-	EntityPtr gameObject = creationFunc();
+	GameObjPtr gameObject = creationFunc();
 	
 	World::sInst->AddGameObject( gameObject );
 

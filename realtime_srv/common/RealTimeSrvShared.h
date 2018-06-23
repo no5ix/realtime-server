@@ -61,6 +61,10 @@ using std::string;
 using std::set;
 using std::unordered_set;
 
+using std::placeholders::_1;
+using std::placeholders::_2;
+using std::placeholders::_3;
+
 #include "realtime_srv/math/Vector3.h"
 #include "realtime_srv/math/Quaternion.h"
 #include "realtime_srv/math/Matrix3x3.h"
@@ -79,7 +83,7 @@ using std::unordered_set;
 #include "realtime_srv/rep/BitStream.h"
 
 
-#include "realtime_srv/entity/Entity.h"
+#include "realtime_srv/gameObj/GameObj.h"
 
 #include "realtime_srv/rep/ReplicationCmd.h"
 #include "realtime_srv/rep/InFlightPacket.h"
@@ -87,9 +91,9 @@ using std::unordered_set;
 #include "realtime_srv/rep/DeliveryNotifyMgr.h"
 #include "realtime_srv/rep/ReplicationMgr.h"
 
-#include "realtime_srv/entity/InputState.h"
-#include "realtime_srv/entity/Action.h"
-#include "realtime_srv/entity/ActionList.h"
+#include "realtime_srv/gameObj/InputState.h"
+#include "realtime_srv/gameObj/Action.h"
+#include "realtime_srv/gameObj/ActionList.h"
 
 
 #include "realtime_srv/net/ClientProxy.h"
