@@ -2,7 +2,7 @@
 
 
 
-#if !_WIN32
+#ifndef IS_WIN
 #include <chrono>
 using namespace std::chrono;
 #endif
@@ -11,7 +11,7 @@ RealtimeSrvTiming	RealtimeSrvTiming::sInstance;
 
 namespace
 {
-#if _WIN32
+#ifdef IS_WIN
 	LARGE_INTEGER sStartTime = { 0 };
 #else
 	high_resolution_clock::time_point sStartTime;
@@ -20,7 +20,7 @@ namespace
 
 RealtimeSrvTiming::RealtimeSrvTiming()
 {
-#if _WIN32
+#ifdef IS_WIN
 	LARGE_INTEGER perfFreq;
 	QueryPerformanceFrequency( &perfFreq );
 	mPerfCountDuration = 1.0 / perfFreq.QuadPart;
@@ -47,7 +47,7 @@ void RealtimeSrvTiming::Update()
 
 double RealtimeSrvTiming::GetGameTimeD() const
 {
-#if _WIN32
+#ifdef IS_WIN
 	LARGE_INTEGER curTime, timeSinceStart;
 	QueryPerformanceCounter( &curTime );
 

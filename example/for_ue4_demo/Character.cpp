@@ -1,4 +1,6 @@
-#include "for_ue4_demo_shared.h"
+#include <realtime_srv/RealtimeServer.h>
+#include "Character.h"
+
 
 
 Character::Character() :
@@ -26,7 +28,7 @@ void Character::Update()
 	Vector3 oldVelocity = GetVelocity();
 	Vector3 oldRotation = GetRotation();
 
-	ClientProxyPtr client = NetworkMgr::sInst->GetClientProxy( GetPlayerId() );
+	ClientProxyPtr client = NetworkMgr::sInstance->GetClientProxy( GetPlayerId() );
 	if ( client )
 	{
 		ActionList& moveList = client->GetUnprocessedMoveList();
@@ -49,7 +51,7 @@ void Character::Update()
 		!RealtimeSrvMath::Is3DVectorEqual( oldRotation, GetRotation() )
 		)
 	{
-		NetworkMgr::sInst->SetStateDirty( GetNetworkId(), ECRS_Pose );
+		NetworkMgr::sInstance->SetStateDirty( GetNetworkId(), ECRS_Pose );
 	}
 }
 
@@ -90,7 +92,7 @@ uint32_t Character::Write( OutputBitStream& inOutputStream, uint32_t inDirtyStat
 
 void Character::HandleDying()
 {
-	NetworkMgr::sInst->UnregistGameObjAndRetNetID( this );
+	NetworkMgr::sInstance->UnregistGameObjAndRetNetID( this );
 }
 
 void Character::HandleShooting()

@@ -1,4 +1,5 @@
-#pragma once
+#include <realtime_srv/RealtimeServer.h>
+
 
 class Character : public GameObj
 {
@@ -22,7 +23,7 @@ public:
 
 public:
 	static GameObjPtr	StaticCreate()
-	{ return NetworkMgr::sInst->RegisterAndReturn( new Character() ); }
+	{ return NetworkMgr::sInstance->RegisterAndReturn( new Character() ); }
 
 	virtual void HandleDying() override;
 

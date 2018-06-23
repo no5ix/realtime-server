@@ -16,7 +16,7 @@ public:
 
 	static void StaticInit();
 
-	static std::unique_ptr< World >		sInst;
+	static std::unique_ptr< World >		sInstance;
 
 	void AddGameObject( GameObjPtr inGameObject );
 	void RemoveGameObject( GameObjPtr inGameObject );

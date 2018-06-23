@@ -1,18 +1,26 @@
 #include "realtime_srv/common/RealtimeSrvShared.h"
 
 
-#if !_WIN32
-extern const char** __argv;
-extern int __argc;
+#ifndef IS_WIN
+const char** __argv;
+int __argc;
 void OutputDebugString( const char* inString )
 {
 	printf( "%s", inString );
 }
 #endif
 
+void RealtimeSrvHelper::SaveCommandLineArg( const int argc, const char** argv )
+{
+#ifndef IS_WIN
+	__argc = argc;
+	__argv = argv;
+#endif
+}
+
 std::string RealtimeSrvHelper::GetCommandLineArg( int inIndex )
 {
-	if (inIndex < __argc)
+	if ( inIndex < __argc )
 	{
 		return std::string( __argv[inIndex] );
 	}
@@ -29,7 +37,7 @@ std::string RealtimeSrvHelper::Sprintf( const char* inFormat, ... )
 	va_list args;
 	va_start( args, inFormat );
 
-#if _WIN32
+#ifdef IS_WIN
 	_vsnprintf_s( temp, 4096, 4096, inFormat, args );
 #else
 	vsnprintf( temp, 4096, inFormat, args );
@@ -54,7 +62,7 @@ void RealtimeSrvHelper::Log( const char* inFormat, ... )
 	va_list args;
 	va_start( args, inFormat );
 
-#if _WIN32
+#ifdef IS_WIN
 	_vsnprintf_s( temp, 4096, 4096, inFormat, args );
 #else
 	vsnprintf( temp, 4096, inFormat, args );
@@ -145,5 +153,41 @@ int RealtimeSrvHelper::BecomeDaemon()
 		return -1;
 
 	return 0;
+}
+
+#else //IS_LINUX
+void RealtimeSrvHelper::SimulateRealWorld(
+	uint8_t LatencyCmdIndex,
+	uint8_t dropPacketChanceCmdIndex /*= 0*/,
+	uint8_t JitterCmdIndex /*= 0*/ )
+{
+	assert( NetworkMgr::sInstance );
+
+	std::string latencyString = RealtimeSrvHelper::GetCommandLineArg(
+		LatencyCmdIndex );
+	if ( !latencyString.empty() )
+	{
+		float latency = stof( latencyString );
+		NetworkMgr::sInstance->SetSimulatedLatency( latency );
+	}
+
+	std::string dropPacketChanceString = RealtimeSrvHelper::GetCommandLineArg(
+		dropPacketChanceCmdIndex );
+	if ( !dropPacketChanceString.empty() )
+	{
+		float dropPacketChance = stof( dropPacketChanceString );
+		NetworkMgr::sInstance->SetDropPacketChance( dropPacketChance );
+	}
+
+	std::string IsSimulatedJitterString = RealtimeSrvHelper::GetCommandLineArg(
+		JitterCmdIndex );
+	if ( !IsSimulatedJitterString.empty() )
+	{
+		int IsSimulatedJitter = stoi( IsSimulatedJitterString );
+		if ( IsSimulatedJitter )
+		{
+			NetworkMgr::sInstance->SetIsSimulatedJitter( true );
+		}
+	}
 }
 #endif //IS_LINUX

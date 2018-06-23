@@ -26,49 +26,23 @@
     <ClCompile Include="..\..\muduo_udp_support\test\chat\udpChatSrv_highperformance.cpp">
       <Filter>test\chat</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\muduo_udp_support\UdpAcceptor.cpp">
-      <Filter>test\chat</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\muduo_udp_support\UdpClient.cpp">
-      <Filter>test\chat</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\muduo_udp_support\UdpConnection.cpp">
-      <Filter>test\chat</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\muduo_udp_support\UdpConnector.cpp">
-      <Filter>test\chat</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\muduo_udp_support\UdpServer.cpp">
-      <Filter>test\chat</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\muduo_udp_support\UdpSocketsOps.cpp">
-      <Filter>test\chat</Filter>
-    </ClCompile>
+    <ClCompile Include="..\..\muduo_udp_support\UdpAcceptor.cpp" />
+    <ClCompile Include="..\..\muduo_udp_support\UdpClient.cpp" />
+    <ClCompile Include="..\..\muduo_udp_support\UdpConnection.cpp" />
+    <ClCompile Include="..\..\muduo_udp_support\UdpConnector.cpp" />
+    <ClCompile Include="..\..\muduo_udp_support\UdpServer.cpp" />
+    <ClCompile Include="..\..\muduo_udp_support\UdpSocketsOps.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\muduo_udp_support\test\chat\udpChatCodec.h">
       <Filter>test\chat</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\muduo_udp_support\UdpAcceptor.h">
-      <Filter>test</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\muduo_udp_support\UdpCallbacks.h">
-      <Filter>test</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\muduo_udp_support\UdpClient.h">
-      <Filter>test</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\muduo_udp_support\UdpConnection.h">
-      <Filter>test</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\muduo_udp_support\UdpConnector.h">
-      <Filter>test</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\muduo_udp_support\UdpServer.h">
-      <Filter>test</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\muduo_udp_support\UdpSocketsOps.h">
-      <Filter>test</Filter>
-    </ClInclude>
+    <ClInclude Include="..\..\muduo_udp_support\UdpAcceptor.h" />
+    <ClInclude Include="..\..\muduo_udp_support\UdpCallbacks.h" />
+    <ClInclude Include="..\..\muduo_udp_support\UdpClient.h" />
+    <ClInclude Include="..\..\muduo_udp_support\UdpConnection.h" />
+    <ClInclude Include="..\..\muduo_udp_support\UdpConnector.h" />
+    <ClInclude Include="..\..\muduo_udp_support\UdpServer.h" />
+    <ClInclude Include="..\..\muduo_udp_support\UdpSocketsOps.h" />
   </ItemGroup>
 </Project>

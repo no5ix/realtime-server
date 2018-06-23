@@ -3,7 +3,7 @@
 
 bool UdpSockInterfc::StaticInit()
 {
-#if _WIN32
+#ifdef IS_WIN
 	WSADATA wsaData;
 	int iResult = WSAStartup( MAKEWORD( 2, 2 ), &wsaData );
 	if ( iResult != NO_ERROR )
@@ -17,7 +17,7 @@ bool UdpSockInterfc::StaticInit()
 
 void UdpSockInterfc::CleanUp()
 {
-#if _WIN32
+#ifdef IS_WIN
 	WSACleanup();
 #endif
 }
@@ -25,7 +25,7 @@ void UdpSockInterfc::CleanUp()
 
 void UdpSockInterfc::ReportError( const char* inOperationDesc )
 {
-#if _WIN32
+#ifdef IS_WIN
 	LPVOID lpMsgBuf;
 	DWORD errorNum = GetLastError();
 
@@ -48,7 +48,7 @@ void UdpSockInterfc::ReportError( const char* inOperationDesc )
 
 int UdpSockInterfc::GetLastError()
 {
-#if _WIN32
+#ifdef IS_WIN
 	return WSAGetLastError();
 #else
 	return errno;
@@ -136,7 +136,7 @@ int UdpSockInterfc::ReceiveFrom( void* inToReceive, int inMaxLength, SockAddrInt
 
 UdpSockInterfc::~UdpSockInterfc()
 {
-#if _WIN32
+#ifdef IS_WIN
 	closesocket( mSocket );
 #else
 	close( mSocket );
@@ -146,7 +146,7 @@ UdpSockInterfc::~UdpSockInterfc()
 
 int UdpSockInterfc::SetNonBlockingMode( bool inShouldBeNonBlocking )
 {
-#if _WIN32
+#ifdef IS_WIN
 	u_long arg = inShouldBeNonBlocking ? 1 : 0;
 	int result = ioctlsocket( mSocket, FIONBIO, &arg );
 #else
@@ -184,7 +184,7 @@ int UdpSockInterfc::Connect( const SockAddrInterfc& inAddress )
 int UdpSockInterfc::SetReUse()
 {
 
-#ifndef _WIN32
+#ifndef IS_WIN
 	int reuse = 1;
 	int err = setsockopt( mSocket, SOL_SOCKET, SO_REUSEADDR, &reuse, sizeof( reuse ) );
 	if ( err < 0 )
@@ -199,7 +199,7 @@ int UdpSockInterfc::SetReUse()
 		ReportError( "UDPSocketInterface::SetReUse SO_REUSEPORT" );
 		return GetLastError();
 	}
-#endif
+#endif //IS_WIN
 
 	return NO_ERROR;
 }

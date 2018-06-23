@@ -1,9 +1,6 @@
 #pragma once
 
 
-#ifdef __linux__
-#define IS_LINUX
-#endif
 
 
 #define DEFAULT_REALTIME_SRV_PORT			(44444)

@@ -1,3 +1,6 @@
+#include <realtime_srv/RealtimeServer.h>
+
+
 class ExampleSrvForUe4Demo
 {
 public:
@@ -5,21 +8,10 @@ public:
 
 	static bool StaticInit();
 
-	int Run();
+	void Run();
 
-
-	void HandleNewClient( ClientProxyPtr inClientProxy );
-	void SpawnCharacterForPlayer( int inPlayerId );
-
-#ifndef IS_LINUX
-	void SimulateRealWorld();
-#endif
+	GameObjPtr SpawnNewCharacterForPlayer( int inPlayerId );
 
 private:
 	ExampleSrvForUe4Demo();
-	void InitNetworkMgr();
-
-private:
-
-	bool	mShouldKeepRunning;
 };

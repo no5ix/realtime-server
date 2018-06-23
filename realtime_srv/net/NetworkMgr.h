@@ -26,7 +26,7 @@ class NetworkMgr
 {
 	typedef unordered_map< int, ClientProxyPtr > PlayerIdToClientMap;
 	typedef unordered_map< int, GameObjPtr > NetIdToGameObjMap;
-	typedef std::function<void( ClientProxyPtr inClientProxy )> NewPlayerCB;
+	typedef std::function< GameObjPtr( int NewPlayerId ) > NewPlayerCB;
 public:
 
 	static const uint32_t	kNullCC = 0;
@@ -45,9 +45,10 @@ public:
 	int						GetNewNetworkId();
 
 public:
-	static std::unique_ptr<NetworkMgr>	sInst;
+	static std::unique_ptr<NetworkMgr>	sInstance;
 
-	static bool				StaticInit( uint16_t inPort = DEFAULT_REALTIME_SRV_PORT );
+	static bool				StaticInit( uint16_t Port );
+	void	Start();
 
 	virtual void			SendOutgoingPackets();
 	inline	GameObjPtr		RegisterAndReturn( GameObj* inGameObject );
@@ -62,6 +63,10 @@ public:
 	virtual int UnregistGameObjAndRetNetID( GameObj* inGameObject );
 
 	void SetNewPlayerCallBack( const NewPlayerCB& cb ) { newPlayerCB_ = cb; }
+
+	void SetWorldUpdateCallback( const std::function<void()>& cb )
+	{ worldUpdateCB_ = cb; }
+
 private:
 	NetworkMgr();
 	bool					Init( uint16_t inPort );
@@ -78,6 +83,7 @@ private:
 	float			mLastCheckDCTime;
 
 	NewPlayerCB newPlayerCB_;
+	std::function<void()> worldUpdateCB_;
 
 
 #ifdef IS_LINUX
@@ -95,11 +101,6 @@ public:
 	void	SendPacket( const OutputBitStream& inOutputStream,
 		const UdpConnectionPtr& conn );
 
-	void setWorldUpdateCallback( const std::function<void()>& cb )
-	{ worldUpdateCB_ = cb; }
-
-	void Start();
-
 	void onMessage(
 		const muduo::net::UdpConnectionPtr& conn,
 		muduo::net::Buffer* buf,
@@ -109,7 +110,6 @@ private:
 	EventLoop loop_;
 	std::shared_ptr<UdpServer> server_;
 
-	std::function<void()> worldUpdateCB_;
 
 protected:
 	static AtomicInt32		kNewNetworkId;

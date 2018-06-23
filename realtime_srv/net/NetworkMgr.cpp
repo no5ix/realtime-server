@@ -1,8 +1,9 @@
 #include "realtime_srv/common/RealtimeSrvShared.h"
+#include <time.h>
 
 
 
-std::unique_ptr<NetworkMgr> NetworkMgr::sInst;
+std::unique_ptr<NetworkMgr> NetworkMgr::sInstance;
 
 namespace
 {
@@ -11,10 +12,10 @@ namespace
 }
 
 
-bool NetworkMgr::StaticInit( uint16_t inPort )
+bool NetworkMgr::StaticInit( uint16_t Port )
 {
-	sInst.reset( new NetworkMgr() );
-	return sInst->Init( inPort );
+	sInstance.reset( new NetworkMgr() );
+	return sInstance->Init( Port );
 }
 
 #ifdef IS_LINUX
@@ -96,7 +97,6 @@ bool NetworkMgr::Init( uint16_t inPort )
 		std::bind( &NetworkMgr::onConnection, this, _1 ) );
 	server_->setMessageCallback(
 		std::bind( &NetworkMgr::onMessage, this, _1, _2, _3 ) );
-
 	server_->setThreadNum( THREAD_NUM );
 
 	return true;
@@ -157,20 +157,23 @@ void NetworkMgr::HandlePacketFromNewClient( InputBitStream& inInputStream,
 				kNewPlayerId.getAndAdd( 1 ),
 				inUdpConnetction );
 
+		int newPlayerId = newClientProxy->GetPlayerId();
 		{
 			MutexLockGuard lock( mutex_ );
 			THREAD_VAR_COW( udpConnToClientMap_ );
 			THREAD_VAR_COW( playerIdToClientMap_ );
 			( *udpConnToClientMap_ )[inUdpConnetction] = newClientProxy;
-			( *playerIdToClientMap_ )[newClientProxy->GetPlayerId()] = newClientProxy;
+			( *playerIdToClientMap_ )[newPlayerId] = newClientProxy;
 		}
 
-		newPlayerCB_( newClientProxy );
+		World::sInstance->AddGameObject( newPlayerCB_( newPlayerId ) );
 
-		NetIdToGameObjMapPtr tempNetworkIdToGameObjectMap = GET_THREAD_VAR( netIdToGameObjMap_ );
+		NetIdToGameObjMapPtr tempNetworkIdToGameObjectMap =
+			GET_THREAD_VAR( netIdToGameObjMap_ );
 		for ( const auto& pair : *tempNetworkIdToGameObjectMap )
 		{
-			newClientProxy->GetReplicationManager().ReplicateCreate( pair.first, pair.second->GetAllStateMask() );
+			newClientProxy->GetReplicationManager().ReplicateCreate(
+				pair.first, pair.second->GetAllStateMask() );
 		}
 
 		if ( packetType == kHelloCC )
@@ -187,7 +190,7 @@ void NetworkMgr::HandlePacketFromNewClient( InputBitStream& inInputStream,
 
 		LOG( "a new client named '%s' as PlayerID %d ",
 			newClientProxy->GetName().c_str(),
-			newClientProxy->GetPlayerId() );
+			newPlayerId );
 	}
 	//else if ( packetType == kInputCC )
 	//{
@@ -335,6 +338,20 @@ NetworkMgr::NetworkMgr() :
 	mTimeOfLastStatePacket( 0.f )
 {}
 
+void NetworkMgr::Start()
+{
+	while ( true )
+	{
+		sInstance->ProcessIncomingPackets();
+
+		sInstance->CheckForDisconnects();
+
+		worldUpdateCB_();
+
+		sInstance->SendOutgoingPackets();
+	}
+}
+
 void NetworkMgr::ProcessIncomingPackets()
 {
 	ReadIncomingPacketsIntoQueue();
@@ -430,9 +447,7 @@ void NetworkMgr::ProcessQueuedPackets()
 
 bool NetworkMgr::Init( uint16_t inPort )
 {
-#if _WIN32
 	UdpSockInterfc::StaticInit();
-#endif //_WIN32
 
 	mSocket = UdpSockInterfc::CreateUDPSocket();
 
@@ -536,10 +551,12 @@ void NetworkMgr::HandlePacketFromNewClient(
 				kNewPlayerId++,
 				inUDPSocket
 				);
-		addrToClientMap_[inFromAddress] = newClientProxy;
-		playerIdToClientMap_[newClientProxy->GetPlayerId()] = newClientProxy;
 
-		newPlayerCB_( newClientProxy );
+		int newPlayerId = newClientProxy->GetPlayerId();
+		addrToClientMap_[inFromAddress] = newClientProxy;
+		playerIdToClientMap_[newPlayerId] = newClientProxy;
+
+		World::sInstance->AddGameObject( newPlayerCB_( newPlayerId ) );
 
 		for ( const auto& pair : netIdToGameObjMap_ )
 		{
@@ -563,7 +580,7 @@ void NetworkMgr::HandlePacketFromNewClient(
 		LOG( "a new client at socket %s, named '%s' as PlayerID %d ",
 			inFromAddress.ToString().c_str(),
 			newClientProxy->GetName().c_str(),
-			newClientProxy->GetPlayerId()
+			newPlayerId
 		);
 	}
 	//else if ( packetType == kInputCC )

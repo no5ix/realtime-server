@@ -1,4 +1,18 @@
-#ifdef _WIN32
+#ifndef REALTIME_SRV_SHARED_H
+#define REALTIME_SRV_SHARED_H
+
+
+#ifdef __linux__
+	#define IS_LINUX
+#else
+	#ifdef _WIN32
+		#define IS_WIN
+	#else
+		#define IS_MAC
+	#endif
+#endif
+
+#ifdef IS_WIN
 	#define WIN32_LEAN_AND_MEAN
 	#define NOMINMAX
 
@@ -6,13 +20,7 @@
 	#include "WinSock2.h"
 	#include "Ws2tcpip.h"
 	typedef int socklen_t;
-	//typedef char* receiveBufer_t;
-#else
-	#include <signal.h>
-	#include <sys/stat.h>
-	#include <pthread.h>
-	#include <arpa/inet.h>
-	#include <sys/epoll.h>
+#else 
 	#include <sys/socket.h>
 	#include <netinet/in.h>
 	#include <sys/types.h>
@@ -20,8 +28,16 @@
 	#include <errno.h>
 	#include <fcntl.h>
 	#include <unistd.h>
-	#include <cstdarg>
-	//typedef void* receiveBufer_t;
+
+	#ifdef IS_LINUX
+		#include <signal.h>
+		#include <sys/stat.h>
+		#include <pthread.h>
+		#include <arpa/inet.h>
+		#include <sys/epoll.h>
+		#include <cstdarg>
+	#endif //IS_LINUX
+
 	typedef int SOCKET;
 	const int NO_ERROR = 0;
 	const int INVALID_SOCKET = -1;
@@ -30,7 +46,7 @@
 	const int SOCKET_ERROR = -1;
 #endif
 
-
+#include <time.h>
 #include <functional>
 #include <stdint.h>
 #include <memory>
@@ -84,6 +100,7 @@ using std::placeholders::_3;
 
 
 #include "realtime_srv/gameObj/GameObj.h"
+#include "realtime_srv/gameObj/World.h"
 
 #include "realtime_srv/rep/ReplicationCmd.h"
 #include "realtime_srv/rep/InFlightPacket.h"
@@ -98,3 +115,6 @@ using std::placeholders::_3;
 
 #include "realtime_srv/net/ClientProxy.h"
 #include "realtime_srv/net/NetworkMgr.h"
+
+
+#endif // REALTIME_SRV_SHARED_H

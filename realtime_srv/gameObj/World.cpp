@@ -1,14 +1,14 @@
-#include "for_ue4_demo_shared.h"
+#include "realtime_srv/common/RealtimeSrvShared.h"
 
 
 
 
 
-std::unique_ptr< World >	World::sInst;
+std::unique_ptr< World >	World::sInstance;
 
 void World::StaticInit()
 {
-	sInst.reset( new World() );
+	sInstance.reset( new World() );
 }
 
 
@@ -54,7 +54,7 @@ void World::Update()
 
 	for ( GameObjs::iterator go = tempGameObjects->begin();
 		go != tempGameObjects->end(); ++go )
-	//for (  auto& go : *tempGameObjects )
+		//for (  auto& go : *tempGameObjects )
 	{
 		if ( !( *go )->DoesWantToDie() )
 		{

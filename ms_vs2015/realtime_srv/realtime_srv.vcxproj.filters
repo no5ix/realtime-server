@@ -90,6 +90,10 @@
     <ClInclude Include="..\..\realtime_srv\gameObj\InputState.h">
       <Filter>gameObj</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\realtime_srv\gameObj\World.h">
+      <Filter>gameObj</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\realtime_srv\RealtimeServer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\realtime_srv\math\Vector3.cpp">
@@ -140,6 +144,10 @@
     <ClCompile Include="..\..\realtime_srv\gameObj\InputState.cpp">
       <Filter>gameObj</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\realtime_srv\gameObj\World.cpp">
+      <Filter>gameObj</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\realtime_srv\RealtimeServer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\..\realtime_srv\CMakeLists.txt" />
