@@ -5,9 +5,6 @@
 #include <muduo/base/Mutex.h>
 
 using namespace muduo;
-
-typedef std::set< GameObjPtr > GameObjs;
-typedef std::shared_ptr< GameObjs > GameObjectsPtr;
 #endif //IS_LINUX
 
 class World
@@ -25,25 +22,28 @@ public:
 
 private:
 	World();
-	//int	GetIndexOfGameObject( GameObjectPtr inGameObject );
 
 #ifdef IS_LINUX
 
+	typedef std::set< GameObjPtr > GameObjs;
+	typedef std::shared_ptr< GameObjs > GameObjectsPtr;
 public:
-	GameObjectsPtr GetGameObjects();
-	void GameObjectsCOW();
+	//GameObjectsPtr GetGameObjects();
+	//void GameObjectsCOW();
 
 private:
-	GameObjectsPtr mGameObjects;
+	//GameObjectsPtr GameObjects_;
+	THREAD_SHARED_VAR_DEF( private, GameObjs, GameObjects_, mutex_ );
 	MutexLock mutex_;
 
 #else //IS_LINUX
 
 public:
-	const std::vector< GameObjPtr >&	GetGameObjects()	const { return mGameObjects; }
+	const std::vector< GameObjPtr >& GetGameObjects() const 
+	{ return GameObjects_; }
 
 private:
-	std::vector< GameObjPtr >	mGameObjects;
+	std::vector< GameObjPtr >	GameObjects_;
 
 #endif //IS_LINUX
 

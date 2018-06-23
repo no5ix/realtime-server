@@ -27,7 +27,6 @@ public:
 	void	SetRotation( Vector3 inRotation ) { mRotation = inRotation; }
 	const Vector3&	GetRotation()					const { return mRotation; }
 
-
 	const Vector3&		GetLocation()				const { return mLocation; }
 	void		SetLocation( const Vector3& inLocation ) { mLocation = inLocation; }
 
@@ -37,7 +36,8 @@ public:
 	int			GetNetworkId()				const { return mNetworkId; }
 	void		SetNetworkId( int inNetworkId );
 
-	virtual uint32_t	Write( OutputBitStream& inOutputStream, uint32_t inDirtyState ) const { ( void )inOutputStream; ( void )inDirtyState; return 0; }
+	virtual uint32_t	Write( OutputBitStream& inOutputStream, uint32_t inDirtyState ) const 
+	{ ( void )inOutputStream; ( void )inDirtyState; return 0; }
 	virtual void		Read( InputBitStream& inInputStream ) { ( void )inInputStream; }
 
 protected:
@@ -46,7 +46,6 @@ protected:
 
 	int												mIndexInWorld;
 	int												mNetworkId;
-
 
 	Vector3											mLocation;
 	Vector3											mRotation;

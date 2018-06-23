@@ -4,10 +4,10 @@
 
 
 bool RealtimeServer::Init( const NewPlayerCallback& NewPlayerCB,
-	bool BecomeDaemon /*= false*/, uint16_t Port /*= DEFAULT_REALTIME_SRV_PORT*/ )
+	bool BecomeDaemonOnLinux /*= false*/, uint16_t Port /*= DEFAULT_REALTIME_SRV_PORT */ )
 {
 #ifdef IS_LINUX
-	if ( BecomeDaemon && RealtimeSrvHelper::BecomeDaemon() == -1 )
+	if ( BecomeDaemonOnLinux && RealtimeSrvHelper::BecomeDaemon() == -1 )
 	{
 		LOG( " Become daemon failed!! ", 0 );
 		return false;

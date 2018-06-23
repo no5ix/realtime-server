@@ -24,7 +24,6 @@ class ClientProxy;
 
 class NetworkMgr
 {
-	typedef unordered_map< int, ClientProxyPtr > PlayerIdToClientMap;
 	typedef unordered_map< int, GameObjPtr > NetIdToGameObjMap;
 	typedef std::function< GameObjPtr( int NewPlayerId ) > NewPlayerCB;
 public:
@@ -54,7 +53,6 @@ public:
 	inline	GameObjPtr		RegisterAndReturn( GameObj* inGameObject );
 	void					SetStateDirty( int inNetworkId, uint32_t inDirtyState );
 	virtual void			CheckForDisconnects();
-	ClientProxyPtr			GetClientProxy( int inPlayerId );
 
 	uint32_t				HandleServerReset( ClientProxyPtr inClientProxy, InputBitStream& inInputStream );
 	void					SendGamePacket( ClientProxyPtr inClientProxy, const uint32_t inConnFlag );
@@ -94,8 +92,6 @@ public:
 	typedef unordered_map< UdpConnectionPtr, ClientProxyPtr >	UdpConnToClientMap;
 	typedef std::shared_ptr< UdpConnToClientMap > UdpConnToClientMapPtr;
 
-	typedef std::shared_ptr< PlayerIdToClientMap > PlayerIdToClientMapPtr;
-
 	typedef std::shared_ptr< unordered_map< int, GameObjPtr > > NetIdToGameObjMapPtr;
 
 	void	SendPacket( const OutputBitStream& inOutputStream,
@@ -112,7 +108,7 @@ private:
 
 
 protected:
-	static AtomicInt32		kNewNetworkId;
+	static AtomicInt32		kNewNetId;
 	MutexLock mutex_;
 public:
 	virtual void onConnection( const UdpConnectionPtr& conn );
@@ -124,7 +120,6 @@ private:
 		const UdpConnectionPtr& inUdpConnetction );
 protected:
 	THREAD_SHARED_VAR_DEF( protected, UdpConnToClientMap, udpConnToClientMap_, mutex_ );
-	THREAD_SHARED_VAR_DEF( protected, PlayerIdToClientMap, playerIdToClientMap_, mutex_ );
 	THREAD_SHARED_VAR_DEF( protected, NetIdToGameObjMap, netIdToGameObjMap_, mutex_ );
 
 private:
@@ -186,7 +181,7 @@ private:
 
 protected:
 	UDPSocketPtr				mSocket;
-	static int					kNewNetworkId;
+	static int					kNewNetId;
 	NetIdToGameObjMap			netIdToGameObjMap_;
 
 public:
@@ -205,7 +200,6 @@ private:
 	typedef unordered_map< SockAddrInterfc, ClientProxyPtr >	AddrToClientMap;
 	AddrToClientMap		addrToClientMap_;
 
-	PlayerIdToClientMap			playerIdToClientMap_;
 #endif //IS_LINUX
 
 };

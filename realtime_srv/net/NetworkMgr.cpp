@@ -20,7 +20,7 @@ bool NetworkMgr::StaticInit( uint16_t Port )
 
 #ifdef IS_LINUX
 
-AtomicInt32 NetworkMgr::kNewNetworkId;
+AtomicInt32 NetworkMgr::kNewNetId;
 AtomicInt32 NetworkMgr::kNewPlayerId;
 
 NetworkMgr::NetworkMgr() :
@@ -28,10 +28,9 @@ NetworkMgr::NetworkMgr() :
 	mLastCheckDCTime( 0.f ),
 	mTimeOfLastStatePacket( 0.f ),
 	netIdToGameObjMap_( new NetIdToGameObjMap ),
-	udpConnToClientMap_( new UdpConnToClientMap ),
-	playerIdToClientMap_( new PlayerIdToClientMap )
+	udpConnToClientMap_( new UdpConnToClientMap )
 {
-	kNewNetworkId.getAndSet( 1 );
+	kNewNetId.getAndSet( 1 );
 	kNewPlayerId.getAndSet( 1 );
 }
 
@@ -49,8 +48,8 @@ void NetworkMgr::Start()
 
 int NetworkMgr::GetNewNetworkId()
 {
-	int toRet = kNewNetworkId.getAndAdd( 1 );
-	if ( kNewNetworkId.get() < toRet )
+	int toRet = kNewNetId.getAndAdd( 1 );
+	if ( kNewNetId.get() < toRet )
 	{
 		LOG( "Network ID Wrap Around!!! You've been playing way too long...", 0 );
 	}
@@ -60,7 +59,7 @@ int NetworkMgr::GetNewNetworkId()
 
 GameObjPtr NetworkMgr::GetGameObject( int inNetworkId )
 {
-	auto tempNetworkIdToGameObjectMap = GET_THREAD_VAR( netIdToGameObjMap_ );
+	auto tempNetworkIdToGameObjectMap = GET_THREAD_SHARED_VAR( netIdToGameObjMap_ );
 	auto gameObjectIt = tempNetworkIdToGameObjectMap->find( inNetworkId );
 	if ( gameObjectIt != tempNetworkIdToGameObjectMap->end() )
 	{
@@ -111,12 +110,10 @@ void NetworkMgr::onConnection( const UdpConnectionPtr& conn )
 	if ( !conn->connected() )
 	{
 		MutexLockGuard lock( mutex_ );
-		THREAD_VAR_COW( udpConnToClientMap_ );
-		THREAD_VAR_COW( playerIdToClientMap_ );
+		THREAD_SHARED_VAR_COW( udpConnToClientMap_ );
 
 		LOG( "Player %d disconnect", ( ( *udpConnToClientMap_ )[conn] )->GetPlayerId() );
 
-		playerIdToClientMap_->erase( ( ( *udpConnToClientMap_ )[conn] )->GetPlayerId() );
 		udpConnToClientMap_->erase( conn );
 	}
 }
@@ -124,7 +121,7 @@ void NetworkMgr::onConnection( const UdpConnectionPtr& conn )
 void NetworkMgr::ProcessPacket( InputBitStream& inInputStream,
 	const UdpConnectionPtr& inUdpConnetction )
 {
-	UdpConnToClientMapPtr tempUdpConnToClientMap = GET_THREAD_VAR( udpConnToClientMap_ );
+	UdpConnToClientMapPtr tempUdpConnToClientMap = GET_THREAD_SHARED_VAR( udpConnToClientMap_ );
 	auto it = tempUdpConnToClientMap->find( inUdpConnetction );
 	if ( it == tempUdpConnToClientMap->end() )
 	{
@@ -160,16 +157,14 @@ void NetworkMgr::HandlePacketFromNewClient( InputBitStream& inInputStream,
 		int newPlayerId = newClientProxy->GetPlayerId();
 		{
 			MutexLockGuard lock( mutex_ );
-			THREAD_VAR_COW( udpConnToClientMap_ );
-			THREAD_VAR_COW( playerIdToClientMap_ );
+			THREAD_SHARED_VAR_COW( udpConnToClientMap_ );
 			( *udpConnToClientMap_ )[inUdpConnetction] = newClientProxy;
-			( *playerIdToClientMap_ )[newPlayerId] = newClientProxy;
 		}
 
 		World::sInstance->AddGameObject( newPlayerCB_( newPlayerId ) );
 
 		NetIdToGameObjMapPtr tempNetworkIdToGameObjectMap =
-			GET_THREAD_VAR( netIdToGameObjMap_ );
+			GET_THREAD_SHARED_VAR( netIdToGameObjMap_ );
 		for ( const auto& pair : *tempNetworkIdToGameObjectMap )
 		{
 			newClientProxy->GetReplicationManager().ReplicateCreate(
@@ -216,9 +211,9 @@ int NetworkMgr::RegistGameObjAndRetNetID( GameObjPtr inGameObject )
 	//}
 	auto regFunc = [newNetworkId, &inGameObject, this]()
 	{ ( *netIdToGameObjMap_ )[newNetworkId] = inGameObject; };
-	SET_THREAD_VAR( netIdToGameObjMap_, mutex_, regFunc );
+	SET_THREAD_SHARED_VAR( netIdToGameObjMap_, mutex_, regFunc );
 
-	UdpConnToClientMapPtr tempUdpConnToClientMap = GET_THREAD_VAR( udpConnToClientMap_ );
+	UdpConnToClientMapPtr tempUdpConnToClientMap = GET_THREAD_SHARED_VAR( udpConnToClientMap_ );
 	for ( const auto& pair : *tempUdpConnToClientMap )
 	{
 		pair.second->GetReplicationManager().ReplicateCreate(
@@ -237,9 +232,9 @@ int NetworkMgr::UnregistGameObjAndRetNetID( GameObj* inGameObject )
 	//}
 	auto tempFunc = [&, this]()
 	{ netIdToGameObjMap_->erase( networkId ); };
-	SET_THREAD_VAR( netIdToGameObjMap_, mutex_, tempFunc );
+	SET_THREAD_SHARED_VAR( netIdToGameObjMap_, mutex_, tempFunc );
 
-	UdpConnToClientMapPtr tempUdpConnToClientMap = GET_THREAD_VAR( udpConnToClientMap_ );
+	UdpConnToClientMapPtr tempUdpConnToClientMap = GET_THREAD_SHARED_VAR( udpConnToClientMap_ );
 	for ( const auto& pair : *tempUdpConnToClientMap )
 	{
 		pair.second->GetReplicationManager().ReplicateDestroy( networkId );
@@ -262,7 +257,7 @@ void NetworkMgr::CheckForDisconnects()
 
 	vector< ClientProxyPtr > clientsToDisconnect;
 
-	auto tempUdpConnToClientMap = GET_THREAD_VAR( udpConnToClientMap_ );
+	auto tempUdpConnToClientMap = GET_THREAD_SHARED_VAR( udpConnToClientMap_ );
 	for ( const auto& pair : *tempUdpConnToClientMap )
 	{
 		if ( pair.second->GetLastPacketFromClientTime() < minAllowedTime )
@@ -290,7 +285,7 @@ void NetworkMgr::SendOutgoingPackets()
 	}
 	mTimeOfLastStatePacket = time;
 
-	UdpConnToClientMapPtr tempUdpConnToClientMap = GET_THREAD_VAR( udpConnToClientMap_ );
+	UdpConnToClientMapPtr tempUdpConnToClientMap = GET_THREAD_SHARED_VAR( udpConnToClientMap_ );
 	for ( const auto& pair : *tempUdpConnToClientMap )
 	{
 		( pair.second )->GetDeliveryNotificationManager().ProcessTimedOutPackets();
@@ -303,21 +298,10 @@ void NetworkMgr::SendOutgoingPackets()
 	}
 }
 
-ClientProxyPtr NetworkMgr::GetClientProxy( int inPlayerId )
-{
-	auto tempPlayerIdToClientMap = GET_THREAD_VAR( playerIdToClientMap_ );
-	auto it = tempPlayerIdToClientMap->find( inPlayerId );
-	if ( it != tempPlayerIdToClientMap->end() )
-	{
-		return it->second;
-	}
-
-	return nullptr;
-}
-
 void NetworkMgr::SetStateDirty( int inNetworkId, uint32_t inDirtyState )
 {
-	UdpConnToClientMapPtr tempUdpConnToClientMap = GET_THREAD_VAR( udpConnToClientMap_ );
+	UdpConnToClientMapPtr tempUdpConnToClientMap = 
+		GET_THREAD_SHARED_VAR( udpConnToClientMap_ );
 	for ( const auto& pair : *tempUdpConnToClientMap )
 	{
 		pair.second->GetReplicationManager().SetStateDirty( inNetworkId, inDirtyState );
@@ -326,7 +310,7 @@ void NetworkMgr::SetStateDirty( int inNetworkId, uint32_t inDirtyState )
 
 #else
 
-int NetworkMgr::kNewNetworkId = 1;
+int NetworkMgr::kNewNetId = 1;
 int NetworkMgr::kNewPlayerId = 1;
 
 NetworkMgr::NetworkMgr() :
@@ -415,8 +399,8 @@ void NetworkMgr::ReadIncomingPacketsIntoQueue()
 
 int NetworkMgr::GetNewNetworkId()
 {
-	int toRet = kNewNetworkId++;
-	if ( kNewNetworkId < toRet )
+	int toRet = kNewNetId++;
+	if ( kNewNetId < toRet )
 	{
 		LOG( "Network ID Wrap Around!!! You've been playing way too long...", 0 );
 	}
@@ -487,7 +471,6 @@ void NetworkMgr::HandleConnectionReset( const SockAddrInterfc& inFromAddress )
 	auto it = addrToClientMap_.find( inFromAddress );
 	if ( it != addrToClientMap_.end() )
 	{
-		playerIdToClientMap_.erase( it->second->GetPlayerId() );
 		addrToClientMap_.erase( it );
 	}
 }
@@ -554,7 +537,6 @@ void NetworkMgr::HandlePacketFromNewClient(
 
 		int newPlayerId = newClientProxy->GetPlayerId();
 		addrToClientMap_[inFromAddress] = newClientProxy;
-		playerIdToClientMap_[newPlayerId] = newClientProxy;
 
 		World::sInstance->AddGameObject( newPlayerCB_( newPlayerId ) );
 
@@ -618,8 +600,6 @@ void NetworkMgr::CheckForDisconnects()
 		{
 			LOG( "Player %d disconnect", it->second->GetPlayerId() );
 
-			playerIdToClientMap_.erase( it->second->GetPlayerId() );
-
 			addrToClientMap_.erase( it++ );
 		}
 		else
@@ -652,17 +632,6 @@ void NetworkMgr::SendOutgoingPackets()
 			SendGamePacket( clientProxy, kStateCC );
 		}
 	}
-}
-
-ClientProxyPtr NetworkMgr::GetClientProxy( int inPlayerId )
-{
-	auto it = playerIdToClientMap_.find( inPlayerId );
-	if ( it != playerIdToClientMap_.end() )
-	{
-		return it->second;
-	}
-
-	return nullptr;
 }
 
 void NetworkMgr::SetStateDirty( int inNetworkId, uint32_t inDirtyState )

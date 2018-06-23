@@ -19,10 +19,11 @@ namespace RealtimeServer
 	// Parameter: uint16_t Port default is DEFAULT_REALTIME_SRV_PORT, see RealtimeSrvShared.h
 	//************************************
 	bool Init( const NewPlayerCallback& NewPlayerCB,
-		bool BecomeDaemon = false,
+		bool BecomeDaemonOnLinux = false,
 		uint16_t Port = DEFAULT_REALTIME_SRV_PORT );
 
 	void Run();
+
 }
 
 #endif // REALTIME_SERVER_H

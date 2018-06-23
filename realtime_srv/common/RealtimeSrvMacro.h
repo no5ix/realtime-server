@@ -67,17 +67,17 @@ AccessSpecifier:																	\
 
 
 // thread shared var read
-#define GET_THREAD_VAR( VarName ) Get##VarName()
+#define GET_THREAD_SHARED_VAR( VarName ) Get##VarName()
 
 // thread shared var copy on write
-#define THREAD_VAR_COW( VarName ) VarName##COW()
+#define THREAD_SHARED_VAR_COW( VarName ) VarName##COW()
 
 // thread shared var write
-#define SET_THREAD_VAR( VarName, Mutex, WriteOperation ) \
+#define SET_THREAD_SHARED_VAR( VarName, Mutex, WriteOperationLambda ) \
 	{												\
 		MutexLockGuard lock( Mutex );				\
 		VarName##COW();								\
-		WriteOperation();								\
+		WriteOperationLambda();								\
 	}												\
 
 // thread shared var util end
