@@ -99,7 +99,7 @@ bool RealtimeSrvHelper::ChunkPacketIDGreaterThan( ChunkPacketID s1, ChunkPacketI
 		( ( s1 < s2 ) && ( s2 - s1 > HALF_MAX_CHUNK_PACKET_ID ) );
 }
 
-bool RealtimeSrvHelper::BecomeDaemon()
+bool RealtimeSrvHelper::BecomeDaemonOnLinux()
 {
 #ifndef IS_LINUX
 
@@ -145,4 +145,44 @@ bool RealtimeSrvHelper::BecomeDaemon()
 
 	return true;
 #endif //IS_LINUX
+}
+
+
+
+void RealtimeSrvHelper::SimulateRealWorldOnWin(
+	NetworkMgr* networkManager,
+	uint8_t LatencyCmdIndex,
+	uint8_t dropPacketChanceCmdIndex /*= 0*/,
+	uint8_t JitterCmdIndex /*= 0*/ )
+{
+#ifdef IS_WIN
+	assert( networkManager );
+
+	std::string latencyString = RealtimeSrvHelper::GetCommandLineArg(
+		LatencyCmdIndex );
+	if ( !latencyString.empty() )
+	{
+		float latency = stof( latencyString );
+		networkManager->SetSimulatedLatency( latency );
+	}
+
+	std::string dropPacketChanceString = RealtimeSrvHelper::GetCommandLineArg(
+		dropPacketChanceCmdIndex );
+	if ( !dropPacketChanceString.empty() )
+	{
+		float dropPacketChance = stof( dropPacketChanceString );
+		networkManager->SetDropPacketChance( dropPacketChance );
+	}
+
+	std::string IsSimulatedJitterString = RealtimeSrvHelper::GetCommandLineArg(
+		JitterCmdIndex );
+	if ( !IsSimulatedJitterString.empty() )
+	{
+		int IsSimulatedJitter = stoi( IsSimulatedJitterString );
+		if ( IsSimulatedJitter )
+		{
+			networkManager->SetIsSimulatedJitter( true );
+		}
+	}
+#endif // IS_WIN
 }

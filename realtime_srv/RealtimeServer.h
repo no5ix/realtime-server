@@ -17,12 +17,20 @@ public:
 
 	//************************************
 	// Parameter: const NewPlayerCallback & NewPlayerCB for spawning your own GameObject.
+	// Parameter: bool BecomeDaemon is only for Linux, default is off.
 	// Parameter: uint16_t Port default is DEFAULT_REALTIME_SRV_PORT, see RealtimeSrvShared.h
 	//************************************
-	void Init( const NewPlayerCallback& NewPlayerCB,
+	bool Init( const NewPlayerCallback& NewPlayerCB,
+		bool BecomeDaemon = false,
 		uint16_t Port = DEFAULT_REALTIME_SRV_PORT );
 
+
 	void Run();
+
+	void SimulateRealWorldOnWindows(
+		uint8_t LatencyCmdIndex,
+		uint8_t dropPacketChanceCmdIndex = 0,
+		uint8_t JitterCmdIndex = 0 );
 
 private:
 	std::unique_ptr<World>	world_;
