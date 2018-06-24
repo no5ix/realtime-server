@@ -1,26 +1,29 @@
 #include "realtime_srv/RealtimeServer.h"
 
 
+using namespace realtime_srv;
 
-
-RealtimeServer::RealtimeServer() : world_( new World() )
-{}
-
-
-bool RealtimeServer::Init( const NewPlayerCallback& NewPlayerCB,
-	bool BecomeDaemon /*= false*/,
-	uint16_t Port /*= DEFAULT_REALTIME_SRV_PORT*/ )
+RealtimeServer::RealtimeServer( bool WhetherTobecomeDaemonOnLinux /*= false*/ ) 
+	: world_( new World() )
 {
 	assert( world_ );
-	if ( BecomeDaemon && !RealtimeSrvHelper::BecomeDaemonOnLinux() )
+
+	if ( WhetherTobecomeDaemonOnLinux && !RealtimeSrvHelper::BecomeDaemonOnLinux() )
 	{
-		LOG( " Become Daemon Failed!! ", 0 ); return false;
+		LOG( " Become Daemon Failed!! ", 0 );
 	}
+
 	networkManager_.reset( new NetworkMgr() );
 	assert( networkManager_ );
+}
+
+
+void RealtimeServer::Run( const NewPlayerCallback& NewPlayerCB,
+	uint16_t Port /*= DEFAULT_REALTIME_SRV_PORT*/ )
+{
 	if ( !networkManager_->Init( Port ) )
 	{
-		LOG( " Network Manager Init Failed!! ", 0 ); return false;
+		LOG( " Network Manager Init Failed!! ", 0 );
 	}
 
 	srand( static_cast< uint32_t >( time( nullptr ) ) );
@@ -34,14 +37,6 @@ bool RealtimeServer::Init( const NewPlayerCallback& NewPlayerCB,
 	world_->SetNotifyAllClientCallBack( std::bind(
 		&NetworkMgr::NotifyAllClient, networkManager_.get(), _1, _2 ) );
 
-	return true;
-}
-
-
-void RealtimeServer::Run()
-{
-	assert( networkManager_ );
-	assert( world_ );
 	networkManager_->Start();
 }
 

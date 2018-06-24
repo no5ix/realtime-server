@@ -9,7 +9,8 @@ using namespace muduo;
 #endif //IS_LINUX
 
 class GameObj;
-class World
+
+class World : realtime_srv::noncopyable
 {
 public:
 	typedef unordered_map< int, GameObjPtr > NetIdToGameObjMap;

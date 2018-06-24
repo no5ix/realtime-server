@@ -82,6 +82,7 @@ using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
 
+#include "realtime_srv/common/noncopyable.h"
 #include "realtime_srv/math/Vector3.h"
 #include "realtime_srv/math/Quaternion.h"
 #include "realtime_srv/math/Matrix3x3.h"

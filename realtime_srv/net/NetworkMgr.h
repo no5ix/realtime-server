@@ -22,7 +22,7 @@ using namespace muduo::net;
 
 class ClientProxy;
 
-class NetworkMgr
+class NetworkMgr : realtime_srv::noncopyable
 {
 	typedef std::function< GameObjPtr( ClientProxyPtr newClientProxy ) > NewPlayerCallback;
 	typedef std::function<void( GameObjPtr, ReplicationAction )> WorldRegistryCB;

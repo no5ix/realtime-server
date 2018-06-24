@@ -23,6 +23,11 @@ public:
 	DeliveryNotifyMgr&	GetDeliveryNotifyManager() { return DeliveryNotifyManager_; }
 	ReplicationMgr&	GetReplicationManager() { return ReplicationManager_; }
 
+	World* GetWorld() const { return world_; }
+	void SetWorld( World* const world ) { world_ = world; }
+
+	NetworkMgr* GetNetworkManager() const { return networkManager_; }
+
 	const ActionList& GetUnprocessedActionList() const { return mUnprocessedMoveList; }
 	ActionList&	 GetUnprocessedActionList() { return mUnprocessedMoveList; }
 
@@ -33,9 +38,6 @@ public:
 	bool GetRecvingServerResetFlag() const { return mRecvingServerResetFlag; }
 	void SetRecvingServerResetFlag( bool inRecvingServerResetFlag )
 	{ mRecvingServerResetFlag = inRecvingServerResetFlag; }
-
-	World* GetWorld() const { return world_; }
-	void SetWorld( World* const world ) { world_ = world; }
 
 	void SetGameObjStateDirty( int inNetworkId, uint32_t inDirtyState );
 

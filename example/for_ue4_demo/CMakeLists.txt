@@ -1,5 +1,5 @@
 set (LIB_REALTIME_SRV realtime_srv)
-set (PROJ_NAME rts_example_for_ue4_demo)
+set (PROJ_NAME rs_example_for_ue4_demo)
 
 IF(UNIX)
 
