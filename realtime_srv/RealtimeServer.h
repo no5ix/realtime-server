@@ -7,23 +7,26 @@
 
 
 
-typedef std::function< GameObjPtr( int NewPlayerId ) > NewPlayerCallback;
+typedef std::function< GameObjPtr( ClientProxyPtr newClientProxy ) > NewPlayerCallback;
 
 
-namespace RealtimeServer
+class RealtimeServer
 {
+public:
+	RealtimeServer();
 
 	//************************************
 	// Parameter: const NewPlayerCallback & NewPlayerCB for spawning your own GameObject.
-	// Parameter: bool BecomeDaemon is only for Linux, default is off.
 	// Parameter: uint16_t Port default is DEFAULT_REALTIME_SRV_PORT, see RealtimeSrvShared.h
 	//************************************
-	bool Init( const NewPlayerCallback& NewPlayerCB,
-		bool BecomeDaemonOnLinux = false,
+	void Init( const NewPlayerCallback& NewPlayerCB,
 		uint16_t Port = DEFAULT_REALTIME_SRV_PORT );
 
 	void Run();
 
-}
+private:
+	std::unique_ptr<World>	world_;
+	std::unique_ptr<NetworkMgr>	networkManager_;
+};
 
 #endif // REALTIME_SERVER_H

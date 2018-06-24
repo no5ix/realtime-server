@@ -67,6 +67,7 @@
 
 using std::shared_ptr;
 using std::unique_ptr;
+using std::weak_ptr;
 using std::vector;
 using std::queue;
 using std::list;
@@ -100,9 +101,10 @@ using std::placeholders::_3;
 
 
 #include "realtime_srv/gameObj/GameObj.h"
-#include "realtime_srv/gameObj/World.h"
 
 #include "realtime_srv/rep/ReplicationCmd.h"
+#include "realtime_srv/gameObj/World.h"
+
 #include "realtime_srv/rep/InFlightPacket.h"
 #include "realtime_srv/rep/AckBitField.h"
 #include "realtime_srv/rep/DeliveryNotifyMgr.h"

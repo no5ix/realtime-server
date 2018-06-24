@@ -49,7 +49,7 @@ public:
 	bool Write( OutputBitStream& inOutputStream ) const;
 	bool Read( InputBitStream& inInputStream );
 
-private:
+protected:
 
 	float	mDesiredMoveForwardAmount;
 	float	mDesiredMoveRightAmount;

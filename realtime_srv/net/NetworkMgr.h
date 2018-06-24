@@ -24,8 +24,8 @@ class ClientProxy;
 
 class NetworkMgr
 {
-	typedef unordered_map< int, GameObjPtr > NetIdToGameObjMap;
-	typedef std::function< GameObjPtr( int NewPlayerId ) > NewPlayerCB;
+	typedef std::function< GameObjPtr( ClientProxyPtr newClientProxy ) > NewPlayerCallback;
+	typedef std::function<void( GameObjPtr, ReplicationAction )> WorldRegistryCB;
 public:
 
 	static const uint32_t	kNullCC = 0;
@@ -35,40 +35,34 @@ public:
 	static const uint32_t	kResetedCC = 'RSTD';
 	static const uint32_t	kStateCC = 'STAT';
 	static const uint32_t	kInputCC = 'INPT';
-public:
 
 	static const int		kMaxPacketsPerFrameCount = 10;
 
-	GameObjPtr				GetGameObject( int inNetworkId );
-
-	int						GetNewNetworkId();
-
 public:
-	static std::unique_ptr<NetworkMgr>	sInstance;
 
-	static bool				StaticInit( uint16_t Port );
+	NetworkMgr();
+	bool	Init( uint16_t inPort );
+
 	void	Start();
 
 	virtual void			SendOutgoingPackets();
-	inline	GameObjPtr		RegisterAndReturn( GameObj* inGameObject );
-	void					SetStateDirty( int inNetworkId, uint32_t inDirtyState );
+	void					SetRepStateDirty( int inNetworkId, uint32_t inDirtyState );
 	virtual void			CheckForDisconnects();
 
 	uint32_t				HandleServerReset( ClientProxyPtr inClientProxy, InputBitStream& inInputStream );
 	void					SendGamePacket( ClientProxyPtr inClientProxy, const uint32_t inConnFlag );
 
-	virtual int RegistGameObjAndRetNetID( GameObjPtr inGameObject );
-	virtual int UnregistGameObjAndRetNetID( GameObj* inGameObject );
+	void NotifyAllClient( GameObjPtr inGameObject, ReplicationAction inAction );
 
-	void SetNewPlayerCallBack( const NewPlayerCB& cb ) { newPlayerCB_ = cb; }
+	void SetNewPlayerCallBack( const NewPlayerCallback& cb ) { newPlayerCB_ = cb; }
 
 	void SetWorldUpdateCallback( const std::function<void()>& cb )
 	{ worldUpdateCB_ = cb; }
 
-private:
-	NetworkMgr();
-	bool					Init( uint16_t inPort );
+	void SetWorldRegistryCallback( const WorldRegistryCB& cb )
+	{ worldRegistryCB_ = cb; }
 
+private:
 	void	DoProcessPacket( ClientProxyPtr inClientProxy, InputBitStream& inInputStream );
 
 	void	WriteLastMoveTimestampIfDirty( OutputBitStream& inOutputStream, ClientProxyPtr inClientProxy );
@@ -80,9 +74,9 @@ private:
 	float			mTimeOfLastStatePacket;
 	float			mLastCheckDCTime;
 
-	NewPlayerCB newPlayerCB_;
+	NewPlayerCallback newPlayerCB_;
 	std::function<void()> worldUpdateCB_;
-
+	WorldRegistryCB worldRegistryCB_;
 
 #ifdef IS_LINUX
 
@@ -92,7 +86,6 @@ public:
 	typedef unordered_map< UdpConnectionPtr, ClientProxyPtr >	UdpConnToClientMap;
 	typedef std::shared_ptr< UdpConnToClientMap > UdpConnToClientMapPtr;
 
-	typedef std::shared_ptr< unordered_map< int, GameObjPtr > > NetIdToGameObjMapPtr;
 
 	void	SendPacket( const OutputBitStream& inOutputStream,
 		const UdpConnectionPtr& conn );
@@ -108,7 +101,6 @@ private:
 
 
 protected:
-	static AtomicInt32		kNewNetId;
 	MutexLock mutex_;
 public:
 	virtual void onConnection( const UdpConnectionPtr& conn );
@@ -120,7 +112,6 @@ private:
 		const UdpConnectionPtr& inUdpConnetction );
 protected:
 	THREAD_SHARED_VAR_DEF( protected, UdpConnToClientMap, udpConnToClientMap_, mutex_ );
-	THREAD_SHARED_VAR_DEF( protected, NetIdToGameObjMap, netIdToGameObjMap_, mutex_ );
 
 private:
 	static AtomicInt32		kNewPlayerId;
@@ -129,7 +120,6 @@ private:
 
 public:
 	virtual ~NetworkMgr() { UdpSockInterfc::CleanUp(); }
-
 
 	void	SendPacket( const OutputBitStream& inOutputStream,
 		const SockAddrInterfc& inSockAddr );
@@ -140,7 +130,6 @@ public:
 	bool	GetIsSimulatedJitter() const { return mWhetherToSimulateJitter; }
 
 	void	HandleConnectionReset( const SockAddrInterfc& inFromAddress );
-	void	ProcessIncomingPackets();
 private:
 	void	ProcessQueuedPackets();
 	void	ReadIncomingPacketsIntoQueue();
@@ -174,15 +163,13 @@ private:
 
 		float					mReceivedTime;
 		InputBitStream			mPacketBuffer;
-		SockAddrInterfc		mFromAddress;
+		SockAddrInterfc			mFromAddress;
 		UDPSocketPtr			mUDPSocket;
 	};
 	queue< ReceivedPacket, list< ReceivedPacket > >	mPacketQueue;
 
 protected:
 	UDPSocketPtr				mSocket;
-	static int					kNewNetId;
-	NetIdToGameObjMap			netIdToGameObjMap_;
 
 public:
 	virtual void ProcessPacket( InputBitStream& inInputStream,
@@ -203,11 +190,3 @@ private:
 #endif //IS_LINUX
 
 };
-
-
-inline GameObjPtr NetworkMgr::RegisterAndReturn( GameObj* inGameObject )
-{
-	GameObjPtr toRet( inGameObject );
-	RegistGameObjAndRetNetID( toRet );
-	return toRet;
-}

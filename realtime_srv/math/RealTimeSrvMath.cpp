@@ -21,12 +21,12 @@ float RealtimeSrvMath::GetRandomFloat()
 	//return static_cast< float >( rand() ) / static_cast< float >( RAND_MAX );
 }
 
-bool	RealtimeSrvMath::Is3DVectorEqual( const Vector3& inA, const Vector3& inB )
+bool RealtimeSrvMath::Is3DVectorEqual( const Vector3& inA, const Vector3& inB )
 {
 	return ( inA.X == inB.X && inA.Y == inB.Y && inA.Z == inB.Z );
 }
 
-bool	RealtimeSrvMath::Is2DVectorEqual( const Vector2& inA, const Vector2& inB )
+bool RealtimeSrvMath::Is2DVectorEqual( const Vector2& inA, const Vector2& inB )
 {
 	return ( inA.X == inB.X && inA.Y == inB.Y );
 }

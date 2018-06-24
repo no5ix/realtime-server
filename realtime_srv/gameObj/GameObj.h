@@ -3,52 +3,78 @@
 #define CLASS_IDENTIFICATION( inCode, inClass ) \
 enum { kClassId = inCode }; \
 virtual uint32_t GetClassId() const { return kClassId; } \
-static inClass* CreateInstance() { return static_cast< inClass* >( new inClass() ); } \
+
+class ClientProxy;
+class InputState;
 
 class GameObj
 {
 public:
 	// 'GOBJ' = 1196376650;
-	CLASS_IDENTIFICATION( 'GOBJ', GameObj )
+	CLASS_IDENTIFICATION( 1196376650, GameObj );
+
+	enum EReplicationState
+	{
+		EPS_Pose = 1 << 0,
+		EPS_AllState = EPS_Pose
+	};
+	virtual uint32_t GetAllStateMask() const { return EPS_AllState; }
 
 	GameObj();
 	virtual ~GameObj() {}
-	virtual uint32_t GetAllStateMask()	const { return 0; }
 
-	virtual uint32_t GetMaxSerializeSize() const{ return 0; }
+public:
+	virtual void Update();
 
-	virtual void	Update() {}
+	void			SetRotation( Vector3 inRotation )
+	{ currentRotation_ = inRotation; }
+	const Vector3&	GetRotation() const { return currentRotation_; }
 
-	virtual void	HandleDying() {}
+	const Vector3&	GetLocation() const { return currentLocation_; }
+	void			SetLocation( const Vector3& inLocation )
+	{ currentLocation_ = inLocation; }
 
-	void	SetIndexInWorld( int inIndex ) { mIndexInWorld = inIndex; }
-	int		GetIndexInWorld()				const { return mIndexInWorld; }
-
-	void	SetRotation( Vector3 inRotation ) { mRotation = inRotation; }
-	const Vector3&	GetRotation()					const { return mRotation; }
-
-	const Vector3&		GetLocation()				const { return mLocation; }
-	void		SetLocation( const Vector3& inLocation ) { mLocation = inLocation; }
+	shared_ptr< ClientProxy >	GetClientProxy() const
+	{ return clientProxy_.lock(); }
+	void SetClientProxy( shared_ptr< ClientProxy > cp )
+	{ clientProxy_ = cp; }
 
 	bool		DoesWantToDie()				const { return mDoesWantToDie; }
 	void		SetDoesWantToDie( bool inWants ) { mDoesWantToDie = inWants; }
 
-	int			GetNetworkId()				const { return mNetworkId; }
-	void		SetNetworkId( int inNetworkId );
+	int			GetObjId()				const { return ObjId_; }
+	void		SetObjId( int inObjId ) { ObjId_ = inObjId; }
 
-	virtual uint32_t	Write( OutputBitStream& inOutputStream, uint32_t inDirtyState ) const 
-	{ ( void )inOutputStream; ( void )inDirtyState; return 0; }
-	virtual void		Read( InputBitStream& inInputStream ) { ( void )inInputStream; }
+	int			GetPlayerId()				const { return ObjId_; }
+	void		SetPlayerId( int inPlayerId ) { ObjId_ = inPlayerId; }
+
+	virtual uint32_t	Write( OutputBitStream& inOutputStream, 
+		uint32_t inDirtyState ) const { return 0; }
+
+	virtual void		Read( InputBitStream& inInputStream ) {}
 
 protected:
 
-	bool											mDoesWantToDie;
+	virtual void SetOldState();
+	virtual bool IsStateDirty();
+	void SetStateDirty( uint32_t repState );
+	virtual void ProcessInput( float inDeltaTime,
+		const InputState& inInputState ) {}
 
-	int												mIndexInWorld;
-	int												mNetworkId;
+protected:
 
-	Vector3											mLocation;
-	Vector3											mRotation;
+	bool mDoesWantToDie;
+
+	int	ObjId_;
+	int	PlayerId_;
+
+	Vector3 currentLocation_;
+	Vector3 oldLocation_;
+
+	Vector3 currentRotation_;
+	Vector3 oldRotation_;
+
+	weak_ptr<ClientProxy> clientProxy_;
 };
 
 typedef shared_ptr< GameObj >	GameObjPtr;

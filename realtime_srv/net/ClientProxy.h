@@ -11,33 +11,38 @@ class ClientProxy
 {
 public:
 
-	int	GetPlayerId()		const { return mPlayerId; }
-	const std::string&		GetName()			const { return mName; }
+	int	GetPlayerId() const { return mPlayerId; }
+	const std::string& GetName()			const { return mName; }
+
 	void SetInputState( const InputState& inInputState ) { mInputState = inInputState; }
-	const InputState&		GetInputState()		const { return mInputState; }
+	const InputState& GetInputState()		const { return mInputState; }
 
-	void			UpdateLastPacketTime();
-	float			GetLastPacketFromClientTime()	const { return mLastPacketFromClientTime; }
+	void UpdateLastPacketTime();
+	float GetLastPacketFromClientTime()	const { return mLastPacketFromClientTime; }
 
-	DeliveryNotifyMgr&	GetDeliveryNotificationManager() { return mDeliveryNotificationManager; }
-	ReplicationMgr&		GetReplicationManager() { return mReplicationManagerServer; }
+	DeliveryNotifyMgr&	GetDeliveryNotifyManager() { return DeliveryNotifyManager_; }
+	ReplicationMgr&	GetReplicationManager() { return ReplicationManager_; }
 
-	const	ActionList&				GetUnprocessedMoveList() const { return mUnprocessedMoveList; }
-	ActionList&				GetUnprocessedMoveList() { return mUnprocessedMoveList; }
+	const ActionList& GetUnprocessedActionList() const { return mUnprocessedMoveList; }
+	ActionList&	 GetUnprocessedActionList() { return mUnprocessedMoveList; }
 
-	void	SetIsLastMoveTimestampDirty( bool inIsDirty ) { mIsLastMoveTimestampDirty = inIsDirty; }
-	bool	IsLastMoveTimestampDirty()						const { return mIsLastMoveTimestampDirty; }
+	void SetIsLastMoveTimestampDirty( bool inIsDirty )
+	{ mIsLastMoveTimestampDirty = inIsDirty; }
+	bool IsLastMoveTimestampDirty()	const { return mIsLastMoveTimestampDirty; }
 
-	bool	GetRecvingServerResetFlag() const { return mRecvingServerResetFlag; }
-	void	SetRecvingServerResetFlag( bool inRecvingServerResetFlag ) { mRecvingServerResetFlag = inRecvingServerResetFlag; }
+	bool GetRecvingServerResetFlag() const { return mRecvingServerResetFlag; }
+	void SetRecvingServerResetFlag( bool inRecvingServerResetFlag )
+	{ mRecvingServerResetFlag = inRecvingServerResetFlag; }
+
+	World* GetWorld() const { return world_; }
+	void SetWorld( World* const world ) { world_ = world; }
+
+	void SetGameObjStateDirty( int inNetworkId, uint32_t inDirtyState );
 
 private:
 
 	std::string			mName;
 	int				mPlayerId;
-
-	DeliveryNotifyMgr	mDeliveryNotificationManager;
-	ReplicationMgr	mReplicationManagerServer;
 
 	InputState		mInputState;
 
@@ -49,11 +54,15 @@ private:
 
 	bool			mRecvingServerResetFlag;
 
+	DeliveryNotifyMgr		DeliveryNotifyManager_;
+	ReplicationMgr			ReplicationManager_;
+	World*					world_;
+	NetworkMgr*				networkManager_;
 
 #ifdef IS_LINUX
 
 public:
-	ClientProxy(
+	ClientProxy( NetworkMgr* inNetworkManager,
 		const std::string& inName,
 		int inPlayerId,
 		const UdpConnectionPtr& inUdpConnection );
@@ -66,14 +75,11 @@ private:
 
 public:
 
-	ClientProxy(
+	ClientProxy( NetworkMgr* inNetworkManager,
 		const SockAddrInterfc& inSocketAddress,
 		const std::string& inName,
 		int inPlayerId,
-		const UDPSocketPtr& inUDPSocket
-		// ,
-		// const std::shared_ptr<UdpConnection>& inUdpConnection	
-	);
+		const UDPSocketPtr& inUDPSocket );
 
 	const SockAddrInterfc& GetSocketAddress() const { return mSocketAddress; }
 	UDPSocketPtr GetUDPSocket() const { return mUDPSocket; }
@@ -88,3 +94,4 @@ private:
 };
 
 typedef shared_ptr< ClientProxy >	ClientProxyPtr;
+typedef weak_ptr<ClientProxy>	ClientProxyWPtr;

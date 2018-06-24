@@ -1,5 +1,5 @@
 
-class ReplicationMgr;
+class ClientProxy;
 
 class DeliveryNotifyMgr
 {
@@ -10,7 +10,7 @@ public:
 	~DeliveryNotifyMgr();
 	
 	inline	InFlightPacket*		WriteState( OutputBitStream& inOutputStream, 
-		ReplicationMgr* inRepMgr, NetworkMgr* inNetworkMgr );
+		ClientProxy* inClientProxy );
 	inline bool					ReadAndProcessState( InputBitStream& inInputStream );
 	
 	void						ProcessTimedOutPackets();
@@ -25,7 +25,7 @@ private:
 	
 	
 	InFlightPacket*		WriteSequenceNumber( OutputBitStream& inOutputStream, 
-		ReplicationMgr* inRepMgr, NetworkMgr* inNetworkMgr );
+		ClientProxy* inClientProxy );
 	
 	bool				ProcessSequenceNumber( InputBitStream& inInputStream );
 	
@@ -54,9 +54,9 @@ protected:
 
 
 inline InFlightPacket* DeliveryNotifyMgr::WriteState( OutputBitStream& inOutputStream, 
-	ReplicationMgr* inRepMgr, NetworkMgr* inNetworkMgr )
+	ClientProxy* inClientProxy )
 {
-	InFlightPacket* toRet = WriteSequenceNumber( inOutputStream, inRepMgr, inNetworkMgr );
+	InFlightPacket* toRet = WriteSequenceNumber( inOutputStream, inClientProxy );
 	if( mShouldSendAcks )
 	{
 		mAckBitField->Write( inOutputStream );

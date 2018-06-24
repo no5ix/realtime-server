@@ -33,7 +33,7 @@ DeliveryNotifyMgr::~DeliveryNotifyMgr()
 }
 
 InFlightPacket* DeliveryNotifyMgr::WriteSequenceNumber( OutputBitStream& inOutputStream, 
-	ReplicationMgr* inRepMgr, NetworkMgr* inNetworkMgr )
+	ClientProxy* inClientProxy )
 {
 
 	PacketSN sequenceNumber = mNextOutgoingSequenceNumber++;
@@ -43,7 +43,7 @@ InFlightPacket* DeliveryNotifyMgr::WriteSequenceNumber( OutputBitStream& inOutpu
 
 	if ( mShouldProcessAcks )
 	{
-		mInFlightPackets.emplace_back( sequenceNumber, inRepMgr, inNetworkMgr );
+		mInFlightPackets.emplace_back( sequenceNumber, inClientProxy );
 
 		return &mInFlightPackets.back();
 	}

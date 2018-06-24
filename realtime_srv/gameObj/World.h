@@ -3,47 +3,46 @@
 #ifdef IS_LINUX
 
 #include <muduo/base/Mutex.h>
+#include <muduo/base/Atomic.h>
 
 using namespace muduo;
 #endif //IS_LINUX
 
+class GameObj;
 class World
 {
 public:
+	typedef unordered_map< int, GameObjPtr > NetIdToGameObjMap;
+	typedef std::shared_ptr< unordered_map< int, GameObjPtr > > NetIdToGameObjMapPtr;
+	typedef std::function<void( GameObjPtr, ReplicationAction )> NotifyAllClientCB;
 
-	static void StaticInit();
-
-	static std::unique_ptr< World >		sInstance;
-
-	void AddGameObject( GameObjPtr inGameObject );
-	void RemoveGameObject( GameObjPtr inGameObject );
-
+	World();
 	void Update();
 
+	void SetNotifyAllClientCallBack( const NotifyAllClientCB& cb )
+	{ notifyAllClientCB_ = cb; }
+
+	GameObjPtr GetGameObject( int inNetworkId );
+	void Registry( GameObjPtr inGameObject, ReplicationAction inAction );
+	void RegistGameObj( GameObjPtr inGameObject );
+	void UnregistGameObj( GameObjPtr inGameObject );
+
 private:
-	World();
+	int	GetNewObjId();
+
+private:
+	NotifyAllClientCB notifyAllClientCB_;
 
 #ifdef IS_LINUX
-
-	typedef std::set< GameObjPtr > GameObjs;
-	typedef std::shared_ptr< GameObjs > GameObjectsPtr;
-public:
-	//GameObjectsPtr GetGameObjects();
-	//void GameObjectsCOW();
-
-private:
-	//GameObjectsPtr GameObjects_;
-	THREAD_SHARED_VAR_DEF( private, GameObjs, GameObjects_, mutex_ );
 	MutexLock mutex_;
+	static AtomicInt32		kNewObjId;
+	THREAD_SHARED_VAR_DEF( private, NetIdToGameObjMap, netIdToGameObjMap_, mutex_ );
 
 #else //IS_LINUX
 
-public:
-	const std::vector< GameObjPtr >& GetGameObjects() const 
-	{ return GameObjects_; }
-
 private:
-	std::vector< GameObjPtr >	GameObjects_;
+	NetIdToGameObjMap			netIdToGameObjMap_;
+	static int					kNewObjId;
 
 #endif //IS_LINUX
 

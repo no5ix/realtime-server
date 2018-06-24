@@ -1,13 +1,14 @@
 #pragma once
 
-class NetworkMgr;
 
 class ReplicationMgr
 {
 public:
+	ReplicationMgr( ClientProxy* clientProxy ) : owner_( clientProxy ) {}
+public:
 	void ReplicateCreate( int inNetworkId, uint32_t inInitialDirtyState );
 	void ReplicateDestroy( int inNetworkId );
-	void SetStateDirty( int inNetworkId, uint32_t inDirtyState );
+	void SetReplicationStateDirty( int inNetworkId, uint32_t inDirtyState );
 	void RemoveFromReplication( int inNetworkId );
 	void HandleCreateAckd( int inNetworkId );
 
@@ -16,11 +17,14 @@ public:
 private:
 
 	uint32_t WriteCreateAction( OutputBitStream& inOutputStream, 
-		int inNetworkId, uint32_t inDirtyState, NetworkMgr* inNetworkMgr );
+		int inNetworkId, uint32_t inDirtyState );
 	uint32_t WriteUpdateAction( OutputBitStream& inOutputStream, 
-		int inNetworkId, uint32_t inDirtyState, NetworkMgr* inNetworkMgr );
+		int inNetworkId, uint32_t inDirtyState );
 	uint32_t WriteDestroyAction( OutputBitStream& inOutputStream, 
-		int inNetworkId, uint32_t inDirtyState, NetworkMgr* inNetworkMgr );
+		int inNetworkId, uint32_t inDirtyState );
 
+private:
 	unordered_map< int, ReplicationCmd >	mNetworkIdToReplicationCommand;
+
+	ClientProxy* owner_;
 };

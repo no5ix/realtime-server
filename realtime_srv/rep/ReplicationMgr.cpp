@@ -17,7 +17,7 @@ void ReplicationMgr::RemoveFromReplication( int inNetworkId )
 	mNetworkIdToReplicationCommand.erase( inNetworkId );
 }
 
-void ReplicationMgr::SetStateDirty( int inNetworkId, uint32_t inDirtyState )
+void ReplicationMgr::SetReplicationStateDirty( int inNetworkId, uint32_t inDirtyState )
 {
 	mNetworkIdToReplicationCommand[inNetworkId].AddDirtyState( inDirtyState );
 }
@@ -49,15 +49,15 @@ void ReplicationMgr::Write( OutputBitStream& inOutputStream, InFlightPacket* inI
 			{
 			case RA_Create:
 				writtenState = WriteCreateAction( inOutputStream,
-					networkId, dirtyState, inInFlightPacket->getNetworkMgr() );
+					networkId, dirtyState );
 				break;
 			case RA_Update:
 				writtenState = WriteUpdateAction( inOutputStream,
-					networkId, dirtyState, inInFlightPacket->getNetworkMgr() );
+					networkId, dirtyState );
 				break;
 			case RA_Destroy:
 				writtenState = WriteDestroyAction( inOutputStream,
-					networkId, dirtyState, inInFlightPacket->getNetworkMgr() );
+					networkId, dirtyState );
 				break;
 			default:
 				break;
@@ -77,18 +77,18 @@ void ReplicationMgr::Write( OutputBitStream& inOutputStream, InFlightPacket* inI
 
 
 uint32_t ReplicationMgr::WriteCreateAction( OutputBitStream& inOutputStream, 
-	int inNetworkId, uint32_t inDirtyState, NetworkMgr* inNetworkMgr )
+	int inNetworkId, uint32_t inDirtyState )
 {
-	GameObjPtr gameObject = inNetworkMgr->GetGameObject( inNetworkId );
+	GameObjPtr gameObject = owner_->GetWorld()->GetGameObject( inNetworkId );
 	
 	inOutputStream.Write( gameObject->GetClassId() );
 	return gameObject->Write( inOutputStream, inDirtyState );
 }
 
 uint32_t ReplicationMgr::WriteUpdateAction( OutputBitStream& inOutputStream, 
-	int inNetworkId, uint32_t inDirtyState, NetworkMgr* inNetworkMgr )
+	int inNetworkId, uint32_t inDirtyState )
 {
-	GameObjPtr gameObject = inNetworkMgr->GetGameObject( inNetworkId );
+	GameObjPtr gameObject = owner_->GetWorld()->GetGameObject( inNetworkId );
 
 	uint32_t writtenState = gameObject->Write( inOutputStream, inDirtyState );
 
@@ -96,7 +96,7 @@ uint32_t ReplicationMgr::WriteUpdateAction( OutputBitStream& inOutputStream,
 }
 
 uint32_t ReplicationMgr::WriteDestroyAction( OutputBitStream& inOutputStream, 
-	int inNetworkId, uint32_t inDirtyState, NetworkMgr* inNetworkMgr )
+	int inNetworkId, uint32_t inDirtyState )
 {
 	( void )inOutputStream;
 	( void )inNetworkId;

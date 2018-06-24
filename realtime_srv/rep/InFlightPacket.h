@@ -5,12 +5,10 @@ class ReplicationMgr;
 class InFlightPacket
 {
 public:
-	InFlightPacket( PacketSN inSequenceNumber, ReplicationMgr* inRepMgr, 
-		NetworkMgr* inNetworkMgr );
+	InFlightPacket( PacketSN inSequenceNumber, ClientProxy* inClientProxy );
 	
 	PacketSN GetSequenceNumber() const	{ return mSequenceNumber; }
 	float GetTimeDispatched() const	{ return mTimeDispatched; }
-	NetworkMgr* getNetworkMgr() const{ return NetworkMgr_; }
 public:
 
 	class ReplicationTransmission
@@ -46,12 +44,12 @@ private:
 	void HandleCreateDeliverySuccess( int inNetworkId ) const;
 	void HandleDestroyDeliverySuccess( int inNetworkId ) const;
 
+private:
 	ReplicationMgr*	mReplicationManager;
 
 	vector< ReplicationTransmission >		mTransmissions;
 
-private:
 	PacketSN	mSequenceNumber;
 	float		mTimeDispatched;
-	NetworkMgr* NetworkMgr_;
+	ClientProxy* owner_;
 };

@@ -5,53 +5,40 @@
 
 Character::Character() :
 	GameObj(),
-	mPlayerId( 0 ),
-	mIsShooting( false ),
-	mHealth( 10 ),
 	BaseTurnRate( 2.f ),
 	BaseLookUpRate( 2.f ),
 	MaxSpeed( 440.f ),
 	Acceleration( 1000.f ),
 	Deceleration( 2000.f ),
 	TurningBoost( 8.0f ),
-	CameraRotation_( Vector3::Zero() ),
-	Velocity( Vector3::Zero() ),
-	mTimeOfNextShot( 0.f ),
-	mTimeBetweenShots( 0.2f )
+	curCameraRotation_( Vector3::Zero() ),
+	oldCameraRotation_( Vector3::Zero() ),
+	oldrentVelocity_( Vector3::Zero() ),
+	currentVelocity_( Vector3::Zero() )
+{}
+
+
+void Character::SetOldState()
 {
-	//SetCollisionRadius( 0.5f );
+	GameObj::SetOldState();
+	oldrentVelocity_ = currentVelocity_;
+	oldCameraRotation_ = curCameraRotation_;
+}
+
+bool Character::IsStateDirty()
+{
+	return GameObj::IsStateDirty()
+		|| !RealtimeSrvMath::Is3DVectorEqual( oldrentVelocity_, currentVelocity_ )
+		|| !RealtimeSrvMath::Is3DVectorEqual( oldCameraRotation_, curCameraRotation_ );
 }
 
 void Character::Update()
 {
-	Vector3 oldLocation = GetLocation();
-	Vector3 oldVelocity = GetVelocity();
-	Vector3 oldRotation = GetRotation();
-
-	ClientProxyPtr client = NetworkMgr::sInstance->GetClientProxy( GetPlayerId() );
-	if ( client )
+	SetOldState();
+	GameObj::Update();
+	if ( IsStateDirty() )
 	{
-		ActionList& moveList = client->GetUnprocessedMoveList();
-		for ( const Action& unprocessedMove : moveList )
-		{
-			const InputState& currentState = unprocessedMove.GetInputState();
-			float deltaTime = unprocessedMove.GetDeltaTime();
-			ProcessInput( deltaTime, currentState );
-			SimulateMovement( deltaTime );
-
-			//LOG( " CharacterServer::SimulateMovement() GetPlayerId = %d", GetPlayerId() );
-		}
-
-		moveList.Clear();
-	}
-
-	//HandleShooting();
-	if ( !RealtimeSrvMath::Is3DVectorEqual( oldLocation, GetLocation() ) ||
-		!RealtimeSrvMath::Is3DVectorEqual( oldVelocity, GetVelocity() ) ||
-		!RealtimeSrvMath::Is3DVectorEqual( oldRotation, GetRotation() )
-		)
-	{
-		NetworkMgr::sInstance->SetStateDirty( GetNetworkId(), ECRS_Pose );
+		SetStateDirty( EPS_Pose );
 	}
 }
 
@@ -59,77 +46,45 @@ uint32_t Character::Write( OutputBitStream& inOutputStream, uint32_t inDirtyStat
 {
 	uint32_t writtenState = 0;
 
-	if ( inDirtyState & ECRS_PlayerId )
+	if ( inDirtyState & EPS_PlayerId )
 	{
 		inOutputStream.Write( ( bool )true );
 		inOutputStream.Write( GetPlayerId() );
 
-		writtenState |= ECRS_PlayerId;
+		writtenState |= EPS_PlayerId;
 	}
 	else
 	{
 		inOutputStream.Write( ( bool )false );
 	}
-
-	if ( inDirtyState & ECRS_Pose )
+	if ( inDirtyState & EPS_Pose )
 	{
 		inOutputStream.Write( ( bool )true );
 
-		inOutputStream.Write( Velocity );
 		inOutputStream.Write( GetLocation() );
 		inOutputStream.Write( GetRotation() );
+		inOutputStream.Write( GetVelocity() );
 		inOutputStream.Write( GetCameraRotation() );
 
-		writtenState |= ECRS_Pose;
+		writtenState |= EPS_Pose;
 	}
 	else
 	{
 		inOutputStream.Write( ( bool )false );
 	}
-
 	return writtenState;
 }
 
-void Character::HandleDying()
-{
-	NetworkMgr::sInstance->UnregistGameObjAndRetNetID( this );
-}
-
-void Character::HandleShooting()
-{}
-
-void Character::TakeDamage( int inDamagingPlayerId )
-{}
-
 void Character::ProcessInput( float inDeltaTime, const InputState& inInputState )
 {
-	//process our input....
+	currentRotation_ = inInputState.GetDesiredTurnRot();
+	curCameraRotation_ = inInputState.GetDesiredLookUpRot();
 
-	//Vector3 newRot( GetRotation() );
-	//mRotation.Y += ( BaseTurnRate * inInputState.GetDesiredTurnAmount() );
-	mRotation = inInputState.GetDesiredTurnRot();
-	//SetRotation( newRot );
-
-	//ActionPawnCameraRotation.Y = mRotation.Y;
-	//ActionPawnCameraRotation.Z = mRotation.Z;
-	//ActionPawnCameraRotation.X = ActionServerMath::Clamp( 
-	//	( ActionPawnCameraRotation.X + ( -1 * BaseLookUpRate * inInputState.GetDesiredLookUpAmount() ) ),
-	//	-89.f, 
-	//	89.f );
-	CameraRotation_ = inInputState.GetDesiredLookUpRot();
-
-	ActionAddMovementInput( CameraRotation_.ToQuaternion() * Vector3::Forward(), inInputState.GetDesiredMoveForwardAmount() );
-	ActionAddMovementInput( CameraRotation_.ToQuaternion() * Vector3::Right(), inInputState.GetDesiredMoveRightAmount() );
-
-
+	ActionAddMovementInput( curCameraRotation_.ToQuaternion() * Vector3::Forward(), inInputState.GetDesiredMoveForwardAmount() );
+	ActionAddMovementInput( curCameraRotation_.ToQuaternion() * Vector3::Right(), inInputState.GetDesiredMoveRightAmount() );
 	ApplyControlInputToVelocity( inDeltaTime );
-}
 
-void Character::SimulateMovement( float inDeltaTime )
-{
-	// Move actor
-	Vector3 Delta = Velocity * inDeltaTime;
-
+	Vector3 Delta = currentVelocity_ * inDeltaTime;
 	if ( !Delta.IsNearlyZero( 1e-6f ) )
 	{
 		SetLocation( GetLocation() + Delta );
@@ -143,7 +98,7 @@ bool Character::IsExceedingMaxSpeed( float inMaxSpeed ) const
 
 	// Allow 1% error tolerance, to account for numeric imprecision.
 	const float OverVelocityPercent = 1.01f;
-	return ( Velocity.SizeSquared() > MaxSpeedSquared * OverVelocityPercent );
+	return ( currentVelocity_.SizeSquared() > MaxSpeedSquared * OverVelocityPercent );
 }
 
 void Character::ActionAddMovementInput( Vector3 WorldDirection, float ScaleValue /*= 1.0f*/ )
@@ -175,36 +130,36 @@ void Character::ApplyControlInputToVelocity( float DeltaTime )
 	if ( AnalogInputModifier > 0.f && !bExceedingMaxSpeed )
 	{
 		// Apply change in velocity direction
-		if ( Velocity.SizeSquared() > 0.f )
+		if ( currentVelocity_.SizeSquared() > 0.f )
 		{
 			// Change direction faster than only using acceleration, but never increase velocity magnitude.
 			const float TimeScale = RealtimeSrvMath::Clamp( DeltaTime * TurningBoost, 0.f, 1.f );
-			Velocity = Velocity + ( ControlAcceleration * Velocity.Size() - Velocity ) * TimeScale;
+			currentVelocity_ = currentVelocity_ + ( ControlAcceleration * currentVelocity_.Size() - currentVelocity_ ) * TimeScale;
 		}
 	}
 	else
 	{
 		// Dampen velocity magnitude based on deceleration.
-		if ( Velocity.SizeSquared() > 0.f )
+		if ( currentVelocity_.SizeSquared() > 0.f )
 		{
-			const Vector3 OldVelocity = Velocity;
-			const float VelSize = RealtimeSrvMath::Max( Velocity.Size() - RealtimeSrvMath::Abs( Deceleration ) * DeltaTime, 0.f );
-			Velocity = Velocity.GetSafeNormal() * VelSize;
+			const Vector3 OldVelocity = currentVelocity_;
+			const float VelSize = RealtimeSrvMath::Max( currentVelocity_.Size() - RealtimeSrvMath::Abs( Deceleration ) * DeltaTime, 0.f );
+			currentVelocity_ = currentVelocity_.GetSafeNormal() * VelSize;
 
 			// Don't allow braking to lower us below max speed if we started above it.
-			if ( bExceedingMaxSpeed && Velocity.SizeSquared() < RealtimeSrvMath::Square( MaxPawnSpeed ) )
+			if ( bExceedingMaxSpeed && currentVelocity_.SizeSquared() < RealtimeSrvMath::Square( MaxPawnSpeed ) )
 			{
-				Velocity = OldVelocity.GetSafeNormal() * MaxPawnSpeed;
+				currentVelocity_ = OldVelocity.GetSafeNormal() * MaxPawnSpeed;
 			}
 		}
 	}
 
 	// Apply acceleration and clamp velocity magnitude.
-	const float NewMaxSpeed = ( IsExceedingMaxSpeed( MaxPawnSpeed ) ) ? Velocity.Size() : MaxPawnSpeed;
-	Velocity += ControlAcceleration * RealtimeSrvMath::Abs( Acceleration ) * DeltaTime;
-	Velocity = Velocity.GetClampedToMaxSize( NewMaxSpeed );
+	const float NewMaxSpeed = ( IsExceedingMaxSpeed( MaxPawnSpeed ) ) ? currentVelocity_.Size() : MaxPawnSpeed;
+	currentVelocity_ += ControlAcceleration * RealtimeSrvMath::Abs( Acceleration ) * DeltaTime;
+	currentVelocity_ = currentVelocity_.GetClampedToMaxSize( NewMaxSpeed );
 
-	Velocity.Z = 0.f;
+	currentVelocity_.Z = 0.f;
 
 	ActionConsumeMovementInputVector();
 }

@@ -18,16 +18,7 @@ namespace RealtimeSrvHelper
 	bool ChunkPacketIDGreaterThanOrEqual( ChunkPacketID s1, ChunkPacketID s2 );
 	bool ChunkPacketIDGreaterThan( ChunkPacketID s1, ChunkPacketID s2 );
 
-
-#ifdef IS_LINUX
-	int BecomeDaemon();
-#endif
-
-	void SimulateRealWorld(
-		uint8_t LatencyCmdIndex,
-		uint8_t dropPacketChanceCmdIndex = 0,
-		uint8_t JitterCmdIndex = 0 );
-
+	bool BecomeDaemon();
 }
 
 #define LOG( ... ) RealtimeSrvHelper::Log( __VA_ARGS__ );
