@@ -1,5 +1,8 @@
 #include "realtime_srv/common/RealtimeSrvShared.h"
 
+using namespace realtime_srv;
+using namespace realtime_srv::RealtimeSrvHelper;
+
 
 #ifndef IS_WIN
 const char** __argv;
@@ -44,12 +47,6 @@ std::string RealtimeSrvHelper::Sprintf( const char* inFormat, ... )
 #endif
 	return std::string( temp );
 }
-
-// void RealTimeSrvHelper::Log( const char* inFormat )
-// {
-// 	OutputDebugString( inFormat );
-// 	OutputDebugString( "\n" );
-// }
 
 void RealtimeSrvHelper::Log( const char* inFormat, ... )
 {
@@ -99,7 +96,7 @@ bool RealtimeSrvHelper::ChunkPacketIDGreaterThan( ChunkPacketID s1, ChunkPacketI
 		( ( s1 < s2 ) && ( s2 - s1 > HALF_MAX_CHUNK_PACKET_ID ) );
 }
 
-bool RealtimeSrvHelper::BecomeDaemonOnLinux()
+bool RealtimeSrvHelper::DaemonizeOnLinux()
 {
 #ifndef IS_LINUX
 

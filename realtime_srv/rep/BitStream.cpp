@@ -1,6 +1,6 @@
 #include "realtime_srv/common/RealtimeSrvShared.h"
 
-
+using namespace realtime_srv;
 
 void OutputBitStream::SliceTo( OutputBitStream& refOutputBitStream, uint8_t inData, uint32_t inBitCount  )
 {

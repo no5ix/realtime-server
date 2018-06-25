@@ -1,5 +1,6 @@
 #include "realtime_srv/common/RealtimeSrvShared.h"
 
+using namespace realtime_srv;
 
 bool Action::Write( OutputBitStream& inOutputStream ) const
 {

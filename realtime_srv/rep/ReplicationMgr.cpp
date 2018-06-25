@@ -1,5 +1,6 @@
 #include "realtime_srv/common/RealtimeSrvShared.h"
 
+using namespace realtime_srv;
 
 
 void ReplicationMgr::ReplicateCreate( int inNetworkId, uint32_t inInitialDirtyState )

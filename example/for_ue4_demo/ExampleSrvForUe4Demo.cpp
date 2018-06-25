@@ -5,11 +5,11 @@
 using namespace realtime_srv;
 
 
-class ExampleSrvForUe4Demo : realtime_srv::noncopyable
+class ExampleSrvForUe4Demo : noncopyable
 {
 public:
-	ExampleSrvForUe4Demo( bool WhetherTobecomeDaemonOnLinux = false )
-		: server_( WhetherTobecomeDaemonOnLinux )
+	ExampleSrvForUe4Demo( bool willDaemonizeOnLinux = false )
+		: server_( willDaemonizeOnLinux )
 	{}
 
 	void Run()
@@ -24,18 +24,19 @@ public:
 		const uint8_t SimulateDropPacketChanceCmdIndexOnWindows = 3;
 		const uint8_t SimulateJitterCmdIndexOnWindows = 4;
 
-		NewPlayerCallback newPlayerCb = std::bind(
-			&ExampleSrvForUe4Demo::SpawnNewCharacterForPlayer,
-			this, _1 );
-
-		server_.Run( newPlayerCb );
 		server_.SimulateRealWorldOnWindows(
 			SimulateLatencyCmdIndexOnWindows,
 			SimulateDropPacketChanceCmdIndexOnWindows,
 			SimulateJitterCmdIndexOnWindows );
+
+		NewPlayerCallback newPlayerCb = std::bind(
+			&ExampleSrvForUe4Demo::SpawnNewCharacterForPlayer,
+			this);
+
+		server_.Run( newPlayerCb );
 	}
 
-	GameObjPtr SpawnNewCharacterForPlayer( ClientProxyPtr newClientProxy )
+	GameObjPtr SpawnNewCharacterForPlayer()
 	{
 		GameObjPtr newGameObj = Character::StaticCreate();
 		CharacterPtr character = std::static_pointer_cast< Character >( newGameObj );
@@ -65,10 +66,11 @@ int main( int argc, const char** argv )
 
 	// 在Linux上, 加上一个命令行参数 1 即可变为守护进程,   
 	// 如:	   ./rs_example_for_ue4_demo  1
-	const uint8_t becomeDaemonCmdIndexOnLinux = 1;
-	bool whetherTobecomeDaemonOnLinux = RealtimeSrvHelper::GetCommandLineArg(
-		becomeDaemonCmdIndexOnLinux ) == "1";
+	// 不加即为前台运行
+	const uint8_t DaemonizeCmdIndexOnLinux = 1;
+	bool willDaemonizeOnLinux = RealtimeSrvHelper::GetCommandLineArg(
+		DaemonizeCmdIndexOnLinux ) == "1";
 
-	ExampleSrvForUe4Demo exmaple_server( whetherTobecomeDaemonOnLinux );
+	ExampleSrvForUe4Demo exmaple_server( willDaemonizeOnLinux );
 	exmaple_server.Run();
 }

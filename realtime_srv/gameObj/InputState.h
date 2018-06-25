@@ -2,73 +2,76 @@
 
 #pragma once
 
-
-class InputState
+namespace realtime_srv
 {
-public:
 
-	InputState() :
-		mDesiredMoveForwardAmount( 0.f ),
-		mDesiredMoveRightAmount( 0.f ),
+	class InputState
+	{
+	public:
 
-		mDesiredTurnAmountX( 0.f ),
-		mDesiredTurnAmountY( 0.f ),
-		mDesiredTurnAmountZ( 0.f ),
+		InputState() :
+			mDesiredMoveForwardAmount( 0.f ),
+			mDesiredMoveRightAmount( 0.f ),
 
-		mDesiredLookUpAmountX( 0.f ),
-		mDesiredLookUpAmountY( 0.f ),
-		mDesiredLookUpAmountZ( 0.f ),
+			mDesiredTurnAmountX( 0.f ),
+			mDesiredTurnAmountY( 0.f ),
+			mDesiredTurnAmountZ( 0.f ),
 
-		mDesiredTurnRateAmount( 0.f ),
-		mDesiredLookUpRateAmount( 0.f ),
+			mDesiredLookUpAmountX( 0.f ),
+			mDesiredLookUpAmountY( 0.f ),
+			mDesiredLookUpAmountZ( 0.f ),
 
-		mDesiredOnStartJumpAmount( 0.f ),
-		mDesiredOnStopJumpAmount( 0.f ),
+			mDesiredTurnRateAmount( 0.f ),
+			mDesiredLookUpRateAmount( 0.f ),
 
-		mDesiredMoveUpAmount( 0.f ),
+			mDesiredOnStartJumpAmount( 0.f ),
+			mDesiredOnStopJumpAmount( 0.f ),
 
-		mIsShooting( false )
-	{}
+			mDesiredMoveUpAmount( 0.f ),
 
-	float GetDesiredMoveForwardAmount()	const { return mDesiredMoveForwardAmount; }
-	float GetDesiredMoveRightAmount()	const { return mDesiredMoveRightAmount; }
+			mIsShooting( false )
+		{}
 
-	Vector3 GetDesiredTurnRot()	const { return Vector3( mDesiredTurnAmountX, mDesiredTurnAmountY, mDesiredTurnAmountZ ); }
-	Vector3 GetDesiredLookUpRot()	const { return Vector3( mDesiredLookUpAmountX, mDesiredLookUpAmountY, mDesiredLookUpAmountZ ); }
+		float GetDesiredMoveForwardAmount()	const { return mDesiredMoveForwardAmount; }
+		float GetDesiredMoveRightAmount()	const { return mDesiredMoveRightAmount; }
 
-	float GetDesiredTurnRateAmount()	const { return mDesiredTurnRateAmount; }
-	float GetDesiredLookUpRateAmount()	const { return mDesiredLookUpRateAmount; }
+		Vector3 GetDesiredTurnRot()	const { return Vector3( mDesiredTurnAmountX, mDesiredTurnAmountY, mDesiredTurnAmountZ ); }
+		Vector3 GetDesiredLookUpRot()	const { return Vector3( mDesiredLookUpAmountX, mDesiredLookUpAmountY, mDesiredLookUpAmountZ ); }
 
-	float GetDesiredOnStartJumpAmount()	const { return mDesiredOnStartJumpAmount; }
-	float GetDesiredOnStopJumpAmount()	const { return mDesiredOnStopJumpAmount; }
+		float GetDesiredTurnRateAmount()	const { return mDesiredTurnRateAmount; }
+		float GetDesiredLookUpRateAmount()	const { return mDesiredLookUpRateAmount; }
 
-	float GetDesiredOnMoveUpAmount()	const { return mDesiredMoveUpAmount; }
+		float GetDesiredOnStartJumpAmount()	const { return mDesiredOnStartJumpAmount; }
+		float GetDesiredOnStopJumpAmount()	const { return mDesiredOnStopJumpAmount; }
 
-	bool  IsShooting()					const { return mIsShooting; }
+		float GetDesiredOnMoveUpAmount()	const { return mDesiredMoveUpAmount; }
 
-	bool Write( OutputBitStream& inOutputStream ) const;
-	bool Read( InputBitStream& inInputStream );
+		bool  IsShooting()					const { return mIsShooting; }
 
-protected:
+		bool Write( OutputBitStream& inOutputStream ) const;
+		bool Read( InputBitStream& inInputStream );
 
-	float	mDesiredMoveForwardAmount;
-	float	mDesiredMoveRightAmount;
+	protected:
 
-	float	mDesiredTurnAmountX;
-	float	mDesiredTurnAmountY;
-	float	mDesiredTurnAmountZ;
+		float	mDesiredMoveForwardAmount;
+		float	mDesiredMoveRightAmount;
 
-	float   mDesiredLookUpAmountX;
-	float   mDesiredLookUpAmountY;
-	float   mDesiredLookUpAmountZ;
+		float	mDesiredTurnAmountX;
+		float	mDesiredTurnAmountY;
+		float	mDesiredTurnAmountZ;
 
-	float	mDesiredTurnRateAmount;
-	float	mDesiredLookUpRateAmount;
+		float   mDesiredLookUpAmountX;
+		float   mDesiredLookUpAmountY;
+		float   mDesiredLookUpAmountZ;
 
-	float	mDesiredOnStartJumpAmount;
-	float	mDesiredOnStopJumpAmount;
+		float	mDesiredTurnRateAmount;
+		float	mDesiredLookUpRateAmount;
 
-	float	mDesiredMoveUpAmount;
+		float	mDesiredOnStartJumpAmount;
+		float	mDesiredOnStopJumpAmount;
 
-	bool	mIsShooting;
-};
+		float	mDesiredMoveUpAmount;
+
+		bool	mIsShooting;
+	};
+}

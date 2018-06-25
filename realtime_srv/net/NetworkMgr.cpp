@@ -1,7 +1,7 @@
 #include "realtime_srv/common/RealtimeSrvShared.h"
 #include <time.h>
 
-
+using namespace realtime_srv;
 
 
 namespace
@@ -9,6 +9,8 @@ namespace
 	const float kTimeBetweenStatePackets = 0.033f;
 	const float kClientDisconnectTimeout = 6.f;
 }
+
+
 
 #ifdef IS_LINUX
 
@@ -123,7 +125,7 @@ void NetworkMgr::HandlePacketFromNewClient( InputBitStream& inInputStream,
 			( *udpConnToClientMap_ )[inUdpConnetction] = newClientProxy;
 		}
 
-		GameObjPtr newGameObj = newPlayerCB_( newClientProxy );
+		GameObjPtr newGameObj = newPlayerCB_();
 		newGameObj->SetClientProxy( newClientProxy );
 		newGameObj->SetPlayerId( newClientProxy->GetPlayerId() );
 		worldRegistryCB_( newGameObj, RA_Create );
@@ -137,7 +139,7 @@ void NetworkMgr::HandlePacketFromNewClient( InputBitStream& inInputStream,
 			// Server reset
 			newClientProxy->SetRecvingServerResetFlag( true );
 			SendGamePacket( newClientProxy, kResetCC );
-			LOG( "SendResetPacket", 0 );
+			LOG( "SendResetPacket" );
 		}
 
 		LOG( "a new client named '%s' as PlayerID %d ",
@@ -170,7 +172,7 @@ void NetworkMgr::NotifyAllClient( GameObjPtr inGameObject, ReplicationAction inA
 				inGameObject->GetObjId(), inGameObject->GetAllStateMask() );
 			break;
 		case RA_Destroy:
-			pair.second->GetReplicationManager().ReplicateDestroy( 
+			pair.second->GetReplicationManager().ReplicateDestroy(
 				inGameObject->GetObjId() );
 			break;
 		default:
@@ -238,12 +240,13 @@ void NetworkMgr::SetRepStateDirty( int inNetworkId, uint32_t inDirtyState )
 		GET_THREAD_SHARED_VAR( udpConnToClientMap_ );
 	for ( const auto& pair : *tempUdpConnToClientMap )
 	{
-		pair.second->GetReplicationManager().SetReplicationStateDirty( 
+		pair.second->GetReplicationManager().SetReplicationStateDirty(
 			inNetworkId, inDirtyState );
 	}
 }
 
 #else
+
 int NetworkMgr::kNewPlayerId = 1;
 
 NetworkMgr::NetworkMgr() :
@@ -281,7 +284,7 @@ void NetworkMgr::ReadIncomingPacketsIntoQueue()
 		int readByteCount = mSocket->ReceiveFrom( packetMem, packetSize, fromAddress );
 		if ( readByteCount == 0 )
 		{
-			//LOG( "ReadIncomingPacketsIntoQueue readByteCount = %d ", 0 );
+			//LOG( "ReadIncomingPacketsIntoQueue readByteCount = %d " );
 			break;
 		}
 		else if ( readByteCount == -WSAECONNRESET )
@@ -305,7 +308,7 @@ void NetworkMgr::ReadIncomingPacketsIntoQueue()
 			}
 			else
 			{
-				//LOG( "Dropped packet!", 0 );
+				//LOG( "Dropped packet!" );
 			}
 		}
 		else
@@ -426,7 +429,7 @@ void NetworkMgr::HandlePacketFromNewClient( InputBitStream& inInputStream,
 		int newPlayerId = newClientProxy->GetPlayerId();
 		addrToClientMap_[inFromAddress] = newClientProxy;
 
-		GameObjPtr newGameObj = newPlayerCB_( newClientProxy );
+		GameObjPtr newGameObj = newPlayerCB_();
 		newGameObj->SetClientProxy( newClientProxy );
 		newGameObj->SetPlayerId( newClientProxy->GetPlayerId() );
 		worldRegistryCB_( newGameObj, RA_Create );
@@ -440,7 +443,7 @@ void NetworkMgr::HandlePacketFromNewClient( InputBitStream& inInputStream,
 			// Server reset
 			newClientProxy->SetRecvingServerResetFlag( true );
 			SendGamePacket( newClientProxy, kResetCC );
-			LOG( "SendResetPacket", 0 );
+			LOG( "SendResetPacket" );
 		}
 		LOG( "a new client at socket %s, named '%s' as PlayerID %d ",
 			inFromAddress.ToString().c_str(),
@@ -513,7 +516,7 @@ void NetworkMgr::SendOutgoingPackets()
 void NetworkMgr::SetRepStateDirty( int inNetworkId, uint32_t inDirtyState )
 {
 	for ( const auto& pair : addrToClientMap_ )
-		pair.second->GetReplicationManager().SetReplicationStateDirty( 
+		pair.second->GetReplicationManager().SetReplicationStateDirty(
 			inNetworkId, inDirtyState );
 }
 
@@ -528,7 +531,7 @@ void NetworkMgr::NotifyAllClient( GameObjPtr inGameObject, ReplicationAction inA
 				inGameObject->GetObjId(), inGameObject->GetAllStateMask() );
 			break;
 		case RA_Destroy:
-			pair.second->GetReplicationManager().ReplicateDestroy( 
+			pair.second->GetReplicationManager().ReplicateDestroy(
 				inGameObject->GetObjId() );
 			break;
 		default:

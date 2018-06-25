@@ -1,6 +1,6 @@
 #include "realtime_srv/common/RealtimeSrvShared.h"
 
-
+using namespace realtime_srv;
 
 void AckBitField::AddLastBit( uint32_t inTotalDifference )
 {

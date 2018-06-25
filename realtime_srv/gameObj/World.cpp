@@ -1,6 +1,7 @@
 #include "realtime_srv/common/RealtimeSrvShared.h"
 
 
+using namespace realtime_srv;
 
 
 void World::Registry( GameObjPtr inGameObject, ReplicationAction inAction )
@@ -9,7 +10,7 @@ void World::Registry( GameObjPtr inGameObject, ReplicationAction inAction )
 	{
 		RegistGameObj( inGameObject );
 	}
-	else if( inAction == RA_Destroy )
+	else if ( inAction == RA_Destroy )
 	{
 		UnregistGameObj( inGameObject );
 	}
@@ -45,7 +46,7 @@ int World::GetNewObjId()
 	int toRet = kNewObjId.getAndAdd( 1 );
 	if ( kNewObjId.get() < toRet )
 	{
-		LOG( "Network ID Wrap Around!!! You've been playing way too long...", 0 );
+		LOG( "Network ID Wrap Around!!! You've been playing way too long..." );
 	}
 
 	return toRet;
@@ -123,7 +124,7 @@ int World::GetNewObjId()
 	int toRet = kNewObjId++;
 	if ( kNewObjId < toRet )
 	{
-		LOG( "Network ID Wrap Around!!! You've been playing way too long...", 0 );
+		LOG( "Network ID Wrap Around!!! You've been playing way too long..." );
 	}
 	return toRet;
 }

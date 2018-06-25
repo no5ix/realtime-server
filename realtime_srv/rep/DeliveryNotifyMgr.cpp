@@ -1,5 +1,7 @@
 #include "realtime_srv/common/RealtimeSrvShared.h"
 
+using namespace realtime_srv;
+
 namespace
 {
 	const float kDelayBeforeAckTimeout = 0.6f;

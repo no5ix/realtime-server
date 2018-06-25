@@ -3,14 +3,15 @@
 
 using namespace realtime_srv;
 
-RealtimeServer::RealtimeServer( bool WhetherTobecomeDaemonOnLinux /*= false*/ ) 
+
+RealtimeServer::RealtimeServer( bool willDaemonizeOnLinux /*= false*/ ) 
 	: world_( new World() )
 {
 	assert( world_ );
 
-	if ( WhetherTobecomeDaemonOnLinux && !RealtimeSrvHelper::BecomeDaemonOnLinux() )
+	if ( willDaemonizeOnLinux && !RealtimeSrvHelper::DaemonizeOnLinux() )
 	{
-		LOG( " Become Daemon Failed!! ", 0 );
+		LOG( " Become Daemon Failed!! ");
 	}
 
 	networkManager_.reset( new NetworkMgr() );
@@ -23,7 +24,7 @@ void RealtimeServer::Run( const NewPlayerCallback& NewPlayerCB,
 {
 	if ( !networkManager_->Init( Port ) )
 	{
-		LOG( " Network Manager Init Failed!! ", 0 );
+		LOG( " Network Manager Init Failed!! " );
 	}
 
 	srand( static_cast< uint32_t >( time( nullptr ) ) );

@@ -1,31 +1,36 @@
 
+
 // 是否要显示调试打印信息
 #define REAL_TIME_SRV_SHOW_DEBUG_MESSAGE	true
 
-class NetworkMgr;
-
-namespace RealtimeSrvHelper
+namespace realtime_srv
 {
-	void SaveCommandLineArg( const int argc, const char** argv );
-	string GetCommandLineArg( int inIndex );
+	class NetworkMgr;
 
-	string Sprintf( const char* inFormat, ... );
+	namespace RealtimeSrvHelper
+	{
 
-	void	Log( const char* inFormat );
-	void	Log( const char* inFormat, ... );
+		void SaveCommandLineArg( const int argc, const char** argv );
+		string GetCommandLineArg( int inIndex );
 
-	bool	SequenceGreaterThanOrEqual( PacketSN s1, PacketSN s2 );
-	bool	SequenceGreaterThan( PacketSN s1, PacketSN s2 );
+		string Sprintf( const char* inFormat, ... );
 
-	bool ChunkPacketIDGreaterThanOrEqual( ChunkPacketID s1, ChunkPacketID s2 );
-	bool ChunkPacketIDGreaterThan( ChunkPacketID s1, ChunkPacketID s2 );
+		void	Log( const char* inFormat, ... );
 
-	bool BecomeDaemonOnLinux();
+		bool	SequenceGreaterThanOrEqual( PacketSN s1, PacketSN s2 );
+		bool	SequenceGreaterThan( PacketSN s1, PacketSN s2 );
 
-	void SimulateRealWorldOnWin( NetworkMgr* networkManager, 
-		uint8_t LatencyCmdIndex, 
-		uint8_t dropPacketChanceCmdIndex = 0, 
-		uint8_t JitterCmdIndex = 0 );
-}
+		bool ChunkPacketIDGreaterThanOrEqual( ChunkPacketID s1, ChunkPacketID s2 );
+		bool ChunkPacketIDGreaterThan( ChunkPacketID s1, ChunkPacketID s2 );
+
+		bool DaemonizeOnLinux();
+
+		void SimulateRealWorldOnWin( NetworkMgr* networkManager,
+			uint8_t LatencyCmdIndex,
+			uint8_t dropPacketChanceCmdIndex = 0,
+			uint8_t JitterCmdIndex = 0 );
+	}
 
 #define LOG( ... ) RealtimeSrvHelper::Log( __VA_ARGS__ );
+
+}

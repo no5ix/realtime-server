@@ -1,6 +1,8 @@
 #include "realtime_srv/common/RealtimeSrvShared.h"
 
 
+using namespace realtime_srv;
+
 bool UdpSockInterfc::StaticInit()
 {
 #ifdef IS_WIN

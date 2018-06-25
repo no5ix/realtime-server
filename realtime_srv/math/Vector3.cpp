@@ -1,6 +1,8 @@
 #include "Vector3.h"
 #include "Quaternion.h"
 
+using namespace realtime_srv;
+
 
 Quaternion Vector3::ToQuaternion() const
 {

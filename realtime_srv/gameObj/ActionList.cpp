@@ -1,6 +1,7 @@
 #include "realtime_srv/common/RealtimeSrvShared.h"
 
 
+using namespace realtime_srv;
 
 
 const Action& ActionList::AddMove( const InputState& inInputState, float inTimestamp )

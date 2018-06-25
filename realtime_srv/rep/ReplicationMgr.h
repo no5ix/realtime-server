@@ -1,30 +1,34 @@
 #pragma once
 
-
-class ReplicationMgr
+namespace realtime_srv
 {
-public:
-	ReplicationMgr( ClientProxy* clientProxy ) : owner_( clientProxy ) {}
-public:
-	void ReplicateCreate( int inNetworkId, uint32_t inInitialDirtyState );
-	void ReplicateDestroy( int inNetworkId );
-	void SetReplicationStateDirty( int inNetworkId, uint32_t inDirtyState );
-	void RemoveFromReplication( int inNetworkId );
-	void HandleCreateAckd( int inNetworkId );
 
-	void Write( OutputBitStream& inOutputStream, InFlightPacket* inInFlightPacket );
+	class ReplicationMgr
+	{
+	public:
+		ReplicationMgr( ClientProxy* clientProxy ) : owner_( clientProxy ) {}
+	public:
+		void ReplicateCreate( int inNetworkId, uint32_t inInitialDirtyState );
+		void ReplicateDestroy( int inNetworkId );
+		void SetReplicationStateDirty( int inNetworkId, uint32_t inDirtyState );
+		void RemoveFromReplication( int inNetworkId );
+		void HandleCreateAckd( int inNetworkId );
 
-private:
+		void Write( OutputBitStream& inOutputStream, InFlightPacket* inInFlightPacket );
 
-	uint32_t WriteCreateAction( OutputBitStream& inOutputStream, 
-		int inNetworkId, uint32_t inDirtyState );
-	uint32_t WriteUpdateAction( OutputBitStream& inOutputStream, 
-		int inNetworkId, uint32_t inDirtyState );
-	uint32_t WriteDestroyAction( OutputBitStream& inOutputStream, 
-		int inNetworkId, uint32_t inDirtyState );
+	private:
 
-private:
-	unordered_map< int, ReplicationCmd >	mNetworkIdToReplicationCommand;
+		uint32_t WriteCreateAction( OutputBitStream& inOutputStream,
+			int inNetworkId, uint32_t inDirtyState );
+		uint32_t WriteUpdateAction( OutputBitStream& inOutputStream,
+			int inNetworkId, uint32_t inDirtyState );
+		uint32_t WriteDestroyAction( OutputBitStream& inOutputStream,
+			int inNetworkId, uint32_t inDirtyState );
 
-	ClientProxy* owner_;
-};
+	private:
+		unordered_map< int, ReplicationCmd >	mNetworkIdToReplicationCommand;
+
+		ClientProxy* owner_;
+	};
+
+}

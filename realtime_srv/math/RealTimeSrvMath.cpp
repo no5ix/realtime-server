@@ -3,7 +3,7 @@
 #include "Vector3.h"
 #include <random>
 
-
+using namespace realtime_srv;
 
 float RealtimeSrvMath::GetRandomFloat()
 {

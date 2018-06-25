@@ -1,5 +1,8 @@
 #include "realtime_srv/common/RealtimeSrvShared.h"
 
+using namespace realtime_srv;
+
+
 InFlightPacket::InFlightPacket(
 	PacketSN inSequenceNumber,
 	ClientProxy* inClientProxy ) :

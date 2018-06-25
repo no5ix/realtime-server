@@ -1,6 +1,7 @@
 #include "realtime_srv/common/RealtimeSrvShared.h"
 
 
+using namespace realtime_srv;
 
 #ifdef IS_LINUX
 ClientProxy::ClientProxy( NetworkMgr* inNetworkManager,

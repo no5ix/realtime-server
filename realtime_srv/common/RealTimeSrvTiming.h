@@ -1,32 +1,35 @@
 
-class RealtimeSrvTiming
+namespace realtime_srv
 {
-public:
-
-	RealtimeSrvTiming();
-
-	void Update();
-
-	float GetDeltaTime() const { return mDeltaTime; }
-
-	double GetGameTimeD() const;
-
-	float GetCurrentGameTime() const
+	class RealtimeSrvTiming
 	{
-		return static_cast< float >( GetGameTimeD() );
-	}
+	public:
 
-	float GetFrameStartTime() const { return mFrameStartTimef; }
+		RealtimeSrvTiming();
+
+		void Update();
+
+		float GetDeltaTime() const { return mDeltaTime; }
+
+		double GetGameTimeD() const;
+
+		float GetCurrentGameTime() const
+		{
+			return static_cast< float >( GetGameTimeD() );
+		}
+
+		float GetFrameStartTime() const { return mFrameStartTimef; }
 
 
-	static RealtimeSrvTiming sInstance;
+		static RealtimeSrvTiming sInstance;
 
-private:
-	float		mDeltaTime;
-	uint64_t	mDeltaTick;
+	private:
+		float		mDeltaTime;
+		uint64_t	mDeltaTick;
 
-	double		mLastFrameStartTime;
-	float		mFrameStartTimef;
-	double		mPerfCountDuration;
+		double		mLastFrameStartTime;
+		float		mFrameStartTimef;
+		double		mPerfCountDuration;
 
-};
+	};
+}

@@ -7,93 +7,99 @@ using namespace muduo;
 using namespace muduo::net;
 #endif //IS_LINUX
 
-class ClientProxy
+namespace realtime_srv
 {
-public:
+	class NetworkMgr;
 
-	int	GetPlayerId() const { return mPlayerId; }
-	const std::string& GetName()			const { return mName; }
+	class ClientProxy
+	{
+	public:
 
-	void SetInputState( const InputState& inInputState ) { mInputState = inInputState; }
-	const InputState& GetInputState()		const { return mInputState; }
+		int	GetPlayerId() const { return mPlayerId; }
+		const std::string& GetName()			const { return mName; }
 
-	void UpdateLastPacketTime();
-	float GetLastPacketFromClientTime()	const { return mLastPacketFromClientTime; }
+		void SetInputState( const InputState& inInputState ) { mInputState = inInputState; }
+		const InputState& GetInputState()		const { return mInputState; }
 
-	DeliveryNotifyMgr&	GetDeliveryNotifyManager() { return DeliveryNotifyManager_; }
-	ReplicationMgr&	GetReplicationManager() { return ReplicationManager_; }
+		void UpdateLastPacketTime();
+		float GetLastPacketFromClientTime()	const { return mLastPacketFromClientTime; }
 
-	World* GetWorld() const { return world_; }
-	void SetWorld( World* const world ) { world_ = world; }
+		DeliveryNotifyMgr&	GetDeliveryNotifyManager() { return DeliveryNotifyManager_; }
+		ReplicationMgr&	GetReplicationManager() { return ReplicationManager_; }
 
-	NetworkMgr* GetNetworkManager() const { return networkManager_; }
+		World* GetWorld() const { return world_; }
+		void SetWorld( World* const world ) { world_ = world; }
 
-	const ActionList& GetUnprocessedActionList() const { return mUnprocessedMoveList; }
-	ActionList&	 GetUnprocessedActionList() { return mUnprocessedMoveList; }
+		NetworkMgr* GetNetworkManager() const { return networkManager_; }
 
-	void SetIsLastMoveTimestampDirty( bool inIsDirty )
-	{ mIsLastMoveTimestampDirty = inIsDirty; }
-	bool IsLastMoveTimestampDirty()	const { return mIsLastMoveTimestampDirty; }
+		const ActionList& GetUnprocessedActionList() const { return mUnprocessedMoveList; }
+		ActionList&	 GetUnprocessedActionList() { return mUnprocessedMoveList; }
 
-	bool GetRecvingServerResetFlag() const { return mRecvingServerResetFlag; }
-	void SetRecvingServerResetFlag( bool inRecvingServerResetFlag )
-	{ mRecvingServerResetFlag = inRecvingServerResetFlag; }
+		void SetIsLastMoveTimestampDirty( bool inIsDirty )
+		{ mIsLastMoveTimestampDirty = inIsDirty; }
+		bool IsLastMoveTimestampDirty()	const { return mIsLastMoveTimestampDirty; }
 
-	void SetGameObjStateDirty( int inNetworkId, uint32_t inDirtyState );
+		bool GetRecvingServerResetFlag() const { return mRecvingServerResetFlag; }
+		void SetRecvingServerResetFlag( bool inRecvingServerResetFlag )
+		{ mRecvingServerResetFlag = inRecvingServerResetFlag; }
 
-private:
+		void SetGameObjStateDirty( int inNetworkId, uint32_t inDirtyState );
 
-	std::string			mName;
-	int				mPlayerId;
+	private:
 
-	InputState		mInputState;
+		std::string			mName;
+		int				mPlayerId;
 
-	float			mLastPacketFromClientTime;
-	float			mTimeToRespawn;
+		InputState		mInputState;
 
-	ActionList		mUnprocessedMoveList;
-	bool			mIsLastMoveTimestampDirty;
+		float			mLastPacketFromClientTime;
+		float			mTimeToRespawn;
 
-	bool			mRecvingServerResetFlag;
+		ActionList		mUnprocessedMoveList;
+		bool			mIsLastMoveTimestampDirty;
 
-	DeliveryNotifyMgr		DeliveryNotifyManager_;
-	ReplicationMgr			ReplicationManager_;
-	World*					world_;
-	NetworkMgr*				networkManager_;
+		bool			mRecvingServerResetFlag;
+
+		DeliveryNotifyMgr		DeliveryNotifyManager_;
+		ReplicationMgr			ReplicationManager_;
+		World*					world_;
+		NetworkMgr*				networkManager_;
 
 #ifdef IS_LINUX
 
-public:
-	ClientProxy( NetworkMgr* inNetworkManager,
-		const std::string& inName,
-		int inPlayerId,
-		const UdpConnectionPtr& inUdpConnection );
+	public:
+		ClientProxy( NetworkMgr* inNetworkManager,
+			const std::string& inName,
+			int inPlayerId,
+			const UdpConnectionPtr& inUdpConnection );
 
-	UdpConnectionPtr GetUdpConnection() const { return UdpConnection_; }
-private:
-	UdpConnectionPtr UdpConnection_;
+		UdpConnectionPtr GetUdpConnection() const { return UdpConnection_; }
+	private:
+		UdpConnectionPtr UdpConnection_;
 
 #else //IS_LINUX
 
-public:
+	public:
 
-	ClientProxy( NetworkMgr* inNetworkManager,
-		const SockAddrInterfc& inSocketAddress,
-		const std::string& inName,
-		int inPlayerId,
-		const UDPSocketPtr& inUDPSocket );
+		ClientProxy( NetworkMgr* inNetworkManager,
+			const SockAddrInterfc& inSocketAddress,
+			const std::string& inName,
+			int inPlayerId,
+			const UDPSocketPtr& inUDPSocket );
 
-	const SockAddrInterfc& GetSocketAddress() const { return mSocketAddress; }
-	UDPSocketPtr GetUDPSocket() const { return mUDPSocket; }
+		const SockAddrInterfc& GetSocketAddress() const { return mSocketAddress; }
+		UDPSocketPtr GetUDPSocket() const { return mUDPSocket; }
 
-private:
+	private:
 
-	SockAddrInterfc	mSocketAddress;
-	UDPSocketPtr	mUDPSocket;
+		SockAddrInterfc	mSocketAddress;
+		UDPSocketPtr	mUDPSocket;
 
 #endif //IS_LINUX
 
-};
+	};
 
-typedef shared_ptr< ClientProxy >	ClientProxyPtr;
-typedef weak_ptr<ClientProxy>	ClientProxyWPtr;
+	typedef shared_ptr< ClientProxy >	ClientProxyPtr;
+	typedef weak_ptr<ClientProxy>	ClientProxyWPtr;
+
+}

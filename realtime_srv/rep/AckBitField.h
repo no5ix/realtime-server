@@ -1,36 +1,41 @@
 #pragma once
 
-class AckBitField
+namespace realtime_srv
 {
-public:
-	AckBitField() : mLatestAckSN( 0 ) 
-	{
-		mAckBitField = ( char * )malloc( ACK_BIT_FIELD_BYTE_LEN );
-		memset( mAckBitField, 0, ACK_BIT_FIELD_BYTE_LEN );
-	}
 
-	~AckBitField()
+	class AckBitField
 	{
-		if (mAckBitField)
+	public:
+		AckBitField() : mLatestAckSN( 0 )
 		{
-			free( mAckBitField );
+			mAckBitField = ( char * )malloc( ACK_BIT_FIELD_BYTE_LEN );
+			memset( mAckBitField, 0, ACK_BIT_FIELD_BYTE_LEN );
 		}
-	}
 
-	void					AddToAckBitField( PacketSN inSequenceNumber, PacketSN inLastSN );
-	void					AddLastBit( uint32_t inTotalDifference );
+		~AckBitField()
+		{
+			if ( mAckBitField )
+			{
+				free( mAckBitField );
+			}
+		}
 
-	bool					IsSetCorrespondingAckBit( PacketSN inAckSN );
+		void					AddToAckBitField( PacketSN inSequenceNumber, PacketSN inLastSN );
+		void					AddLastBit( uint32_t inTotalDifference );
 
-	void					Write( OutputBitStream& inOutputStream );
-	void					Read( InputBitStream& inInputStream );
+		bool					IsSetCorrespondingAckBit( PacketSN inAckSN );
 
-	char *					GetAckBitField()		const { return mAckBitField; }
-	PacketSN 				GetLatestAckSN()		const { return mLatestAckSN; }
+		void					Write( OutputBitStream& inOutputStream );
+		void					Read( InputBitStream& inInputStream );
 
-private:
-	void					DoAddToAckBitField( uint32_t inDifference );
+		char *					GetAckBitField()		const { return mAckBitField; }
+		PacketSN 				GetLatestAckSN()		const { return mLatestAckSN; }
 
-	char* 					mAckBitField;
-	PacketSN				mLatestAckSN;
-};
+	private:
+		void					DoAddToAckBitField( uint32_t inDifference );
+
+		char* 					mAckBitField;
+		PacketSN				mLatestAckSN;
+	};
+
+}

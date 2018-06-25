@@ -82,6 +82,7 @@ using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
 
+
 #include "realtime_srv/common/noncopyable.h"
 #include "realtime_srv/math/Vector3.h"
 #include "realtime_srv/math/Quaternion.h"
@@ -118,6 +119,8 @@ using std::placeholders::_3;
 
 #include "realtime_srv/net/ClientProxy.h"
 #include "realtime_srv/net/NetworkMgr.h"
+
+using namespace realtime_srv;
 
 
 #endif // REALTIME_SRV_SHARED_H
