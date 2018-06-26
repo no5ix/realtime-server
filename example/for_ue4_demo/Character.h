@@ -1,11 +1,11 @@
 #include <realtime_srv/RealtimeServer.h>
 
 
-class Character : public GameObj
+class Character : public realtime_srv::GameObj
 {
 public:
 	// 'CHRT' = 1128813140;
-	CLASS_IDENTIFICATION( 1128813140, GameObj );
+	CLASS_IDENTIFICATION( 1128813140 );
 
 	enum EReplicationState
 	{
@@ -17,16 +17,16 @@ public:
 	};
 	virtual uint32_t GetAllStateMask() const override { return EPS_AllState; }
 
-	virtual uint32_t Write( OutputBitStream& inOutputStream,
+	virtual uint32_t Write( realtime_srv::OutputBitStream& inOutputStream,
 		uint32_t inDirtyState ) const override;
 
 public:
-	static GameObjPtr	StaticCreate()
-	{ GameObjPtr toRet( new Character() ); return toRet; }
+	static realtime_srv::GameObjPtr	StaticCreate()
+	{ realtime_srv::GameObjPtr toRet( new Character() ); return toRet; }
 
 	float GetMaxSpeed() const { return MaxSpeed; }
-	const Vector3& GetCameraRotation() const { return curCameraRotation_; }
-	const Vector3& GetVelocity() const { return currentVelocity_; }
+	const realtime_srv::Vector3& GetCameraRotation() const { return curCameraRotation_; }
+	const realtime_srv::Vector3& GetVelocity() const { return currentVelocity_; }
 
 protected:
 	Character();
@@ -34,7 +34,8 @@ protected:
 	virtual void Update() override;
 	virtual void SetOldState() override;
 	virtual bool IsStateDirty() override;
-	virtual void ProcessInput( float inDeltaTime, const InputState& inInputState ) override;
+	virtual void ProcessInput( float inDeltaTime, 
+		const realtime_srv::InputState& inInputState ) override;
 
 protected:
 	void HandleShooting() {}
@@ -43,15 +44,15 @@ protected:
 	void ApplyControlInputToVelocity( float DeltaTime );
 
 	bool IsExceedingMaxSpeed( float inMaxSpeed ) const;
-	void ActionAddMovementInput( Vector3 WorldDirection, float ScaleValue = 1.0f );
-	Vector3 ActionConsumeMovementInputVector();
-	Vector3 ActionGetPendingInputVector() const;
+	void ActionAddMovementInput( const realtime_srv::Vector3& WorldDirection, float ScaleValue = 1.0f );
+	const realtime_srv::Vector3& ActionConsumeMovementInputVector();
+	const realtime_srv::Vector3& ActionGetPendingInputVector() const;
 
 private:
 
-	Vector3 ActionControlInputVector;
+	realtime_srv::Vector3 ActionControlInputVector;
 
-	Vector3 ActionLastControlInputVector;
+	realtime_srv::Vector3 ActionLastControlInputVector;
 
 	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
 	float BaseTurnRate;
@@ -70,10 +71,10 @@ private:
 
 	float TurningBoost;
 
-	Vector3 curCameraRotation_;
-	Vector3 currentVelocity_;
-	Vector3 oldCameraRotation_;
-	Vector3 oldrentVelocity_;
+	realtime_srv::Vector3 curCameraRotation_;
+	realtime_srv::Vector3 currentVelocity_;
+	realtime_srv::Vector3 oldCameraRotation_;
+	realtime_srv::Vector3 oldrentVelocity_;
 
 
 };

@@ -1,5 +1,5 @@
-#ifndef REALTIME_SERVER_H
-#define REALTIME_SERVER_H
+#ifndef REALTIME_SRV_REALTIME_SERVER_H
+#define REALTIME_SRV_REALTIME_SERVER_H
 
 #include "realtime_srv/common/RealtimeSrvShared.h"
 
@@ -32,4 +32,4 @@ namespace realtime_srv
 	};
 
 }
-#endif // REALTIME_SERVER_H
+#endif // REALTIME_SRV_REALTIME_SERVER_H

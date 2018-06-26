@@ -1,11 +1,8 @@
 #pragma once
 
 #ifdef IS_LINUX
-
 #include <muduo/base/Mutex.h>
 #include <muduo/base/Atomic.h>
-
-using namespace muduo;
 #endif //IS_LINUX
 
 namespace realtime_srv
@@ -13,7 +10,7 @@ namespace realtime_srv
 
 	class GameObj;
 
-	class World : realtime_srv::noncopyable
+	class World : noncopyable
 	{
 	public:
 		typedef unordered_map< int, GameObjPtr > NetIdToGameObjMap;
@@ -38,8 +35,8 @@ namespace realtime_srv
 		NotifyAllClientCB notifyAllClientCB_;
 
 #ifdef IS_LINUX
-		MutexLock mutex_;
-		static AtomicInt32		kNewObjId;
+		muduo::MutexLock mutex_;
+		static muduo::AtomicInt32		kNewObjId;
 		THREAD_SHARED_VAR_DEF( private, NetIdToGameObjMap, netIdToGameObjMap_, mutex_ );
 
 #else //IS_LINUX

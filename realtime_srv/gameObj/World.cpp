@@ -19,6 +19,9 @@ void World::Registry( GameObjPtr inGameObject, ReplicationAction inAction )
 
 #ifdef IS_LINUX
 
+
+using namespace muduo;
+
 AtomicInt32 World::kNewObjId;
 
 World::World() :

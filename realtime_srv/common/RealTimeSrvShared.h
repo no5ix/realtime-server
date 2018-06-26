@@ -120,7 +120,6 @@ using std::placeholders::_3;
 #include "realtime_srv/net/ClientProxy.h"
 #include "realtime_srv/net/NetworkMgr.h"
 
-using namespace realtime_srv;
 
 
 #endif // REALTIME_SRV_SHARED_H

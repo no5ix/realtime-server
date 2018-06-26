@@ -1,7 +1,7 @@
 #include <realtime_srv/RealtimeServer.h>
 #include "Character.h"
 
-
+using namespace realtime_srv;
 
 Character::Character() :
 	GameObj(),
@@ -84,7 +84,7 @@ void Character::ProcessInput( float inDeltaTime, const InputState& inInputState 
 	ActionAddMovementInput( curCameraRotation_.ToQuaternion() * Vector3::Right(), inInputState.GetDesiredMoveRightAmount() );
 	ApplyControlInputToVelocity( inDeltaTime );
 
-	Vector3 Delta = currentVelocity_ * inDeltaTime;
+	const Vector3& Delta = currentVelocity_ * inDeltaTime;
 	if ( !Delta.IsNearlyZero( 1e-6f ) )
 	{
 		SetLocation( GetLocation() + Delta );
@@ -101,19 +101,19 @@ bool Character::IsExceedingMaxSpeed( float inMaxSpeed ) const
 	return ( currentVelocity_.SizeSquared() > MaxSpeedSquared * OverVelocityPercent );
 }
 
-void Character::ActionAddMovementInput( Vector3 WorldDirection, float ScaleValue /*= 1.0f*/ )
+void Character::ActionAddMovementInput( const realtime_srv::Vector3& WorldDirection, float ScaleValue /*= 1.0f */ )
 {
 	ActionControlInputVector += WorldDirection * ScaleValue;
 }
 
-Vector3 Character::ActionConsumeMovementInputVector()
+const Vector3& Character::ActionConsumeMovementInputVector()
 {
 	ActionLastControlInputVector = ActionControlInputVector;
 	ActionControlInputVector = Vector3::Zero();
 	return ActionLastControlInputVector;
 }
 
-Vector3 Character::ActionGetPendingInputVector() const
+const Vector3& Character::ActionGetPendingInputVector() const
 {
 	// There's really no point redirecting to the MovementComponent since GetInputVector is not virtual there, and it just comes back to us.
 	return ActionControlInputVector;
@@ -121,7 +121,7 @@ Vector3 Character::ActionGetPendingInputVector() const
 
 void Character::ApplyControlInputToVelocity( float DeltaTime )
 {
-	const Vector3 ControlAcceleration = ActionGetPendingInputVector().GetClampedToMaxSize( 1.f );
+	const Vector3& ControlAcceleration = ActionGetPendingInputVector().GetClampedToMaxSize( 1.f );
 
 	const float AnalogInputModifier = ( ControlAcceleration.SizeSquared() > 0.f ? ControlAcceleration.Size() : 0.f );
 	const float MaxPawnSpeed = GetMaxSpeed() * AnalogInputModifier;
@@ -142,7 +142,7 @@ void Character::ApplyControlInputToVelocity( float DeltaTime )
 		// Dampen velocity magnitude based on deceleration.
 		if ( currentVelocity_.SizeSquared() > 0.f )
 		{
-			const Vector3 OldVelocity = currentVelocity_;
+			const Vector3& OldVelocity = currentVelocity_;
 			const float VelSize = RealtimeSrvMath::Max( currentVelocity_.Size() - RealtimeSrvMath::Abs( Deceleration ) * DeltaTime, 0.f );
 			currentVelocity_ = currentVelocity_.GetSafeNormal() * VelSize;
 

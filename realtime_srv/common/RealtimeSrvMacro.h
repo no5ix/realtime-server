@@ -52,7 +52,7 @@ AccessSpecifier:																	\
 public:																				\
 	std::shared_ptr<OriginalVarType> Get##VarName()									\
 	{																				\
-		MutexLockGuard lock( Mutex );												\
+		muduo::MutexLockGuard lock( Mutex );												\
 		return VarName;																\
 	}																				\
 	void VarName##COW()																\
@@ -75,7 +75,7 @@ AccessSpecifier:																	\
 // thread shared var write
 #define SET_THREAD_SHARED_VAR( VarName, Mutex, WriteOperationLambda ) \
 	{												\
-		MutexLockGuard lock( Mutex );				\
+		muduo::MutexLockGuard lock( Mutex );				\
 		VarName##COW();								\
 		WriteOperationLambda();								\
 	}												\

@@ -1,14 +1,12 @@
+#pragma once
+
 #ifdef IS_LINUX
 #include <muduo_udp_support/UdpConnection.h>
-
-class UdpConnection;
-
-using namespace muduo;
-using namespace muduo::net;
 #endif //IS_LINUX
 
 namespace realtime_srv
 {
+
 	class NetworkMgr;
 
 	class ClientProxy
@@ -71,11 +69,11 @@ namespace realtime_srv
 		ClientProxy( NetworkMgr* inNetworkManager,
 			const std::string& inName,
 			int inPlayerId,
-			const UdpConnectionPtr& inUdpConnection );
+			const muduo::net::UdpConnectionPtr& inUdpConnection );
 
-		UdpConnectionPtr GetUdpConnection() const { return UdpConnection_; }
+		muduo::net::UdpConnectionPtr GetUdpConnection() const { return UdpConnection_; }
 	private:
-		UdpConnectionPtr UdpConnection_;
+		muduo::net::UdpConnectionPtr UdpConnection_;
 
 #else //IS_LINUX
 

@@ -4,6 +4,9 @@
 using namespace realtime_srv;
 
 #ifdef IS_LINUX
+
+using namespace muduo::net;
+
 ClientProxy::ClientProxy( NetworkMgr* inNetworkManager,
 	const std::string& inName,
 	int inPlayerId,

@@ -1,7 +1,6 @@
 #include <realtime_srv/RealtimeServer.h>
 #include "Character.h"
 
-
 using namespace realtime_srv;
 
 

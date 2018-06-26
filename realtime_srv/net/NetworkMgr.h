@@ -1,3 +1,5 @@
+#pragma once
+
 #ifdef IS_LINUX
 #include <muduo/base/Logging.h>
 #include <muduo/base/Mutex.h>
@@ -13,15 +15,11 @@
 #include <stdio.h>
 #include <unistd.h>
 
-class UdpConnection;
-
-using namespace muduo;
-using namespace muduo::net;
-
 #endif //IS_LINUX
 
 namespace realtime_srv
 {
+
 	class GameObj;
 	class ClientProxy;
 	typedef std::function< GameObjPtr() > NewPlayerCallback;
@@ -48,12 +46,12 @@ namespace realtime_srv
 
 		void	Start();
 
-		virtual void			SendOutgoingPackets();
-		void					SetRepStateDirty( int inNetworkId, uint32_t inDirtyState );
-		virtual void			CheckForDisconnects();
-
-		uint32_t				HandleServerReset( ClientProxyPtr inClientProxy, InputBitStream& inInputStream );
-		void					SendGamePacket( ClientProxyPtr inClientProxy, const uint32_t inConnFlag );
+		virtual void SendOutgoingPackets();
+		void		 SetRepStateDirty( int inNetworkId, uint32_t inDirtyState );
+		virtual void CheckForDisconnects();
+                              
+		uint32_t	 HandleServerReset( ClientProxyPtr inClientProxy, InputBitStream& inInputStream );
+		void		 SendGamePacket( ClientProxyPtr inClientProxy, const uint32_t inConnFlag );
 
 		void NotifyAllClient( GameObjPtr inGameObject, ReplicationAction inAction );
 
@@ -83,42 +81,32 @@ namespace realtime_srv
 
 #ifdef IS_LINUX
 
-
 	public:
 
-		typedef unordered_map< UdpConnectionPtr, ClientProxyPtr >	UdpConnToClientMap;
+		typedef unordered_map< muduo::net::UdpConnectionPtr, ClientProxyPtr >	UdpConnToClientMap;
 		typedef std::shared_ptr< UdpConnToClientMap > UdpConnToClientMapPtr;
 
 
-		void	SendPacket( const OutputBitStream& inOutputStream,
-			const UdpConnectionPtr& conn );
+		void SendPacket( const OutputBitStream& inOutputStream,
+			const muduo::net::UdpConnectionPtr& conn );
 
-		void onMessage(
-			const muduo::net::UdpConnectionPtr& conn,
+		void onMessage( const muduo::net::UdpConnectionPtr& conn,
 			muduo::net::Buffer* buf,
-			muduo::Timestamp receiveTime
-		);
-	private:
-		EventLoop loop_;
-		std::shared_ptr<UdpServer> server_;
-
-
-	protected:
-		MutexLock mutex_;
-	public:
-		virtual void onConnection( const UdpConnectionPtr& conn );
+			muduo::Timestamp receiveTime );
+		virtual void onConnection( const muduo::net::UdpConnectionPtr& conn );
 
 		virtual void ProcessPacket( InputBitStream& inInputStream,
-			const UdpConnectionPtr& inUdpConnetction );
+			const muduo::net::UdpConnectionPtr& inUdpConnetction );
 	private:
 		void	HandlePacketFromNewClient( InputBitStream& inInputStream,
-			const UdpConnectionPtr& inUdpConnetction );
-	protected:
-		THREAD_SHARED_VAR_DEF( protected, UdpConnToClientMap, udpConnToClientMap_, mutex_ );
+			const muduo::net::UdpConnectionPtr& inUdpConnetction );
 
 	private:
-		static AtomicInt32		kNewPlayerId;
-
+		THREAD_SHARED_VAR_DEF( protected, UdpConnToClientMap, udpConnToClientMap_, mutex_ );
+		muduo::net::EventLoop loop_;
+		std::shared_ptr<muduo::net::UdpServer> server_;
+		muduo::MutexLock mutex_;
+		static muduo::AtomicInt32		kNewPlayerId;
 #else //IS_LINUX
 
 	public:
@@ -136,11 +124,12 @@ namespace realtime_srv
 	private:
 		void	ProcessQueuedPackets();
 		void	ReadIncomingPacketsIntoQueue();
-	private:
-
-		float						mDropPacketChance;
-		float						mSimulatedLatency;
-		bool						mWhetherToSimulateJitter;
+		virtual void ProcessPacket( InputBitStream& inInputStream,
+			const SockAddrInterfc& inFromAddress,
+			const UDPSocketPtr& inUDPSocket );
+		void	HandlePacketFromNewClient( InputBitStream& inInputStream,
+			const SockAddrInterfc& inFromAddress,
+			const UDPSocketPtr& inUDPSocket );
 	private:
 		class ReceivedPacket
 		{
@@ -171,24 +160,14 @@ namespace realtime_srv
 		};
 		queue< ReceivedPacket, list< ReceivedPacket > >	mPacketQueue;
 
-	protected:
+	private:
 		UDPSocketPtr				mSocket;
-
-	public:
-		virtual void ProcessPacket( InputBitStream& inInputStream,
-			const SockAddrInterfc& inFromAddress,
-			const UDPSocketPtr& inUDPSocket );
-	private:
-		void	HandlePacketFromNewClient(
-			InputBitStream& inInputStream,
-			const SockAddrInterfc& inFromAddress,
-			const UDPSocketPtr& inUDPSocket
-		);
-	private:
 		static int				kNewPlayerId;
-
 		typedef unordered_map< SockAddrInterfc, ClientProxyPtr >	AddrToClientMap;
 		AddrToClientMap		addrToClientMap_;
+		float						mDropPacketChance;
+		float						mSimulatedLatency;
+		bool						mWhetherToSimulateJitter;
 
 #endif //IS_LINUX
 

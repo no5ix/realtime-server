@@ -4,7 +4,6 @@ chmod u+x build_rs.sh;
 chmod u+x kill_rs.sh;
 chmod u+x run_rs.sh;
 chmod u+x show_rs.sh;
-chmod u+x init_rs_env.sh;
 
 
 
@@ -20,7 +19,7 @@ fi
 
 
 RS_BIN_DIR=../build/bin
-RS_BIN_SYMBOLIC_LINK=rs_bin
+RS_BIN_SYMBOLIC_LINK=bin_rs
 
 if [ ! -L "$RS_BIN_SYMBOLIC_LINK" ]; then
     ln -s $RS_BIN_DIR $RS_BIN_SYMBOLIC_LINK;

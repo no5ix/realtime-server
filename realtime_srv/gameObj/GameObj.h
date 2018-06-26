@@ -3,7 +3,7 @@
 namespace realtime_srv
 {
 
-#define CLASS_IDENTIFICATION( inCode, inClass ) \
+#define CLASS_IDENTIFICATION( inCode ) \
 enum { kClassId = inCode }; \
 virtual uint32_t GetClassId() const { return kClassId; } \
 
@@ -14,7 +14,7 @@ virtual uint32_t GetClassId() const { return kClassId; } \
 	{
 	public:
 		// 'GOBJ' = 1196376650;
-		CLASS_IDENTIFICATION( 1196376650, GameObj );
+		CLASS_IDENTIFICATION( 1196376650 );
 
 		enum EReplicationState
 		{
