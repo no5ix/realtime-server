@@ -2,21 +2,19 @@
 
 using namespace realtime_srv;
 
-void OutputBitStream::SliceTo( OutputBitStream& refOutputBitStream, uint8_t inData, uint32_t inBitCount  )
-{
+void OutputBitStream::SliceTo( OutputBitStream& refOutputBitStream, uint8_t inData, uint32_t inBitCount ) {
 	uint32_t byteOffset = refOutputBitStream.mBitHead >> 3;
 	uint32_t bitOffset = refOutputBitStream.mBitHead & 0x7;
 
 	uint8_t currentMask = ~( 0xff << bitOffset );
 
-	refOutputBitStream.mBuffer[byteOffset] = 
+	refOutputBitStream.mBuffer[byteOffset] =
 		( refOutputBitStream.mBuffer[byteOffset] & currentMask ) | ( inData << bitOffset );
 
 
 	uint32_t bitsFreeThisByte = 8 - bitOffset;
 
-	if ( bitsFreeThisByte < inBitCount )
-	{
+	if ( bitsFreeThisByte < inBitCount ) {
 		refOutputBitStream.mBuffer[byteOffset + 1] = inData >> bitsFreeThisByte;
 	}
 
@@ -24,9 +22,8 @@ void OutputBitStream::SliceTo( OutputBitStream& refOutputBitStream, uint8_t inDa
 	refOutputBitStream.mBitHead += inBitCount;
 }
 
-bool OutputBitStream::SliceTo( OutputBitStream& refOutputBitStream )
-{
-	char * srcByte = this->mBuffer + (mSlicePoint >> 3);
+bool OutputBitStream::SliceTo( OutputBitStream& refOutputBitStream ) {
+	char * srcByte = this->mBuffer + ( mSlicePoint >> 3 );
 
 	bool outIsReachTheEnd = false;
 
@@ -38,26 +35,22 @@ bool OutputBitStream::SliceTo( OutputBitStream& refOutputBitStream )
 		:
 		refOutputBitStreamSurplusBitLen;
 
-	while ( sliceSize > 8 )
-	{
+	while ( sliceSize > 8 ) {
 		SliceTo( refOutputBitStream, *srcByte, 8 );
 		++srcByte;
 		sliceSize -= 8;
 	}
-	if ( sliceSize > 0 )
-	{
+	if ( sliceSize > 0 ) {
 		SliceTo( refOutputBitStream, *srcByte, sliceSize );
 	}
 
 	return outIsReachTheEnd;
 }
 
-void OutputBitStream::WriteBits( uint8_t inData, uint32_t inBitCount )
-{
+void OutputBitStream::WriteBits( uint8_t inData, uint32_t inBitCount ) {
 	uint32_t nextBitHead = mBitHead + static_cast< uint32_t >( inBitCount );
 
-	if ( nextBitHead > mBitCapacity )
-	{
+	if ( nextBitHead > mBitCapacity ) {
 		ReallocBuffer( std::max( mBitCapacity * 2, nextBitHead ) );
 	}
 
@@ -69,45 +62,38 @@ void OutputBitStream::WriteBits( uint8_t inData, uint32_t inBitCount )
 
 	uint32_t bitsFreeThisByte = 8 - bitOffset;
 
-	if ( bitsFreeThisByte < inBitCount )
-	{
+	if ( bitsFreeThisByte < inBitCount ) {
 		mBuffer[byteOffset + 1] = inData >> bitsFreeThisByte;
 	}
 
 	mBitHead = nextBitHead;
 }
 
-void OutputBitStream::WriteBits( const void* inData, uint32_t inBitCount )
-{
+void OutputBitStream::WriteBits( const void* inData, uint32_t inBitCount ) {
 	const char* srcByte = static_cast< const char* >( inData );
-	while ( inBitCount > 8 )
-	{
+	while ( inBitCount > 8 ) {
 		WriteBits( *srcByte, 8 );
 		++srcByte;
 		inBitCount -= 8;
 	}
-	if ( inBitCount > 0 )
-	{
+	if ( inBitCount > 0 ) {
 		WriteBits( *srcByte, inBitCount );
 	}
 }
 
-void OutputBitStream::Write( const Vector3& inVector )
-{
+void OutputBitStream::Write( const Vector3& inVector ) {
 	Write( inVector.X );
 	Write( inVector.Y );
 	Write( inVector.Z );
 }
 
-void InputBitStream::Read( Vector3& outVector )
-{
+void InputBitStream::Read( Vector3& outVector ) {
 	Read( outVector.X );
 	Read( outVector.Y );
 	Read( outVector.Z );
 }
 
-void OutputBitStream::Write( const Quaternion& inQuat )
-{
+void OutputBitStream::Write( const Quaternion& inQuat ) {
 	float precision = ( 2.f / 65535.f );
 	Write( ConvertToFixed( static_cast< float > ( inQuat.X ), -1.f, precision ), 16 );
 	Write( ConvertToFixed( static_cast< float > ( inQuat.Y ), -1.f, precision ), 16 );
@@ -115,15 +101,11 @@ void OutputBitStream::Write( const Quaternion& inQuat )
 	Write( inQuat.W < 0 );
 }
 
-void OutputBitStream::ReallocBuffer( uint32_t inNewBitLength )
-{
-	if ( mBuffer == nullptr )
-	{
+void OutputBitStream::ReallocBuffer( uint32_t inNewBitLength ) {
+	if ( mBuffer == nullptr ) {
 		mBuffer = static_cast< char* >( std::malloc( inNewBitLength >> 3 ) );
 		memset( mBuffer, 0, inNewBitLength >> 3 );
-	}
-	else
-	{
+	} else {
 		char* tempBuffer = static_cast< char* >( std::malloc( inNewBitLength >> 3 ) );
 		memset( tempBuffer, 0, inNewBitLength >> 3 );
 		memcpy( tempBuffer, mBuffer, mBitCapacity >> 3 );
@@ -133,16 +115,14 @@ void OutputBitStream::ReallocBuffer( uint32_t inNewBitLength )
 	mBitCapacity = inNewBitLength;
 }
 
-void InputBitStream::ReadBits( uint8_t& outData, uint32_t inBitCount )
-{
+void InputBitStream::ReadBits( uint8_t& outData, uint32_t inBitCount ) {
 	uint32_t byteOffset = mBitHead >> 3;
 	uint32_t bitOffset = mBitHead & 0x7;
 
 	outData = static_cast< uint8_t >( mBuffer[byteOffset] ) >> bitOffset;
 
 	uint32_t bitsFreeThisByte = 8 - bitOffset;
-	if ( bitsFreeThisByte < inBitCount )
-	{
+	if ( bitsFreeThisByte < inBitCount ) {
 		outData |= static_cast< uint8_t >( mBuffer[byteOffset + 1] ) << bitsFreeThisByte;
 	}
 
@@ -151,23 +131,19 @@ void InputBitStream::ReadBits( uint8_t& outData, uint32_t inBitCount )
 	mBitHead += inBitCount;
 }
 
-void InputBitStream::ReadBits( void* outData, uint32_t inBitCount )
-{
+void InputBitStream::ReadBits( void* outData, uint32_t inBitCount ) {
 	uint8_t* destByte = reinterpret_cast< uint8_t* >( outData );
-	while ( inBitCount > 8 )
-	{
+	while ( inBitCount > 8 ) {
 		ReadBits( *destByte, 8 );
 		++destByte;
 		inBitCount -= 8;
 	}
-	if ( inBitCount > 0 )
-	{
+	if ( inBitCount > 0 ) {
 		ReadBits( *destByte, inBitCount );
 	}
 }
 
-void InputBitStream::Read( Quaternion& outQuat )
-{
+void InputBitStream::Read( Quaternion& outQuat ) {
 	float precision = ( 2.f / 65535.f );
 
 	uint32_t f = 0;
@@ -186,15 +162,13 @@ void InputBitStream::Read( Quaternion& outQuat )
 	bool isNegative;
 	Read( isNegative );
 
-	if ( isNegative )
-	{
+	if ( isNegative ) {
 		outQuat.W *= -1;
 	}
 }
 
 
-void InputBitStream::RecombineTo( InputBitStream& refInputBitStream )
-{
+void InputBitStream::RecombineTo( InputBitStream& refInputBitStream ) {
 	char * destByte = refInputBitStream.mBuffer + ( refInputBitStream.mRecombinePoint >> 3 );
 
 	uint32_t SurplusBitLen = mBitCapacity - mBitHead;

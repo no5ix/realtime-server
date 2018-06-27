@@ -19,10 +19,8 @@ namespace realtime_srv
 				free( mAckBitField );
 			}
 		}
-
 		void					AddToAckBitField( PacketSN inSequenceNumber, PacketSN inLastSN );
 		void					AddLastBit( uint32_t inTotalDifference );
-
 		bool					IsSetCorrespondingAckBit( PacketSN inAckSN );
 
 		void					Write( OutputBitStream& inOutputStream );
@@ -30,10 +28,10 @@ namespace realtime_srv
 
 		char *					GetAckBitField()		const { return mAckBitField; }
 		PacketSN 				GetLatestAckSN()		const { return mLatestAckSN; }
-
 	private:
 		void					DoAddToAckBitField( uint32_t inDifference );
 
+	private:
 		char* 					mAckBitField;
 		PacketSN				mLatestAckSN;
 	};

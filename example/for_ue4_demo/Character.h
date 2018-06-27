@@ -1,14 +1,14 @@
+#pragma once
+
 #include <realtime_srv/RealtimeServer.h>
 
 
-class Character : public realtime_srv::GameObj
-{
+class Character : public realtime_srv::GameObj {
 public:
 	// 'CHRT' = 1128813140;
 	CLASS_IDENTIFICATION( 1128813140 );
 
-	enum EReplicationState
-	{
+	enum EReplicationState {
 		EPS_Pose = 1 << 0,
 		EPS_PlayerId = 1 << 1,
 
@@ -21,8 +21,7 @@ public:
 		uint32_t inDirtyState ) const override;
 
 public:
-	static realtime_srv::GameObjPtr	StaticCreate()
-	{ realtime_srv::GameObjPtr toRet( new Character() ); return toRet; }
+	static realtime_srv::GameObjPtr	StaticCreate() { realtime_srv::GameObjPtr toRet( new Character() ); return toRet; }
 
 	float GetMaxSpeed() const { return MaxSpeed; }
 	const realtime_srv::Vector3& GetCameraRotation() const { return curCameraRotation_; }
@@ -34,7 +33,7 @@ protected:
 	virtual void Update() override;
 	virtual void SetOldState() override;
 	virtual bool IsStateDirty() override;
-	virtual void ProcessInput( float inDeltaTime, 
+	virtual void ProcessInput( float inDeltaTime,
 		const realtime_srv::InputState& inInputState ) override;
 
 protected:
@@ -45,14 +44,14 @@ protected:
 
 	bool IsExceedingMaxSpeed( float inMaxSpeed ) const;
 	void ActionAddMovementInput( const realtime_srv::Vector3& WorldDirection, float ScaleValue = 1.0f );
-	const realtime_srv::Vector3& ActionConsumeMovementInputVector();
-	const realtime_srv::Vector3& ActionGetPendingInputVector() const;
+	const realtime_srv::Vector3& ConsumeMovementInputVector();
+	const realtime_srv::Vector3& GetPendingInputVector() const;
 
 private:
 
-	realtime_srv::Vector3 ActionControlInputVector;
+	realtime_srv::Vector3 ControlInputVector_;
 
-	realtime_srv::Vector3 ActionLastControlInputVector;
+	realtime_srv::Vector3 LastControlInputVector_;
 
 	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
 	float BaseTurnRate;

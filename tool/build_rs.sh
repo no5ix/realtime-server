@@ -18,7 +18,7 @@ else
 fi
 
 
-RS_BIN_DIR=../build/bin
+RS_BIN_DIR=`cd ../build/bin && pwd`
 RS_BIN_SYMBOLIC_LINK=bin_rs
 
 if [ ! -L "$RS_BIN_SYMBOLIC_LINK" ]; then

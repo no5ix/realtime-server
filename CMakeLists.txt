@@ -98,10 +98,9 @@ set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 
 if(UNIX)
 
-    # Inhibit all warning messages.
     if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
         # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wno-long-long -pedantic")
-        # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w")
+        # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w")  # Inhibit all warning messages.
         set(CXX_FLAGS
             -g
             # -DVALGRIND
@@ -133,12 +132,22 @@ if(UNIX)
     set(CMAKE_CXX_FLAGS_DEBUG "$ENV{CXXFLAGS} -O0 -Wall -g -ggdb")
     set(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall")
 
+    # find hiredis
+    find_path(HIREDIS_INCLUDE_DIR hiredis/hiredis.h)
+    find_library(HIREDIS_LIBRARY NAMES hiredis)
+
+    if(HIREDIS_INCLUDE_DIR AND HIREDIS_LIBRARY)
+        message(STATUS "found hiredis")
+    endif()
+
+
     include_directories(${PROJECT_SOURCE_DIR})
 
     add_subdirectory(muduo)
     add_subdirectory(muduo_udp_support)
-    add_subdirectory(realtime_srv)
+    add_subdirectory(muduo_contrib)
 
+    add_subdirectory(realtime_srv)
     add_subdirectory(example)
 
 else()

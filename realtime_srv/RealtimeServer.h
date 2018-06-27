@@ -17,7 +17,7 @@ namespace realtime_srv
 		// Parameter: const NewPlayerCallback & NewPlayerCB for spawning your own GameObject.
 		// Parameter: uint16_t Port default is DEFAULT_REALTIME_SRV_PORT, see RealtimeSrvShared.h
 		//************************************
-		void Run( const NewPlayerCallback& NewPlayerCB,
+		void Run( const NewPlayerCallback& NewPlayerCb,
 			uint16_t Port = DEFAULT_REALTIME_SRV_PORT );
 
 

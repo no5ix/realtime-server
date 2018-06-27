@@ -3,13 +3,11 @@
 
 using namespace realtime_srv;
 
-bool UdpSockInterfc::StaticInit()
-{
+bool UdpSockInterfc::StaticInit() {
 #ifdef IS_WIN
 	WSADATA wsaData;
 	int iResult = WSAStartup( MAKEWORD( 2, 2 ), &wsaData );
-	if ( iResult != NO_ERROR )
-	{
+	if ( iResult != NO_ERROR ) {
 		ReportError( "Starting Up" );
 		return false;
 	}
@@ -17,16 +15,14 @@ bool UdpSockInterfc::StaticInit()
 	return true;
 }
 
-void UdpSockInterfc::CleanUp()
-{
+void UdpSockInterfc::CleanUp() {
 #ifdef IS_WIN
 	WSACleanup();
 #endif
 }
 
 
-void UdpSockInterfc::ReportError( const char* inOperationDesc )
-{
+void UdpSockInterfc::ReportError( const char* inOperationDesc ) {
 #ifdef IS_WIN
 	LPVOID lpMsgBuf;
 	DWORD errorNum = GetLastError();
@@ -48,8 +44,7 @@ void UdpSockInterfc::ReportError( const char* inOperationDesc )
 #endif
 }
 
-int UdpSockInterfc::GetLastError()
-{
+int UdpSockInterfc::GetLastError() {
 #ifdef IS_WIN
 	return WSAGetLastError();
 #else
@@ -58,26 +53,20 @@ int UdpSockInterfc::GetLastError()
 
 }
 
-UDPSocketPtr UdpSockInterfc::CreateUDPSocket()
-{
+UDPSocketPtr UdpSockInterfc::CreateUDPSocket() {
 	SOCKET s = socket( AF_INET, SOCK_DGRAM, IPPROTO_UDP );
 
-	if ( s != INVALID_SOCKET )
-	{
+	if ( s != INVALID_SOCKET ) {
 		return UDPSocketPtr( new UdpSockInterfc( s ) );
-	}
-	else
-	{
+	} else {
 		ReportError( "CreateUDPSocket" );
 		return nullptr;
 	}
 }
 
-int UdpSockInterfc::Bind( const SockAddrInterfc& inBindAddress )
-{
+int UdpSockInterfc::Bind( const SockAddrInterfc& inBindAddress ) {
 	int error = bind( mSocket, &inBindAddress.mSockAddr, inBindAddress.GetSize() );
-	if ( error != 0 )
-	{
+	if ( error != 0 ) {
 		ReportError( "UDPSocketInterface::Bind" );
 		return GetLastError();
 	}
@@ -85,59 +74,45 @@ int UdpSockInterfc::Bind( const SockAddrInterfc& inBindAddress )
 	return NO_ERROR;
 }
 
-int UdpSockInterfc::SendTo( const void* inToSend, int inLength, const SockAddrInterfc& inToAddress )
-{
+int UdpSockInterfc::SendTo( const void* inToSend, int inLength, const SockAddrInterfc& inToAddress ) {
 	int byteSentCount = sendto( mSocket,
 		static_cast< const char* >( inToSend ),
 		inLength,
 		0, &inToAddress.mSockAddr, inToAddress.GetSize() );
 
-	if ( byteSentCount <= 0 )
-	{
+	if ( byteSentCount <= 0 ) {
 		ReportError( "UDPSocketInterface::SendTo" );
 		return -GetLastError();
-	}
-	else
-	{
+	} else {
 		return byteSentCount;
 	}
 }
 
-int UdpSockInterfc::ReceiveFrom( void* inToReceive, int inMaxLength, SockAddrInterfc& outFromAddress )
-{
+int UdpSockInterfc::ReceiveFrom( void* inToReceive, int inMaxLength, SockAddrInterfc& outFromAddress ) {
 	socklen_t fromLength = outFromAddress.GetSize();
 
 	int readByteCount = recvfrom( mSocket,
 		static_cast< char* >( inToReceive ),
 		inMaxLength,
 		0, &outFromAddress.mSockAddr, &fromLength );
-	if ( readByteCount >= 0 )
-	{
+	if ( readByteCount >= 0 ) {
 		return readByteCount;
-	}
-	else
-	{
+	} else {
 		int error = GetLastError();
 
-		if ( error == WSAEWOULDBLOCK )
-		{
+		if ( error == WSAEWOULDBLOCK ) {
 			return 0;
-		}
-		else if ( error == WSAECONNRESET )
-		{
+		} else if ( error == WSAECONNRESET ) {
 			LOG( "Connection reset from %s", outFromAddress.ToString().c_str() );
 			return -WSAECONNRESET;
-		}
-		else
-		{
+		} else {
 			ReportError( "UDPSocketInterface::ReceiveFrom" );
 			return -error;
 		}
 	}
 }
 
-UdpSockInterfc::~UdpSockInterfc()
-{
+UdpSockInterfc::~UdpSockInterfc() {
 #ifdef IS_WIN
 	closesocket( mSocket );
 #else
@@ -146,8 +121,7 @@ UdpSockInterfc::~UdpSockInterfc()
 }
 
 
-int UdpSockInterfc::SetNonBlockingMode( bool inShouldBeNonBlocking )
-{
+int UdpSockInterfc::SetNonBlockingMode( bool inShouldBeNonBlocking ) {
 #ifdef IS_WIN
 	u_long arg = inShouldBeNonBlocking ? 1 : 0;
 	int result = ioctlsocket( mSocket, FIONBIO, &arg );
@@ -157,24 +131,19 @@ int UdpSockInterfc::SetNonBlockingMode( bool inShouldBeNonBlocking )
 	int result = fcntl( mSocket, F_SETFL, flags );
 #endif
 
-	if ( result == SOCKET_ERROR )
-	{
+	if ( result == SOCKET_ERROR ) {
 		ReportError( "UDPSocketInterface::SetNonBlockingMode" );
 		return GetLastError();
-	}
-	else
-	{
+	} else {
 		return NO_ERROR;
 	}
 }
 
 
 
-int UdpSockInterfc::Connect( const SockAddrInterfc& inAddress )
-{
+int UdpSockInterfc::Connect( const SockAddrInterfc& inAddress ) {
 	int err = connect( mSocket, &inAddress.mSockAddr, inAddress.GetSize() );
-	if ( err < 0 )
-	{
+	if ( err < 0 ) {
 		ReportError( "TCPSocket::Connect" );
 		return GetLastError();
 	}
@@ -183,21 +152,18 @@ int UdpSockInterfc::Connect( const SockAddrInterfc& inAddress )
 
 
 
-int UdpSockInterfc::SetReUse()
-{
+int UdpSockInterfc::SetReUse() {
 
 #ifndef IS_WIN
 	int reuse = 1;
 	int err = setsockopt( mSocket, SOL_SOCKET, SO_REUSEADDR, &reuse, sizeof( reuse ) );
-	if ( err < 0 )
-	{
+	if ( err < 0 ) {
 		ReportError( "UDPSocketInterface::SetReUse SO_REUSEADDR" );
 		return GetLastError();
 	}
 
 	err = setsockopt( mSocket, SOL_SOCKET, SO_REUSEPORT, &reuse, sizeof( reuse ) );
-	if ( err < 0 )
-	{
+	if ( err < 0 ) {
 		ReportError( "UDPSocketInterface::SetReUse SO_REUSEPORT" );
 		return GetLastError();
 	}
@@ -209,44 +175,31 @@ int UdpSockInterfc::SetReUse()
 
 
 
-int32_t	UdpSockInterfc::Send( const void* inData, size_t inLen )
-{
+int32_t	UdpSockInterfc::Send( const void* inData, size_t inLen ) {
 	int byteSentCount = send( mSocket, static_cast< const char* >( inData ), inLen, 0 );
 
-	if ( byteSentCount <= 0 )
-	{
+	if ( byteSentCount <= 0 ) {
 		ReportError( "UDPSocketInterface::Send" );
 		return -GetLastError();
-	}
-	else
-	{
+	} else {
 		return byteSentCount;
 	}
 }
 
-int32_t	UdpSockInterfc::Recv( void* inData, size_t inLen )
-{
+int32_t	UdpSockInterfc::Recv( void* inData, size_t inLen ) {
 	int bytesReceivedCount = recv( mSocket, static_cast< char* >( inData ), inLen, 0 );
 
-	if ( bytesReceivedCount >= 0 )
-	{
+	if ( bytesReceivedCount >= 0 ) {
 		return bytesReceivedCount;
-	}
-	else
-	{
+	} else {
 		int error = GetLastError();
 
-		if ( error == WSAEWOULDBLOCK )
-		{
+		if ( error == WSAEWOULDBLOCK ) {
 			return 0;
-		}
-		else if ( error == WSAECONNRESET )
-		{
+		} else if ( error == WSAECONNRESET ) {
 			//LOG( "Connection reset from %s", outFromAddress.ToString().c_str() );
 			return -WSAECONNRESET;
-		}
-		else
-		{
+		} else {
 			ReportError( "UDPSocketInterface::Recv" );
 			return -error;
 		}

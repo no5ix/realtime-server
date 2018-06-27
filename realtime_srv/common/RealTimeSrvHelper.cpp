@@ -7,24 +7,20 @@ using namespace realtime_srv::RealtimeSrvHelper;
 #ifndef IS_WIN
 const char** __argv;
 int __argc;
-void OutputDebugString( const char* inString )
-{
+void OutputDebugString( const char* inString ) {
 	printf( "%s", inString );
 }
 #endif
 
-void RealtimeSrvHelper::SaveCommandLineArg( const int argc, const char** argv )
-{
+void RealtimeSrvHelper::SaveCommandLineArg( const int argc, const char** argv ) {
 #ifndef IS_WIN
 	__argc = argc;
 	__argv = argv;
 #endif
 }
 
-std::string RealtimeSrvHelper::GetCommandLineArg( int inIndex )
-{
-	if ( inIndex < __argc )
-	{
+std::string RealtimeSrvHelper::GetCommandLineArg( int inIndex ) {
+	if ( inIndex < __argc ) {
 		return std::string( __argv[inIndex] );
 	}
 
@@ -32,10 +28,8 @@ std::string RealtimeSrvHelper::GetCommandLineArg( int inIndex )
 }
 
 
-std::string RealtimeSrvHelper::Sprintf( const char* inFormat, ... )
-{
-	//not thread safe...
-	static char temp[4096];
+std::string RealtimeSrvHelper::Sprintf( const char* inFormat, ... ) {
+	char temp[4096];
 
 	va_list args;
 	va_start( args, inFormat );
@@ -45,16 +39,16 @@ std::string RealtimeSrvHelper::Sprintf( const char* inFormat, ... )
 #else
 	vsnprintf( temp, 4096, inFormat, args );
 #endif
+	va_end( args );
 	return std::string( temp );
 }
 
-void RealtimeSrvHelper::Log( const char* inFormat, ... )
-{
+
+void RealtimeSrvHelper::Log( const char* inFormat, ... ) {
 	if ( !REAL_TIME_SRV_SHOW_DEBUG_MESSAGE )
 		return;
 
-	//not thread safe...
-	static char temp[4096];
+	char temp[4096];
 
 	va_list args;
 	va_start( args, inFormat );
@@ -66,63 +60,57 @@ void RealtimeSrvHelper::Log( const char* inFormat, ... )
 #endif
 	OutputDebugString( temp );
 	OutputDebugString( "\n" );
+	va_end( args );
 }
 
-bool RealtimeSrvHelper::SequenceGreaterThanOrEqual( PacketSN s1, PacketSN s2 )
-{
+bool RealtimeSrvHelper::SequenceGreaterThanOrEqual( PacketSN s1, PacketSN s2 ) {
 	return ( ( s1 >= s2 ) && ( s1 - s2 <= HALF_MAX_PACKET_SEQUENCE_NUMBER ) ) ||
 		( ( s1 < s2 ) && ( s2 - s1 > HALF_MAX_PACKET_SEQUENCE_NUMBER ) );
 	//return s1 >= s2;
 }
 
 
-bool RealtimeSrvHelper::SequenceGreaterThan( PacketSN s1, PacketSN s2 )
-{
+bool RealtimeSrvHelper::SequenceGreaterThan( PacketSN s1, PacketSN s2 ) {
 	return ( ( s1 > s2 ) && ( s1 - s2 <= HALF_MAX_PACKET_SEQUENCE_NUMBER ) ) ||
 		( ( s1 < s2 ) && ( s2 - s1 > HALF_MAX_PACKET_SEQUENCE_NUMBER ) );
 	//return s1 > s2;
 }
 
-bool RealtimeSrvHelper::ChunkPacketIDGreaterThanOrEqual( ChunkPacketID s1, ChunkPacketID s2 )
-{
+bool RealtimeSrvHelper::ChunkPacketIDGreaterThanOrEqual( ChunkPacketID s1, ChunkPacketID s2 ) {
 	return ( ( s1 >= s2 ) && ( s1 - s2 <= HALF_MAX_CHUNK_PACKET_ID ) ) ||
 		( ( s1 < s2 ) && ( s2 - s1 > HALF_MAX_CHUNK_PACKET_ID ) );
 }
 
 
-bool RealtimeSrvHelper::ChunkPacketIDGreaterThan( ChunkPacketID s1, ChunkPacketID s2 )
-{
+bool RealtimeSrvHelper::ChunkPacketIDGreaterThan( ChunkPacketID s1, ChunkPacketID s2 ) {
 	return ( ( s1 > s2 ) && ( s1 - s2 <= HALF_MAX_CHUNK_PACKET_ID ) ) ||
 		( ( s1 < s2 ) && ( s2 - s1 > HALF_MAX_CHUNK_PACKET_ID ) );
 }
 
-bool RealtimeSrvHelper::DaemonizeOnLinux()
-{
+bool RealtimeSrvHelper::DaemonizeOnLinux() {
 #ifndef IS_LINUX
 
 	return true;
 
 #else
 	int maxfd, fd;
-	switch ( fork() )
-	{                   /* Become background process */
-	case -1:
-		return false;
-	case 0:
-		break;                     /* Child falls through... */
-	default:
-		_exit( EXIT_SUCCESS );       /* while parent terminates */
+	switch ( fork() ) {                   /* Become background process */
+		case -1:
+			return false;
+		case 0:
+			break;                     /* Child falls through... */
+		default:
+			_exit( EXIT_SUCCESS );       /* while parent terminates */
 	}
 	if ( setsid() == -1 )                 /* Become leader of new session */
 		return false;
-	switch ( fork() )
-	{                   /* Ensure we are not session leader */
-	case -1:
-		return false;
-	case 0:
-		break;
-	default:
-		_exit( EXIT_SUCCESS );
+	switch ( fork() ) {                   /* Ensure we are not session leader */
+		case -1:
+			return false;
+		case 0:
+			break;
+		default:
+			_exit( EXIT_SUCCESS );
 	}
 	umask( 0 );                       /* Clear file mode creation mask */
 	chdir( "/" );                     /* Change to root directory */
@@ -150,34 +138,29 @@ void RealtimeSrvHelper::SimulateRealWorldOnWin(
 	NetworkMgr* networkManager,
 	uint8_t LatencyCmdIndex,
 	uint8_t dropPacketChanceCmdIndex /*= 0*/,
-	uint8_t JitterCmdIndex /*= 0*/ )
-{
+	uint8_t JitterCmdIndex /*= 0*/ ) {
 #ifdef IS_WIN
 	assert( networkManager );
 
 	std::string latencyString = RealtimeSrvHelper::GetCommandLineArg(
 		LatencyCmdIndex );
-	if ( !latencyString.empty() )
-	{
+	if ( !latencyString.empty() ) {
 		float latency = stof( latencyString );
 		networkManager->SetSimulatedLatency( latency );
 	}
 
 	std::string dropPacketChanceString = RealtimeSrvHelper::GetCommandLineArg(
 		dropPacketChanceCmdIndex );
-	if ( !dropPacketChanceString.empty() )
-	{
+	if ( !dropPacketChanceString.empty() ) {
 		float dropPacketChance = stof( dropPacketChanceString );
 		networkManager->SetDropPacketChance( dropPacketChance );
 	}
 
 	std::string IsSimulatedJitterString = RealtimeSrvHelper::GetCommandLineArg(
 		JitterCmdIndex );
-	if ( !IsSimulatedJitterString.empty() )
-	{
+	if ( !IsSimulatedJitterString.empty() ) {
 		int IsSimulatedJitter = stoi( IsSimulatedJitterString );
-		if ( IsSimulatedJitter )
-		{
+		if ( IsSimulatedJitter ) {
 			networkManager->SetIsSimulatedJitter( true );
 		}
 	}

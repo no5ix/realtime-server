@@ -1,4 +1,5 @@
 set (PROJ_NAME muduo_udp_support)
+set (MUDUO_LIB_NAME muduo)
 
 IF(UNIX)
 

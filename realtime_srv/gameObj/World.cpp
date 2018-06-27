@@ -4,14 +4,10 @@
 using namespace realtime_srv;
 
 
-void World::Registry( GameObjPtr inGameObject, ReplicationAction inAction )
-{
-	if ( inAction == RA_Create )
-	{
+void World::Registry( GameObjPtr inGameObject, ReplicationAction inAction ) {
+	if ( inAction == RA_Create ) {
 		RegistGameObj( inGameObject );
-	}
-	else if ( inAction == RA_Destroy )
-	{
+	} else if ( inAction == RA_Destroy ) {
 		UnregistGameObj( inGameObject );
 	}
 }
@@ -25,91 +21,72 @@ using namespace muduo;
 AtomicInt32 World::kNewObjId;
 
 World::World() :
-	netIdToGameObjMap_( new NetIdToGameObjMap )
-{
+	netIdToGameObjMap_( new NetIdToGameObjMap ) {
 	kNewObjId.getAndSet( 1 );
 }
 
-GameObjPtr World::GetGameObject( int inNetworkId )
-{
+GameObjPtr World::GetGameObject( int inNetworkId ) {
 	auto tempNetworkIdToGameObjectMap = GET_THREAD_SHARED_VAR( netIdToGameObjMap_ );
 	auto gameObjectIt = tempNetworkIdToGameObjectMap->find( inNetworkId );
-	if ( gameObjectIt != tempNetworkIdToGameObjectMap->end() )
-	{
+	if ( gameObjectIt != tempNetworkIdToGameObjectMap->end() ) {
 		return gameObjectIt->second;
-	}
-	else
-	{
+	} else {
 		return GameObjPtr();
 	}
 }
 
-int World::GetNewObjId()
-{
+int World::GetNewObjId() {
 	int toRet = kNewObjId.getAndAdd( 1 );
-	if ( kNewObjId.get() < toRet )
-	{
+	if ( kNewObjId.get() < toRet ) {
 		LOG( "Network ID Wrap Around!!! You've been playing way too long..." );
 	}
 
 	return toRet;
 }
 
-void World::RegistGameObj( GameObjPtr inGameObject )
-{
+void World::RegistGameObj( GameObjPtr inGameObject ) {
 	int newNetworkId = GetNewObjId();
 	inGameObject->SetObjId( newNetworkId );
 
-	auto regFunc = [newNetworkId, &inGameObject, this]()
-	{ ( *netIdToGameObjMap_ )[newNetworkId] = inGameObject; };
+	auto regFunc = [newNetworkId, &inGameObject, this]() { ( *netIdToGameObjMap_ )[newNetworkId] = inGameObject; };
 	SET_THREAD_SHARED_VAR( netIdToGameObjMap_, mutex_, regFunc );
 
 	notifyAllClientCB_( inGameObject, RA_Create );
 	auto newClientProxy = inGameObject->GetClientProxy();
-	if ( newClientProxy )
-	{
+	if ( newClientProxy ) {
 		newClientProxy->SetWorld( this );
 		NetIdToGameObjMapPtr tempNetworkIdToGameObjectMap =
 			GET_THREAD_SHARED_VAR( netIdToGameObjMap_ );
-		for ( const auto& pair : *tempNetworkIdToGameObjectMap )
-		{
+		for ( const auto& pair : *tempNetworkIdToGameObjectMap ) {
 			newClientProxy->GetReplicationManager()
 				.ReplicateCreate( pair.first, pair.second->GetAllStateMask() );
 		}
 	}
 }
 
-void World::UnregistGameObj( GameObjPtr inGameObject )
-{
+void World::UnregistGameObj( GameObjPtr inGameObject ) {
 	notifyAllClientCB_( inGameObject, RA_Destroy );
 
 	int networkId = inGameObject->GetObjId();
-	auto tempFunc = [&, this]()
-	{ netIdToGameObjMap_->erase( networkId ); };
+	auto tempFunc = [&, this]() { netIdToGameObjMap_->erase( networkId ); };
 	SET_THREAD_SHARED_VAR( netIdToGameObjMap_, mutex_, tempFunc );
 
 }
 
-void World::Update()
-{
+void World::Update() {
 	vector< GameObjPtr > GameObjsToRem;
 	auto  tempGameObjects = GET_THREAD_SHARED_VAR( netIdToGameObjMap_ );
 
-	for ( const auto& pair : *tempGameObjects )
-	{
+	for ( const auto& pair : *tempGameObjects ) {
 		auto go = pair.second;
-		if ( !( go )->DoesWantToDie() )
-		{
+		if ( !( go )->DoesWantToDie() ) {
 			( go )->Update();
-		}
-		else
-		{
+		} else {
 			GameObjsToRem.push_back( go );
 		}
 	}
 
-	if ( GameObjsToRem.size() > 0 )
-	{
+	if ( GameObjsToRem.size() > 0 ) {
 		for ( auto g : GameObjsToRem )
 			UnregistGameObj( g );
 	}
@@ -119,78 +96,61 @@ void World::Update()
 
 
 int World::kNewObjId = 1;
-World::World()
-{}
+World::World() {}
 
-int World::GetNewObjId()
-{
+int World::GetNewObjId() {
 	int toRet = kNewObjId++;
-	if ( kNewObjId < toRet )
-	{
+	if ( kNewObjId < toRet ) {
 		LOG( "Network ID Wrap Around!!! You've been playing way too long..." );
 	}
 	return toRet;
 }
 
-GameObjPtr World::GetGameObject( int inNetworkId )
-{
+GameObjPtr World::GetGameObject( int inNetworkId ) {
 	auto gameObjectIt = netIdToGameObjMap_.find( inNetworkId );
-	if ( gameObjectIt != netIdToGameObjMap_.end() )
-	{
+	if ( gameObjectIt != netIdToGameObjMap_.end() ) {
 		return gameObjectIt->second;
-	}
-	else
-	{
+	} else {
 		return GameObjPtr();
 	}
 }
 
-void World::RegistGameObj( GameObjPtr inGameObject )
-{
+void World::RegistGameObj( GameObjPtr inGameObject ) {
 	int newNetworkId = GetNewObjId();
 	inGameObject->SetObjId( newNetworkId );
 	netIdToGameObjMap_[newNetworkId] = inGameObject;
 
 	notifyAllClientCB_( inGameObject, RA_Create );
 	auto newClientProxy = inGameObject->GetClientProxy();
-	if ( newClientProxy )
-	{
+	if ( newClientProxy ) {
 		newClientProxy->SetWorld( this );
-		for ( const auto& pair : netIdToGameObjMap_ )
-		{
+		for ( const auto& pair : netIdToGameObjMap_ ) {
 			newClientProxy->GetReplicationManager().ReplicateCreate(
 				pair.first, pair.second->GetAllStateMask() );
 		}
 	}
 }
 
-void World::UnregistGameObj( GameObjPtr inGameObject )
-{
+void World::UnregistGameObj( GameObjPtr inGameObject ) {
 	notifyAllClientCB_( inGameObject, RA_Destroy );
 
 	int networkId = inGameObject->GetObjId();
 	netIdToGameObjMap_.erase( networkId );
 }
 
-void World::Update()
-{
+void World::Update() {
 	vector< GameObjPtr > GameObjsToRem;
-	for ( const auto& pair : netIdToGameObjMap_ )
-	{
+	for ( const auto& pair : netIdToGameObjMap_ ) {
 		auto go = pair.second;
 
-		if ( !go->DoesWantToDie() )
-		{
+		if ( !go->DoesWantToDie() ) {
 			go->Update();
-		}
-		else
-		{
+		} else {
 			GameObjsToRem.push_back( go );
 		}
 	}
 
-	if ( GameObjsToRem.size() > 0 )
-	{
+	if ( GameObjsToRem.size() > 0 ) {
 		for ( auto& g : GameObjsToRem )
 			UnregistGameObj( g );
 	}

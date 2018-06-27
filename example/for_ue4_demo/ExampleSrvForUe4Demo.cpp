@@ -4,15 +4,12 @@
 using namespace realtime_srv;
 
 
-class ExampleSrvForUe4Demo : noncopyable
-{
+class ExampleSrvForUe4Demo : noncopyable {
 public:
 	ExampleSrvForUe4Demo( bool willDaemonizeOnLinux = false )
-		: server_( willDaemonizeOnLinux )
-	{}
+		: server_( willDaemonizeOnLinux ) {}
 
-	void Run()
-	{
+	void Run() {
 		//	在Windows上, 如果输入命令:   ./example_for_ue4_demo.exe 0 0.3 0.8 1
 		//	则服务器将会模拟 : 
 		//	-	模拟延迟为 : 当前延迟+300毫秒的延迟, 若当前延迟为30ms,
@@ -28,15 +25,10 @@ public:
 			SimulateDropPacketChanceCmdIndexOnWindows,
 			SimulateJitterCmdIndexOnWindows );
 
-		NewPlayerCallback newPlayerCb = std::bind(
-			&ExampleSrvForUe4Demo::SpawnNewCharacterForPlayer,
-			this);
-
-		server_.Run( newPlayerCb );
+		server_.Run( [&]() { return SpawnNewCharacterForPlayer(); } );
 	}
 
-	GameObjPtr SpawnNewCharacterForPlayer()
-	{
+	GameObjPtr SpawnNewCharacterForPlayer() {
 		GameObjPtr newGameObj = Character::StaticCreate();
 		CharacterPtr character = std::static_pointer_cast< Character >( newGameObj );
 
@@ -59,8 +51,7 @@ private:
 
 
 
-int main( int argc, const char** argv )
-{
+int main( int argc, const char** argv ) {
 	RealtimeSrvHelper::SaveCommandLineArg( argc, argv );
 
 	// 在Linux上, 加上一个命令行参数 1 即可变为守护进程,   
