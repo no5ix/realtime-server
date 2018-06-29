@@ -10,7 +10,8 @@ using namespace std::chrono;
 
 RealtimeSrvTiming	RealtimeSrvTiming::sInstance;
 
-namespace {
+namespace
+{
 #ifdef IS_WIN
 LARGE_INTEGER sStartTime = { 0 };
 #else
@@ -18,7 +19,8 @@ high_resolution_clock::time_point sStartTime;
 #endif
 }
 
-RealtimeSrvTiming::RealtimeSrvTiming() {
+RealtimeSrvTiming::RealtimeSrvTiming()
+{
 #ifdef IS_WIN
 	LARGE_INTEGER perfFreq;
 	QueryPerformanceFrequency( &perfFreq );
@@ -32,7 +34,8 @@ RealtimeSrvTiming::RealtimeSrvTiming() {
 #endif
 }
 
-void RealtimeSrvTiming::Update() {
+void RealtimeSrvTiming::Update()
+{
 
 	double currentTime = GetGameTimeD();
 
@@ -43,7 +46,8 @@ void RealtimeSrvTiming::Update() {
 
 }
 
-double RealtimeSrvTiming::GetGameTimeD() const {
+double RealtimeSrvTiming::GetGameTimeD() const
+{
 #ifdef IS_WIN
 	LARGE_INTEGER curTime, timeSinceStart;
 	QueryPerformanceCounter( &curTime );

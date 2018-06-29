@@ -5,10 +5,12 @@ using namespace realtime_srv;
 
 
 RealtimeServer::RealtimeServer( bool willDaemonizeOnLinux /*= false*/ )
-	: world_( new World() ) {
+	: world_( new World() )
+{
 
 	assert( world_ );
-	if ( willDaemonizeOnLinux && !RealtimeSrvHelper::DaemonizeOnLinux() ) {
+	if ( willDaemonizeOnLinux && !RealtimeSrvHelper::DaemonizeOnLinux() )
+	{
 		LOG( " Become Daemon Failed!! " );
 	}
 
@@ -18,8 +20,10 @@ RealtimeServer::RealtimeServer( bool willDaemonizeOnLinux /*= false*/ )
 
 
 void RealtimeServer::Run( const NewPlayerCallback& NewPlayerCb,
-	uint16_t Port /*= DEFAULT_REALTIME_SRV_PORT*/ ) {
-	if ( !networkManager_->Init( Port ) ) {
+	uint16_t Port /*= DEFAULT_REALTIME_SRV_PORT*/ )
+{
+	if ( !networkManager_->Init( Port ) )
+	{
 		LOG( " Network Manager Init Failed!! " );
 	}
 
@@ -40,7 +44,8 @@ void RealtimeServer::Run( const NewPlayerCallback& NewPlayerCb,
 void RealtimeServer::SimulateRealWorldOnWindows(
 	uint8_t LatencyCmdIndex,
 	uint8_t DropPacketChanceCmdIndex /*= 0*/,
-	uint8_t JitterCmdIndex /*= 0*/ ) {
+	uint8_t JitterCmdIndex /*= 0*/ )
+{
 	assert( networkManager_ );
 	RealtimeSrvHelper::SimulateRealWorldOnWin(
 		networkManager_.get(),

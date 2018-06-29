@@ -6,26 +6,26 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\..\muduo\contrib\hiredis\CMakeLists.txt">
+    <Text Include="..\..\muduo_contrib\hiredis\CMakeLists.txt">
       <Filter>hiredis</Filter>
     </Text>
-    <Text Include="..\..\muduo\contrib\CMakeLists.txt" />
+    <Text Include="..\..\muduo_contrib\CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\muduo\contrib\hiredis\Hiredis.cc">
+    <ClCompile Include="..\..\muduo_contrib\hiredis\Hiredis.cc">
       <Filter>hiredis</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\muduo\contrib\hiredis\mrediscli.cc">
+    <ClCompile Include="..\..\muduo_contrib\hiredis\mrediscli.cc">
       <Filter>hiredis</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\muduo\contrib\hiredis\Hiredis.h">
+    <ClInclude Include="..\..\muduo_contrib\hiredis\Hiredis.h">
       <Filter>hiredis</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\muduo\contrib\hiredis\README.md">
+    <None Include="..\..\muduo_contrib\hiredis\README.md">
       <Filter>hiredis</Filter>
     </None>
   </ItemGroup>

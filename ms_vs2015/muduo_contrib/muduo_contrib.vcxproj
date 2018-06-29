@@ -18,6 +18,20 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\muduo_contrib\CMakeLists.txt" />
+    <Text Include="..\..\muduo_contrib\hiredis\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\muduo_contrib\hiredis\Hiredis.cc" />
+    <ClCompile Include="..\..\muduo_contrib\hiredis\mrediscli.cc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\muduo_contrib\hiredis\Hiredis.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\muduo_contrib\hiredis\README.md" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{A23B6D0A-4789-4ECA-8958-7624E7E7BB58}</ProjectGuid>
     <RootNamespace>muduo_contrib</RootNamespace>
@@ -109,20 +123,6 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <Text Include="..\..\muduo\contrib\CMakeLists.txt" />
-    <Text Include="..\..\muduo\contrib\hiredis\CMakeLists.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\..\muduo\contrib\hiredis\Hiredis.cc" />
-    <ClCompile Include="..\..\muduo\contrib\hiredis\mrediscli.cc" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\muduo\contrib\hiredis\Hiredis.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\muduo\contrib\hiredis\README.md" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

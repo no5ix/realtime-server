@@ -17,13 +17,15 @@
 
 #endif //IS_LINUX
 
-namespace realtime_srv {
+namespace realtime_srv
+{
 
 class GameObj;
 class ClientProxy;
 typedef std::function< GameObjPtr() > NewPlayerCallback;
 
-class NetworkMgr : noncopyable {
+class NetworkMgr : noncopyable
+{
 	typedef std::function<void( GameObjPtr, ReplicationAction )> WorldRegistryCB;
 public:
 
@@ -48,29 +50,37 @@ public:
 	void		 SetRepStateDirty( int inNetworkId, uint32_t inDirtyState );
 	virtual void CheckForDisconnects();
 
-	uint32_t	 HandleServerReset( ClientProxyPtr inClientProxy, InputBitStream& inInputStream );
-	void		 SendGamePacket( ClientProxyPtr inClientProxy, const uint32_t inConnFlag );
+	uint32_t	 HandleServerReset( ClientProxyPtr inClientProxy,
+																InputBitStream& inInputStream );
+	void		 SendGamePacket( ClientProxyPtr inClientProxy,
+													 const uint32_t inConnFlag );
 
 	void NotifyAllClient( GameObjPtr inGameObject, ReplicationAction inAction );
 
-	void SetNewPlayerCallback( const NewPlayerCallback& cb ) { newPlayerCB_ = cb; }
+	void SetNewPlayerCallback( const NewPlayerCallback& cb )
+	{ newPlayerCB_ = cb; }
 
-	void SetWorldUpdateCallback( const std::function<void()>& cb ) { worldUpdateCB_ = cb; }
+	void SetWorldUpdateCallback( const std::function<void()>& cb )
+	{ worldUpdateCB_ = cb; }
 
-	void SetWorldRegistryCallback( const WorldRegistryCB& cb ) { worldRegistryCB_ = cb; }
+	void SetWorldRegistryCallback( const WorldRegistryCB& cb )
+	{ worldRegistryCB_ = cb; }
 
 private:
-	void	DoProcessPacket( ClientProxyPtr inClientProxy, InputBitStream& inInputStream );
+	void	DoProcessPacket( ClientProxyPtr inClientProxy,
+												 InputBitStream& inInputStream );
 
-	void	WriteLastMoveTimestampIfDirty( OutputBitStream& inOutputStream, ClientProxyPtr inClientProxy );
+	void	WriteLastMoveTimestampIfDirty( OutputBitStream& inOutputStream,
+																			 ClientProxyPtr inClientProxy );
 
-	void	HandleInputPacket( ClientProxyPtr inClientProxy, InputBitStream& inInputStream );
+	void	HandleInputPacket( ClientProxyPtr inClientProxy,
+													 InputBitStream& inInputStream );
 
 	NewPlayerCallback newPlayerCB_;
 	std::function<void()> worldUpdateCB_;
 	WorldRegistryCB worldRegistryCB_;
 
-	#ifdef IS_LINUX
+#ifdef IS_LINUX
 
 public:
 
@@ -79,18 +89,18 @@ public:
 
 
 	void SendPacket( const OutputBitStream& inOutputStream,
-		const muduo::net::UdpConnectionPtr& conn );
+									 const muduo::net::UdpConnectionPtr& conn );
 
 	void onMessage( const muduo::net::UdpConnectionPtr& conn,
-		muduo::net::Buffer* buf,
-		muduo::Timestamp receiveTime );
+									muduo::net::Buffer* buf,
+									muduo::Timestamp receiveTime );
 	virtual void onConnection( const muduo::net::UdpConnectionPtr& conn );
 
 	virtual void ProcessPacket( InputBitStream& inInputStream,
-		const muduo::net::UdpConnectionPtr& inUdpConnetction );
+															const muduo::net::UdpConnectionPtr& inUdpConnetction );
 private:
 	void	HandlePacketFromNewClient( InputBitStream& inInputStream,
-		const muduo::net::UdpConnectionPtr& inUdpConnetction );
+																	 const muduo::net::UdpConnectionPtr& inUdpConnetction );
 
 private:
 	THREAD_SHARED_VAR_DEF( protected, UdpConnToClientMap, udpConnToClientMap_, mutex_ );
@@ -98,44 +108,47 @@ private:
 	std::shared_ptr<muduo::net::UdpServer> server_;
 	muduo::MutexLock mutex_;
 	static muduo::AtomicInt32		kNewPlayerId;
-	#else //IS_LINUX
+#else //IS_LINUX
 
 public:
-	virtual ~NetworkMgr() { UdpSockInterfc::CleanUp(); }
+	virtual ~NetworkMgr() { UdpSockInterf::CleanUp(); }
 
 	void	SendPacket( const OutputBitStream& inOutputStream,
-		const SockAddrInterfc& inSockAddr );
+										const SockAddrInterf& inSockAddr );
 	void	SetDropPacketChance( float inChance ) { mDropPacketChance = inChance; }
 	void	SetSimulatedLatency( float inLatency ) { mSimulatedLatency = inLatency; }
 
-	void	SetIsSimulatedJitter( bool inIsSimulatedJitter ) { mWhetherToSimulateJitter = inIsSimulatedJitter; }
+	void	SetIsSimulatedJitter( bool inIsSimulatedJitter )
+	{ mWhetherToSimulateJitter = inIsSimulatedJitter; }
 	bool	GetIsSimulatedJitter() const { return mWhetherToSimulateJitter; }
 
-	void	HandleConnectionReset( const SockAddrInterfc& inFromAddress );
+	void	HandleConnectionReset( const SockAddrInterf& inFromAddress );
 private:
 	void	ProcessQueuedPackets();
 	void	ReadIncomingPacketsIntoQueue();
 	virtual void ProcessPacket( InputBitStream& inInputStream,
-		const SockAddrInterfc& inFromAddress,
-		const UDPSocketPtr& inUDPSocket );
+															const SockAddrInterf& inFromAddress,
+															const UDPSocketPtr& inUDPSocket );
 	void	HandlePacketFromNewClient( InputBitStream& inInputStream,
-		const SockAddrInterfc& inFromAddress,
-		const UDPSocketPtr& inUDPSocket );
+																	 const SockAddrInterf& inFromAddress,
+																	 const UDPSocketPtr& inUDPSocket );
 private:
-	class ReceivedPacket {
+	class ReceivedPacket
+	{
 	public:
 		ReceivedPacket(
 			float inReceivedTime,
 			InputBitStream& inInputMemoryBitStream,
-			const SockAddrInterfc& inFromAddress,
-			UDPSocketPtr  inUDPSocket = nullptr
-		) :
+			const SockAddrInterf& inFromAddress,
+			UDPSocketPtr  inUDPSocket = nullptr )
+			:
 			mReceivedTime( inReceivedTime ),
 			mFromAddress( inFromAddress ),
 			mPacketBuffer( inInputMemoryBitStream ),
-			mUDPSocket( inUDPSocket ) {}
+			mUDPSocket( inUDPSocket )
+		{}
 
-		const	SockAddrInterfc&			GetFromAddress()	const { return mFromAddress; }
+		const	SockAddrInterf&			GetFromAddress()	const { return mFromAddress; }
 		float					GetReceivedTime()	const { return mReceivedTime; }
 		InputBitStream&	GetPacketBuffer() { return mPacketBuffer; }
 		UDPSocketPtr	GetUDPSocket() const { return mUDPSocket; }
@@ -144,7 +157,7 @@ private:
 
 		float					mReceivedTime;
 		InputBitStream			mPacketBuffer;
-		SockAddrInterfc			mFromAddress;
+		SockAddrInterf			mFromAddress;
 		UDPSocketPtr			mUDPSocket;
 	};
 	queue< ReceivedPacket, list< ReceivedPacket > >	mPacketQueue;
@@ -152,7 +165,7 @@ private:
 private:
 	UDPSocketPtr				mSocket;
 	static int				kNewPlayerId;
-	typedef unordered_map< SockAddrInterfc, ClientProxyPtr >	AddrToClientMap;
+	typedef unordered_map< SockAddrInterf, ClientProxyPtr >	AddrToClientMap;
 	AddrToClientMap		addrToClientMap_;
 
 	float			mTimeOfLastStatePacket;
@@ -162,7 +175,7 @@ private:
 	float						mSimulatedLatency;
 	bool						mWhetherToSimulateJitter;
 
-	#endif //IS_LINUX
+#endif //IS_LINUX
 
 };
 }

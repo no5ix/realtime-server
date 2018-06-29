@@ -18,5 +18,5 @@ then
 fi
 
 # printf "killing process $PID running on ${PORT}\n"
-echo "[`date '+%x %X'`] A living server is running, Kill the server Now."
+echo "[`date '+%x %X'`] A living server is running, kill the server Now."
 kill -9 $PID

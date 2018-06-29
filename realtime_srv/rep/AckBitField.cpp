@@ -2,18 +2,22 @@
 
 using namespace realtime_srv;
 
-void AckBitField::AddLastBit( uint32_t inTotalDifference ) {
+void AckBitField::AddLastBit( uint32_t inTotalDifference )
+{
 	uint32_t byteOffset = ( inTotalDifference - 1 ) >> 3;
 	uint32_t bitOffset = ( inTotalDifference - 1 ) & 0x7;
 	uint8_t tempMask = 0x01 << bitOffset;
 	*( mAckBitField + byteOffset ) |= tempMask;
 }
 
-void AckBitField::DoAddToAckBitField( uint32_t inDifference ) {
+void AckBitField::DoAddToAckBitField( uint32_t inDifference )
+{
 	uint8_t temp_uint8 = 0;
-	for ( int i = ACK_BIT_FIELD_BYTE_LEN - 1; i > 0; --i ) {
+	for ( int i = ACK_BIT_FIELD_BYTE_LEN - 1; i > 0; --i )
+	{
 		*( mAckBitField + i ) = ( *( mAckBitField + i ) << inDifference );
-		if ( i - 1 >= 0 ) {
+		if ( i - 1 >= 0 )
+		{
 			temp_uint8 = *( mAckBitField + i - 1 );
 			*( mAckBitField + i ) |=
 				( temp_uint8 >> ( 8 - inDifference ) );
@@ -22,10 +26,12 @@ void AckBitField::DoAddToAckBitField( uint32_t inDifference ) {
 	*mAckBitField = ( *mAckBitField ) << inDifference;
 }
 
-void AckBitField::AddToAckBitField( PacketSN inSequenceNumber, PacketSN inLastSN ) {
+void AckBitField::AddToAckBitField( PacketSN inSequenceNumber, PacketSN inLastSN )
+{
 	mLatestAckSN = inSequenceNumber;
 	static bool isFirstTime = true;
-	if ( isFirstTime ) {
+	if ( isFirstTime )
+	{
 		isFirstTime = false;
 		return;
 	}
@@ -34,27 +40,32 @@ void AckBitField::AddToAckBitField( PacketSN inSequenceNumber, PacketSN inLastSN
 		inSequenceNumber, inLastSN++ ); ++totalDifference );
 
 	uint32_t tempDiff = totalDifference;
-	while ( tempDiff > 8 ) {
+	while ( tempDiff > 8 )
+	{
 		DoAddToAckBitField( 8 );
 		tempDiff -= 8;
 	}
-	if ( tempDiff > 0 ) {
+	if ( tempDiff > 0 )
+	{
 		DoAddToAckBitField( tempDiff );
 	}
 	AddLastBit( totalDifference );
 }
 
-void AckBitField::Write( OutputBitStream& inOutputStream ) {
+void AckBitField::Write( OutputBitStream& inOutputStream )
+{
 	inOutputStream.Write( mLatestAckSN );
 	inOutputStream.WriteBytes( mAckBitField, ACK_BIT_FIELD_BYTE_LEN );
 }
 
-void AckBitField::Read( InputBitStream& inInputStream ) {
+void AckBitField::Read( InputBitStream& inInputStream )
+{
 	inInputStream.Read( mLatestAckSN );
 	inInputStream.ReadBytes( mAckBitField, ACK_BIT_FIELD_BYTE_LEN );
 }
 
-bool AckBitField::IsSetCorrespondingAckBit( PacketSN inAckSN ) {
+bool AckBitField::IsSetCorrespondingAckBit( PacketSN inAckSN )
+{
 	uint32_t difference = 0;
 	for ( ; RealtimeSrvHelper::SequenceGreaterThan(
 		mLatestAckSN, inAckSN++ ); ++difference );

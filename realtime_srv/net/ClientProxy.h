@@ -4,11 +4,13 @@
 #include <muduo_udp_support/UdpConnection.h>
 #endif //IS_LINUX
 
-namespace realtime_srv {
+namespace realtime_srv
+{
 
 class NetworkMgr;
 
-class ClientProxy {
+class ClientProxy
+{
 public:
 
 	int	GetPlayerId() const { return mPlayerId; }
@@ -59,7 +61,7 @@ private:
 	World*					world_;
 	NetworkMgr*				networkManager_;
 
-	#ifdef IS_LINUX
+#ifdef IS_LINUX
 
 public:
 	ClientProxy( NetworkMgr* inNetworkManager,
@@ -71,25 +73,25 @@ public:
 private:
 	muduo::net::UdpConnectionPtr UdpConnection_;
 
-	#else //IS_LINUX
+#else //IS_LINUX
 
 public:
 
 	ClientProxy( NetworkMgr* inNetworkManager,
-		const SockAddrInterfc& inSocketAddress,
+		const SockAddrInterf& inSocketAddress,
 		const std::string& inName,
 		int inPlayerId,
 		const UDPSocketPtr& inUDPSocket );
 
-	const SockAddrInterfc& GetSocketAddress() const { return mSocketAddress; }
+	const SockAddrInterf& GetSocketAddress() const { return mSocketAddress; }
 	UDPSocketPtr GetUDPSocket() const { return mUDPSocket; }
 
 private:
 
-	SockAddrInterfc	mSocketAddress;
+	SockAddrInterf	mSocketAddress;
 	UDPSocketPtr	mUDPSocket;
 
-	#endif //IS_LINUX
+#endif //IS_LINUX
 
 };
 

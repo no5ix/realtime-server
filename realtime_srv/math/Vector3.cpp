@@ -4,7 +4,8 @@
 using namespace realtime_srv;
 
 
-Quaternion Vector3::ToQuaternion() const {
+Quaternion Vector3::ToQuaternion() const
+{
 	const float DEG_TO_RAD = PI / ( 180.f );
 	float x = X*DEG_TO_RAD;
 	float y = Y*DEG_TO_RAD;

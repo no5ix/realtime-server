@@ -3,7 +3,8 @@
 
 using namespace realtime_srv;
 
-bool InputState::Write( OutputBitStream& inOutputStream ) const {
+bool InputState::Write( OutputBitStream& inOutputStream ) const
+{
 	inOutputStream.Write( mDesiredMoveForwardAmount );
 	inOutputStream.Write( mDesiredMoveRightAmount );
 
@@ -20,7 +21,8 @@ bool InputState::Write( OutputBitStream& inOutputStream ) const {
 	return true;
 }
 
-bool InputState::Read( InputBitStream& inInputStream ) {
+bool InputState::Read( InputBitStream& inInputStream )
+{
 	inInputStream.Read( mDesiredMoveForwardAmount );
 	inInputStream.Read( mDesiredMoveRightAmount );
 

@@ -95,8 +95,8 @@ using std::placeholders::_3;
 #include "realtime_srv/common/RealtimeSrvMacro.h"
 #include "realtime_srv/common/RealtimeSrvTiming.h"
 
-#include "realtime_srv/net/SockAddrInterfc.h"
-#include "realtime_srv/net/UdpSockInterfc.h"
+#include "realtime_srv/net/SockAddrInterf.h"
+#include "realtime_srv/net/UdpSockInterf.h"
 
 
 #include "realtime_srv/rep/BitStream.h"

@@ -1,6 +1,7 @@
 #pragma once
 
-namespace realtime_srv {
+namespace realtime_srv
+{
 
 #define CLASS_IDENTIFICATION( inCode ) \
 enum { kClassId = inCode }; \
@@ -9,12 +10,14 @@ virtual uint32_t GetClassId() const { return kClassId; } \
 class ClientProxy;
 class InputState;
 
-class GameObj {
+class GameObj
+{
 public:
 	// 'GOBJ' = 1196376650;
 	CLASS_IDENTIFICATION( 1196376650 );
 
-	enum EReplicationState {
+	enum EReplicationState
+	{
 		EPS_Pose = 1 << 0,
 		EPS_AllState = EPS_Pose
 	};

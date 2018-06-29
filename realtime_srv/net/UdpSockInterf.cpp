@@ -3,7 +3,7 @@
 
 using namespace realtime_srv;
 
-bool UdpSockInterfc::StaticInit() {
+bool UdpSockInterf::StaticInit() {
 #ifdef IS_WIN
 	WSADATA wsaData;
 	int iResult = WSAStartup( MAKEWORD( 2, 2 ), &wsaData );
@@ -15,14 +15,14 @@ bool UdpSockInterfc::StaticInit() {
 	return true;
 }
 
-void UdpSockInterfc::CleanUp() {
+void UdpSockInterf::CleanUp() {
 #ifdef IS_WIN
 	WSACleanup();
 #endif
 }
 
 
-void UdpSockInterfc::ReportError( const char* inOperationDesc ) {
+void UdpSockInterf::ReportError( const char* inOperationDesc ) {
 #ifdef IS_WIN
 	LPVOID lpMsgBuf;
 	DWORD errorNum = GetLastError();
@@ -44,7 +44,7 @@ void UdpSockInterfc::ReportError( const char* inOperationDesc ) {
 #endif
 }
 
-int UdpSockInterfc::GetLastError() {
+int UdpSockInterf::GetLastError() {
 #ifdef IS_WIN
 	return WSAGetLastError();
 #else
@@ -53,18 +53,18 @@ int UdpSockInterfc::GetLastError() {
 
 }
 
-UDPSocketPtr UdpSockInterfc::CreateUDPSocket() {
+UDPSocketPtr UdpSockInterf::CreateUDPSocket() {
 	SOCKET s = socket( AF_INET, SOCK_DGRAM, IPPROTO_UDP );
 
 	if ( s != INVALID_SOCKET ) {
-		return UDPSocketPtr( new UdpSockInterfc( s ) );
+		return UDPSocketPtr( new UdpSockInterf( s ) );
 	} else {
 		ReportError( "CreateUDPSocket" );
 		return nullptr;
 	}
 }
 
-int UdpSockInterfc::Bind( const SockAddrInterfc& inBindAddress ) {
+int UdpSockInterf::Bind( const SockAddrInterf& inBindAddress ) {
 	int error = bind( mSocket, &inBindAddress.mSockAddr, inBindAddress.GetSize() );
 	if ( error != 0 ) {
 		ReportError( "UDPSocketInterface::Bind" );
@@ -74,7 +74,7 @@ int UdpSockInterfc::Bind( const SockAddrInterfc& inBindAddress ) {
 	return NO_ERROR;
 }
 
-int UdpSockInterfc::SendTo( const void* inToSend, int inLength, const SockAddrInterfc& inToAddress ) {
+int UdpSockInterf::SendTo( const void* inToSend, int inLength, const SockAddrInterf& inToAddress ) {
 	int byteSentCount = sendto( mSocket,
 		static_cast< const char* >( inToSend ),
 		inLength,
@@ -88,7 +88,7 @@ int UdpSockInterfc::SendTo( const void* inToSend, int inLength, const SockAddrIn
 	}
 }
 
-int UdpSockInterfc::ReceiveFrom( void* inToReceive, int inMaxLength, SockAddrInterfc& outFromAddress ) {
+int UdpSockInterf::ReceiveFrom( void* inToReceive, int inMaxLength, SockAddrInterf& outFromAddress ) {
 	socklen_t fromLength = outFromAddress.GetSize();
 
 	int readByteCount = recvfrom( mSocket,
@@ -112,7 +112,7 @@ int UdpSockInterfc::ReceiveFrom( void* inToReceive, int inMaxLength, SockAddrInt
 	}
 }
 
-UdpSockInterfc::~UdpSockInterfc() {
+UdpSockInterf::~UdpSockInterf() {
 #ifdef IS_WIN
 	closesocket( mSocket );
 #else
@@ -121,7 +121,7 @@ UdpSockInterfc::~UdpSockInterfc() {
 }
 
 
-int UdpSockInterfc::SetNonBlockingMode( bool inShouldBeNonBlocking ) {
+int UdpSockInterf::SetNonBlockingMode( bool inShouldBeNonBlocking ) {
 #ifdef IS_WIN
 	u_long arg = inShouldBeNonBlocking ? 1 : 0;
 	int result = ioctlsocket( mSocket, FIONBIO, &arg );
@@ -141,7 +141,7 @@ int UdpSockInterfc::SetNonBlockingMode( bool inShouldBeNonBlocking ) {
 
 
 
-int UdpSockInterfc::Connect( const SockAddrInterfc& inAddress ) {
+int UdpSockInterf::Connect( const SockAddrInterf& inAddress ) {
 	int err = connect( mSocket, &inAddress.mSockAddr, inAddress.GetSize() );
 	if ( err < 0 ) {
 		ReportError( "TCPSocket::Connect" );
@@ -152,7 +152,7 @@ int UdpSockInterfc::Connect( const SockAddrInterfc& inAddress ) {
 
 
 
-int UdpSockInterfc::SetReUse() {
+int UdpSockInterf::SetReUse() {
 
 #ifndef IS_WIN
 	int reuse = 1;
@@ -175,7 +175,7 @@ int UdpSockInterfc::SetReUse() {
 
 
 
-int32_t	UdpSockInterfc::Send( const void* inData, size_t inLen ) {
+int32_t	UdpSockInterf::Send( const void* inData, size_t inLen ) {
 	int byteSentCount = send( mSocket, static_cast< const char* >( inData ), inLen, 0 );
 
 	if ( byteSentCount <= 0 ) {
@@ -186,7 +186,7 @@ int32_t	UdpSockInterfc::Send( const void* inData, size_t inLen ) {
 	}
 }
 
-int32_t	UdpSockInterfc::Recv( void* inData, size_t inLen ) {
+int32_t	UdpSockInterf::Recv( void* inData, size_t inLen ) {
 	int bytesReceivedCount = recv( mSocket, static_cast< char* >( inData ), inLen, 0 );
 
 	if ( bytesReceivedCount >= 0 ) {

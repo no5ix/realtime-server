@@ -36,8 +36,8 @@
     <ClInclude Include="..\..\realtime_srv\math\Vector3.h" />
     <ClInclude Include="..\..\realtime_srv\net\ClientProxy.h" />
     <ClInclude Include="..\..\realtime_srv\net\NetworkMgr.h" />
-    <ClInclude Include="..\..\realtime_srv\net\SockAddrInterfc.h" />
-    <ClInclude Include="..\..\realtime_srv\net\UdpSockInterfc.h" />
+    <ClInclude Include="..\..\realtime_srv\net\SockAddrInterf.h" />
+    <ClInclude Include="..\..\realtime_srv\net\UdpSockInterf.h" />
     <ClInclude Include="..\..\realtime_srv\RealtimeServer.h" />
     <ClInclude Include="..\..\realtime_srv\rep\AckBitField.h" />
     <ClInclude Include="..\..\realtime_srv\rep\BitStream.h" />
@@ -58,7 +58,7 @@
     <ClCompile Include="..\..\realtime_srv\math\Vector3.cpp" />
     <ClCompile Include="..\..\realtime_srv\net\ClientProxy.cpp" />
     <ClCompile Include="..\..\realtime_srv\net\NetworkMgr.cpp" />
-    <ClCompile Include="..\..\realtime_srv\net\UdpSockInterfc.cpp" />
+    <ClCompile Include="..\..\realtime_srv\net\UdpSockInterf.cpp" />
     <ClCompile Include="..\..\realtime_srv\RealtimeServer.cpp" />
     <ClCompile Include="..\..\realtime_srv\rep\AckBitField.cpp" />
     <ClCompile Include="..\..\realtime_srv\rep\BitStream.cpp" />

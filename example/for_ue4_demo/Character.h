@@ -3,12 +3,14 @@
 #include <realtime_srv/RealtimeServer.h>
 
 
-class Character : public realtime_srv::GameObj {
+class Character : public realtime_srv::GameObj
+{
 public:
 	// 'CHRT' = 1128813140;
 	CLASS_IDENTIFICATION( 1128813140 );
 
-	enum EReplicationState {
+	enum EReplicationState
+	{
 		EPS_Pose = 1 << 0,
 		EPS_PlayerId = 1 << 1,
 

@@ -21,14 +21,15 @@ ClientProxy::ClientProxy( NetworkMgr* inNetworkManager,
 	mLastPacketFromClientTime( 0.f ),
 	mTimeToRespawn( 0.f ),
 	mRecvingServerResetFlag( false ),
-	UdpConnection_( inUdpConnection ) {
+	UdpConnection_( inUdpConnection )
+{
 	UpdateLastPacketTime();
 }
 
 #else //IS_LINUX
 
 ClientProxy::ClientProxy( NetworkMgr* inNetworkManager,
-	const SockAddrInterfc& inSocketAddress,
+	const SockAddrInterf& inSocketAddress,
 	const std::string& inName,
 	int inPlayerId,
 	const UDPSocketPtr& inUDPSocket )
@@ -42,16 +43,19 @@ ClientProxy::ClientProxy( NetworkMgr* inNetworkManager,
 	DeliveryNotifyManager_( false, true ),
 	mIsLastMoveTimestampDirty( false ),
 	mTimeToRespawn( 0.f ),
-	mRecvingServerResetFlag( false ) {
+	mRecvingServerResetFlag( false )
+{
 	UpdateLastPacketTime();
 }
 #endif //IS_LINUX
 
 
-void ClientProxy::UpdateLastPacketTime() {
+void ClientProxy::UpdateLastPacketTime()
+{
 	mLastPacketFromClientTime = RealtimeSrvTiming::sInstance.GetCurrentGameTime();
 }
 
-void ClientProxy::SetGameObjStateDirty( int inNetworkId, uint32_t inDirtyState ) {
+void ClientProxy::SetGameObjStateDirty( int inNetworkId, uint32_t inDirtyState )
+{
 	networkManager_->SetRepStateDirty( inNetworkId, inDirtyState );
 }

@@ -21,26 +21,26 @@ using namespace muduo::net;
 namespace
 {
 
-	typedef struct sockaddr SA;
+typedef struct sockaddr SA;
 
 
 #if VALGRIND || defined (NO_ACCEPT4)
-	void setNonBlockAndCloseOnExec( int sockfd )
-	{
-		// non-block
-		int flags = ::fcntl( sockfd, F_GETFL, 0 );
-		flags |= O_NONBLOCK;
-		int ret = ::fcntl( sockfd, F_SETFL, flags );
-		// FIXME check
+void setNonBlockAndCloseOnExec( int sockfd )
+{
+	// non-block
+	int flags = ::fcntl( sockfd, F_GETFL, 0 );
+	flags |= O_NONBLOCK;
+	int ret = ::fcntl( sockfd, F_SETFL, flags );
+	// FIXME check
 
-		// close-on-exec
-		flags = ::fcntl( sockfd, F_GETFD, 0 );
-		flags |= FD_CLOEXEC;
-		ret = ::fcntl( sockfd, F_SETFD, flags );
-		// FIXME check
+	// close-on-exec
+	flags = ::fcntl( sockfd, F_GETFD, 0 );
+	flags |= FD_CLOEXEC;
+	ret = ::fcntl( sockfd, F_SETFD, flags );
+	// FIXME check
 
-		( void )ret;
-	}
+	( void )ret;
+}
 #endif
 
 }
@@ -92,13 +92,13 @@ int sockets::recvfrom( int sockfd, struct sockaddr_in6* addr )
 		LOG_SYSERR << "Socket::accept";
 		switch ( savedErrno )
 		{
-		case EAGAIN:
-			// expected errors
-			errno = savedErrno;
-			break;
-		default:
-			LOG_FATAL << "unknown error of ::recvfrom " << savedErrno;
-			break;
+			case EAGAIN:
+				// expected errors
+				errno = savedErrno;
+				break;
+			default:
+				LOG_FATAL << "unknown error of ::recvfrom " << savedErrno;
+				break;
 		}
 	}
 	return readByteCount;

@@ -41,7 +41,7 @@ UdpConnection::UdpConnection( EventLoop* loop,
 	const std::shared_ptr< Socket >& connectedSocket,
 	const InetAddress& localAddr,
 	const InetAddress& peerAddr )
-	: 
+	:
 	loop_( CHECK_NOTNULL( loop ) ),
 	name_( nameArg ),
 	state_( kConnecting ),
@@ -237,16 +237,16 @@ const char* UdpConnection::stateToString() const
 {
 	switch ( state_ )
 	{
-	case kDisconnected:
-		return "kDisconnected";
-	case kConnecting:
-		return "kConnecting";
-	case kConnected:
-		return "kConnected";
-	case kDisconnecting:
-		return "kDisconnecting";
-	default:
-		return "unknown state";
+		case kDisconnected:
+			return "kDisconnected";
+		case kConnecting:
+			return "kConnecting";
+		case kConnected:
+			return "kConnected";
+		case kDisconnecting:
+			return "kDisconnecting";
+		default:
+			return "unknown state";
 	}
 }
 
