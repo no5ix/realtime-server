@@ -36,7 +36,7 @@
 
 - A [UE4 demo](https://github.com/no5ix/realtime-server-ue4-demo) for it
 - 附一个[UE4游戏前端演示Demo](https://github.com/no5ix/realtime-server-ue4-demo)
-    - Video Preview 视频演示 : [Click me 点我](https://hulinhong.com/2018/05/02/a_real_time_game_server_and_a_ue4_demo_for_it/)
+    - Video Preview 视频演示 : [Click me 点我](https://hulinhong.com)
 
     - Unreal Engine Version : 4.16 - 4.19
     - 虚幻引擎版本 : 兼容 4.16 - 4.19
