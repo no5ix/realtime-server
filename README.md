@@ -28,11 +28,6 @@
 # About This 
 
 
-- Win/Linux
-- RUDP
-- C++11
-- Bit Stream
-- Add UDP support for muduo
 
 - A [UE4 demo](https://github.com/no5ix/realtime-server-ue4-demo) for it
 - 附一个[UE4游戏前端演示Demo](https://github.com/no5ix/realtime-server-ue4-demo)
@@ -46,6 +41,11 @@
 
     - No Replication component from UE4, just socket
     - 没有用UE4的网络同步组件, 唯socket而已
+- Win/Linux
+- RUDP
+- C++11
+- Bit Stream
+- Add UDP support for muduo
 
 
 
