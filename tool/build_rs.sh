@@ -29,6 +29,14 @@ else
 fi
 
 
+# toluapp
+
+echo "toluapping..."
+
+EXAMPLE_CODE_DIR="../example/for_ue4_demo/"
+tolua++5.1 -o ${EXAMPLE_CODE_DIR}lua_Character.cpp ${EXAMPLE_CODE_DIR}Character.pkg
+
+
 # cmake
 
 CUR_DIR=`pwd`

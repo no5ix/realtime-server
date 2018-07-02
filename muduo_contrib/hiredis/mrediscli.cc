@@ -168,8 +168,6 @@ int main( int argc, char** argv )
 	loop.runAfter( 3.0, std::bind( echo, &hiredis, &hi ) );
 	//loop.runAfter( 6.0, std::bind( echo, &hiredis, &hi ) );
 
-
-
 	string key_hiredis( "key_hiredis" );
 	loop.runEvery( 2.0, std::bind( incr, &hiredis, &key_hiredis ) );
 

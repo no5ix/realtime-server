@@ -1,14 +1,24 @@
 #include <realtime_srv/RealtimeServer.h>
 #include "Character.h"
+#include "ExampleRedisCli.h"
+#include "LuaWrapper.h"
+
 
 using namespace realtime_srv;
+
+extern int  tolua__open (lua_State* tolua_S);
 
 
 class ExampleSrvForUe4Demo : noncopyable
 {
 public:
 	ExampleSrvForUe4Demo( bool willDaemonizeOnLinux = false )
-		: server_( willDaemonizeOnLinux ) {}
+		: server_( willDaemonizeOnLinux )
+	{
+	#ifdef HAS_REDIS
+		db_.Init( server_.GetEventLoop() );
+	#endif // HAS_REDIS
+	}
 
 	void Run()
 	{
@@ -27,10 +37,10 @@ public:
 			SimulateDropPacketChanceCmdIndexOnWindows,
 			SimulateJitterCmdIndexOnWindows );
 
-		server_.Run( [&]() { return SpawnNewCharacterForPlayer(); } );
+		server_.Run( [&]( ClientProxyPtr cp ) { return SpawnNewCharacterForPlayer( cp ); } );
 	}
 
-	GameObjPtr SpawnNewCharacterForPlayer()
+	GameObjPtr SpawnNewCharacterForPlayer( ClientProxyPtr cliProxy )
 	{
 		GameObjPtr newGameObj = Character::StaticCreate();
 		CharacterPtr character = std::static_pointer_cast< Character >( newGameObj );
@@ -43,11 +53,25 @@ public:
 			0.f,
 			RealtimeSrvMath::GetRandomFloat() * 180.f,
 			0.f ) );
+
+		LuaWrapper lw_char( "Character.lua", tolua__open );
+
+
+
+	#ifdef HAS_REDIS
+		db_.SaveNewPlayer( cliProxy->GetPlayerId(),
+			cliProxy->GetPlayerName() );
+	#endif // HAS_REDIS
+
 		return newGameObj;
 	}
 
 private:
 	RealtimeServer server_;
+
+#ifdef HAS_REDIS
+	ExampleRedisCli db_;
+#endif // HAS_REDIS
 };
 
 
@@ -67,4 +91,6 @@ int main( int argc, const char** argv )
 
 	ExampleSrvForUe4Demo exmaple_server( willDaemonizeOnLinux );
 	exmaple_server.Run();
+
 }
+

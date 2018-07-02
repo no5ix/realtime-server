@@ -44,9 +44,6 @@ public:
 	int			GetObjId()				const { return ObjId_; }
 	void		SetObjId( int inObjId ) { ObjId_ = inObjId; }
 
-	int			GetPlayerId()				const { return ObjId_; }
-	void		SetPlayerId( int inPlayerId ) { ObjId_ = inPlayerId; }
-
 	virtual uint32_t	Write( OutputBitStream& inOutputStream,
 		uint32_t inDirtyState ) const { return 0; }
 
@@ -65,7 +62,6 @@ protected:
 	bool mDoesWantToDie;
 
 	int	ObjId_;
-	int	PlayerId_;
 
 	Vector3 currentLocation_;
 	Vector3 oldLocation_;

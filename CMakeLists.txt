@@ -114,6 +114,7 @@ if(UNIX)
             -Wno-unused-parameter
             # -Wold-style-cast
             -Wno-multichar
+            -Wno-unused-function
             -Wno-reorder
             -Woverloaded-virtual
             -Wpointer-arith
@@ -138,6 +139,16 @@ if(UNIX)
 
     if(HIREDIS_INCLUDE_DIR AND HIREDIS_LIBRARY)
         message(STATUS "found hiredis")
+    endif()
+
+
+    # find lua
+    include_directories(/usr/include/lua5.1)
+    find_path(LUA_INCLUDE_DIR lua5.1/lua.h)
+    find_library(LUA_LIBRARY NAMES lua5.1)
+
+    if(LUA_INCLUDE_DIR AND LUA_LIBRARY)
+        message(STATUS "found lua5.1")
     endif()
 
 

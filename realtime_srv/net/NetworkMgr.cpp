@@ -19,12 +19,12 @@ const float kClientDisconnectTimeout = 6.f;
 using namespace muduo;
 using namespace muduo::net;
 
-AtomicInt32 NetworkMgr::kNewPlayerId;
+AtomicInt32 NetworkMgr::kNewNetId;
 
 NetworkMgr::NetworkMgr() :
 	udpConnToClientMap_( new UdpConnToClientMap )
 {
-	kNewPlayerId.getAndSet( 1 );
+	kNewNetId.getAndSet( 1 );
 }
 
 void NetworkMgr::SendPacket( const OutputBitStream& inOutputStream, const UdpConnectionPtr& conn )
@@ -122,19 +122,17 @@ void NetworkMgr::HandlePacketFromNewClient( InputBitStream& inInputStream,
 			std::make_shared< ClientProxy >(
 				this,
 				playerName,
-				kNewPlayerId.getAndAdd( 1 ),
+				kNewNetId.getAndAdd( 1 ),
 				inUdpConnetction );
 
-		int newPlayerId = newClientProxy->GetPlayerId();
 		{
 			MutexLockGuard lock( mutex_ );
 			THREAD_SHARED_VAR_COW( udpConnToClientMap_ );
 			( *udpConnToClientMap_ )[inUdpConnetction] = newClientProxy;
 		}
 
-		GameObjPtr newGameObj = newPlayerCB_();
+		GameObjPtr newGameObj = newPlayerCB_( newClientProxy );
 		newGameObj->SetClientProxy( newClientProxy );
-		newGameObj->SetPlayerId( newClientProxy->GetPlayerId() );
 		worldRegistryCB_( newGameObj, RA_Create );
 
 		if ( packetType == kHelloCC )
@@ -150,8 +148,8 @@ void NetworkMgr::HandlePacketFromNewClient( InputBitStream& inInputStream,
 		}
 
 		LOG( "a new client named '%s' as PlayerID %d ",
-			newClientProxy->GetName().c_str(),
-			newPlayerId );
+			newClientProxy->GetPlayerName().c_str(),
+			newClientProxy->GetPlayerId() );
 	}
 	//else if ( packetType == kInputCC )
 	//{
@@ -241,7 +239,7 @@ void NetworkMgr::SetRepStateDirty( int inNetworkId, uint32_t inDirtyState )
 
 #else
 
-int NetworkMgr::kNewPlayerId = 1;
+int NetworkMgr::kNewNetId = 1;
 
 NetworkMgr::NetworkMgr() :
 	mTimeOfLastStatePacket( 0.f ),
@@ -408,22 +406,20 @@ void NetworkMgr::HandlePacketFromNewClient( InputBitStream& inInputStream,
 		|| packetType == kResetedCC
 		)
 	{
-		std::string playerName = "RealTimeSrvTestPlayerName";
+		std::string playerName = "rs_test_player_name";
 		//inInputStream.Read( playerName );	
 
 		ClientProxyPtr newClientProxy = std::make_shared< ClientProxy >(
 			this,
 			inFromAddress,
 			playerName,
-			kNewPlayerId++,
+			kNewNetId++,
 			inUDPSocket );
 
-		int newPlayerId = newClientProxy->GetPlayerId();
 		addrToClientMap_[inFromAddress] = newClientProxy;
 
-		GameObjPtr newGameObj = newPlayerCB_();
+		GameObjPtr newGameObj = newPlayerCB_( newClientProxy );
 		newGameObj->SetClientProxy( newClientProxy );
-		newGameObj->SetPlayerId( newClientProxy->GetPlayerId() );
 		worldRegistryCB_( newGameObj, RA_Create );
 
 		if ( packetType == kHelloCC )
@@ -439,8 +435,8 @@ void NetworkMgr::HandlePacketFromNewClient( InputBitStream& inInputStream,
 		}
 		LOG( "a new client at socket %s, named '%s' as PlayerID %d ",
 			inFromAddress.ToString().c_str(),
-			newClientProxy->GetName().c_str(),
-			newPlayerId
+			newClientProxy->GetPlayerName().c_str(),
+			newClientProxy->GetPlayerId()
 		);
 	}
 	//else if ( packetType == kInputCC )

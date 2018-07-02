@@ -6,7 +6,6 @@ using namespace realtime_srv;
 GameObj::GameObj() :
 	mDoesWantToDie( false ),
 	ObjId_( 0 ),
-	PlayerId_( 0 ),
 	currentLocation_( Vector3::Zero() ),
 	oldLocation_( Vector3::Zero() ),
 	currentRotation_( Vector3::Zero() ),

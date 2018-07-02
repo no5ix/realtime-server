@@ -26,6 +26,12 @@ public:
 		uint8_t dropPacketChanceCmdIndex = 0,
 		uint8_t JitterCmdIndex = 0 );
 
+
+#ifdef IS_LINUX
+	muduo::net::EventLoop* GetEventLoop()
+	{ return networkManager_->GetEventLoop(); }
+#endif //IS_LINUX
+
 private:
 	std::unique_ptr<World>	world_;
 	std::unique_ptr<NetworkMgr>	networkManager_;

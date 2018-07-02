@@ -3,6 +3,7 @@
 #ifdef IS_LINUX
 #include <muduo/base/Logging.h>
 #include <muduo/base/Mutex.h>
+#include <muduo/net/EventLoopThreadPool.h>
 #include <muduo/base/ThreadLocalSingleton.h>
 #include <muduo/net/EventLoop.h>
 #include <muduo_udp_support/UdpServer.h>
@@ -22,7 +23,7 @@ namespace realtime_srv
 
 class GameObj;
 class ClientProxy;
-typedef std::function< GameObjPtr() > NewPlayerCallback;
+typedef std::function< GameObjPtr( std::shared_ptr<ClientProxy> ) > NewPlayerCallback;
 
 class NetworkMgr : noncopyable
 {
@@ -51,9 +52,9 @@ public:
 	virtual void CheckForDisconnects();
 
 	uint32_t	 HandleServerReset( ClientProxyPtr inClientProxy,
-																InputBitStream& inInputStream );
+		InputBitStream& inInputStream );
 	void		 SendGamePacket( ClientProxyPtr inClientProxy,
-													 const uint32_t inConnFlag );
+		const uint32_t inConnFlag );
 
 	void NotifyAllClient( GameObjPtr inGameObject, ReplicationAction inAction );
 
@@ -68,13 +69,13 @@ public:
 
 private:
 	void	DoProcessPacket( ClientProxyPtr inClientProxy,
-												 InputBitStream& inInputStream );
+		InputBitStream& inInputStream );
 
 	void	WriteLastMoveTimestampIfDirty( OutputBitStream& inOutputStream,
-																			 ClientProxyPtr inClientProxy );
+		ClientProxyPtr inClientProxy );
 
 	void	HandleInputPacket( ClientProxyPtr inClientProxy,
-													 InputBitStream& inInputStream );
+		InputBitStream& inInputStream );
 
 	NewPlayerCallback newPlayerCB_;
 	std::function<void()> worldUpdateCB_;
@@ -87,34 +88,35 @@ public:
 	typedef unordered_map< muduo::net::UdpConnectionPtr, ClientProxyPtr >	UdpConnToClientMap;
 	typedef std::shared_ptr< UdpConnToClientMap > UdpConnToClientMapPtr;
 
+	muduo::net::EventLoop* GetEventLoop() { return &loop_; }
 
 	void SendPacket( const OutputBitStream& inOutputStream,
-									 const muduo::net::UdpConnectionPtr& conn );
+		const muduo::net::UdpConnectionPtr& conn );
 
 	void onMessage( const muduo::net::UdpConnectionPtr& conn,
-									muduo::net::Buffer* buf,
-									muduo::Timestamp receiveTime );
+		muduo::net::Buffer* buf,
+		muduo::Timestamp receiveTime );
 	virtual void onConnection( const muduo::net::UdpConnectionPtr& conn );
 
 	virtual void ProcessPacket( InputBitStream& inInputStream,
-															const muduo::net::UdpConnectionPtr& inUdpConnetction );
+		const muduo::net::UdpConnectionPtr& inUdpConnetction );
 private:
 	void	HandlePacketFromNewClient( InputBitStream& inInputStream,
-																	 const muduo::net::UdpConnectionPtr& inUdpConnetction );
+		const muduo::net::UdpConnectionPtr& inUdpConnetction );
 
 private:
 	THREAD_SHARED_VAR_DEF( protected, UdpConnToClientMap, udpConnToClientMap_, mutex_ );
 	muduo::net::EventLoop loop_;
 	std::shared_ptr<muduo::net::UdpServer> server_;
 	muduo::MutexLock mutex_;
-	static muduo::AtomicInt32		kNewPlayerId;
+	static muduo::AtomicInt32		kNewNetId;
 #else //IS_LINUX
 
 public:
 	virtual ~NetworkMgr() { UdpSockInterf::CleanUp(); }
 
 	void	SendPacket( const OutputBitStream& inOutputStream,
-										const SockAddrInterf& inSockAddr );
+		const SockAddrInterf& inSockAddr );
 	void	SetDropPacketChance( float inChance ) { mDropPacketChance = inChance; }
 	void	SetSimulatedLatency( float inLatency ) { mSimulatedLatency = inLatency; }
 
@@ -127,11 +129,11 @@ private:
 	void	ProcessQueuedPackets();
 	void	ReadIncomingPacketsIntoQueue();
 	virtual void ProcessPacket( InputBitStream& inInputStream,
-															const SockAddrInterf& inFromAddress,
-															const UDPSocketPtr& inUDPSocket );
+		const SockAddrInterf& inFromAddress,
+		const UDPSocketPtr& inUDPSocket );
 	void	HandlePacketFromNewClient( InputBitStream& inInputStream,
-																	 const SockAddrInterf& inFromAddress,
-																	 const UDPSocketPtr& inUDPSocket );
+		const SockAddrInterf& inFromAddress,
+		const UDPSocketPtr& inUDPSocket );
 private:
 	class ReceivedPacket
 	{
@@ -164,7 +166,7 @@ private:
 
 private:
 	UDPSocketPtr				mSocket;
-	static int				kNewPlayerId;
+	static int				kNewNetId;
 	typedef unordered_map< SockAddrInterf, ClientProxyPtr >	AddrToClientMap;
 	AddrToClientMap		addrToClientMap_;
 

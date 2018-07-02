@@ -14,7 +14,7 @@ class ClientProxy
 public:
 
 	int	GetPlayerId() const { return mPlayerId; }
-	const std::string& GetName()			const { return mName; }
+	const std::string& GetPlayerName()			const { return mPlayerName; }
 
 	void SetInputState( const InputState& inInputState ) { mInputState = inInputState; }
 	const InputState& GetInputState()		const { return mInputState; }
@@ -43,7 +43,7 @@ public:
 
 private:
 
-	std::string			mName;
+	std::string			mPlayerName;
 	int				mPlayerId;
 
 	InputState		mInputState;

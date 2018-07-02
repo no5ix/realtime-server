@@ -25,16 +25,16 @@ using namespace muduo;
 AtomicInt32 World::kNewObjId;
 
 World::World() :
-	netIdToGameObjMap_( new NetIdToGameObjMap )
+	ObjIdToGameObjMap_( new ObjIdToGameObjMap )
 {
 	kNewObjId.getAndSet( 1 );
 }
 
-GameObjPtr World::GetGameObject( int inNetworkId )
+GameObjPtr World::GetGameObject( int inObjId )
 {
-	auto tempNetworkIdToGameObjectMap = GET_THREAD_SHARED_VAR( netIdToGameObjMap_ );
-	auto gameObjectIt = tempNetworkIdToGameObjectMap->find( inNetworkId );
-	if ( gameObjectIt != tempNetworkIdToGameObjectMap->end() )
+	auto tempObjIdToGameObjMap = GET_THREAD_SHARED_VAR( ObjIdToGameObjMap_ );
+	auto gameObjectIt = tempObjIdToGameObjMap->find( inObjId );
+	if ( gameObjectIt != tempObjIdToGameObjMap->end() )
 	{
 		return gameObjectIt->second;
 	}
@@ -57,20 +57,20 @@ int World::GetNewObjId()
 
 void World::RegistGameObj( GameObjPtr inGameObject )
 {
-	int newNetworkId = GetNewObjId();
-	inGameObject->SetObjId( newNetworkId );
+	int newObjId = GetNewObjId();
+	inGameObject->SetObjId( newObjId );
 
-	auto regFunc = [newNetworkId, &inGameObject, this]() { ( *netIdToGameObjMap_ )[newNetworkId] = inGameObject; };
-	SET_THREAD_SHARED_VAR( netIdToGameObjMap_, mutex_, regFunc );
+	auto regFunc = [newObjId, &inGameObject, this]() { ( *ObjIdToGameObjMap_ )[newObjId] = inGameObject; };
+	SET_THREAD_SHARED_VAR( ObjIdToGameObjMap_, mutex_, regFunc );
 
 	notifyAllClientCB_( inGameObject, RA_Create );
 	auto newClientProxy = inGameObject->GetClientProxy();
 	if ( newClientProxy )
 	{
 		newClientProxy->SetWorld( this );
-		NetIdToGameObjMapPtr tempNetworkIdToGameObjectMap =
-			GET_THREAD_SHARED_VAR( netIdToGameObjMap_ );
-		for ( const auto& pair : *tempNetworkIdToGameObjectMap )
+		ObjIdToGameObjMapPtr tempObjIdToGameObjMap =
+			GET_THREAD_SHARED_VAR( ObjIdToGameObjMap_ );
+		for ( const auto& pair : *tempObjIdToGameObjMap )
 		{
 			newClientProxy->GetReplicationManager()
 				.ReplicateCreate( pair.first, pair.second->GetAllStateMask() );
@@ -82,16 +82,16 @@ void World::UnregistGameObj( GameObjPtr inGameObject )
 {
 	notifyAllClientCB_( inGameObject, RA_Destroy );
 
-	int networkId = inGameObject->GetObjId();
-	auto tempFunc = [&, this]() { netIdToGameObjMap_->erase( networkId ); };
-	SET_THREAD_SHARED_VAR( netIdToGameObjMap_, mutex_, tempFunc );
+	int objId = inGameObject->GetObjId();
+	auto tempFunc = [&, this]() { ObjIdToGameObjMap_->erase( objId ); };
+	SET_THREAD_SHARED_VAR( ObjIdToGameObjMap_, mutex_, tempFunc );
 
 }
 
 void World::Update()
 {
 	vector< GameObjPtr > GameObjsToRem;
-	auto  tempGameObjects = GET_THREAD_SHARED_VAR( netIdToGameObjMap_ );
+	auto  tempGameObjects = GET_THREAD_SHARED_VAR( ObjIdToGameObjMap_ );
 
 	for ( const auto& pair : *tempGameObjects )
 	{
@@ -129,10 +129,10 @@ int World::GetNewObjId()
 	return toRet;
 }
 
-GameObjPtr World::GetGameObject( int inNetworkId )
+GameObjPtr World::GetGameObject( int inObjId )
 {
-	auto gameObjectIt = netIdToGameObjMap_.find( inNetworkId );
-	if ( gameObjectIt != netIdToGameObjMap_.end() )
+	auto gameObjectIt = ObjIdToGameObjMap_.find( inObjId );
+	if ( gameObjectIt != ObjIdToGameObjMap_.end() )
 	{
 		return gameObjectIt->second;
 	}
@@ -144,16 +144,16 @@ GameObjPtr World::GetGameObject( int inNetworkId )
 
 void World::RegistGameObj( GameObjPtr inGameObject )
 {
-	int newNetworkId = GetNewObjId();
-	inGameObject->SetObjId( newNetworkId );
-	netIdToGameObjMap_[newNetworkId] = inGameObject;
+	int newObjId = GetNewObjId();
+	inGameObject->SetObjId( newObjId );
+	ObjIdToGameObjMap_[newObjId] = inGameObject;
 
 	notifyAllClientCB_( inGameObject, RA_Create );
 	auto newClientProxy = inGameObject->GetClientProxy();
 	if ( newClientProxy )
 	{
 		newClientProxy->SetWorld( this );
-		for ( const auto& pair : netIdToGameObjMap_ )
+		for ( const auto& pair : ObjIdToGameObjMap_ )
 		{
 			newClientProxy->GetReplicationManager().ReplicateCreate(
 				pair.first, pair.second->GetAllStateMask() );
@@ -165,14 +165,14 @@ void World::UnregistGameObj( GameObjPtr inGameObject )
 {
 	notifyAllClientCB_( inGameObject, RA_Destroy );
 
-	int networkId = inGameObject->GetObjId();
-	netIdToGameObjMap_.erase( networkId );
+	int objId = inGameObject->GetObjId();
+	ObjIdToGameObjMap_.erase( objId );
 }
 
 void World::Update()
 {
 	vector< GameObjPtr > GameObjsToRem;
-	for ( const auto& pair : netIdToGameObjMap_ )
+	for ( const auto& pair : ObjIdToGameObjMap_ )
 	{
 		auto go = pair.second;
 

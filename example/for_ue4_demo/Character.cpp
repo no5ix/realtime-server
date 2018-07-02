@@ -49,7 +49,7 @@ uint32_t Character::Write( OutputBitStream& inOutputStream, uint32_t inDirtyStat
 	if ( inDirtyState & EPS_PlayerId )
 	{
 		inOutputStream.Write( ( bool )true );
-		inOutputStream.Write( GetPlayerId() );
+		inOutputStream.Write( GetClientProxy() ? GetClientProxy()->GetPlayerId() : 0 );
 
 		writtenState |= EPS_PlayerId;
 	}

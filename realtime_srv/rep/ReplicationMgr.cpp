@@ -3,35 +3,35 @@
 using namespace realtime_srv;
 
 
-void ReplicationMgr::ReplicateCreate( int inNetId, uint32_t inInitDirtyState )
+void ReplicationMgr::ReplicateCreate( int inObjId, uint32_t inInitDirtyState )
 {
-	mNetIdToRepCmd[inNetId] = ReplicationCmd( inInitDirtyState );
+	mObjIdToRepCmd[inObjId] = ReplicationCmd( inInitDirtyState );
 }
 
-void ReplicationMgr::ReplicateDestroy( int inNetId )
+void ReplicationMgr::ReplicateDestroy( int inObjId )
 {
-	mNetIdToRepCmd[inNetId].SetDestroy();
+	mObjIdToRepCmd[inObjId].SetDestroy();
 }
 
-void ReplicationMgr::RemoveFromReplication( int inNetId )
+void ReplicationMgr::RemoveFromReplication( int inObjId )
 {
-	mNetIdToRepCmd.erase( inNetId );
+	mObjIdToRepCmd.erase( inObjId );
 }
 
-void ReplicationMgr::SetReplicationStateDirty( int inNetId, uint32_t inDirtyState )
+void ReplicationMgr::SetReplicationStateDirty( int inObjId, uint32_t inDirtyState )
 {
-	mNetIdToRepCmd[inNetId].AddDirtyState( inDirtyState );
+	mObjIdToRepCmd[inObjId].AddDirtyState( inDirtyState );
 }
 
-void ReplicationMgr::HandleCreateAckd( int inNetId )
+void ReplicationMgr::HandleCreateAckd( int inObjId )
 {
-	mNetIdToRepCmd[inNetId].HandleCreateAckd();
+	mObjIdToRepCmd[inObjId].HandleCreateAckd();
 }
 
 
 void ReplicationMgr::Write( OutputBitStream& inOutputStream, InFlightPacket* inInFlightPacket )
 {
-	for ( auto& pair : mNetIdToRepCmd )
+	for ( auto& pair : mObjIdToRepCmd )
 	{
 		ReplicationCmd& replicationCommand = pair.second;
 		if ( replicationCommand.HasDirtyState() )
@@ -78,18 +78,18 @@ void ReplicationMgr::Write( OutputBitStream& inOutputStream, InFlightPacket* inI
 
 
 uint32_t ReplicationMgr::WriteCreateAction( OutputBitStream& inOutputStream,
-	int inNetId, uint32_t inDirtyState )
+	int inObjId, uint32_t inDirtyState )
 {
-	GameObjPtr gameObject = owner_->GetWorld()->GetGameObject( inNetId );
+	GameObjPtr gameObject = owner_->GetWorld()->GetGameObject( inObjId );
 
 	inOutputStream.Write( gameObject->GetClassId() );
 	return gameObject->Write( inOutputStream, inDirtyState );
 }
 
 uint32_t ReplicationMgr::WriteUpdateAction( OutputBitStream& inOutputStream,
-	int inNetId, uint32_t inDirtyState )
+	int inObjId, uint32_t inDirtyState )
 {
-	GameObjPtr gameObject = owner_->GetWorld()->GetGameObject( inNetId );
+	GameObjPtr gameObject = owner_->GetWorld()->GetGameObject( inObjId );
 
 	uint32_t writtenState = gameObject->Write( inOutputStream, inDirtyState );
 
@@ -97,10 +97,10 @@ uint32_t ReplicationMgr::WriteUpdateAction( OutputBitStream& inOutputStream,
 }
 
 uint32_t ReplicationMgr::WriteDestroyAction( OutputBitStream& inOutputStream,
-	int inNetId, uint32_t inDirtyState )
+	int inObjId, uint32_t inDirtyState )
 {
 	( void )inOutputStream;
-	( void )inNetId;
+	( void )inObjId;
 	( void )inDirtyState;
 
 

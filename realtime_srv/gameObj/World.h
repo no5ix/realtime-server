@@ -13,8 +13,8 @@ class GameObj;
 class World : noncopyable
 {
 public:
-	typedef unordered_map< int, GameObjPtr > NetIdToGameObjMap;
-	typedef std::shared_ptr< unordered_map< int, GameObjPtr > > NetIdToGameObjMapPtr;
+	typedef unordered_map< int, GameObjPtr > ObjIdToGameObjMap;
+	typedef std::shared_ptr< unordered_map< int, GameObjPtr > > ObjIdToGameObjMapPtr;
 	typedef std::function<void( GameObjPtr, ReplicationAction )> NotifyAllClientCB;
 
 	World();
@@ -36,12 +36,12 @@ private:
 #ifdef IS_LINUX
 	muduo::MutexLock mutex_;
 	static muduo::AtomicInt32		kNewObjId;
-	THREAD_SHARED_VAR_DEF( private, NetIdToGameObjMap, netIdToGameObjMap_, mutex_ );
+	THREAD_SHARED_VAR_DEF( private, ObjIdToGameObjMap, ObjIdToGameObjMap_, mutex_ );
 
 #else //IS_LINUX
 
 private:
-	NetIdToGameObjMap			netIdToGameObjMap_;
+	ObjIdToGameObjMap			ObjIdToGameObjMap_;
 	static int					kNewObjId;
 
 #endif //IS_LINUX
