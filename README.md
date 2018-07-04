@@ -29,8 +29,8 @@
 
 
 
-- A [UE4 demo](https://github.com/no5ix/realtime-server-ue4-demo) for it
-- 附一个[UE4游戏前端演示Demo](https://github.com/no5ix/realtime-server-ue4-demo)
+- A [UE4 State Synchronization demo](https://github.com/no5ix/realtime-server-ue4-demo) for it
+- 附一个[虚幻4状态同步Demo](https://github.com/no5ix/realtime-server-ue4-demo)
     - Video Preview 视频演示 : [Click me 点我](https://hulinhong.com)
 
     - No Replication component from UE4, just socket
@@ -42,6 +42,7 @@
     - A realtime-server example for this ue4 demo.(see [this](https://github.com/no5ix/realtime-server/tree/master/example/for_ue4_demo))
     - 为这个ue4的demo写了一个realtime-server的例子.(看 [这个](https://github.com/no5ix/realtime-server/tree/master/example/for_ue4_demo))
 - Win/Linux
+- Multi-Thread
 - RUDP
 - C++11
 - Bit Stream

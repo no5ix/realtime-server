@@ -1,4 +1,5 @@
 set (PROJ_NAME rs_example_for_ue4_demo)
+set (PROJ_NAME_WITH_REDIS rs_example_for_ue4_demo_with_redis)
 
 set (LIB_REALTIME_SRV realtime_srv)
 set (LIB_MUDUO_HIREDIS muduo_hiredis)
@@ -8,25 +9,25 @@ set (LIB_TOLUAPP tolua++5.1)
 
 IF(UNIX)
 
-    # file(GLOB_RECURSE all_files "./*.*")
-    # add_executable(${PROJ_NAME} ${all_files})
-    # target_link_libraries(${PROJ_NAME} ${LIB_REALTIME_SRV})
 
     if(HIREDIS_INCLUDE_DIR AND HIREDIS_LIBRARY)
 
-        file(GLOB_RECURSE all_files "./*.*")
-        add_executable(${PROJ_NAME} ${all_files})
-        target_link_libraries(${PROJ_NAME} ${LIB_REALTIME_SRV} ${LIB_MUDUO_HIREDIS} ${LIB_LUA} ${LIB_TOLUAPP})
+        set(example_for_ue4_demo_SRCS
+            Character.cpp
+            ExampleSrvForUe4DemoWithRedis.cpp
+            ExampleRedisCli.cpp
+        )
+        add_executable(${PROJ_NAME} ${example_for_ue4_demo_SRCS})
+        target_link_libraries(${PROJ_NAME} ${LIB_REALTIME_SRV} ${LIB_MUDUO_HIREDIS})
     
     else()
-        set(example_for_ue4_demo_SRCS
-        Character.cpp
-        ExampleRedisCli.cpp.cpp
-        ExampleSrvForUe4Demo.cpp
-        )
 
-        add_executable(${PROJ_NAME} ${example_for_ue4_demo_SRCS})
-        target_link_libraries(${PROJ_NAME} ${LIB_REALTIME_SRV})
+        set(example_for_ue4_demo_SRCS
+            Character.cpp
+            ExampleSrvForUe4Demo.cpp
+        )
+        add_executable(${PROJ_NAME_WITH_REDIS} ${example_for_ue4_demo_SRCS})
+        target_link_libraries(${PROJ_NAME_WITH_REDIS} ${LIB_REALTIME_SRV})
 
     endif()
 

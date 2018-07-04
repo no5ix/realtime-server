@@ -142,15 +142,6 @@ if(UNIX)
     endif()
 
 
-    # find lua
-    include_directories(/usr/include/lua5.1)
-    find_path(LUA_INCLUDE_DIR lua5.1/lua.h)
-    find_library(LUA_LIBRARY NAMES lua5.1)
-
-    if(LUA_INCLUDE_DIR AND LUA_LIBRARY)
-        message(STATUS "found lua5.1")
-    endif()
-
 
     include_directories(${PROJECT_SOURCE_DIR})
 

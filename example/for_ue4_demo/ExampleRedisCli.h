@@ -1,13 +1,8 @@
-#include "realtime_srv/common/RealtimeSrvShared.h"
 
-#ifdef IS_LINUX
-	#define HAS_REDIS
-#endif
-
-#ifdef HAS_REDIS
 
 #pragma once
 
+#include "realtime_srv/common/RealtimeSrvShared.h"
 #include <muduo_contrib/hiredis/Hiredis.h>
 
 #include <muduo/base/Logging.h>
@@ -38,4 +33,3 @@ private:
 	muduo::net::EventLoop *loop_;
 };
 
-#endif // HAS_REDIS

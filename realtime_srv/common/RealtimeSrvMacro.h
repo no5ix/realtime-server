@@ -7,10 +7,10 @@
 
 
 #ifdef PI
-# undef PI
-# define PI (3.1415926535897932f)
+#undef PI
+#define PI (3.1415926535897932f)
 #else
-# define PI (3.1415926535897932f)
+#define PI (3.1415926535897932f)
 #endif
 
 

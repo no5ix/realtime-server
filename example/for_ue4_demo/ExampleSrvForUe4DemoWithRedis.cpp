@@ -1,5 +1,6 @@
 #include <realtime_srv/RealtimeServer.h>
 #include "Character.h"
+#include "ExampleRedisCli.h"
 
 
 using namespace realtime_srv;
@@ -10,7 +11,9 @@ class ExampleSrvForUe4Demo : noncopyable
 public:
 	ExampleSrvForUe4Demo( bool willDaemonizeOnLinux = false )
 		: server_( willDaemonizeOnLinux )
-	{}
+	{
+		db_.Init( server_.GetEventLoop() );
+	}
 
 	void Run()
 	{
@@ -46,11 +49,17 @@ public:
 			RealtimeSrvMath::GetRandomFloat() * 180.f,
 			0.f ) );
 
+
+		db_.SaveNewPlayer( cliProxy->GetPlayerId(),
+			cliProxy->GetPlayerName() );
+
 		return newGameObj;
 	}
 
 private:
 	RealtimeServer server_;
+
+	ExampleRedisCli db_;
 };
 
 

@@ -2,7 +2,6 @@
 
 #include "ExampleRedisCli.h"
 
-#ifdef HAS_REDIS
 
 
 using namespace muduo;
@@ -120,4 +119,3 @@ void ExampleRedisCli::SaveNewPlayer( int newPlayerId, const std::string& newPlay
 }
 
 
-#endif // HAS_REDIS
