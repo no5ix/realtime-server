@@ -14,7 +14,8 @@ Character::Character() :
 	curCameraRotation_( Vector3::Zero() ),
 	oldCameraRotation_( Vector3::Zero() ),
 	oldrentVelocity_( Vector3::Zero() ),
-	currentVelocity_( Vector3::Zero() )
+	currentVelocity_( Vector3::Zero() ),
+	playerId_( 0 )
 {}
 
 
@@ -49,7 +50,7 @@ uint32_t Character::Write( OutputBitStream& inOutputStream, uint32_t inDirtyStat
 	if ( inDirtyState & EPS_PlayerId )
 	{
 		inOutputStream.Write( ( bool )true );
-		inOutputStream.Write( GetClientProxy() ? GetClientProxy()->GetPlayerId() : 0 );
+		inOutputStream.Write( playerId_ );
 
 		writtenState |= EPS_PlayerId;
 	}

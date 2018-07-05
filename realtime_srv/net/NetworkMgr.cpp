@@ -22,6 +22,9 @@ using namespace muduo::net;
 AtomicInt32 NetworkMgr::kNewNetId;
 
 NetworkMgr::NetworkMgr() :
+	mDropPacketChance( 0.f ),
+	mSimulatedLatency( 0.f ),
+	mSimulateJitter( false ),
 	udpConnToClientMap_( new UdpConnToClientMap ),
 	recvPacketSet_( new	ReceivedPacketSet )
 {
@@ -49,9 +52,9 @@ void NetworkMgr::onMessage( const muduo::net::UdpConnectionPtr& conn,
 			float simulatedRecvTime =
 				RealtimeSrvTiming::sInstance.GetCurrentGameTime() +
 				mSimulatedLatency +
-				( GetIsSimulatedJitter() ?
+				( mSimulateJitter ?
 					RealtimeSrvMath::Clamp( RealtimeSrvMath::GetRandomFloat(),
-						0.f, 0.06f ) : 0.f );
+						0.f, mSimulatedLatency ) : 0.f );
 
 			auto tempFunc = [&, simulatedRecvTime]() {
 				recvPacketSet_->emplace( simulatedRecvTime, inputStreamPtr, conn );
@@ -294,7 +297,7 @@ NetworkMgr::NetworkMgr() :
 	mLastCheckDCTime( 0.f ),
 	mDropPacketChance( 0.f ),
 	mSimulatedLatency( 0.f ),
-	mWhetherToSimulateJitter( false )
+	mSimulateJitter( false )
 {}
 
 void NetworkMgr::Start()
@@ -341,8 +344,9 @@ void NetworkMgr::ReadIncomingPacketsIntoQueue()
 				float simulatedReceivedTime =
 					RealtimeSrvTiming::sInstance.GetCurrentGameTime() +
 					mSimulatedLatency +
-					( GetIsSimulatedJitter() ?
-						RealtimeSrvMath::Clamp( RealtimeSrvMath::GetRandomFloat(), 0.f, 0.06f ) : 0.f );
+					( mSimulateJitter ?
+						RealtimeSrvMath::Clamp( RealtimeSrvMath::GetRandomFloat(),
+							0.f, mSimulatedLatency ) : 0.f );
 				mPacketQueue.emplace( simulatedReceivedTime, inputStream, fromAddress );
 			}
 			else
@@ -676,13 +680,15 @@ void NetworkMgr::SendGamePacket( ClientProxyPtr inClientProxy, const uint32_t in
 #endif //IS_LINUX
 }
 
-void NetworkMgr::WriteLastMoveTimestampIfDirty( OutputBitStream& inOutputStream, ClientProxyPtr inClientProxy )
+void NetworkMgr::WriteLastMoveTimestampIfDirty( OutputBitStream& inOutputStream,
+	ClientProxyPtr inClientProxy )
 {
 	bool isTimestampDirty = inClientProxy->IsLastMoveTimestampDirty();
 	inOutputStream.Write( isTimestampDirty );
 	if ( isTimestampDirty )
 	{
-		inOutputStream.Write( inClientProxy->GetUnprocessedActionList().GetLastMoveTimestamp() );
+		inOutputStream.Write( inClientProxy->GetUnprocessedActionList()
+			.GetLastMoveTimestamp() );
 		inClientProxy->SetIsLastMoveTimestampDirty( false );
 	}
 }

@@ -71,10 +71,8 @@ public:
 	{ mDropPacketChance = inChance; }
 	void	SetSimulatedLatency( float inLatency )
 	{ mSimulatedLatency = inLatency; }
-
 	void	SetIsSimulatedJitter( bool inIsSimulatedJitter )
-	{ mWhetherToSimulateJitter = inIsSimulatedJitter; }
-	bool	GetIsSimulatedJitter() const { return mWhetherToSimulateJitter; }
+	{ mSimulateJitter = inIsSimulatedJitter; }
 
 private:
 	void	ProcessQueuedPackets();
@@ -94,7 +92,7 @@ private:
 
 	float						mDropPacketChance;
 	float						mSimulatedLatency;
-	bool						mWhetherToSimulateJitter;
+	bool						mSimulateJitter;
 
 #ifdef IS_LINUX
 

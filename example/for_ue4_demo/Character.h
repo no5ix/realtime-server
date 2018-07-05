@@ -29,6 +29,8 @@ public:
 	const realtime_srv::Vector3& GetCameraRotation() const { return curCameraRotation_; }
 	const realtime_srv::Vector3& GetVelocity() const { return currentVelocity_; }
 
+	void SetPlayerId( int newPlayerId ) { playerId_ = newPlayerId; }
+
 protected:
 	Character();
 
@@ -77,7 +79,7 @@ private:
 	realtime_srv::Vector3 oldCameraRotation_;
 	realtime_srv::Vector3 oldrentVelocity_;
 
-
+	int playerId_;
 };
 
 typedef shared_ptr< Character >	CharacterPtr;

@@ -35,13 +35,14 @@ public:
 	GameObjPtr SpawnNewCharacterForPlayer( ClientProxyPtr cliProxy )
 	{
 		GameObjPtr newGameObj = Character::StaticCreate();
-		CharacterPtr character = std::static_pointer_cast< Character >( newGameObj );
+		CharacterPtr newCharacter = std::static_pointer_cast< Character >( newGameObj );
 
-		character->SetLocation( Vector3(
+		newCharacter->SetPlayerId( cliProxy->GetPlayerId() );
+		newCharacter->SetLocation( Vector3(
 			2500.f + RealtimeSrvMath::GetRandomFloat() * -5000.f,
 			2500.f + RealtimeSrvMath::GetRandomFloat() * -5000.f,
 			0.f ) );
-		character->SetRotation( Vector3(
+		newCharacter->SetRotation( Vector3(
 			0.f,
 			RealtimeSrvMath::GetRandomFloat() * 180.f,
 			0.f ) );
