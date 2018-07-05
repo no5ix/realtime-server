@@ -1,9 +1,5 @@
 #pragma once
 
-#ifdef IS_LINUX
-#include <muduo/base/Mutex.h>
-#include <muduo/base/Atomic.h>
-#endif //IS_LINUX
 
 namespace realtime_srv
 {
@@ -33,18 +29,8 @@ private:
 private:
 	NotifyAllClientCB notifyAllClientCB_;
 
-#ifdef IS_LINUX
-	muduo::MutexLock mutex_;
-	static muduo::AtomicInt32		kNewObjId;
-	THREAD_SHARED_VAR_DEF( private, ObjIdToGameObjMap, ObjIdToGameObjMap_, mutex_ );
-
-#else //IS_LINUX
-
-private:
 	ObjIdToGameObjMap			ObjIdToGameObjMap_;
 	static int					kNewObjId;
-
-#endif //IS_LINUX
 
 };
 }

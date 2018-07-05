@@ -8,7 +8,7 @@ using namespace realtime_srv;
 
 namespace
 {
-const float kTimeBetweenStatePackets = 0.033f;
+const float kTickInterval = 0.033f;
 const float kClientDisconnectTimeout = 6.f;
 }
 
@@ -22,7 +22,8 @@ using namespace muduo::net;
 AtomicInt32 NetworkMgr::kNewNetId;
 
 NetworkMgr::NetworkMgr() :
-	udpConnToClientMap_( new UdpConnToClientMap )
+	udpConnToClientMap_( new UdpConnToClientMap ),
+	recvPacketSet_( new	ReceivedPacketSet )
 {
 	kNewNetId.getAndSet( 1 );
 }
@@ -33,25 +34,77 @@ void NetworkMgr::SendPacket( const OutputBitStream& inOutputStream, const UdpCon
 		inOutputStream.GetBufferPtr(), inOutputStream.GetByteLength() );
 }
 
-void NetworkMgr::Start()
-{
-	server_->start();
-	loop_.loop();
-}
-
 void NetworkMgr::onMessage( const muduo::net::UdpConnectionPtr& conn,
 	muduo::net::Buffer* buf,
 	muduo::Timestamp receiveTime )
 {
 	if ( buf->readableBytes() > 0 ) // kHeaderLen == 0
 	{
-		InputBitStream inputStream( buf->peek(), buf->readableBytes() * 8 );
+		shared_ptr<InputBitStream> inputStreamPtr(
+			new InputBitStream( buf->peek(), buf->readableBytes() * 8 ) );
 		buf->retrieveAll();
 
-		ProcessPacket( inputStream, conn );
-		//CheckForDisconnects();
-		worldUpdateCB_();
-		//SendOutgoingPackets();
+		if ( RealtimeSrvMath::GetRandomFloat() >= mDropPacketChance )
+		{
+			float simulatedRecvTime =
+				RealtimeSrvTiming::sInstance.GetCurrentGameTime() +
+				mSimulatedLatency +
+				( GetIsSimulatedJitter() ?
+					RealtimeSrvMath::Clamp( RealtimeSrvMath::GetRandomFloat(),
+						0.f, 0.06f ) : 0.f );
+
+			auto tempFunc = [&, simulatedRecvTime]() {
+				recvPacketSet_->emplace( simulatedRecvTime, inputStreamPtr, conn );
+			};
+			SET_THREAD_SHARED_VAR( recvPacketSet_, mutex_, tempFunc );
+		}
+		else
+		{
+		 //LOG( "Dropped packet!" );
+		}
+	}
+}
+
+void NetworkMgr::Tick()
+{
+	ProcessQueuedPackets();
+	worldUpdateCB_();
+	SendOutgoingPackets();
+}
+
+void NetworkMgr::ProcessQueuedPackets()
+{
+	if ( recvPacketSet_->empty() )
+	{
+		return;
+	}
+	std::vector< ReceivedPacket > pendingDeleteRecvPacket;
+	auto recvPacketSetCopy = GET_THREAD_SHARED_VAR( recvPacketSet_ );
+	for ( ReceivedPacketSet::iterator it = recvPacketSetCopy->begin();
+		it != recvPacketSetCopy->end(); ++it )
+	{
+		if ( RealtimeSrvTiming::sInstance.GetCurrentGameTime() >
+			it->GetReceivedTime() )
+		{
+			ProcessPacket(
+				*( it->GetPacketBuffer() ),
+				it->GetUdpConn()
+			);
+			pendingDeleteRecvPacket.push_back( *it );
+		}
+		else
+		{
+			break;
+		}
+	}
+	if ( !pendingDeleteRecvPacket.empty() )
+	{
+		muduo::MutexLockGuard lock( mutex_ );
+		THREAD_SHARED_VAR_COW( recvPacketSet_ );
+		for ( const auto& pdrp : pendingDeleteRecvPacket )
+		{
+			recvPacketSet_->erase( pdrp );
+		}
 	}
 }
 
@@ -68,10 +121,16 @@ bool NetworkMgr::Init( uint16_t inPort )
 
 	loop_.runEvery( static_cast< double >( kClientDisconnectTimeout ),
 		std::bind( &NetworkMgr::CheckForDisconnects, this ) );
-	loop_.runEvery( static_cast< double >( kTimeBetweenStatePackets ),
-		std::bind( &NetworkMgr::SendOutgoingPackets, this ) );
+	loop_.runEvery( static_cast< double >( kTickInterval ),
+		std::bind( &NetworkMgr::Tick, this ) );
 
 	return true;
+}
+
+void NetworkMgr::Start()
+{
+	server_->start();
+	loop_.loop();
 }
 
 void NetworkMgr::onConnection( const UdpConnectionPtr& conn )
@@ -82,21 +141,22 @@ void NetworkMgr::onConnection( const UdpConnectionPtr& conn )
 		<< ( conn->connected() ? "UP" : "DOWN" );
 	if ( !conn->connected() )
 	{
-		MutexLockGuard lock( mutex_ );
-		THREAD_SHARED_VAR_COW( udpConnToClientMap_ );
-
-		LOG( "Player %d disconnect", ( ( *udpConnToClientMap_ )[conn] )->GetPlayerId() );
-
-		udpConnToClientMap_->erase( conn );
+		loop_.runInLoop( std::bind( &NetworkMgr::RemoveUdpConn, this, conn ) );
 	}
+}
+
+void NetworkMgr::RemoveUdpConn( const UdpConnectionPtr& conn )
+{
+	loop_.assertInLoopThread();
+	LOG( "Player %d disconnect", ( ( *udpConnToClientMap_ )[conn] )->GetPlayerId() );
+	udpConnToClientMap_->erase( conn );
 }
 
 void NetworkMgr::ProcessPacket( InputBitStream& inInputStream,
 	const UdpConnectionPtr& inUdpConnetction )
 {
-	UdpConnToClientMapPtr tempUdpConnToClientMap = GET_THREAD_SHARED_VAR( udpConnToClientMap_ );
-	auto it = tempUdpConnToClientMap->find( inUdpConnetction );
-	if ( it == tempUdpConnToClientMap->end() )
+	auto it = udpConnToClientMap_->find( inUdpConnetction );
+	if ( it == udpConnToClientMap_->end() )
 	{
 		HandlePacketFromNewClient( inInputStream, inUdpConnetction );
 	}
@@ -125,11 +185,7 @@ void NetworkMgr::HandlePacketFromNewClient( InputBitStream& inInputStream,
 				kNewNetId.getAndAdd( 1 ),
 				inUdpConnetction );
 
-		{
-			MutexLockGuard lock( mutex_ );
-			THREAD_SHARED_VAR_COW( udpConnToClientMap_ );
-			( *udpConnToClientMap_ )[inUdpConnetction] = newClientProxy;
-		}
+		( *udpConnToClientMap_ )[inUdpConnetction] = newClientProxy;
 
 		GameObjPtr newGameObj = newPlayerCB_( newClientProxy );
 		newGameObj->SetClientProxy( newClientProxy );
@@ -166,9 +222,7 @@ void NetworkMgr::HandlePacketFromNewClient( InputBitStream& inInputStream,
 
 void NetworkMgr::NotifyAllClient( GameObjPtr inGameObject, ReplicationAction inAction )
 {
-	UdpConnToClientMapPtr tempUdpConnToClientMap =
-		GET_THREAD_SHARED_VAR( udpConnToClientMap_ );
-	for ( const auto& pair : *tempUdpConnToClientMap )
+	for ( const auto& pair : *udpConnToClientMap_ )
 	{
 		switch ( inAction )
 		{
@@ -193,12 +247,10 @@ void NetworkMgr::CheckForDisconnects()
 
 	vector< ClientProxyPtr > clientsToDisconnect;
 
-	auto tempUdpConnToClientMap = GET_THREAD_SHARED_VAR( udpConnToClientMap_ );
-	for ( const auto& pair : *tempUdpConnToClientMap )
+	for ( const auto& pair : *udpConnToClientMap_ )
 	{
 		if ( pair.second->GetLastPacketFromClientTime() < minAllowedTime )
 		{
-//LOG( "Player %d disconnect", pair.second->GetPlayerId() );
 			clientsToDisconnect.push_back( pair.second );
 		}
 	}
@@ -213,9 +265,7 @@ void NetworkMgr::CheckForDisconnects()
 
 void NetworkMgr::SendOutgoingPackets()
 {
-	UdpConnToClientMapPtr tempUdpConnToClientMap =
-		GET_THREAD_SHARED_VAR( udpConnToClientMap_ );
-	for ( const auto& pair : *tempUdpConnToClientMap )
+	for ( const auto& pair : *udpConnToClientMap_ )
 	{
 		( pair.second )->GetDeliveryNotifyManager().ProcessTimedOutPackets();
 
@@ -228,9 +278,7 @@ void NetworkMgr::SendOutgoingPackets()
 
 void NetworkMgr::SetRepStateDirty( int inNetworkId, uint32_t inDirtyState )
 {
-	UdpConnToClientMapPtr tempUdpConnToClientMap =
-		GET_THREAD_SHARED_VAR( udpConnToClientMap_ );
-	for ( const auto& pair : *tempUdpConnToClientMap )
+	for ( const auto& pair : *udpConnToClientMap_ )
 	{
 		pair.second->GetReplicationManager().SetReplicationStateDirty(
 			inNetworkId, inDirtyState );
@@ -483,7 +531,7 @@ void NetworkMgr::SendOutgoingPackets()
 {
 	float time = RealtimeSrvTiming::sInstance.GetCurrentGameTime();
 
-	if ( time < mTimeOfLastStatePacket + kTimeBetweenStatePackets )
+	if ( time < mTimeOfLastStatePacket + kTickInterval )
 	{
 		return;
 	}
@@ -612,7 +660,7 @@ void NetworkMgr::SendGamePacket( ClientProxyPtr inClientProxy, const uint32_t in
 		case kResetCC:
 		case kWelcomeCC:
 			outputPacket.Write( inClientProxy->GetPlayerId() );
-			outputPacket.Write( kTimeBetweenStatePackets );
+			outputPacket.Write( kTickInterval );
 			break;
 		case kStateCC:
 			WriteLastMoveTimestampIfDirty( outputPacket, inClientProxy );

@@ -1,4 +1,8 @@
 
+#ifdef IS_LINUX
+#include <muduo/base/Timestamp.h>
+#endif // IS_LINUX
+
 namespace realtime_srv
 {
 class RealtimeSrvTiming
@@ -31,5 +35,8 @@ private:
 	float		mFrameStartTimef;
 	double		mPerfCountDuration;
 
+#ifdef IS_LINUX
+	muduo::Timestamp sStartTime;
+#endif // IS_LINUX
 };
 }

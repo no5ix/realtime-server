@@ -67,7 +67,18 @@ public:
 	void SetWorldRegistryCallback( const WorldRegistryCB& cb )
 	{ worldRegistryCB_ = cb; }
 
+	void	SetDropPacketChance( float inChance )
+	{ mDropPacketChance = inChance; }
+	void	SetSimulatedLatency( float inLatency )
+	{ mSimulatedLatency = inLatency; }
+
+	void	SetIsSimulatedJitter( bool inIsSimulatedJitter )
+	{ mWhetherToSimulateJitter = inIsSimulatedJitter; }
+	bool	GetIsSimulatedJitter() const { return mWhetherToSimulateJitter; }
+
 private:
+	void	ProcessQueuedPackets();
+
 	void	DoProcessPacket( ClientProxyPtr inClientProxy,
 		InputBitStream& inInputStream );
 
@@ -76,10 +87,14 @@ private:
 
 	void	HandleInputPacket( ClientProxyPtr inClientProxy,
 		InputBitStream& inInputStream );
-
+private:
 	NewPlayerCallback newPlayerCB_;
 	std::function<void()> worldUpdateCB_;
 	WorldRegistryCB worldRegistryCB_;
+
+	float						mDropPacketChance;
+	float						mSimulatedLatency;
+	bool						mWhetherToSimulateJitter;
 
 #ifdef IS_LINUX
 
@@ -90,26 +105,60 @@ public:
 
 	muduo::net::EventLoop* GetEventLoop() { return &loop_; }
 
+protected:
+	void Tick();
 	void SendPacket( const OutputBitStream& inOutputStream,
 		const muduo::net::UdpConnectionPtr& conn );
 
 	void onMessage( const muduo::net::UdpConnectionPtr& conn,
 		muduo::net::Buffer* buf,
 		muduo::Timestamp receiveTime );
+
 	virtual void onConnection( const muduo::net::UdpConnectionPtr& conn );
 
 	virtual void ProcessPacket( InputBitStream& inInputStream,
 		const muduo::net::UdpConnectionPtr& inUdpConnetction );
-private:
+
+	void RemoveUdpConn( const muduo::net::UdpConnectionPtr& conn );
+
 	void	HandlePacketFromNewClient( InputBitStream& inInputStream,
 		const muduo::net::UdpConnectionPtr& inUdpConnetction );
 
 private:
-	THREAD_SHARED_VAR_DEF( protected, UdpConnToClientMap, udpConnToClientMap_, mutex_ );
+	class ReceivedPacket
+	{
+	public:
+		ReceivedPacket(
+			const float inReceivedTime,
+			const shared_ptr<InputBitStream>& inInputMemoryBitStreamPtr,
+			const muduo::net::UdpConnectionPtr& inUdpConnetction )
+			:
+			mReceivedTime( inReceivedTime ),
+			mPacketBuffer( inInputMemoryBitStreamPtr ),
+			mUdpConn( inUdpConnetction )
+		{}
+		const	muduo::net::UdpConnectionPtr&	GetUdpConn() const { return mUdpConn; }
+		float GetReceivedTime()	const { return mReceivedTime; }
+		const shared_ptr<InputBitStream>& GetPacketBuffer() const { return mPacketBuffer; }
+
+		bool operator<( const ReceivedPacket& other ) const
+		{ return this->mReceivedTime < other.GetReceivedTime(); }
+	private:
+		float					mReceivedTime;
+		shared_ptr<InputBitStream>			mPacketBuffer;
+		muduo::net::UdpConnectionPtr			mUdpConn;
+	};
+	//typedef std::queue< ReceivedPacket, std::list< ReceivedPacket > > PacketQueue;
+	typedef std::set< ReceivedPacket > ReceivedPacketSet;
+	THREAD_SHARED_VAR_DEF( private, ReceivedPacketSet, recvPacketSet_, mutex_ );
+
+private:
+	std::unique_ptr< UdpConnToClientMap > udpConnToClientMap_;
 	muduo::net::EventLoop loop_;
-	std::shared_ptr<muduo::net::UdpServer> server_;
+	std::unique_ptr<muduo::net::UdpServer> server_;
 	muduo::MutexLock mutex_;
 	static muduo::AtomicInt32		kNewNetId;
+
 #else //IS_LINUX
 
 public:
@@ -117,16 +166,9 @@ public:
 
 	void	SendPacket( const OutputBitStream& inOutputStream,
 		const SockAddrInterf& inSockAddr );
-	void	SetDropPacketChance( float inChance ) { mDropPacketChance = inChance; }
-	void	SetSimulatedLatency( float inLatency ) { mSimulatedLatency = inLatency; }
-
-	void	SetIsSimulatedJitter( bool inIsSimulatedJitter )
-	{ mWhetherToSimulateJitter = inIsSimulatedJitter; }
-	bool	GetIsSimulatedJitter() const { return mWhetherToSimulateJitter; }
 
 	void	HandleConnectionReset( const SockAddrInterf& inFromAddress );
 private:
-	void	ProcessQueuedPackets();
 	void	ReadIncomingPacketsIntoQueue();
 	virtual void ProcessPacket( InputBitStream& inInputStream,
 		const SockAddrInterf& inFromAddress,
@@ -172,10 +214,6 @@ private:
 
 	float			mTimeOfLastStatePacket;
 	float			mLastCheckDCTime;
-
-	float						mDropPacketChance;
-	float						mSimulatedLatency;
-	bool						mWhetherToSimulateJitter;
 
 #endif //IS_LINUX
 

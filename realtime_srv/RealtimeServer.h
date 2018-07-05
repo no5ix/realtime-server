@@ -21,7 +21,7 @@ public:
 		uint16_t Port = DEFAULT_REALTIME_SRV_PORT );
 
 
-	void SimulateRealWorldOnWindows(
+	void SimulateRealWorld(
 		uint8_t LatencyCmdIndex,
 		uint8_t dropPacketChanceCmdIndex = 0,
 		uint8_t JitterCmdIndex = 0 );

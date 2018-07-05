@@ -1,8 +1,11 @@
 
-
 #pragma once
 
 #include "realtime_srv/common/RealtimeSrvShared.h"
+
+#ifdef IS_LINUX
+
+
 #include <muduo_contrib/hiredis/Hiredis.h>
 
 #include <muduo/base/Logging.h>
@@ -33,3 +36,4 @@ private:
 	muduo::net::EventLoop *loop_;
 };
 
+#endif // IS_LINUX

@@ -12,16 +12,25 @@
 
 # top -p `lsof -i:44444 | grep rs | awk '{print $2}'` ;
 
-
+## 两次检测间隔时间 秒
+interval=1
 PORT=$1
 
 if ! [[ "${PORT}" =~ ^[0-9]+$ ]] ;
 then
-    # printf "error: '${PORT}' is not a number.\n\nUsage killport <port number>\n"
-    # exit 1
+    printf " Usage show_rs.sh <port number>\n\n"
     PORT=44444
 fi
 
-lsof -i:${PORT}
+show_server_state()
+{
+    lsof -i:${PORT}
+}
 
+while :
+do
+    show_server_state
+    sleep $interval
+    printf "\n"
+done
 exit 0

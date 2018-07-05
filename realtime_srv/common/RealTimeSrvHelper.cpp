@@ -147,13 +147,12 @@ bool RealtimeSrvHelper::DaemonizeOnLinux()
 
 
 
-void RealtimeSrvHelper::SimulateRealWorldOnWin(
+void RealtimeSrvHelper::SimulateRealWorldNetCondition(
 	NetworkMgr* networkManager,
 	uint8_t LatencyCmdIndex,
 	uint8_t dropPacketChanceCmdIndex /*= 0*/,
 	uint8_t JitterCmdIndex /*= 0*/ )
 {
-#ifdef IS_WIN
 	assert( networkManager );
 
 	std::string latencyString = RealtimeSrvHelper::GetCommandLineArg(
@@ -182,5 +181,4 @@ void RealtimeSrvHelper::SimulateRealWorldOnWin(
 			networkManager->SetIsSimulatedJitter( true );
 		}
 	}
-#endif // IS_WIN
 }

@@ -17,19 +17,17 @@ IF(UNIX)
             ExampleSrvForUe4DemoWithRedis.cpp
             ExampleRedisCli.cpp
         )
-        add_executable(${PROJ_NAME} ${example_for_ue4_demo_SRCS})
-        target_link_libraries(${PROJ_NAME} ${LIB_REALTIME_SRV} ${LIB_MUDUO_HIREDIS})
+        add_executable(${PROJ_NAME_WITH_REDIS} ${example_for_ue4_demo_SRCS})
+        target_link_libraries(${PROJ_NAME_WITH_REDIS} ${LIB_REALTIME_SRV} ${LIB_MUDUO_HIREDIS})
     
-    else()
+    endif()
 
         set(example_for_ue4_demo_SRCS
             Character.cpp
             ExampleSrvForUe4Demo.cpp
         )
-        add_executable(${PROJ_NAME_WITH_REDIS} ${example_for_ue4_demo_SRCS})
-        target_link_libraries(${PROJ_NAME_WITH_REDIS} ${LIB_REALTIME_SRV})
-
-    endif()
+        add_executable(${PROJ_NAME} ${example_for_ue4_demo_SRCS})
+        target_link_libraries(${PROJ_NAME} ${LIB_REALTIME_SRV})
 
 
 # elseif(WIN32) # Check if we are on Windows

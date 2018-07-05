@@ -57,6 +57,7 @@ public:																				\
 	}																				\
 	void VarName##COW()																\
 	{																				\
+		assert( VarName );													\
 		if ( !VarName.unique() )													\
 		{																			\
 			VarName.reset( new OriginalVarType( *VarName ) );						\
@@ -70,7 +71,7 @@ AccessSpecifier:																	\
 #define GET_THREAD_SHARED_VAR( VarName ) Get##VarName()
 
 // thread shared var copy on write
-#define THREAD_SHARED_VAR_COW( VarName ) VarName##COW()
+#define THREAD_SHARED_VAR_COW( VarName )	VarName##COW()																		\
 
 // thread shared var write
 #define SET_THREAD_SHARED_VAR( VarName, Mutex, WriteOperationLambda ) \

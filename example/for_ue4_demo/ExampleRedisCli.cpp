@@ -2,6 +2,8 @@
 
 #include "ExampleRedisCli.h"
 
+#ifdef IS_LINUX
+
 
 
 using namespace muduo;
@@ -119,3 +121,4 @@ void ExampleRedisCli::SaveNewPlayer( int newPlayerId, const std::string& newPlay
 }
 
 
+#endif // IS_LINUX

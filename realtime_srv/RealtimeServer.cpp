@@ -41,13 +41,13 @@ void RealtimeServer::Run( const NewPlayerCallback& NewPlayerCb,
 }
 
 
-void RealtimeServer::SimulateRealWorldOnWindows(
+void RealtimeServer::SimulateRealWorld(
 	uint8_t LatencyCmdIndex,
 	uint8_t DropPacketChanceCmdIndex /*= 0*/,
 	uint8_t JitterCmdIndex /*= 0*/ )
 {
 	assert( networkManager_ );
-	RealtimeSrvHelper::SimulateRealWorldOnWin(
+	RealtimeSrvHelper::SimulateRealWorldNetCondition(
 		networkManager_.get(),
 		LatencyCmdIndex,
 		DropPacketChanceCmdIndex,
