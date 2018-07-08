@@ -30,14 +30,11 @@
 
 
 - A [UE4 State Synchronization demo](https://github.com/no5ix/realtime-server-ue4-demo) for it
-- 附一个[虚幻4状态同步Demo](https://github.com/no5ix/realtime-server-ue4-demo)
+- 附一个[虚幻4的demo](https://github.com/no5ix/realtime-server-ue4-demo)
     - Video Preview 视频演示 : [Click me 点我](https://hulinhong.com)
     - 
     - State Sync 状态同步
     - 
-    - No Replication component from UE4, just socket
-    - 没有用UE4的网络同步组件, 唯socket而已
-    -
     - No replication component from UE4, just socket
     - 没有用UE4的网络同步组件, 唯socket而已
     - 
