@@ -7,11 +7,14 @@
 # Usage
 
 - Windows : 
+
     1. open ` ms_vs2015/realtime_srv.sln `
-    2. compile `realtime_srv`
-    3. compile `example_for_ue4_demo`
-    4. run `example_for_ue4_demo`
+    2. compile ` realtime_srv `
+    3. compile ` example_for_ue4_demo `
+    4. run ` example_for_ue4_demo `
+
 - Linux : 
-    1. cd tool/
-    2. sh build_rs.sh
-    3. ./run_rs.sh
+
+    1. `cd tool/`
+    2. `sh build_rs.sh`
+    3. `./run_rs.sh`
