@@ -186,6 +186,9 @@
     <ClInclude Include="..\..\lib\lualib\sol.hpp">
       <Filter>lualib</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\lib\lualib\LuaBindMgr.h">
+      <Filter>lualib</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\lib\muduo\base\Condition.cc">

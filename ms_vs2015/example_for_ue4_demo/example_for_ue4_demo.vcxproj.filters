@@ -4,8 +4,8 @@
     <ClCompile Include="..\..\example\for_ue4_demo\Character.cpp" />
     <ClCompile Include="..\..\example\for_ue4_demo\ExampleSrvForUe4Demo.cpp" />
     <ClCompile Include="..\..\example\for_ue4_demo\ExampleRedisCli.cpp" />
-    <ClCompile Include="..\..\example\for_ue4_demo\ExampleSrvForUe4DemoWithRedis.cpp" />
     <ClCompile Include="..\..\example\for_ue4_demo\CharacterLuaBind.cpp" />
+    <ClCompile Include="..\..\example\for_ue4_demo\ExampleSrvForUe4DemoPlus.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\example\for_ue4_demo\Character.h" />

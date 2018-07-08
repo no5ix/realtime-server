@@ -1,28 +1,27 @@
 set (PROJ_NAME rs_example_for_ue4_demo)
-set (PROJ_NAME_WITH_REDIS rs_example_for_ue4_demo_with_redis)
+set (PROJ_NAME_PLUS rs_example_for_ue4_demo_plus)
 
 set (LIB_REALTIME_SRV realtime_srv)
 set (LIB_MUDUO_HIREDIS muduo_hiredis)
-set (LIB_LUA lua5.1)
+set (LIB_LUA lua${LUA_VERSION})
 
 
 IF(UNIX)
 
-
-    if(HIREDIS_INCLUDE_DIR AND HIREDIS_LIBRARY)
+    if(HIREDIS_INCLUDE_DIR AND HIREDIS_LIBRARY AND LUA_INCLUDE_DIR AND LUA_LIBRARY)
 
         set(example_for_ue4_demo_SRCS
             Character.cpp
-            ExampleSrvForUe4DemoWithRedis.cpp
+            ExampleSrvForUe4DemoPlus.cpp
+            CharacterLuaBind.cpp
             ExampleRedisCli.cpp
         )
-        add_executable(${PROJ_NAME_WITH_REDIS} ${example_for_ue4_demo_SRCS})
-        target_link_libraries(${PROJ_NAME_WITH_REDIS} ${LIB_REALTIME_SRV} ${LIB_MUDUO_HIREDIS} ${LIB_LUA})
+        add_executable(${PROJ_NAME_PLUS} ${example_for_ue4_demo_SRCS})
+        target_link_libraries(${PROJ_NAME_PLUS} ${LIB_REALTIME_SRV} ${LIB_MUDUO_HIREDIS} ${LIB_LUA})
     
     endif()
 
     set(example_for_ue4_demo_SRCS
-        CharacterLuaBind.cpp
         Character.cpp
         ExampleSrvForUe4Demo.cpp
     )

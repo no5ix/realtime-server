@@ -102,19 +102,19 @@ using std::placeholders::_3;
 #include "realtime_srv/rep/BitStream.h"
 
 
-#include "realtime_srv/gameObj/GameObj.h"
+#include "realtime_srv/game_obj/GameObj.h"
 
 #include "realtime_srv/rep/ReplicationCmd.h"
-#include "realtime_srv/gameObj/World.h"
+#include "realtime_srv/game_obj/World.h"
 
 #include "realtime_srv/rep/InFlightPacket.h"
 #include "realtime_srv/rep/AckBitField.h"
 #include "realtime_srv/rep/DeliveryNotifyMgr.h"
 #include "realtime_srv/rep/ReplicationMgr.h"
 
-#include "realtime_srv/gameObj/InputState.h"
-#include "realtime_srv/gameObj/Action.h"
-#include "realtime_srv/gameObj/ActionList.h"
+#include "realtime_srv/game_obj/InputState.h"
+#include "realtime_srv/game_obj/Action.h"
+#include "realtime_srv/game_obj/ActionList.h"
 
 
 #include "realtime_srv/net/ClientProxy.h"

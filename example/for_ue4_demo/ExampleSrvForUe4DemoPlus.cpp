@@ -4,6 +4,7 @@
 
 #include "Character.h"
 #include "ExampleRedisCli.h"
+#include "CharacterLuaBind.h"
 
 
 using namespace realtime_srv;
@@ -40,23 +41,13 @@ public:
 
 	GameObjPtr SpawnNewCharacterForPlayer( ClientProxyPtr cliProxy )
 	{
-		//GameObjPtr newGameObj = Character::StaticCreate();
-		//CharacterPtr newCharacter = std::static_pointer_cast< Character >( newGameObj );
+		db_.SaveNewPlayer( cliProxy->GetPlayerId(),
+			cliProxy->GetPlayerName() );
 
-		//newCharacter->SetPlayerId( cliProxy->GetPlayerId() );
-		//newCharacter->SetLocation(
-		//	2500.f + RealtimeSrvMath::GetRandomFloat() * -5000.f,
-		//	2500.f + RealtimeSrvMath::GetRandomFloat() * -5000.f,
-		//	0.f );
-		//newCharacter->SetRotation(
-		//	0.f,
-		//	RealtimeSrvMath::GetRandomFloat() * 180.f,
-		//	0.f );
-
-		//db_.SaveNewPlayer( cliProxy->GetPlayerId(),
-		//	cliProxy->GetPlayerName() );
-
-		return GameObjPtr();
+		CharacterLuaBind clb;
+		CharacterPtr newCharacter = clb.DoFile();
+		newCharacter->SetPlayerId( cliProxy->GetPlayerId() );
+		return  std::static_pointer_cast< GameObj >( newCharacter );
 	}
 
 private:

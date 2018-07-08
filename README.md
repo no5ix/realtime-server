@@ -33,6 +33,11 @@
 - 附一个[虚幻4状态同步Demo](https://github.com/no5ix/realtime-server-ue4-demo)
     - Video Preview 视频演示 : [Click me 点我](https://hulinhong.com)
     - 
+    - State Sync 状态同步
+    - 
+    - No Replication component from UE4, just socket
+    - 没有用UE4的网络同步组件, 唯socket而已
+    -
     - No replication component from UE4, just socket
     - 没有用UE4的网络同步组件, 唯socket而已
     - 
@@ -60,5 +65,5 @@
     4. run `example_for_ue4_demo`
 - Linux : 
     1. cd tool/
-    2. sh build_rs.sh -j2
-    3. ./run_rs.sh ( ` ./run_rs.sh 1 ` for daemonize )
+    2. sh build_rs.sh
+    3. ./run_rs.sh

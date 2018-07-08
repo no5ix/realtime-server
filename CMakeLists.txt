@@ -11,6 +11,7 @@ add_definitions(-std=c++1z)
 # 项目信息
 set (PROJ_NAME realtime_srv)
 set (LIB_PATH_NAME lib)
+set (LUA_VERSION 5.1)
 project (${PROJ_NAME})
 
 
@@ -136,11 +137,19 @@ if(UNIX)
     set(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall")
 
     # find hiredis
-    find_path(HIREDIS_INCLUDE_DIR hiredis/hiredis.h)
-    find_library(HIREDIS_LIBRARY NAMES hiredis)
+    find_path(HIREDIS_INCLUDE_DIR hiredis/hiredis.h)    # find in /usr/local/include
+    find_library(HIREDIS_LIBRARY NAMES hiredis)         # find in /usr/local/lib
 
     if(HIREDIS_INCLUDE_DIR AND HIREDIS_LIBRARY)
         message(STATUS "found hiredis")
+    endif()
+
+    # find lua
+    find_path(LUA_INCLUDE_DIR lua.h)        # find in /usr/local/include
+    find_library(LUA_LIBRARY NAMES lua/${LUA_VERSION}/lua${LUA_VERSION})             # find in /usr/local/lib
+
+    if(LUA_INCLUDE_DIR AND LUA_LIBRARY)
+        message(STATUS "found lua${LUA_VERSION}")
     endif()
 
 

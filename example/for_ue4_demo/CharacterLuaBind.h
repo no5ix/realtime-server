@@ -1,19 +1,16 @@
 #pragma once
 #include <realtime_srv/RealtimeServer.h>
 
-#include <lualib/sol.hpp>
+#ifdef IS_LINUX
 
-class Character;
+#include <lualib/LuaBindMgr.h>
 
-class CharacterLuaBind
+
+class CharacterLuaBind : public realtime_srv::LuaBindMgr
 {
-
 public:
 	CharacterLuaBind();
-	Character* DoFile();
-	sol::state& GetOwner() { return lua_; }
-
-private:
-	sol::state lua_;
-
+	CharacterPtr DoFile();
 };
+
+#endif // IS_LINUX

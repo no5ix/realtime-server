@@ -2,23 +2,26 @@
 
 # lsof -i:44444 | grep rs | awk '{print $2}' | xargs kill -9
 
-SRV_NAME=rs_example_for_ue4_demo
-SRV_NAME_WITH_HIREDIS=rs_example_for_ue4_demo_with_redis
+EXAMPLE_NAME=rs_example_for_ue4_demo
+EXAMPLE_NAME_PLUS=rs_example_for_ue4_demo_plus
+
 
 CUR_DIR=`pwd`
 BIN_PATH="${CUR_DIR}/../build/bin/"
 
-if [ ! -e "${BIN_PATH}${SRV_NAME_WITH_HIREDIS}" ]; then
-    BIN_PATH="${BIN_PATH}${SRV_NAME}"
+if [ ! -e "${BIN_PATH}${EXAMPLE_NAME_PLUS}" ]; then
+    SRV_NAME="${EXAMPLE_NAME}"
 else
-    BIN_PATH="${BIN_PATH}${SRV_NAME_WITH_HIREDIS}"
+    SRV_NAME="${EXAMPLE_NAME_PLUS}"
 fi
 
 ./kill_rs.sh
 
 echo "[`date '+%x %X'`] Start a new server."
 
-${BIN_PATH} $*;
+cd ${BIN_PATH};
+./${SRV_NAME} $*;
+cd -;
 
 sleep 1
 # netstat -anlp | grep ':44444'

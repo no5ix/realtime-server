@@ -24,11 +24,11 @@
     <ClInclude Include="..\..\realtime_srv\common\RealtimeSrvHelper.h" />
     <ClInclude Include="..\..\realtime_srv\common\RealtimeSrvShared.h" />
     <ClInclude Include="..\..\realtime_srv\common\RealtimeSrvTiming.h" />
-    <ClInclude Include="..\..\realtime_srv\gameObj\Action.h" />
-    <ClInclude Include="..\..\realtime_srv\gameObj\ActionList.h" />
-    <ClInclude Include="..\..\realtime_srv\gameObj\GameObj.h" />
-    <ClInclude Include="..\..\realtime_srv\gameObj\InputState.h" />
-    <ClInclude Include="..\..\realtime_srv\gameObj\World.h" />
+    <ClInclude Include="..\..\realtime_srv\game_obj\Action.h" />
+    <ClInclude Include="..\..\realtime_srv\game_obj\ActionList.h" />
+    <ClInclude Include="..\..\realtime_srv\game_obj\GameObj.h" />
+    <ClInclude Include="..\..\realtime_srv\game_obj\InputState.h" />
+    <ClInclude Include="..\..\realtime_srv\game_obj\World.h" />
     <ClInclude Include="..\..\realtime_srv\math\Matrix3x3.h" />
     <ClInclude Include="..\..\realtime_srv\math\Quaternion.h" />
     <ClInclude Include="..\..\realtime_srv\math\RealtimeSrvMath.h" />
@@ -49,11 +49,11 @@
   <ItemGroup>
     <ClCompile Include="..\..\realtime_srv\common\RealtimeSrvHelper.cpp" />
     <ClCompile Include="..\..\realtime_srv\common\RealtimeSrvTiming.cpp" />
-    <ClCompile Include="..\..\realtime_srv\gameObj\Action.cpp" />
-    <ClCompile Include="..\..\realtime_srv\gameObj\ActionList.cpp" />
-    <ClCompile Include="..\..\realtime_srv\gameObj\GameObj.cpp" />
-    <ClCompile Include="..\..\realtime_srv\gameObj\InputState.cpp" />
-    <ClCompile Include="..\..\realtime_srv\gameObj\World.cpp" />
+    <ClCompile Include="..\..\realtime_srv\game_obj\Action.cpp" />
+    <ClCompile Include="..\..\realtime_srv\game_obj\ActionList.cpp" />
+    <ClCompile Include="..\..\realtime_srv\game_obj\GameObj.cpp" />
+    <ClCompile Include="..\..\realtime_srv\game_obj\InputState.cpp" />
+    <ClCompile Include="..\..\realtime_srv\game_obj\World.cpp" />
     <ClCompile Include="..\..\realtime_srv\math\RealtimeSrvMath.cpp" />
     <ClCompile Include="..\..\realtime_srv\math\Vector3.cpp" />
     <ClCompile Include="..\..\realtime_srv\net\ClientProxy.cpp" />

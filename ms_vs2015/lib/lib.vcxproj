@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\lib\lualib\LuaBindMgr.h" />
     <ClInclude Include="..\..\lib\lualib\sol.hpp" />
     <ClInclude Include="..\..\lib\muduo\base\Atomic.h" />
     <ClInclude Include="..\..\lib\muduo\base\Condition.h" />

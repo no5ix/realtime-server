@@ -15,7 +15,7 @@
     <Filter Include="rep">
       <UniqueIdentifier>{484d3a7a-9cec-41f3-9056-e1b6153bfe2e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="gameObj">
+    <Filter Include="game_obj">
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
@@ -72,21 +72,6 @@
     <ClInclude Include="..\..\realtime_srv\math\RealtimeSrvMath.h">
       <Filter>math</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\realtime_srv\gameObj\Action.h">
-      <Filter>gameObj</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\realtime_srv\gameObj\ActionList.h">
-      <Filter>gameObj</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\realtime_srv\gameObj\GameObj.h">
-      <Filter>gameObj</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\realtime_srv\gameObj\InputState.h">
-      <Filter>gameObj</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\realtime_srv\gameObj\World.h">
-      <Filter>gameObj</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\realtime_srv\RealtimeServer.h" />
     <ClInclude Include="..\..\realtime_srv\common\noncopyable.h">
       <Filter>common</Filter>
@@ -96,6 +81,21 @@
     </ClInclude>
     <ClInclude Include="..\..\realtime_srv\net\UdpSockInterf.h">
       <Filter>net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\realtime_srv\game_obj\Action.h">
+      <Filter>game_obj</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\realtime_srv\game_obj\ActionList.h">
+      <Filter>game_obj</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\realtime_srv\game_obj\GameObj.h">
+      <Filter>game_obj</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\realtime_srv\game_obj\InputState.h">
+      <Filter>game_obj</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\realtime_srv\game_obj\World.h">
+      <Filter>game_obj</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -132,24 +132,24 @@
     <ClCompile Include="..\..\realtime_srv\common\RealtimeSrvTiming.cpp">
       <Filter>common</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\realtime_srv\gameObj\Action.cpp">
-      <Filter>gameObj</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\realtime_srv\gameObj\ActionList.cpp">
-      <Filter>gameObj</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\realtime_srv\gameObj\GameObj.cpp">
-      <Filter>gameObj</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\realtime_srv\gameObj\InputState.cpp">
-      <Filter>gameObj</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\realtime_srv\gameObj\World.cpp">
-      <Filter>gameObj</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\realtime_srv\RealtimeServer.cpp" />
     <ClCompile Include="..\..\realtime_srv\net\UdpSockInterf.cpp">
       <Filter>net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\realtime_srv\game_obj\Action.cpp">
+      <Filter>game_obj</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\realtime_srv\game_obj\ActionList.cpp">
+      <Filter>game_obj</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\realtime_srv\game_obj\GameObj.cpp">
+      <Filter>game_obj</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\realtime_srv\game_obj\InputState.cpp">
+      <Filter>game_obj</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\realtime_srv\game_obj\World.cpp">
+      <Filter>game_obj</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

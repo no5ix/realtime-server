@@ -24,8 +24,6 @@ public:
 		uint32_t inDirtyState ) const override;
 
 public:
-	static Character	StaticCreate() 
-	{ Character* toRet = new Character(); return *toRet; }
 
 	float GetMaxSpeed() const { return MaxSpeed; }
 	const realtime_srv::Vector3& GetCameraRotation() const { return curCameraRotation_; }

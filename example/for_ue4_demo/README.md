@@ -13,5 +13,5 @@
     4. run `example_for_ue4_demo`
 - Linux : 
     1. cd tool/
-    2. sh build_rs.sh -j2
-    3. ./run_rs.sh ( ` ./run_rs.sh 1 ` for daemonize )
+    2. sh build_rs.sh
+    3. ./run_rs.sh
