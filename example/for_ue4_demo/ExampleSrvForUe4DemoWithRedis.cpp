@@ -40,23 +40,23 @@ public:
 
 	GameObjPtr SpawnNewCharacterForPlayer( ClientProxyPtr cliProxy )
 	{
-		GameObjPtr newGameObj = Character::StaticCreate();
-		CharacterPtr newCharacter = std::static_pointer_cast< Character >( newGameObj );
+		//GameObjPtr newGameObj = Character::StaticCreate();
+		//CharacterPtr newCharacter = std::static_pointer_cast< Character >( newGameObj );
 
-		newCharacter->SetPlayerId( cliProxy->GetPlayerId() );
-		newCharacter->SetLocation( Vector3(
-			2500.f + RealtimeSrvMath::GetRandomFloat() * -5000.f,
-			2500.f + RealtimeSrvMath::GetRandomFloat() * -5000.f,
-			0.f ) );
-		newCharacter->SetRotation( Vector3(
-			0.f,
-			RealtimeSrvMath::GetRandomFloat() * 180.f,
-			0.f ) );
+		//newCharacter->SetPlayerId( cliProxy->GetPlayerId() );
+		//newCharacter->SetLocation(
+		//	2500.f + RealtimeSrvMath::GetRandomFloat() * -5000.f,
+		//	2500.f + RealtimeSrvMath::GetRandomFloat() * -5000.f,
+		//	0.f );
+		//newCharacter->SetRotation(
+		//	0.f,
+		//	RealtimeSrvMath::GetRandomFloat() * 180.f,
+		//	0.f );
 
-		db_.SaveNewPlayer( cliProxy->GetPlayerId(),
-			cliProxy->GetPlayerName() );
+		//db_.SaveNewPlayer( cliProxy->GetPlayerId(),
+		//	cliProxy->GetPlayerName() );
 
-		return newGameObj;
+		return GameObjPtr();
 	}
 
 private:

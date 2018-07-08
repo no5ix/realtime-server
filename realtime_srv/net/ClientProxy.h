@@ -22,8 +22,8 @@ public:
 	void UpdateLastPacketTime();
 	float GetLastPacketFromClientTime()	const { return mLastPacketFromClientTime; }
 
-	DeliveryNotifyMgr&	GetDeliveryNotifyManager() { return DeliveryNotifyManager_; }
-	ReplicationMgr&	GetReplicationManager() { return ReplicationManager_; }
+	DeliveryNotifyMgr&	GetDeliveryNotifyManager() { return deliveryNotifyManager_; }
+	ReplicationMgr&	GetReplicationManager() { return replicationManager_; }
 
 	World* GetWorld() const { return world_; }
 	void SetWorld( World* const world ) { world_ = world; }
@@ -56,10 +56,10 @@ private:
 
 	bool			mRecvingServerResetFlag;
 
-	DeliveryNotifyMgr		DeliveryNotifyManager_;
-	ReplicationMgr			ReplicationManager_;
-	World*					world_;
-	NetworkMgr*				networkManager_;
+	DeliveryNotifyMgr		deliveryNotifyManager_;
+	ReplicationMgr			replicationManager_;
+	World*							world_;
+	NetworkMgr*					networkManager_;
 
 #ifdef IS_LINUX
 

@@ -4,13 +4,15 @@ set_property(GLOBAL PROPERTY USE_FOLDERS On)
 cmake_minimum_required (VERSION 2.8)
 
 # support C++11
-add_definitions(-std=c++11)
+add_definitions(-std=c++1z)
 
 
 
 # 项目信息
 set (PROJ_NAME realtime_srv)
+set (LIB_PATH_NAME lib)
 project (${PROJ_NAME})
+
 
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
@@ -144,10 +146,12 @@ if(UNIX)
 
 
     include_directories(${PROJECT_SOURCE_DIR})
+    include_directories(${PROJECT_SOURCE_DIR}/${LIB_PATH_NAME})
 
-    add_subdirectory(muduo)
-    add_subdirectory(muduo_udp_support)
-    add_subdirectory(muduo_contrib)
+    add_subdirectory(${LIB_PATH_NAME}/muduo)
+    add_subdirectory(${LIB_PATH_NAME}/muduo_udp_support)
+    add_subdirectory(${LIB_PATH_NAME}/muduo_contrib)
+    # add_subdirectory(${LIB_PATH_NAME}/lualib)
 
     add_subdirectory(realtime_srv)
     add_subdirectory(example)

@@ -6,6 +6,8 @@
 class Character : public realtime_srv::GameObj
 {
 public:
+	Character();
+
 	// 'CHRT' = 1128813140;
 	CLASS_IDENTIFICATION( 1128813140 );
 
@@ -14,8 +16,7 @@ public:
 		EPS_Pose = 1 << 0,
 		EPS_PlayerId = 1 << 1,
 
-		EPS_AllState = EPS_Pose
-		| EPS_PlayerId
+		EPS_AllState = EPS_Pose | EPS_PlayerId
 	};
 	virtual uint32_t GetAllStateMask() const override { return EPS_AllState; }
 
@@ -23,7 +24,8 @@ public:
 		uint32_t inDirtyState ) const override;
 
 public:
-	static realtime_srv::GameObjPtr	StaticCreate() { realtime_srv::GameObjPtr toRet( new Character() ); return toRet; }
+	static Character	StaticCreate() 
+	{ Character* toRet = new Character(); return *toRet; }
 
 	float GetMaxSpeed() const { return MaxSpeed; }
 	const realtime_srv::Vector3& GetCameraRotation() const { return curCameraRotation_; }
@@ -32,7 +34,6 @@ public:
 	void SetPlayerId( int newPlayerId ) { playerId_ = newPlayerId; }
 
 protected:
-	Character();
 
 	virtual void Update() override;
 	virtual void SetOldState() override;

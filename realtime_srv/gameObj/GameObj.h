@@ -29,11 +29,15 @@ public:
 public:
 	virtual void Update();
 
-	void			SetRotation( Vector3 inRotation ) { currentRotation_ = inRotation; }
 	const Vector3&	GetRotation() const { return currentRotation_; }
+	void SetRotation( Vector3 inRotation ) { currentRotation_ = inRotation; }
+	void SetRotation( const float x, const float y, const float z )
+	{ currentRotation_ = Vector3( x, y, z ); }
 
 	const Vector3&	GetLocation() const { return currentLocation_; }
-	void			SetLocation( const Vector3& inLocation ) { currentLocation_ = inLocation; }
+	void SetLocation( const Vector3& inLocation ) { currentLocation_ = inLocation; }
+	void SetLocation( const float x, const float y, const float z )
+	{ currentLocation_ = Vector3( x, y, z ); }
 
 	shared_ptr< ClientProxy >	GetClientProxy() const { return clientProxy_.lock(); }
 	void SetClientProxy( shared_ptr< ClientProxy > cp ) { clientProxy_ = cp; }

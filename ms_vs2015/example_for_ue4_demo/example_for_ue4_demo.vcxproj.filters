@@ -5,12 +5,17 @@
     <ClCompile Include="..\..\example\for_ue4_demo\ExampleSrvForUe4Demo.cpp" />
     <ClCompile Include="..\..\example\for_ue4_demo\ExampleRedisCli.cpp" />
     <ClCompile Include="..\..\example\for_ue4_demo\ExampleSrvForUe4DemoWithRedis.cpp" />
+    <ClCompile Include="..\..\example\for_ue4_demo\CharacterLuaBind.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\example\for_ue4_demo\Character.h" />
     <ClInclude Include="..\..\example\for_ue4_demo\ExampleRedisCli.h" />
+    <ClInclude Include="..\..\example\for_ue4_demo\CharacterLuaBind.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\..\example\for_ue4_demo\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\example\for_ue4_demo\Character.lua" />
   </ItemGroup>
 </Project>

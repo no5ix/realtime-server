@@ -20,16 +20,21 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\example\for_ue4_demo\Character.cpp" />
+    <ClCompile Include="..\..\example\for_ue4_demo\CharacterLuaBind.cpp" />
     <ClCompile Include="..\..\example\for_ue4_demo\ExampleRedisCli.cpp" />
     <ClCompile Include="..\..\example\for_ue4_demo\ExampleSrvForUe4Demo.cpp" />
     <ClCompile Include="..\..\example\for_ue4_demo\ExampleSrvForUe4DemoWithRedis.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\example\for_ue4_demo\Character.h" />
+    <ClInclude Include="..\..\example\for_ue4_demo\CharacterLuaBind.h" />
     <ClInclude Include="..\..\example\for_ue4_demo\ExampleRedisCli.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\..\example\for_ue4_demo\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\example\for_ue4_demo\Character.lua" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{CDDB2A39-D6CF-4AA7-8C57-E3DE5AFC32DF}</ProjectGuid>
@@ -84,7 +89,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>..\..\;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <IncludePath>..\..\;..\..\lib\;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
     <LibraryPath>$(SolutionDir)\build\lib;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86</LibraryPath>
     <OutDir>$(SolutionDir)\build\bin\</OutDir>
   </PropertyGroup>

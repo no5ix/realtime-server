@@ -1,0 +1,334 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="muduo">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="muduo\base">
+      <UniqueIdentifier>{10268349-abac-4b71-8fee-6133afa1cdd7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="muduo_contrib">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="muduo_udp_support">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="muduo\net">
+      <UniqueIdentifier>{4be05a5f-384f-42a2-b41d-8816c6835905}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="muduo\net\poller">
+      <UniqueIdentifier>{bf2ddd45-7e27-479a-8553-ddb84f081a6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="muduo_contrib\hiredis">
+      <UniqueIdentifier>{e5458f11-736d-4b90-9866-f8091ecde939}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="muduo_udp_support\test">
+      <UniqueIdentifier>{e7a4c279-9c43-4bea-bdec-eb79b0017b9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="muduo_udp_support\test\chat">
+      <UniqueIdentifier>{b2a70387-2d69-489f-b135-e21b970e47c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lualib">
+      <UniqueIdentifier>{4e437fe6-64d8-491a-ab4f-bf0603ca4206}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\lib\muduo\base\Atomic.h">
+      <Filter>muduo\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\muduo\base\Condition.h">
+      <Filter>muduo\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\muduo\base\copyable.h">
+      <Filter>muduo\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\muduo\base\CountDownLatch.h">
+      <Filter>muduo\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\muduo\base\CurrentThread.h">
+      <Filter>muduo\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\muduo\base\Date.h">
+      <Filter>muduo\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\muduo\base\Exception.h">
+      <Filter>muduo\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\muduo\base\Logging.h">
+      <Filter>muduo\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\muduo\base\LogStream.h">
+      <Filter>muduo\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\muduo\base\Mutex.h">
+      <Filter>muduo\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\muduo\base\noncopyable.h">
+      <Filter>muduo\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\muduo\base\StringPiece.h">
+      <Filter>muduo\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\muduo\base\Thread.h">
+      <Filter>muduo\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\muduo\base\ThreadLocal.h">
+      <Filter>muduo\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\muduo\base\ThreadLocalSingleton.h">
+      <Filter>muduo\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\muduo\base\Timestamp.h">
+      <Filter>muduo\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\muduo\base\TimeZone.h">
+      <Filter>muduo\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\muduo\base\Types.h">
+      <Filter>muduo\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\muduo\base\WeakCallback.h">
+      <Filter>muduo\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\muduo\net\Acceptor.h">
+      <Filter>muduo\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\muduo\net\Buffer.h">
+      <Filter>muduo\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\muduo\net\Callbacks.h">
+      <Filter>muduo\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\muduo\net\Channel.h">
+      <Filter>muduo\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\muduo\net\Connector.h">
+      <Filter>muduo\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\muduo\net\Endian.h">
+      <Filter>muduo\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\muduo\net\EventLoop.h">
+      <Filter>muduo\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\muduo\net\EventLoopThread.h">
+      <Filter>muduo\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\muduo\net\EventLoopThreadPool.h">
+      <Filter>muduo\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\muduo\net\InetAddress.h">
+      <Filter>muduo\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\muduo\net\Poller.h">
+      <Filter>muduo\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\muduo\net\Socket.h">
+      <Filter>muduo\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\muduo\net\SocketsOps.h">
+      <Filter>muduo\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\muduo\net\TcpClient.h">
+      <Filter>muduo\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\muduo\net\TcpConnection.h">
+      <Filter>muduo\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\muduo\net\TcpServer.h">
+      <Filter>muduo\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\muduo\net\Timer.h">
+      <Filter>muduo\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\muduo\net\TimerId.h">
+      <Filter>muduo\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\muduo\net\TimerQueue.h">
+      <Filter>muduo\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\muduo\net\poller\EPollPoller.h">
+      <Filter>muduo\net\poller</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\muduo\net\poller\PollPoller.h">
+      <Filter>muduo\net\poller</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\muduo_contrib\hiredis\Hiredis.h">
+      <Filter>muduo_contrib\hiredis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\muduo_udp_support\UdpAcceptor.h">
+      <Filter>muduo_udp_support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\muduo_udp_support\UdpCallbacks.h">
+      <Filter>muduo_udp_support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\muduo_udp_support\UdpClient.h">
+      <Filter>muduo_udp_support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\muduo_udp_support\UdpConnection.h">
+      <Filter>muduo_udp_support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\muduo_udp_support\UdpConnector.h">
+      <Filter>muduo_udp_support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\muduo_udp_support\UdpServer.h">
+      <Filter>muduo_udp_support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\muduo_udp_support\UdpSocketsOps.h">
+      <Filter>muduo_udp_support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\muduo_udp_support\test\chat\udpChatCodec.h">
+      <Filter>muduo_udp_support\test\chat</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\lualib\sol.hpp">
+      <Filter>lualib</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\lib\muduo\base\Condition.cc">
+      <Filter>muduo\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\muduo\base\CountDownLatch.cc">
+      <Filter>muduo\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\muduo\base\Date.cc">
+      <Filter>muduo\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\muduo\base\Exception.cc">
+      <Filter>muduo\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\muduo\base\Logging.cc">
+      <Filter>muduo\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\muduo\base\LogStream.cc">
+      <Filter>muduo\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\muduo\base\Thread.cc">
+      <Filter>muduo\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\muduo\base\Timestamp.cc">
+      <Filter>muduo\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\muduo\base\TimeZone.cc">
+      <Filter>muduo\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\muduo\net\Acceptor.cc">
+      <Filter>muduo\net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\muduo\net\Buffer.cc">
+      <Filter>muduo\net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\muduo\net\Channel.cc">
+      <Filter>muduo\net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\muduo\net\Connector.cc">
+      <Filter>muduo\net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\muduo\net\EventLoop.cc">
+      <Filter>muduo\net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\muduo\net\EventLoopThread.cc">
+      <Filter>muduo\net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\muduo\net\EventLoopThreadPool.cc">
+      <Filter>muduo\net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\muduo\net\InetAddress.cc">
+      <Filter>muduo\net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\muduo\net\Poller.cc">
+      <Filter>muduo\net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\muduo\net\Socket.cc">
+      <Filter>muduo\net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\muduo\net\SocketsOps.cc">
+      <Filter>muduo\net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\muduo\net\TcpClient.cc">
+      <Filter>muduo\net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\muduo\net\TcpConnection.cc">
+      <Filter>muduo\net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\muduo\net\TcpServer.cc">
+      <Filter>muduo\net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\muduo\net\Timer.cc">
+      <Filter>muduo\net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\muduo\net\TimerQueue.cc">
+      <Filter>muduo\net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\muduo\net\poller\DefaultPoller.cc">
+      <Filter>muduo\net\poller</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\muduo\net\poller\EPollPoller.cc">
+      <Filter>muduo\net\poller</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\muduo\net\poller\PollPoller.cc">
+      <Filter>muduo\net\poller</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\muduo_contrib\hiredis\Hiredis.cc">
+      <Filter>muduo_contrib\hiredis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\muduo_contrib\hiredis\mrediscli.cc">
+      <Filter>muduo_contrib\hiredis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\muduo_udp_support\UdpAcceptor.cpp">
+      <Filter>muduo_udp_support</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\muduo_udp_support\UdpClient.cpp">
+      <Filter>muduo_udp_support</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\muduo_udp_support\UdpConnection.cpp">
+      <Filter>muduo_udp_support</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\muduo_udp_support\UdpConnector.cpp">
+      <Filter>muduo_udp_support</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\muduo_udp_support\UdpServer.cpp">
+      <Filter>muduo_udp_support</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\muduo_udp_support\UdpSocketsOps.cpp">
+      <Filter>muduo_udp_support</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\muduo_udp_support\test\chat\udpChatCli.cpp">
+      <Filter>muduo_udp_support\test\chat</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\muduo_udp_support\test\chat\udpChatSrv.cpp">
+      <Filter>muduo_udp_support\test\chat</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\muduo_udp_support\test\chat\udpChatSrv_highperformance.cpp">
+      <Filter>muduo_udp_support\test\chat</Filter>
+    </ClCompile>
+    <ClCompile Include="LuaBindMgr.cpp">
+      <Filter>muduo_contrib</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\lib\muduo_contrib\hiredis\CMakeLists.txt">
+      <Filter>muduo_contrib\hiredis</Filter>
+    </Text>
+    <Text Include="..\..\lib\muduo_contrib\CMakeLists.txt">
+      <Filter>muduo_contrib</Filter>
+    </Text>
+    <Text Include="..\..\lib\muduo\CMakeLists.txt">
+      <Filter>muduo</Filter>
+    </Text>
+    <Text Include="..\..\lib\muduo_udp_support\CMakeLists.txt">
+      <Filter>muduo_udp_support</Filter>
+    </Text>
+    <Text Include="..\..\lib\muduo_udp_support\test\chat\CMakeLists.txt">
+      <Filter>muduo_udp_support\test\chat</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\lib\muduo_contrib\hiredis\README.md">
+      <Filter>muduo_contrib\hiredis</Filter>
+    </None>
+  </ItemGroup>
+</Project>

@@ -13,10 +13,10 @@ ClientProxy::ClientProxy( NetworkMgr* inNetworkManager,
 	const UdpConnectionPtr& inUdpConnection )
 	:
 	networkManager_( inNetworkManager ),
-	ReplicationManager_( this ),
+	replicationManager_( this ),
 	mPlayerName( inPlayerName ),
 	mPlayerId( inPlayerId ),
-	DeliveryNotifyManager_( false, true ),
+	deliveryNotifyManager_( false, true ),
 	mIsLastMoveTimestampDirty( false ),
 	mLastPacketFromClientTime( 0.f ),
 	mTimeToRespawn( 0.f ),
@@ -35,12 +35,12 @@ ClientProxy::ClientProxy( NetworkMgr* inNetworkManager,
 	const UDPSocketPtr& inUDPSocket )
 	:
 	networkManager_( inNetworkManager ),
-	ReplicationManager_( this ),
+	replicationManager_( this ),
 	mSocketAddress( inSocketAddress ),
 	mPlayerName( inPlayerName ),
 	mPlayerId( inPlayerId ),
 	mUDPSocket( inUDPSocket ),
-	DeliveryNotifyManager_( false, true ),
+	deliveryNotifyManager_( false, true ),
 	mIsLastMoveTimestampDirty( false ),
 	mTimeToRespawn( 0.f ),
 	mRecvingServerResetFlag( false )

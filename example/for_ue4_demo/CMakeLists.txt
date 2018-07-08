@@ -4,7 +4,6 @@ set (PROJ_NAME_WITH_REDIS rs_example_for_ue4_demo_with_redis)
 set (LIB_REALTIME_SRV realtime_srv)
 set (LIB_MUDUO_HIREDIS muduo_hiredis)
 set (LIB_LUA lua5.1)
-set (LIB_TOLUAPP tolua++5.1)
 
 
 IF(UNIX)
@@ -18,16 +17,17 @@ IF(UNIX)
             ExampleRedisCli.cpp
         )
         add_executable(${PROJ_NAME_WITH_REDIS} ${example_for_ue4_demo_SRCS})
-        target_link_libraries(${PROJ_NAME_WITH_REDIS} ${LIB_REALTIME_SRV} ${LIB_MUDUO_HIREDIS})
+        target_link_libraries(${PROJ_NAME_WITH_REDIS} ${LIB_REALTIME_SRV} ${LIB_MUDUO_HIREDIS} ${LIB_LUA})
     
     endif()
 
-        set(example_for_ue4_demo_SRCS
-            Character.cpp
-            ExampleSrvForUe4Demo.cpp
-        )
-        add_executable(${PROJ_NAME} ${example_for_ue4_demo_SRCS})
-        target_link_libraries(${PROJ_NAME} ${LIB_REALTIME_SRV})
+    set(example_for_ue4_demo_SRCS
+        CharacterLuaBind.cpp
+        Character.cpp
+        ExampleSrvForUe4Demo.cpp
+    )
+    add_executable(${PROJ_NAME} ${example_for_ue4_demo_SRCS})
+    target_link_libraries(${PROJ_NAME} ${LIB_REALTIME_SRV} ${LIB_LUA})
 
 
 # elseif(WIN32) # Check if we are on Windows

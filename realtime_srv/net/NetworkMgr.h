@@ -148,7 +148,7 @@ private:
 	};
 	//typedef std::queue< ReceivedPacket, std::list< ReceivedPacket > > PacketQueue;
 	typedef std::set< ReceivedPacket > ReceivedPacketSet;
-	THREAD_SHARED_VAR_DEF( private, ReceivedPacketSet, recvPacketSet_, mutex_ );
+	THREAD_SHARED_VAR_DEF( private, ReceivedPacketSet, recvedPacketSet_, mutex_ );
 
 private:
 	std::unique_ptr< UdpConnToClientMap > udpConnToClientMap_;

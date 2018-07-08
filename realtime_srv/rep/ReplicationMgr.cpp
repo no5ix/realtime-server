@@ -81,7 +81,7 @@ uint32_t ReplicationMgr::WriteCreateAction( OutputBitStream& inOutputStream,
 	int inObjId, uint32_t inDirtyState )
 {
 	GameObjPtr gameObject = owner_->GetWorld()->GetGameObject( inObjId );
-
+	assert( gameObject );
 	inOutputStream.Write( gameObject->GetClassId() );
 	return gameObject->Write( inOutputStream, inDirtyState );
 }
@@ -90,9 +90,8 @@ uint32_t ReplicationMgr::WriteUpdateAction( OutputBitStream& inOutputStream,
 	int inObjId, uint32_t inDirtyState )
 {
 	GameObjPtr gameObject = owner_->GetWorld()->GetGameObject( inObjId );
-
+	assert( gameObject );
 	uint32_t writtenState = gameObject->Write( inOutputStream, inDirtyState );
-
 	return writtenState;
 }
 

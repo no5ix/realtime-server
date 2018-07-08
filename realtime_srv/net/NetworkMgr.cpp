@@ -26,7 +26,7 @@ NetworkMgr::NetworkMgr() :
 	mSimulatedLatency( 0.f ),
 	mSimulateJitter( false ),
 	udpConnToClientMap_( new UdpConnToClientMap ),
-	recvPacketSet_( new	ReceivedPacketSet )
+	recvedPacketSet_( new	ReceivedPacketSet )
 {
 	kNewNetId.getAndSet( 1 );
 }
@@ -57,9 +57,9 @@ void NetworkMgr::onMessage( const muduo::net::UdpConnectionPtr& conn,
 						0.f, mSimulatedLatency ) : 0.f );
 
 			auto tempFunc = [&, simulatedRecvTime]() {
-				recvPacketSet_->emplace( simulatedRecvTime, inputStreamPtr, conn );
+				recvedPacketSet_->emplace( simulatedRecvTime, inputStreamPtr, conn );
 			};
-			SET_THREAD_SHARED_VAR( recvPacketSet_, mutex_, tempFunc );
+			SET_THREAD_SHARED_VAR( recvedPacketSet_, mutex_, tempFunc );
 		}
 		else
 		{
@@ -77,12 +77,12 @@ void NetworkMgr::Tick()
 
 void NetworkMgr::ProcessQueuedPackets()
 {
-	if ( recvPacketSet_->empty() )
+	if ( recvedPacketSet_->empty() )
 	{
 		return;
 	}
-	std::vector< ReceivedPacket > pendingDeleteRecvPacket;
-	auto recvPacketSetCopy = GET_THREAD_SHARED_VAR( recvPacketSet_ );
+	std::vector< ReceivedPacket > pendingDeleteRecvedPacket;
+	auto recvPacketSetCopy = GET_THREAD_SHARED_VAR( recvedPacketSet_ );
 	for ( ReceivedPacketSet::iterator it = recvPacketSetCopy->begin();
 		it != recvPacketSetCopy->end(); ++it )
 	{
@@ -93,20 +93,20 @@ void NetworkMgr::ProcessQueuedPackets()
 				*( it->GetPacketBuffer() ),
 				it->GetUdpConn()
 			);
-			pendingDeleteRecvPacket.push_back( *it );
+			pendingDeleteRecvedPacket.push_back( *it );
 		}
 		else
 		{
 			break;
 		}
 	}
-	if ( !pendingDeleteRecvPacket.empty() )
+	if ( !pendingDeleteRecvedPacket.empty() )
 	{
 		muduo::MutexLockGuard lock( mutex_ );
-		THREAD_SHARED_VAR_COW( recvPacketSet_ );
-		for ( const auto& pdrp : pendingDeleteRecvPacket )
+		THREAD_SHARED_VAR_COW( recvedPacketSet_ );
+		for ( const auto& pdrp : pendingDeleteRecvedPacket )
 		{
-			recvPacketSet_->erase( pdrp );
+			recvedPacketSet_->erase( pdrp );
 		}
 	}
 }
