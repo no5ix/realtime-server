@@ -38,8 +38,7 @@ void NetworkMgr::SendPacket( const OutputBitStream& inOutputStream, const UdpCon
 }
 
 void NetworkMgr::onMessage( const muduo::net::UdpConnectionPtr& conn,
-	muduo::net::Buffer* buf,
-	muduo::Timestamp receiveTime )
+	muduo::net::Buffer* buf, muduo::Timestamp receiveTime )
 {
 	if ( buf->readableBytes() > 0 ) // kHeaderLen == 0
 	{
@@ -65,6 +64,21 @@ void NetworkMgr::onMessage( const muduo::net::UdpConnectionPtr& conn,
 		{
 		 //LOG( "Dropped packet!" );
 		}
+	}
+}
+
+void NetworkMgr::onMessageInLazyState( const muduo::net::UdpConnectionPtr& conn,
+	muduo::net::Buffer* buf, muduo::Timestamp receiveTime )
+{
+	if ( buf->readableBytes() > 0 ) // kHeaderLen == 0
+	{
+		InputBitStream newInputStream( buf->peek(), buf->readableBytes() * 8 );
+		buf->retrieveAll();
+
+		ProcessPacket( newInputStream, conn );
+		worldUpdateCB_();
+		SendOutgoingPackets();
+		CheckForDisconnects();
 	}
 }
 
@@ -111,21 +125,29 @@ void NetworkMgr::ProcessQueuedPackets()
 	}
 }
 
-bool NetworkMgr::Init( uint16_t inPort )
+bool NetworkMgr::Init( uint16_t inPort, bool isLazy /*= false*/ )
 {
 	InetAddress serverAddr( inPort );
 	server_.reset( new UdpServer( &loop_, serverAddr, "realtime_srv" ) );
 
 	server_->setConnectionCallback(
 		std::bind( &NetworkMgr::onConnection, this, _1 ) );
-	server_->setMessageCallback(
-		std::bind( &NetworkMgr::onMessage, this, _1, _2, _3 ) );
 	server_->setThreadNum( THREAD_NUM );
 
-	loop_.runEvery( static_cast< double >( kClientDisconnectTimeout ),
-		std::bind( &NetworkMgr::CheckForDisconnects, this ) );
-	loop_.runEvery( static_cast< double >( kTickInterval ),
-		std::bind( &NetworkMgr::Tick, this ) );
+	if ( !isLazy )
+	{
+		server_->setMessageCallback(
+			std::bind( &NetworkMgr::onMessage, this, _1, _2, _3 ) );
+		loop_.runEvery( static_cast< double >( kClientDisconnectTimeout ),
+			std::bind( &NetworkMgr::CheckForDisconnects, this ) );
+		loop_.runEvery( static_cast< double >( kTickInterval ),
+			std::bind( &NetworkMgr::Tick, this ) );
+	}
+	else
+	{
+		server_->setMessageCallback(
+			std::bind( &NetworkMgr::onMessageInLazyState, this, _1, _2, _3 ) );
+	}
 
 	return true;
 }
@@ -386,7 +408,7 @@ void NetworkMgr::ProcessQueuedPackets()
 	}
 }
 
-bool NetworkMgr::Init( uint16_t inPort )
+bool NetworkMgr::Init( uint16_t inPort, bool isLazy /*= false*/ )
 {
 	UdpSockInterf::StaticInit();
 

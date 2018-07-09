@@ -8,10 +8,16 @@ using namespace realtime_srv;
 class ExampleSrvForUe4Demo : noncopyable
 {
 public:
+	ExampleSrvForUe4Demo( bool willDaemonizeOnLinux = true )
+		: server_( willDaemonizeOnLinux )
+	{}
 
 	void Run()
 	{
-		server_.Run( [&]( ClientProxyPtr cp ) { return SpawnNewCharacterForPlayer( cp ); } );
+		server_.Run(
+			[&]( ClientProxyPtr cp ) { return SpawnNewCharacterForPlayer( cp ); }
+			, true // true for lazy mode, comment this line for high performance mode.
+		);
 	}
 
 	GameObjPtr SpawnNewCharacterForPlayer( ClientProxyPtr cliProxy )

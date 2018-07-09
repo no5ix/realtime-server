@@ -1,19 +1,25 @@
-set_property(GLOBAL PROPERTY USE_FOLDERS On)
 
 # CMake 最低版本号要求
 cmake_minimum_required (VERSION 2.8)
 
-# support C++11
-add_definitions(-std=c++1y)
+# support C++14
+# add_definitions(-std=c++1y)
 
-
+# CMake disable -std=c++11 flag for C files
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1y")
+# set(CMAKE_CXX_FLAGS "-std=c++14")
+# set(CMAKE_CXX_STANDARD 14)
+# set(CMAKE_CXX_STANDARD_REQUIRED ON)
+# set(CMAKE_CXX_EXTENSIONS OFF)
 
 # 项目信息
 set (PROJ_NAME realtime_srv)
 set (LIB_PATH_NAME lib)
-set (LUA_VERSION 5.1)
+# set (LUA_VERSION 5.1)
 project (${PROJ_NAME})
 
+
+set_property(GLOBAL PROPERTY USE_FOLDERS On)
 
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
@@ -144,23 +150,24 @@ if(UNIX)
         message(STATUS "found hiredis")
     endif()
 
-    # find lua
-    find_path(LUA_INCLUDE_DIR lua.h)        # find in /usr/local/include
-    find_library(LUA_LIBRARY NAMES lua/${LUA_VERSION}/lua${LUA_VERSION})             # find in /usr/local/lib
+    # # find lua
+    # find_path(LUA_INCLUDE_DIR lua.h)        # find in /usr/local/include
+    # find_library(LUA_LIBRARY NAMES lua/${LUA_VERSION}/lua${LUA_VERSION})             # find in /usr/local/lib
 
-    if(LUA_INCLUDE_DIR AND LUA_LIBRARY)
-        message(STATUS "found lua${LUA_VERSION}")
-    endif()
+    # if(LUA_INCLUDE_DIR AND LUA_LIBRARY)
+    #     message(STATUS "found lua${LUA_VERSION}")
+    # endif()
 
 
 
     include_directories(${PROJECT_SOURCE_DIR})
     include_directories(${PROJECT_SOURCE_DIR}/${LIB_PATH_NAME})
+    include_directories(${PROJECT_SOURCE_DIR}/${LIB_PATH_NAME}/lualib/lua53)
 
     add_subdirectory(${LIB_PATH_NAME}/muduo)
     add_subdirectory(${LIB_PATH_NAME}/muduo_udp_support)
     add_subdirectory(${LIB_PATH_NAME}/muduo_contrib)
-    # add_subdirectory(${LIB_PATH_NAME}/lualib)
+    add_subdirectory(${LIB_PATH_NAME}/lualib)
 
     add_subdirectory(realtime_srv)
     add_subdirectory(example)

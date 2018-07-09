@@ -19,6 +19,32 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\lib\lualib\lua53\lapi.h" />
+    <ClInclude Include="..\..\lib\lualib\lua53\lauxlib.h" />
+    <ClInclude Include="..\..\lib\lualib\lua53\lcode.h" />
+    <ClInclude Include="..\..\lib\lualib\lua53\lctype.h" />
+    <ClInclude Include="..\..\lib\lualib\lua53\ldebug.h" />
+    <ClInclude Include="..\..\lib\lualib\lua53\ldo.h" />
+    <ClInclude Include="..\..\lib\lualib\lua53\lfunc.h" />
+    <ClInclude Include="..\..\lib\lualib\lua53\lgc.h" />
+    <ClInclude Include="..\..\lib\lualib\lua53\llex.h" />
+    <ClInclude Include="..\..\lib\lualib\lua53\llimits.h" />
+    <ClInclude Include="..\..\lib\lualib\lua53\lmem.h" />
+    <ClInclude Include="..\..\lib\lualib\lua53\lobject.h" />
+    <ClInclude Include="..\..\lib\lualib\lua53\lopcodes.h" />
+    <ClInclude Include="..\..\lib\lualib\lua53\lparser.h" />
+    <ClInclude Include="..\..\lib\lualib\lua53\lprefix.h" />
+    <ClInclude Include="..\..\lib\lualib\lua53\lstate.h" />
+    <ClInclude Include="..\..\lib\lualib\lua53\lstring.h" />
+    <ClInclude Include="..\..\lib\lualib\lua53\ltable.h" />
+    <ClInclude Include="..\..\lib\lualib\lua53\ltm.h" />
+    <ClInclude Include="..\..\lib\lualib\lua53\lua.h" />
+    <ClInclude Include="..\..\lib\lualib\lua53\lua.hpp" />
+    <ClInclude Include="..\..\lib\lualib\lua53\luaconf.h" />
+    <ClInclude Include="..\..\lib\lualib\lua53\lualib.h" />
+    <ClInclude Include="..\..\lib\lualib\lua53\lundump.h" />
+    <ClInclude Include="..\..\lib\lualib\lua53\lvm.h" />
+    <ClInclude Include="..\..\lib\lualib\lua53\lzio.h" />
     <ClInclude Include="..\..\lib\lualib\LuaBindMgr.h" />
     <ClInclude Include="..\..\lib\lualib\sol.hpp" />
     <ClInclude Include="..\..\lib\muduo\base\Atomic.h" />
@@ -72,6 +98,41 @@
     <ClInclude Include="..\..\lib\muduo_udp_support\UdpSocketsOps.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\lib\lualib\lua53\lapi.c" />
+    <ClCompile Include="..\..\lib\lualib\lua53\lauxlib.c" />
+    <ClCompile Include="..\..\lib\lualib\lua53\lbaselib.c" />
+    <ClCompile Include="..\..\lib\lualib\lua53\lbitlib.c" />
+    <ClCompile Include="..\..\lib\lualib\lua53\lcode.c" />
+    <ClCompile Include="..\..\lib\lualib\lua53\lcorolib.c" />
+    <ClCompile Include="..\..\lib\lualib\lua53\lctype.c" />
+    <ClCompile Include="..\..\lib\lualib\lua53\ldblib.c" />
+    <ClCompile Include="..\..\lib\lualib\lua53\ldebug.c" />
+    <ClCompile Include="..\..\lib\lualib\lua53\ldo.c" />
+    <ClCompile Include="..\..\lib\lualib\lua53\ldump.c" />
+    <ClCompile Include="..\..\lib\lualib\lua53\lfunc.c" />
+    <ClCompile Include="..\..\lib\lualib\lua53\lgc.c" />
+    <ClCompile Include="..\..\lib\lualib\lua53\linit.c" />
+    <ClCompile Include="..\..\lib\lualib\lua53\liolib.c" />
+    <ClCompile Include="..\..\lib\lualib\lua53\llex.c" />
+    <ClCompile Include="..\..\lib\lualib\lua53\lmathlib.c" />
+    <ClCompile Include="..\..\lib\lualib\lua53\lmem.c" />
+    <ClCompile Include="..\..\lib\lualib\lua53\loadlib.c" />
+    <ClCompile Include="..\..\lib\lualib\lua53\lobject.c" />
+    <ClCompile Include="..\..\lib\lualib\lua53\lopcodes.c" />
+    <ClCompile Include="..\..\lib\lualib\lua53\loslib.c" />
+    <ClCompile Include="..\..\lib\lualib\lua53\lparser.c" />
+    <ClCompile Include="..\..\lib\lualib\lua53\lstate.c" />
+    <ClCompile Include="..\..\lib\lualib\lua53\lstring.c" />
+    <ClCompile Include="..\..\lib\lualib\lua53\lstrlib.c" />
+    <ClCompile Include="..\..\lib\lualib\lua53\ltable.c" />
+    <ClCompile Include="..\..\lib\lualib\lua53\ltablib.c" />
+    <ClCompile Include="..\..\lib\lualib\lua53\ltm.c" />
+    <ClCompile Include="..\..\lib\lualib\lua53\lua.c" />
+    <ClCompile Include="..\..\lib\lualib\lua53\luac.c" />
+    <ClCompile Include="..\..\lib\lualib\lua53\lundump.c" />
+    <ClCompile Include="..\..\lib\lualib\lua53\lutf8lib.c" />
+    <ClCompile Include="..\..\lib\lualib\lua53\lvm.c" />
+    <ClCompile Include="..\..\lib\lualib\lua53\lzio.c" />
     <ClCompile Include="..\..\lib\muduo\base\Condition.cc" />
     <ClCompile Include="..\..\lib\muduo\base\CountDownLatch.cc" />
     <ClCompile Include="..\..\lib\muduo\base\Date.cc" />
@@ -114,6 +175,7 @@
     <ClCompile Include="LuaBindMgr.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="..\..\lib\lualib\CMakeLists.txt" />
     <Text Include="..\..\lib\muduo\CMakeLists.txt" />
     <Text Include="..\..\lib\muduo_contrib\CMakeLists.txt" />
     <Text Include="..\..\lib\muduo_contrib\hiredis\CMakeLists.txt" />
@@ -121,6 +183,8 @@
     <Text Include="..\..\lib\muduo_udp_support\test\chat\CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\lib\lualib\lua53\Makefile" />
+    <None Include="..\..\lib\lualib\lua53\README" />
     <None Include="..\..\lib\muduo_contrib\hiredis\README.md" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -173,7 +237,10 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <SourcePath>
+    </SourcePath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>

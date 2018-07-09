@@ -43,7 +43,7 @@ public:
 public:
 
 	NetworkMgr();
-	bool	Init( uint16_t inPort );
+	bool Init( uint16_t inPort, bool isLazy = false );
 
 	void	Start();
 
@@ -109,8 +109,10 @@ protected:
 		const muduo::net::UdpConnectionPtr& conn );
 
 	void onMessage( const muduo::net::UdpConnectionPtr& conn,
-		muduo::net::Buffer* buf,
-		muduo::Timestamp receiveTime );
+		muduo::net::Buffer* buf, muduo::Timestamp receiveTime );
+
+	void onMessageInLazyState( const muduo::net::UdpConnectionPtr& conn,
+		muduo::net::Buffer* buf, muduo::Timestamp receiveTime );
 
 	virtual void onConnection( const muduo::net::UdpConnectionPtr& conn );
 

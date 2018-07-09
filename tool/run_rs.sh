@@ -23,12 +23,12 @@ cd ${BIN_PATH};
 ./${SRV_NAME} $*;
 cd -;
 
-sleep 1
+# sleep 1
 # netstat -anlp | grep ':44444'
 # netstat -anlp | grep -w ${SRV_NAME}
 # lsof -c ${SRV_NAME} | head -1 && lsof -c ${SRV_NAME} | grep -w "IPv4"
 
-./show_rs.sh
+# ./show_rs.sh
 
 
 exit 0
