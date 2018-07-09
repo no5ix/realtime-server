@@ -26,7 +26,7 @@ IF(UNIX)
         ExampleSrvForUe4Demo.cpp
     )
     add_executable(${PROJ_NAME} ${example_for_ue4_demo_SRCS})
-    target_link_libraries(${PROJ_NAME} ${LIB_REALTIME_SRV} ${LIB_LUA})
+    target_link_libraries(${PROJ_NAME} ${LIB_REALTIME_SRV})
 
 
 # elseif(WIN32) # Check if we are on Windows

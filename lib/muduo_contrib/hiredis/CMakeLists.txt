@@ -8,10 +8,6 @@ IF(UNIX)
     add_library(${PROJ_NAME} ${muduo_hiredis_SRCS})
     target_link_libraries(${PROJ_NAME} ${MUDUO_LIB_NAME} hiredis)
 
-
-    add_executable(mrediscli Hiredis.cc mrediscli.cc)
-    target_link_libraries(mrediscli ${MUDUO_LIB_NAME} hiredis)
-
 # elseif(WIN32) # Check if we are on Windows
 
 #   create_win_proj(${PROJ_NAME})

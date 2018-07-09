@@ -1,10 +1,12 @@
 # A realtime-server example for [realtime-server-ue4-demo](https://github.com/no5ix/realtime-server-ue4-demo)
 
-为 [realtime-server-ue4-demo](https://github.com/no5ix/realtime-server-ue4-demo) 写了一个realtime-server端的配套例子
+
+为 [realtime-server-ue4-demo](https://github.com/no5ix/realtime-server-ue4-demo) 写了一个realtime-server端的配套服务端例子
 
 
 
 # Usage
+
 
 - Windows : 
 

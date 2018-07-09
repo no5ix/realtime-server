@@ -29,14 +29,14 @@ else
 fi
 
 
-# move lua file to bin path
+# copy lua file to bin path
 
 EXAMPLE_NAME="for_ue4_demo"
 EXAMPLE_DIR="${RS_DIR}/example/${EXAMPLE_NAME}"
 
 mkdir -p ${RS_BIN_DIR}/${EXAMPLE_NAME}/
-mv  ${EXAMPLE_DIR}/*.lua  ${RS_BIN_DIR}/${EXAMPLE_NAME}/
-echo "move lua file to bin path finished."
+cp  ${EXAMPLE_DIR}/*.lua  ${RS_BIN_DIR}/${EXAMPLE_NAME}/
+echo "copy lua file to bin path finished."
 
 # cmake
 
