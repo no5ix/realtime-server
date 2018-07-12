@@ -14,7 +14,7 @@ using namespace realtime_srv;
 
 
 
-RealtimeSrvTiming	RealtimeSrvTiming::sInstance;
+RealtimeSrvTiming	RealtimeSrvTiming::sInst;
 
 namespace
 {

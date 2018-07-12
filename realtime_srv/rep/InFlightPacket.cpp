@@ -7,28 +7,33 @@ InFlightPacket::InFlightPacket(
 	PacketSN inSequenceNumber,
 	ClientProxy* inClientProxy ) :
 	mSequenceNumber( inSequenceNumber ),
-	mTimeDispatched( RealtimeSrvTiming::sInstance.GetCurrentGameTime() ),
+	mTimeDispatched( RealtimeSrvTiming::sInst.GetCurrentGameTime() ),
 	owner_( inClientProxy )
 {}
 
-void InFlightPacket::AddTransmission( int inNetworkId, ReplicationAction inAction, uint32_t inState )
+void InFlightPacket::AddTransmission( int inObjId,
+	ReplicationAction inAction, uint32_t inState )
 {
-	mTransmissions.emplace_back( inNetworkId, inAction, inState );
+	NetIdToTransMap_.emplace( std::make_pair(
+		inObjId,
+		ReplicationTransmission( inObjId, inAction, inState ) ) );
 }
 
-void InFlightPacket::HandleDeliveryFailure( DeliveryNotifyMgr* inDeliveryNotificationManager ) const
+void InFlightPacket::HandleDeliveryFailure() const
 {
-	for ( const ReplicationTransmission& rt : mTransmissions )
+	const ReplicationTransmission *rt = nullptr;
+	for ( const auto& ipair : NetIdToTransMap_ )
 	{
-		int networkId = rt.GetNetworkId();
+		rt = &ipair.second;
+		int networkId = rt->GetObjId();
 
-		switch ( rt.GetAction() )
+		switch ( rt->GetAction() )
 		{
 			case RA_Create:
 				HandleCreateDeliveryFailure( networkId );
 				break;
 			case RA_Update:
-				HandleUpdateStateDeliveryFailure( networkId, rt.GetState(), inDeliveryNotificationManager );
+				HandleUpdateStateDeliveryFailure( networkId, rt->GetState() );
 				break;
 			case RA_Destroy:
 				HandleDestroyDeliveryFailure( networkId );
@@ -36,54 +41,59 @@ void InFlightPacket::HandleDeliveryFailure( DeliveryNotifyMgr* inDeliveryNotific
 			default:
 				break;
 		}
-
 	}
 }
 
-void InFlightPacket::HandleCreateDeliveryFailure( int inNetworkId ) const
+void InFlightPacket::HandleCreateDeliveryFailure( int inObjId ) const
 {
-	GameObjPtr gameObject = owner_->GetWorld()->GetGameObject( inNetworkId );
+	GameObjPtr gameObject = owner_->GetWorld()->GetGameObject( inObjId );
 	if ( gameObject )
 	{
-		owner_->GetReplicationManager().ReplicateCreate( inNetworkId, gameObject->GetAllStateMask() );
+		owner_->GetReplicationManager().ReplicateCreate(
+			inObjId, gameObject->GetAllStateMask() );
 	}
 }
 
-void InFlightPacket::HandleDestroyDeliveryFailure( int inNetworkId ) const
+void InFlightPacket::HandleDestroyDeliveryFailure( int inObjId ) const
 {
-	owner_->GetReplicationManager().ReplicateDestroy( inNetworkId );
+	owner_->GetReplicationManager().ReplicateDestroy( inObjId );
 }
 
-void InFlightPacket::HandleUpdateStateDeliveryFailure( int inNetworkId, uint32_t inState, DeliveryNotifyMgr* inDeliveryNotificationManager ) const
+void realtime_srv::InFlightPacket::HandleUpdateStateDeliveryFailure( int inObjId,
+	uint32_t inState ) const
 {
-	if ( owner_->GetWorld()->GetGameObject( inNetworkId ) )
+	if ( owner_->GetWorld()->IsGameObjectExist( inObjId ) )
 	{
-		for ( const auto& inFlightPacket : inDeliveryNotificationManager->GetInFlightPackets() )
+		for ( const auto& iFlightPacket : owner_->GetDeliveryNotifyManager().GetInFlightPackets() )
 		{
-			for ( const ReplicationTransmission& otherRT : inFlightPacket.mTransmissions )
+			auto TransIt = iFlightPacket.NetIdToTransMap_.find( inObjId );
+			if (TransIt != NetIdToTransMap_.end())
 			{
-				inState &= ~otherRT.GetState();
+				inState &= ~( TransIt->second.GetState() );
 			}
 		}
 
 		if ( inState )
 		{
-			owner_->GetReplicationManager().SetReplicationStateDirty( inNetworkId, inState );
+			owner_->GetReplicationManager().SetReplicationStateDirty( inObjId, inState );
 		}
 	}
 }
 
-void InFlightPacket::HandleDeliverySuccess( DeliveryNotifyMgr* inDeliveryNotificationManager ) const
+void realtime_srv::InFlightPacket::HandleDeliverySuccess() const
 {
-	for ( const ReplicationTransmission& rt : mTransmissions )
+	const ReplicationTransmission *rt = nullptr;
+	for ( const auto& ipair : NetIdToTransMap_ )
 	{
-		switch ( rt.GetAction() )
+		rt = &ipair.second;
+
+		switch ( rt->GetAction() )
 		{
 			case RA_Create:
-				HandleCreateDeliverySuccess( rt.GetNetworkId() );
+				HandleCreateDeliverySuccess( rt->GetObjId() );
 				break;
 			case RA_Destroy:
-				HandleDestroyDeliverySuccess( rt.GetNetworkId() );
+				HandleDestroyDeliverySuccess( rt->GetObjId() );
 				break;
 			default:
 				break;
@@ -91,12 +101,12 @@ void InFlightPacket::HandleDeliverySuccess( DeliveryNotifyMgr* inDeliveryNotific
 	}
 }
 
-void InFlightPacket::HandleCreateDeliverySuccess( int inNetworkId ) const
+void InFlightPacket::HandleCreateDeliverySuccess( int inObjId ) const
 {
-	owner_->GetReplicationManager().HandleCreateAckd( inNetworkId );
+	owner_->GetReplicationManager().HandleCreateAckd( inObjId );
 }
 
-void InFlightPacket::HandleDestroyDeliverySuccess( int inNetworkId ) const
+void InFlightPacket::HandleDestroyDeliverySuccess( int inObjId ) const
 {
-	owner_->GetReplicationManager().RemoveFromReplication( inNetworkId );
+	owner_->GetReplicationManager().RemoveFromReplication( inObjId );
 }

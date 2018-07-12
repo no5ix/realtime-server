@@ -32,6 +32,19 @@ int World::GetNewObjId()
 	return toRet;
 }
 
+bool World::IsGameObjectExist( int inObjId )
+{
+	auto gameObjectIt = ObjIdToGameObjMap_.find( inObjId );
+	if ( gameObjectIt != ObjIdToGameObjMap_.end() )
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
 GameObjPtr World::GetGameObject( int inObjId )
 {
 	auto gameObjectIt = ObjIdToGameObjMap_.find( inObjId );

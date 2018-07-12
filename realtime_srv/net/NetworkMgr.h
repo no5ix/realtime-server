@@ -68,11 +68,13 @@ public:
 	{ worldRegistryCB_ = cb; }
 
 	void	SetDropPacketChance( float inChance )
-	{ mDropPacketChance = inChance; }
+	{ mDropPacketChance = inChance; isSimilateRealWorld_ = true; }
 	void	SetSimulatedLatency( float inLatency )
-	{ mSimulatedLatency = inLatency; }
+	{ mSimulatedLatency = inLatency; isSimilateRealWorld_ = true; }
 	void	SetIsSimulatedJitter( bool inIsSimulatedJitter )
-	{ mSimulateJitter = inIsSimulatedJitter; }
+	{ mSimulateJitter = inIsSimulatedJitter; isSimilateRealWorld_ = true; }
+	void	SetIsSimilateRealWorld( bool inIsSimilateRealWorld )
+	{ isSimilateRealWorld_ = inIsSimilateRealWorld; }
 
 private:
 	void	ProcessQueuedPackets();
@@ -93,6 +95,7 @@ private:
 	float						mDropPacketChance;
 	float						mSimulatedLatency;
 	bool						mSimulateJitter;
+	bool						isSimilateRealWorld_;
 
 #ifdef IS_LINUX
 
@@ -111,7 +114,7 @@ protected:
 	void onMessage( const muduo::net::UdpConnectionPtr& conn,
 		muduo::net::Buffer* buf, muduo::Timestamp receiveTime );
 
-	void onMessageInLazyState( const muduo::net::UdpConnectionPtr& conn,
+	void onMessageInLazyMode( const muduo::net::UdpConnectionPtr& conn,
 		muduo::net::Buffer* buf, muduo::Timestamp receiveTime );
 
 	virtual void onConnection( const muduo::net::UdpConnectionPtr& conn );

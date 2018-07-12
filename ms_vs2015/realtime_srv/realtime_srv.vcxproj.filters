@@ -60,9 +60,6 @@
     <ClInclude Include="..\..\realtime_srv\common\RealtimeSrvHelper.h">
       <Filter>common</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\realtime_srv\common\RealtimeSrvTiming.h">
-      <Filter>common</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\realtime_srv\common\RealtimeSrvMacro.h">
       <Filter>common</Filter>
     </ClInclude>
@@ -97,6 +94,9 @@
     <ClInclude Include="..\..\realtime_srv\game_obj\World.h">
       <Filter>game_obj</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\realtime_srv\common\RealtimeSrvTiming.h">
+      <Filter>common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\realtime_srv\math\Vector3.cpp">
@@ -129,9 +129,6 @@
     <ClCompile Include="..\..\realtime_srv\common\RealtimeSrvHelper.cpp">
       <Filter>common</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\realtime_srv\common\RealtimeSrvTiming.cpp">
-      <Filter>common</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\realtime_srv\RealtimeServer.cpp" />
     <ClCompile Include="..\..\realtime_srv\net\UdpSockInterf.cpp">
       <Filter>net</Filter>
@@ -150,6 +147,9 @@
     </ClCompile>
     <ClCompile Include="..\..\realtime_srv\game_obj\World.cpp">
       <Filter>game_obj</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\realtime_srv\common\RealtimeSrvTiming.cpp">
+      <Filter>common</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

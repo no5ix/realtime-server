@@ -25,7 +25,7 @@ public:
 	float GetFrameStartTime() const { return mFrameStartTimef; }
 
 
-	static RealtimeSrvTiming sInstance;
+	static RealtimeSrvTiming sInst;
 
 private:
 	float		mDeltaTime;

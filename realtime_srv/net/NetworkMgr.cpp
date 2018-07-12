@@ -25,13 +25,15 @@ NetworkMgr::NetworkMgr() :
 	mDropPacketChance( 0.f ),
 	mSimulatedLatency( 0.f ),
 	mSimulateJitter( false ),
+	isSimilateRealWorld_( false ),
 	udpConnToClientMap_( new UdpConnToClientMap ),
 	recvedPacketSet_( new	ReceivedPacketSet )
 {
 	kNewNetId.getAndSet( 1 );
 }
 
-void NetworkMgr::SendPacket( const OutputBitStream& inOutputStream, const UdpConnectionPtr& conn )
+void NetworkMgr::SendPacket( const OutputBitStream& inOutputStream,
+	const UdpConnectionPtr& conn )
 {
 	conn->send(
 		inOutputStream.GetBufferPtr(), inOutputStream.GetByteLength() );
@@ -46,28 +48,40 @@ void NetworkMgr::onMessage( const muduo::net::UdpConnectionPtr& conn,
 			new InputBitStream( buf->peek(), buf->readableBytes() * 8 ) );
 		buf->retrieveAll();
 
-		if ( RealtimeSrvMath::GetRandomFloat() >= mDropPacketChance )
+		if ( isSimilateRealWorld_ )
 		{
-			float simulatedRecvTime =
-				RealtimeSrvTiming::sInstance.GetCurrentGameTime() +
-				mSimulatedLatency +
-				( mSimulateJitter ?
-					RealtimeSrvMath::Clamp( RealtimeSrvMath::GetRandomFloat(),
-						0.f, mSimulatedLatency ) : 0.f );
+			if ( RealtimeSrvMath::GetRandomFloat() >= mDropPacketChance )
+			{
+				float simulatedRecvTimeOffset =
+					mSimulatedLatency +
+					( mSimulateJitter ?
+						RealtimeSrvMath::Clamp( RealtimeSrvMath::GetRandomFloat(),
+							0.f, mSimulatedLatency ) : 0.f );
 
-			auto tempFunc = [&, simulatedRecvTime]() {
-				recvedPacketSet_->emplace( simulatedRecvTime, inputStreamPtr, conn );
-			};
-			SET_THREAD_SHARED_VAR( recvedPacketSet_, mutex_, tempFunc );
+				auto tempFunc = [&, simulatedRecvTimeOffset]() {
+					recvedPacketSet_->emplace(
+						simulatedRecvTimeOffset + RealtimeSrvTiming::sInst.GetCurrentGameTime(),
+						inputStreamPtr, conn );
+				};
+				SET_THREAD_SHARED_VAR( recvedPacketSet_, mutex_, tempFunc );
+
+			}
+			else
+			{
+				//LOG( "Dropped packet!" );
+			}
 		}
 		else
 		{
-		 //LOG( "Dropped packet!" );
+			muduo::MutexLockGuard lock( mutex_ );
+			THREAD_SHARED_VAR_COW( recvedPacketSet_ );
+			recvedPacketSet_->emplace(
+				RealtimeSrvTiming::sInst.GetCurrentGameTime(), inputStreamPtr, conn );
 		}
 	}
 }
 
-void NetworkMgr::onMessageInLazyState( const muduo::net::UdpConnectionPtr& conn,
+void NetworkMgr::onMessageInLazyMode( const muduo::net::UdpConnectionPtr& conn,
 	muduo::net::Buffer* buf, muduo::Timestamp receiveTime )
 {
 	if ( buf->readableBytes() > 0 ) // kHeaderLen == 0
@@ -100,7 +114,7 @@ void NetworkMgr::ProcessQueuedPackets()
 	for ( ReceivedPacketSet::iterator it = recvPacketSetCopy->begin();
 		it != recvPacketSetCopy->end(); ++it )
 	{
-		if ( RealtimeSrvTiming::sInstance.GetCurrentGameTime() >
+		if ( RealtimeSrvTiming::sInst.GetCurrentGameTime() >
 			it->GetReceivedTime() )
 		{
 			ProcessPacket(
@@ -146,7 +160,7 @@ bool NetworkMgr::Init( uint16_t inPort, bool isLazy /*= false*/ )
 	else
 	{
 		server_->setMessageCallback(
-			std::bind( &NetworkMgr::onMessageInLazyState, this, _1, _2, _3 ) );
+			std::bind( &NetworkMgr::onMessageInLazyMode, this, _1, _2, _3 ) );
 	}
 
 	return true;
@@ -268,7 +282,7 @@ void NetworkMgr::NotifyAllClient( GameObjPtr inGameObject, ReplicationAction inA
 void NetworkMgr::CheckForDisconnects()
 {
 	float minAllowedTime =
-		RealtimeSrvTiming::sInstance.GetCurrentGameTime() - kClientDisconnectTimeout;
+		RealtimeSrvTiming::sInst.GetCurrentGameTime() - kClientDisconnectTimeout;
 
 	vector< ClientProxyPtr > clientsToDisconnect;
 
@@ -319,7 +333,8 @@ NetworkMgr::NetworkMgr() :
 	mLastCheckDCTime( 0.f ),
 	mDropPacketChance( 0.f ),
 	mSimulatedLatency( 0.f ),
-	mSimulateJitter( false )
+	mSimulateJitter( false ),
+	isSimilateRealWorld_( false )
 {}
 
 void NetworkMgr::Start()
@@ -364,7 +379,7 @@ void NetworkMgr::ReadIncomingPacketsIntoQueue()
 			if ( RealtimeSrvMath::GetRandomFloat() >= mDropPacketChance )
 			{
 				float simulatedReceivedTime =
-					RealtimeSrvTiming::sInstance.GetCurrentGameTime() +
+					RealtimeSrvTiming::sInst.GetCurrentGameTime() +
 					mSimulatedLatency +
 					( mSimulateJitter ?
 						RealtimeSrvMath::Clamp( RealtimeSrvMath::GetRandomFloat(),
@@ -392,7 +407,8 @@ void NetworkMgr::ProcessQueuedPackets()
 	while ( !mPacketQueue.empty() )
 	{
 		ReceivedPacket& nextPacket = mPacketQueue.front();
-		if ( RealtimeSrvTiming::sInstance.GetCurrentGameTime() > nextPacket.GetReceivedTime() )
+		if ( RealtimeSrvTiming::sInst.GetCurrentGameTime()
+			> nextPacket.GetReceivedTime() )
 		{
 			ProcessPacket(
 				nextPacket.GetPacketBuffer(),
@@ -527,7 +543,7 @@ void NetworkMgr::HandlePacketFromNewClient( InputBitStream& inInputStream,
 
 void NetworkMgr::CheckForDisconnects()
 {
-	float curTime = RealtimeSrvTiming::sInstance.GetCurrentGameTime();
+	float curTime = RealtimeSrvTiming::sInst.GetCurrentGameTime();
 
 	if ( curTime - mLastCheckDCTime < kClientDisconnectTimeout )
 	{
@@ -535,8 +551,8 @@ void NetworkMgr::CheckForDisconnects()
 	}
 	mLastCheckDCTime = curTime;
 
-	float minAllowedTime =
-		RealtimeSrvTiming::sInstance.GetCurrentGameTime() - kClientDisconnectTimeout;
+	float minAllowedTime = RealtimeSrvTiming::sInst.GetCurrentGameTime()
+		- kClientDisconnectTimeout;
 	for ( AddrToClientMap::iterator it = addrToClientMap_.begin();
 		it != addrToClientMap_.end(); )
 	{
@@ -555,7 +571,7 @@ void NetworkMgr::CheckForDisconnects()
 
 void NetworkMgr::SendOutgoingPackets()
 {
-	float time = RealtimeSrvTiming::sInstance.GetCurrentGameTime();
+	float time = RealtimeSrvTiming::sInst.GetCurrentGameTime();
 
 	if ( time < mTimeOfLastStatePacket + kTickInterval )
 	{
@@ -563,13 +579,14 @@ void NetworkMgr::SendOutgoingPackets()
 	}
 	mTimeOfLastStatePacket = time;
 
-	for ( auto it = addrToClientMap_.begin(), end = addrToClientMap_.end(); it != end; ++it )
+	for ( auto it = addrToClientMap_.begin(), end = addrToClientMap_.end();
+		it != end; ++it )
 	{
 		ClientProxyPtr clientProxy = it->second;
 		clientProxy->GetDeliveryNotifyManager().ProcessTimedOutPackets();
 		if ( clientProxy->IsLastMoveTimestampDirty() )
 		{
-//SendStatePacketToClient( clientProxy );
+			//SendStatePacketToClient( clientProxy );
 			SendGamePacket( clientProxy, kStateCC );
 		}
 	}
@@ -582,7 +599,8 @@ void NetworkMgr::SetRepStateDirty( int inNetworkId, uint32_t inDirtyState )
 			inNetworkId, inDirtyState );
 }
 
-void NetworkMgr::NotifyAllClient( GameObjPtr inGameObject, ReplicationAction inAction )
+void NetworkMgr::NotifyAllClient( GameObjPtr inGameObject,
+	ReplicationAction inAction )
 {
 	for ( const auto& pair : addrToClientMap_ )
 	{

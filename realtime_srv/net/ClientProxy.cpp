@@ -52,7 +52,7 @@ ClientProxy::ClientProxy( NetworkMgr* inNetworkManager,
 
 void ClientProxy::UpdateLastPacketTime()
 {
-	mLastPacketFromClientTime = RealtimeSrvTiming::sInstance.GetCurrentGameTime();
+	mLastPacketFromClientTime = RealtimeSrvTiming::sInst.GetCurrentGameTime();
 }
 
 void ClientProxy::SetGameObjStateDirty( int inNetworkId, uint32_t inDirtyState )

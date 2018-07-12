@@ -83,7 +83,7 @@ bool DeliveryNotifyMgr::ProcessSequenceNumber( InputBitStream& inInputStream )
 
 void DeliveryNotifyMgr::ProcessTimedOutPackets()
 {
-	float timeoutTime = RealtimeSrvTiming::sInstance.GetCurrentGameTime() - kDelayBeforeAckTimeout;
+	float timeoutTime = RealtimeSrvTiming::sInst.GetCurrentGameTime() - kDelayBeforeAckTimeout;
 
 	while ( !mInFlightPackets.empty() )
 	{
@@ -104,13 +104,13 @@ void DeliveryNotifyMgr::ProcessTimedOutPackets()
 void DeliveryNotifyMgr::HandlePacketDeliveryFailure( const InFlightPacket& inFlightPacket )
 {
 	++mDroppedPacketCount;
-	inFlightPacket.HandleDeliveryFailure( this );
+	inFlightPacket.HandleDeliveryFailure();
 }
 
 void DeliveryNotifyMgr::HandlePacketDeliverySuccess( const InFlightPacket& inFlightPacket )
 {
 	++mDeliveredPacketCount;
-	inFlightPacket.HandleDeliverySuccess( this );
+	inFlightPacket.HandleDeliverySuccess();
 }
 
 void DeliveryNotifyMgr::ProcessAckBitField( InputBitStream& inInputStream )
@@ -118,10 +118,10 @@ void DeliveryNotifyMgr::ProcessAckBitField( InputBitStream& inInputStream )
 	AckBitField recvedAckBitField;
 	recvedAckBitField.Read( inInputStream );
 
-	PacketSN nextAckedSN =
-		recvedAckBitField.GetLatestAckSN() - ( ACK_BIT_FIELD_BYTE_LEN << 3 );
-
 	PacketSN LastAckedSN = recvedAckBitField.GetLatestAckSN();
+	PacketSN nextAckedSN =
+		LastAckedSN - ( ACK_BIT_FIELD_BYTE_LEN << 3 );
+
 
 	while (
 		RealtimeSrvHelper::SequenceGreaterThanOrEqual( LastAckedSN, nextAckedSN )

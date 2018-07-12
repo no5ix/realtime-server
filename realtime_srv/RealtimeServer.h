@@ -14,9 +14,11 @@ public:
 	RealtimeServer( bool WhetherTobecomeDaemonOnLinux = false );
 
 	//************************************
-	// Parameter: const NewPlayerCallback & NewPlayerCB : for spawning your own GameObject.
-	// Parameter: bool Port IsLazy : if true, the server would block until a new packet arrives.
-	// Parameter: uint16_t Port : default is DEFAULT_REALTIME_SRV_PORT, see RealtimeSrvMacro.h
+	// @Parameter const NewPlayerCallback & NewPlayerCB : for spawning your own GameObject.
+	// @Parameter bool Port IsLazy : 
+	//		default to false for high performance. 
+	//		if true, the server would run as lazy mode ( block until a new packet arrives ).
+	// @Parameter uint16_t Port : default is DEFAULT_REALTIME_SRV_PORT, see RealtimeSrvMacro.h
 	//************************************
 	void Run( const NewPlayerCallback& NewPlayerCb,
 		bool IsLazy = false,

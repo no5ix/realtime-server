@@ -19,38 +19,41 @@ public:
 	class ReplicationTransmission
 	{
 	public:
-		ReplicationTransmission( int inNetworkId, ReplicationAction inAction, uint32_t inState ) :
-			mNetworkId( inNetworkId ),
+		ReplicationTransmission( int inObjId,
+			ReplicationAction inAction, uint32_t inState )
+			:
+			ObjId_( inObjId ),
 			mAction( inAction ),
 			mState( inState )
 		{}
 
-		int							GetNetworkId()		const { return mNetworkId; }
+		int							GetObjId()		const { return ObjId_; }
 		ReplicationAction			GetAction()			const { return mAction; }
 		uint32_t					GetState()			const { return mState; }
 
 	private:
-		int							mNetworkId;
+		int							ObjId_;
 		ReplicationAction			mAction;
 		uint32_t					mState;
 	};
 
-	void AddTransmission( int inNetworkId, ReplicationAction inAction, uint32_t inState );
+	void AddTransmission( int inObjId, ReplicationAction inAction, uint32_t inState );
 
-	virtual void HandleDeliveryFailure( DeliveryNotifyMgr* inDeliveryNotificationManager ) const;
-	virtual void HandleDeliverySuccess( DeliveryNotifyMgr* inDeliveryNotificationManager ) const;
+	virtual void HandleDeliveryFailure() const;
+	virtual void HandleDeliverySuccess( ) const;
 
-
-private:
-
-	void HandleCreateDeliveryFailure( int inNetworkId ) const;
-	void HandleUpdateStateDeliveryFailure( int inNetworkId, uint32_t inState, DeliveryNotifyMgr* inDeliveryNotificationManager ) const;
-	void HandleDestroyDeliveryFailure( int inNetworkId ) const;
-	void HandleCreateDeliverySuccess( int inNetworkId ) const;
-	void HandleDestroyDeliverySuccess( int inNetworkId ) const;
 
 private:
-	vector< ReplicationTransmission >		mTransmissions;
+
+	void HandleCreateDeliveryFailure( int inObjId ) const;
+	void HandleUpdateStateDeliveryFailure( int inObjId, 
+		uint32_t inState ) const;
+	void HandleDestroyDeliveryFailure( int inObjId ) const;
+	void HandleCreateDeliverySuccess( int inObjId ) const;
+	void HandleDestroyDeliverySuccess( int inObjId ) const;
+
+private:
+	std::unordered_map< int, ReplicationTransmission >	NetIdToTransMap_;
 
 	PacketSN	mSequenceNumber;
 	float		mTimeDispatched;
