@@ -69,7 +69,7 @@ public:
 		int inPlayerId,
 		const muduo::net::UdpConnectionPtr& inUdpConnection );
 
-	muduo::net::UdpConnectionPtr GetUdpConnection() const { return UdpConnection_; }
+	muduo::net::UdpConnectionPtr& GetUdpConnection() { return UdpConnection_; }
 private:
 	muduo::net::UdpConnectionPtr UdpConnection_;
 

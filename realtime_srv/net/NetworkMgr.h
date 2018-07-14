@@ -3,14 +3,19 @@
 #ifdef IS_LINUX
 #include <muduo/base/Logging.h>
 #include <muduo/base/Mutex.h>
+#include <muduo/net/EventLoopThread.h>
 #include <muduo/net/EventLoopThreadPool.h>
 #include <muduo/base/ThreadLocalSingleton.h>
 #include <muduo/net/EventLoop.h>
 #include <muduo_udp_support/UdpServer.h>
+#include <muduo/base/ThreadPool.h>
 
 #include <muduo/net/Buffer.h>
 #include <muduo/net/Endian.h>
 #include <muduo_udp_support/UdpConnection.h>
+
+#include <concurrent_queue/concurrentqueue.h>
+#include <concurrent_queue/blockingconcurrentqueue.h>
 
 #include <set>
 #include <stdio.h>
@@ -27,7 +32,7 @@ typedef std::function< GameObjPtr( std::shared_ptr<ClientProxy> ) > NewPlayerCal
 
 class NetworkMgr : noncopyable
 {
-	typedef std::function<void( GameObjPtr, ReplicationAction )> WorldRegistryCB;
+	typedef std::function<void( GameObjPtr, ReplicationAction )> WorldRegistryCb;
 public:
 
 	static const uint32_t	kNullCC = 0;
@@ -38,7 +43,6 @@ public:
 	static const uint32_t	kStateCC = 'STAT';
 	static const uint32_t	kInputCC = 'INPT';
 
-	static const int		kMaxPacketsPerFrameCount = 10;
 
 public:
 
@@ -47,25 +51,22 @@ public:
 
 	void	Start();
 
-	virtual void SendOutgoingPackets();
 	void		 SetRepStateDirty( int inNetworkId, uint32_t inDirtyState );
 	virtual void CheckForDisconnects();
 
 	uint32_t	 HandleServerReset( ClientProxyPtr inClientProxy,
 		InputBitStream& inInputStream );
-	void		 SendGamePacket( ClientProxyPtr inClientProxy,
-		const uint32_t inConnFlag );
 
 	void NotifyAllClient( GameObjPtr inGameObject, ReplicationAction inAction );
 
 	void SetNewPlayerCallback( const NewPlayerCallback& cb )
-	{ newPlayerCB_ = cb; }
+	{ newPlayerCb_ = cb; }
 
 	void SetWorldUpdateCallback( const std::function<void()>& cb )
-	{ worldUpdateCB_ = cb; }
+	{ worldUpdateCb_ = cb; }
 
-	void SetWorldRegistryCallback( const WorldRegistryCB& cb )
-	{ worldRegistryCB_ = cb; }
+	void SetWorldRegistryCallback( const WorldRegistryCb& cb )
+	{ worldRegistryCb_ = cb; }
 
 	void	SetDropPacketChance( float inChance )
 	{ mDropPacketChance = inChance; isSimilateRealWorld_ = true; }
@@ -77,7 +78,6 @@ public:
 	{ isSimilateRealWorld_ = inIsSimilateRealWorld; }
 
 private:
-	void	ProcessQueuedPackets();
 
 	void	DoProcessPacket( ClientProxyPtr inClientProxy,
 		InputBitStream& inInputStream );
@@ -88,33 +88,41 @@ private:
 	void	HandleInputPacket( ClientProxyPtr inClientProxy,
 		InputBitStream& inInputStream );
 private:
-	NewPlayerCallback newPlayerCB_;
-	std::function<void()> worldUpdateCB_;
-	WorldRegistryCB worldRegistryCB_;
+	NewPlayerCallback newPlayerCb_;
+	std::function<void()> worldUpdateCb_;
+	WorldRegistryCb worldRegistryCb_;
 
 	float						mDropPacketChance;
 	float						mSimulatedLatency;
 	bool						mSimulateJitter;
 	bool						isSimilateRealWorld_;
+	float						mLastCheckDCTime;
 
 #ifdef IS_LINUX
 
 public:
-
 	typedef unordered_map< muduo::net::UdpConnectionPtr, ClientProxyPtr >	UdpConnToClientMap;
 	typedef std::shared_ptr< UdpConnToClientMap > UdpConnToClientMapPtr;
 
-	muduo::net::EventLoop* GetEventLoop() { return &loop_; }
+	muduo::net::EventLoop* GetEventLoop() { return &serverBaseLoop_; }
 
 protected:
+	void PrepareOutgoingPackets();
+	void PrepareGamePacket( ClientProxyPtr inClientProxy, const uint32_t inConnFlag );
+
+	void SendGamePacket();
+	void SendGamePacketLazy();
+
 	void Tick();
+	void TickLazy();
+
 	void SendPacket( const OutputBitStream& inOutputStream,
 		const muduo::net::UdpConnectionPtr& conn );
 
 	void onMessage( const muduo::net::UdpConnectionPtr& conn,
 		muduo::net::Buffer* buf, muduo::Timestamp receiveTime );
 
-	void onMessageInLazyMode( const muduo::net::UdpConnectionPtr& conn,
+	void onMessageLazy( const muduo::net::UdpConnectionPtr& conn,
 		muduo::net::Buffer* buf, muduo::Timestamp receiveTime );
 
 	virtual void onConnection( const muduo::net::UdpConnectionPtr& conn );
@@ -128,9 +136,11 @@ protected:
 		const muduo::net::UdpConnectionPtr& inUdpConnetction );
 
 private:
+	////// recv
 	class ReceivedPacket
 	{
 	public:
+		ReceivedPacket() {}
 		ReceivedPacket(
 			const float inReceivedTime,
 			const shared_ptr<InputBitStream>& inInputMemoryBitStreamPtr,
@@ -151,27 +161,70 @@ private:
 		shared_ptr<InputBitStream>			mPacketBuffer;
 		muduo::net::UdpConnectionPtr			mUdpConn;
 	};
-	//typedef std::queue< ReceivedPacket, std::list< ReceivedPacket > > PacketQueue;
-	typedef std::set< ReceivedPacket > ReceivedPacketSet;
-	THREAD_SHARED_VAR_DEF( private, ReceivedPacketSet, recvedPacketSet_, mutex_ );
+	typedef moodycamel::ConcurrentQueue<ReceivedPacket> ReceivedPacketQueue;
+	typedef moodycamel::BlockingConcurrentQueue<ReceivedPacket> ReceivedPacketBlockQueue;
+	ReceivedPacketQueue recvedPacketQ_;
+	ReceivedPacketBlockQueue recvedPacketBlockQ_;
+
+	////// snd
+	class PendingSendPacket
+	{
+	public:
+		PendingSendPacket() {}
+		PendingSendPacket( std::shared_ptr<OutputBitStream>& OutPutPacketBuffer,
+			muduo::net::UdpConnectionPtr& UdpConnection )
+			:
+			outPacketBuf_( OutPutPacketBuffer ),
+			udpConn_( UdpConnection )
+		{}
+		muduo::net::UdpConnectionPtr GetUdpConnection() { return udpConn_.lock(); }
+		std::shared_ptr<OutputBitStream>& GetPacketBuffer() { return outPacketBuf_; }
+	private:
+		std::shared_ptr<OutputBitStream> outPacketBuf_;
+		std::weak_ptr<muduo::net::UdpConnection> udpConn_;
+	};
+	typedef moodycamel::ConcurrentQueue< PendingSendPacket > PendingSendPacketQueue;
+	PendingSendPacketQueue pendingSndPacketQ_;
+	void DoSendPacketTask( muduo::net::EventLoop* p );
+	std::shared_ptr<muduo::net::EventLoopThreadPool> sndPktThreadLoopPool_;
+	muduo::net::EventLoopThread sndPktBaseLoopThread_;
+	muduo::net::EventLoop* sndPktBaseLoop;
+
+	typedef moodycamel::BlockingConcurrentQueue< PendingSendPacket > PendingSendPacketBlockQueue;
+	PendingSendPacketBlockQueue pendingSndPacketBlockQ_;
+	muduo::ThreadPool sndPktThreadPoolLazy_;
+
+	////// tick
+	void DoTickPendingFuncs();
+	muduo::Thread tickThread_;
+	muduo::Thread tickThreadLazy_;
+	typedef std::function<void()> TickPendingFunctor;
+	std::vector<TickPendingFunctor> tickPendingFuncs_;
+
+	////// conn
+	muduo::net::EventLoop serverBaseLoop_;
+	std::unique_ptr<muduo::net::UdpServer> server_;
+	muduo::MutexLock mutex_;
 
 private:
 	std::unique_ptr< UdpConnToClientMap > udpConnToClientMap_;
-	muduo::net::EventLoop loop_;
-	std::unique_ptr<muduo::net::UdpServer> server_;
-	muduo::MutexLock mutex_;
 	static muduo::AtomicInt32		kNewNetId;
+	bool isLazy_;
 
 #else //IS_LINUX
 
 public:
 	virtual ~NetworkMgr() { UdpSockInterf::CleanUp(); }
+	void SendOutgoingPackets();
 
 	void	SendPacket( const OutputBitStream& inOutputStream,
 		const SockAddrInterf& inSockAddr );
 
 	void	HandleConnectionReset( const SockAddrInterf& inFromAddress );
 private:
+	void	ProcessQueuedPackets();
+	void		 SendGamePacket( ClientProxyPtr inClientProxy,
+		const uint32_t inConnFlag );
 	void	ReadIncomingPacketsIntoQueue();
 	virtual void ProcessPacket( InputBitStream& inInputStream,
 		const SockAddrInterf& inFromAddress,
@@ -216,7 +269,6 @@ private:
 	AddrToClientMap		addrToClientMap_;
 
 	float			mTimeOfLastStatePacket;
-	float			mLastCheckDCTime;
 
 #endif //IS_LINUX
 

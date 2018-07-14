@@ -8,8 +8,9 @@ using namespace realtime_srv;
 
 namespace
 {
-const float kTickInterval = 0.033f;
+const float kSendPacketInterval = 0.033f;
 const float kClientDisconnectTimeout = 6.f;
+const int		kMaxPacketsPerFrameCount = 10;
 }
 
 
@@ -25,9 +26,14 @@ NetworkMgr::NetworkMgr() :
 	mDropPacketChance( 0.f ),
 	mSimulatedLatency( 0.f ),
 	mSimulateJitter( false ),
+	mLastCheckDCTime( 0.f ),
 	isSimilateRealWorld_( false ),
+	tickThread_( std::bind( &NetworkMgr::Tick, this ), "rs_tick" ),
+	tickThreadLazy_( std::bind( &NetworkMgr::TickLazy, this ), "rs_tick_lazy" ),
+	sndPktBaseLoopThread_( std::bind( &NetworkMgr::DoSendPacketTask, this, _1 ), "rs_snd" ),
+	sndPktThreadPoolLazy_( "rs_snd_lazy" ),
 	udpConnToClientMap_( new UdpConnToClientMap ),
-	recvedPacketSet_( new	ReceivedPacketSet )
+	isLazy_( false )
 {
 	kNewNetId.getAndSet( 1 );
 }
@@ -35,158 +41,240 @@ NetworkMgr::NetworkMgr() :
 void NetworkMgr::SendPacket( const OutputBitStream& inOutputStream,
 	const UdpConnectionPtr& conn )
 {
+	if ( !conn ) return;
 	conn->send(
 		inOutputStream.GetBufferPtr(), inOutputStream.GetByteLength() );
+}
+
+void NetworkMgr::SendGamePacket()
+{
+	PendingSendPacket pendingSndPkt;
+	UdpConnectionPtr udpConn;
+	while ( pendingSndPacketQ_.try_dequeue( pendingSndPkt ) )
+	{
+		if ( udpConn = pendingSndPkt.GetUdpConnection() )
+		{
+			SendPacket( *pendingSndPkt.GetPacketBuffer(), udpConn );
+		}
+	}
+}
+
+void NetworkMgr::SendGamePacketLazy()
+{
+	PendingSendPacket pendingSndPkt;
+	UdpConnectionPtr udpConn;
+	while ( true )
+	{
+		pendingSndPacketBlockQ_.wait_dequeue( pendingSndPkt );
+		if ( udpConn = pendingSndPkt.GetUdpConnection() )
+		{
+			SendPacket( *pendingSndPkt.GetPacketBuffer(), udpConn );
+		}
+	}
+}
+
+void NetworkMgr::PrepareGamePacket( ClientProxyPtr inClientProxy, const uint32_t inConnFlag )
+{
+	shared_ptr< OutputBitStream > outputPacket( new OutputBitStream() );
+	outputPacket->Write( inConnFlag );
+
+	InFlightPacket* ifp = inClientProxy->GetDeliveryNotifyManager()
+		.WriteState( *outputPacket, inClientProxy.get() );
+
+	switch ( inConnFlag )
+	{
+		case kResetCC:
+		case kWelcomeCC:
+			outputPacket->Write( inClientProxy->GetPlayerId() );
+			outputPacket->Write( kSendPacketInterval );
+			break;
+		case kStateCC:
+			WriteLastMoveTimestampIfDirty( *outputPacket, inClientProxy );
+		default:
+			break;
+	}
+	inClientProxy->GetReplicationManager().Write( *outputPacket, ifp );
+
+	if ( isLazy_ )
+	{
+		pendingSndPacketBlockQ_.enqueue( PendingSendPacket(
+			outputPacket, inClientProxy->GetUdpConnection() ) );
+	}
+	else
+	{
+		pendingSndPacketQ_.enqueue( PendingSendPacket(
+			outputPacket, inClientProxy->GetUdpConnection() ) );
+	}
 }
 
 void NetworkMgr::onMessage( const muduo::net::UdpConnectionPtr& conn,
 	muduo::net::Buffer* buf, muduo::Timestamp receiveTime )
 {
-	if ( buf->readableBytes() > 0 ) // kHeaderLen == 0
+	if ( buf->readableBytes() > 0 )
 	{
 		shared_ptr<InputBitStream> inputStreamPtr(
 			new InputBitStream( buf->peek(), buf->readableBytes() * 8 ) );
 		buf->retrieveAll();
 
-		if ( isSimilateRealWorld_ )
+		recvedPacketQ_.enqueue( ReceivedPacket(
+			RealtimeSrvTiming::sInst.GetCurrentGameTime(), inputStreamPtr, conn ) );
+	}
+}
+
+void NetworkMgr::onMessageLazy( const muduo::net::UdpConnectionPtr& conn,
+	muduo::net::Buffer* buf, muduo::Timestamp receiveTime )
+{
+	if ( buf->readableBytes() > 0 )
+	{
+		shared_ptr<InputBitStream> inputStreamPtr(
+			new InputBitStream( buf->peek(), buf->readableBytes() * 8 ) );
+		buf->retrieveAll();
+
+		recvedPacketBlockQ_.enqueue( ReceivedPacket(
+			RealtimeSrvTiming::sInst.GetCurrentGameTime(), inputStreamPtr, conn ) );
+	}
+}
+
+void NetworkMgr::TickLazy()
+{
+	int count = 0;
+	const int kMicroSecondsPerSecond = 1000 * 1000;
+	const int64_t timeOut = static_cast< int64_t >(
+		kClientDisconnectTimeout * kMicroSecondsPerSecond );
+	ReceivedPacket recvedPacket;
+	while ( true )
+	{
+		while ( recvedPacketBlockQ_.wait_dequeue_timed( recvedPacket, timeOut ) )
 		{
-			if ( RealtimeSrvMath::GetRandomFloat() >= mDropPacketChance )
-			{
-				float simulatedRecvTimeOffset =
-					mSimulatedLatency +
-					( mSimulateJitter ?
-						RealtimeSrvMath::Clamp( RealtimeSrvMath::GetRandomFloat(),
-							0.f, mSimulatedLatency ) : 0.f );
-
-				auto tempFunc = [&, simulatedRecvTimeOffset]() {
-					recvedPacketSet_->emplace(
-						simulatedRecvTimeOffset + RealtimeSrvTiming::sInst.GetCurrentGameTime(),
-						inputStreamPtr, conn );
-				};
-				SET_THREAD_SHARED_VAR( recvedPacketSet_, mutex_, tempFunc );
-
-			}
-			else
-			{
-				//LOG( "Dropped packet!" );
-			}
+			ProcessPacket( *( recvedPacket.GetPacketBuffer() ),
+				recvedPacket.GetUdpConn() );
+			if ( ++count > kMaxPacketsPerFrameCount ) { count = 0; break; }
 		}
-		else
+		CheckForDisconnects();
+		DoTickPendingFuncs();
+		if ( count > 0 )
 		{
-			muduo::MutexLockGuard lock( mutex_ );
-			THREAD_SHARED_VAR_COW( recvedPacketSet_ );
-			recvedPacketSet_->emplace(
-				RealtimeSrvTiming::sInst.GetCurrentGameTime(), inputStreamPtr, conn );
+			count = 0;
+			worldUpdateCb_();
+			PrepareOutgoingPackets();
 		}
 	}
 }
 
-void NetworkMgr::onMessageInLazyMode( const muduo::net::UdpConnectionPtr& conn,
-	muduo::net::Buffer* buf, muduo::Timestamp receiveTime )
+void NetworkMgr::DoTickPendingFuncs()
 {
-	if ( buf->readableBytes() > 0 ) // kHeaderLen == 0
+	MutexLockGuard lock( mutex_ );
+	for ( size_t i = 0; i < tickPendingFuncs_.size(); ++i )
 	{
-		InputBitStream newInputStream( buf->peek(), buf->readableBytes() * 8 );
-		buf->retrieveAll();
-
-		ProcessPacket( newInputStream, conn );
-		worldUpdateCB_();
-		SendOutgoingPackets();
-		CheckForDisconnects();
+		tickPendingFuncs_[i]();
+		if ( i == tickPendingFuncs_.size() - 1 )
+		{
+			tickPendingFuncs_.clear();
+		}
 	}
 }
 
 void NetworkMgr::Tick()
 {
-	ProcessQueuedPackets();
-	worldUpdateCB_();
-	SendOutgoingPackets();
-}
-
-void NetworkMgr::ProcessQueuedPackets()
-{
-	if ( recvedPacketSet_->empty() )
+	int count = 0;
+	ReceivedPacket recvedPacket;
+	while ( true )
 	{
-		return;
-	}
-	std::vector< ReceivedPacket > pendingDeleteRecvedPacket;
-	auto recvPacketSetCopy = GET_THREAD_SHARED_VAR( recvedPacketSet_ );
-	for ( ReceivedPacketSet::iterator it = recvPacketSetCopy->begin();
-		it != recvPacketSetCopy->end(); ++it )
-	{
-		if ( RealtimeSrvTiming::sInst.GetCurrentGameTime() >
-			it->GetReceivedTime() )
+		while ( recvedPacketQ_.try_dequeue( recvedPacket ) )
 		{
-			ProcessPacket(
-				*( it->GetPacketBuffer() ),
-				it->GetUdpConn()
-			);
-			pendingDeleteRecvedPacket.push_back( *it );
+			ProcessPacket( *( recvedPacket.GetPacketBuffer() ),
+				recvedPacket.GetUdpConn() );
+			if ( ++count > kMaxPacketsPerFrameCount ) { count = 0; break; }
 		}
-		else
+		DoTickPendingFuncs();
+		if ( count > 0 )
 		{
-			break;
-		}
-	}
-	if ( !pendingDeleteRecvedPacket.empty() )
-	{
-		muduo::MutexLockGuard lock( mutex_ );
-		THREAD_SHARED_VAR_COW( recvedPacketSet_ );
-		for ( const auto& pdrp : pendingDeleteRecvedPacket )
-		{
-			recvedPacketSet_->erase( pdrp );
+			count = 0;
+			worldUpdateCb_();
+			PrepareOutgoingPackets();
 		}
 	}
 }
 
 bool NetworkMgr::Init( uint16_t inPort, bool isLazy /*= false*/ )
 {
+	isLazy_ = isLazy;
 	InetAddress serverAddr( inPort );
-	server_.reset( new UdpServer( &loop_, serverAddr, "realtime_srv" ) );
-
+	server_.reset( new UdpServer( &serverBaseLoop_, serverAddr, "rs_recv" ) );
 	server_->setConnectionCallback(
 		std::bind( &NetworkMgr::onConnection, this, _1 ) );
-	server_->setThreadNum( THREAD_NUM );
+	server_->setThreadNum( CONNECTION_THREAD_NUM );
 
-	if ( !isLazy )
+	if ( !isLazy_ )
 	{
 		server_->setMessageCallback(
 			std::bind( &NetworkMgr::onMessage, this, _1, _2, _3 ) );
-		loop_.runEvery( static_cast< double >( kClientDisconnectTimeout ),
+		serverBaseLoop_.runEvery( static_cast< double >( kClientDisconnectTimeout ),
 			std::bind( &NetworkMgr::CheckForDisconnects, this ) );
-		loop_.runEvery( static_cast< double >( kTickInterval ),
-			std::bind( &NetworkMgr::Tick, this ) );
 	}
 	else
 	{
 		server_->setMessageCallback(
-			std::bind( &NetworkMgr::onMessageInLazyMode, this, _1, _2, _3 ) );
+			std::bind( &NetworkMgr::onMessageLazy, this, _1, _2, _3 ) );
 	}
-
 	return true;
+}
+
+void NetworkMgr::DoSendPacketTask( EventLoop* sndPktLoop )
+{
+	sndPktLoop->runEvery(
+		static_cast< double >( kSendPacketInterval ),
+		[&]() { SendGamePacket(); } );
 }
 
 void NetworkMgr::Start()
 {
-	server_->start();
-	loop_.loop();
+	assert( server_ );
+
+	if ( !isLazy_ )
+	{
+		sndPktBaseLoop = sndPktBaseLoopThread_.startLoop();
+		sndPktBaseLoop->runInLoop( [&]() {
+			sndPktThreadLoopPool_.reset(
+				new EventLoopThreadPool( sndPktBaseLoop, "rs_snd" ) );
+			sndPktThreadLoopPool_->setThreadNum( SEND_PACKET_THREAD_NUM );
+			sndPktThreadLoopPool_->start(
+				std::bind( &NetworkMgr::DoSendPacketTask, this, _1 ) );
+		} );
+
+		assert( !tickThread_.started() );
+		tickThread_.start();
+	}
+	else
+	{
+		sndPktThreadPoolLazy_.start( SEND_PACKET_THREAD_NUM );
+		sndPktThreadPoolLazy_.run( [&]() { SendGamePacketLazy(); } );
+
+		assert( !tickThreadLazy_.started() );
+		tickThreadLazy_.start();
+	}
+
+	{
+		server_->start();
+		serverBaseLoop_.loop();
+	}
 }
 
 void NetworkMgr::onConnection( const UdpConnectionPtr& conn )
 {
-	//NetworkMgr::onConnection( conn );
 	LOG_INFO << conn->localAddress().toIpPort() << " -> "
 		<< conn->peerAddress().toIpPort() << " is "
 		<< ( conn->connected() ? "UP" : "DOWN" );
 	if ( !conn->connected() )
 	{
-		loop_.runInLoop( std::bind( &NetworkMgr::RemoveUdpConn, this, conn ) );
+		MutexLockGuard lock( mutex_ );
+		tickPendingFuncs_.push_back(
+			std::bind( &NetworkMgr::RemoveUdpConn, this, conn ) );
 	}
 }
 
 void NetworkMgr::RemoveUdpConn( const UdpConnectionPtr& conn )
 {
-	loop_.assertInLoopThread();
 	LOG( "Player %d disconnect", ( ( *udpConnToClientMap_ )[conn] )->GetPlayerId() );
 	udpConnToClientMap_->erase( conn );
 }
@@ -226,19 +314,19 @@ void NetworkMgr::HandlePacketFromNewClient( InputBitStream& inInputStream,
 
 		( *udpConnToClientMap_ )[inUdpConnetction] = newClientProxy;
 
-		GameObjPtr newGameObj = newPlayerCB_( newClientProxy );
+		GameObjPtr newGameObj = newPlayerCb_( newClientProxy );
 		newGameObj->SetClientProxy( newClientProxy );
-		worldRegistryCB_( newGameObj, RA_Create );
+		worldRegistryCb_( newGameObj, RA_Create );
 
 		if ( packetType == kHelloCC )
 		{
-			SendGamePacket( newClientProxy, kWelcomeCC );
+			PrepareGamePacket( newClientProxy, kWelcomeCC );
 		}
 		else
 		{
 	 // Server reset
 			newClientProxy->SetRecvingServerResetFlag( true );
-			SendGamePacket( newClientProxy, kResetCC );
+			PrepareGamePacket( newClientProxy, kResetCC );
 			LOG( "SendResetPacket" );
 		}
 
@@ -297,12 +385,12 @@ void NetworkMgr::CheckForDisconnects()
 	{
 		for ( auto cliToDC : clientsToDisconnect )
 		{
-			cliToDC->GetUdpConnection()->forceClose(); // -> NetworkMgr::onConnection
+			cliToDC->GetUdpConnection()->forceClose();
 		}
 	}
 }
 
-void NetworkMgr::SendOutgoingPackets()
+void NetworkMgr::PrepareOutgoingPackets()
 {
 	for ( const auto& pair : *udpConnToClientMap_ )
 	{
@@ -310,7 +398,7 @@ void NetworkMgr::SendOutgoingPackets()
 
 		if ( ( pair.second )->IsLastMoveTimestampDirty() )
 		{
-			SendGamePacket( ( pair.second ), kStateCC );
+			PrepareGamePacket( ( pair.second ), kStateCC );
 		}
 	}
 }
@@ -344,7 +432,7 @@ void NetworkMgr::Start()
 		ReadIncomingPacketsIntoQueue();
 		ProcessQueuedPackets();
 		CheckForDisconnects();
-		worldUpdateCB_();
+		worldUpdateCb_();
 		SendOutgoingPackets();
 	}
 }
@@ -508,9 +596,9 @@ void NetworkMgr::HandlePacketFromNewClient( InputBitStream& inInputStream,
 
 		addrToClientMap_[inFromAddress] = newClientProxy;
 
-		GameObjPtr newGameObj = newPlayerCB_( newClientProxy );
+		GameObjPtr newGameObj = newPlayerCb_( newClientProxy );
 		newGameObj->SetClientProxy( newClientProxy );
-		worldRegistryCB_( newGameObj, RA_Create );
+		worldRegistryCb_( newGameObj, RA_Create );
 
 		if ( packetType == kHelloCC )
 		{
@@ -573,7 +661,7 @@ void NetworkMgr::SendOutgoingPackets()
 {
 	float time = RealtimeSrvTiming::sInst.GetCurrentGameTime();
 
-	if ( time < mTimeOfLastStatePacket + kTickInterval )
+	if ( time < mTimeOfLastStatePacket + kSendPacketInterval )
 	{
 		return;
 	}
@@ -620,6 +708,30 @@ void NetworkMgr::NotifyAllClient( GameObjPtr inGameObject,
 	}
 }
 
+void NetworkMgr::SendGamePacket( ClientProxyPtr inClientProxy, const uint32_t inConnFlag )
+{
+	shared_ptr< OutputBitStream > outputPacket( new OutputBitStream() );
+	outputPacket->Write( inConnFlag );
+
+	InFlightPacket* ifp = inClientProxy->GetDeliveryNotifyManager()
+		.WriteState( *outputPacket, inClientProxy.get() );
+
+	switch ( inConnFlag )
+	{
+		case kResetCC:
+		case kWelcomeCC:
+			outputPacket->Write( inClientProxy->GetPlayerId() );
+			outputPacket->Write( kSendPacketInterval );
+			break;
+		case kStateCC:
+			WriteLastMoveTimestampIfDirty( *outputPacket, inClientProxy );
+		default:
+			break;
+	}
+	inClientProxy->GetReplicationManager().Write( *outputPacket, ifp );
+
+	SendPacket( outputPacket, inClientProxy->GetSocketAddress() );
+}
 #endif //IS_LINUX
 
 
@@ -631,7 +743,11 @@ void NetworkMgr::DoProcessPacket( ClientProxyPtr inClientProxy, InputBitStream& 
 	switch ( packetType )
 	{
 		case kHelloCC:
+		#ifdef IS_LINUX
+			PrepareGamePacket( inClientProxy, kWelcomeCC );
+		#else
 			SendGamePacket( inClientProxy, kWelcomeCC );
+		#endif //IS_LINUX
 			break;
 		case kInputCC:
 			if ( inClientProxy->GetDeliveryNotifyManager().ReadAndProcessState( inInputStream ) )
@@ -664,7 +780,11 @@ uint32_t NetworkMgr::HandleServerReset( ClientProxyPtr inClientProxy, InputBitSt
 	}
 	if ( inClientProxy->GetRecvingServerResetFlag() == true )
 	{
-		SendGamePacket( inClientProxy, kResetCC );
+	#ifdef IS_LINUX
+		PrepareGamePacket( inClientProxy, kWelcomeCC );
+	#else
+		SendGamePacket( inClientProxy, kWelcomeCC );
+	#endif //IS_LINUX
 		return kNullCC;
 	}
 	else
@@ -689,35 +809,6 @@ void NetworkMgr::HandleInputPacket( ClientProxyPtr inClientProxy, InputBitStream
 			}
 		}
 	}
-}
-
-void NetworkMgr::SendGamePacket( ClientProxyPtr inClientProxy, const uint32_t inConnFlag )
-{
-	OutputBitStream outputPacket;
-	outputPacket.Write( inConnFlag );
-
-	InFlightPacket* ifp = inClientProxy->GetDeliveryNotifyManager()
-		.WriteState( outputPacket, inClientProxy.get() );
-
-	switch ( inConnFlag )
-	{
-		case kResetCC:
-		case kWelcomeCC:
-			outputPacket.Write( inClientProxy->GetPlayerId() );
-			outputPacket.Write( kTickInterval );
-			break;
-		case kStateCC:
-			WriteLastMoveTimestampIfDirty( outputPacket, inClientProxy );
-		default:
-			break;
-	}
-	inClientProxy->GetReplicationManager().Write( outputPacket, ifp );
-
-#ifdef IS_LINUX
-	SendPacket( outputPacket, inClientProxy->GetUdpConnection() );
-#else
-	SendPacket( outputPacket, inClientProxy->GetSocketAddress() );
-#endif //IS_LINUX
 }
 
 void NetworkMgr::WriteLastMoveTimestampIfDirty( OutputBitStream& inOutputStream,

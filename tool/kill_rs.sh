@@ -9,14 +9,15 @@ then
     PORT=44444
 fi
 
-PID=$(lsof -ti:${PORT})
 
-if ! [[ "$PID" =~ ^[0-9]+$ ]] ;
+PIDs=$(lsof -ti:${PORT} | xargs)
+printf "$PIDs \n"
+
+if ! [[ "$PIDs" =~ ^[0-9]+$ ]] ;
 then
     printf "[`date '+%x %X'`] No server exist.\n"
-    exit 0
+    exit 1
 fi
 
-# printf "killing process $PID running on ${PORT}\n"
-echo "[`date '+%x %X'`] A living server is running, kill the server Now."
-kill -9 $PID
+echo "[`date '+%x %X'`] Some living server is running, kill the server Now."
+kill -9 $PIDs

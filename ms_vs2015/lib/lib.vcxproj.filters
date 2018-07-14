@@ -37,6 +37,9 @@
     <Filter Include="lualib\lua53">
       <UniqueIdentifier>{e6f97984-3168-48fc-a212-8c57ecd89d73}</UniqueIdentifier>
     </Filter>
+    <Filter Include="concurrent_queue">
+      <UniqueIdentifier>{8a56e1ae-3e5a-4def-a48d-116a26b5ebc3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\lib\muduo\base\Atomic.h">
@@ -270,6 +273,15 @@
     <ClInclude Include="..\..\lib\lualib\lua53\lzio.h">
       <Filter>lualib\lua53</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\lib\concurrent_queue\blockingconcurrentqueue.h">
+      <Filter>concurrent_queue</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\concurrent_queue\concurrentqueue.h">
+      <Filter>concurrent_queue</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\muduo\base\ThreadPool.h">
+      <Filter>muduo\base</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\lib\muduo\base\Condition.cc">
@@ -389,9 +401,6 @@
     <ClCompile Include="..\..\lib\muduo_udp_support\test\chat\udpChatSrv_highperformance.cpp">
       <Filter>muduo_udp_support\test\chat</Filter>
     </ClCompile>
-    <ClCompile Include="LuaBindMgr.cpp">
-      <Filter>muduo_contrib</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\lib\lualib\lua53\lapi.c">
       <Filter>lualib\lua53</Filter>
     </ClCompile>
@@ -496,6 +505,9 @@
     </ClCompile>
     <ClCompile Include="..\..\lib\lualib\lua53\lzio.c">
       <Filter>lualib\lua53</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\muduo\base\ThreadPool.cc">
+      <Filter>muduo\base</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

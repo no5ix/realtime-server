@@ -127,7 +127,7 @@ if(UNIX)
             -Wno-reorder
             -Woverloaded-virtual
             -Wpointer-arith
-            -Wshadow
+            # -Wshadow
             -Wwrite-strings
             -march=native
             # -MMD

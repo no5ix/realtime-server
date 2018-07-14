@@ -19,6 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\lib\concurrent_queue\blockingconcurrentqueue.h" />
+    <ClInclude Include="..\..\lib\concurrent_queue\concurrentqueue.h" />
     <ClInclude Include="..\..\lib\lualib\lua53\lapi.h" />
     <ClInclude Include="..\..\lib\lualib\lua53\lauxlib.h" />
     <ClInclude Include="..\..\lib\lualib\lua53\lcode.h" />
@@ -62,6 +64,7 @@
     <ClInclude Include="..\..\lib\muduo\base\Thread.h" />
     <ClInclude Include="..\..\lib\muduo\base\ThreadLocal.h" />
     <ClInclude Include="..\..\lib\muduo\base\ThreadLocalSingleton.h" />
+    <ClInclude Include="..\..\lib\muduo\base\ThreadPool.h" />
     <ClInclude Include="..\..\lib\muduo\base\Timestamp.h" />
     <ClInclude Include="..\..\lib\muduo\base\TimeZone.h" />
     <ClInclude Include="..\..\lib\muduo\base\Types.h" />
@@ -140,6 +143,7 @@
     <ClCompile Include="..\..\lib\muduo\base\Logging.cc" />
     <ClCompile Include="..\..\lib\muduo\base\LogStream.cc" />
     <ClCompile Include="..\..\lib\muduo\base\Thread.cc" />
+    <ClCompile Include="..\..\lib\muduo\base\ThreadPool.cc" />
     <ClCompile Include="..\..\lib\muduo\base\Timestamp.cc" />
     <ClCompile Include="..\..\lib\muduo\base\TimeZone.cc" />
     <ClCompile Include="..\..\lib\muduo\net\Acceptor.cc" />
@@ -172,7 +176,6 @@
     <ClCompile Include="..\..\lib\muduo_udp_support\UdpConnector.cpp" />
     <ClCompile Include="..\..\lib\muduo_udp_support\UdpServer.cpp" />
     <ClCompile Include="..\..\lib\muduo_udp_support\UdpSocketsOps.cpp" />
-    <ClCompile Include="LuaBindMgr.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\..\lib\lualib\CMakeLists.txt" />

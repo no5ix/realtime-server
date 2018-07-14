@@ -8,7 +8,7 @@ using namespace realtime_srv;
 class ExampleSrvForUe4Demo : noncopyable
 {
 public:
-	ExampleSrvForUe4Demo( bool willDaemonizeOnLinux = true )
+	ExampleSrvForUe4Demo( bool willDaemonizeOnLinux = false )
 		: server_( willDaemonizeOnLinux )
 	{}
 
