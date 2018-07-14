@@ -2,15 +2,15 @@
 #define REALTIME_SRV_SHARED_H
 
 
-#ifdef __linux__
+//#ifdef __linux__
 	#define IS_LINUX
-#else
-	#ifdef _WIN32
-		#define IS_WIN
-	#else
-		#define IS_MAC
-	#endif
-#endif
+//#else
+//	#ifdef _WIN32
+//		#define IS_WIN
+//	#else
+//		#define IS_MAC
+//	#endif
+//#endif
 
 #ifdef IS_WIN
 	#define WIN32_LEAN_AND_MEAN

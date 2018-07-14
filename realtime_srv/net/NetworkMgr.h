@@ -1,25 +1,28 @@
 #pragma once
 
 #ifdef IS_LINUX
-#include <muduo/base/Logging.h>
-#include <muduo/base/Mutex.h>
-#include <muduo/net/EventLoopThread.h>
-#include <muduo/net/EventLoopThreadPool.h>
-#include <muduo/base/ThreadLocalSingleton.h>
-#include <muduo/net/EventLoop.h>
-#include <muduo_udp_support/UdpServer.h>
-#include <muduo/base/ThreadPool.h>
+//#include <muduo/base/Logging.h>
+//#include <muduo/base/Mutex.h>
+//#include <muduo/net/EventLoopThread.h>
+//#include <muduo/net/EventLoopThreadPool.h>
+//#include <muduo/base/ThreadLocalSingleton.h>
+//#include <muduo/net/EventLoop.h>
+//#include <muduo_udp_support/UdpServer.h>
+//#include <muduo/base/ThreadPool.h>
+//
+//#include <muduo/net/Buffer.h>
+//#include <muduo/net/Endian.h>
+//#include <muduo_udp_support/UdpConnection.h>
+//
+//#include <concurrent_queue/concurrentqueue.h>
+//#include <concurrent_queue/blockingconcurrentqueue.h>
+//
+//#include <set>
+//#include <stdio.h>
+//#include <unistd.h>
 
-#include <muduo/net/Buffer.h>
-#include <muduo/net/Endian.h>
-#include <muduo_udp_support/UdpConnection.h>
-
-#include <concurrent_queue/concurrentqueue.h>
-#include <concurrent_queue/blockingconcurrentqueue.h>
-
-#include <set>
-#include <stdio.h>
-#include <unistd.h>
+#include <realtime_srv/net/PktDispatcher.h>
+#include <realtime_srv/net/PktHandler.h>
 
 #endif //IS_LINUX
 
@@ -104,28 +107,12 @@ public:
 	typedef unordered_map< muduo::net::UdpConnectionPtr, ClientProxyPtr >	UdpConnToClientMap;
 	typedef std::shared_ptr< UdpConnToClientMap > UdpConnToClientMapPtr;
 
-	muduo::net::EventLoop* GetEventLoop() { return &serverBaseLoop_; }
+	//muduo::net::EventLoop* GetEventLoop() { return &serverBaseLoop_; }
 
 protected:
+	void OnConnOrDisconn( const muduo::net::UdpConnectionPtr& conn );
 	void PrepareOutgoingPackets();
 	void PrepareGamePacket( ClientProxyPtr inClientProxy, const uint32_t inConnFlag );
-
-	void SendGamePacket();
-	void SendGamePacketLazy();
-
-	void Tick();
-	void TickLazy();
-
-	void SendPacket( const OutputBitStream& inOutputStream,
-		const muduo::net::UdpConnectionPtr& conn );
-
-	void onMessage( const muduo::net::UdpConnectionPtr& conn,
-		muduo::net::Buffer* buf, muduo::Timestamp receiveTime );
-
-	void onMessageLazy( const muduo::net::UdpConnectionPtr& conn,
-		muduo::net::Buffer* buf, muduo::Timestamp receiveTime );
-
-	virtual void onConnection( const muduo::net::UdpConnectionPtr& conn );
 
 	virtual void ProcessPacket( InputBitStream& inInputStream,
 		const muduo::net::UdpConnectionPtr& inUdpConnetction );
@@ -135,76 +122,15 @@ protected:
 	void	HandlePacketFromNewClient( InputBitStream& inInputStream,
 		const muduo::net::UdpConnectionPtr& inUdpConnetction );
 
+	void PktHandleFunc( ReceivedPacket& recvedPacket );
 private:
-	////// recv
-	class ReceivedPacket
-	{
-	public:
-		ReceivedPacket() {}
-		ReceivedPacket(
-			const float inReceivedTime,
-			const shared_ptr<InputBitStream>& inInputMemoryBitStreamPtr,
-			const muduo::net::UdpConnectionPtr& inUdpConnetction )
-			:
-			mReceivedTime( inReceivedTime ),
-			mPacketBuffer( inInputMemoryBitStreamPtr ),
-			mUdpConn( inUdpConnetction )
-		{}
-		const	muduo::net::UdpConnectionPtr&	GetUdpConn() const { return mUdpConn; }
-		float GetReceivedTime()	const { return mReceivedTime; }
-		const shared_ptr<InputBitStream>& GetPacketBuffer() const { return mPacketBuffer; }
 
-		bool operator<( const ReceivedPacket& other ) const
-		{ return this->mReceivedTime < other.GetReceivedTime(); }
-	private:
-		float					mReceivedTime;
-		shared_ptr<InputBitStream>			mPacketBuffer;
-		muduo::net::UdpConnectionPtr			mUdpConn;
-	};
-	typedef moodycamel::ConcurrentQueue<ReceivedPacket> ReceivedPacketQueue;
-	typedef moodycamel::BlockingConcurrentQueue<ReceivedPacket> ReceivedPacketBlockQueue;
-	ReceivedPacketQueue recvedPacketQ_;
 	ReceivedPacketBlockQueue recvedPacketBlockQ_;
-
-	////// snd
-	class PendingSendPacket
-	{
-	public:
-		PendingSendPacket() {}
-		PendingSendPacket( std::shared_ptr<OutputBitStream>& OutPutPacketBuffer,
-			muduo::net::UdpConnectionPtr& UdpConnection )
-			:
-			outPacketBuf_( OutPutPacketBuffer ),
-			udpConn_( UdpConnection )
-		{}
-		muduo::net::UdpConnectionPtr GetUdpConnection() { return udpConn_.lock(); }
-		std::shared_ptr<OutputBitStream>& GetPacketBuffer() { return outPacketBuf_; }
-	private:
-		std::shared_ptr<OutputBitStream> outPacketBuf_;
-		std::weak_ptr<muduo::net::UdpConnection> udpConn_;
-	};
-	typedef moodycamel::ConcurrentQueue< PendingSendPacket > PendingSendPacketQueue;
 	PendingSendPacketQueue pendingSndPacketQ_;
-	void DoSendPacketTask( muduo::net::EventLoop* p );
-	std::shared_ptr<muduo::net::EventLoopThreadPool> sndPktThreadLoopPool_;
-	muduo::net::EventLoopThread sndPktBaseLoopThread_;
-	muduo::net::EventLoop* sndPktBaseLoop;
 
-	typedef moodycamel::BlockingConcurrentQueue< PendingSendPacket > PendingSendPacketBlockQueue;
-	PendingSendPacketBlockQueue pendingSndPacketBlockQ_;
-	muduo::ThreadPool sndPktThreadPoolLazy_;
+	PktDispatcher pktDispatcher_;
+	PktHandler		pktHandler_;
 
-	////// tick
-	void DoTickPendingFuncs();
-	muduo::Thread tickThread_;
-	muduo::Thread tickThreadLazy_;
-	typedef std::function<void()> TickPendingFunctor;
-	std::vector<TickPendingFunctor> tickPendingFuncs_;
-
-	////// conn
-	muduo::net::EventLoop serverBaseLoop_;
-	std::unique_ptr<muduo::net::UdpServer> server_;
-	muduo::MutexLock mutex_;
 
 private:
 	std::unique_ptr< UdpConnToClientMap > udpConnToClientMap_;

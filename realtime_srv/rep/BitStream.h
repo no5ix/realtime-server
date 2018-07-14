@@ -1,7 +1,15 @@
+#pragma once
 
 #include <cstdint>
 #include <cstdlib>
 #include <string>
+
+#include "realtime_srv/math/Vector3.h"
+#include "realtime_srv/math/Quaternion.h"
+#include "realtime_srv/math/Matrix3x3.h"
+#include "realtime_srv/math/Vector2.h"
+#include "realtime_srv/common/RealtimeSrvMacro.h"
+
 
 namespace realtime_srv
 {

@@ -97,6 +97,15 @@
     <ClInclude Include="..\..\realtime_srv\common\RealtimeSrvTiming.h">
       <Filter>common</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\realtime_srv\net\PktDispatcher.h">
+      <Filter>net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\realtime_srv\net\PktHandler.h">
+      <Filter>net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\realtime_srv\net\Packet.h">
+      <Filter>net</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\realtime_srv\math\Vector3.cpp">
@@ -150,6 +159,12 @@
     </ClCompile>
     <ClCompile Include="..\..\realtime_srv\common\RealtimeSrvTiming.cpp">
       <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\realtime_srv\net\PktDispatcher.cpp">
+      <Filter>net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\realtime_srv\net\PktHandler.cpp">
+      <Filter>net</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

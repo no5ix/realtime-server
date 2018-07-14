@@ -1,76 +1,34 @@
 #include "realtime_srv/common/RealtimeSrvShared.h"
-#include <time.h>
 
 
 
 using namespace realtime_srv;
 
 
-namespace
-{
-const float kSendPacketInterval = 0.033f;
-const float kClientDisconnectTimeout = 6.f;
-const int		kMaxPacketsPerFrameCount = 10;
-}
+
 
 
 
 #ifdef IS_LINUX
+
+namespace
+{
+const float		kClientDisconnectTimeout = 6.f;
+const size_t	kMaxPacketsPerFrameCount = 10;
+}
 
 using namespace muduo;
 using namespace muduo::net;
 
 AtomicInt32 NetworkMgr::kNewNetId;
 
+
 NetworkMgr::NetworkMgr() :
-	mDropPacketChance( 0.f ),
-	mSimulatedLatency( 0.f ),
-	mSimulateJitter( false ),
-	mLastCheckDCTime( 0.f ),
-	isSimilateRealWorld_( false ),
-	tickThread_( std::bind( &NetworkMgr::Tick, this ), "rs_tick" ),
-	tickThreadLazy_( std::bind( &NetworkMgr::TickLazy, this ), "rs_tick_lazy" ),
-	sndPktBaseLoopThread_( std::bind( &NetworkMgr::DoSendPacketTask, this, _1 ), "rs_snd" ),
-	sndPktThreadPoolLazy_( "rs_snd_lazy" ),
+	pktHandler_( &recvedPacketBlockQ_, std::bind( &NetworkMgr::PktHandleFunc, this, _1 ) ),
 	udpConnToClientMap_( new UdpConnToClientMap ),
 	isLazy_( false )
 {
 	kNewNetId.getAndSet( 1 );
-}
-
-void NetworkMgr::SendPacket( const OutputBitStream& inOutputStream,
-	const UdpConnectionPtr& conn )
-{
-	if ( !conn ) return;
-	conn->send(
-		inOutputStream.GetBufferPtr(), inOutputStream.GetByteLength() );
-}
-
-void NetworkMgr::SendGamePacket()
-{
-	PendingSendPacket pendingSndPkt;
-	UdpConnectionPtr udpConn;
-	while ( pendingSndPacketQ_.try_dequeue( pendingSndPkt ) )
-	{
-		if ( udpConn = pendingSndPkt.GetUdpConnection() )
-		{
-			SendPacket( *pendingSndPkt.GetPacketBuffer(), udpConn );
-		}
-	}
-}
-
-void NetworkMgr::SendGamePacketLazy()
-{
-	PendingSendPacket pendingSndPkt;
-	UdpConnectionPtr udpConn;
-	while ( true )
-	{
-		pendingSndPacketBlockQ_.wait_dequeue( pendingSndPkt );
-		if ( udpConn = pendingSndPkt.GetUdpConnection() )
-		{
-			SendPacket( *pendingSndPkt.GetPacketBuffer(), udpConn );
-		}
-	}
 }
 
 void NetworkMgr::PrepareGamePacket( ClientProxyPtr inClientProxy, const uint32_t inConnFlag )
@@ -86,7 +44,7 @@ void NetworkMgr::PrepareGamePacket( ClientProxyPtr inClientProxy, const uint32_t
 		case kResetCC:
 		case kWelcomeCC:
 			outputPacket->Write( inClientProxy->GetPlayerId() );
-			outputPacket->Write( kSendPacketInterval );
+			outputPacket->Write( PktDispatcher::kSendPacketInterval );
 			break;
 		case kStateCC:
 			WriteLastMoveTimestampIfDirty( *outputPacket, inClientProxy );
@@ -95,103 +53,44 @@ void NetworkMgr::PrepareGamePacket( ClientProxyPtr inClientProxy, const uint32_t
 	}
 	inClientProxy->GetReplicationManager().Write( *outputPacket, ifp );
 
-	if ( isLazy_ )
-	{
-		pendingSndPacketBlockQ_.enqueue( PendingSendPacket(
-			outputPacket, inClientProxy->GetUdpConnection() ) );
-	}
-	else
-	{
-		pendingSndPacketQ_.enqueue( PendingSendPacket(
-			outputPacket, inClientProxy->GetUdpConnection() ) );
-	}
+	//if ( isLazy_ )
+	//{
+	//	pendingSndPacketBlockQ_.enqueue( PendingSendPacket(
+	//		outputPacket, inClientProxy->GetUdpConnection() ) );
+	//}
+	//else
+	//{
+	pendingSndPacketQ_.enqueue( PendingSendPacket(
+		outputPacket, inClientProxy->GetUdpConnection() ) );
+//}
 }
 
-void NetworkMgr::onMessage( const muduo::net::UdpConnectionPtr& conn,
-	muduo::net::Buffer* buf, muduo::Timestamp receiveTime )
+void NetworkMgr::PktHandleFunc( ReceivedPacket& recvedPacket )
 {
-	if ( buf->readableBytes() > 0 )
-	{
-		shared_ptr<InputBitStream> inputStreamPtr(
-			new InputBitStream( buf->peek(), buf->readableBytes() * 8 ) );
-		buf->retrieveAll();
-
-		recvedPacketQ_.enqueue( ReceivedPacket(
-			RealtimeSrvTiming::sInst.GetCurrentGameTime(), inputStreamPtr, conn ) );
-	}
+	ProcessPacket( *( recvedPacket.GetPacketBuffer() ), recvedPacket.GetUdpConn() );
+	worldUpdateCb_();
+	PrepareOutgoingPackets();
 }
 
-void NetworkMgr::onMessageLazy( const muduo::net::UdpConnectionPtr& conn,
-	muduo::net::Buffer* buf, muduo::Timestamp receiveTime )
+void NetworkMgr::CheckForDisconnects()
 {
-	if ( buf->readableBytes() > 0 )
-	{
-		shared_ptr<InputBitStream> inputStreamPtr(
-			new InputBitStream( buf->peek(), buf->readableBytes() * 8 ) );
-		buf->retrieveAll();
+	float minAllowedTime =
+		RealtimeSrvTiming::sInst.GetCurrentGameTime() - kClientDisconnectTimeout;
 
-		recvedPacketBlockQ_.enqueue( ReceivedPacket(
-			RealtimeSrvTiming::sInst.GetCurrentGameTime(), inputStreamPtr, conn ) );
-	}
-}
+	vector< ClientProxyPtr > clientsToDisconnect;
 
-void NetworkMgr::TickLazy()
-{
-	int count = 0;
-	const int kMicroSecondsPerSecond = 1000 * 1000;
-	const int64_t timeOut = static_cast< int64_t >(
-		kClientDisconnectTimeout * kMicroSecondsPerSecond );
-	ReceivedPacket recvedPacket;
-	while ( true )
+	for ( const auto& pair : *udpConnToClientMap_ )
 	{
-		while ( recvedPacketBlockQ_.wait_dequeue_timed( recvedPacket, timeOut ) )
+		if ( pair.second->GetLastPacketFromClientTime() < minAllowedTime )
 		{
-			ProcessPacket( *( recvedPacket.GetPacketBuffer() ),
-				recvedPacket.GetUdpConn() );
-			if ( ++count > kMaxPacketsPerFrameCount ) { count = 0; break; }
-		}
-		CheckForDisconnects();
-		DoTickPendingFuncs();
-		if ( count > 0 )
-		{
-			count = 0;
-			worldUpdateCb_();
-			PrepareOutgoingPackets();
+			clientsToDisconnect.push_back( pair.second );
 		}
 	}
-}
-
-void NetworkMgr::DoTickPendingFuncs()
-{
-	MutexLockGuard lock( mutex_ );
-	for ( size_t i = 0; i < tickPendingFuncs_.size(); ++i )
+	if ( clientsToDisconnect.size() > 0 )
 	{
-		tickPendingFuncs_[i]();
-		if ( i == tickPendingFuncs_.size() - 1 )
+		for ( auto cliToDC : clientsToDisconnect )
 		{
-			tickPendingFuncs_.clear();
-		}
-	}
-}
-
-void NetworkMgr::Tick()
-{
-	int count = 0;
-	ReceivedPacket recvedPacket;
-	while ( true )
-	{
-		while ( recvedPacketQ_.try_dequeue( recvedPacket ) )
-		{
-			ProcessPacket( *( recvedPacket.GetPacketBuffer() ),
-				recvedPacket.GetUdpConn() );
-			if ( ++count > kMaxPacketsPerFrameCount ) { count = 0; break; }
-		}
-		DoTickPendingFuncs();
-		if ( count > 0 )
-		{
-			count = 0;
-			worldUpdateCb_();
-			PrepareOutgoingPackets();
+			cliToDC->GetUdpConnection()->forceClose();
 		}
 	}
 }
@@ -199,78 +98,36 @@ void NetworkMgr::Tick()
 bool NetworkMgr::Init( uint16_t inPort, bool isLazy /*= false*/ )
 {
 	isLazy_ = isLazy;
-	InetAddress serverAddr( inPort );
-	server_.reset( new UdpServer( &serverBaseLoop_, serverAddr, "rs_recv" ) );
-	server_->setConnectionCallback(
-		std::bind( &NetworkMgr::onConnection, this, _1 ) );
-	server_->setThreadNum( CONNECTION_THREAD_NUM );
 
-	if ( !isLazy_ )
-	{
-		server_->setMessageCallback(
-			std::bind( &NetworkMgr::onMessage, this, _1, _2, _3 ) );
-		serverBaseLoop_.runEvery( static_cast< double >( kClientDisconnectTimeout ),
-			std::bind( &NetworkMgr::CheckForDisconnects, this ) );
-	}
-	else
-	{
-		server_->setMessageCallback(
-			std::bind( &NetworkMgr::onMessageLazy, this, _1, _2, _3 ) );
-	}
+	pktDispatcher_.Init( inPort,
+		&recvedPacketBlockQ_, &pendingSndPacketQ_, isLazy_ );
+
+	std::function< void() > checkDisconnCb =
+		std::bind( &NetworkMgr::CheckForDisconnects, this );
+	pktDispatcher_.SetInterval(
+		std::bind( &PktHandler::AppendToPendingFuncs, &pktHandler_, checkDisconnCb ),
+		static_cast< double >( kClientDisconnectTimeout ) );
+
+	pktDispatcher_.SetConnCallback(
+		std::bind( &NetworkMgr::OnConnOrDisconn, this, _1 ) );
+
 	return true;
 }
 
-void NetworkMgr::DoSendPacketTask( EventLoop* sndPktLoop )
+void NetworkMgr::OnConnOrDisconn( const UdpConnectionPtr& conn )
 {
-	sndPktLoop->runEvery(
-		static_cast< double >( kSendPacketInterval ),
-		[&]() { SendGamePacket(); } );
+	if ( !conn->connected() )
+	{
+		pktHandler_.AppendToPendingFuncs( [&]() {
+			RemoveUdpConn( conn );
+		} );
+	}
 }
 
 void NetworkMgr::Start()
 {
-	assert( server_ );
-
-	if ( !isLazy_ )
-	{
-		sndPktBaseLoop = sndPktBaseLoopThread_.startLoop();
-		sndPktBaseLoop->runInLoop( [&]() {
-			sndPktThreadLoopPool_.reset(
-				new EventLoopThreadPool( sndPktBaseLoop, "rs_snd" ) );
-			sndPktThreadLoopPool_->setThreadNum( SEND_PACKET_THREAD_NUM );
-			sndPktThreadLoopPool_->start(
-				std::bind( &NetworkMgr::DoSendPacketTask, this, _1 ) );
-		} );
-
-		assert( !tickThread_.started() );
-		tickThread_.start();
-	}
-	else
-	{
-		sndPktThreadPoolLazy_.start( SEND_PACKET_THREAD_NUM );
-		sndPktThreadPoolLazy_.run( [&]() { SendGamePacketLazy(); } );
-
-		assert( !tickThreadLazy_.started() );
-		tickThreadLazy_.start();
-	}
-
-	{
-		server_->start();
-		serverBaseLoop_.loop();
-	}
-}
-
-void NetworkMgr::onConnection( const UdpConnectionPtr& conn )
-{
-	LOG_INFO << conn->localAddress().toIpPort() << " -> "
-		<< conn->peerAddress().toIpPort() << " is "
-		<< ( conn->connected() ? "UP" : "DOWN" );
-	if ( !conn->connected() )
-	{
-		MutexLockGuard lock( mutex_ );
-		tickPendingFuncs_.push_back(
-			std::bind( &NetworkMgr::RemoveUdpConn, this, conn ) );
-	}
+	pktHandler_.Start();
+	pktDispatcher_.Start();
 }
 
 void NetworkMgr::RemoveUdpConn( const UdpConnectionPtr& conn )
@@ -367,29 +224,6 @@ void NetworkMgr::NotifyAllClient( GameObjPtr inGameObject, ReplicationAction inA
 	}
 }
 
-void NetworkMgr::CheckForDisconnects()
-{
-	float minAllowedTime =
-		RealtimeSrvTiming::sInst.GetCurrentGameTime() - kClientDisconnectTimeout;
-
-	vector< ClientProxyPtr > clientsToDisconnect;
-
-	for ( const auto& pair : *udpConnToClientMap_ )
-	{
-		if ( pair.second->GetLastPacketFromClientTime() < minAllowedTime )
-		{
-			clientsToDisconnect.push_back( pair.second );
-		}
-	}
-	if ( clientsToDisconnect.size() > 0 )
-	{
-		for ( auto cliToDC : clientsToDisconnect )
-		{
-			cliToDC->GetUdpConnection()->forceClose();
-		}
-	}
-}
-
 void NetworkMgr::PrepareOutgoingPackets()
 {
 	for ( const auto& pair : *udpConnToClientMap_ )
@@ -413,6 +247,13 @@ void NetworkMgr::SetRepStateDirty( int inNetworkId, uint32_t inDirtyState )
 }
 
 #else
+
+namespace
+{
+const float kSendPacketInterval = 0.033f;
+const float kClientDisconnectTimeout = 6.f;
+const int		kMaxPacketsPerFrameCount = 10;
+}
 
 int NetworkMgr::kNewNetId = 1;
 

@@ -16,7 +16,7 @@ public:
 	ExampleSrvForUe4Demo( bool willDaemonizeOnLinux = false )
 		: server_( willDaemonizeOnLinux )
 	{
-		db_.Init( server_.GetEventLoop() );
+		//db_.Init( &loop_ );
 	}
 
 	void Run()
@@ -37,12 +37,13 @@ public:
 			SimulateJitterCmdIndex );
 
 		server_.Run( [&]( ClientProxyPtr cp ) { return SpawnNewCharacterForPlayer( cp ); } );
+		//loop_.loop();
 	}
 
 	GameObjPtr SpawnNewCharacterForPlayer( ClientProxyPtr cliProxy )
 	{
-		db_.SaveNewPlayer( cliProxy->GetPlayerId(),
-			cliProxy->GetPlayerName() );
+		//db_.SaveNewPlayer( cliProxy->GetPlayerId(),
+		//	cliProxy->GetPlayerName() );
 
 		CharacterLuaBind clb;
 		CharacterPtr newCharacter = clb.DoFile();
@@ -52,8 +53,8 @@ public:
 
 private:
 	RealtimeServer server_;
-
-	ExampleRedisCli db_;
+	//muduo::net::EventLoop loop_;
+	//ExampleRedisCli db_;
 };
 
 

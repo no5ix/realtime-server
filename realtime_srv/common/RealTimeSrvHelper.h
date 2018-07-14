@@ -1,4 +1,4 @@
-
+#pragma once
 
 // 是否要显示调试打印信息
 #define REAL_TIME_SRV_SHOW_DEBUG_MESSAGE	true
