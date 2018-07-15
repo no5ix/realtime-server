@@ -7,6 +7,7 @@ IF(UNIX)
     list(REMOVE_ITEM SRCS ${CMAKE_CURRENT_SOURCE_DIR}/lua53/lua.c)
     list(REMOVE_ITEM SRCS ${CMAKE_CURRENT_SOURCE_DIR}/lua53/luac.c)
 
+
     add_library(${PROJ_NAME} ${SRCS})
     target_link_libraries(${PROJ_NAME})
 

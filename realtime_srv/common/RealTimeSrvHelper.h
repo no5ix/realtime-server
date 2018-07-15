@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 // 是否要显示调试打印信息
 #define REAL_TIME_SRV_SHOW_DEBUG_MESSAGE	true
 
@@ -11,9 +13,9 @@ namespace realtime_srv
 	{
 
 		void SaveCommandLineArg( const int argc, const char** argv );
-		string GetCommandLineArg( int inIndex );
+		std::string GetCommandLineArg( int inIndex );
 
-		string Sprintf( const char* inFormat, ... );
+		std::string Sprintf( const char* inFormat, ... );
 
 		void	Log( const char* inFormat, ... );
 

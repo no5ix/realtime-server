@@ -1,5 +1,7 @@
 #pragma once
 
+#ifdef __linux__
+
 #include <functional>
 #include <vector>
 #include <muduo/base/Thread.h>
@@ -27,11 +29,10 @@ public:
 
 	void Start() { assert( !pktHandleThread_.started() ); pktHandleThread_.start(); }
 
-	void ProcessPkt( PktProcessCallback inPktHandleCallback );
-
 	void AppendToPendingFuncs( PendingFunc func );
 
 private:
+	void ProcessPkt( PktProcessCallback inPktHandleCallback );
 	void DoPendingFuncs();
 
 private:
@@ -42,3 +43,5 @@ private:
 };
 
 }
+
+#endif // __linux__

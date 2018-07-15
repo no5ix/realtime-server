@@ -1,5 +1,7 @@
 #pragma once
 
+#ifdef __linux__
+
 #include <memory>
 
 #include <concurrent_queue/concurrentqueue.h>
@@ -17,6 +19,7 @@ class ReceivedPacket
 {
 public:
 	ReceivedPacket() {}
+
 	ReceivedPacket(
 		const float inReceivedTime,
 		const std::shared_ptr<InputBitStream>& inInputMemoryBitStreamPtr,
@@ -26,6 +29,34 @@ public:
 		recvedPacketBuf_( inInputMemoryBitStreamPtr ),
 		udpConn_( inUdpConnetction )
 	{}
+
+	ReceivedPacket( ReceivedPacket &&Other ) noexcept
+		:
+		recvedTime_( Other.recvedTime_ ),
+		recvedPacketBuf_( Other.recvedPacketBuf_ ),
+		udpConn_( Other.udpConn_ )
+	{
+		Other.recvedPacketBuf_.reset();
+		Other.udpConn_.reset();
+	}
+
+	ReceivedPacket& operator=( ReceivedPacket &&Other ) noexcept
+	{
+		if ( this != &Other )
+		{
+			recvedPacketBuf_.reset();
+			udpConn_.reset();
+
+			recvedTime_ = Other.recvedTime_;
+			recvedPacketBuf_ = Other.recvedPacketBuf_;
+			udpConn_ = Other.udpConn_;
+
+			Other.recvedPacketBuf_.reset();
+			Other.udpConn_.reset();
+		}
+		return *this;
+	}
+
 	muduo::net::UdpConnectionPtr&	GetUdpConn() { return udpConn_; }
 	float GetReceivedTime()	const { return recvedTime_; }
 	std::shared_ptr<InputBitStream>& GetPacketBuffer() { return recvedPacketBuf_; }
@@ -40,6 +71,7 @@ private:
 };
 typedef moodycamel::ConcurrentQueue<ReceivedPacket> ReceivedPacketQueue;
 typedef moodycamel::BlockingConcurrentQueue<ReceivedPacket> ReceivedPacketBlockQueue;
+
 
 
 class PendingSendPacket
@@ -61,4 +93,7 @@ private:
 typedef moodycamel::ConcurrentQueue< PendingSendPacket > PendingSendPacketQueue;
 typedef moodycamel::BlockingConcurrentQueue< PendingSendPacket > PendingSendPacketBlockQueue;
 
-}
+
+} // namespace realtime_srv
+
+#endif // __linux__

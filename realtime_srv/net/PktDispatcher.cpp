@@ -1,4 +1,5 @@
-//#include "realtime_srv/common/RealtimeSrvShared.h"
+#ifdef __linux__
+
 #include <realtime_srv/net/PktDispatcher.h>
 #include <realtime_srv/common/RealtimeSrvTiming.h>
 
@@ -31,7 +32,7 @@ bool PktDispatcher::Init( uint16_t inPort,
 	pendingSndPktQ_ = inSndPktQ;
 	InetAddress serverAddr( inPort );
 
-	server_.reset( new UdpServer( &serverBaseLoop_, serverAddr, "rs_pkt_dispatcher" ) );
+	server_.reset( new UdpServer( &baseLoop_, serverAddr, "rs_pkt_dispatcher" ) );
 	server_->setConnectionCallback(
 		std::bind( &PktDispatcher::onConnection, this, _1 ) );
 	server_->setThreadNum( CONNECTION_THREAD_NUM );
@@ -45,7 +46,7 @@ bool PktDispatcher::Init( uint16_t inPort,
 
 void PktDispatcher::SetInterval( std::function<void()> func, double interval )
 {
-	serverBaseLoop_.runEvery( interval, func );
+	baseLoop_.runEvery( interval, func );
 }
 
 void PktDispatcher::Start()
@@ -53,7 +54,7 @@ void PktDispatcher::Start()
 	assert( server_ );
 
 	server_->start();
-	serverBaseLoop_.loop();
+	baseLoop_.loop();
 }
 
 void PktDispatcher::IoThreadInit( EventLoop* loop )
@@ -75,7 +76,6 @@ void PktDispatcher::onMessage( const muduo::net::UdpConnectionPtr& conn,
 			new InputBitStream( buf->peek(), buf->readableBytes() * 8 ) );
 		buf->retrieveAll();
 
-		// test
 		recvedPktBQ_->enqueue( ReceivedPacket(
 			RealtimeSrvTiming::sInst.GetCurrentGameTime(), inputStreamPtr, conn ) );
 
@@ -88,6 +88,7 @@ void PktDispatcher::onMessage( const muduo::net::UdpConnectionPtr& conn,
 				std::bind( &PktDispatcher::SendGamePacket, this ) );
 			lat.timerId_ = curTimerId;
 			t_isSleep_ = false;
+			LOG_INFO << "wake uuuuuup";
 		}
 	}
 }
@@ -103,7 +104,6 @@ void PktDispatcher::onConnection( const UdpConnectionPtr& conn )
 
 void PktDispatcher::SendGamePacket()
 {
-	// test
 	t_sndCountThisRound_ = 0;
 	PendingSendPacket pendingSndPkt;
 	while ( pendingSndPktQ_->try_dequeue( pendingSndPkt ) )
@@ -122,6 +122,7 @@ void PktDispatcher::SendGamePacket()
 			LoopAndTimerId& lat = tidToLoopAndTimerIdMap_[muduo::CurrentThread::tid()];
 			lat.loop_->cancel( lat.timerId_ );
 			t_isSleep_ = true;
+			LOG_INFO << "go to sleeeeeeeep";
 		}
 	}
 	else
@@ -130,3 +131,5 @@ void PktDispatcher::SendGamePacket()
 	}
 	t_sndCountLastRound_ = t_sndCountThisRound_;
 }
+
+#endif // __linux__

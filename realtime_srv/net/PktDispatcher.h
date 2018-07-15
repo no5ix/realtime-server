@@ -1,5 +1,7 @@
 #pragma once
 
+#ifdef __linux__
+
 #include <memory>
 #include <map>
 
@@ -44,6 +46,8 @@ public:
 	void SetConnCallback( const UdpConnectionCallback& cb )
 	{ connCb_ = cb; }
 
+	muduo::net::EventLoop* GetBaseLoop() { return &baseLoop_; }
+
 protected:
 	void SendGamePacket();
 
@@ -74,8 +78,10 @@ private:
 	ReceivedPacketBlockQueue* recvedPktBQ_;
 	PendingSendPacketQueue* pendingSndPktQ_;
 
-	muduo::net::EventLoop serverBaseLoop_;
+	muduo::net::EventLoop baseLoop_;
 	std::unique_ptr<muduo::net::UdpServer> server_;
 };
 
 }
+
+#endif // __linux__

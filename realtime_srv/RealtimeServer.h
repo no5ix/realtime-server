@@ -27,10 +27,10 @@ public:
 		uint8_t JitterCmdIndex = 0 );
 
 
-//#ifdef IS_LINUX
-//	muduo::net::EventLoop* GetEventLoop()
-//	{ return networkManager_->GetEventLoop(); }
-//#endif //IS_LINUX
+#ifdef IS_LINUX
+	muduo::net::EventLoop* GetEventLoop()
+	{ return networkManager_->GetEventLoop(); }
+#endif //IS_LINUX
 
 private:
 	std::unique_ptr<World>	world_;

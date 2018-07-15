@@ -18,7 +18,7 @@ IF(UNIX)
     )
     add_executable(${PROJ_NAME} ${SRCS})
     target_link_libraries(${PROJ_NAME} ${LIB_REALTIME_SRV})
-    message(STATUS  "${PROJ_NAME} build finished")
+    message(STATUS  "${PROJ_NAME} check finished")
     
 
     if (CMAKE_COMPILER_IS_GNUCC)
@@ -37,12 +37,12 @@ IF(UNIX)
                 )
                 add_executable(${PROJ_NAME_PLUS} ${SRCS})
                 target_link_libraries(${PROJ_NAME_PLUS} ${LIB_REALTIME_SRV} ${LIB_MUDUO_HIREDIS} ${LIB_LUA_BIND})
-                message(STATUS  "${PROJ_NAME_PLUS} build finished.")
+                message(STATUS  "${PROJ_NAME_PLUS} check finished.")
             endif()
 
         else()
 
-            message(WARNING  "${PROJ_NAME} build succeeded, but ${PROJ_NAME_PLUS} build failed, ${PROJ_NAME_PLUS} Requires :
+            message(WARNING  "${PROJ_NAME} check succeeded, but ${PROJ_NAME_PLUS} check failed, ${PROJ_NAME_PLUS} Requires :
                     - Redis
                     - Hiredis 
                     - gcc Version >= 6.0 for compiling Sol2

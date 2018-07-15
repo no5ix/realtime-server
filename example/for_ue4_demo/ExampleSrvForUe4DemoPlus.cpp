@@ -16,7 +16,7 @@ public:
 	ExampleSrvForUe4Demo( bool willDaemonizeOnLinux = false )
 		: server_( willDaemonizeOnLinux )
 	{
-		//db_.Init( &loop_ );
+		db_.Init( server_.GetEventLoop() );
 	}
 
 	void Run()
@@ -42,8 +42,8 @@ public:
 
 	GameObjPtr SpawnNewCharacterForPlayer( ClientProxyPtr cliProxy )
 	{
-		//db_.SaveNewPlayer( cliProxy->GetPlayerId(),
-		//	cliProxy->GetPlayerName() );
+		db_.SaveNewPlayer( cliProxy->GetPlayerId(),
+			cliProxy->GetPlayerName() );
 
 		CharacterLuaBind clb;
 		CharacterPtr newCharacter = clb.DoFile();
@@ -53,8 +53,7 @@ public:
 
 private:
 	RealtimeServer server_;
-	//muduo::net::EventLoop loop_;
-	//ExampleRedisCli db_;
+	ExampleRedisCli db_;
 };
 
 
