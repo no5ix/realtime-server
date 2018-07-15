@@ -14,24 +14,25 @@ namespace realtime_srv
 class PktHandler
 {
 public:
-	static const size_t	kMaxPacketsPerFrameCount = 10;
-	typedef std::function<void( ReceivedPacket& )> PktHandleCallback;
+	static const size_t	kMaxPacketsCountPerRound = 10;
+	typedef std::function<void( ReceivedPacket& )> PktProcessCallback;
 	typedef std::function< void() > PendingFunc;
 
 public:
 
 	PktHandler( ReceivedPacketBlockQueue* const inRecvPktBQ,
-		PktHandleCallback inPktHandleCallback );
+		PktProcessCallback pktProcessCallback );
 
 	~PktHandler() { pktHandleThread_.join(); }
 
 	void Start() { assert( !pktHandleThread_.started() ); pktHandleThread_.start(); }
 
-	void Tick( PktHandleCallback inPktHandleCallback );
+	void ProcessPkt( PktProcessCallback inPktHandleCallback );
 
-	void DoTickPendingFuncs();
+	void AppendToPendingFuncs( PendingFunc func );
 
-	void AppendToPendingFuncs( PendingFunc cb );
+private:
+	void DoPendingFuncs();
 
 private:
 	std::vector< PendingFunc > pendingFuncs_;

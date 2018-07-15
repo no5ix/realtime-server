@@ -153,6 +153,7 @@ void RealtimeSrvHelper::SimulateRealWorldNetCondition(
 	uint8_t dropPacketChanceCmdIndex /*= 0*/,
 	uint8_t JitterCmdIndex /*= 0*/ )
 {
+#ifndef IS_LINUX
 	assert( networkManager );
 
 	std::string latencyString = RealtimeSrvHelper::GetCommandLineArg(
@@ -181,4 +182,5 @@ void RealtimeSrvHelper::SimulateRealWorldNetCondition(
 			networkManager->SetIsSimulatedJitter( true );
 		}
 	}
+#endif
 }

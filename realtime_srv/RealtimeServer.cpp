@@ -20,10 +20,9 @@ RealtimeServer::RealtimeServer( bool willDaemonizeOnLinux /*= false*/ )
 
 
 void RealtimeServer::Run( const NewPlayerCallback& NewPlayerCb,
-	bool IsLazy /*= false*/,
 	uint16_t Port /*= DEFAULT_REALTIME_SRV_PORT*/ )
 {
-	if ( !networkManager_->Init( Port, IsLazy ) )
+	if ( !networkManager_->Init( Port ) )
 	{
 		LOG( " Network Manager Init Failed!! " );
 	}
@@ -42,7 +41,7 @@ void RealtimeServer::Run( const NewPlayerCallback& NewPlayerCb,
 }
 
 
-void RealtimeServer::SimulateRealWorld(
+void RealtimeServer::SimulateRealWorldOnWin(
 	uint8_t LatencyCmdIndex,
 	uint8_t DropPacketChanceCmdIndex /*= 0*/,
 	uint8_t JitterCmdIndex /*= 0*/ )

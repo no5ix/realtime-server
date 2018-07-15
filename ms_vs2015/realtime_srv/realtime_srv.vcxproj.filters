@@ -88,9 +88,6 @@
     <ClInclude Include="..\..\realtime_srv\game_obj\GameObj.h">
       <Filter>game_obj</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\realtime_srv\game_obj\InputState.h">
-      <Filter>game_obj</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\realtime_srv\game_obj\World.h">
       <Filter>game_obj</Filter>
     </ClInclude>
@@ -105,6 +102,9 @@
     </ClInclude>
     <ClInclude Include="..\..\realtime_srv\net\Packet.h">
       <Filter>net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\realtime_srv\game_obj\InputState.h">
+      <Filter>game_obj</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

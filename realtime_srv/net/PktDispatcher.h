@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <map>
 
 #include <muduo/base/Logging.h>
 #include <muduo/base/Mutex.h>
@@ -22,7 +23,6 @@ namespace realtime_srv
 
 class PktHandler;
 
-// dispatch
 class PktDispatcher
 {
 public:
@@ -31,14 +31,11 @@ public:
 	> UdpConnectionCallback;
 
 	static const float	kSendPacketInterval;
+
 public:
-
-	PktDispatcher();
-
 	bool Init( uint16_t inPort,
 		ReceivedPacketBlockQueue* const inRecvPktBQ,
-		PendingSendPacketQueue* const inSndPktQ,
-		bool isLazy = false );
+		PendingSendPacketQueue* const inSndPktQ );
 
 	void Start();
 
@@ -46,7 +43,6 @@ public:
 
 	void SetConnCallback( const UdpConnectionCallback& cb )
 	{ connCb_ = cb; }
-
 
 protected:
 	void SendGamePacket();
@@ -58,20 +54,23 @@ protected:
 
 	void onConnection( const muduo::net::UdpConnectionPtr& conn );
 
-	//void onMessageLazy( const muduo::net::UdpConnectionPtr& conn,
-	//	muduo::net::Buffer* buf, muduo::Timestamp receiveTime );
-
-
 private:
-	bool						isLazy_;
-	float						mDropPacketChance;
-	float						mSimulatedLatency;
-	bool						mSimulateJitter;
-	bool						isSimilateRealWorld_;
-	float						mLastCheckDCTime;
+	struct LoopAndTimerId
+	{
+		LoopAndTimerId() {}
+		LoopAndTimerId(
+			muduo::net::EventLoop* inLoop,
+			muduo::net::TimerId		inTimerId )
+			:
+			loop_( inLoop ),
+			timerId_( inTimerId )
+		{}
+		muduo::net::EventLoop* loop_;
+		muduo::net::TimerId		timerId_;
+	};
+	std::map<int, LoopAndTimerId> tidToLoopAndTimerIdMap_;
 
 	UdpConnectionCallback connCb_;
-private:
 	ReceivedPacketBlockQueue* recvedPktBQ_;
 	PendingSendPacketQueue* pendingSndPktQ_;
 

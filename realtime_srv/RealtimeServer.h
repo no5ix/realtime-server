@@ -15,17 +15,13 @@ public:
 
 	//************************************
 	// @Parameter const NewPlayerCallback & NewPlayerCB : for spawning your own GameObject.
-	// @Parameter bool Port IsLazy : 
-	//		default to false for high performance. 
-	//		if true, the server would run as lazy mode ( block until a new packet arrives ).
 	// @Parameter uint16_t Port : default is DEFAULT_REALTIME_SRV_PORT, see RealtimeSrvMacro.h
 	//************************************
 	void Run( const NewPlayerCallback& NewPlayerCb,
-		bool IsLazy = false,
 		uint16_t Port = DEFAULT_REALTIME_SRV_PORT );
 
 
-	void SimulateRealWorld(
+	void SimulateRealWorldOnWin(
 		uint8_t LatencyCmdIndex,
 		uint8_t dropPacketChanceCmdIndex = 0,
 		uint8_t JitterCmdIndex = 0 );

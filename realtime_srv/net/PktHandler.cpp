@@ -6,57 +6,50 @@ using namespace realtime_srv;
 using namespace muduo;
 
 PktHandler::PktHandler( ReceivedPacketBlockQueue* const inRecvPktBQ,
-	PktHandleCallback inPktHandleCallback )
+	PktProcessCallback pktProcessCallback )
 	:
 	recvedPktBQ_( inRecvPktBQ ),
 	pktHandleThread_(
-		std::bind( &PktHandler::Tick, this, inPktHandleCallback ),
+		std::bind( &PktHandler::ProcessPkt, this, pktProcessCallback ),
 		"rs_pkt_handler" )
 {}
 
 
-void PktHandler::Tick( PktHandleCallback inPktHandleCallback )
+void PktHandler::ProcessPkt( PktProcessCallback pktProcessCallback )
 {
-	//const int kMicroSecondsPerSecond = 1000 * 1000;
-	//const int64_t checkDisConnTimeOut = static_cast< int64_t >(
-	//	kClientDisconnectTimeout * kMicroSecondsPerSecond );
+	const int wakeupIntervalSec = 6;
+	const int MicroSecsPerSec = 1000 * 1000;
+	const int64_t waitTimeOut = static_cast< int64_t >(
+		wakeupIntervalSec * MicroSecsPerSec );
 
 	size_t count = 0;
-	std::vector<	ReceivedPacket > recvedPackets;
-	recvedPackets.reserve( kMaxPacketsPerFrameCount );
+	std::vector< ReceivedPacket > recvedPackets;
+	recvedPackets.reserve( kMaxPacketsCountPerRound );
 
 	while ( true )
 	{
-		//count = recvedPacketBlockQ_.wait_dequeue_bulk_timed(
-		//	recvedPacket.begin(), kMaxPacketsPerFrameCount, checkDisConnTimeOut );
-		//while ( recvedPacketBlockQ_.wait_dequeue_timed( recvedPacket, checkDisConnTimeOut ) )
+		count = recvedPktBQ_->wait_dequeue_bulk_timed(
+			recvedPackets.begin(), kMaxPacketsCountPerRound, waitTimeOut );
 
-		count = recvedPktBQ_->wait_dequeue_bulk(
-			recvedPackets.begin(), kMaxPacketsPerFrameCount );
+		DoPendingFuncs();
 		for ( size_t i = 0; i != count; ++i )
 		{
-			//ProcessPacket( *( recvedPackets[i].GetPacketBuffer() ), recvedPackets[i].GetUdpConn() );
-			//worldUpdateCb_();
-			//PrepareOutgoingPackets();
-
-			PktHandleCallback( recvedPackets[i] );
+			pktProcessCallback( recvedPackets[i] );
 		}
-		DoTickPendingFuncs();
+		recvedPackets.clear();
 	}
 }
 
-void PktHandler::DoTickPendingFuncs()
+void PktHandler::DoPendingFuncs()
 {
-	std::vector<PendingFunc> tempTickPendingFuncs;
-
+	std::vector<PendingFunc> tempPendingFuncs;
 	{
 		MutexLockGuard lock( mutex_ );
-		tempTickPendingFuncs.swap( pendingFuncs_ );
+		tempPendingFuncs.swap( pendingFuncs_ );
 	}
-
-	for ( size_t i = 0; i < tempTickPendingFuncs.size(); ++i )
+	for ( size_t i = 0; i < tempPendingFuncs.size(); ++i )
 	{
-		tempTickPendingFuncs[i]();
+		tempPendingFuncs[i]();
 	}
 }
 

@@ -1,12 +1,7 @@
 #include "realtime_srv/common/RealtimeSrvShared.h"
 
 
-
 using namespace realtime_srv;
-
-
-
-
 
 
 #ifdef IS_LINUX
@@ -22,11 +17,8 @@ using namespace muduo::net;
 
 AtomicInt32 NetworkMgr::kNewNetId;
 
-
 NetworkMgr::NetworkMgr() :
-	pktHandler_( &recvedPacketBlockQ_, std::bind( &NetworkMgr::PktHandleFunc, this, _1 ) ),
-	udpConnToClientMap_( new UdpConnToClientMap ),
-	isLazy_( false )
+	pktHandler_( &recvedPacketBlockQ_, std::bind( &NetworkMgr::PktProcessFunc, this, _1 ) )
 {
 	kNewNetId.getAndSet( 1 );
 }
@@ -53,19 +45,12 @@ void NetworkMgr::PrepareGamePacket( ClientProxyPtr inClientProxy, const uint32_t
 	}
 	inClientProxy->GetReplicationManager().Write( *outputPacket, ifp );
 
-	//if ( isLazy_ )
-	//{
-	//	pendingSndPacketBlockQ_.enqueue( PendingSendPacket(
-	//		outputPacket, inClientProxy->GetUdpConnection() ) );
-	//}
-	//else
-	//{
+	// test
 	pendingSndPacketQ_.enqueue( PendingSendPacket(
 		outputPacket, inClientProxy->GetUdpConnection() ) );
-//}
 }
 
-void NetworkMgr::PktHandleFunc( ReceivedPacket& recvedPacket )
+void NetworkMgr::PktProcessFunc( ReceivedPacket& recvedPacket )
 {
 	ProcessPacket( *( recvedPacket.GetPacketBuffer() ), recvedPacket.GetUdpConn() );
 	worldUpdateCb_();
@@ -79,7 +64,7 @@ void NetworkMgr::CheckForDisconnects()
 
 	vector< ClientProxyPtr > clientsToDisconnect;
 
-	for ( const auto& pair : *udpConnToClientMap_ )
+	for ( const auto& pair : udpConnToClientMap_ )
 	{
 		if ( pair.second->GetLastPacketFromClientTime() < minAllowedTime )
 		{
@@ -95,12 +80,10 @@ void NetworkMgr::CheckForDisconnects()
 	}
 }
 
-bool NetworkMgr::Init( uint16_t inPort, bool isLazy /*= false*/ )
+bool NetworkMgr::Init( uint16_t inPort )
 {
-	isLazy_ = isLazy;
-
 	pktDispatcher_.Init( inPort,
-		&recvedPacketBlockQ_, &pendingSndPacketQ_, isLazy_ );
+		&recvedPacketBlockQ_, &pendingSndPacketQ_ );
 
 	std::function< void() > checkDisconnCb =
 		std::bind( &NetworkMgr::CheckForDisconnects, this );
@@ -118,9 +101,8 @@ void NetworkMgr::OnConnOrDisconn( const UdpConnectionPtr& conn )
 {
 	if ( !conn->connected() )
 	{
-		pktHandler_.AppendToPendingFuncs( [&]() {
-			RemoveUdpConn( conn );
-		} );
+		pktHandler_.AppendToPendingFuncs(
+			std::bind( &NetworkMgr::RemoveUdpConn, this, conn ) );
 	}
 }
 
@@ -132,15 +114,15 @@ void NetworkMgr::Start()
 
 void NetworkMgr::RemoveUdpConn( const UdpConnectionPtr& conn )
 {
-	LOG( "Player %d disconnect", ( ( *udpConnToClientMap_ )[conn] )->GetPlayerId() );
-	udpConnToClientMap_->erase( conn );
+	LOG( "Player %d disconnect", ( ( udpConnToClientMap_ )[conn] )->GetPlayerId() );
+	udpConnToClientMap_.erase( conn );
 }
 
 void NetworkMgr::ProcessPacket( InputBitStream& inInputStream,
 	const UdpConnectionPtr& inUdpConnetction )
 {
-	auto it = udpConnToClientMap_->find( inUdpConnetction );
-	if ( it == udpConnToClientMap_->end() )
+	auto it = udpConnToClientMap_.find( inUdpConnetction );
+	if ( it == udpConnToClientMap_.end() )
 	{
 		HandlePacketFromNewClient( inInputStream, inUdpConnetction );
 	}
@@ -169,7 +151,7 @@ void NetworkMgr::HandlePacketFromNewClient( InputBitStream& inInputStream,
 				kNewNetId.getAndAdd( 1 ),
 				inUdpConnetction );
 
-		( *udpConnToClientMap_ )[inUdpConnetction] = newClientProxy;
+		( udpConnToClientMap_ )[inUdpConnetction] = newClientProxy;
 
 		GameObjPtr newGameObj = newPlayerCb_( newClientProxy );
 		newGameObj->SetClientProxy( newClientProxy );
@@ -206,7 +188,7 @@ void NetworkMgr::HandlePacketFromNewClient( InputBitStream& inInputStream,
 
 void NetworkMgr::NotifyAllClient( GameObjPtr inGameObject, ReplicationAction inAction )
 {
-	for ( const auto& pair : *udpConnToClientMap_ )
+	for ( const auto& pair : udpConnToClientMap_ )
 	{
 		switch ( inAction )
 		{
@@ -226,7 +208,7 @@ void NetworkMgr::NotifyAllClient( GameObjPtr inGameObject, ReplicationAction inA
 
 void NetworkMgr::PrepareOutgoingPackets()
 {
-	for ( const auto& pair : *udpConnToClientMap_ )
+	for ( const auto& pair : udpConnToClientMap_ )
 	{
 		( pair.second )->GetDeliveryNotifyManager().ProcessTimedOutPackets();
 
@@ -239,7 +221,7 @@ void NetworkMgr::PrepareOutgoingPackets()
 
 void NetworkMgr::SetRepStateDirty( int inNetworkId, uint32_t inDirtyState )
 {
-	for ( const auto& pair : *udpConnToClientMap_ )
+	for ( const auto& pair : udpConnToClientMap_ )
 	{
 		pair.second->GetReplicationManager().SetReplicationStateDirty(
 			inNetworkId, inDirtyState );

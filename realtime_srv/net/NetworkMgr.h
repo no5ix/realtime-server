@@ -1,25 +1,6 @@
 #pragma once
 
 #ifdef IS_LINUX
-//#include <muduo/base/Logging.h>
-//#include <muduo/base/Mutex.h>
-//#include <muduo/net/EventLoopThread.h>
-//#include <muduo/net/EventLoopThreadPool.h>
-//#include <muduo/base/ThreadLocalSingleton.h>
-//#include <muduo/net/EventLoop.h>
-//#include <muduo_udp_support/UdpServer.h>
-//#include <muduo/base/ThreadPool.h>
-//
-//#include <muduo/net/Buffer.h>
-//#include <muduo/net/Endian.h>
-//#include <muduo_udp_support/UdpConnection.h>
-//
-//#include <concurrent_queue/concurrentqueue.h>
-//#include <concurrent_queue/blockingconcurrentqueue.h>
-//
-//#include <set>
-//#include <stdio.h>
-//#include <unistd.h>
 
 #include <realtime_srv/net/PktDispatcher.h>
 #include <realtime_srv/net/PktHandler.h>
@@ -46,19 +27,14 @@ public:
 	static const uint32_t	kStateCC = 'STAT';
 	static const uint32_t	kInputCC = 'INPT';
 
-
 public:
 
 	NetworkMgr();
-	bool Init( uint16_t inPort, bool isLazy = false );
 
-	void	Start();
+	bool Init( uint16_t inPort );
+	void Start();
 
-	void		 SetRepStateDirty( int inNetworkId, uint32_t inDirtyState );
-	virtual void CheckForDisconnects();
-
-	uint32_t	 HandleServerReset( ClientProxyPtr inClientProxy,
-		InputBitStream& inInputStream );
+	void SetRepStateDirty( int inNetworkId, uint32_t inDirtyState );
 
 	void NotifyAllClient( GameObjPtr inGameObject, ReplicationAction inAction );
 
@@ -71,16 +47,12 @@ public:
 	void SetWorldRegistryCallback( const WorldRegistryCb& cb )
 	{ worldRegistryCb_ = cb; }
 
-	void	SetDropPacketChance( float inChance )
-	{ mDropPacketChance = inChance; isSimilateRealWorld_ = true; }
-	void	SetSimulatedLatency( float inLatency )
-	{ mSimulatedLatency = inLatency; isSimilateRealWorld_ = true; }
-	void	SetIsSimulatedJitter( bool inIsSimulatedJitter )
-	{ mSimulateJitter = inIsSimulatedJitter; isSimilateRealWorld_ = true; }
-	void	SetIsSimilateRealWorld( bool inIsSimilateRealWorld )
-	{ isSimilateRealWorld_ = inIsSimilateRealWorld; }
-
 private:
+
+	void CheckForDisconnects();
+
+	uint32_t	 HandleServerReset( ClientProxyPtr inClientProxy,
+		InputBitStream& inInputStream );
 
 	void	DoProcessPacket( ClientProxyPtr inClientProxy,
 		InputBitStream& inInputStream );
@@ -90,16 +62,11 @@ private:
 
 	void	HandleInputPacket( ClientProxyPtr inClientProxy,
 		InputBitStream& inInputStream );
+
 private:
 	NewPlayerCallback newPlayerCb_;
 	std::function<void()> worldUpdateCb_;
 	WorldRegistryCb worldRegistryCb_;
-
-	float						mDropPacketChance;
-	float						mSimulatedLatency;
-	bool						mSimulateJitter;
-	bool						isSimilateRealWorld_;
-	float						mLastCheckDCTime;
 
 #ifdef IS_LINUX
 
@@ -122,7 +89,7 @@ protected:
 	void	HandlePacketFromNewClient( InputBitStream& inInputStream,
 		const muduo::net::UdpConnectionPtr& inUdpConnetction );
 
-	void PktHandleFunc( ReceivedPacket& recvedPacket );
+	void PktProcessFunc( ReceivedPacket& recvedPacket );
 private:
 
 	ReceivedPacketBlockQueue recvedPacketBlockQ_;
@@ -131,16 +98,23 @@ private:
 	PktDispatcher pktDispatcher_;
 	PktHandler		pktHandler_;
 
-
-private:
-	std::unique_ptr< UdpConnToClientMap > udpConnToClientMap_;
+	UdpConnToClientMap udpConnToClientMap_;
 	static muduo::AtomicInt32		kNewNetId;
-	bool isLazy_;
 
 #else //IS_LINUX
 
 public:
 	virtual ~NetworkMgr() { UdpSockInterf::CleanUp(); }
+
+	void	SetDropPacketChance( float inChance )
+	{ mDropPacketChance = inChance; isSimilateRealWorld_ = true; }
+	void	SetSimulatedLatency( float inLatency )
+	{ mSimulatedLatency = inLatency; isSimilateRealWorld_ = true; }
+	void	SetIsSimulatedJitter( bool inIsSimulatedJitter )
+	{ mSimulateJitter = inIsSimulatedJitter; isSimilateRealWorld_ = true; }
+	void	SetIsSimilateRealWorld( bool inIsSimilateRealWorld )
+	{ isSimilateRealWorld_ = inIsSimilateRealWorld; }
+
 	void SendOutgoingPackets();
 
 	void	SendPacket( const OutputBitStream& inOutputStream,
@@ -194,7 +168,12 @@ private:
 	typedef unordered_map< SockAddrInterf, ClientProxyPtr >	AddrToClientMap;
 	AddrToClientMap		addrToClientMap_;
 
-	float			mTimeOfLastStatePacket;
+	float						mTimeOfLastStatePacket;
+	float						mDropPacketChance;
+	float						mSimulatedLatency;
+	bool						mSimulateJitter;
+	bool						isSimilateRealWorld_;
+	float						mLastCheckDCTime;
 
 #endif //IS_LINUX
 

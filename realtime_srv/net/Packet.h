@@ -13,7 +13,6 @@
 namespace realtime_srv
 {
 
-////// recv
 class ReceivedPacket
 {
 public:
@@ -23,27 +22,26 @@ public:
 		const std::shared_ptr<InputBitStream>& inInputMemoryBitStreamPtr,
 		const muduo::net::UdpConnectionPtr& inUdpConnetction )
 		:
-		mReceivedTime( inReceivedTime ),
-		mPacketBuffer( inInputMemoryBitStreamPtr ),
-		mUdpConn( inUdpConnetction )
+		recvedTime_( inReceivedTime ),
+		recvedPacketBuf_( inInputMemoryBitStreamPtr ),
+		udpConn_( inUdpConnetction )
 	{}
-	const	muduo::net::UdpConnectionPtr&	GetUdpConn() const { return mUdpConn; }
-	float GetReceivedTime()	const { return mReceivedTime; }
-	const std::shared_ptr<InputBitStream>& GetPacketBuffer() const { return mPacketBuffer; }
+	muduo::net::UdpConnectionPtr&	GetUdpConn() { return udpConn_; }
+	float GetReceivedTime()	const { return recvedTime_; }
+	std::shared_ptr<InputBitStream>& GetPacketBuffer() { return recvedPacketBuf_; }
 
 	bool operator<( const ReceivedPacket& other ) const
-	{ return this->mReceivedTime < other.GetReceivedTime(); }
+	{ return this->recvedTime_ < other.GetReceivedTime(); }
 
 private:
-	float																mReceivedTime;
-	std::shared_ptr<InputBitStream>			mPacketBuffer;
-	muduo::net::UdpConnectionPtr				mUdpConn;
+	float																recvedTime_;
+	std::shared_ptr<InputBitStream>			recvedPacketBuf_;
+	muduo::net::UdpConnectionPtr				udpConn_;
 };
 typedef moodycamel::ConcurrentQueue<ReceivedPacket> ReceivedPacketQueue;
 typedef moodycamel::BlockingConcurrentQueue<ReceivedPacket> ReceivedPacketBlockQueue;
 
 
-////// snd
 class PendingSendPacket
 {
 public:
@@ -51,14 +49,14 @@ public:
 	PendingSendPacket( std::shared_ptr<OutputBitStream>& OutPutPacketBuffer,
 		muduo::net::UdpConnectionPtr& UdpConnection )
 		:
-		outPacketBuf_( OutPutPacketBuffer ),
+		sndPacketBuf_( OutPutPacketBuffer ),
 		udpConn_( UdpConnection )
 	{}
-	muduo::net::UdpConnectionPtr GetUdpConnection() { return udpConn_.lock(); }
-	std::shared_ptr<OutputBitStream>& GetPacketBuffer() { return outPacketBuf_; }
+	muduo::net::UdpConnectionPtr& GetUdpConnection() { return udpConn_; }
+	std::shared_ptr<OutputBitStream>& GetPacketBuffer() { return sndPacketBuf_; }
 private:
-	std::shared_ptr<OutputBitStream>					outPacketBuf_;
-	std::weak_ptr<muduo::net::UdpConnection>	udpConn_;
+	std::shared_ptr<OutputBitStream>					sndPacketBuf_;
+	muduo::net::UdpConnectionPtr							udpConn_;
 };
 typedef moodycamel::ConcurrentQueue< PendingSendPacket > PendingSendPacketQueue;
 typedef moodycamel::BlockingConcurrentQueue< PendingSendPacket > PendingSendPacketBlockQueue;

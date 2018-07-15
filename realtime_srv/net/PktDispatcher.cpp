@@ -1,6 +1,6 @@
-#include "realtime_srv/common/RealtimeSrvShared.h"
+//#include "realtime_srv/common/RealtimeSrvShared.h"
 #include <realtime_srv/net/PktDispatcher.h>
-
+#include <realtime_srv/common/RealtimeSrvTiming.h>
 
 using namespace realtime_srv;
 
@@ -11,22 +11,22 @@ using namespace muduo::net;
 
 const float PktDispatcher::kSendPacketInterval = 0.033f;
 
+namespace
+{
+__thread int t_sndCountThisRound_ = 0;
+__thread int t_sndCountLastRound_ = 0;
+__thread int t_noPktSndRoundCount_ = 0;
+__thread bool t_isSleep_ = false;
 
-PktDispatcher::PktDispatcher() :
-	mDropPacketChance( 0.f ),
-	mSimulatedLatency( 0.f ),
-	mSimulateJitter( false ),
-	mLastCheckDCTime( 0.f ),
-	isSimilateRealWorld_( false ),
-	isLazy_( false )
-{}
+const int sleepRoundCountThreshold = static_cast< int >( 1 / PktDispatcher::kSendPacketInterval );
+}
+
+
 
 bool PktDispatcher::Init( uint16_t inPort,
 	ReceivedPacketBlockQueue* const inRecvPktBQ,
-	PendingSendPacketQueue* const inSndPktQ,
-	bool isLazy /*= false*/ )
+	PendingSendPacketQueue* const inSndPktQ )
 {
-	isLazy_ = isLazy;
 	recvedPktBQ_ = inRecvPktBQ;
 	pendingSndPktQ_ = inSndPktQ;
 	InetAddress serverAddr( inPort );
@@ -35,19 +35,11 @@ bool PktDispatcher::Init( uint16_t inPort,
 	server_->setConnectionCallback(
 		std::bind( &PktDispatcher::onConnection, this, _1 ) );
 	server_->setThreadNum( CONNECTION_THREAD_NUM );
+	server_->setMessageCallback(
+		std::bind( &PktDispatcher::onMessage, this, _1, _2, _3 ) );
+	server_->setThreadInitCallback(
+		std::bind( &PktDispatcher::IoThreadInit, this, _1 ) );
 
-	if ( !isLazy_ )
-	{
-		server_->setMessageCallback(
-			std::bind( &PktDispatcher::onMessage, this, _1, _2, _3 ) );
-		server_->setThreadInitCallback(
-			std::bind( &PktDispatcher::IoThreadInit, this, _1 ) );
-	}
-	//else
-	//{
-	//	server_->setMessageCallback(
-	//		std::bind( &PktDispatcher::onMessageLazy, this, _1, _2, _3 ) );
-	//}
 	return true;
 }
 
@@ -66,8 +58,12 @@ void PktDispatcher::Start()
 
 void PktDispatcher::IoThreadInit( EventLoop* loop )
 {
-	loop->runEvery( static_cast< double >( kSendPacketInterval ),
+	muduo::net::TimerId curTimerId = loop->runEvery(
+		static_cast< double >( kSendPacketInterval ),
 		std::bind( &PktDispatcher::SendGamePacket, this ) );
+
+	tidToLoopAndTimerIdMap_[muduo::CurrentThread::tid()] =
+		LoopAndTimerId( loop, curTimerId );
 }
 
 void PktDispatcher::onMessage( const muduo::net::UdpConnectionPtr& conn,
@@ -75,12 +71,24 @@ void PktDispatcher::onMessage( const muduo::net::UdpConnectionPtr& conn,
 {
 	if ( buf->readableBytes() > 0 )
 	{
-		shared_ptr<InputBitStream> inputStreamPtr(
+		std::shared_ptr<InputBitStream> inputStreamPtr(
 			new InputBitStream( buf->peek(), buf->readableBytes() * 8 ) );
 		buf->retrieveAll();
 
+		// test
 		recvedPktBQ_->enqueue( ReceivedPacket(
 			RealtimeSrvTiming::sInst.GetCurrentGameTime(), inputStreamPtr, conn ) );
+
+		//wake up
+		if ( t_isSleep_ )
+		{
+			LoopAndTimerId& lat = tidToLoopAndTimerIdMap_[muduo::CurrentThread::tid()];
+			muduo::net::TimerId curTimerId = lat.loop_->runEvery(
+				static_cast< double >( kSendPacketInterval ),
+				std::bind( &PktDispatcher::SendGamePacket, this ) );
+			lat.timerId_ = curTimerId;
+			t_isSleep_ = false;
+		}
 	}
 }
 
@@ -95,14 +103,30 @@ void PktDispatcher::onConnection( const UdpConnectionPtr& conn )
 
 void PktDispatcher::SendGamePacket()
 {
+	// test
+	t_sndCountThisRound_ = 0;
 	PendingSendPacket pendingSndPkt;
-	UdpConnectionPtr udpConn;
 	while ( pendingSndPktQ_->try_dequeue( pendingSndPkt ) )
 	{
-		if ( udpConn = pendingSndPkt.GetUdpConnection() )
+		++t_sndCountThisRound_;
+		pendingSndPkt.GetUdpConnection()->send(
+			pendingSndPkt.GetPacketBuffer()->GetBufferPtr(),
+			pendingSndPkt.GetPacketBuffer()->GetByteLength() );
+	}
+	// 1 sec no pkt to snd, then sleep
+	if ( t_sndCountThisRound_ == 0 && t_sndCountLastRound_ == 0 )
+	{
+		if ( ++t_noPktSndRoundCount_ > sleepRoundCountThreshold )
 		{
-			udpConn->send( pendingSndPkt.GetPacketBuffer()->GetBufferPtr(),
-				pendingSndPkt.GetPacketBuffer()->GetByteLength() );
+			t_noPktSndRoundCount_ = 0;
+			LoopAndTimerId& lat = tidToLoopAndTimerIdMap_[muduo::CurrentThread::tid()];
+			lat.loop_->cancel( lat.timerId_ );
+			t_isSleep_ = true;
 		}
 	}
+	else
+	{
+		t_noPktSndRoundCount_ = 0;
+	}
+	t_sndCountLastRound_ = t_sndCountThisRound_;
 }

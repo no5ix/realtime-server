@@ -16,7 +16,6 @@ public:
 	{
 		server_.Run(
 			[&]( ClientProxyPtr cp ) { return SpawnNewCharacterForPlayer( cp ); }
-			, true // true for lazy mode, comment this line for high performance mode.
 		);
 	}
 
