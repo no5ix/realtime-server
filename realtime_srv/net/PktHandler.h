@@ -36,7 +36,9 @@ private:
 	void DoPendingFuncs();
 
 private:
+	size_t pendingFuncCnt_;
 	std::vector< PendingFunc > pendingFuncs_;
+
 	ReceivedPacketBlockQueue* recvedPktBQ_;
 	muduo::Thread pktHandleThread_;
 	muduo::MutexLock mutex_;

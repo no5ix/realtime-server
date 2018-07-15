@@ -14,21 +14,21 @@
 #endif
 
 
-#define SMALL_NUMBER						(1.e-8f)
+#define SMALL_NUMBER								(1.e-8f)
 #define KINDA_SMALL_NUMBER					(1.e-4f)
-#define BIG_NUMBER							(3.4e+38f)
-#define EULERS_NUMBER						(2.71828182845904523536f)
+#define BIG_NUMBER									(3.4e+38f)
+#define EULERS_NUMBER								(2.71828182845904523536f)
 
 // PacketSequenceNumber
-typedef unsigned short						PacketSN;
-#define PACKET_SEQUENCE_NUMBER_BIT_WIDE		(16)
-#define MAX_PACKET_SEQUENCE_NUMBER			(65535)
+typedef unsigned short											PacketSN;
+#define PACKET_SEQUENCE_NUMBER_BIT_WIDE			(16)
+#define MAX_PACKET_SEQUENCE_NUMBER					(65535)
 #define HALF_MAX_PACKET_SEQUENCE_NUMBER     (32768)
 
 // ChunkPacketID
 typedef unsigned int						ChunkPacketID;
 #define CHUNK_PACKET_ID_BIT_WIDE			(32)
-#define MAX_CHUNK_PACKET_ID					(4294967296)
+#define MAX_CHUNK_PACKET_ID						(4294967296)
 #define HALF_MAX_CHUNK_PACKET_ID			(2147483648)
 
 
@@ -36,10 +36,10 @@ typedef unsigned int						ChunkPacketID;
 
 #define ACK_BIT_FIELD_BYTE_LEN				(4)
 
-#define CONNECTION_THREAD_NUM							(5)
-#define SEND_PACKET_THREAD_NUM			 (2)
+#define CONNECTION_THREAD_NUM					(6)
+#define SEND_PACKET_THREAD_NUM				(2)
 
-#define MOVE_COUNT_NUM						(2)
+#define ACTION_COUNT_NUM								(2)
 
 
 #ifdef IS_LINUX

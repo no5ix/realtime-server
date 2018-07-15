@@ -11,13 +11,12 @@ fi
 
 
 PIDs=$(lsof -ti:${PORT} | xargs)
-printf "$PIDs \n"
 
-if ! [[ "$PIDs" =~ ^[0-9]+$ ]] ;
+if ! [[ "$PIDs" =~ ^[0-9] ]] ;
 then
     printf "[`date '+%x %X'`] No server exist.\n"
     exit 1
 fi
 
-echo "[`date '+%x %X'`] Some living server is running, kill the server Now."
+echo "[`date '+%x %X'`] Some living server(pid : ${PIDs}) is running, kill these server Now."
 kill -9 $PIDs

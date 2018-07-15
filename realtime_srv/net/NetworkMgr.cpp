@@ -8,7 +8,7 @@ using namespace realtime_srv;
 
 namespace
 {
-const float		kClientDisconnectTimeout = 1.f;
+const float		kClientDisconnectTimeout = 6.f;
 }
 
 using namespace muduo;
@@ -295,15 +295,15 @@ uint32_t NetworkMgr::HandleServerReset( ClientProxyPtr inClientProxy, InputBitSt
 
 void NetworkMgr::HandleInputPacket( ClientProxyPtr inClientProxy, InputBitStream& inInputStream )
 {
-	uint32_t moveCount = 0;
-	Action move;
-	inInputStream.Read( moveCount, MOVE_COUNT_NUM );
+	uint32_t actionCount = 0;
+	Action action;
+	inInputStream.Read( actionCount, ACTION_COUNT_NUM );
 
-	for ( ; moveCount > 0; --moveCount )
+	for ( ; actionCount > 0; --actionCount )
 	{
-		if ( move.Read( inInputStream ) )
+		if ( action.Read( inInputStream ) )
 		{
-			if ( inClientProxy->GetUnprocessedActionList().AddMoveIfNew( move ) )
+			if ( inClientProxy->GetUnprocessedActionList().AddMoveIfNew( action ) )
 			{
 				inClientProxy->SetIsLastMoveTimestampDirty( true );
 			}
