@@ -24,29 +24,23 @@ const int sleepRoundCountThreshold = static_cast< int >( 1 / PktDispatcher::kSen
 
 
 
-bool PktDispatcher::Init( uint16_t inPort,
+PktDispatcher::PktDispatcher( uint16_t inPort, uint32_t inThreadCount,
 	ReceivedPacketBlockQueue* const inRecvPktBQ,
 	PendingSendPacketQueue* const inSndPktQ )
+	:
+	recvedPktBQ_( inRecvPktBQ ),
+	pendingSndPktQ_( inSndPktQ )
 {
-	recvedPktBQ_ = inRecvPktBQ;
-	pendingSndPktQ_ = inSndPktQ;
 	InetAddress serverAddr( inPort );
 
 	server_.reset( new UdpServer( &baseLoop_, serverAddr, "rs_pkt_dispatcher" ) );
 	server_->setConnectionCallback(
 		std::bind( &PktDispatcher::onConnection, this, _1 ) );
-	server_->setThreadNum( CONNECTION_THREAD_NUM );
+	server_->setThreadNum( inThreadCount );
 	server_->setMessageCallback(
 		std::bind( &PktDispatcher::onMessage, this, _1, _2, _3 ) );
 	server_->setThreadInitCallback(
 		std::bind( &PktDispatcher::IoThreadInit, this, _1 ) );
-
-	return true;
-}
-
-void PktDispatcher::SetInterval( std::function<void()> func, double interval )
-{
-	baseLoop_.runEvery( interval, func );
 }
 
 void PktDispatcher::Start()
@@ -63,8 +57,8 @@ void PktDispatcher::IoThreadInit( EventLoop* loop )
 		static_cast< double >( kSendPacketInterval ),
 		std::bind( &PktDispatcher::SendGamePacket, this ) );
 
-	tidToLoopAndTimerIdMap_[muduo::CurrentThread::tid()] =
-		LoopAndTimerId( loop, curTimerId );
+		tidToLoopAndTimerIdMap_[muduo::CurrentThread::tid()] =
+			LoopAndTimerId( loop, curTimerId );
 }
 
 void PktDispatcher::onMessage( const muduo::net::UdpConnectionPtr& conn,
@@ -76,8 +70,8 @@ void PktDispatcher::onMessage( const muduo::net::UdpConnectionPtr& conn,
 			new InputBitStream( buf->peek(), buf->readableBytes() * 8 ) );
 		buf->retrieveAll();
 
-		recvedPktBQ_->enqueue( ReceivedPacket(
-			RealtimeSrvTiming::sInst.GetCurrentGameTime(), inputStreamPtr, conn ) );
+		recvedPktBQ_->enqueue( ReceivedPacketPtr( new ReceivedPacket(
+			RealtimeSrvTiming::sInst.GetCurrentGameTime(), inputStreamPtr, conn ) ) );
 
 		//wake up
 		if ( t_isSleep_ )
@@ -105,13 +99,13 @@ void PktDispatcher::onConnection( const UdpConnectionPtr& conn )
 void PktDispatcher::SendGamePacket()
 {
 	t_sndCountThisRound_ = 0;
-	PendingSendPacket pendingSndPkt;
+	PendingSendPacketPtr pendingSndPkt;
 	while ( pendingSndPktQ_->try_dequeue( pendingSndPkt ) )
 	{
 		++t_sndCountThisRound_;
-		pendingSndPkt.GetUdpConnection()->send(
-			pendingSndPkt.GetPacketBuffer()->GetBufferPtr(),
-			pendingSndPkt.GetPacketBuffer()->GetByteLength() );
+		pendingSndPkt->GetUdpConnection()->send(
+			pendingSndPkt->GetPacketBuffer()->GetBufferPtr(),
+			pendingSndPkt->GetPacketBuffer()->GetByteLength() );
 	}
 	// 1 sec no pkt to snd, then sleep
 	if ( t_sndCountThisRound_ == 0 && t_sndCountLastRound_ == 0 )

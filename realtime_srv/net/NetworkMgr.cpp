@@ -16,8 +16,11 @@ using namespace muduo::net;
 
 AtomicInt32 NetworkMgr::kNewNetId;
 
-NetworkMgr::NetworkMgr() :
-	pktHandler_( &recvedPacketBlockQ_, std::bind( &NetworkMgr::PktProcessFunc, this, _1 ) )
+NetworkMgr::NetworkMgr( uint16_t inPort ) :
+	pktHandler_( &recvedPacketBlockQ_,
+		std::bind( &NetworkMgr::PktProcessFunc, this, _1 ) ),
+	pktDispatcher_( inPort, PACKET_DISPATCHER_THREAD_NUM,
+		&recvedPacketBlockQ_, &pendingSndPacketQ_ )
 {
 	kNewNetId.getAndSet( 1 );
 }
@@ -44,13 +47,13 @@ void NetworkMgr::PrepareGamePacket( ClientProxyPtr inClientProxy, const uint32_t
 	}
 	inClientProxy->GetReplicationManager().Write( *outputPacket, ifp );
 
-	pendingSndPacketQ_.enqueue( PendingSendPacket(
-		outputPacket, inClientProxy->GetUdpConnection() ) );
+	pendingSndPacketQ_.enqueue( PendingSendPacketPtr( new PendingSendPacket(
+		outputPacket, inClientProxy->GetUdpConnection() ) ) );
 }
 
-void NetworkMgr::PktProcessFunc( ReceivedPacket& recvedPacket )
+void NetworkMgr::PktProcessFunc( ReceivedPacketPtr& recvedPacket )
 {
-	ProcessPacket( *( recvedPacket.GetPacketBuffer() ), recvedPacket.GetUdpConn() );
+	ProcessPacket( *( recvedPacket->GetPacketBuffer() ), recvedPacket->GetUdpConn() );
 	worldUpdateCb_();
 	PrepareOutgoingPackets();
 }
@@ -65,28 +68,18 @@ void NetworkMgr::CheckForDisconnects()
 	for ( const auto& pair : udpConnToClientMap_ )
 	{
 		if ( pair.second->GetLastPacketFromClientTime() < minAllowedTime )
-		{
-			clientsToDisconnect.push_back( pair.second );
-		}
+		{ clientsToDisconnect.push_back( pair.second ); }
 	}
-	if ( clientsToDisconnect.size() > 0 )
-	{
-		for ( auto cliToDC : clientsToDisconnect )
-		{
-			cliToDC->GetUdpConnection()->forceClose();
-		}
-	}
+	for ( auto cliToDC : clientsToDisconnect )
+	{ cliToDC->GetUdpConnection()->forceClose(); }
 }
 
-bool NetworkMgr::Init( uint16_t inPort )
+bool NetworkMgr::Init()
 {
-	pktDispatcher_.Init( inPort,
-		&recvedPacketBlockQ_, &pendingSndPacketQ_ );
-
 	std::function< void() > checkDisconnCb =
 		std::bind( &NetworkMgr::CheckForDisconnects, this );
-	pktDispatcher_.SetInterval(
-		std::bind( &PktHandler::AppendToPendingFuncs, &pktHandler_, checkDisconnCb ),
+	pktDispatcher_.SetInterval( std::bind(
+		&PktHandler::AppendToPendingFuncs, &pktHandler_, checkDisconnCb ),
 		static_cast< double >( kClientDisconnectTimeout ) );
 
 	pktDispatcher_.SetConnCallback(
@@ -231,7 +224,7 @@ void NetworkMgr::SetRepStateDirty( int inNetworkId, uint32_t inDirtyState )
 }
 
 #else
-#include "realtime_srv/net/NetworkMgrWinH.h"
+#include "realtime_srv/net/NetworkMgrWinS.h"
 #endif
 
 
@@ -265,7 +258,7 @@ void NetworkMgr::DoProcessPacket( ClientProxyPtr inClientProxy, InputBitStream& 
 			LOG( "Unknown packet type received from %s", inClientProxy->GetSocketAddress().ToString().c_str() );
 		#endif //IS_LINUX
 			break;
-}
+	}
 }
 
 uint32_t NetworkMgr::HandleServerReset( ClientProxyPtr inClientProxy, InputBitStream& inInputStream )

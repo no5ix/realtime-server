@@ -16,8 +16,11 @@ typedef std::function< GameObjPtr( std::shared_ptr<ClientProxy> ) > NewPlayerCal
 
 class NetworkMgr : noncopyable
 {
-	typedef std::function<void( GameObjPtr, ReplicationAction )> WorldRegistryCb;
+
+#ifdef IS_LINUX
+
 public:
+	typedef std::function<void( GameObjPtr, ReplicationAction )> WorldRegistryCb;
 
 	static const uint32_t	kNullCC = 0;
 	static const uint32_t	kHelloCC = 'HELO';
@@ -28,10 +31,6 @@ public:
 	static const uint32_t	kInputCC = 'INPT';
 
 public:
-
-	NetworkMgr();
-
-	bool Init( uint16_t inPort );
 	void Start();
 
 	void SetRepStateDirty( int inNetworkId, uint32_t inDirtyState );
@@ -67,8 +66,11 @@ private:
 	NewPlayerCallback newPlayerCb_;
 	std::function<void()> worldUpdateCb_;
 	WorldRegistryCb worldRegistryCb_;
+public:
 
-#ifdef IS_LINUX
+	NetworkMgr( uint16_t inPort );
+
+	bool Init();
 
 public:
 	typedef unordered_map< muduo::net::UdpConnectionPtr, ClientProxyPtr >	UdpConnToClientMap;
@@ -89,7 +91,7 @@ protected:
 	void	HandlePacketFromNewClient( InputBitStream& inInputStream,
 		const muduo::net::UdpConnectionPtr& inUdpConnetction );
 
-	void PktProcessFunc( ReceivedPacket& recvedPacket );
+	void PktProcessFunc( ReceivedPacketPtr& recvedPacket );
 private:
 
 	ReceivedPacketBlockQueue recvedPacketBlockQ_;
@@ -102,7 +104,7 @@ private:
 	static muduo::AtomicInt32		kNewNetId;
 
 #else //IS_LINUX
-#include "realtime_srv/net/NetworkMgrWinS.h"
+#include "realtime_srv/net/NetworkMgrWinH.h"
 #endif //IS_LINUX
 
 };

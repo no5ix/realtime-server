@@ -36,10 +36,9 @@ typedef unsigned int						ChunkPacketID;
 
 #define ACK_BIT_FIELD_BYTE_LEN				(4)
 
-#define CONNECTION_THREAD_NUM					(6)
-#define SEND_PACKET_THREAD_NUM				(2)
+#define PACKET_DISPATCHER_THREAD_NUM	(6)
 
-#define ACTION_COUNT_NUM								(2)
+#define ACTION_COUNT_NUM							(2)
 
 
 #ifdef IS_LINUX

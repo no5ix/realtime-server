@@ -23,7 +23,6 @@
 namespace realtime_srv
 {
 
-class PktHandler;
 
 class PktDispatcher
 {
@@ -35,13 +34,15 @@ public:
 	static const float	kSendPacketInterval;
 
 public:
-	bool Init( uint16_t inPort,
+
+	PktDispatcher( uint16_t inPort, uint32_t inThreadCount,
 		ReceivedPacketBlockQueue* const inRecvPktBQ,
 		PendingSendPacketQueue* const inSndPktQ );
 
 	void Start();
 
-	void SetInterval( std::function<void()> func, double interval );
+	void SetInterval( std::function<void()> func, double interval )
+	{ baseLoop_.runEvery( interval, func ); }
 
 	void SetConnCallback( const UdpConnectionCallback& cb )
 	{ connCb_ = cb; }
@@ -74,12 +75,15 @@ private:
 	};
 	std::map<int, LoopAndTimerId> tidToLoopAndTimerIdMap_;
 
+
+
 	UdpConnectionCallback connCb_;
 	ReceivedPacketBlockQueue* recvedPktBQ_;
 	PendingSendPacketQueue* pendingSndPktQ_;
 
 	muduo::net::EventLoop baseLoop_;
 	std::unique_ptr<muduo::net::UdpServer> server_;
+
 };
 
 }

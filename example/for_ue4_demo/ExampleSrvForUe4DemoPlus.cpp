@@ -37,7 +37,6 @@ public:
 			SimulateJitterCmdIndex );
 
 		server_.Run( [&]( ClientProxyPtr cp ) { return SpawnNewCharacterForPlayer( cp ); } );
-		//loop_.loop();
 	}
 
 	GameObjPtr SpawnNewCharacterForPlayer( ClientProxyPtr cliProxy )

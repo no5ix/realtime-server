@@ -4,8 +4,11 @@
 
 #include <functional>
 #include <vector>
+
 #include <muduo/base/Thread.h>
-#include <muduo/base/Mutex.h>
+
+#include <concurrent_queue/concurrentqueue.h>
+#include <concurrent_queue/blockingconcurrentqueue.h>
 
 #include "realtime_srv/net/Packet.h"
 
@@ -16,8 +19,7 @@ namespace realtime_srv
 class PktHandler
 {
 public:
-	static const size_t	kMaxPacketsCountPerRound = 10;
-	typedef std::function<void( ReceivedPacket& )> PktProcessCallback;
+	typedef std::function<void( ReceivedPacketPtr& )> PktProcessCallback;
 	typedef std::function< void() > PendingFunc;
 
 public:
@@ -27,21 +29,29 @@ public:
 
 	~PktHandler() { pktHandleThread_.join(); }
 
-	void Start() { assert( !pktHandleThread_.started() ); pktHandleThread_.start(); }
+	void Start() 
+	{ assert( !pktHandleThread_.started() ); pktHandleThread_.start(); }
 
 	void AppendToPendingFuncs( PendingFunc func );
 
 private:
 	void ProcessPkt( PktProcessCallback inPktHandleCallback );
 	void DoPendingFuncs();
+	void Wakeup();
+
+	bool isInPktHandlerThread() const 
+	{ return threadId_ == muduo::CurrentThread::tid(); }
 
 private:
-	size_t pendingFuncCnt_;
-	std::vector< PendingFunc > pendingFuncs_;
+	typedef moodycamel::ConcurrentQueue<PendingFunc> PendingFuncsQueue;
+	PendingFuncsQueue pendingFuncsQ_;
+	PendingFunc pendingFunc_;
 
 	ReceivedPacketBlockQueue* recvedPktBQ_;
+
+	bool isInvokingPendingFunc_;
 	muduo::Thread pktHandleThread_;
-	muduo::MutexLock mutex_;
+	pid_t threadId_;
 };
 
 }

@@ -69,8 +69,9 @@ private:
 	std::shared_ptr<InputBitStream>			recvedPacketBuf_;
 	muduo::net::UdpConnectionPtr				udpConn_;
 };
-typedef moodycamel::ConcurrentQueue<ReceivedPacket> ReceivedPacketQueue;
-typedef moodycamel::BlockingConcurrentQueue<ReceivedPacket> ReceivedPacketBlockQueue;
+typedef std::shared_ptr<ReceivedPacket> ReceivedPacketPtr;
+typedef moodycamel::ConcurrentQueue<ReceivedPacketPtr> ReceivedPacketQueue;
+typedef moodycamel::BlockingConcurrentQueue<ReceivedPacketPtr> ReceivedPacketBlockQueue;
 
 
 
@@ -90,8 +91,9 @@ private:
 	std::shared_ptr<OutputBitStream>					sndPacketBuf_;
 	muduo::net::UdpConnectionPtr							udpConn_;
 };
-typedef moodycamel::ConcurrentQueue< PendingSendPacket > PendingSendPacketQueue;
-typedef moodycamel::BlockingConcurrentQueue< PendingSendPacket > PendingSendPacketBlockQueue;
+typedef std::shared_ptr<PendingSendPacket> PendingSendPacketPtr;
+typedef moodycamel::ConcurrentQueue< PendingSendPacketPtr > PendingSendPacketQueue;
+typedef moodycamel::BlockingConcurrentQueue< PendingSendPacketPtr > PendingSendPacketBlockQueue;
 
 
 } // namespace realtime_srv

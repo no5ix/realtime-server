@@ -1,17 +1,21 @@
 #ifdef __linux__
 
 #include <realtime_srv/net/PktHandler.h>
-#include <realtime_srv/common/RealtimeSrvHelper.h>
 
 using namespace realtime_srv;
 using namespace muduo;
 
 
+namespace
+{
+const size_t	kMaxPacketsCountPerRound = 10;
+}
+
 
 PktHandler::PktHandler( ReceivedPacketBlockQueue* const inRecvPktBQ,
 	PktProcessCallback pktProcessCallback )
 	:
-	pendingFuncCnt_( 0 ),
+	isInvokingPendingFunc_( false ),
 	recvedPktBQ_( inRecvPktBQ ),
 	pktHandleThread_(
 		std::bind( &PktHandler::ProcessPkt, this, pktProcessCallback ),
@@ -20,81 +24,46 @@ PktHandler::PktHandler( ReceivedPacketBlockQueue* const inRecvPktBQ,
 
 void PktHandler::ProcessPkt( PktProcessCallback pktProcessCb )
 {
-	const int wakeupIntervalSec = 6;
-	const int MicroSecsPerSec = 1000 * 1000;
-	const int64_t waitTimeOut = static_cast< int64_t >(
-		wakeupIntervalSec * MicroSecsPerSec );
+	threadId_ = muduo::CurrentThread::tid();
 
-	//////** efficient mode
 	size_t cnt = 0;
+	ReceivedPacketPtr rp;
 	// - correct way below
-	std::vector< ReceivedPacket > recvedPackets( kMaxPacketsCountPerRound );
+	std::vector< ReceivedPacketPtr > tempRecvedPkts( kMaxPacketsCountPerRound );
 	// - wrong way below : concurrentQueue will not release the last group
-	//std::vector< ReceivedPacket > recvedPackets;
-	//recvedPackets.reserve( kMaxPacketsCountPerRound );
-
+	//std::vector< ReceivedPacketPtr > tempRecvedPkts;
+	//tempRecvedPkts.reserve( kMaxPacketsCountPerRound );
 	while ( true )
 	{
-		cnt = recvedPktBQ_->wait_dequeue_bulk_timed(
-			recvedPackets.begin(), kMaxPacketsCountPerRound, waitTimeOut );
+		cnt = recvedPktBQ_->wait_dequeue_bulk(
+			tempRecvedPkts.begin(), kMaxPacketsCountPerRound );
+
+		for ( size_t i = 0; i != cnt; ++i )
+			if ( rp = tempRecvedPkts[i] ) { pktProcessCb( rp ); rp.reset(); }
 
 		DoPendingFuncs();
-
-		if ( cnt == 0 ) // timeout condition, release the last group, but keep the memory
-		{ for ( auto& rp : recvedPackets ) rp = ReceivedPacket(); }
-		else
-		{ for ( size_t i = 0; i != cnt; ++i ) pktProcessCb( recvedPackets[i] ); }
 	}
-
-
-	//////** inefficient mode 
-	//ReceivedPacket recvedPacket;
-	//while ( true )
-	//{
-	//	if ( recvedPktBQ_->wait_dequeue_timed( recvedPacket, waitTimeOut ) )
-	//	{
-	//		pktProcessCallback( recvedPacket );
-	//	}
-	//	else
-	//	{
-	//		recvedPacket = ReceivedPacket(); // release the last one, but keep the memory
-	//	}
-	//	DoPendingFuncs();
-	//}
 }
 
 void PktHandler::DoPendingFuncs()
 {
-	////** less PendingFunc condition
-	MutexLockGuard lock( mutex_ );
-	for ( size_t i = 0; i < pendingFuncCnt_; ++i )
-	{
-		pendingFuncs_[i]();
-		if ( i == pendingFuncCnt_ - 1 )
-		{
-			pendingFuncs_.clear();
-			pendingFuncCnt_ = 0;
-		}
-	}
+	isInvokingPendingFunc_ = true;
 
+	while ( pendingFuncsQ_.try_dequeue( pendingFunc_ ) )
+	{ pendingFunc_(); pendingFunc_ = PendingFunc(); } // invoke pendingFunc_ & release objs in the pendingFunc_
 
-	////////** more PendingFunc condition
-	//std::vector<PendingFunc> tempPendingFuncs;
-	//{
-	//	MutexLockGuard lock( mutex_ );
-	//	tempPendingFuncs.swap( pendingFuncs_ );
-	//}
-	//for ( size_t i = 0; i < tempPendingFuncs.size(); ++i )
-	//{
-	//	tempPendingFuncs[i]();
-	//}
+	isInvokingPendingFunc_ = false;
 }
 
-void realtime_srv::PktHandler::AppendToPendingFuncs( PendingFunc func )
+void PktHandler::AppendToPendingFuncs( PendingFunc func )
 {
-	MutexLockGuard lock( mutex_ );
-	pendingFuncs_.push_back( std::move( func ) );
-	++pendingFuncCnt_;
+	pendingFuncsQ_.enqueue( std::move( func ) );
+	if ( !isInPktHandlerThread() || isInvokingPendingFunc_ ) Wakeup();
+}
+
+void PktHandler::Wakeup()
+{
+	recvedPktBQ_->enqueue( ReceivedPacketPtr() );
 }
 
 #endif // __linux__
