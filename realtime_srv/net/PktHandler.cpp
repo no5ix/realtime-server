@@ -15,7 +15,6 @@ const size_t	kMaxPacketsCountPerRound = 10;
 PktHandler::PktHandler( ReceivedPacketBlockQueue* const inRecvPktBQ,
 	PktProcessCallback pktProcessCallback )
 	:
-	isInvokingPendingFunc_( false ),
 	recvedPktBQ_( inRecvPktBQ ),
 	pktHandleThread_(
 		std::bind( &PktHandler::ProcessPkt, this, pktProcessCallback ),
@@ -24,8 +23,6 @@ PktHandler::PktHandler( ReceivedPacketBlockQueue* const inRecvPktBQ,
 
 void PktHandler::ProcessPkt( PktProcessCallback pktProcessCb )
 {
-	threadId_ = muduo::CurrentThread::tid();
-
 	size_t cnt = 0;
 	ReceivedPacketPtr rp;
 	// - correct way below
@@ -47,18 +44,14 @@ void PktHandler::ProcessPkt( PktProcessCallback pktProcessCb )
 
 void PktHandler::DoPendingFuncs()
 {
-	isInvokingPendingFunc_ = true;
-
 	while ( pendingFuncsQ_.try_dequeue( pendingFunc_ ) )
 	{ pendingFunc_(); pendingFunc_ = PendingFunc(); } // invoke pendingFunc_ & release objs in the pendingFunc_
-
-	isInvokingPendingFunc_ = false;
 }
 
 void PktHandler::AppendToPendingFuncs( PendingFunc func )
 {
 	pendingFuncsQ_.enqueue( std::move( func ) );
-	if ( !isInPktHandlerThread() || isInvokingPendingFunc_ ) Wakeup();
+	Wakeup();
 }
 
 void PktHandler::Wakeup()

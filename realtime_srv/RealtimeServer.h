@@ -11,14 +11,17 @@ namespace realtime_srv
 class RealtimeServer : noncopyable
 {
 public:
-	RealtimeServer( bool WhetherTobecomeDaemonOnLinux = false,
-		uint16_t Port = DEFAULT_REALTIME_SRV_PORT );
 
 	//************************************
 	// @Parameter const NewPlayerCallback & NewPlayerCB : for spawning your own GameObject.
 	// @Parameter uint16_t Port : default is DEFAULT_REALTIME_SRV_PORT, see RealtimeSrvMacro.h
 	//************************************
-	void Run( const NewPlayerCallback& NewPlayerCb );
+	RealtimeServer( const NewPlayerCallback& NewPlayerCb,
+		bool WhetherTobecomeDaemonOnLinux = false,
+		uint16_t Port = DEFAULT_REALTIME_SRV_PORT );
+
+
+	void Run() { networkManager_->Start(); }
 
 
 	void SimulateRealWorldOnWin(

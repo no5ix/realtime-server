@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <cstdlib>
 #include <string>
+#include <memory>
 
 #include "realtime_srv/math/Vector3.h"
 #include "realtime_srv/math/Quaternion.h"
@@ -100,6 +101,8 @@ private:
 	uint32_t	mBitHead;
 	uint32_t	mBitCapacity;
 };
+typedef std::shared_ptr<OutputBitStream> OutputBitStreamPtr;
+
 
 class InputBitStream
 {
@@ -241,5 +244,6 @@ private:
 	bool		mIsBufferOwner;
 
 };
+typedef std::shared_ptr<InputBitStream> InputBitStreamPtr;
 
 }

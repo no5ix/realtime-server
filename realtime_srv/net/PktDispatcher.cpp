@@ -24,12 +24,7 @@ const int sleepRoundCountThreshold = static_cast< int >( 1 / PktDispatcher::kSen
 
 
 
-PktDispatcher::PktDispatcher( uint16_t inPort, uint32_t inThreadCount,
-	ReceivedPacketBlockQueue* const inRecvPktBQ,
-	PendingSendPacketQueue* const inSndPktQ )
-	:
-	recvedPktBQ_( inRecvPktBQ ),
-	pendingSndPktQ_( inSndPktQ )
+PktDispatcher::PktDispatcher( uint16_t inPort, uint32_t inThreadCount )
 {
 	InetAddress serverAddr( inPort );
 
@@ -57,8 +52,16 @@ void PktDispatcher::IoThreadInit( EventLoop* loop )
 		static_cast< double >( kSendPacketInterval ),
 		std::bind( &PktDispatcher::SendGamePacket, this ) );
 
-		tidToLoopAndTimerIdMap_[muduo::CurrentThread::tid()] =
-			LoopAndTimerId( loop, curTimerId );
+	tidToLoopAndTimerIdMap_[CurrentThread::tid()] =
+		LoopAndTimerId( loop, curTimerId );
+
+	tidToPendingSndPktQMap_[CurrentThread::tid()] = PendingSendPacketQueue();
+}
+
+void PktDispatcher::AppendToPendingSndPktQ(
+	const PendingSendPacketPtr& psp, pid_t threadId )
+{
+	tidToPendingSndPktQMap_[threadId].enqueue( psp );
 }
 
 void PktDispatcher::onMessage( const muduo::net::UdpConnectionPtr& conn,
@@ -70,13 +73,14 @@ void PktDispatcher::onMessage( const muduo::net::UdpConnectionPtr& conn,
 			new InputBitStream( buf->peek(), buf->readableBytes() * 8 ) );
 		buf->retrieveAll();
 
-		recvedPktBQ_->enqueue( ReceivedPacketPtr( new ReceivedPacket(
-			RealtimeSrvTiming::sInst.GetCurrentGameTime(), inputStreamPtr, conn ) ) );
+		recvedPktBQ_.enqueue( ReceivedPacketPtr( new ReceivedPacket(
+			RealtimeSrvTiming::sInst.GetCurrentGameTime(),
+			CurrentThread::tid(), inputStreamPtr, conn ) ) );
 
 		//wake up
 		if ( t_isSleep_ )
 		{
-			LoopAndTimerId& lat = tidToLoopAndTimerIdMap_[muduo::CurrentThread::tid()];
+			LoopAndTimerId& lat = tidToLoopAndTimerIdMap_[CurrentThread::tid()];
 			muduo::net::TimerId curTimerId = lat.loop_->runEvery(
 				static_cast< double >( kSendPacketInterval ),
 				std::bind( &PktDispatcher::SendGamePacket, this ) );
@@ -100,24 +104,24 @@ void PktDispatcher::SendGamePacket()
 {
 	t_sndCountThisRound_ = 0;
 	PendingSendPacketPtr pendingSndPkt;
-	while ( pendingSndPktQ_->try_dequeue( pendingSndPkt ) )
+	while ( tidToPendingSndPktQMap_[CurrentThread::tid()]
+		.try_dequeue( pendingSndPkt ) )
 	{
 		++t_sndCountThisRound_;
 		pendingSndPkt->GetUdpConnection()->send(
 			pendingSndPkt->GetPacketBuffer()->GetBufferPtr(),
 			pendingSndPkt->GetPacketBuffer()->GetByteLength() );
 	}
-	// 1 sec no pkt to snd, then sleep
-	if ( t_sndCountThisRound_ == 0 && t_sndCountLastRound_ == 0 )
+
+	// long time no pkt to snd, then sleep
+	if ( t_sndCountThisRound_ == 0 && t_sndCountLastRound_ == 0
+		&& ++t_noPktSndRoundCount_ > sleepRoundCountThreshold )
 	{
-		if ( ++t_noPktSndRoundCount_ > sleepRoundCountThreshold )
-		{
-			t_noPktSndRoundCount_ = 0;
-			LoopAndTimerId& lat = tidToLoopAndTimerIdMap_[muduo::CurrentThread::tid()];
-			lat.loop_->cancel( lat.timerId_ );
-			t_isSleep_ = true;
-			LOG_INFO << "go to sleeeeeeeep";
-		}
+		t_noPktSndRoundCount_ = 0;
+		LoopAndTimerId& lat = tidToLoopAndTimerIdMap_[CurrentThread::tid()];
+		lat.loop_->cancel( lat.timerId_ );
+		t_isSleep_ = true;
+		LOG_INFO << "go to sleeeeeeeep";
 	}
 	else
 	{

@@ -9,15 +9,12 @@ class ExampleSrvForUe4Demo : noncopyable
 {
 public:
 	ExampleSrvForUe4Demo( bool willDaemonizeOnLinux = true )
-		: server_( willDaemonizeOnLinux )
+		:
+		server_( std::bind( &ExampleSrvForUe4Demo::SpawnNewCharacterForPlayer, this, _1 ),
+			willDaemonizeOnLinux )
 	{}
 
-	void Run()
-	{
-		server_.Run(
-			[&]( ClientProxyPtr cp ) { return SpawnNewCharacterForPlayer( cp ); }
-		);
-	}
+	void Run() { server_.Run(); }
 
 	GameObjPtr SpawnNewCharacterForPlayer( ClientProxyPtr cliProxy )
 	{

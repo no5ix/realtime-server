@@ -162,7 +162,7 @@ void NetworkMgr::ProcessPacket(
 	}
 	else
 	{
-		DoProcessPacket( ( *it ).second, inInputStream );
+		CheckPacketType( ( *it ).second, inInputStream );
 	}
 }
 

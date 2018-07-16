@@ -35,9 +35,7 @@ public:
 
 public:
 
-	PktDispatcher( uint16_t inPort, uint32_t inThreadCount,
-		ReceivedPacketBlockQueue* const inRecvPktBQ,
-		PendingSendPacketQueue* const inSndPktQ );
+	PktDispatcher( uint16_t inPort, uint32_t inThreadCount );
 
 	void Start();
 
@@ -48,6 +46,12 @@ public:
 	{ connCb_ = cb; }
 
 	muduo::net::EventLoop* GetBaseLoop() { return &baseLoop_; }
+
+	void AppendToPendingSndPktQ(
+		const PendingSendPacketPtr& psp, const pid_t threadId );
+
+	ReceivedPacketBlockQueue* GetReceivedPacketBlockQueue()
+	{ return &recvedPktBQ_; }
 
 protected:
 	void SendGamePacket();
@@ -75,11 +79,10 @@ private:
 	};
 	std::map<int, LoopAndTimerId> tidToLoopAndTimerIdMap_;
 
-
+	std::map<int, PendingSendPacketQueue> tidToPendingSndPktQMap_;
 
 	UdpConnectionCallback connCb_;
-	ReceivedPacketBlockQueue* recvedPktBQ_;
-	PendingSendPacketQueue* pendingSndPktQ_;
+	ReceivedPacketBlockQueue recvedPktBQ_;
 
 	muduo::net::EventLoop baseLoop_;
 	std::unique_ptr<muduo::net::UdpServer> server_;

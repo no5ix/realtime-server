@@ -4,11 +4,11 @@
 using namespace realtime_srv;
 
 
-RealtimeServer::RealtimeServer( bool willDaemonizeOnLinux /*= false*/,
+RealtimeServer::RealtimeServer( const NewPlayerCallback& NewPlayerCb,
+	bool willDaemonizeOnLinux /*= false*/,
 	uint16_t Port /*= DEFAULT_REALTIME_SRV_PORT*/ )
 	: world_( new World() )
 {
-
 	assert( world_ );
 	if ( willDaemonizeOnLinux && !RealtimeSrvHelper::DaemonizeOnLinux() )
 	{
@@ -27,11 +27,6 @@ RealtimeServer::RealtimeServer( bool willDaemonizeOnLinux /*= false*/,
 	{
 		LOG( " Network Manager Init Failed!! " );
 	}
-}
-
-
-void RealtimeServer::Run( const NewPlayerCallback& NewPlayerCb )
-{
 
 	srand( static_cast< uint32_t >( time( nullptr ) ) );
 
@@ -42,9 +37,8 @@ void RealtimeServer::Run( const NewPlayerCallback& NewPlayerCb )
 
 	world_->SetNotifyAllClientCallback( std::bind(
 		&NetworkMgr::NotifyAllClient, networkManager_.get(), _1, _2 ) );
-
-	networkManager_->Start();
 }
+
 
 
 void RealtimeServer::SimulateRealWorldOnWin(

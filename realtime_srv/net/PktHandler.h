@@ -39,8 +39,6 @@ private:
 	void DoPendingFuncs();
 	void Wakeup();
 
-	bool isInPktHandlerThread() const 
-	{ return threadId_ == muduo::CurrentThread::tid(); }
 
 private:
 	typedef moodycamel::ConcurrentQueue<PendingFunc> PendingFuncsQueue;
@@ -49,9 +47,7 @@ private:
 
 	ReceivedPacketBlockQueue* recvedPktBQ_;
 
-	bool isInvokingPendingFunc_;
 	muduo::Thread pktHandleThread_;
-	pid_t threadId_;
 };
 
 }

@@ -9,9 +9,11 @@ using namespace muduo::net;
 
 ClientProxy::ClientProxy( NetworkMgr* inNetworkManager,
 	const std::string& inPlayerName,
-	int inPlayerId,
+	const int inPlayerId,
+	const pid_t inHoldedByThreadId,
 	const UdpConnectionPtr& inUdpConnection )
 	:
+	connHoldedByTid_( inHoldedByThreadId ),
 	networkManager_( inNetworkManager ),
 	replicationManager_( this ),
 	mPlayerName( inPlayerName ),

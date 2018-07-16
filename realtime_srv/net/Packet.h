@@ -22,17 +22,19 @@ public:
 
 	ReceivedPacket(
 		const float inReceivedTime,
+		const float inHoldByThreadId,
 		const std::shared_ptr<InputBitStream>& inInputMemoryBitStreamPtr,
 		const muduo::net::UdpConnectionPtr& inUdpConnetction )
 		:
 		recvedTime_( inReceivedTime ),
+		holdedByThreadId_( inHoldByThreadId ),
 		recvedPacketBuf_( inInputMemoryBitStreamPtr ),
 		udpConn_( inUdpConnetction )
 	{}
 
 	ReceivedPacket( ReceivedPacket &&Other ) noexcept
-		:
-		recvedTime_( Other.recvedTime_ ),
+		: recvedTime_( Other.recvedTime_ ),
+		holdedByThreadId_( Other.holdedByThreadId_ ),
 		recvedPacketBuf_( Other.recvedPacketBuf_ ),
 		udpConn_( Other.udpConn_ )
 	{
@@ -50,6 +52,7 @@ public:
 			recvedTime_ = Other.recvedTime_;
 			recvedPacketBuf_ = Other.recvedPacketBuf_;
 			udpConn_ = Other.udpConn_;
+			holdedByThreadId_ = Other.holdedByThreadId_;
 
 			Other.recvedPacketBuf_.reset();
 			Other.udpConn_.reset();
@@ -60,6 +63,7 @@ public:
 	muduo::net::UdpConnectionPtr&	GetUdpConn() { return udpConn_; }
 	float GetReceivedTime()	const { return recvedTime_; }
 	std::shared_ptr<InputBitStream>& GetPacketBuffer() { return recvedPacketBuf_; }
+	pid_t GetHoldedByThreadId() const { return holdedByThreadId_; }
 
 	bool operator<( const ReceivedPacket& other ) const
 	{ return this->recvedTime_ < other.GetReceivedTime(); }
@@ -68,6 +72,7 @@ private:
 	float																recvedTime_;
 	std::shared_ptr<InputBitStream>			recvedPacketBuf_;
 	muduo::net::UdpConnectionPtr				udpConn_;
+	pid_t																holdedByThreadId_;
 };
 typedef std::shared_ptr<ReceivedPacket> ReceivedPacketPtr;
 typedef moodycamel::ConcurrentQueue<ReceivedPacketPtr> ReceivedPacketQueue;

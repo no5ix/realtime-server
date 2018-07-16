@@ -41,6 +41,7 @@ public:
 
 	void SetGameObjStateDirty( int inNetworkId, uint32_t inDirtyState );
 
+
 private:
 
 	std::string			mPlayerName;
@@ -66,12 +67,16 @@ private:
 public:
 	ClientProxy( NetworkMgr* inNetworkManager,
 		const std::string& inName,
-		int inPlayerId,
+		const int inPlayerId,
+		const pid_t inHoldedByThreadId,
 		const muduo::net::UdpConnectionPtr& inUdpConnection );
+
+	pid_t GetConnHoldedByThreadId() const { return connHoldedByTid_; }
 
 	muduo::net::UdpConnectionPtr& GetUdpConnection() { return UdpConnection_; }
 private:
-	muduo::net::UdpConnectionPtr UdpConnection_;
+	muduo::net::UdpConnectionPtr	UdpConnection_;
+	pid_t													connHoldedByTid_;
 
 #else //IS_LINUX
 

@@ -34,7 +34,7 @@ private:
 	uint32_t	 HandleServerReset( ClientProxyPtr inClientProxy,
 		InputBitStream& inInputStream );
 
-	void	DoProcessPacket( ClientProxyPtr inClientProxy,
+	void	CheckPacketType( ClientProxyPtr inClientProxy,
 		InputBitStream& inInputStream );
 
 	void	WriteLastMoveTimestampIfDirty( OutputBitStream& inOutputStream,
