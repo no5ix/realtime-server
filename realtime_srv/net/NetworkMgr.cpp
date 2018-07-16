@@ -19,10 +19,26 @@ AtomicInt32 NetworkMgr::kNewNetId;
 NetworkMgr::NetworkMgr( uint16_t inPort ) :
 	pktDispatcher_( inPort, PACKET_DISPATCHER_THREAD_NUM ),
 	pktHandler_( pktDispatcher_.GetReceivedPacketBlockQueue(),
-		std::bind( &NetworkMgr::PktProcessFunc, this, _1 ) )
+		std::bind( &NetworkMgr::PktProcessCallbackFunc, this, _1 ) )
 {
 	kNewNetId.getAndSet( 1 );
+
+	std::function< void() > checkDisconnCb =
+		std::bind( &NetworkMgr::CheckForDisconnects, this );
+	pktDispatcher_.SetInterval( std::bind(
+		&PktHandler::AppendToPendingFuncs, &pktHandler_, checkDisconnCb ),
+		static_cast< double >( kClientDisconnectTimeout ) );
+
+	pktDispatcher_.SetConnCallback(
+		std::bind( &NetworkMgr::OnConnOrDisconn, this, _1 ) );
 }
+
+void NetworkMgr::Start()
+{
+	pktHandler_.Start();
+	pktDispatcher_.Start();
+}
+
 
 void NetworkMgr::DoPreparePacketToSend( ClientProxyPtr cliProxy, const uint32_t inConnFlag )
 {
@@ -50,7 +66,6 @@ void NetworkMgr::DoPreparePacketToSend( ClientProxyPtr cliProxy, const uint32_t 
 		PendingSendPacketPtr( new PendingSendPacket(
 			outputPacket, cliProxy->GetUdpConnection() ) ),
 		cliProxy->GetConnHoldedByThreadId() );
-
 }
 
 void NetworkMgr::DoProcessPkt( ReceivedPacketPtr& recvedPacket )
@@ -80,7 +95,7 @@ void NetworkMgr::PreparePacketToSend()
 	}
 }
 
-void NetworkMgr::PktProcessFunc( ReceivedPacketPtr& recvedPacket )
+void NetworkMgr::PktProcessCallbackFunc( ReceivedPacketPtr& recvedPacket )
 {
 	DoProcessPkt( recvedPacket );
 	worldUpdateCb_();
@@ -103,20 +118,6 @@ void NetworkMgr::CheckForDisconnects()
 	{ cliToDC->GetUdpConnection()->forceClose(); }
 }
 
-bool NetworkMgr::Init()
-{
-	std::function< void() > checkDisconnCb =
-		std::bind( &NetworkMgr::CheckForDisconnects, this );
-	pktDispatcher_.SetInterval( std::bind(
-		&PktHandler::AppendToPendingFuncs, &pktHandler_, checkDisconnCb ),
-		static_cast< double >( kClientDisconnectTimeout ) );
-
-	pktDispatcher_.SetConnCallback(
-		std::bind( &NetworkMgr::OnConnOrDisconn, this, _1 ) );
-
-	return true;
-}
-
 void NetworkMgr::OnConnOrDisconn( const UdpConnectionPtr& conn )
 {
 	if ( !conn->connected() )
@@ -124,12 +125,6 @@ void NetworkMgr::OnConnOrDisconn( const UdpConnectionPtr& conn )
 		pktHandler_.AppendToPendingFuncs(
 			std::bind( &NetworkMgr::RemoveClient, this, conn ) );
 	}
-}
-
-void NetworkMgr::Start()
-{
-	pktHandler_.Start();
-	pktDispatcher_.Start();
 }
 
 void NetworkMgr::RemoveClient( const UdpConnectionPtr& conn )
@@ -162,7 +157,7 @@ void NetworkMgr::WelcomeNewClient( InputBitStream& inInputStream,
 				inHoldedByThreadId,
 				inUdpConnetction );
 
-		( udpConnToClientMap_ )[inUdpConnetction] = newClientProxy;
+		udpConnToClientMap_[inUdpConnetction] = newClientProxy;
 
 		GameObjPtr newGameObj = newPlayerCb_( newClientProxy );
 		newGameObj->SetClientProxy( newClientProxy );
@@ -174,10 +169,9 @@ void NetworkMgr::WelcomeNewClient( InputBitStream& inInputStream,
 		}
 		else
 		{
-	 // Server reset
 			newClientProxy->SetRecvingServerResetFlag( true );
 			DoPreparePacketToSend( newClientProxy, kResetCC );
-			LOG( "SendResetPacket" );
+			LOG( "Send Reset Packet" );
 		}
 
 		LOG( "a new client named '%s' as PlayerID %d ",

@@ -9,14 +9,25 @@ const int		kMaxPacketsPerFrameCount = 10;
 
 int NetworkMgr::kNewNetId = 1;
 
-NetworkMgr::NetworkMgr() :
+NetworkMgr::NetworkMgr( uint16_t inPort ) :
 	mTimeOfLastStatePacket( 0.f ),
 	mLastCheckDCTime( 0.f ),
 	mDropPacketChance( 0.f ),
 	mSimulatedLatency( 0.f ),
 	mSimulateJitter( false ),
 	isSimilateRealWorld_( false )
-{}
+{
+	UdpSockInterf::StaticInit();
+
+	mSocket = UdpSockInterf::CreateUDPSocket();
+	assert( mSocket );
+
+	SockAddrInterf ownAddress( INADDR_ANY, inPort );
+	mSocket->Bind( ownAddress );
+	mSocket->SetNonBlockingMode( true );
+
+	LOG( "Initializing NetworkManager at port %d", inPort );
+}
 
 void NetworkMgr::Start()
 {
@@ -103,26 +114,6 @@ void NetworkMgr::ProcessQueuedPackets()
 			break;
 		}
 	}
-}
-
-bool NetworkMgr::Init( uint16_t inPort )
-{
-	UdpSockInterf::StaticInit();
-
-	mSocket = UdpSockInterf::CreateUDPSocket();
-	if ( mSocket == nullptr )
-	{
-		return false;
-	}
-	SockAddrInterf ownAddress( INADDR_ANY, inPort );
-	mSocket->Bind( ownAddress );
-	if ( mSocket->SetNonBlockingMode( true ) != NO_ERROR )
-	{
-		return false;
-	}
-
-	LOG( "Initializing NetworkManager at port %d", inPort );
-	return true;
 }
 
 void NetworkMgr::SendPacket( const OutputBitStream& inOutputStream,

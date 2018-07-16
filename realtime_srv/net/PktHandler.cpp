@@ -9,6 +9,7 @@ using namespace muduo;
 namespace
 {
 const size_t	kMaxPacketsCountPerRound = 10;
+const int64_t kQueueWaitTimeoutUsec = 11000000;
 }
 
 
@@ -32,8 +33,8 @@ void PktHandler::ProcessPkt( PktProcessCallback pktProcessCb )
 	//tempRecvedPkts.reserve( kMaxPacketsCountPerRound );
 	while ( true )
 	{
-		cnt = recvedPktBQ_->wait_dequeue_bulk(
-			tempRecvedPkts.begin(), kMaxPacketsCountPerRound );
+		cnt = recvedPktBQ_->wait_dequeue_bulk_timed( tempRecvedPkts.begin(),
+			kMaxPacketsCountPerRound, kQueueWaitTimeoutUsec );
 
 		for ( size_t i = 0; i != cnt; ++i )
 			if ( rp = tempRecvedPkts[i] ) { pktProcessCb( rp ); rp.reset(); }

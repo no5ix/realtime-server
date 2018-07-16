@@ -107,7 +107,7 @@ void PktDispatcher::SendGamePacket()
 	while ( tidToPendingSndPktQMap_[CurrentThread::tid()]
 		.try_dequeue( pendingSndPkt ) )
 	{
-		++t_sndCountThisRound_;
+		//++t_sndCountThisRound_;
 		pendingSndPkt->GetUdpConnection()->send(
 			pendingSndPkt->GetPacketBuffer()->GetBufferPtr(),
 			pendingSndPkt->GetPacketBuffer()->GetByteLength() );

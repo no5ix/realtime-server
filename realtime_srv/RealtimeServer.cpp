@@ -15,18 +15,8 @@ RealtimeServer::RealtimeServer( const NewPlayerCallback& NewPlayerCb,
 		LOG( " Become Daemon Failed!! " );
 	}
 
-#ifdef IS_LINUX
 	networkManager_.reset( new NetworkMgr( Port ) );
 	assert( networkManager_ );
-	if ( !networkManager_->Init() )
-#else
-	networkManager_.reset( new NetworkMgr() );
-	assert( networkManager_ );
-	if ( !networkManager_->Init( Port ) )
-#endif //IS_LINUX
-	{
-		LOG( " Network Manager Init Failed!! " );
-	}
 
 	srand( static_cast< uint32_t >( time( nullptr ) ) );
 

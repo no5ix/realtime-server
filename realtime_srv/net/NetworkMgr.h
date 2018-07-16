@@ -35,10 +35,11 @@ public:
 public:
 
 	NetworkMgr( uint16_t inPort );
-	bool Init();
+
 	void Start();
 
 	muduo::net::EventLoop* GetEventLoop() { return pktDispatcher_.GetBaseLoop(); }
+
 	void SetRepStateDirty( int inNetworkId, uint32_t inDirtyState );
 
 	void NotifyAllClient( GameObjPtr inGameObject, ReplicationAction inAction );
@@ -78,7 +79,7 @@ private:
 		const muduo::net::UdpConnectionPtr& inUdpConnetction,
 		const pid_t inHoldedByThreadId );
 
-	void PktProcessFunc( ReceivedPacketPtr& recvedPacket );
+	void PktProcessCallbackFunc( ReceivedPacketPtr& recvedPacket );
 
 private:
 
