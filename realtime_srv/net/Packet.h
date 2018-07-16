@@ -84,8 +84,9 @@ class PendingSendPacket
 {
 public:
 	PendingSendPacket() {}
-	PendingSendPacket( std::shared_ptr<OutputBitStream>& OutPutPacketBuffer,
-		muduo::net::UdpConnectionPtr& UdpConnection )
+	PendingSendPacket( 
+		const std::shared_ptr<OutputBitStream>& OutPutPacketBuffer,
+		const muduo::net::UdpConnectionPtr& UdpConnection )
 		:
 		sndPacketBuf_( OutPutPacketBuffer ),
 		udpConn_( UdpConnection )

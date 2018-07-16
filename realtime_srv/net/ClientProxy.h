@@ -13,7 +13,7 @@ class ClientProxy
 {
 public:
 
-	int	GetPlayerId() const { return mPlayerId; }
+	int	GetNetId() const { return netId_; }
 	const std::string& GetPlayerName()			const { return mPlayerName; }
 
 	void SetInputState( const InputState& inInputState ) { mInputState = inInputState; }
@@ -37,7 +37,8 @@ public:
 	bool IsLastMoveTimestampDirty()	const { return mIsLastMoveTimestampDirty; }
 
 	bool GetRecvingServerResetFlag() const { return mRecvingServerResetFlag; }
-	void SetRecvingServerResetFlag( bool inRecvingServerResetFlag ) { mRecvingServerResetFlag = inRecvingServerResetFlag; }
+	void SetRecvingServerResetFlag( bool inRecvingServerResetFlag )
+	{ mRecvingServerResetFlag = inRecvingServerResetFlag; }
 
 	void SetGameObjStateDirty( int inNetworkId, uint32_t inDirtyState );
 
@@ -45,7 +46,7 @@ public:
 private:
 
 	std::string			mPlayerName;
-	int				mPlayerId;
+	int							netId_;
 
 	InputState		mInputState;
 
@@ -67,13 +68,13 @@ private:
 public:
 	ClientProxy( NetworkMgr* inNetworkManager,
 		const std::string& inName,
-		const int inPlayerId,
+		const int inNetId,
 		const pid_t inHoldedByThreadId,
 		const muduo::net::UdpConnectionPtr& inUdpConnection );
 
 	pid_t GetConnHoldedByThreadId() const { return connHoldedByTid_; }
-
 	muduo::net::UdpConnectionPtr& GetUdpConnection() { return UdpConnection_; }
+
 private:
 	muduo::net::UdpConnectionPtr	UdpConnection_;
 	pid_t													connHoldedByTid_;
@@ -85,7 +86,7 @@ public:
 	ClientProxy( NetworkMgr* inNetworkManager,
 		const SockAddrInterf& inSocketAddress,
 		const std::string& inName,
-		int inPlayerId,
+		int inNetId,
 		const UDPSocketPtr& inUDPSocket );
 
 	const SockAddrInterf& GetSocketAddress() const { return mSocketAddress; }

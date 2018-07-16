@@ -75,10 +75,10 @@ void UdpServer::newConnection( std::shared_ptr< Socket > connectedSocket,
 	++nextConnId_;
 	string connName = name_ + buf;
 
-	LOG_INFO << "UdpServer::newConnection [" << name_
-		<< "] - new connection [" << connName
-		<< "] - new connection sockfd [" << connectedSocket->fd()
-		<< "] from " << peerAddr.toIpPort();
+	//LOG_INFO << "UdpServer::newConnection [" << name_
+		//<< "] - new connection [" << connName
+		//<< "] - new connection sockfd [" << connectedSocket->fd()
+		//<< "] from " << peerAddr.toIpPort();
 	//InetAddress localAddr( sockets::getLocalAddr( connectedSocket->fd() ) );
 	InetAddress localAddr( acceptor_->GetListenPort() );
 
@@ -108,8 +108,8 @@ void UdpServer::removeConnection( const UdpConnectionPtr& conn )
 void UdpServer::removeConnectionInLoop( const UdpConnectionPtr& conn )
 {
 	loop_->assertInLoopThread();
-	LOG_INFO << "UdpServer::removeConnectionInLoop [" << name_
-		<< "] - connection " << conn->name();
+	//LOG_INFO << "UdpServer::removeConnectionInLoop [" << name_
+		//<< "] - connection " << conn->name();
 
 	size_t n = connections_.erase( conn->name() );
 	( void )n;

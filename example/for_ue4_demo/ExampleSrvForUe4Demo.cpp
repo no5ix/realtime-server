@@ -20,7 +20,7 @@ public:
 	{
 		CharacterPtr newCharacter = std::make_shared< Character >();
 
-		newCharacter->SetPlayerId( cliProxy->GetPlayerId() );
+		newCharacter->SetPlayerId( cliProxy->GetNetId() );
 		newCharacter->SetLocation(
 			2500.f + RealtimeSrvMath::GetRandomFloat() * -5000.f,
 			2500.f + RealtimeSrvMath::GetRandomFloat() * -5000.f,

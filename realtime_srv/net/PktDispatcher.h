@@ -37,7 +37,7 @@ public:
 
 	PktDispatcher( uint16_t inPort, uint32_t inThreadCount );
 
-	void Start();
+	void Start() { assert( server_ ); server_->start(); baseLoop_.loop(); }
 
 	void SetInterval( std::function<void()> func, double interval )
 	{ baseLoop_.runEvery( interval, func ); }
@@ -47,8 +47,9 @@ public:
 
 	muduo::net::EventLoop* GetBaseLoop() { return &baseLoop_; }
 
-	void AppendToPendingSndPktQ(
-		const PendingSendPacketPtr& psp, const pid_t threadId );
+	void AppendToPendingSndPktQ( const PendingSendPacketPtr& psp,
+		const pid_t threadId )
+	{ tidToPendingSndPktQMap_.at( threadId ).enqueue( psp ); }
 
 	ReceivedPacketBlockQueue* GetReceivedPacketBlockQueue()
 	{ return &recvedPktBQ_; }

@@ -29,7 +29,7 @@ public:
 
 	~PktHandler() { pktHandleThread_.join(); }
 
-	void Start() 
+	void Start()
 	{ assert( !pktHandleThread_.started() ); pktHandleThread_.start(); }
 
 	void AppendToPendingFuncs( PendingFunc func );
@@ -37,17 +37,21 @@ public:
 private:
 	void ProcessPkt( PktProcessCallback inPktHandleCallback );
 	void DoPendingFuncs();
-	void Wakeup();
 
+	void Wakeup() { recvedPktBQ_->enqueue( ReceivedPacketPtr() ); }
+
+	bool IsInPktHandlerThread() const { return threadId_ == muduo::CurrentThread::tid(); }
 
 private:
 	typedef moodycamel::ConcurrentQueue<PendingFunc> PendingFuncsQueue;
 	PendingFuncsQueue pendingFuncsQ_;
 	PendingFunc pendingFunc_;
+	bool isInvokingPendingFunc_;
 
 	ReceivedPacketBlockQueue* recvedPktBQ_;
 
 	muduo::Thread pktHandleThread_;
+	pid_t					threadId_;
 };
 
 }

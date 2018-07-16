@@ -38,14 +38,6 @@ PktDispatcher::PktDispatcher( uint16_t inPort, uint32_t inThreadCount )
 		std::bind( &PktDispatcher::IoThreadInit, this, _1 ) );
 }
 
-void PktDispatcher::Start()
-{
-	assert( server_ );
-
-	server_->start();
-	baseLoop_.loop();
-}
-
 void PktDispatcher::IoThreadInit( EventLoop* loop )
 {
 	muduo::net::TimerId curTimerId = loop->runEvery(
@@ -56,12 +48,6 @@ void PktDispatcher::IoThreadInit( EventLoop* loop )
 		LoopAndTimerId( loop, curTimerId );
 
 	tidToPendingSndPktQMap_[CurrentThread::tid()] = PendingSendPacketQueue();
-}
-
-void PktDispatcher::AppendToPendingSndPktQ(
-	const PendingSendPacketPtr& psp, pid_t threadId )
-{
-	tidToPendingSndPktQMap_[threadId].enqueue( psp );
 }
 
 void PktDispatcher::onMessage( const muduo::net::UdpConnectionPtr& conn,
@@ -80,7 +66,7 @@ void PktDispatcher::onMessage( const muduo::net::UdpConnectionPtr& conn,
 		//wake up
 		if ( t_isSleep_ )
 		{
-			LoopAndTimerId& lat = tidToLoopAndTimerIdMap_[CurrentThread::tid()];
+			LoopAndTimerId& lat = tidToLoopAndTimerIdMap_.at( CurrentThread::tid() );
 			muduo::net::TimerId curTimerId = lat.loop_->runEvery(
 				static_cast< double >( kSendPacketInterval ),
 				std::bind( &PktDispatcher::SendGamePacket, this ) );
@@ -97,31 +83,35 @@ void PktDispatcher::onConnection( const UdpConnectionPtr& conn )
 		<< conn->peerAddress().toIpPort() << " is "
 		<< ( conn->connected() ? "UP" : "DOWN" );
 
-	connCb_( conn );
+	if (connCb_) connCb_( conn );
 }
 
 void PktDispatcher::SendGamePacket()
 {
 	t_sndCountThisRound_ = 0;
 	PendingSendPacketPtr pendingSndPkt;
-	while ( tidToPendingSndPktQMap_[CurrentThread::tid()]
-		.try_dequeue( pendingSndPkt ) )
+	PendingSendPacketQueue& curPendingSndPktQ =
+		tidToPendingSndPktQMap_.at( CurrentThread::tid() );
+
+	while ( curPendingSndPktQ.try_dequeue( pendingSndPkt ) )
 	{
-		//++t_sndCountThisRound_;
+		++t_sndCountThisRound_;
 		pendingSndPkt->GetUdpConnection()->send(
 			pendingSndPkt->GetPacketBuffer()->GetBufferPtr(),
 			pendingSndPkt->GetPacketBuffer()->GetByteLength() );
 	}
 
 	// long time no pkt to snd, then sleep
-	if ( t_sndCountThisRound_ == 0 && t_sndCountLastRound_ == 0
-		&& ++t_noPktSndRoundCount_ > sleepRoundCountThreshold )
+	if ( t_sndCountThisRound_ == 0 && t_sndCountLastRound_ == 0 )
 	{
-		t_noPktSndRoundCount_ = 0;
-		LoopAndTimerId& lat = tidToLoopAndTimerIdMap_[CurrentThread::tid()];
-		lat.loop_->cancel( lat.timerId_ );
-		t_isSleep_ = true;
-		LOG_INFO << "go to sleeeeeeeep";
+		if ( ++t_noPktSndRoundCount_ > sleepRoundCountThreshold )
+		{
+			t_noPktSndRoundCount_ = 0;
+			LoopAndTimerId& lat = tidToLoopAndTimerIdMap_.at( CurrentThread::tid() );
+			lat.loop_->cancel( lat.timerId_ );
+			t_isSleep_ = true;
+			LOG_INFO << "go to sleeeeeeeep";
+		}
 	}
 	else
 	{

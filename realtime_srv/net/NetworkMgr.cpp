@@ -28,17 +28,7 @@ NetworkMgr::NetworkMgr( uint16_t inPort ) :
 	pktDispatcher_.SetInterval( std::bind(
 		&PktHandler::AppendToPendingFuncs, &pktHandler_, checkDisconnCb ),
 		static_cast< double >( kClientDisconnectTimeout ) );
-
-	pktDispatcher_.SetConnCallback(
-		std::bind( &NetworkMgr::OnConnOrDisconn, this, _1 ) );
 }
-
-void NetworkMgr::Start()
-{
-	pktHandler_.Start();
-	pktDispatcher_.Start();
-}
-
 
 void NetworkMgr::DoPreparePacketToSend( ClientProxyPtr cliProxy, const uint32_t inConnFlag )
 {
@@ -52,7 +42,7 @@ void NetworkMgr::DoPreparePacketToSend( ClientProxyPtr cliProxy, const uint32_t 
 	{
 		case kResetCC:
 		case kWelcomeCC:
-			outputPacket->Write( cliProxy->GetPlayerId() );
+			outputPacket->Write( cliProxy->GetNetId() );
 			outputPacket->Write( PktDispatcher::kSendPacketInterval );
 			break;
 		case kStateCC:
@@ -107,33 +97,17 @@ void NetworkMgr::CheckForDisconnects()
 	float minAllowedTime =
 		RealtimeSrvTiming::sInst.GetCurrentGameTime() - kClientDisconnectTimeout;
 
-	vector< ClientProxyPtr > clientsToDisconnect;
-
-	for ( const auto& pair : udpConnToClientMap_ )
+	for ( auto it = udpConnToClientMap_.begin();
+		it != udpConnToClientMap_.end(); )
 	{
-		if ( pair.second->GetLastPacketFromClientTime() < minAllowedTime )
-		{ clientsToDisconnect.push_back( pair.second ); }
-	}
-	for ( auto cliToDC : clientsToDisconnect )
-	{ cliToDC->GetUdpConnection()->forceClose(); }
-}
-
-void NetworkMgr::OnConnOrDisconn( const UdpConnectionPtr& conn )
-{
-	if ( !conn->connected() )
-	{
-		pktHandler_.AppendToPendingFuncs(
-			std::bind( &NetworkMgr::RemoveClient, this, conn ) );
-	}
-}
-
-void NetworkMgr::RemoveClient( const UdpConnectionPtr& conn )
-{
-	auto it = udpConnToClientMap_.find( conn );
-	if ( it != udpConnToClientMap_.end() )
-	{
-		LOG( "Player %d disconnect", it->second->GetPlayerId() );
-		udpConnToClientMap_.erase( conn );
+		if ( it->second->GetLastPacketFromClientTime() < minAllowedTime )
+		{
+			it->second->GetUdpConnection()->forceClose();
+			LOG( "Player %d disconnect", it->second->GetNetId() );
+			udpConnToClientMap_.erase( it++ );
+		}
+		else
+		{ ++it; }
 	}
 }
 
@@ -176,7 +150,7 @@ void NetworkMgr::WelcomeNewClient( InputBitStream& inInputStream,
 
 		LOG( "a new client named '%s' as PlayerID %d ",
 			newClientProxy->GetPlayerName().c_str(),
-			newClientProxy->GetPlayerId() );
+			newClientProxy->GetNetId() );
 	}
 	else
 	{

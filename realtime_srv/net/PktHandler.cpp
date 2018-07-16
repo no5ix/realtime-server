@@ -16,6 +16,8 @@ const int64_t kQueueWaitTimeoutUsec = 11000000;
 PktHandler::PktHandler( ReceivedPacketBlockQueue* const inRecvPktBQ,
 	PktProcessCallback pktProcessCallback )
 	:
+	threadId_( muduo::CurrentThread::tid() ),
+	isInvokingPendingFunc_( false ),
 	recvedPktBQ_( inRecvPktBQ ),
 	pktHandleThread_(
 		std::bind( &PktHandler::ProcessPkt, this, pktProcessCallback ),
@@ -46,18 +48,14 @@ void PktHandler::ProcessPkt( PktProcessCallback pktProcessCb )
 void PktHandler::DoPendingFuncs()
 {
 	while ( pendingFuncsQ_.try_dequeue( pendingFunc_ ) )
-	{ pendingFunc_(); pendingFunc_ = PendingFunc(); } // invoke pendingFunc_ & release objs in the pendingFunc_
+	{ pendingFunc_(); pendingFunc_ = PendingFunc(); } // do pendingFunc_ & release objs in the pendingFunc_
 }
 
 void PktHandler::AppendToPendingFuncs( PendingFunc func )
 {
 	pendingFuncsQ_.enqueue( std::move( func ) );
-	Wakeup();
+	if ( !IsInPktHandlerThread() | isInvokingPendingFunc_ ) Wakeup();
 }
 
-void PktHandler::Wakeup()
-{
-	recvedPktBQ_->enqueue( ReceivedPacketPtr() );
-}
 
 #endif // __linux__

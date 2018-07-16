@@ -36,7 +36,7 @@ public:
 
 	NetworkMgr( uint16_t inPort );
 
-	void Start();
+	void Start() { pktHandler_.Start(); pktDispatcher_.Start(); }
 
 	muduo::net::EventLoop* GetEventLoop() { return pktDispatcher_.GetBaseLoop(); }
 
@@ -70,10 +70,7 @@ private:
 	void	WriteLastMoveTimestampIfDirty( OutputBitStream& inOutputStream,
 		ClientProxyPtr inClientProxy );
 
-	void OnConnOrDisconn( const muduo::net::UdpConnectionPtr& conn );
 	void DoPreparePacketToSend( ClientProxyPtr inClientProxy, const uint32_t inConnFlag );
-
-	void RemoveClient( const muduo::net::UdpConnectionPtr& conn );
 
 	void	WelcomeNewClient( InputBitStream& inInputStream,
 		const muduo::net::UdpConnectionPtr& inUdpConnetction,

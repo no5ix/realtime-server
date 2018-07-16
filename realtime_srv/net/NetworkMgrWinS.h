@@ -198,7 +198,7 @@ void NetworkMgr::HandlePacketFromNewClient( InputBitStream& inInputStream,
 		LOG( "a new client at socket %s, named '%s' as PlayerID %d ",
 			inFromAddress.ToString().c_str(),
 			newClientProxy->GetPlayerName().c_str(),
-			newClientProxy->GetPlayerId()
+			newClientProxy->GetNetId()
 		);
 	}
 	//else if ( packetType == kInputCC )
@@ -230,7 +230,7 @@ void NetworkMgr::CheckForDisconnects()
 	{
 		if ( it->second->GetLastPacketFromClientTime() < minAllowedTime )
 		{
-			LOG( "Player %d disconnect", it->second->GetPlayerId() );
+			LOG( "Player %d disconnect", it->second->GetNetId() );
 
 			it = addrToClientMap_.erase( it );
 		}
@@ -304,7 +304,7 @@ void NetworkMgr::SendGamePacket( ClientProxyPtr inClientProxy, const uint32_t in
 	{
 		case kResetCC:
 		case kWelcomeCC:
-			outputPacket.Write( inClientProxy->GetPlayerId() );
+			outputPacket.Write( inClientProxy->GetNetId() );
 			outputPacket.Write( kSendPacketInterval );
 			break;
 		case kStateCC:

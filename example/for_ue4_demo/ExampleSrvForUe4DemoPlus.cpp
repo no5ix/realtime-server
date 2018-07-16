@@ -43,12 +43,12 @@ public:
 
 	GameObjPtr SpawnNewCharacterForPlayer( ClientProxyPtr cliProxy )
 	{
-		db_.SaveNewPlayer( cliProxy->GetPlayerId(),
+		db_.SaveNewPlayer( cliProxy->GetNetId(),
 			cliProxy->GetPlayerName() );
 
 		CharacterLuaBind clb;
 		CharacterPtr newCharacter = clb.DoFile();
-		newCharacter->SetPlayerId( cliProxy->GetPlayerId() );
+		newCharacter->SetPlayerId( cliProxy->GetNetId() );
 		return  std::static_pointer_cast< GameObj >( newCharacter );
 	}
 
