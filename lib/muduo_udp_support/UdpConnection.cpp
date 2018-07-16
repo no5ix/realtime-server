@@ -70,6 +70,11 @@ UdpConnection::~UdpConnection()
 	LOG_DEBUG << "UdpConnection::dtor[" << name_ << "] at " << this
 		<< " fd=" << channel_->fd()
 		<< " state=" << stateToString();
+
+	LOG_INFO << localAddress().toIpPort() << " -> "
+		<< peerAddress().toIpPort() << " is "
+		<< ( connected() ? "UP" : "DOWN" );
+
 	assert( state_ == kDisconnected );
 }
 

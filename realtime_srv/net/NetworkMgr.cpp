@@ -103,7 +103,6 @@ void NetworkMgr::CheckForDisconnects()
 		if ( it->second->GetLastPacketFromClientTime() < minAllowedTime )
 		{
 			it->second->GetUdpConnection()->forceClose();
-			LOG( "Player %d disconnect", it->second->GetNetId() );
 			udpConnToClientMap_.erase( it++ );
 		}
 		else
@@ -138,19 +137,17 @@ void NetworkMgr::WelcomeNewClient( InputBitStream& inInputStream,
 		worldRegistryCb_( newGameObj, RA_Create );
 
 		if ( packetType == kHelloCC )
-		{
-			DoPreparePacketToSend( newClientProxy, kWelcomeCC );
-		}
+		{ DoPreparePacketToSend( newClientProxy, kWelcomeCC ); }
 		else
 		{
 			newClientProxy->SetRecvingServerResetFlag( true );
 			DoPreparePacketToSend( newClientProxy, kResetCC );
-			LOG( "Send Reset Packet" );
+			LOG_INFO << "Send Reset Packet";
 		}
 
-		LOG( "a new client named '%s' as PlayerID %d ",
-			newClientProxy->GetPlayerName().c_str(),
-			newClientProxy->GetNetId() );
+		LOG_INFO << "a new client named '"
+			<< newClientProxy->GetPlayerName().c_str()
+			<< "' as PlayerID " << newClientProxy->GetNetId();
 	}
 	else
 	{

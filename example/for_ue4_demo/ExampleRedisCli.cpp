@@ -100,8 +100,8 @@ std::string ExampleRedisCli::redisReplyToString( const redisReply* reply )
 void ExampleRedisCli::SaveNewPlayerCb( hiredis::Hiredis *c, redisReply *reply,
 	int playerId, const std::string& playerName )
 {
-	LOG_INFO << "ZADD player " << "playerId = " << playerId << " "
-		<< "playerName = " << playerName << " " << redisReplyToString( reply );
+	//LOG_INFO << "ZADD player " << "playerId = " << playerId << " "
+		//<< "playerName = " << playerName << " " << redisReplyToString( reply );
 }
 
 void ExampleRedisCli::SaveNewPlayer( int newPlayerId, const std::string& newPlayerName )

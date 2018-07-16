@@ -49,7 +49,9 @@ public:
 
 	void AppendToPendingSndPktQ( const PendingSendPacketPtr& psp,
 		const pid_t threadId )
-	{ tidToPendingSndPktQMap_.at( threadId ).enqueue( psp ); }
+	{
+		tidToPendingSndPktQMap_.at( threadId ).enqueue( psp );
+	}
 
 	ReceivedPacketBlockQueue* GetReceivedPacketBlockQueue()
 	{ return &recvedPktBQ_; }
@@ -62,7 +64,8 @@ protected:
 	void onMessage( const muduo::net::UdpConnectionPtr& conn,
 		muduo::net::Buffer* buf, muduo::Timestamp receiveTime );
 
-	void onConnection( const muduo::net::UdpConnectionPtr& conn );
+	void onConnection( const muduo::net::UdpConnectionPtr& conn )
+	{ if ( connCb_ ) connCb_( conn ); }
 
 private:
 	struct LoopAndTimerId

@@ -16,7 +16,6 @@ const int64_t kQueueWaitTimeoutUsec = 11000000;
 PktHandler::PktHandler( ReceivedPacketBlockQueue* const inRecvPktBQ,
 	PktProcessCallback pktProcessCallback )
 	:
-	threadId_( muduo::CurrentThread::tid() ),
 	isInvokingPendingFunc_( false ),
 	recvedPktBQ_( inRecvPktBQ ),
 	pktHandleThread_(
@@ -26,8 +25,9 @@ PktHandler::PktHandler( ReceivedPacketBlockQueue* const inRecvPktBQ,
 
 void PktHandler::ProcessPkt( PktProcessCallback pktProcessCb )
 {
+	threadId_ = muduo::CurrentThread::tid();
+
 	size_t cnt = 0;
-	ReceivedPacketPtr rp;
 	// - correct way below
 	std::vector< ReceivedPacketPtr > tempRecvedPkts( kMaxPacketsCountPerRound );
 	// - wrong way below : concurrentQueue will not release the last group
@@ -39,7 +39,8 @@ void PktHandler::ProcessPkt( PktProcessCallback pktProcessCb )
 			kMaxPacketsCountPerRound, kQueueWaitTimeoutUsec );
 
 		for ( size_t i = 0; i != cnt; ++i )
-			if ( rp = tempRecvedPkts[i] ) { pktProcessCb( rp ); rp.reset(); }
+			if ( tempRecvedPkts[i] )
+			{ pktProcessCb( tempRecvedPkts[i] ); tempRecvedPkts[i].reset(); }
 
 		DoPendingFuncs();
 	}
@@ -47,14 +48,18 @@ void PktHandler::ProcessPkt( PktProcessCallback pktProcessCb )
 
 void PktHandler::DoPendingFuncs()
 {
+	isInvokingPendingFunc_ = true;
+
 	while ( pendingFuncsQ_.try_dequeue( pendingFunc_ ) )
 	{ pendingFunc_(); pendingFunc_ = PendingFunc(); } // do pendingFunc_ & release objs in the pendingFunc_
+
+	isInvokingPendingFunc_ = false;
 }
 
 void PktHandler::AppendToPendingFuncs( PendingFunc func )
 {
 	pendingFuncsQ_.enqueue( std::move( func ) );
-	if ( !IsInPktHandlerThread() | isInvokingPendingFunc_ ) Wakeup();
+	if ( !IsInPktHandlerThread() || isInvokingPendingFunc_ ) Wakeup();
 }
 
 

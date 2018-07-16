@@ -77,15 +77,6 @@ void PktDispatcher::onMessage( const muduo::net::UdpConnectionPtr& conn,
 	}
 }
 
-void PktDispatcher::onConnection( const UdpConnectionPtr& conn )
-{
-	LOG_INFO << conn->localAddress().toIpPort() << " -> "
-		<< conn->peerAddress().toIpPort() << " is "
-		<< ( conn->connected() ? "UP" : "DOWN" );
-
-	if (connCb_) connCb_( conn );
-}
-
 void PktDispatcher::SendGamePacket()
 {
 	t_sndCountThisRound_ = 0;

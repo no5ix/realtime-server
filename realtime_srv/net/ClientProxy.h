@@ -1,6 +1,7 @@
 #pragma once
 
 #ifdef IS_LINUX
+#include <muduo/base/Logging.h>
 #include <muduo_udp_support/UdpConnection.h>
 #endif //IS_LINUX
 
@@ -71,6 +72,8 @@ public:
 		const int inNetId,
 		const pid_t inHoldedByThreadId,
 		const muduo::net::UdpConnectionPtr& inUdpConnection );
+
+	~ClientProxy() { LOG_INFO << "Netid " << netId_ << " disconnect"; }
 
 	pid_t GetConnHoldedByThreadId() const { return connHoldedByTid_; }
 	muduo::net::UdpConnectionPtr& GetUdpConnection() { return UdpConnection_; }
