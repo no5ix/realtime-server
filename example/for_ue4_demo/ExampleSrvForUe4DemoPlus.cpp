@@ -20,9 +20,7 @@ public:
 			std::bind( &ExampleSrvForUe4Demo::SpawnNewCharacterForPlayer, this, _1 ),
 			std::bind( &ExampleSrvForUe4Demo::MyInputState, this ),
 			willDaemonizeOnLinux )
-	{
-		db_.Init( server_.GetEventLoop() );
-	}
+	{ db_.Init( server_.GetEventLoop() ); }
 
 	InputState* MyInputState() { return new ExampleInputState(); }
 
@@ -44,8 +42,6 @@ private:
 	RealtimeServer server_;
 	ExampleRedisCli db_;
 };
-
-
 
 
 
