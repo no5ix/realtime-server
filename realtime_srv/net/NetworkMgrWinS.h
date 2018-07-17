@@ -1,5 +1,6 @@
 
 
+
 namespace
 {
 const float kSendPacketInterval = 0.033f;
@@ -9,12 +10,13 @@ const int		kMaxPacketsPerFrameCount = 10;
 
 int NetworkMgr::kNewNetId = 1;
 
-NetworkMgr::NetworkMgr( uint16_t inPort ) :
+NetworkMgr::NetworkMgr( uint16_t inPort /*= DEFAULT_REALTIME_SRV_PORT*/ ) :
 	mTimeOfLastStatePacket( 0.f ),
 	mLastCheckDCTime( 0.f ),
 	mDropPacketChance( 0.f ),
 	mSimulatedLatency( 0.f ),
 	mSimulateJitter( false ),
+	bUnregistObjWhenCliDisconn_( false ),
 	isSimilateRealWorld_( false )
 {
 	UdpSockInterf::StaticInit();
@@ -181,8 +183,12 @@ void NetworkMgr::HandlePacketFromNewClient( InputBitStream& inInputStream,
 		addrToClientMap_[inFromAddress] = newClientProxy;
 
 		GameObjPtr& newGameObj = newPlayerCb_( newClientProxy );
-		newGameObj->SetClientProxy( newClientProxy );
-		worldRegistryCb_( newGameObj, RA_Create );
+		if ( newGameObj )
+		{
+			newGameObj->SetOwner( newClientProxy );
+			worldRegistryCb_( newGameObj, RA_Create );
+			newClientProxy->AddGameObj( newGameObj );
+		}
 
 		if ( packetType == kHelloCC )
 		{
@@ -231,6 +237,10 @@ void NetworkMgr::CheckForDisconnects()
 		if ( it->second->GetLastPacketFromClientTime() < minAllowedTime )
 		{
 			LOG( "Player %d disconnect", it->second->GetNetId() );
+
+			if ( bUnregistObjWhenCliDisconn_ )
+				for ( auto& obj : it->second->GetAllOwnedGameObjs() )
+					worldRegistryCb_( obj, RA_Destroy );
 
 			it = addrToClientMap_.erase( it );
 		}

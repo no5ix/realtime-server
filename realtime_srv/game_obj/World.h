@@ -14,10 +14,15 @@ public:
 
 	void Update();
 
-	void SetNotifyAllClientCallback( const NotifyAllClientCB& cb ) { notifyAllClientCB_ = cb; }
+	void SetNotifyAllClientCallback( const NotifyAllClientCB& cb )
+	{ notifyAllClientCB_ = cb; }
 
 	bool IsGameObjectExist( int inObjId );
 	GameObjPtr GetGameObject( int inNetworkId );
+
+	ObjIdToGameObjMap& GetAllGameObj() { return ObjIdToGameObjMap_; }
+	const ObjIdToGameObjMap& GetAllGameObj() const { return ObjIdToGameObjMap_; }
+
 	void Registry( GameObjPtr& inGameObject, ReplicationAction inAction );
 	void RegistGameObj( GameObjPtr& inGameObject );
 	void UnregistGameObj( GameObjPtr& inGameObject );

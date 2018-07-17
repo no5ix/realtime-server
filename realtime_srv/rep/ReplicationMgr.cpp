@@ -5,33 +5,33 @@ using namespace realtime_srv;
 
 void ReplicationMgr::ReplicateCreate( int inObjId, uint32_t inInitDirtyState )
 {
-	mObjIdToRepCmd[inObjId] = ReplicationCmd( inInitDirtyState );
+	objIdToRepCmd_[inObjId] = ReplicationCmd( inInitDirtyState );
 }
 
 void ReplicationMgr::ReplicateDestroy( int inObjId )
 {
-	mObjIdToRepCmd[inObjId].SetDestroy();
+	objIdToRepCmd_[inObjId].SetDestroy();
 }
 
 void ReplicationMgr::RemoveFromReplication( int inObjId )
 {
-	mObjIdToRepCmd.erase( inObjId );
+	objIdToRepCmd_.erase( inObjId );
 }
 
 void ReplicationMgr::SetReplicationStateDirty( int inObjId, uint32_t inDirtyState )
 {
-	mObjIdToRepCmd[inObjId].AddDirtyState( inDirtyState );
+	objIdToRepCmd_[inObjId].AddDirtyState( inDirtyState );
 }
 
 void ReplicationMgr::HandleCreateAckd( int inObjId )
 {
-	mObjIdToRepCmd[inObjId].HandleCreateAckd();
+	objIdToRepCmd_[inObjId].HandleCreateAckd();
 }
 
 
 void ReplicationMgr::Write( OutputBitStream& inOutputStream, InFlightPacket* inInFlightPacket )
 {
-	for ( auto& pair : mObjIdToRepCmd )
+	for ( auto& pair : objIdToRepCmd_ )
 	{
 		ReplicationCmd& replicationCommand = pair.second;
 		if ( replicationCommand.HasDirtyState() )

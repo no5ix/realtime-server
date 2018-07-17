@@ -39,7 +39,7 @@ void ExampleRedisCli::connectCallback( hiredis::Hiredis* c, int status )
 	}
 	else
 	{
-		LOG_INFO << "Connected...";
+		LOG_INFO << "Connected.";
 	}
 }
 

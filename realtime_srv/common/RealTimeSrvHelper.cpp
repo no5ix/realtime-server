@@ -149,9 +149,9 @@ bool RealtimeSrvHelper::DaemonizeOnLinux()
 
 void RealtimeSrvHelper::SimulateRealWorldNetCondition(
 	NetworkMgr* networkManager,
-	uint8_t LatencyCmdIndex,
-	uint8_t dropPacketChanceCmdIndex /*= 0*/,
-	uint8_t JitterCmdIndex /*= 0*/ )
+	uint8_t LatencyCmdIndex /*= 1*/,
+	uint8_t dropPacketChanceCmdIndex /*= 2*/,
+	uint8_t JitterCmdIndex /*= 3*/ )
 {
 #ifndef IS_LINUX
 	assert( networkManager );

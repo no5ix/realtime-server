@@ -10,9 +10,35 @@ int World::kNewObjId = 1;
 void World::Registry( GameObjPtr& obj, ReplicationAction repAction )
 {
 	if ( repAction == RA_Create )
-		RegistGameObj( obj );
+		return RegistGameObj( obj );
 	else if ( repAction == RA_Destroy )
-		UnregistGameObj( obj );
+		return UnregistGameObj( obj );
+}
+
+void World::RegistGameObj( GameObjPtr& obj )
+{
+	int newObjId = GetNewObjId();
+	obj->SetObjId( newObjId );
+	ObjIdToGameObjMap_[newObjId] = obj;
+
+	notifyAllClientCB_( obj, RA_Create );
+	auto newClientProxy = obj->GetOwner();
+	if ( newClientProxy )
+	{
+		newClientProxy->SetWorld( this );
+		for ( const auto& ipair : ObjIdToGameObjMap_ )
+		{
+			newClientProxy->GetReplicationManager().ReplicateCreate(
+				ipair.first, ipair.second->GetAllStateMask() );
+		}
+	}
+}
+
+void World::UnregistGameObj( GameObjPtr& _obj )
+{
+	notifyAllClientCB_( _obj, RA_Destroy );
+	_obj->WhenDying();
+	ObjIdToGameObjMap_.erase( _obj->GetObjId() );
 }
 
 int World::GetNewObjId()
@@ -38,38 +64,13 @@ GameObjPtr World::GetGameObject( int objId )
 		return GameObjPtr();
 }
 
-void World::RegistGameObj( GameObjPtr& obj )
-{
-	int newObjId = GetNewObjId();
-	obj->SetObjId( newObjId );
-	ObjIdToGameObjMap_[newObjId] = obj;
-
-	notifyAllClientCB_( obj, RA_Create );
-	auto newClientProxy = obj->GetClientProxy();
-	if ( newClientProxy )
-	{
-		newClientProxy->SetWorld( this );
-		for ( const auto& ipair : ObjIdToGameObjMap_ )
-		{
-			newClientProxy->GetReplicationManager().ReplicateCreate(
-				ipair.first, ipair.second->GetAllStateMask() );
-		}
-	}
-}
-
-void World::UnregistGameObj( GameObjPtr& obj )
-{
-	notifyAllClientCB_( obj, RA_Destroy );
-	ObjIdToGameObjMap_.erase( obj->GetObjId() );
-}
-
 void World::Update()
 {
 	vector< GameObjPtr > GameObjsToRem;
 	for ( const auto& pair : ObjIdToGameObjMap_ )
 	{
 		auto go = pair.second;
-		if ( go->IsPendingToDestroy() )
+		if ( go->IsPendingToDie() )
 			GameObjsToRem.push_back( go );
 		else
 			go->Update();

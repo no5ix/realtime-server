@@ -7,16 +7,21 @@ class Character : public realtime_srv::GameObj
 {
 public:
 	Character();
+	virtual ~Character()
+	{ realtime_srv::LOG( "Character (holded by Player %d) die.", playerId_ ); }
+
+	virtual void WhenDying()
+	{ realtime_srv::LOG( "Character (holded by Player %d) dying...", playerId_ ); }
 
 	// 'CHRT' = 1128813140;
 	CLASS_IDENTIFICATION( 1128813140 );
 
 	enum EReplicationState
 	{
-		EPS_Pose = 1 << 0,
-		EPS_PlayerId = 1 << 1,
+		ERS_Pose = 1 << 0,
+		ERS_PlayerId = 1 << 1,
 
-		EPS_AllState = EPS_Pose | EPS_PlayerId
+		EPS_AllState = ERS_Pose | ERS_PlayerId
 	};
 	virtual uint32_t GetAllStateMask() const override { return EPS_AllState; }
 
@@ -40,12 +45,13 @@ public:
 	const realtime_srv::Vector3& GetVelocity() const { return curVelocity_; }
 
 	void SetPlayerId( int newPlayerId ) { playerId_ = newPlayerId; }
+	int GetPlayerId() const { return playerId_; }
 
 protected:
 
-	virtual void CheckAndSetDirtyState() override;
+	virtual void AfterUpdate() override;
 
-	virtual void SetOldState() override;
+	virtual void BeforeUpdate() override;
 
 	virtual void ProcessInput( float inDeltaTime,
 		const realtime_srv::InputStatePtr& inInputState ) override;

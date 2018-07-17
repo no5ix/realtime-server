@@ -16,10 +16,11 @@ using namespace muduo::net;
 
 AtomicInt32 NetworkMgr::kNewNetId;
 
-NetworkMgr::NetworkMgr( uint16_t inPort ) :
+NetworkMgr::NetworkMgr( uint16_t inPort /*= DEFAULT_REALTIME_SRV_PORT*/ ) :
 	pktDispatcher_( inPort, PACKET_DISPATCHER_THREAD_NUM ),
 	pktHandler_( pktDispatcher_.GetReceivedPacketBlockQueue(),
-		std::bind( &NetworkMgr::PktProcessCallbackFunc, this, _1 ) )
+		std::bind( &NetworkMgr::PktProcessCallbackFunc, this, _1 ) ),
+	bUnregistObjWhenCliDisconn_( false )
 {
 	kNewNetId.getAndSet( 1 );
 
@@ -115,6 +116,10 @@ void NetworkMgr::CheckForDisconnects()
 	{
 		if ( it->second->GetLastPacketFromClientTime() < minAllowedTime )
 		{
+			if ( bUnregistObjWhenCliDisconn_ )
+				for ( auto& obj : it->second->GetAllOwnedGameObjs() )
+					worldRegistryCb_( obj, RA_Destroy );
+
 			it->second->GetUdpConnection()->forceClose();
 			udpConnToClientMap_.erase( it++ );
 		}
@@ -135,19 +140,22 @@ void NetworkMgr::WelcomeNewClient( InputBitStream& inInputStream,
 		std::string playerName = "realtime_srv_test_player_name";
 		//inInputStream.Read( playerName );	
 
-		ClientProxyPtr newClientProxy =
-			std::make_shared< ClientProxy >(
-				this,
-				playerName,
-				kNewNetId.getAndAdd( 1 ),
-				inHoldedByThreadId,
-				inUdpConnetction );
+		ClientProxyPtr newClientProxy = std::make_shared< ClientProxy >(
+			this,
+			playerName,
+			kNewNetId.getAndAdd( 1 ),
+			inHoldedByThreadId,
+			inUdpConnetction );
 
 		udpConnToClientMap_[inUdpConnetction] = newClientProxy;
 
 		GameObjPtr newGameObj = newPlayerCb_( newClientProxy );
-		newGameObj->SetClientProxy( newClientProxy );
-		worldRegistryCb_( newGameObj, RA_Create );
+		if ( newGameObj )
+		{
+			newGameObj->SetOwner( newClientProxy );
+			worldRegistryCb_( newGameObj, RA_Create );
+			newClientProxy->AddGameObj( newGameObj );
+		}
 
 		if ( packetType == kHelloCC )
 		{ DoPreparePacketToSend( newClientProxy, kWelcomeCC ); }
@@ -160,7 +168,7 @@ void NetworkMgr::WelcomeNewClient( InputBitStream& inInputStream,
 
 		LOG_INFO << "a new client named '"
 			<< newClientProxy->GetPlayerName().c_str()
-			<< "' as PlayerID " << newClientProxy->GetNetId();
+			<< "' as Net ID " << newClientProxy->GetNetId();
 	}
 	else
 	{

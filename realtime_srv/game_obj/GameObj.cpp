@@ -4,13 +4,13 @@
 using namespace realtime_srv;
 
 GameObj::GameObj() :
-	isPendingToDestroy_( false ),
+	isPendingToDie_( false ),
 	ObjId_( 0 )
 {}
 
 void GameObj::SetStateDirty( uint32_t repState )
 {
-	if ( ClientProxyPtr cp = GetClientProxy() )
+	if ( ClientProxyPtr cp = GetOwner() )
 	{
 		cp->SetGameObjStateDirty( GetObjId(), repState );
 	}
@@ -19,9 +19,9 @@ void GameObj::SetStateDirty( uint32_t repState )
 void GameObj::Update()
 {
 
-	SetOldState();
+	BeforeUpdate();
 
-	if ( ClientProxyPtr cp = GetClientProxy() )
+	if ( ClientProxyPtr cp = GetOwner() )
 	{
 		ActionList& actionList = cp->GetUnprocessedActionList();
 		for ( const Action& unprocessedAction : actionList )
@@ -33,5 +33,5 @@ void GameObj::Update()
 		actionList.Clear();
 	}
 
-	CheckAndSetDirtyState();
+	AfterUpdate();
 }

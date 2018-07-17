@@ -6,7 +6,7 @@ namespace realtime_srv
 class GameObj;
 class ClientProxy;
 typedef std::function< GameObjPtr( ClientProxyPtr& ) > NewPlayerCallback;
-typedef std::function<InputState*()> CustomInputStateCallback;
+typedef std::function<InputState*( )> CustomInputStateCallback;
 
 class NetworkMgr : noncopyable
 {
@@ -41,6 +41,11 @@ public:
 	void SetCustomInputStateCallback( const CustomInputStateCallback& cb )
 	{ customInputStatecb_ = cb; }
 
+	bool GetUnregistObjWhenCliDisconn() const
+	{ return bUnregistObjWhenCliDisconn_; }
+	void SetUnregistObjWhenCliDisconn( bool _whehter )
+	{ bUnregistObjWhenCliDisconn_ = _whehter; }
+
 private:
 
 	void CheckForDisconnects();
@@ -58,6 +63,7 @@ private:
 		InputBitStream& inInputStream );
 
 private:
+	bool bUnregistObjWhenCliDisconn_;
 	NewPlayerCallback newPlayerCb_;
 	std::function<void()> worldUpdateCb_;
 	WorldRegistryCb worldRegistryCb_;
@@ -65,7 +71,7 @@ private:
 
 public:
 
-	NetworkMgr( uint16_t inPort );
+	NetworkMgr( uint16_t inPort = DEFAULT_REALTIME_SRV_PORT );
 	virtual ~NetworkMgr() { UdpSockInterf::CleanUp(); }
 
 	void	SetDropPacketChance( float inChance )

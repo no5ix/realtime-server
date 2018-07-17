@@ -26,7 +26,7 @@ private:
 		int inNetworkId, uint32_t inDirtyState );
 
 private:
-	unordered_map< int, ReplicationCmd >	mObjIdToRepCmd;
+	unordered_map< int, ReplicationCmd >	objIdToRepCmd_;
 
 	ClientProxy* owner_;
 };

@@ -15,7 +15,13 @@ class ClientProxy
 public:
 
 	int	GetNetId() const { return netId_; }
-	const std::string& GetPlayerName()			const { return mPlayerName; }
+	const std::string& GetPlayerName() const { return mPlayerName; }
+
+	void AddGameObj( const GameObjPtr& _gameObj )
+	{ ownedGameObjs_.push_back( _gameObj ); }
+
+	std::vector<GameObjPtr>& GetAllOwnedGameObjs() { return ownedGameObjs_; }
+	const std::vector<GameObjPtr>& GetAllOwnedGameObjs() const { return ownedGameObjs_; }
 
 	void UpdateLastPacketTime();
 	float GetLastPacketFromClientTime()	const { return mLastPacketFromClientTime; }
@@ -31,10 +37,13 @@ public:
 	const ActionList& GetUnprocessedActionList() const { return mUnprocessedMoveList; }
 	ActionList&	 GetUnprocessedActionList() { return mUnprocessedMoveList; }
 
-	void SetIsLastMoveTimestampDirty( bool inIsDirty ) { mIsLastMoveTimestampDirty = inIsDirty; }
-	bool IsLastMoveTimestampDirty()	const { return mIsLastMoveTimestampDirty; }
+	void SetIsLastMoveTimestampDirty( bool inIsDirty )
+	{ mIsLastMoveTimestampDirty = inIsDirty; }
+	bool IsLastMoveTimestampDirty()	const
+	{ return mIsLastMoveTimestampDirty; }
 
-	bool GetRecvingServerResetFlag() const { return mRecvingServerResetFlag; }
+	bool GetRecvingServerResetFlag() const
+	{ return mRecvingServerResetFlag; }
 	void SetRecvingServerResetFlag( bool inRecvingServerResetFlag )
 	{ mRecvingServerResetFlag = inRecvingServerResetFlag; }
 
@@ -44,6 +53,7 @@ private:
 
 	std::string			mPlayerName;
 	int							netId_;
+	std::vector<GameObjPtr> ownedGameObjs_;
 
 	float			mLastPacketFromClientTime;
 	float			mTimeToRespawn;

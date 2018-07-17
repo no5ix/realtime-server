@@ -9,12 +9,12 @@ using namespace realtime_srv;
 class ExampleSrvForUe4Demo : noncopyable
 {
 public:
-	ExampleSrvForUe4Demo( bool willDaemonizeOnLinux = true )
+	ExampleSrvForUe4Demo( bool _willDaemonizeOnLinux = true )
 		:
 		server_(
 			std::bind( &ExampleSrvForUe4Demo::SpawnNewCharacter, this, _1 ),
 			std::bind( &ExampleSrvForUe4Demo::MyInputState, this ),
-			willDaemonizeOnLinux )
+			_willDaemonizeOnLinux )
 	{}
 
 	InputState* MyInputState() { return new ExampleInputState(); }

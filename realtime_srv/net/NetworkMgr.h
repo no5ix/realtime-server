@@ -31,7 +31,7 @@ public:
 
 public:
 
-	NetworkMgr( uint16_t inPort );
+	NetworkMgr( uint16_t inPort = DEFAULT_REALTIME_SRV_PORT );
 
 	void Start();
 
@@ -52,6 +52,11 @@ public:
 
 	void SetCustomInputStateCallback( const CustomInputStateCallback& cb )
 	{ customInputStatecb_ = cb; }
+
+	bool GetUnregistObjWhenCliDisconn() const
+	{ return bUnregistObjWhenCliDisconn_; }
+	void SetUnregistObjWhenCliDisconn( bool _whehter) 
+	{ bUnregistObjWhenCliDisconn_ = _whehter; }
 
 private:
 	void DoProcessPkt( ReceivedPacketPtr& recvedPacket );
@@ -79,6 +84,8 @@ private:
 	void PktProcessCallbackFunc( ReceivedPacketPtr& recvedPacket );
 
 private:
+
+	bool bUnregistObjWhenCliDisconn_;
 
 	NewPlayerCallback newPlayerCb_;
 	std::function<void()> worldUpdateCb_;

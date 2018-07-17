@@ -14,7 +14,7 @@ InFlightPacket::InFlightPacket(
 void InFlightPacket::AddTransmission( int inObjId,
 	ReplicationAction inAction, uint32_t inState )
 {
-	NetIdToTransMap_.emplace( std::make_pair(
+	objIdToTransMap_.emplace( std::make_pair(
 		inObjId,
 		ReplicationTransmission( inObjId, inAction, inState ) ) );
 }
@@ -22,21 +22,21 @@ void InFlightPacket::AddTransmission( int inObjId,
 void InFlightPacket::HandleDeliveryFailure() const
 {
 	const ReplicationTransmission *rt = nullptr;
-	for ( const auto& ipair : NetIdToTransMap_ )
+	for ( const auto& ipair : objIdToTransMap_ )
 	{
 		rt = &ipair.second;
-		int networkId = rt->GetObjId();
+		int objId = rt->GetObjId();
 
 		switch ( rt->GetAction() )
 		{
 			case RA_Create:
-				HandleCreateDeliveryFailure( networkId );
+				HandleCreateDeliveryFailure( objId );
 				break;
 			case RA_Update:
-				HandleUpdateStateDeliveryFailure( networkId, rt->GetState() );
+				HandleUpdateStateDeliveryFailure( objId, rt->GetState() );
 				break;
 			case RA_Destroy:
-				HandleDestroyDeliveryFailure( networkId );
+				HandleDestroyDeliveryFailure( objId );
 				break;
 			default:
 				break;
@@ -66,8 +66,8 @@ void realtime_srv::InFlightPacket::HandleUpdateStateDeliveryFailure( int inObjId
 	{
 		for ( const auto& iFlightPacket : owner_->GetDeliveryNotifyManager().GetInFlightPackets() )
 		{
-			auto TransIt = iFlightPacket.NetIdToTransMap_.find( inObjId );
-			if (TransIt != NetIdToTransMap_.end())
+			auto TransIt = iFlightPacket.objIdToTransMap_.find( inObjId );
+			if (TransIt != objIdToTransMap_.end())
 			{
 				inState &= ~( TransIt->second.GetState() );
 			}
@@ -83,7 +83,7 @@ void realtime_srv::InFlightPacket::HandleUpdateStateDeliveryFailure( int inObjId
 void realtime_srv::InFlightPacket::HandleDeliverySuccess() const
 {
 	const ReplicationTransmission *rt = nullptr;
-	for ( const auto& ipair : NetIdToTransMap_ )
+	for ( const auto& ipair : objIdToTransMap_ )
 	{
 		rt = &ipair.second;
 

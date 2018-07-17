@@ -28,7 +28,7 @@ Character::Character() :
 	oldRotation_( Vector3::Zero() )
 {}
 
-void Character::SetOldState()
+void Character::BeforeUpdate()
 {
 	oldLocation_ = curLocation_;
 	oldRotation_ = curRotation_;
@@ -36,14 +36,14 @@ void Character::SetOldState()
 	oldCameraRotation_ = curCameraRotation_;
 }
 
-void Character::CheckAndSetDirtyState()
+void Character::AfterUpdate()
 {
 	if ( !RealtimeSrvMath::Is3DVectorEqual( oldLocation_, curLocation_ )
 		|| !RealtimeSrvMath::Is3DVectorEqual( oldRotation_, curRotation_ )
 		|| !RealtimeSrvMath::Is3DVectorEqual( oldVelocity_, curVelocity_ )
 		|| !RealtimeSrvMath::Is3DVectorEqual( oldCameraRotation_, curCameraRotation_ ) )
 	{
-		SetStateDirty( EPS_Pose );
+		SetStateDirty( ERS_Pose );
 	}
 }
 
@@ -51,18 +51,18 @@ uint32_t Character::Write( OutputBitStream& inOutputStream, uint32_t inDirtyStat
 {
 	uint32_t writtenState = 0;
 
-	if ( inDirtyState & EPS_PlayerId )
+	if ( inDirtyState & ERS_PlayerId )
 	{
 		inOutputStream.Write( ( bool )true );
 		inOutputStream.Write( playerId_ );
 
-		writtenState |= EPS_PlayerId;
+		writtenState |= ERS_PlayerId;
 	}
 	else
 	{
 		inOutputStream.Write( ( bool )false );
 	}
-	if ( inDirtyState & EPS_Pose )
+	if ( inDirtyState & ERS_Pose )
 	{
 		inOutputStream.Write( ( bool )true );
 
@@ -71,7 +71,7 @@ uint32_t Character::Write( OutputBitStream& inOutputStream, uint32_t inDirtyStat
 		inOutputStream.Write( GetVelocity() );
 		inOutputStream.Write( GetCameraRotation() );
 
-		writtenState |= EPS_Pose;
+		writtenState |= ERS_Pose;
 	}
 	else
 	{

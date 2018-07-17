@@ -53,7 +53,7 @@ private:
 	void HandleDestroyDeliverySuccess( int inObjId ) const;
 
 private:
-	std::unordered_map< int, ReplicationTransmission >	NetIdToTransMap_;
+	std::unordered_map< int, ReplicationTransmission >	objIdToTransMap_;
 
 	PacketSN	mSequenceNumber;
 	float		mTimeDispatched;

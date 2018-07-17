@@ -17,20 +17,31 @@ public:
 	// @Parameter const CustomInputStateCallback : for using your own InputState class.
 	// @Parameter uint16_t Port : default is DEFAULT_REALTIME_SRV_PORT, see RealtimeSrvMacro.h
 	//************************************
-	RealtimeServer( 
-		const NewPlayerCallback& NewPlayerCb,
-		const CustomInputStateCallback& CustomInputStateCb,
-		bool willDaemonizeOnLinux = false,
-		uint16_t Port = DEFAULT_REALTIME_SRV_PORT );
+	RealtimeServer(
+		const NewPlayerCallback& _newPlayerCb,
+		const CustomInputStateCallback& _customInputStateCb,
+		bool _willDaemonizeOnLinux = false,
+		uint16_t _port = DEFAULT_REALTIME_SRV_PORT );
 
 
-	void Run() { networkManager_->Start(); }
+	void Run()
+	{
+		LOG( "Server running as '%sUnregistObjWhenClientDisconnect' mode.",
+			( networkManager_->GetUnregistObjWhenCliDisconn() ? "" : "Not" ) );
+		networkManager_->Start();
+	}
 
 
-	void SimulateRealWorldOnWin(
-		uint8_t LatencyCmdIndex,
-		uint8_t dropPacketChanceCmdIndex = 0,
-		uint8_t JitterCmdIndex = 0 );
+	void SetUnregistGameObjWhenClientDisconnect( bool _wheter )
+	{
+		networkManager_->SetUnregistObjWhenCliDisconn( _wheter );
+	}
+
+
+	void SimulateRealWorldOnWin()
+	{
+		RealtimeSrvHelper::SimulateRealWorldNetCondition( networkManager_.get() );
+	}
 
 
 #ifdef IS_LINUX
