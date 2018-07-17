@@ -6,16 +6,17 @@ class Action
 {
 public:
 
-	Action() {}
+	Action( InputState* inInputState ) : inputState_( inInputState ) {}
 
-	Action( const InputState& inInputState, float inTimestamp, float inDeltaTime ) :
-		mInputState( inInputState ),
+	Action( const InputStatePtr& inInputState, float inTimestamp, float inDeltaTime ) :
+		inputState_( inInputState ),
 		mTimestamp( inTimestamp ),
 		mDeltaTime( inDeltaTime )
 	{}
 
 
-	const InputState&	GetInputState()	const { return mInputState; }
+	InputStatePtr& GetInputState() { return inputState_; }
+	const InputStatePtr& GetInputState() const { return inputState_; }
 	float				GetTimestamp()	const { return mTimestamp; }
 	float				GetDeltaTime()	const { return mDeltaTime; }
 
@@ -23,7 +24,7 @@ public:
 	bool Read( InputBitStream& inInputStream );
 
 private:
-	InputState	mInputState;
+	InputStatePtr	inputState_;
 	float		mTimestamp;
 	float		mDeltaTime;
 

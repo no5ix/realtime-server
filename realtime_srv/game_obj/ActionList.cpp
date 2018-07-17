@@ -4,20 +4,10 @@
 using namespace realtime_srv;
 
 
-const Action& ActionList::AddMove( const InputState& inInputState, float inTimestamp )
+
+bool realtime_srv::ActionList::AddMoveIfNew( const Action& inAction )
 {
-	float deltaTime = mLastMoveTimestamp >= 0.f ? inTimestamp - mLastMoveTimestamp : 0.f;
-
-	mMoves.emplace_back( inInputState, inTimestamp, deltaTime );
-
-	mLastMoveTimestamp = inTimestamp;
-
-	return mMoves.back();
-}
-
-bool ActionList::AddMoveIfNew( const Action& inMove )
-{
-	float timeStamp = inMove.GetTimestamp();
+	float timeStamp = inAction.GetTimestamp();
 
 	if ( timeStamp > mLastMoveTimestamp )
 	{
@@ -25,7 +15,7 @@ bool ActionList::AddMoveIfNew( const Action& inMove )
 
 		mLastMoveTimestamp = timeStamp;
 
-		mMoves.emplace_back( inMove.GetInputState(), timeStamp, deltaTime );
+		actionQ_.emplace_back( inAction.GetInputState(), timeStamp, deltaTime );
 		return true;
 	}
 
@@ -34,8 +24,8 @@ bool ActionList::AddMoveIfNew( const Action& inMove )
 
 void	ActionList::RemovedProcessedMoves( float inLastMoveProcessedOnServerTimestamp )
 {
-	while ( !mMoves.empty() && mMoves.front().GetTimestamp() <= inLastMoveProcessedOnServerTimestamp )
+	while ( !actionQ_.empty() && actionQ_.front().GetTimestamp() <= inLastMoveProcessedOnServerTimestamp )
 	{
-		mMoves.pop_front();
+		actionQ_.pop_front();
 	}
 }

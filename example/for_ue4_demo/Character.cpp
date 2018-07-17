@@ -1,5 +1,6 @@
 #include <realtime_srv/RealtimeServer.h>
 #include "Character.h"
+#include "ExampleInputState.h"
 
 using namespace realtime_srv;
 
@@ -13,31 +14,29 @@ Character::Character() :
 	TurningBoost( 8.0f ),
 	curCameraRotation_( Vector3::Zero() ),
 	oldCameraRotation_( Vector3::Zero() ),
-	oldrentVelocity_( Vector3::Zero() ),
-	currentVelocity_( Vector3::Zero() ),
-	playerId_( 0 )
+	oldVelocity_( Vector3::Zero() ),
+	curVelocity_( Vector3::Zero() ),
+	playerId_( 0 ),
+	curLocation_( Vector3::Zero() ),
+	oldLocation_( Vector3::Zero() ),
+	curRotation_( Vector3::Zero() ),
+	oldRotation_( Vector3::Zero() )
 {}
-
 
 void Character::SetOldState()
 {
-	GameObj::SetOldState();
-	oldrentVelocity_ = currentVelocity_;
+	oldLocation_ = curLocation_;
+	oldRotation_ = curRotation_;
+	oldVelocity_ = curVelocity_;
 	oldCameraRotation_ = curCameraRotation_;
 }
 
-bool Character::IsStateDirty()
+void Character::CheckAndSetDirtyState()
 {
-	return GameObj::IsStateDirty()
-		|| !RealtimeSrvMath::Is3DVectorEqual( oldrentVelocity_, currentVelocity_ )
-		|| !RealtimeSrvMath::Is3DVectorEqual( oldCameraRotation_, curCameraRotation_ );
-}
-
-void Character::Update()
-{
-	SetOldState();
-	GameObj::Update();
-	if ( IsStateDirty() )
+	if ( !RealtimeSrvMath::Is3DVectorEqual( oldLocation_, curLocation_ )
+		|| !RealtimeSrvMath::Is3DVectorEqual( oldRotation_, curRotation_ )
+		|| !RealtimeSrvMath::Is3DVectorEqual( oldVelocity_, curVelocity_ )
+		|| !RealtimeSrvMath::Is3DVectorEqual( oldCameraRotation_, curCameraRotation_ ) )
 	{
 		SetStateDirty( EPS_Pose );
 	}
@@ -76,18 +75,24 @@ uint32_t Character::Write( OutputBitStream& inOutputStream, uint32_t inDirtyStat
 	return writtenState;
 }
 
-void Character::ProcessInput( float inDeltaTime, const InputState& inInputState )
+void Character::ProcessInput( float inDeltaTime, const InputStatePtr& inInputState )
 {
-	currentRotation_ = inInputState.GetDesiredTurnRot();
-	curCameraRotation_ = inInputState.GetDesiredLookUpRot();
+	const ExampleInputStatePtr& justForTest = 
+		std::dynamic_pointer_cast< ExampleInputState >( inInputState );
+	assert( justForTest->IsShooting() == false );
 
-	ActionAddMovementInput( curCameraRotation_.ToQuaternion() * Vector3::Forward(),
-		inInputState.GetDesiredMoveForwardAmount() );
-	ActionAddMovementInput( curCameraRotation_.ToQuaternion() * Vector3::Right(),
-		inInputState.GetDesiredMoveRightAmount() );
+	curRotation_ = inInputState->GetDesiredTurnRot();
+	curCameraRotation_ = inInputState->GetDesiredLookUpRot();
+
+	AddActionInput( curCameraRotation_.ToQuaternion() * Vector3::Forward(),
+		inInputState->GetDesiredMoveForwardAmount() );
+
+	AddActionInput( curCameraRotation_.ToQuaternion() * Vector3::Right(),
+		inInputState->GetDesiredMoveRightAmount() );
+
 	ApplyControlInputToVelocity( inDeltaTime );
 
-	const Vector3& Delta = currentVelocity_ * inDeltaTime;
+	const Vector3& Delta = curVelocity_ * inDeltaTime;
 	if ( !Delta.IsNearlyZero( 1e-6f ) )
 	{
 		SetLocation( GetLocation() + Delta );
@@ -101,10 +106,10 @@ bool Character::IsExceedingMaxSpeed( float inMaxSpeed ) const
 
 	// Allow 1% error tolerance, to account for numeric imprecision.
 	const float OverVelocityPercent = 1.01f;
-	return ( currentVelocity_.SizeSquared() > MaxSpeedSquared * OverVelocityPercent );
+	return ( curVelocity_.SizeSquared() > MaxSpeedSquared * OverVelocityPercent );
 }
 
-void Character::ActionAddMovementInput( const Vector3& WorldDirection,
+void Character::AddActionInput( const Vector3& WorldDirection,
 	float ScaleValue /*= 1.0f */ )
 {
 	ControlInputVector_ += WorldDirection * ScaleValue;
@@ -119,7 +124,7 @@ const Vector3& Character::ConsumeMovementInputVector()
 
 const Vector3& Character::GetPendingInputVector() const
 {
-// There's really no point redirecting to the MovementComponent since GetInputVector is not virtual there, and it just comes back to us.
+	// There's really no point redirecting to the MovementComponent since GetInputVector is not virtual there, and it just comes back to us.
 	return ControlInputVector_;
 }
 
@@ -135,42 +140,42 @@ void Character::ApplyControlInputToVelocity( float DeltaTime )
 
 	if ( AnalogInputModifier > 0.f && !bExceedingMaxSpeed )
 	{
-// Apply change in velocity direction
-		if ( currentVelocity_.SizeSquared() > 0.f )
+		// Apply change in velocity direction
+		if ( curVelocity_.SizeSquared() > 0.f )
 		{
-// Change direction faster than only using acceleration, but never increase velocity magnitude.
+			// Change direction faster than only using acceleration, but never increase velocity magnitude.
 			const float TimeScale = RealtimeSrvMath::Clamp( DeltaTime * TurningBoost, 0.f, 1.f );
-			currentVelocity_ = currentVelocity_ + ( ControlAcceleration *
-				currentVelocity_.Size() - currentVelocity_ ) * TimeScale;
+			curVelocity_ = curVelocity_ + ( ControlAcceleration *
+				curVelocity_.Size() - curVelocity_ ) * TimeScale;
 		}
 	}
 	else
 	{
-// Dampen velocity magnitude based on deceleration.
-		if ( currentVelocity_.SizeSquared() > 0.f )
+		// Dampen velocity magnitude based on deceleration.
+		if ( curVelocity_.SizeSquared() > 0.f )
 		{
-			const Vector3& OldVelocity = currentVelocity_;
-			const float VelSize = RealtimeSrvMath::Max( currentVelocity_.Size() -
+			const Vector3& OldVelocity = curVelocity_;
+			const float VelSize = RealtimeSrvMath::Max( curVelocity_.Size() -
 				RealtimeSrvMath::Abs( Deceleration ) * DeltaTime, 0.f );
-			currentVelocity_ = currentVelocity_.GetSafeNormal() * VelSize;
+			curVelocity_ = curVelocity_.GetSafeNormal() * VelSize;
 
 			// Don't allow braking to lower us below max speed if we started above it.
-			if ( bExceedingMaxSpeed && currentVelocity_.SizeSquared() <
+			if ( bExceedingMaxSpeed && curVelocity_.SizeSquared() <
 				RealtimeSrvMath::Square( MaxPawnSpeed ) )
 			{
-				currentVelocity_ = OldVelocity.GetSafeNormal() * MaxPawnSpeed;
+				curVelocity_ = OldVelocity.GetSafeNormal() * MaxPawnSpeed;
 			}
 		}
 	}
 
 	// Apply acceleration and clamp velocity magnitude.
 	const float NewMaxSpeed = ( IsExceedingMaxSpeed( MaxPawnSpeed ) ) ?
-		currentVelocity_.Size() : MaxPawnSpeed;
-	currentVelocity_ += ControlAcceleration * RealtimeSrvMath::Abs(
+		curVelocity_.Size() : MaxPawnSpeed;
+	curVelocity_ += ControlAcceleration * RealtimeSrvMath::Abs(
 		Acceleration ) * DeltaTime;
-	currentVelocity_ = currentVelocity_.GetClampedToMaxSize( NewMaxSpeed );
+	curVelocity_ = curVelocity_.GetClampedToMaxSize( NewMaxSpeed );
 
-	currentVelocity_.Z = 0.f;
+	curVelocity_.Z = 0.f;
 
 	ConsumeMovementInputVector();
 }

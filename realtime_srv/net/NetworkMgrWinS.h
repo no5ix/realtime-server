@@ -180,7 +180,7 @@ void NetworkMgr::HandlePacketFromNewClient( InputBitStream& inInputStream,
 
 		addrToClientMap_[inFromAddress] = newClientProxy;
 
-		GameObjPtr newGameObj = newPlayerCb_( newClientProxy );
+		GameObjPtr& newGameObj = newPlayerCb_( newClientProxy );
 		newGameObj->SetClientProxy( newClientProxy );
 		worldRegistryCb_( newGameObj, RA_Create );
 
@@ -271,7 +271,7 @@ void NetworkMgr::SetRepStateDirty( int inNetworkId, uint32_t inDirtyState )
 			inNetworkId, inDirtyState );
 }
 
-void NetworkMgr::NotifyAllClient( GameObjPtr inGameObject,
+void NetworkMgr::NotifyAllClient( GameObjPtr& inGameObject,
 	ReplicationAction inAction )
 {
 	for ( const auto& pair : addrToClientMap_ )
@@ -315,4 +315,82 @@ void NetworkMgr::SendGamePacket( ClientProxyPtr inClientProxy, const uint32_t in
 	inClientProxy->GetReplicationManager().Write( outputPacket, ifp );
 
 	SendPacket( outputPacket, inClientProxy->GetSocketAddress() );
+}
+
+
+
+void NetworkMgr::CheckPacketType( ClientProxyPtr& inClientProxy, InputBitStream& inInputStream )
+{
+	inClientProxy->UpdateLastPacketTime();
+
+	uint32_t packetType = HandleServerReset( inClientProxy, inInputStream );
+	switch ( packetType )
+	{
+		case kHelloCC:
+			SendGamePacket( inClientProxy, kWelcomeCC );
+			break;
+		case kInputCC:
+			if ( inClientProxy->GetDeliveryNotifyManager().ReadAndProcessState( inInputStream ) )
+			{
+				HandleInputPacket( inClientProxy, inInputStream );
+			}
+			break;
+		case kNullCC:
+			break;
+		default:
+			LOG( "Unknown packet type received from %s", inClientProxy->GetSocketAddress().ToString().c_str() );
+			break;
+	}
+}
+
+uint32_t NetworkMgr::HandleServerReset( ClientProxyPtr& inClientProxy, InputBitStream& inInputStream )
+{
+	uint32_t packetType;
+	inInputStream.Read( packetType );
+
+	if ( packetType == kResetedCC )
+	{
+		inClientProxy->SetRecvingServerResetFlag( false );
+		inInputStream.Read( packetType );
+	}
+	if ( inClientProxy->GetRecvingServerResetFlag() == true )
+	{
+		SendGamePacket( inClientProxy, kWelcomeCC );
+		return kNullCC;
+	}
+	else
+	{
+		return packetType;
+	}
+}
+
+void NetworkMgr::HandleInputPacket( ClientProxyPtr& inClientProxy, InputBitStream& inInputStream )
+{
+	uint32_t actionCount = 0;
+	Action action( customInputStatecb_() );
+	inInputStream.Read( actionCount, ACTION_COUNT_NUM );
+
+	for ( ; actionCount > 0; --actionCount )
+	{
+		if ( action.Read( inInputStream ) )
+		{
+			if ( inClientProxy->GetUnprocessedActionList().AddMoveIfNew( action ) )
+			{
+				inClientProxy->SetIsLastMoveTimestampDirty( true );
+			}
+		}
+	}
+}
+
+void NetworkMgr::WriteLastMoveTimestampIfDirty( OutputBitStream& inOutputStream,
+	ClientProxyPtr& inClientProxy )
+{
+	bool isTimestampDirty = inClientProxy->IsLastMoveTimestampDirty();
+	inOutputStream.Write( isTimestampDirty );
+	if ( isTimestampDirty )
+	{
+		inOutputStream.Write( inClientProxy->GetUnprocessedActionList()
+			.GetLastMoveTimestamp() );
+		inClientProxy->SetIsLastMoveTimestampDirty( false );
+	}
 }

@@ -4,12 +4,15 @@
 using namespace realtime_srv;
 
 
-RealtimeServer::RealtimeServer( const NewPlayerCallback& NewPlayerCb,
+RealtimeServer::RealtimeServer( 
+	const NewPlayerCallback& NewPlayerCb,
+	const CustomInputStateCallback& CustomInputStateCb,
 	bool willDaemonizeOnLinux /*= false*/,
 	uint16_t Port /*= DEFAULT_REALTIME_SRV_PORT*/ )
-	: world_( new World() )
 {
+	world_.reset( new World() );
 	assert( world_ );
+
 	if ( willDaemonizeOnLinux && !RealtimeSrvHelper::DaemonizeOnLinux() )
 	{
 		LOG( " Become Daemon Failed!! " );
@@ -21,6 +24,8 @@ RealtimeServer::RealtimeServer( const NewPlayerCallback& NewPlayerCb,
 	srand( static_cast< uint32_t >( time( nullptr ) ) );
 
 	networkManager_->SetNewPlayerCallback( NewPlayerCb );
+	networkManager_->SetCustomInputStateCallback( CustomInputStateCb );
+
 	networkManager_->SetWorldUpdateCallback( [&]() { world_->Update(); } );
 	networkManager_->SetWorldRegistryCallback( std::bind(
 		&World::Registry, world_.get(), _1, _2 ) );

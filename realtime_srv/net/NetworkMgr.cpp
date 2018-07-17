@@ -30,6 +30,19 @@ NetworkMgr::NetworkMgr( uint16_t inPort ) :
 		static_cast< double >( kClientDisconnectTimeout ) );
 }
 
+void realtime_srv::NetworkMgr::Start()
+{
+	assert( newPlayerCb_ );
+	assert( customInputStatecb_ );
+
+	assert( worldRegistryCb_ );
+	assert( worldUpdateCb_ );
+
+	pktHandler_.Start();
+	pktDispatcher_.Start();
+}
+
+
 void NetworkMgr::DoPreparePacketToSend( ClientProxyPtr cliProxy, const uint32_t inConnFlag )
 {
 	shared_ptr< OutputBitStream > outputPacket( new OutputBitStream() );
@@ -157,7 +170,7 @@ void NetworkMgr::WelcomeNewClient( InputBitStream& inInputStream,
 	}
 }
 
-void NetworkMgr::NotifyAllClient( GameObjPtr inGameObject, ReplicationAction inAction )
+void NetworkMgr::NotifyAllClient( GameObjPtr& inGameObject, ReplicationAction inAction )
 {
 	for ( const auto& pair : udpConnToClientMap_ )
 	{
@@ -186,12 +199,9 @@ void NetworkMgr::SetRepStateDirty( int inNetworkId, uint32_t inDirtyState )
 	}
 }
 
-#else
-#include "realtime_srv/net/NetworkMgrWinS.h"
-#endif
 
 
-void NetworkMgr::CheckPacketType( ClientProxyPtr inClientProxy, InputBitStream& inInputStream )
+void NetworkMgr::CheckPacketType( ClientProxyPtr& inClientProxy, InputBitStream& inInputStream )
 {
 	inClientProxy->UpdateLastPacketTime();
 
@@ -199,11 +209,7 @@ void NetworkMgr::CheckPacketType( ClientProxyPtr inClientProxy, InputBitStream& 
 	switch ( packetType )
 	{
 		case kHelloCC:
-		#ifdef IS_LINUX
 			DoPreparePacketToSend( inClientProxy, kWelcomeCC );
-		#else
-			SendGamePacket( inClientProxy, kWelcomeCC );
-		#endif //IS_LINUX
 			break;
 		case kInputCC:
 			if ( inClientProxy->GetDeliveryNotifyManager().ReadAndProcessState( inInputStream ) )
@@ -214,17 +220,13 @@ void NetworkMgr::CheckPacketType( ClientProxyPtr inClientProxy, InputBitStream& 
 		case kNullCC:
 			break;
 		default:
-		#ifdef IS_LINUX
 			LOG_INFO << "Unknown packet type received from "
 				<< inClientProxy->GetUdpConnection()->peerAddress().toIpPort();
-		#else
-			LOG( "Unknown packet type received from %s", inClientProxy->GetSocketAddress().ToString().c_str() );
-		#endif //IS_LINUX
 			break;
 	}
 }
 
-uint32_t NetworkMgr::HandleServerReset( ClientProxyPtr inClientProxy, InputBitStream& inInputStream )
+uint32_t NetworkMgr::HandleServerReset( ClientProxyPtr& inClientProxy, InputBitStream& inInputStream )
 {
 	uint32_t packetType;
 	inInputStream.Read( packetType );
@@ -236,11 +238,7 @@ uint32_t NetworkMgr::HandleServerReset( ClientProxyPtr inClientProxy, InputBitSt
 	}
 	if ( inClientProxy->GetRecvingServerResetFlag() == true )
 	{
-	#ifdef IS_LINUX
 		DoPreparePacketToSend( inClientProxy, kWelcomeCC );
-	#else
-		SendGamePacket( inClientProxy, kWelcomeCC );
-	#endif //IS_LINUX
 		return kNullCC;
 	}
 	else
@@ -249,10 +247,10 @@ uint32_t NetworkMgr::HandleServerReset( ClientProxyPtr inClientProxy, InputBitSt
 	}
 }
 
-void NetworkMgr::HandleInputPacket( ClientProxyPtr inClientProxy, InputBitStream& inInputStream )
+void NetworkMgr::HandleInputPacket( ClientProxyPtr& inClientProxy, InputBitStream& inInputStream )
 {
 	uint32_t actionCount = 0;
-	Action action;
+	Action action( customInputStatecb_() );
 	inInputStream.Read( actionCount, ACTION_COUNT_NUM );
 
 	for ( ; actionCount > 0; --actionCount )
@@ -268,7 +266,7 @@ void NetworkMgr::HandleInputPacket( ClientProxyPtr inClientProxy, InputBitStream
 }
 
 void NetworkMgr::WriteLastMoveTimestampIfDirty( OutputBitStream& inOutputStream,
-	ClientProxyPtr inClientProxy )
+	ClientProxyPtr& inClientProxy )
 {
 	bool isTimestampDirty = inClientProxy->IsLastMoveTimestampDirty();
 	inOutputStream.Write( isTimestampDirty );
@@ -279,3 +277,8 @@ void NetworkMgr::WriteLastMoveTimestampIfDirty( OutputBitStream& inOutputStream,
 		inClientProxy->SetIsLastMoveTimestampDirty( false );
 	}
 }
+
+
+#else
+#include "realtime_srv/net/NetworkMgrWinS.h"
+#endif

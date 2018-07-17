@@ -16,6 +16,7 @@ const int64_t kQueueWaitTimeoutUsec = 11000000;
 PktHandler::PktHandler( ReceivedPacketBlockQueue* const inRecvPktBQ,
 	PktProcessCallback pktProcessCallback )
 	:
+	threadId_( 0 ),
 	isInvokingPendingFunc_( false ),
 	recvedPktBQ_( inRecvPktBQ ),
 	pktHandleThread_(
@@ -28,11 +29,7 @@ void PktHandler::ProcessPkt( PktProcessCallback pktProcessCb )
 	threadId_ = muduo::CurrentThread::tid();
 
 	size_t cnt = 0;
-	// - correct way below
 	std::vector< ReceivedPacketPtr > tempRecvedPkts( kMaxPacketsCountPerRound );
-	// - wrong way below : concurrentQueue will not release the last group
-	//std::vector< ReceivedPacketPtr > tempRecvedPkts;
-	//tempRecvedPkts.reserve( kMaxPacketsCountPerRound );
 	while ( true )
 	{
 		cnt = recvedPktBQ_->wait_dequeue_bulk_timed( tempRecvedPkts.begin(),

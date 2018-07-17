@@ -25,19 +25,30 @@ public:
 
 public:
 
+	const realtime_srv::Vector3&	GetRotation() const { return curRotation_; }
+	void SetRotation( realtime_srv::Vector3 inRotation ) { curRotation_ = inRotation; }
+	void SetRotation( const float x, const float y, const float z )
+	{ curRotation_ = realtime_srv::Vector3( x, y, z ); }
+
+	const realtime_srv::Vector3&	GetLocation() const { return curLocation_; }
+	void SetLocation( const realtime_srv::Vector3& inLocation ) { curLocation_ = inLocation; }
+	void SetLocation( const float x, const float y, const float z )
+	{ curLocation_ = realtime_srv::Vector3( x, y, z ); }
+
 	float GetMaxSpeed() const { return MaxSpeed; }
 	const realtime_srv::Vector3& GetCameraRotation() const { return curCameraRotation_; }
-	const realtime_srv::Vector3& GetVelocity() const { return currentVelocity_; }
+	const realtime_srv::Vector3& GetVelocity() const { return curVelocity_; }
 
 	void SetPlayerId( int newPlayerId ) { playerId_ = newPlayerId; }
 
 protected:
 
-	virtual void Update() override;
+	virtual void CheckAndSetDirtyState() override;
+
 	virtual void SetOldState() override;
-	virtual bool IsStateDirty() override;
+
 	virtual void ProcessInput( float inDeltaTime,
-		const realtime_srv::InputState& inInputState ) override;
+		const realtime_srv::InputStatePtr& inInputState ) override;
 
 protected:
 	void HandleShooting() {}
@@ -46,7 +57,7 @@ protected:
 	void ApplyControlInputToVelocity( float DeltaTime );
 
 	bool IsExceedingMaxSpeed( float inMaxSpeed ) const;
-	void ActionAddMovementInput( const realtime_srv::Vector3& WorldDirection, float ScaleValue = 1.0f );
+	void AddActionInput( const realtime_srv::Vector3& WorldDirection, float ScaleValue = 1.0f );
 	const realtime_srv::Vector3& ConsumeMovementInputVector();
 	const realtime_srv::Vector3& GetPendingInputVector() const;
 
@@ -73,10 +84,17 @@ private:
 
 	float TurningBoost;
 
+
+	realtime_srv::Vector3 curLocation_;
+	realtime_srv::Vector3 oldLocation_;
+
+	realtime_srv::Vector3 curRotation_;
+	realtime_srv::Vector3 oldRotation_;
+
 	realtime_srv::Vector3 curCameraRotation_;
-	realtime_srv::Vector3 currentVelocity_;
+	realtime_srv::Vector3 curVelocity_;
 	realtime_srv::Vector3 oldCameraRotation_;
-	realtime_srv::Vector3 oldrentVelocity_;
+	realtime_srv::Vector3 oldVelocity_;
 
 	int playerId_;
 };

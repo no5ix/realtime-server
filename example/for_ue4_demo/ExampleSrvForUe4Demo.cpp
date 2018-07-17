@@ -1,5 +1,6 @@
 #include <realtime_srv/RealtimeServer.h>
 #include "Character.h"
+#include "ExampleInputState.h"
 
 
 using namespace realtime_srv;
@@ -10,13 +11,17 @@ class ExampleSrvForUe4Demo : noncopyable
 public:
 	ExampleSrvForUe4Demo( bool willDaemonizeOnLinux = true )
 		:
-		server_( std::bind( &ExampleSrvForUe4Demo::SpawnNewCharacterForPlayer, this, _1 ),
+		server_(
+			std::bind( &ExampleSrvForUe4Demo::SpawnNewCharacterForPlayer, this, _1 ),
+			std::bind( &ExampleSrvForUe4Demo::MyInputState, this ),
 			willDaemonizeOnLinux )
 	{}
 
+	InputState* MyInputState() { return new ExampleInputState(); }
+
 	void Run() { server_.Run(); }
 
-	GameObjPtr SpawnNewCharacterForPlayer( ClientProxyPtr cliProxy )
+	GameObjPtr SpawnNewCharacterForPlayer( ClientProxyPtr& cliProxy )
 	{
 		CharacterPtr newCharacter = std::make_shared< Character >();
 

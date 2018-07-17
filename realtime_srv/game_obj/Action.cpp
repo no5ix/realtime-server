@@ -4,7 +4,7 @@ using namespace realtime_srv;
 
 bool Action::Write( OutputBitStream& inOutputStream ) const
 {
-	mInputState.Write( inOutputStream );
+	inputState_->Write( inOutputStream );
 	inOutputStream.Write( mTimestamp );
 
 	return true;
@@ -12,7 +12,7 @@ bool Action::Write( OutputBitStream& inOutputStream ) const
 
 bool Action::Read( InputBitStream& inInputStream )
 {
-	mInputState.Read( inInputStream );
+	inputState_->Read( inInputStream );
 	inInputStream.Read( mTimestamp );
 
 	return true;

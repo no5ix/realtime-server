@@ -1,7 +1,18 @@
 
 
+namespace realtime_srv
+{
+
+class GameObj;
+class ClientProxy;
+typedef std::function< GameObjPtr( ClientProxyPtr& ) > NewPlayerCallback;
+typedef std::function<InputState*()> CustomInputStateCallback;
+
+class NetworkMgr : noncopyable
+{
+
 public:
-	typedef std::function<void( GameObjPtr, ReplicationAction )> WorldRegistryCb;
+	typedef std::function<void( GameObjPtr&, ReplicationAction )> WorldRegistryCb;
 
 	static const uint32_t	kNullCC = 0;
 	static const uint32_t	kHelloCC = 'HELO';
@@ -16,7 +27,7 @@ public:
 
 	void SetRepStateDirty( int inNetworkId, uint32_t inDirtyState );
 
-	void NotifyAllClient( GameObjPtr inGameObject, ReplicationAction inAction );
+	void NotifyAllClient( GameObjPtr& inGameObject, ReplicationAction inAction );
 
 	void SetNewPlayerCallback( const NewPlayerCallback& cb )
 	{ newPlayerCb_ = cb; }
@@ -27,26 +38,30 @@ public:
 	void SetWorldRegistryCallback( const WorldRegistryCb& cb )
 	{ worldRegistryCb_ = cb; }
 
+	void SetCustomInputStateCallback( const CustomInputStateCallback& cb )
+	{ customInputStatecb_ = cb; }
+
 private:
 
 	void CheckForDisconnects();
 
-	uint32_t	 HandleServerReset( ClientProxyPtr inClientProxy,
+	uint32_t	 HandleServerReset( ClientProxyPtr& inClientProxy,
 		InputBitStream& inInputStream );
 
-	void	CheckPacketType( ClientProxyPtr inClientProxy,
+	void	CheckPacketType( ClientProxyPtr& inClientProxy,
 		InputBitStream& inInputStream );
 
 	void	WriteLastMoveTimestampIfDirty( OutputBitStream& inOutputStream,
-		ClientProxyPtr inClientProxy );
+		ClientProxyPtr& inClientProxy );
 
-	void	HandleInputPacket( ClientProxyPtr inClientProxy,
+	void	HandleInputPacket( ClientProxyPtr& inClientProxy,
 		InputBitStream& inInputStream );
 
 private:
 	NewPlayerCallback newPlayerCb_;
 	std::function<void()> worldUpdateCb_;
 	WorldRegistryCb worldRegistryCb_;
+	CustomInputStateCallback customInputStatecb_;
 
 public:
 
@@ -68,61 +83,63 @@ public:
 		const SockAddrInterf& inSockAddr );
 
 	void	HandleConnectionReset( const SockAddrInterf& inFromAddress );
-	private:
-		void	ProcessQueuedPackets();
+private:
+	void	ProcessQueuedPackets();
 
-		void	SendGamePacket( ClientProxyPtr inClientProxy,
-			const uint32_t inConnFlag );
+	void	SendGamePacket( ClientProxyPtr inClientProxy,
+		const uint32_t inConnFlag );
 
-		void	ReadIncomingPacketsIntoQueue();
+	void	ReadIncomingPacketsIntoQueue();
 
-		virtual void ProcessPacket( InputBitStream& inInputStream,
+	virtual void ProcessPacket( InputBitStream& inInputStream,
+		const SockAddrInterf& inFromAddress,
+		const UDPSocketPtr& inUDPSocket );
+
+	void	HandlePacketFromNewClient( InputBitStream& inInputStream,
+		const SockAddrInterf& inFromAddress,
+		const UDPSocketPtr& inUDPSocket );
+
+private:
+	class ReceivedPacket
+	{
+	public:
+		ReceivedPacket(
+			float inReceivedTime,
+			InputBitStream& inInputMemoryBitStream,
 			const SockAddrInterf& inFromAddress,
-			const UDPSocketPtr& inUDPSocket );
+			UDPSocketPtr  inUDPSocket = nullptr )
+			:
+			mReceivedTime( inReceivedTime ),
+			mFromAddress( inFromAddress ),
+			mPacketBuffer( inInputMemoryBitStream ),
+			mUDPSocket( inUDPSocket )
+		{}
 
-		void	HandlePacketFromNewClient( InputBitStream& inInputStream,
-			const SockAddrInterf& inFromAddress,
-			const UDPSocketPtr& inUDPSocket );
-
-	private:
-		class ReceivedPacket
-		{
-		public:
-			ReceivedPacket(
-				float inReceivedTime,
-				InputBitStream& inInputMemoryBitStream,
-				const SockAddrInterf& inFromAddress,
-				UDPSocketPtr  inUDPSocket = nullptr )
-				:
-				mReceivedTime( inReceivedTime ),
-				mFromAddress( inFromAddress ),
-				mPacketBuffer( inInputMemoryBitStream ),
-				mUDPSocket( inUDPSocket )
-			{}
-
-			const	SockAddrInterf&			GetFromAddress()	const { return mFromAddress; }
-			float					GetReceivedTime()	const { return mReceivedTime; }
-			InputBitStream&	GetPacketBuffer() { return mPacketBuffer; }
-			UDPSocketPtr	GetUDPSocket() const { return mUDPSocket; }
-
-		private:
-
-			float					mReceivedTime;
-			InputBitStream			mPacketBuffer;
-			SockAddrInterf			mFromAddress;
-			UDPSocketPtr			mUDPSocket;
-		};
-		queue< ReceivedPacket, list< ReceivedPacket > >	mPacketQueue;
+		const	SockAddrInterf&			GetFromAddress()	const { return mFromAddress; }
+		float					GetReceivedTime()	const { return mReceivedTime; }
+		InputBitStream&	GetPacketBuffer() { return mPacketBuffer; }
+		UDPSocketPtr	GetUDPSocket() const { return mUDPSocket; }
 
 	private:
-		UDPSocketPtr				mSocket;
-		static int				kNewNetId;
-		typedef unordered_map< SockAddrInterf, ClientProxyPtr >	AddrToClientMap;
-		AddrToClientMap		addrToClientMap_;
 
-		float						mTimeOfLastStatePacket;
-		float						mDropPacketChance;
-		float						mSimulatedLatency;
-		bool						mSimulateJitter;
-		bool						isSimilateRealWorld_;
-		float						mLastCheckDCTime;
+		float					mReceivedTime;
+		InputBitStream			mPacketBuffer;
+		SockAddrInterf			mFromAddress;
+		UDPSocketPtr			mUDPSocket;
+	};
+	queue< ReceivedPacket, list< ReceivedPacket > >	mPacketQueue;
+
+private:
+	UDPSocketPtr				mSocket;
+	static int				kNewNetId;
+	typedef unordered_map< SockAddrInterf, ClientProxyPtr >	AddrToClientMap;
+	AddrToClientMap		addrToClientMap_;
+
+	float						mTimeOfLastStatePacket;
+	float						mDropPacketChance;
+	float						mSimulatedLatency;
+	bool						mSimulateJitter;
+	bool						isSimilateRealWorld_;
+	float						mLastCheckDCTime;
+};
+}

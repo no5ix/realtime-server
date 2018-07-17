@@ -17,9 +17,6 @@ public:
 	int	GetNetId() const { return netId_; }
 	const std::string& GetPlayerName()			const { return mPlayerName; }
 
-	void SetInputState( const InputState& inInputState ) { mInputState = inInputState; }
-	const InputState& GetInputState()		const { return mInputState; }
-
 	void UpdateLastPacketTime();
 	float GetLastPacketFromClientTime()	const { return mLastPacketFromClientTime; }
 
@@ -43,13 +40,10 @@ public:
 
 	void SetGameObjStateDirty( int inNetworkId, uint32_t inDirtyState );
 
-
 private:
 
 	std::string			mPlayerName;
 	int							netId_;
-
-	InputState		mInputState;
 
 	float			mLastPacketFromClientTime;
 	float			mTimeToRespawn;

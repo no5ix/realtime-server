@@ -26,52 +26,39 @@ public:
 	GameObj();
 	virtual ~GameObj() {}
 
-public:
 	virtual void Update();
 
-	const Vector3&	GetRotation() const { return currentRotation_; }
-	void SetRotation( Vector3 inRotation ) { currentRotation_ = inRotation; }
-	void SetRotation( const float x, const float y, const float z )
-	{ currentRotation_ = Vector3( x, y, z ); }
+	virtual uint32_t	Write( OutputBitStream& inOutputStream,
+		uint32_t inDirtyState ) const = 0;
 
-	const Vector3&	GetLocation() const { return currentLocation_; }
-	void SetLocation( const Vector3& inLocation ) { currentLocation_ = inLocation; }
-	void SetLocation( const float x, const float y, const float z )
-	{ currentLocation_ = Vector3( x, y, z ); }
+	virtual void Read( InputBitStream& inInputStream ) {}
+
+public:
 
 	shared_ptr< ClientProxy >	GetClientProxy() const { return clientProxy_.lock(); }
 	void SetClientProxy( shared_ptr< ClientProxy > cp ) { clientProxy_ = cp; }
 
-	bool		DoesWantToDie()				const { return mDoesWantToDie; }
-	void		SetDoesWantToDie( bool inWants ) { mDoesWantToDie = inWants; }
+	bool		IsPendingToDestroy() const { return isPendingToDestroy_; }
+	void		SetPendingToDestroy( bool whether ) { isPendingToDestroy_ = whether; }
 
 	int			GetObjId()				const { return ObjId_; }
 	void		SetObjId( int inObjId ) { ObjId_ = inObjId; }
 
-	virtual uint32_t	Write( OutputBitStream& inOutputStream,
-		uint32_t inDirtyState ) const { return 0; }
-
-	virtual void		Read( InputBitStream& inInputStream ) {}
-
 protected:
 
-	virtual void SetOldState();
-	virtual bool IsStateDirty();
-	void SetStateDirty( uint32_t repState );
+	virtual void SetOldState() = 0;
+	virtual void CheckAndSetDirtyState() = 0;
+
 	virtual void ProcessInput( float inDeltaTime,
-		const InputState& inInputState ) {}
+		const std::shared_ptr<InputState>& inInputState ) = 0;
+
+	void SetStateDirty( uint32_t repState );
 
 protected:
 
-	bool mDoesWantToDie;
+	bool isPendingToDestroy_;
 
 	int	ObjId_;
-
-	Vector3 currentLocation_;
-	Vector3 oldLocation_;
-
-	Vector3 currentRotation_;
-	Vector3 oldRotation_;
 
 	weak_ptr<ClientProxy> clientProxy_;
 };

@@ -4,25 +4,9 @@
 using namespace realtime_srv;
 
 GameObj::GameObj() :
-	mDoesWantToDie( false ),
-	ObjId_( 0 ),
-	currentLocation_( Vector3::Zero() ),
-	oldLocation_( Vector3::Zero() ),
-	currentRotation_( Vector3::Zero() ),
-	oldRotation_( Vector3::Zero() )
+	isPendingToDestroy_( false ),
+	ObjId_( 0 )
 {}
-
-void GameObj::SetOldState()
-{
-	oldLocation_ = GetLocation();
-	oldRotation_ = GetRotation();
-}
-
-bool GameObj::IsStateDirty()
-{
-	return !RealtimeSrvMath::Is3DVectorEqual( oldLocation_, GetLocation() ) ||
-		!RealtimeSrvMath::Is3DVectorEqual( oldRotation_, GetRotation() );
-}
 
 void GameObj::SetStateDirty( uint32_t repState )
 {
@@ -34,15 +18,20 @@ void GameObj::SetStateDirty( uint32_t repState )
 
 void GameObj::Update()
 {
+
+	SetOldState();
+
 	if ( ClientProxyPtr cp = GetClientProxy() )
 	{
 		ActionList& actionList = cp->GetUnprocessedActionList();
 		for ( const Action& unprocessedAction : actionList )
 		{
-			const InputState& currentState = unprocessedAction.GetInputState();
+			const InputStatePtr& currentState = unprocessedAction.GetInputState();
 			float deltaTime = unprocessedAction.GetDeltaTime();
 			ProcessInput( deltaTime, currentState );
 		}
 		actionList.Clear();
 	}
+
+	CheckAndSetDirtyState();
 }

@@ -11,6 +11,7 @@
     <ClInclude Include="..\..\example\for_ue4_demo\Character.h" />
     <ClInclude Include="..\..\example\for_ue4_demo\ExampleRedisCli.h" />
     <ClInclude Include="..\..\example\for_ue4_demo\CharacterLuaBind.h" />
+    <ClInclude Include="..\..\example\for_ue4_demo\ExampleInputState.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\..\example\for_ue4_demo\CMakeLists.txt" />

@@ -49,9 +49,7 @@ public:
 
 	void AppendToPendingSndPktQ( const PendingSendPacketPtr& psp,
 		const pid_t threadId )
-	{
-		tidToPendingSndPktQMap_.at( threadId ).enqueue( psp );
-	}
+	{ tidToPendingSndPktQMap_.at( threadId ).enqueue( psp ); }
 
 	ReceivedPacketBlockQueue* GetReceivedPacketBlockQueue()
 	{ return &recvedPktBQ_; }

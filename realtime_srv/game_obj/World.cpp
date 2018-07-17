@@ -7,82 +7,60 @@ using namespace realtime_srv;
 
 int World::kNewObjId = 1;
 
-World::World() 
-{}
-
-void World::Registry( GameObjPtr inGameObject, ReplicationAction inAction )
+void World::Registry( GameObjPtr& obj, ReplicationAction repAction )
 {
-	if ( inAction == RA_Create )
-	{
-		RegistGameObj( inGameObject );
-	}
-	else if ( inAction == RA_Destroy )
-	{
-		UnregistGameObj( inGameObject );
-	}
+	if ( repAction == RA_Create )
+		RegistGameObj( obj );
+	else if ( repAction == RA_Destroy )
+		UnregistGameObj( obj );
 }
 
 int World::GetNewObjId()
 {
 	int toRet = kNewObjId++;
 	if ( kNewObjId < toRet )
-	{
-		LOG( "Network ID Wrap Around!!! You've been playing way too long..." );
-	}
+		LOG( "GameObj ID Wrap Around!!! You've been playing way too long..." );
 	return toRet;
 }
 
-bool World::IsGameObjectExist( int inObjId )
+bool World::IsGameObjectExist( int objId )
 {
-	auto gameObjectIt = ObjIdToGameObjMap_.find( inObjId );
-	if ( gameObjectIt != ObjIdToGameObjMap_.end() )
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+	auto gameObjectIt = ObjIdToGameObjMap_.find( objId );
+	return gameObjectIt != ObjIdToGameObjMap_.end();
 }
 
-GameObjPtr World::GetGameObject( int inObjId )
+GameObjPtr World::GetGameObject( int objId )
 {
-	auto gameObjectIt = ObjIdToGameObjMap_.find( inObjId );
+	auto gameObjectIt = ObjIdToGameObjMap_.find( objId );
 	if ( gameObjectIt != ObjIdToGameObjMap_.end() )
-	{
 		return gameObjectIt->second;
-	}
 	else
-	{
 		return GameObjPtr();
-	}
 }
 
-void World::RegistGameObj( GameObjPtr inGameObject )
+void World::RegistGameObj( GameObjPtr& obj )
 {
 	int newObjId = GetNewObjId();
-	inGameObject->SetObjId( newObjId );
-	ObjIdToGameObjMap_[newObjId] = inGameObject;
+	obj->SetObjId( newObjId );
+	ObjIdToGameObjMap_[newObjId] = obj;
 
-	notifyAllClientCB_( inGameObject, RA_Create );
-	auto newClientProxy = inGameObject->GetClientProxy();
+	notifyAllClientCB_( obj, RA_Create );
+	auto newClientProxy = obj->GetClientProxy();
 	if ( newClientProxy )
 	{
 		newClientProxy->SetWorld( this );
-		for ( const auto& pair : ObjIdToGameObjMap_ )
+		for ( const auto& ipair : ObjIdToGameObjMap_ )
 		{
 			newClientProxy->GetReplicationManager().ReplicateCreate(
-				pair.first, pair.second->GetAllStateMask() );
+				ipair.first, ipair.second->GetAllStateMask() );
 		}
 	}
 }
 
-void World::UnregistGameObj( GameObjPtr inGameObject )
+void World::UnregistGameObj( GameObjPtr& obj )
 {
-	notifyAllClientCB_( inGameObject, RA_Destroy );
-
-	int objId = inGameObject->GetObjId();
-	ObjIdToGameObjMap_.erase( objId );
+	notifyAllClientCB_( obj, RA_Destroy );
+	ObjIdToGameObjMap_.erase( obj->GetObjId() );
 }
 
 void World::Update()
@@ -91,20 +69,11 @@ void World::Update()
 	for ( const auto& pair : ObjIdToGameObjMap_ )
 	{
 		auto go = pair.second;
-
-		if ( !go->DoesWantToDie() )
-		{
-			go->Update();
-		}
-		else
-		{
+		if ( go->IsPendingToDestroy() )
 			GameObjsToRem.push_back( go );
-		}
+		else
+			go->Update();
 	}
 
-	if ( GameObjsToRem.size() > 0 )
-	{
-		for ( auto& g : GameObjsToRem )
-			UnregistGameObj( g );
-	}
+	for ( auto& g : GameObjsToRem ) UnregistGameObj( g );
 }

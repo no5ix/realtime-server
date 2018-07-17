@@ -19,17 +19,7 @@ public:
 
 		mDesiredLookUpAmountX( 0.f ),
 		mDesiredLookUpAmountY( 0.f ),
-		mDesiredLookUpAmountZ( 0.f ),
-
-		mDesiredTurnRateAmount( 0.f ),
-		mDesiredLookUpRateAmount( 0.f ),
-
-		mDesiredOnStartJumpAmount( 0.f ),
-		mDesiredOnStopJumpAmount( 0.f ),
-
-		mDesiredMoveUpAmount( 0.f ),
-
-		mIsShooting( false )
+		mDesiredLookUpAmountZ( 0.f )
 	{}
 
 	float GetDesiredMoveForwardAmount()	const { return mDesiredMoveForwardAmount; }
@@ -38,18 +28,9 @@ public:
 	Vector3 GetDesiredTurnRot()	const { return Vector3( mDesiredTurnAmountX, mDesiredTurnAmountY, mDesiredTurnAmountZ ); }
 	Vector3 GetDesiredLookUpRot()	const { return Vector3( mDesiredLookUpAmountX, mDesiredLookUpAmountY, mDesiredLookUpAmountZ ); }
 
-	float GetDesiredTurnRateAmount()	const { return mDesiredTurnRateAmount; }
-	float GetDesiredLookUpRateAmount()	const { return mDesiredLookUpRateAmount; }
 
-	float GetDesiredOnStartJumpAmount()	const { return mDesiredOnStartJumpAmount; }
-	float GetDesiredOnStopJumpAmount()	const { return mDesiredOnStopJumpAmount; }
-
-	float GetDesiredOnMoveUpAmount()	const { return mDesiredMoveUpAmount; }
-
-	bool  IsShooting()					const { return mIsShooting; }
-
-	bool Write( OutputBitStream& inOutputStream ) const;
-	bool Read( InputBitStream& inInputStream );
+	virtual bool Write( OutputBitStream& inOutputStream ) const;
+	virtual bool Read( InputBitStream& inInputStream );
 
 protected:
 
@@ -60,18 +41,11 @@ protected:
 	float	mDesiredTurnAmountY;
 	float	mDesiredTurnAmountZ;
 
-	float   mDesiredLookUpAmountX;
-	float   mDesiredLookUpAmountY;
-	float   mDesiredLookUpAmountZ;
+	float mDesiredLookUpAmountX;
+	float mDesiredLookUpAmountY;
+	float mDesiredLookUpAmountZ;
 
-	float	mDesiredTurnRateAmount;
-	float	mDesiredLookUpRateAmount;
-
-	float	mDesiredOnStartJumpAmount;
-	float	mDesiredOnStopJumpAmount;
-
-	float	mDesiredMoveUpAmount;
-
-	bool	mIsShooting;
 };
+typedef std::shared_ptr<InputState> InputStatePtr;
+
 }

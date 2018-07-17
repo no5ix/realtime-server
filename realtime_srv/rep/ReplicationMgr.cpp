@@ -91,8 +91,7 @@ uint32_t ReplicationMgr::WriteUpdateAction( OutputBitStream& inOutputStream,
 {
 	GameObjPtr gameObject = owner_->GetWorld()->GetGameObject( inObjId );
 	assert( gameObject );
-	uint32_t writtenState = gameObject->Write( inOutputStream, inDirtyState );
-	return writtenState;
+	return gameObject->Write( inOutputStream, inDirtyState );
 }
 
 uint32_t ReplicationMgr::WriteDestroyAction( OutputBitStream& inOutputStream,
