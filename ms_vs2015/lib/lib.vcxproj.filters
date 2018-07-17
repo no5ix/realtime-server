@@ -192,9 +192,6 @@
     <ClInclude Include="..\..\lib\lualib\sol.hpp">
       <Filter>lualib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\lib\lualib\LuaBindMgr.h">
-      <Filter>lualib</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\lib\lualib\lua53\lapi.h">
       <Filter>lualib\lua53</Filter>
     </ClInclude>

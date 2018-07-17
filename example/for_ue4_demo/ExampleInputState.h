@@ -1,7 +1,7 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+#pragma once
+
 #include <realtime_srv/game_obj/InputState.h>
 
-#pragma once
 
 
 class ExampleInputState : public realtime_srv::InputState

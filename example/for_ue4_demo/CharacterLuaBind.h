@@ -3,7 +3,7 @@
 
 #ifdef IS_LINUX
 
-#include <lualib/LuaBindMgr.h>
+#include <realtime_srv/common/LuaBindMgr.h>
 
 
 class CharacterLuaBind : public realtime_srv::LuaBindMgr

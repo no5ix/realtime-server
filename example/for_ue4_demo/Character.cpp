@@ -12,14 +12,19 @@ Character::Character() :
 	Acceleration( 1000.f ),
 	Deceleration( 2000.f ),
 	TurningBoost( 8.0f ),
+	playerId_( 0 ),
 	curCameraRotation_( Vector3::Zero() ),
 	oldCameraRotation_( Vector3::Zero() ),
 	oldVelocity_( Vector3::Zero() ),
 	curVelocity_( Vector3::Zero() ),
-	playerId_( 0 ),
-	curLocation_( Vector3::Zero() ),
+	curLocation_(
+		2500.f + RealtimeSrvMath::GetRandomFloat() * -5000.f,
+		2500.f + RealtimeSrvMath::GetRandomFloat() * -5000.f,
+		0.f ),
+	curRotation_( 0.f,
+		RealtimeSrvMath::GetRandomFloat() * 180.f,
+		0.f ),
 	oldLocation_( Vector3::Zero() ),
-	curRotation_( Vector3::Zero() ),
 	oldRotation_( Vector3::Zero() )
 {}
 
@@ -77,7 +82,7 @@ uint32_t Character::Write( OutputBitStream& inOutputStream, uint32_t inDirtyStat
 
 void Character::ProcessInput( float inDeltaTime, const InputStatePtr& inInputState )
 {
-	const ExampleInputStatePtr& justForTest = 
+	const ExampleInputStatePtr& justForTest =
 		std::dynamic_pointer_cast< ExampleInputState >( inInputState );
 	assert( justForTest->IsShooting() == false );
 

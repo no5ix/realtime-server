@@ -47,7 +47,6 @@
     <ClInclude Include="..\..\lib\lualib\lua53\lundump.h" />
     <ClInclude Include="..\..\lib\lualib\lua53\lvm.h" />
     <ClInclude Include="..\..\lib\lualib\lua53\lzio.h" />
-    <ClInclude Include="..\..\lib\lualib\LuaBindMgr.h" />
     <ClInclude Include="..\..\lib\lualib\sol.hpp" />
     <ClInclude Include="..\..\lib\muduo\base\Atomic.h" />
     <ClInclude Include="..\..\lib\muduo\base\Condition.h" />

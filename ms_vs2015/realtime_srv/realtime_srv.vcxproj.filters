@@ -112,6 +112,9 @@
     <ClInclude Include="..\..\realtime_srv\net\NetworkMgrWinS.h">
       <Filter>net</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\realtime_srv\common\LuaBindMgr.h">
+      <Filter>common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\realtime_srv\math\Vector3.cpp">

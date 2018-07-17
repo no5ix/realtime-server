@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\realtime_srv\common\LuaBindMgr.h" />
     <ClInclude Include="..\..\realtime_srv\common\noncopyable.h" />
     <ClInclude Include="..\..\realtime_srv\common\RealtimeSrvMacro.h" />
     <ClInclude Include="..\..\realtime_srv\common\RealtimeSrvHelper.h" />
