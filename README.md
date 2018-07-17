@@ -32,9 +32,7 @@
 - Multi-Thread
 - RUDP
 - Bit Stream
-- Lock-Free Concurrency MQ
 - Add UDP support for [muduo](https://github.com/chenshuo/muduo)
-- Support Lua
 - C++11
 
 

@@ -5,25 +5,26 @@ using namespace realtime_srv;
 
 GameObj::GameObj() :
 	isPendingToDie_( false ),
-	ObjId_( 0 )
+	hasOwner_( false ),
+	objId_( 0 )
 {}
 
 void GameObj::SetStateDirty( uint32_t repState )
 {
-	if ( ClientProxyPtr cp = GetOwner() )
+	if ( hasOwner_ )
 	{
-		cp->SetGameObjStateDirty( GetObjId(), repState );
+		GetOwner()->SetGameObjStateDirty( GetObjId(), repState );
 	}
 }
 
 void GameObj::Update()
 {
 
-	BeforeUpdate();
+	BeforeProcessInput();
 
-	if ( ClientProxyPtr cp = GetOwner() )
+	if ( hasOwner_ )
 	{
-		ActionList& actionList = cp->GetUnprocessedActionList();
+		ActionList& actionList = GetOwner()->GetUnprocessedActionList();
 		for ( const Action& unprocessedAction : actionList )
 		{
 			const InputStatePtr& currentState = unprocessedAction.GetInputState();
@@ -33,5 +34,5 @@ void GameObj::Update()
 		actionList.Clear();
 	}
 
-	AfterUpdate();
+	AfterProcessInput();
 }

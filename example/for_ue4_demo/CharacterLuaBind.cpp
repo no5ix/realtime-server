@@ -8,7 +8,7 @@ using namespace realtime_srv;
 CharacterLuaBind::CharacterLuaBind()
 {
 	lua_.new_usertype<Character>( "Character"
-		, "MakeSharedNew", []() { return std::make_shared< Character >(); }
+		, "NewCharacter", []() { return new Character; }
 		, "SetLocation", sol::overload( sol::resolve<void( const float x,
 			const float y, const float z )>( &Character::SetLocation ) )
 		, "SetRotation", sol::overload( sol::resolve<void( const float x,
@@ -16,11 +16,11 @@ CharacterLuaBind::CharacterLuaBind()
 		);
 }
 
-CharacterPtr CharacterLuaBind::DoFile()
+Character* CharacterLuaBind::DoFile()
 {
 	lua_.script_file( "for_ue4_demo/Character.lua" );
 	sol::object keep_alive = lua_["newCharacter"];
-	CharacterPtr newCharacter = keep_alive.as<CharacterPtr>();
+	Character* newCharacter = keep_alive.as<Character*>();
 	return newCharacter;
 }
 

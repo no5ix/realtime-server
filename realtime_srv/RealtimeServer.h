@@ -13,28 +13,19 @@ class RealtimeServer : noncopyable
 public:
 
 	//************************************
-	// @Parameter const NewPlayerCallback : for spawning your own GameObject class.
-	// @Parameter const CustomInputStateCallback : for using your own InputState class.
 	// @Parameter uint16_t Port : default is DEFAULT_REALTIME_SRV_PORT, see RealtimeSrvMacro.h
 	//************************************
 	RealtimeServer(
-		const NewPlayerCallback& _newPlayerCb,
-		const CustomInputStateCallback& _customInputStateCb,
 		bool _willDaemonizeOnLinux = false,
 		uint16_t _port = DEFAULT_REALTIME_SRV_PORT );
 
 
 	void Run()
 	{
-		LOG( "Server running as '%sUnregistObjWhenClientDisconnect' mode.",
+		LOG( "Server running as '%s Unregist GameObj When Client Disconnect' mode.",
 			( networkManager_->GetUnregistObjWhenCliDisconn() ? "" : "Not" ) );
 		networkManager_->Start();
 	}
-
-	
-	void SetUnregistGameObjWhenClientDisconnect( bool _wheter )
-	{ networkManager_->SetUnregistObjWhenCliDisconn( _wheter ); }
-
 
 
 	//	在Windows上 ( Linux为了减少代码分支, 不提供此功能 ), 
@@ -44,17 +35,19 @@ public:
 	//	-	模拟丢包率为 0.8 : 百分之八十的丢包率
 	//	-	模拟网络抖动为 1 : 1为随机抖动, 0为不抖动
 	void SimulateRealWorldOnWin()
-	{ RealtimeSrvHelper::SimulateRealWorldNetCondition( networkManager_.get() ); }
+	{ RealtimeSrvHelper::SimulateRealWorldNetCondition( networkManager_ ); }
 
 
-#ifdef IS_LINUX
-	muduo::net::EventLoop* GetEventLoop()
-	{ return networkManager_->GetEventLoop(); }
-#endif //IS_LINUX
+	std::shared_ptr<World> GetWorld()
+	{ return world_; }
+
+	std::shared_ptr<NetworkMgr> GetNetworkManager()
+	{ return networkManager_; }
+
 
 private:
-	std::unique_ptr<World>	world_;
-	std::unique_ptr<NetworkMgr>	networkManager_;
+	std::shared_ptr<World>	world_;
+	std::shared_ptr<NetworkMgr>	networkManager_;
 };
 
 }

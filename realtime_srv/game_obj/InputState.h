@@ -25,8 +25,10 @@ public:
 	float GetDesiredMoveForwardAmount()	const { return mDesiredMoveForwardAmount; }
 	float GetDesiredMoveRightAmount()	const { return mDesiredMoveRightAmount; }
 
-	Vector3 GetDesiredTurnRot()	const { return Vector3( mDesiredTurnAmountX, mDesiredTurnAmountY, mDesiredTurnAmountZ ); }
-	Vector3 GetDesiredLookUpRot()	const { return Vector3( mDesiredLookUpAmountX, mDesiredLookUpAmountY, mDesiredLookUpAmountZ ); }
+	Vector3 GetDesiredTurnRot()	const
+	{ return Vector3( mDesiredTurnAmountX, mDesiredTurnAmountY, mDesiredTurnAmountZ ); }
+	Vector3 GetDesiredLookUpRot()	const
+	{ return Vector3( mDesiredLookUpAmountX, mDesiredLookUpAmountY, mDesiredLookUpAmountZ ); }
 
 
 	virtual bool Write( OutputBitStream& inOutputStream ) const;

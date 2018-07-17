@@ -4,8 +4,7 @@
 
 using namespace realtime_srv;
 
-Character::Character() :
-	GameObj(),
+Character::Character( ) :
 	BaseTurnRate( 2.f ),
 	BaseLookUpRate( 2.f ),
 	MaxSpeed( 440.f ),
@@ -28,7 +27,7 @@ Character::Character() :
 	oldRotation_( Vector3::Zero() )
 {}
 
-void Character::BeforeUpdate()
+void Character::BeforeProcessInput()
 {
 	oldLocation_ = curLocation_;
 	oldRotation_ = curRotation_;
@@ -36,7 +35,7 @@ void Character::BeforeUpdate()
 	oldCameraRotation_ = curCameraRotation_;
 }
 
-void Character::AfterUpdate()
+void Character::AfterProcessInput()
 {
 	if ( !RealtimeSrvMath::Is3DVectorEqual( oldLocation_, curLocation_ )
 		|| !RealtimeSrvMath::Is3DVectorEqual( oldRotation_, curRotation_ )
@@ -82,9 +81,12 @@ uint32_t Character::Write( OutputBitStream& inOutputStream, uint32_t inDirtyStat
 
 void Character::ProcessInput( float inDeltaTime, const InputStatePtr& inInputState )
 {
-	const ExampleInputStatePtr& justForTest =
-		std::dynamic_pointer_cast< ExampleInputState >( inInputState );
-	assert( justForTest->IsShooting() == false );
+	{	// test -> ExampleInputState
+		const ExampleInputStatePtr& justForTest =
+			std::dynamic_pointer_cast< ExampleInputState >( inInputState );
+		if ( justForTest )
+			assert( justForTest->IsShooting() == false );
+	}
 
 	curRotation_ = inInputState->GetDesiredTurnRot();
 	curCameraRotation_ = inInputState->GetDesiredLookUpRot();
@@ -94,6 +96,11 @@ void Character::ProcessInput( float inDeltaTime, const InputStatePtr& inInputSta
 
 	AddActionInput( curCameraRotation_.ToQuaternion() * Vector3::Right(),
 		inInputState->GetDesiredMoveRightAmount() );
+
+	// test ->
+	LOG( "GetDesiredMoveRightAmount : %f", inInputState->GetDesiredMoveRightAmount() );
+	LOG( "GetDesiredMoveForwardAmount %f: ", inInputState->GetDesiredMoveForwardAmount() );
+	// <- test
 
 	ApplyControlInputToVelocity( inDeltaTime );
 

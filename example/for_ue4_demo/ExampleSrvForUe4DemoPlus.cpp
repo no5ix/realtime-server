@@ -14,33 +14,47 @@ using namespace realtime_srv;
 class ExampleSrvForUe4DemoPlus : noncopyable
 {
 public:
-	ExampleSrvForUe4DemoPlus( bool _willDaemonizeOnLinux = false )
-		:
-		server_(
-			std::bind( &ExampleSrvForUe4DemoPlus::SpawnNewCharacter, this, _1 ),
-			std::bind( &ExampleSrvForUe4DemoPlus::MyInputState, this ),
-			_willDaemonizeOnLinux )
+	ExampleSrvForUe4DemoPlus( bool willDaemonizeOnLinux = false )
+		: server_( willDaemonizeOnLinux )
 	{
-		db_.Init( server_.GetEventLoop() );
-		server_.SetUnregistGameObjWhenClientDisconnect( true );
+		db_.Init( server_.GetNetworkManager()->GetEventLoop() );
+
+		server_.GetNetworkManager()->SetNewPlayerCallback(
+			std::bind( &ExampleSrvForUe4DemoPlus::OnNewPlayer, this, _1 ) );
+
+		// test -> ExampleInputState
+		// for using your own InputState class.
+		server_.GetNetworkManager()->SetCustomInputStateCallback( std::bind(
+			&ExampleSrvForUe4DemoPlus::MyInputState, this ) );
+
+		server_.GetNetworkManager()->SetUnregistObjWhenCliDisconn( true );
 	}
 
-	InputState* MyInputState() { return new ExampleInputState(); }
+	InputState* MyInputState() { return new ExampleInputState; }
 
-	GameObjPtr SpawnNewCharacter( ClientProxyPtr& cliProxy )
+	void Run() { server_.SimulateRealWorldOnWin();  AddRobot(); server_.Run(); }
+
+
+	GameObj* OnNewPlayer( ClientProxyPtr& _newClientProxy )
 	{
-		// test hiredis
-		db_.SaveNewPlayer( cliProxy->GetNetId(),
-			cliProxy->GetPlayerName() );
+		// test -> hiredis
+		db_.SaveNewPlayer( _newClientProxy->GetNetId(),
+			_newClientProxy->GetPlayerName() );
 
-		// test lua
+		// test -> lua
 		CharacterLuaBind clb;
-		CharacterPtr newCharacter = clb.DoFile();
-		newCharacter->SetPlayerId( cliProxy->GetNetId() );
-		return  std::static_pointer_cast< GameObj >( newCharacter );
+		Character* newCharacter = clb.DoFile();
+		newCharacter->SetPlayerId( _newClientProxy->GetNetId() );
+		return newCharacter;
 	}
 
-	void Run() { server_.SimulateRealWorldOnWin(); server_.Run(); }
+	void AddRobot()
+	{
+		server_.GetWorld()->RegistGameObj( GameObjPtr( new Character ) );
+		server_.GetWorld()->RegistGameObj( GameObjPtr( new Character ) );
+		server_.GetWorld()->RegistGameObj( GameObjPtr( new Character ) );
+	}
+
 
 private:
 

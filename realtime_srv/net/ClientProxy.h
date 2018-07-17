@@ -29,10 +29,10 @@ public:
 	DeliveryNotifyMgr&	GetDeliveryNotifyManager() { return deliveryNotifyManager_; }
 	ReplicationMgr&	GetReplicationManager() { return replicationManager_; }
 
-	World* GetWorld() const { return world_; }
-	void SetWorld( World* const world ) { world_ = world; }
+	WorldPtr& GetWorld() { return world_; }
+	void SetWorld( WorldPtr  world ) { world_ = world; }
 
-	NetworkMgr* GetNetworkManager() const { return networkManager_; }
+	std::shared_ptr<NetworkMgr>& GetNetworkManager() { return networkManager_; }
 
 	const ActionList& GetUnprocessedActionList() const { return mUnprocessedMoveList; }
 	ActionList&	 GetUnprocessedActionList() { return mUnprocessedMoveList; }
@@ -65,13 +65,13 @@ private:
 
 	DeliveryNotifyMgr		deliveryNotifyManager_;
 	ReplicationMgr			replicationManager_;
-	World*							world_;
-	NetworkMgr*					networkManager_;
+	WorldPtr							world_;
+	std::shared_ptr<NetworkMgr>					networkManager_;
 
 #ifdef IS_LINUX
 
 public:
-	ClientProxy( NetworkMgr* inNetworkManager,
+	ClientProxy( const std::shared_ptr<NetworkMgr>& inNetworkManager,
 		const std::string& inName,
 		const int inNetId,
 		const pid_t inHoldedByThreadId,
@@ -90,7 +90,7 @@ private:
 
 public:
 
-	ClientProxy( NetworkMgr* inNetworkManager,
+	ClientProxy( const std::shared_ptr<NetworkMgr>& inNetworkManager,
 		const SockAddrInterf& inSocketAddress,
 		const std::string& inName,
 		int inNetId,

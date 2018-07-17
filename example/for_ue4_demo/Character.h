@@ -7,6 +7,7 @@ class Character : public realtime_srv::GameObj
 {
 public:
 	Character();
+
 	virtual ~Character()
 	{ realtime_srv::LOG( "Character (holded by Player %d) die.", playerId_ ); }
 
@@ -49,9 +50,8 @@ public:
 
 protected:
 
-	virtual void AfterUpdate() override;
-
-	virtual void BeforeUpdate() override;
+	virtual void BeforeProcessInput() override;
+	virtual void AfterProcessInput() override;
 
 	virtual void ProcessInput( float inDeltaTime,
 		const realtime_srv::InputStatePtr& inInputState ) override;

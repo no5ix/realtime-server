@@ -30,10 +30,10 @@ PktDispatcher::PktDispatcher( uint16_t inPort, uint32_t inThreadCount )
 
 	server_.reset( new UdpServer( &baseLoop_, serverAddr, "rs_pkt_dispatcher" ) );
 	server_->setConnectionCallback(
-		std::bind( &PktDispatcher::onConnection, this, _1 ) );
+		std::bind( &PktDispatcher::OnConnection, this, _1 ) );
 	server_->setThreadNum( inThreadCount );
 	server_->setMessageCallback(
-		std::bind( &PktDispatcher::onMessage, this, _1, _2, _3 ) );
+		std::bind( &PktDispatcher::OnMessage, this, _1, _2, _3 ) );
 	server_->setThreadInitCallback(
 		std::bind( &PktDispatcher::IoThreadInit, this, _1 ) );
 }
@@ -50,7 +50,7 @@ void PktDispatcher::IoThreadInit( EventLoop* loop )
 	tidToPendingSndPktQMap_[CurrentThread::tid()] = PendingSendPacketQueue();
 }
 
-void PktDispatcher::onMessage( const muduo::net::UdpConnectionPtr& conn,
+void PktDispatcher::OnMessage( const muduo::net::UdpConnectionPtr& conn,
 	muduo::net::Buffer* buf, muduo::Timestamp receiveTime )
 {
 	if ( buf->readableBytes() > 0 )

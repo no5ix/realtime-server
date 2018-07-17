@@ -10,7 +10,7 @@ virtual uint32_t GetClassId() const { return kClassId; } \
 class ClientProxy;
 class InputState;
 
-class GameObj
+class GameObj : public std::enable_shared_from_this<GameObj>
 {
 public:
 	// 'GOBJ' = 1196376650;
@@ -34,19 +34,20 @@ public:
 
 	virtual void WhenDying() {}
 
-	shared_ptr< ClientProxy >	GetOwner() const { return owner_.lock(); }
-	void SetOwner( shared_ptr< ClientProxy > cp ) { owner_ = cp; }
+	std::shared_ptr<ClientProxy>	GetOwner() { return owner_.lock(); }
+	void SetOwner( std::shared_ptr<ClientProxy>& cp ) { owner_ = cp; hasOwner_ = true; }
+	void LoseOwner() { hasOwner_ = false; }
 
 	bool		IsPendingToDie() const { return isPendingToDie_; }
 	void		SetPendingToDie( bool whether ) { isPendingToDie_ = whether; }
 
-	int			GetObjId()				const { return ObjId_; }
-	void		SetObjId( int inObjId ) { ObjId_ = inObjId; }
+	int			GetObjId()				const { return objId_; }
+	void		SetObjId( int inObjId ) { objId_ = inObjId; }
 
 protected:
 
-	virtual void BeforeUpdate() {}
-	virtual void AfterUpdate() = 0;
+	virtual void BeforeProcessInput() {}
+	virtual void AfterProcessInput() = 0;
 
 	virtual void ProcessInput( float inDeltaTime,
 		const std::shared_ptr<InputState>& inInputState ) {}
@@ -56,12 +57,13 @@ protected:
 protected:
 
 	bool isPendingToDie_;
+	bool hasOwner_;
 
-	int	ObjId_;
+	int	objId_;
 
-	weak_ptr<ClientProxy> owner_;
+	std::weak_ptr<ClientProxy> owner_;
 };
 
-typedef shared_ptr< GameObj >	GameObjPtr;
+typedef std::shared_ptr< GameObj >	GameObjPtr;
 
 }

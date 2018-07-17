@@ -5,12 +5,13 @@
 
 #include <realtime_srv/common/LuaBindMgr.h>
 
+class Character;
 
 class CharacterLuaBind : public realtime_srv::LuaBindMgr
 {
 public:
 	CharacterLuaBind();
-	CharacterPtr DoFile();
+	Character* DoFile();
 };
 
 #endif // IS_LINUX

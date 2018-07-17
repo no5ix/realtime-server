@@ -33,8 +33,8 @@ NetworkMgr::NetworkMgr( uint16_t inPort /*= DEFAULT_REALTIME_SRV_PORT*/ ) :
 
 void realtime_srv::NetworkMgr::Start()
 {
-	assert( newPlayerCb_ );
-	assert( customInputStatecb_ );
+	//assert( newPlayerCb_ );
+	//assert( customInputStatecb_ );
 
 	assert( worldRegistryCb_ );
 	assert( worldUpdateCb_ );
@@ -119,12 +119,15 @@ void NetworkMgr::CheckForDisconnects()
 			if ( bUnregistObjWhenCliDisconn_ )
 				for ( auto& obj : it->second->GetAllOwnedGameObjs() )
 					worldRegistryCb_( obj, RA_Destroy );
+			else
+				for ( auto& obj : it->second->GetAllOwnedGameObjs() )
+					obj->LoseOwner();
 
 			it->second->GetUdpConnection()->forceClose();
 			udpConnToClientMap_.erase( it++ );
 		}
 		else
-		{ ++it; }
+			++it;
 	}
 }
 
@@ -141,7 +144,7 @@ void NetworkMgr::WelcomeNewClient( InputBitStream& inInputStream,
 		//inInputStream.Read( playerName );	
 
 		ClientProxyPtr newClientProxy = std::make_shared< ClientProxy >(
-			this,
+			shared_from_this(),
 			playerName,
 			kNewNetId.getAndAdd( 1 ),
 			inHoldedByThreadId,
@@ -149,9 +152,11 @@ void NetworkMgr::WelcomeNewClient( InputBitStream& inInputStream,
 
 		udpConnToClientMap_[inUdpConnetction] = newClientProxy;
 
-		GameObjPtr newGameObj = newPlayerCb_( newClientProxy );
-		if ( newGameObj )
+		if ( newPlayerCb_ )
 		{
+			GameObjPtr newGameObj( newPlayerCb_( newClientProxy ) );
+			assert( newGameObj );
+
 			newGameObj->SetOwner( newClientProxy );
 			worldRegistryCb_( newGameObj, RA_Create );
 			newClientProxy->AddGameObj( newGameObj );
@@ -258,7 +263,7 @@ uint32_t NetworkMgr::HandleServerReset( ClientProxyPtr& inClientProxy, InputBitS
 void NetworkMgr::HandleInputPacket( ClientProxyPtr& inClientProxy, InputBitStream& inInputStream )
 {
 	uint32_t actionCount = 0;
-	Action action( customInputStatecb_() );
+	Action action( customInputStatecb_ ? customInputStatecb_() : ( new InputState ) );
 	inInputStream.Read( actionCount, ACTION_COUNT_NUM );
 
 	for ( ; actionCount > 0; --actionCount )

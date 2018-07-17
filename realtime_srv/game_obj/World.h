@@ -6,7 +6,7 @@ namespace realtime_srv
 
 class GameObj;
 
-class World : noncopyable
+class World : noncopyable, public std::enable_shared_from_this<World>
 {
 public:
 	typedef unordered_map< int, GameObjPtr > ObjIdToGameObjMap;
@@ -23,9 +23,9 @@ public:
 	ObjIdToGameObjMap& GetAllGameObj() { return ObjIdToGameObjMap_; }
 	const ObjIdToGameObjMap& GetAllGameObj() const { return ObjIdToGameObjMap_; }
 
-	void Registry( GameObjPtr& inGameObject, ReplicationAction inAction );
-	void RegistGameObj( GameObjPtr& inGameObject );
-	void UnregistGameObj( GameObjPtr& inGameObject );
+	void Registry( GameObjPtr inGameObject, ReplicationAction inAction );
+	void RegistGameObj( GameObjPtr inGameObject );
+	void UnregistGameObj( GameObjPtr inGameObject );
 
 private:
 	int	GetNewObjId();
@@ -37,4 +37,5 @@ private:
 	static int					kNewObjId;
 
 };
+typedef shared_ptr<World> WorldPtr;
 }

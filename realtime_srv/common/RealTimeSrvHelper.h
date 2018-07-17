@@ -27,7 +27,8 @@ namespace realtime_srv
 
 		bool DaemonizeOnLinux();
 
-		void SimulateRealWorldNetCondition( NetworkMgr* networkManager,
+		void SimulateRealWorldNetCondition(
+			std::shared_ptr<NetworkMgr>& networkManager,
 			uint8_t LatencyCmdIndex = 1,
 			uint8_t dropPacketChanceCmdIndex = 2,
 			uint8_t JitterCmdIndex = 3 );

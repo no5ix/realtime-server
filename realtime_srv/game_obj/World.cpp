@@ -7,7 +7,7 @@ using namespace realtime_srv;
 
 int World::kNewObjId = 1;
 
-void World::Registry( GameObjPtr& obj, ReplicationAction repAction )
+void World::Registry( GameObjPtr obj, ReplicationAction repAction )
 {
 	if ( repAction == RA_Create )
 		return RegistGameObj( obj );
@@ -15,7 +15,7 @@ void World::Registry( GameObjPtr& obj, ReplicationAction repAction )
 		return UnregistGameObj( obj );
 }
 
-void World::RegistGameObj( GameObjPtr& obj )
+void World::RegistGameObj( GameObjPtr obj )
 {
 	int newObjId = GetNewObjId();
 	obj->SetObjId( newObjId );
@@ -25,7 +25,7 @@ void World::RegistGameObj( GameObjPtr& obj )
 	auto newClientProxy = obj->GetOwner();
 	if ( newClientProxy )
 	{
-		newClientProxy->SetWorld( this );
+		newClientProxy->SetWorld( shared_from_this() );
 		for ( const auto& ipair : ObjIdToGameObjMap_ )
 		{
 			newClientProxy->GetReplicationManager().ReplicateCreate(
@@ -34,7 +34,7 @@ void World::RegistGameObj( GameObjPtr& obj )
 	}
 }
 
-void World::UnregistGameObj( GameObjPtr& _obj )
+void World::UnregistGameObj( GameObjPtr _obj )
 {
 	notifyAllClientCB_( _obj, RA_Destroy );
 	_obj->WhenDying();

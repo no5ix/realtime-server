@@ -59,10 +59,10 @@ protected:
 
 	void IoThreadInit( muduo::net::EventLoop* loop );
 
-	void onMessage( const muduo::net::UdpConnectionPtr& conn,
+	void OnMessage( const muduo::net::UdpConnectionPtr& conn,
 		muduo::net::Buffer* buf, muduo::Timestamp receiveTime );
 
-	void onConnection( const muduo::net::UdpConnectionPtr& conn )
+	void OnConnection( const muduo::net::UdpConnectionPtr& conn )
 	{ if ( connCb_ ) connCb_( conn ); }
 
 private:

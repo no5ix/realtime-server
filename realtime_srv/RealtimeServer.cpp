@@ -5,11 +5,11 @@ using namespace realtime_srv;
 
 
 realtime_srv::RealtimeServer::RealtimeServer(
-	const NewPlayerCallback& _newPlayerCb,
-	const CustomInputStateCallback& _customInputStateCb,
 	bool _willDaemonizeOnLinux /*= false*/,
 	uint16_t _port /*= DEFAULT_REALTIME_SRV_PORT */ )
 {
+	srand( static_cast< uint32_t >( time( nullptr ) ) );
+
 	world_.reset( new World() );
 	assert( world_ );
 
@@ -20,12 +20,6 @@ realtime_srv::RealtimeServer::RealtimeServer(
 
 	networkManager_.reset( new NetworkMgr( _port ) );
 	assert( networkManager_ );
-
-	srand( static_cast< uint32_t >( time( nullptr ) ) );
-
-	networkManager_->SetNewPlayerCallback( _newPlayerCb );
-	networkManager_->SetCustomInputStateCallback( _customInputStateCb );
-
 	networkManager_->SetWorldUpdateCallback( [&]() { world_->Update(); } );
 	networkManager_->SetWorldRegistryCallback( std::bind(
 		&World::Registry, world_.get(), _1, _2 ) );

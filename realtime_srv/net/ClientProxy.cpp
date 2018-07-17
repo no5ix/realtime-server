@@ -7,7 +7,8 @@ using namespace realtime_srv;
 
 using namespace muduo::net;
 
-ClientProxy::ClientProxy( NetworkMgr* inNetworkManager,
+ClientProxy::ClientProxy(
+	const std::shared_ptr<NetworkMgr>& inNetworkManager,
 	const std::string& inPlayerName,
 	const int inNetId,
 	const pid_t inHoldedByThreadId,
@@ -30,7 +31,8 @@ ClientProxy::ClientProxy( NetworkMgr* inNetworkManager,
 
 #else //IS_LINUX
 
-ClientProxy::ClientProxy( NetworkMgr* inNetworkManager,
+ClientProxy::ClientProxy(
+	const std::shared_ptr<NetworkMgr>& inNetworkManager,
 	const SockAddrInterf& inSocketAddress,
 	const std::string& inPlayerName,
 	int inNetId,

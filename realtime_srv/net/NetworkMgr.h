@@ -10,10 +10,10 @@ namespace realtime_srv
 
 class GameObj;
 class ClientProxy;
-typedef std::function< GameObjPtr( ClientProxyPtr& ) > NewPlayerCallback;
+typedef std::function< GameObj*( ClientProxyPtr& ) > NewPlayerCallback;
 typedef std::function<InputState*()> CustomInputStateCallback;
 
-class NetworkMgr : noncopyable
+class NetworkMgr : noncopyable, public std::enable_shared_from_this<NetworkMgr>
 {
 
 public:
@@ -100,6 +100,8 @@ private:
 
 
 };
+typedef std::shared_ptr<NetworkMgr> NetworkMgrPtr;
+
 }
 
 #else //IS_LINUX
