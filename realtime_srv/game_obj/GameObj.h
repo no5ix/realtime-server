@@ -34,8 +34,6 @@ public:
 	virtual uint32_t	Write( OutputBitStream& inOutputStream,
 		uint32_t inDirtyState ) const = 0;
 
-	virtual void WhenDying() {}
-
 	std::shared_ptr<ClientProxy>	GetOwner() { return owner_.lock(); }
 	void LoseOwner() { hasOwner_ = false; }
 	void SetOwner( std::shared_ptr<ClientProxy>& cp )

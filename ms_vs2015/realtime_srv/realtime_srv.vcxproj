@@ -37,8 +37,6 @@
     <ClInclude Include="..\..\realtime_srv\math\Vector3.h" />
     <ClInclude Include="..\..\realtime_srv\net\ClientProxy.h" />
     <ClInclude Include="..\..\realtime_srv\net\NetworkMgr.h" />
-    <ClInclude Include="..\..\realtime_srv\net\NetworkMgrWinS.h" />
-    <ClInclude Include="..\..\realtime_srv\net\NetworkMgrWinH.h" />
     <ClInclude Include="..\..\realtime_srv\net\Packet.h" />
     <ClInclude Include="..\..\realtime_srv\net\PktHandler.h" />
     <ClInclude Include="..\..\realtime_srv\net\SockAddrInterf.h" />

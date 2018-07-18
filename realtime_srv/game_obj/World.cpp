@@ -38,7 +38,6 @@ void World::RegistGameObj( GameObjPtr _obj )
 void World::UnregistGameObj( GameObjPtr _obj )
 {
 	onObjCreateOrDestoryCb_( _obj, RA_Destroy );
-	_obj->WhenDying();
 	ObjIdToGameObjMap_.erase( _obj->GetObjId() );
 }
 

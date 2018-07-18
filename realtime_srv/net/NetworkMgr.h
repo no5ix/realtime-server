@@ -107,6 +107,6 @@ typedef std::shared_ptr<NetworkMgr> NetworkMgrPtr;
 
 }
 
-#else //IS_LINUX
-#include "realtime_srv/net/NetworkMgrWinH.h"
+//#else
+//#include "realtime_srv/net/NetworkMgrWinH.h"
 #endif //IS_LINUX

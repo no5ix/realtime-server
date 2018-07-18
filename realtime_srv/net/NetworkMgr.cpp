@@ -337,6 +337,6 @@ void NetworkMgr::WriteLastMoveTimestampIfDirty( OutputBitStream& inOutputStream,
 }
 
 
-#else
-#include "realtime_srv/net/NetworkMgrWinS.h"
+//#else
+//#include "realtime_srv/net/NetworkMgrWinS.h"
 #endif

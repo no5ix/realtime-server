@@ -100,12 +100,6 @@
     <ClInclude Include="..\..\realtime_srv\game_obj\InputState.h">
       <Filter>game_obj</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\realtime_srv\net\NetworkMgrWinH.h">
-      <Filter>net</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\realtime_srv\net\NetworkMgrWinS.h">
-      <Filter>net</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\realtime_srv\common\LuaBindMgr.h">
       <Filter>common</Filter>
     </ClInclude>
