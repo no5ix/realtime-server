@@ -19,6 +19,7 @@ public:
 	{
 		db_.Init( server_.GetNetworkManager()->GetEventLoop() );
 
+		// for spawning your own controlled GameObject.
 		server_.GetNetworkManager()->SetNewPlayerCallback(
 			std::bind( &ExampleSrvForUe4DemoPlus::OnNewPlayer, this, _1 ) );
 
@@ -32,14 +33,14 @@ public:
 
 	InputState* MyInputState() { return new ExampleInputState; }
 
-	void Run() { server_.SimulateRealWorldOnWin();  AddRobots(); server_.Run(); }
+	void Run() { server_.SimulateRealWorldOnWin();  AddRobot(); server_.Run(); }
 
 
 	GameObj* OnNewPlayer( ClientProxyPtr& _newClientProxy )
 	{
 		// test -> hiredis
 		db_.SaveNewPlayer( _newClientProxy->GetNetId(),
-			_newClientProxy->GetPlayerName() );
+			"realtime_srv_test_player" );
 
 		// test -> lua
 		CharacterLuaBind clb;
@@ -48,10 +49,8 @@ public:
 		return newCharacter;
 	}
 
-	void AddRobots()
+	void AddRobot()
 	{
-		server_.GetWorld()->RegistGameObj( GameObjPtr( new Robot ) );
-		server_.GetWorld()->RegistGameObj( GameObjPtr( new Robot ) );
 		server_.GetWorld()->RegistGameObj( GameObjPtr( new Robot ) );
 	}
 

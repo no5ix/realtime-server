@@ -11,7 +11,7 @@ public:
 	ExampleSrvForUe4Demo( bool _willDaemonizeOnLinux = false )
 		: server_( _willDaemonizeOnLinux )
 	{
-		// for spawning your own GameObject class.
+		// for spawning your own controlled GameObject.
 		server_.GetNetworkManager()->SetNewPlayerCallback(
 			std::bind( &ExampleSrvForUe4Demo::OnNewPlayer, this, _1 ) );
 	}

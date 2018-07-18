@@ -9,8 +9,6 @@ class ExampleInputState : public realtime_srv::InputState
 public:
 
 	ExampleInputState() :
-		realtime_srv::InputState(),
-
 		mDesiredTurnRateAmount( 0.f ),
 		mDesiredLookUpRateAmount( 0.f ),
 

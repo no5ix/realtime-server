@@ -56,11 +56,8 @@ public:
 
 	muduo::net::EventLoop* GetBaseLoop() { return &baseLoop_; }
 
-	void AppendToPendingSndPktQ( const PendingSendPacketPtr& psp,
-		const pid_t threadId )
-	{
-		tidToPendingSndPktQMap_.at( threadId ).enqueue( psp );
-	}
+	void AddToPendingSndPktQ( const PendingSendPacketPtr& psp, const pid_t threadId )
+	{ tidToPendingSndPktQMap_.at( threadId ).enqueue( psp ); }
 
 	ReceivedPacketBlockQueue* GetReceivedPacketBlockQueue()
 	{ return &recvedPktBQ_; }
@@ -114,7 +111,7 @@ private:
 	muduo::net::EventLoop baseLoop_;
 	std::unique_ptr<muduo::net::UdpServer> server_;
 	pid_t baseThreadId_;
-	bool isBaseThreadSleep_;
+	bool isBaseThreadSleeping_;
 };
 
 }

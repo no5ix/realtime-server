@@ -32,7 +32,7 @@ PktHandler::PktHandler( uint16_t _port, uint32_t _threadCount,
 	TickCallback _tickCb,
 	CheckDisconnectCallback _checkDisconnCb /*= CheckDisconnectCallback()*/ )
 	:
-	isBaseThreadSleep_( false ),
+	isBaseThreadSleeping_( false ),
 	baseThreadId_( CurrentThread::tid() ),
 	pendingRecvedPktsCnt_( 0 ),
 	pendingRecvedPkts_( std::vector<ReceivedPacketPtr>( kMaxPacketsCountPerRound ) ),
@@ -78,7 +78,7 @@ void PktHandler::CheckForSleep()
 
 			if ( CurrentThread::tid() == baseThreadId_ )
 			{
-				isBaseThreadSleep_ = true;
+				isBaseThreadSleeping_ = true;
 				LOG_INFO << "BaseThread go to sleeeeeeeep";
 			}
 			else
@@ -86,20 +86,18 @@ void PktHandler::CheckForSleep()
 				t_isDispatcherThreadSleeping_ = true;
 				LOG_INFO << "DispatcherThread go to sleeeeeeeep";
 			}
-
 		}
 	}
 	else
-	{
 		t_noPktHandleRoundCount_ = 0;
-	}
+
 	t_handleCountLastRound_ = t_handleCountThisRound_;
 	t_handleCountThisRound_ = 0;
 }
 
 void PktHandler::CheckForWakingUp()
 {
-	if ( isBaseThreadSleep_ )
+	if ( isBaseThreadSleeping_ )
 	{
 		muduo::net::TimerId curTimerId;
 		LoopAndTimerId& lat = tidToLoopAndTimerIdMap_.at( baseThreadId_ );
@@ -108,7 +106,7 @@ void PktHandler::CheckForWakingUp()
 			std::bind( &PktHandler::ProcessPkt, this ) );
 
 		lat.timerId_ = curTimerId;
-		isBaseThreadSleep_ = false;
+		isBaseThreadSleeping_ = false;
 		LOG_INFO << "BaseThread wake uuuuuup";
 	}
 
@@ -148,7 +146,6 @@ void PktHandler::IoThreadInit( EventLoop* loop )
 		std::bind( &PktHandler::SendPkt, this ) );
 
 	AddToAutoSleepSystem( loop, sndPktTimerId );
-
 	tidToPendingSndPktQMap_[CurrentThread::tid()] = PendingSendPacketQueue();
 }
 
@@ -182,7 +179,6 @@ void PktHandler::SendPkt()
 			pendingSndPkt->GetPacketBuffer()->GetBufferPtr(),
 			pendingSndPkt->GetPacketBuffer()->GetByteLength() );
 	}
-
 	CheckForSleep();
 }
 

@@ -15,7 +15,6 @@ class ClientProxy
 public:
 
 	int	GetNetId() const { return netId_; }
-	const std::string& GetPlayerName() const { return mPlayerName; }
 
 	void AddGameObj( const GameObjPtr& _gameObj )
 	{ ownedGameObjs_.push_back( _gameObj ); }
@@ -52,7 +51,6 @@ public:
 
 private:
 
-	std::string			mPlayerName;
 	int							netId_;
 	std::vector<GameObjPtr> ownedGameObjs_;
 
@@ -73,7 +71,6 @@ private:
 
 public:
 	ClientProxy( const std::shared_ptr<NetworkMgr>& inNetworkManager,
-		const std::string& inName,
 		const int inNetId,
 		const pid_t inHoldedByThreadId,
 		const muduo::net::UdpConnectionPtr& inUdpConnection );
@@ -93,7 +90,6 @@ public:
 
 	ClientProxy( const std::shared_ptr<NetworkMgr>& inNetworkManager,
 		const SockAddrInterf& inSocketAddress,
-		const std::string& inName,
 		int inNetId,
 		const UDPSocketPtr& inUDPSocket );
 

@@ -8,51 +8,59 @@ using namespace realtime_srv;
 class Robot : public Character
 {
 public:
-	Robot()
+
+	Robot() : simulateInputeState_( new realtime_srv::InputState )
 	{
 		SetLocation(
 			RealtimeSrvMath::GetRandomFloat() * 600.f,
 			RealtimeSrvMath::GetRandomFloat() * 500.f,
-			1000.f );
+			0.f );
 	}
 
 protected:
+
+	// of course u can set location & rotation directly...XD
 	virtual void AfterProcessInput() override
 	{
-		static float moveDirection = 1.f;
-		static float yaw = RealtimeSrvMath::GetRandomFloat() * 360.f;
-		if ( yaw > 0 )
-		{
-			moveDirection = 1.f;
-			yaw -= 0.6f;
-			if ( yaw > 180.f )
-			{
-				moveDirection = -1.f;
-			}
-		}
-		else
-		{
-			yaw = 360.f;
-			moveDirection = 0.f;
-		}
-		realtime_srv::InputStatePtr simulateInputeState( new realtime_srv::InputState(
-			moveDirection,
-			moveDirection,
+		MakeSimulativeInpute();
 
-			0.f,
-			yaw,
-			0.f,
-
-			0.f,
-			yaw,
-			0.f
-		) );
-
-		float simulateDeltaTime = 0.016f;
-		Character::ProcessInput( simulateDeltaTime, simulateInputeState );
+		Character::ProcessInput( kSimulateDeltaTime_, simulateInputeState_ );
 
 		Character::AfterProcessInput();
 	}
 
+	void MoveInCircles()
+	{
+		if ( kYaw_ > 0 )
+			kYaw_ -= 1.6f;
+		else
+			kYaw_ = 360.f;
+	}
+
+	void MakeSimulativeInpute()
+	{
+		MoveInCircles();
+
+		simulateInputeState_->mDesiredMoveForwardAmount = 1.f;
+		simulateInputeState_->mDesiredMoveRightAmount = 1.f;
+
+		simulateInputeState_->mDesiredTurnAmountX = 0.f;
+		simulateInputeState_->mDesiredTurnAmountY = kYaw_;
+		simulateInputeState_->mDesiredTurnAmountZ = 0.f;
+
+		simulateInputeState_->mDesiredLookUpAmountX = 0.f;
+		simulateInputeState_->mDesiredLookUpAmountY = kYaw_;
+		simulateInputeState_->mDesiredLookUpAmountZ = 0.f;
+	}
+
+
+protected:
+
+	static float kYaw_;
+	static const float kSimulateDeltaTime_;
+	realtime_srv::InputStatePtr simulateInputeState_;
 
 };
+
+float Robot::kYaw_ = RealtimeSrvMath::GetRandomFloat() * 360.f;
+const float Robot::kSimulateDeltaTime_ = 0.033f;

@@ -14,18 +14,18 @@ public:
 
 	void Update();
 
-	void OnObjCreateOrDestoryCallback( const OnObjCreateOrDestoryCb& cb )
-	{ onObjCreateOrDestoryCb_ = cb; }
+	void OnObjCreateOrDestoryCallback( const OnObjCreateOrDestoryCb& _cb )
+	{ onObjCreateOrDestoryCb_ = _cb; }
 
-	bool IsGameObjectExist( int inObjId );
-	GameObjPtr GetGameObject( int inNetworkId );
+	bool IsGameObjectExist( int _objId );
+	GameObjPtr GetGameObject( int _objId );
 
 	ObjIdToGameObjMap& GetAllGameObj() { return ObjIdToGameObjMap_; }
 	const ObjIdToGameObjMap& GetAllGameObj() const { return ObjIdToGameObjMap_; }
 
-	void Registry( GameObjPtr inGameObject, ReplicationAction inAction );
-	void RegistGameObj( GameObjPtr inGameObject );
-	void UnregistGameObj( GameObjPtr inGameObject );
+	void Registry( GameObjPtr _obj, ReplicationAction _action );
+	void RegistGameObj( GameObjPtr _obj );
+	void UnregistGameObj( GameObjPtr _obj );
 
 private:
 	int	GetNewObjId();

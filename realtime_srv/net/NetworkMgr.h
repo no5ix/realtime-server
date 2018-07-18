@@ -9,16 +9,18 @@ namespace realtime_srv
 
 class GameObj;
 class ClientProxy;
-typedef std::function< GameObj*( ClientProxyPtr& ) > NewPlayerCallback;
+typedef std::function<GameObj*( ClientProxyPtr& )> NewPlayerCallback;
 typedef std::function<InputState*()> CustomInputStateCallback;
 
 class NetworkMgr : noncopyable, public std::enable_shared_from_this<NetworkMgr>
 {
-
 public:
 	typedef std::function<void( GameObjPtr&, ReplicationAction )> WorldRegistryCb;
-	typedef unordered_map< muduo::net::UdpConnectionPtr, ClientProxyPtr >	UdpConnToClientMap;
-	typedef std::shared_ptr< UdpConnToClientMap > UdpConnToClientMapPtr;
+
+	typedef unordered_map<muduo::net::UdpConnectionPtr,
+		ClientProxyPtr>	UdpConnToClientMap;
+
+	typedef std::shared_ptr<UdpConnToClientMap> UdpConnToClientMapPtr;
 
 	static const uint32_t	kNullCC = 0;
 	static const uint32_t	kHelloCC = 'HELO';
@@ -58,6 +60,7 @@ public:
 	{ bUnregistObjWhenCliDisconn_ = _whehter; }
 
 private:
+	void Tick();
 	void DoProcessPkt( ReceivedPacketPtr& recvedPacket );
 	void PreparePacketToSend();
 	void CheckForDisconnects();
@@ -74,13 +77,16 @@ private:
 	void	WriteLastMoveTimestampIfDirty( OutputBitStream& inOutputStream,
 		ClientProxyPtr& inClientProxy );
 
-	void DoPreparePacketToSend( ClientProxyPtr inClientProxy, const uint32_t inConnFlag );
+	void DoPreparePacketToSend( ClientProxyPtr& inClientProxy,
+		const uint32_t inConnFlag );
 
 	void	WelcomeNewClient( InputBitStream& inInputStream,
 		const muduo::net::UdpConnectionPtr& inUdpConnetction,
 		const pid_t inHoldedByThreadId );
 
-	void Tick();
+	ClientProxyPtr CreateNewClient(
+		const muduo::net::UdpConnectionPtr& _udpConnetction,
+		const pid_t _holdedByThreadId );
 
 private:
 
@@ -95,7 +101,6 @@ private:
 
 	UdpConnToClientMap					udpConnToClientMap_;
 	static muduo::AtomicInt32		kNewNetId;
-
 
 };
 typedef std::shared_ptr<NetworkMgr> NetworkMgrPtr;

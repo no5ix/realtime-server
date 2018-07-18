@@ -81,13 +81,6 @@ uint32_t Character::Write( OutputBitStream& inOutputStream, uint32_t inDirtyStat
 
 void Character::ProcessInput( float inDeltaTime, const InputStatePtr& inInputState )
 {
-	{	// test -> ExampleInputState
-		const ExampleInputStatePtr& justForTest =
-			std::dynamic_pointer_cast< ExampleInputState >( inInputState );
-		if ( playerId_ != 0 ) // robot's playerId is 0
-			assert( justForTest );
-	}
-
 	curRotation_ = inInputState->GetDesiredTurnRot();
 	curCameraRotation_ = inInputState->GetDesiredLookUpRot();
 

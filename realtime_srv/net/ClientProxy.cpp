@@ -9,7 +9,6 @@ using namespace muduo::net;
 
 ClientProxy::ClientProxy(
 	const std::shared_ptr<NetworkMgr>& inNetworkManager,
-	const std::string& inPlayerName,
 	const int inNetId,
 	const pid_t inHoldedByThreadId,
 	const UdpConnectionPtr& inUdpConnection )
@@ -17,7 +16,6 @@ ClientProxy::ClientProxy(
 	connHoldedByTid_( inHoldedByThreadId ),
 	networkManager_( inNetworkManager ),
 	replicationManager_( this ),
-	mPlayerName( inPlayerName ),
 	netId_( inNetId ),
 	deliveryNotifyManager_( false, true ),
 	mIsLastMoveTimestampDirty( false ),
@@ -34,14 +32,12 @@ ClientProxy::ClientProxy(
 ClientProxy::ClientProxy(
 	const std::shared_ptr<NetworkMgr>& inNetworkManager,
 	const SockAddrInterf& inSocketAddress,
-	const std::string& inPlayerName,
 	int inNetId,
 	const UDPSocketPtr& inUDPSocket )
 	:
 	networkManager_( inNetworkManager ),
 	replicationManager_( this ),
 	mSocketAddress( inSocketAddress ),
-	mPlayerName( inPlayerName ),
 	netId_( inNetId ),
 	mUDPSocket( inUDPSocket ),
 	deliveryNotifyManager_( false, true ),

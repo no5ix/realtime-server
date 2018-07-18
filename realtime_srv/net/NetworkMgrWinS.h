@@ -170,18 +170,13 @@ void NetworkMgr::HandlePacketFromNewClient( InputBitStream& inInputStream,
 		|| packetType == kResetedCC
 		)
 	{
-		std::string playerName = "rs_test_player_name";
-		//inInputStream.Read( playerName );	
-
 		ClientProxyPtr newClientProxy = std::make_shared< ClientProxy >(
 			shared_from_this(),
 			inFromAddress,
-			playerName,
 			kNewNetId++,
 			inUDPSocket );
 
 		addrToClientMap_[inFromAddress] = newClientProxy;
-
 
 		if ( newPlayerCb_ )
 		{
@@ -205,9 +200,8 @@ void NetworkMgr::HandlePacketFromNewClient( InputBitStream& inInputStream,
 			SendGamePacket( newClientProxy, kResetCC );
 			LOG( "SendResetPacket" );
 		}
-		LOG( "a new client at socket %s, named '%s' as PlayerID %d ",
+		LOG( "a new client at socket %s' as PlayerID %d ",
 			inFromAddress.ToString().c_str(),
-			newClientProxy->GetPlayerName().c_str(),
 			newClientProxy->GetNetId()
 		);
 	}

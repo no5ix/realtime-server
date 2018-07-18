@@ -45,7 +45,8 @@ public:
 	virtual bool Write( OutputBitStream& inOutputStream ) const;
 	virtual bool Read( InputBitStream& inInputStream );
 
-protected:
+
+public:
 
 	float	mDesiredMoveForwardAmount;
 	float	mDesiredMoveRightAmount;

@@ -33,32 +33,34 @@ void realtime_srv::NetworkMgr::Start()
 	pktHandler_.Start();
 }
 
-void NetworkMgr::DoPreparePacketToSend( ClientProxyPtr cliProxy, const uint32_t inConnFlag )
+void NetworkMgr::DoPreparePacketToSend( ClientProxyPtr& _cliProxy, const uint32_t _connFlag )
 {
 	shared_ptr< OutputBitStream > outputPacket( new OutputBitStream() );
-	outputPacket->Write( inConnFlag );
+	outputPacket->Write( _connFlag );
 
-	InFlightPacket* ifp = cliProxy->GetDeliveryNotifyManager()
-		.WriteState( *outputPacket, cliProxy.get() );
+	InFlightPacket* ifp = _cliProxy->GetDeliveryNotifyManager()
+		.WriteState( *outputPacket, _cliProxy.get() );
 
-	switch ( inConnFlag )
+	switch ( _connFlag )
 	{
 		case kResetCC:
+			_cliProxy->SetRecvingServerResetFlag( true );
+			LOG_INFO << "Send Reset Packet";
 		case kWelcomeCC:
-			outputPacket->Write( cliProxy->GetNetId() );
+			outputPacket->Write( _cliProxy->GetNetId() );
 			outputPacket->Write( PktHandler::kSendPacketInterval );
 			break;
 		case kStateCC:
-			WriteLastMoveTimestampIfDirty( *outputPacket, cliProxy );
+			WriteLastMoveTimestampIfDirty( *outputPacket, _cliProxy );
 		default:
 			break;
 	}
-	cliProxy->GetReplicationManager().Write( *outputPacket, ifp );
+	_cliProxy->GetReplicationManager().Write( *outputPacket, ifp );
 
-	pktHandler_.AppendToPendingSndPktQ(
+	pktHandler_.AddToPendingSndPktQ(
 		PendingSendPacketPtr( new PendingSendPacket(
-			outputPacket, cliProxy->GetUdpConnection() ) ),
-		cliProxy->GetConnHoldedByThreadId() );
+			outputPacket, _cliProxy->GetUdpConnection() ) ),
+		_cliProxy->GetConnHoldedByThreadId() );
 }
 
 void NetworkMgr::DoProcessPkt( ReceivedPacketPtr& recvedPacket )
@@ -77,7 +79,7 @@ void NetworkMgr::DoProcessPkt( ReceivedPacketPtr& recvedPacket )
 
 void NetworkMgr::PreparePacketToSend()
 {
-	for ( const auto& pair : udpConnToClientMap_ )
+	for ( auto& pair : udpConnToClientMap_ )
 	{
 		( pair.second )->GetDeliveryNotifyManager().ProcessTimedOutPackets();
 
@@ -119,61 +121,113 @@ void NetworkMgr::CheckForDisconnects()
 	}
 }
 
-void NetworkMgr::WelcomeNewClient( InputBitStream& inInputStream,
-	const UdpConnectionPtr& inUdpConnetction, const pid_t inHoldedByThreadId )
+//void NetworkMgr::WelcomeNewClient( InputBitStream& inInputStream,
+//	const UdpConnectionPtr& inUdpConnetction, const pid_t inHoldedByThreadId )
+//{
+//	uint32_t	packetType;
+//	inInputStream.Read( packetType );
+//	if ( packetType == kHelloCC
+//		|| packetType == kInputCC
+//		|| packetType == kResetedCC )
+//	{
+//		std::string playerName = "realtime_srv_test_player_name";
+//		//inInputStream.Read( playerName );	
+//
+//		ClientProxyPtr newClientProxy = std::make_shared< ClientProxy >(
+//			shared_from_this(),
+//			playerName,
+//			kNewNetId.getAndAdd( 1 ),
+//			inHoldedByThreadId,
+//			inUdpConnetction );
+//
+//		udpConnToClientMap_[inUdpConnetction] = newClientProxy;
+//
+//		if ( newPlayerCb_ )
+//		{
+//			GameObjPtr newGameObj( newPlayerCb_( newClientProxy ) );
+//			assert( newGameObj );
+//
+//			newGameObj->SetOwner( newClientProxy );
+//			worldRegistryCb_( newGameObj, RA_Create );
+//			newClientProxy->AddGameObj( newGameObj );
+//		}
+//
+//		if ( packetType == kHelloCC )
+//		{ DoPreparePacketToSend( newClientProxy, kWelcomeCC ); }
+//		else
+//		{
+//			newClientProxy->SetRecvingServerResetFlag( true );
+//			DoPreparePacketToSend( newClientProxy, kResetCC );
+//			LOG_INFO << "Send Reset Packet";
+//		}
+//
+//		LOG_INFO << "a new client named '"
+//			<< newClientProxy->GetPlayerName().c_str()
+//			<< "' as Net ID " << newClientProxy->GetNetId();
+//	}
+//	else
+//	{
+//		LOG_INFO << "Bad incoming packet from unknown client at socket "
+//			<< inUdpConnetction->peerAddress().toIpPort() << " is "
+//			<< " - we're under attack!!";
+//	}
+//}
+
+ClientProxyPtr NetworkMgr::CreateNewClient(
+	const UdpConnectionPtr& _udpConnetction, const pid_t _holdedByThreadId )
+{
+	ClientProxyPtr newClientProxy = std::make_shared<ClientProxy>(
+		shared_from_this(),
+		kNewNetId.getAndAdd( 1 ),
+		_holdedByThreadId,
+		_udpConnetction );
+
+	udpConnToClientMap_[_udpConnetction] = newClientProxy;
+
+	if ( newPlayerCb_ )
+	{
+		GameObjPtr newGameObj( newPlayerCb_( newClientProxy ) );
+		assert( newGameObj );
+
+		newGameObj->SetOwner( newClientProxy );
+		worldRegistryCb_( newGameObj, RA_Create );
+		newClientProxy->AddGameObj( newGameObj );
+	}
+	return newClientProxy;
+}
+
+void NetworkMgr::WelcomeNewClient( InputBitStream& _inputStream,
+	const UdpConnectionPtr& _udpConnetction, const pid_t _holdedByThreadId )
 {
 	uint32_t	packetType;
-	inInputStream.Read( packetType );
-	if ( packetType == kHelloCC
-		|| packetType == kInputCC
-		|| packetType == kResetedCC )
+	_inputStream.Read( packetType );
+
+	switch ( packetType )
 	{
-		std::string playerName = "realtime_srv_test_player_name";
-		//inInputStream.Read( playerName );	
-
-		ClientProxyPtr newClientProxy = std::make_shared< ClientProxy >(
-			shared_from_this(),
-			playerName,
-			kNewNetId.getAndAdd( 1 ),
-			inHoldedByThreadId,
-			inUdpConnetction );
-
-		udpConnToClientMap_[inUdpConnetction] = newClientProxy;
-
-		if ( newPlayerCb_ )
+		case kHelloCC:
+		case kInputCC:
+		case kResetedCC:
 		{
-			GameObjPtr newGameObj( newPlayerCb_( newClientProxy ) );
-			assert( newGameObj );
-
-			newGameObj->SetOwner( newClientProxy );
-			worldRegistryCb_( newGameObj, RA_Create );
-			newClientProxy->AddGameObj( newGameObj );
+			ClientProxyPtr newClientProxy =
+				CreateNewClient( _udpConnetction, _holdedByThreadId );
+			if ( packetType == kHelloCC )
+				DoPreparePacketToSend( newClientProxy, kWelcomeCC );
+			else
+				DoPreparePacketToSend( newClientProxy, kResetCC );
+			LOG_INFO << "a new client as Net ID " << newClientProxy->GetNetId();
+			break;
 		}
-
-		if ( packetType == kHelloCC )
-		{ DoPreparePacketToSend( newClientProxy, kWelcomeCC ); }
-		else
-		{
-			newClientProxy->SetRecvingServerResetFlag( true );
-			DoPreparePacketToSend( newClientProxy, kResetCC );
-			LOG_INFO << "Send Reset Packet";
-		}
-
-		LOG_INFO << "a new client named '"
-			<< newClientProxy->GetPlayerName().c_str()
-			<< "' as Net ID " << newClientProxy->GetNetId();
-	}
-	else
-	{
-		LOG_INFO << "Bad incoming packet from unknown client at socket "
-			<< inUdpConnetction->peerAddress().toIpPort() << " is "
-			<< " - we're under attack!!";
+		default:
+			LOG_INFO << "Bad incoming packet from unknown client at socket "
+				<< _udpConnetction->peerAddress().toIpPort() << " is "
+				<< " - we're under attack!!";
+			break;
 	}
 }
 
 void NetworkMgr::OnObjCreateOrDestory( GameObjPtr& inGameObject, ReplicationAction inAction )
 {
-	if (inAction == RA_Create)
+	if ( inAction == RA_Create )
 		inGameObject->SetNetworkMgr( shared_from_this() );
 
 	for ( const auto& pair : udpConnToClientMap_ )
