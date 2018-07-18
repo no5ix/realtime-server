@@ -4,7 +4,7 @@
 using namespace realtime_srv;
 
 
-#ifdef IS_LINUX
+//#ifdef IS_LINUX
 
 
 using namespace muduo;
@@ -121,58 +121,6 @@ void NetworkMgr::CheckForDisconnects()
 	}
 }
 
-//void NetworkMgr::WelcomeNewClient( InputBitStream& inInputStream,
-//	const UdpConnectionPtr& inUdpConnetction, const pid_t inHoldedByThreadId )
-//{
-//	uint32_t	packetType;
-//	inInputStream.Read( packetType );
-//	if ( packetType == kHelloCC
-//		|| packetType == kInputCC
-//		|| packetType == kResetedCC )
-//	{
-//		std::string playerName = "realtime_srv_test_player_name";
-//		//inInputStream.Read( playerName );	
-//
-//		ClientProxyPtr newClientProxy = std::make_shared< ClientProxy >(
-//			shared_from_this(),
-//			playerName,
-//			kNewNetId.getAndAdd( 1 ),
-//			inHoldedByThreadId,
-//			inUdpConnetction );
-//
-//		udpConnToClientMap_[inUdpConnetction] = newClientProxy;
-//
-//		if ( newPlayerCb_ )
-//		{
-//			GameObjPtr newGameObj( newPlayerCb_( newClientProxy ) );
-//			assert( newGameObj );
-//
-//			newGameObj->SetOwner( newClientProxy );
-//			worldRegistryCb_( newGameObj, RA_Create );
-//			newClientProxy->AddGameObj( newGameObj );
-//		}
-//
-//		if ( packetType == kHelloCC )
-//		{ DoPreparePacketToSend( newClientProxy, kWelcomeCC ); }
-//		else
-//		{
-//			newClientProxy->SetRecvingServerResetFlag( true );
-//			DoPreparePacketToSend( newClientProxy, kResetCC );
-//			LOG_INFO << "Send Reset Packet";
-//		}
-//
-//		LOG_INFO << "a new client named '"
-//			<< newClientProxy->GetPlayerName().c_str()
-//			<< "' as Net ID " << newClientProxy->GetNetId();
-//	}
-//	else
-//	{
-//		LOG_INFO << "Bad incoming packet from unknown client at socket "
-//			<< inUdpConnetction->peerAddress().toIpPort() << " is "
-//			<< " - we're under attack!!";
-//	}
-//}
-
 ClientProxyPtr NetworkMgr::CreateNewClient(
 	const UdpConnectionPtr& _udpConnetction, const pid_t _holdedByThreadId )
 {
@@ -257,8 +205,6 @@ void NetworkMgr::SetRepStateDirty( int _objId, uint32_t inDirtyState )
 	}
 }
 
-
-
 void NetworkMgr::CheckPacketType( ClientProxyPtr& inClientProxy, InputBitStream& inInputStream )
 {
 	inClientProxy->UpdateLastPacketTime();
@@ -339,4 +285,4 @@ void NetworkMgr::WriteLastMoveTimestampIfDirty( OutputBitStream& inOutputStream,
 
 //#else
 //#include "realtime_srv/net/NetworkMgrWinS.h"
-#endif
+//#endif

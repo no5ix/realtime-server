@@ -1,6 +1,6 @@
 #pragma once
 
-#ifdef IS_LINUX
+//#ifdef IS_LINUX
 
 #include <realtime_srv/net/PktHandler.h>
 
@@ -109,4 +109,4 @@ typedef std::shared_ptr<NetworkMgr> NetworkMgrPtr;
 
 //#else
 //#include "realtime_srv/net/NetworkMgrWinH.h"
-#endif //IS_LINUX
+//#endif //IS_LINUX

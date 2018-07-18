@@ -145,8 +145,6 @@ bool RealtimeSrvHelper::DaemonizeOnLinux()
 #endif //IS_LINUX
 }
 
-
-
 void RealtimeSrvHelper::SimulateRealWorldNetCondition(
 	NetworkMgrPtr& networkManager,
 	uint8_t LatencyCmdIndex /*= 1*/,
