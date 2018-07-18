@@ -23,7 +23,9 @@ public:
 	std::vector<GameObjPtr>& GetAllOwnedGameObjs() { return ownedGameObjs_; }
 	const std::vector<GameObjPtr>& GetAllOwnedGameObjs() const { return ownedGameObjs_; }
 
-	void UpdateLastPacketTime();
+	void UpdateLastPacketTime()
+	{ mLastPacketFromClientTime = RealtimeSrvTiming::sInst.GetCurrentGameTime(); }
+
 	float GetLastPacketFromClientTime()	const { return mLastPacketFromClientTime; }
 
 	DeliveryNotifyMgr&	GetDeliveryNotifyManager() { return deliveryNotifyManager_; }
@@ -47,7 +49,6 @@ public:
 	void SetRecvingServerResetFlag( bool inRecvingServerResetFlag )
 	{ mRecvingServerResetFlag = inRecvingServerResetFlag; }
 
-	void SetGameObjStateDirty( int inNetworkId, uint32_t inDirtyState );
 
 private:
 

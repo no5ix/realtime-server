@@ -67,7 +67,7 @@ protected:
 	const realtime_srv::Vector3& ConsumeMovementInputVector();
 	const realtime_srv::Vector3& GetPendingInputVector() const;
 
-private:
+protected:
 
 	realtime_srv::Vector3 ControlInputVector_;
 

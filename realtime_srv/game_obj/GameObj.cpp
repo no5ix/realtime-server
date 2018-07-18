@@ -1,5 +1,6 @@
 #include "realtime_srv/common/RealtimeSrvShared.h"
-
+//;;;
+#include <muduo/base/Logging.h>
 
 using namespace realtime_srv;
 
@@ -11,10 +12,9 @@ GameObj::GameObj() :
 
 void GameObj::SetStateDirty( uint32_t repState )
 {
-	if ( hasOwner_ )
-	{
-		GetOwner()->SetGameObjStateDirty( GetObjId(), repState );
-	}
+	assert( networkMgr_ );
+	LOG_INFO << "SetStateDirtySetStateDirtySetStateDirty";
+	networkMgr_->SetRepStateDirty( objId_, repState );
 }
 
 void GameObj::Update()

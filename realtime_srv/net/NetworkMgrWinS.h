@@ -174,7 +174,7 @@ void NetworkMgr::HandlePacketFromNewClient( InputBitStream& inInputStream,
 		//inInputStream.Read( playerName );	
 
 		ClientProxyPtr newClientProxy = std::make_shared< ClientProxy >(
-			this,
+			shared_from_this(),
 			inFromAddress,
 			playerName,
 			kNewNetId++,
@@ -182,10 +182,14 @@ void NetworkMgr::HandlePacketFromNewClient( InputBitStream& inInputStream,
 
 		addrToClientMap_[inFromAddress] = newClientProxy;
 
-		GameObjPtr& newGameObj = newPlayerCb_( newClientProxy );
-		if ( newGameObj )
+
+		if ( newPlayerCb_ )
 		{
+			GameObjPtr newGameObj( newPlayerCb_( newClientProxy ) );
+			assert( newGameObj );
+
 			newGameObj->SetOwner( newClientProxy );
+			newGameObj->SetNetworkMgr( shared_from_this() );
 			worldRegistryCb_( newGameObj, RA_Create );
 			newClientProxy->AddGameObj( newGameObj );
 		}
@@ -241,6 +245,9 @@ void NetworkMgr::CheckForDisconnects()
 			if ( bUnregistObjWhenCliDisconn_ )
 				for ( auto& obj : it->second->GetAllOwnedGameObjs() )
 					worldRegistryCb_( obj, RA_Destroy );
+			else
+				for ( auto& obj : it->second->GetAllOwnedGameObjs() )
+					obj->LoseOwner();
 
 			it = addrToClientMap_.erase( it );
 		}
@@ -274,14 +281,14 @@ void NetworkMgr::SendOutgoingPackets()
 	}
 }
 
-void NetworkMgr::SetRepStateDirty( int inNetworkId, uint32_t inDirtyState )
+void NetworkMgr::SetRepStateDirty( int _objId, uint32_t inDirtyState )
 {
 	for ( const auto& pair : addrToClientMap_ )
 		pair.second->GetReplicationManager().SetReplicationStateDirty(
-			inNetworkId, inDirtyState );
+			_objId, inDirtyState );
 }
 
-void NetworkMgr::NotifyAllClient( GameObjPtr& inGameObject,
+void NetworkMgr::OnObjCreateOrDestroy( GameObjPtr& inGameObject,
 	ReplicationAction inAction )
 {
 	for ( const auto& pair : addrToClientMap_ )
@@ -377,7 +384,7 @@ uint32_t NetworkMgr::HandleServerReset( ClientProxyPtr& inClientProxy, InputBitS
 void NetworkMgr::HandleInputPacket( ClientProxyPtr& inClientProxy, InputBitStream& inInputStream )
 {
 	uint32_t actionCount = 0;
-	Action action( customInputStatecb_() );
+	Action action( customInputStatecb_ ? customInputStatecb_() : ( new InputState ) );
 	inInputStream.Read( actionCount, ACTION_COUNT_NUM );
 
 	for ( ; actionCount > 0; --actionCount )

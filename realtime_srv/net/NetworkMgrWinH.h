@@ -5,10 +5,10 @@ namespace realtime_srv
 
 class GameObj;
 class ClientProxy;
-typedef std::function< GameObjPtr( ClientProxyPtr& ) > NewPlayerCallback;
+typedef std::function< GameObj*( ClientProxyPtr& ) > NewPlayerCallback;
 typedef std::function<InputState*( )> CustomInputStateCallback;
 
-class NetworkMgr : noncopyable
+class NetworkMgr : noncopyable, public std::enable_shared_from_this<NetworkMgr>
 {
 
 public:
@@ -25,9 +25,9 @@ public:
 public:
 	void Start();
 
-	void SetRepStateDirty( int inNetworkId, uint32_t inDirtyState );
+	void SetRepStateDirty( int _objId, uint32_t inDirtyState );
 
-	void NotifyAllClient( GameObjPtr& inGameObject, ReplicationAction inAction );
+	void OnObjCreateOrDestroy( GameObjPtr& inGameObject, ReplicationAction inAction );
 
 	void SetNewPlayerCallback( const NewPlayerCallback& cb )
 	{ newPlayerCb_ = cb; }
@@ -148,4 +148,6 @@ private:
 	bool						isSimilateRealWorld_;
 	float						mLastCheckDCTime;
 };
+typedef std::shared_ptr<NetworkMgr> NetworkMgrPtr;
+
 }

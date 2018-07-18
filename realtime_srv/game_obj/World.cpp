@@ -19,6 +19,7 @@ void World::RegistGameObj( GameObjPtr obj )
 {
 	int newObjId = GetNewObjId();
 	obj->SetObjId( newObjId );
+	obj->SetWorld( shared_from_this() );
 	ObjIdToGameObjMap_[newObjId] = obj;
 
 	notifyAllClientCB_( obj, RA_Create );

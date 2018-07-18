@@ -52,14 +52,3 @@ ClientProxy::ClientProxy(
 	UpdateLastPacketTime();
 }
 #endif //IS_LINUX
-
-
-void ClientProxy::UpdateLastPacketTime()
-{
-	mLastPacketFromClientTime = RealtimeSrvTiming::sInst.GetCurrentGameTime();
-}
-
-void ClientProxy::SetGameObjStateDirty( int inNetworkId, uint32_t inDirtyState )
-{
-	networkManager_->SetRepStateDirty( inNetworkId, inDirtyState );
-}

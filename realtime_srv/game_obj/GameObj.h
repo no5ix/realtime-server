@@ -9,6 +9,8 @@ virtual uint32_t GetClassId() const { return kClassId; } \
 
 class ClientProxy;
 class InputState;
+class World;
+class NetworkMgr;
 
 class GameObj : public std::enable_shared_from_this<GameObj>
 {
@@ -35,8 +37,14 @@ public:
 	virtual void WhenDying() {}
 
 	std::shared_ptr<ClientProxy>	GetOwner() { return owner_.lock(); }
-	void SetOwner( std::shared_ptr<ClientProxy>& cp ) { owner_ = cp; hasOwner_ = true; }
 	void LoseOwner() { hasOwner_ = false; }
+	void SetOwner( std::shared_ptr<ClientProxy>& cp )
+	{ owner_ = cp; hasOwner_ = true; }
+
+	void SetWorld( const std::shared_ptr<World>& _world ) { world_ = _world; }
+
+	void SetNetworkMgr( const std::shared_ptr<NetworkMgr>& _networkMgr )
+	{ networkMgr_ = _networkMgr; }
 
 	bool		IsPendingToDie() const { return isPendingToDie_; }
 	void		SetPendingToDie( bool whether ) { isPendingToDie_ = whether; }
@@ -62,6 +70,8 @@ protected:
 	int	objId_;
 
 	std::weak_ptr<ClientProxy> owner_;
+	std::shared_ptr<World> world_;
+	std::shared_ptr<NetworkMgr> networkMgr_;
 };
 
 typedef std::shared_ptr< GameObj >	GameObjPtr;

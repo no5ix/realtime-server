@@ -2,7 +2,6 @@
 
 #ifdef IS_LINUX
 
-#include <realtime_srv/net/PktDispatcher.h>
 #include <realtime_srv/net/PktHandler.h>
 
 namespace realtime_srv
@@ -35,11 +34,11 @@ public:
 
 	void Start();
 
-	muduo::net::EventLoop* GetEventLoop() { return pktDispatcher_.GetBaseLoop(); }
+	muduo::net::EventLoop* GetEventLoop() { return pktHandler_.GetBaseLoop(); }
 
-	void SetRepStateDirty( int inNetworkId, uint32_t inDirtyState );
+	void SetRepStateDirty( int _objId, uint32_t inDirtyState );
 
-	void NotifyAllClient( GameObjPtr& inGameObject, ReplicationAction inAction );
+	void OnObjCreateOrDestroy( GameObjPtr& inGameObject, ReplicationAction inAction );
 
 	void SetNewPlayerCallback( const NewPlayerCallback& cb )
 	{ newPlayerCb_ = cb; }
@@ -55,7 +54,7 @@ public:
 
 	bool GetUnregistObjWhenCliDisconn() const
 	{ return bUnregistObjWhenCliDisconn_; }
-	void SetUnregistObjWhenCliDisconn( bool _whehter) 
+	void SetUnregistObjWhenCliDisconn( bool _whehter )
 	{ bUnregistObjWhenCliDisconn_ = _whehter; }
 
 private:
@@ -81,7 +80,7 @@ private:
 		const muduo::net::UdpConnectionPtr& inUdpConnetction,
 		const pid_t inHoldedByThreadId );
 
-	void PktProcessCallbackFunc( ReceivedPacketPtr& recvedPacket );
+	void Tick();
 
 private:
 
@@ -92,8 +91,7 @@ private:
 	WorldRegistryCb worldRegistryCb_;
 	CustomInputStateCallback customInputStatecb_;
 
-	PktDispatcher pktDispatcher_;
-	PktHandler		pktHandler_;
+	PktHandler pktHandler_;
 
 	UdpConnToClientMap					udpConnToClientMap_;
 	static muduo::AtomicInt32		kNewNetId;

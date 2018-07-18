@@ -6,7 +6,7 @@
 #include "ExampleRedisCli.h"
 #include "CharacterLuaBind.h"
 #include "ExampleInputState.h"
-
+#include "Robot.h"
 
 using namespace realtime_srv;
 
@@ -50,9 +50,9 @@ public:
 
 	void AddRobot()
 	{
-		server_.GetWorld()->RegistGameObj( GameObjPtr( new Character ) );
-		server_.GetWorld()->RegistGameObj( GameObjPtr( new Character ) );
-		server_.GetWorld()->RegistGameObj( GameObjPtr( new Character ) );
+		//server_.GetWorld()->RegistGameObj( GameObjPtr( new Robot ) );
+		//server_.GetWorld()->RegistGameObj( GameObjPtr( new Robot ) );
+		server_.GetWorld()->RegistGameObj( GameObjPtr( new Robot ) );
 	}
 
 

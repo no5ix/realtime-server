@@ -9,17 +9,28 @@ class InputState
 {
 public:
 
-	InputState() :
-		mDesiredMoveForwardAmount( 0.f ),
-		mDesiredMoveRightAmount( 0.f ),
+	InputState(
+		float _DesiredMoveForwardAmount = 0.f,
+		float _DesiredMoveRightAmount = 0.f,
 
-		mDesiredTurnAmountX( 0.f ),
-		mDesiredTurnAmountY( 0.f ),
-		mDesiredTurnAmountZ( 0.f ),
+		float _DesiredTurnAmountX = 0.f,
+		float _DesiredTurnAmountY = 0.f,
+		float _DesiredTurnAmountZ = 0.f,
 
-		mDesiredLookUpAmountX( 0.f ),
-		mDesiredLookUpAmountY( 0.f ),
-		mDesiredLookUpAmountZ( 0.f )
+		float _DesiredLookUpAmountX = 0.f,
+		float _DesiredLookUpAmountY = 0.f,
+		float _DesiredLookUpAmountZ = 0.f )
+		:
+		mDesiredMoveForwardAmount( _DesiredMoveForwardAmount ),
+		mDesiredMoveRightAmount( _DesiredMoveRightAmount ),
+
+		mDesiredTurnAmountX( _DesiredTurnAmountX ),
+		mDesiredTurnAmountY( _DesiredTurnAmountY ),
+		mDesiredTurnAmountZ( _DesiredTurnAmountZ ),
+
+		mDesiredLookUpAmountX( _DesiredLookUpAmountX ),
+		mDesiredLookUpAmountY( _DesiredLookUpAmountY ),
+		mDesiredLookUpAmountZ( _DesiredLookUpAmountZ )
 	{}
 
 	float GetDesiredMoveForwardAmount()	const { return mDesiredMoveForwardAmount; }

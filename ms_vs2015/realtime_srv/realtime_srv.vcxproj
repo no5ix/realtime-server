@@ -40,7 +40,6 @@
     <ClInclude Include="..\..\realtime_srv\net\NetworkMgrWinS.h" />
     <ClInclude Include="..\..\realtime_srv\net\NetworkMgrWinH.h" />
     <ClInclude Include="..\..\realtime_srv\net\Packet.h" />
-    <ClInclude Include="..\..\realtime_srv\net\PktDispatcher.h" />
     <ClInclude Include="..\..\realtime_srv\net\PktHandler.h" />
     <ClInclude Include="..\..\realtime_srv\net\SockAddrInterf.h" />
     <ClInclude Include="..\..\realtime_srv\net\UdpSockInterf.h" />
@@ -64,7 +63,6 @@
     <ClCompile Include="..\..\realtime_srv\math\Vector3.cpp" />
     <ClCompile Include="..\..\realtime_srv\net\ClientProxy.cpp" />
     <ClCompile Include="..\..\realtime_srv\net\NetworkMgr.cpp" />
-    <ClCompile Include="..\..\realtime_srv\net\PktDispatcher.cpp" />
     <ClCompile Include="..\..\realtime_srv\net\PktHandler.cpp" />
     <ClCompile Include="..\..\realtime_srv\net\UdpSockInterf.cpp" />
     <ClCompile Include="..\..\realtime_srv\RealtimeServer.cpp" />

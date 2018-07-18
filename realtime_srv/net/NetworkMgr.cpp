@@ -6,10 +6,6 @@ using namespace realtime_srv;
 
 #ifdef IS_LINUX
 
-namespace
-{
-const float		kClientDisconnectTimeout = 6.f;
-}
 
 using namespace muduo;
 using namespace muduo::net;
@@ -17,18 +13,13 @@ using namespace muduo::net;
 AtomicInt32 NetworkMgr::kNewNetId;
 
 NetworkMgr::NetworkMgr( uint16_t inPort /*= DEFAULT_REALTIME_SRV_PORT*/ ) :
-	pktDispatcher_( inPort, PACKET_DISPATCHER_THREAD_NUM ),
-	pktHandler_( pktDispatcher_.GetReceivedPacketBlockQueue(),
-		std::bind( &NetworkMgr::PktProcessCallbackFunc, this, _1 ) ),
+	pktHandler_( inPort, PACKET_DISPATCHER_THREAD_NUM,
+		std::bind( &NetworkMgr::DoProcessPkt, this, _1 ),
+		std::bind( &NetworkMgr::Tick, this ),
+		std::bind( &NetworkMgr::CheckForDisconnects, this ) ),
 	bUnregistObjWhenCliDisconn_( false )
 {
 	kNewNetId.getAndSet( 1 );
-
-	std::function< void() > checkDisconnCb =
-		std::bind( &NetworkMgr::CheckForDisconnects, this );
-	pktDispatcher_.SetInterval( std::bind(
-		&PktHandler::AppendToPendingFuncs, &pktHandler_, checkDisconnCb ),
-		static_cast< double >( kClientDisconnectTimeout ) );
 }
 
 void realtime_srv::NetworkMgr::Start()
@@ -40,9 +31,7 @@ void realtime_srv::NetworkMgr::Start()
 	assert( worldUpdateCb_ );
 
 	pktHandler_.Start();
-	pktDispatcher_.Start();
 }
-
 
 void NetworkMgr::DoPreparePacketToSend( ClientProxyPtr cliProxy, const uint32_t inConnFlag )
 {
@@ -57,7 +46,7 @@ void NetworkMgr::DoPreparePacketToSend( ClientProxyPtr cliProxy, const uint32_t 
 		case kResetCC:
 		case kWelcomeCC:
 			outputPacket->Write( cliProxy->GetNetId() );
-			outputPacket->Write( PktDispatcher::kSendPacketInterval );
+			outputPacket->Write( PktHandler::kSendPacketInterval );
 			break;
 		case kStateCC:
 			WriteLastMoveTimestampIfDirty( *outputPacket, cliProxy );
@@ -66,7 +55,7 @@ void NetworkMgr::DoPreparePacketToSend( ClientProxyPtr cliProxy, const uint32_t 
 	}
 	cliProxy->GetReplicationManager().Write( *outputPacket, ifp );
 
-	pktDispatcher_.AppendToPendingSndPktQ(
+	pktHandler_.AppendToPendingSndPktQ(
 		PendingSendPacketPtr( new PendingSendPacket(
 			outputPacket, cliProxy->GetUdpConnection() ) ),
 		cliProxy->GetConnHoldedByThreadId() );
@@ -99,9 +88,8 @@ void NetworkMgr::PreparePacketToSend()
 	}
 }
 
-void NetworkMgr::PktProcessCallbackFunc( ReceivedPacketPtr& recvedPacket )
+void NetworkMgr::Tick()
 {
-	DoProcessPkt( recvedPacket );
 	worldUpdateCb_();
 	PreparePacketToSend();
 }
@@ -109,7 +97,7 @@ void NetworkMgr::PktProcessCallbackFunc( ReceivedPacketPtr& recvedPacket )
 void NetworkMgr::CheckForDisconnects()
 {
 	float minAllowedTime =
-		RealtimeSrvTiming::sInst.GetCurrentGameTime() - kClientDisconnectTimeout;
+		RealtimeSrvTiming::sInst.GetCurrentGameTime() - PktHandler::kClientDisconnectTimeout;
 
 	for ( auto it = udpConnToClientMap_.begin();
 		it != udpConnToClientMap_.end(); )
@@ -183,13 +171,14 @@ void NetworkMgr::WelcomeNewClient( InputBitStream& inInputStream,
 	}
 }
 
-void NetworkMgr::NotifyAllClient( GameObjPtr& inGameObject, ReplicationAction inAction )
+void NetworkMgr::OnObjCreateOrDestroy( GameObjPtr& inGameObject, ReplicationAction inAction )
 {
 	for ( const auto& pair : udpConnToClientMap_ )
 	{
 		switch ( inAction )
 		{
 			case RA_Create:
+				inGameObject->SetNetworkMgr( shared_from_this() );
 				pair.second->GetReplicationManager().ReplicateCreate(
 					inGameObject->GetObjId(), inGameObject->GetAllStateMask() );
 				break;
@@ -203,12 +192,12 @@ void NetworkMgr::NotifyAllClient( GameObjPtr& inGameObject, ReplicationAction in
 	}
 }
 
-void NetworkMgr::SetRepStateDirty( int inNetworkId, uint32_t inDirtyState )
+void NetworkMgr::SetRepStateDirty( int _objId, uint32_t inDirtyState )
 {
 	for ( const auto& pair : udpConnToClientMap_ )
 	{
 		pair.second->GetReplicationManager().SetReplicationStateDirty(
-			inNetworkId, inDirtyState );
+			_objId, inDirtyState );
 	}
 }
 

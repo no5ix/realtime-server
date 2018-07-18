@@ -4,7 +4,7 @@
 
 using namespace realtime_srv;
 
-Character::Character( ) :
+Character::Character() :
 	BaseTurnRate( 2.f ),
 	BaseLookUpRate( 2.f ),
 	MaxSpeed( 440.f ),
@@ -71,6 +71,28 @@ uint32_t Character::Write( OutputBitStream& inOutputStream, uint32_t inDirtyStat
 		inOutputStream.Write( GetCameraRotation() );
 
 		writtenState |= ERS_Pose;
+
+		// test ->
+		if ( playerId_ == 0 )
+		{
+			LOG( "curRotation_.Xgggggggg : %f", curRotation_.X );
+			LOG( "curRotation_.Y : %f", curRotation_.Y );
+			LOG( "curRotation_.Z : %f", curRotation_.Z );
+
+			LOG( "curCameraRotation_.X : %f", curCameraRotation_.X );
+			LOG( "curCameraRotation_.Y : %f", curCameraRotation_.Y );
+			LOG( "curCameraRotation_.Z : %f", curCameraRotation_.Z );
+
+			LOG( "curLocation_.X : %f", curLocation_.X );
+			LOG( "curLocation_.Y : %f", curLocation_.Y );
+			LOG( "curLocation_.Z : %f", curLocation_.Z );
+
+			LOG( "curVelocity_.X : %f", curVelocity_.X );
+			LOG( "curVelocity_.Y : %f", curVelocity_.Y );
+			LOG( "curVelocity_.Z : %f", curVelocity_.Z );
+		}
+		//;;;
+		// <- test
 	}
 	else
 	{
@@ -96,11 +118,6 @@ void Character::ProcessInput( float inDeltaTime, const InputStatePtr& inInputSta
 
 	AddActionInput( curCameraRotation_.ToQuaternion() * Vector3::Right(),
 		inInputState->GetDesiredMoveRightAmount() );
-
-	// test ->
-	LOG( "GetDesiredMoveRightAmount : %f", inInputState->GetDesiredMoveRightAmount() );
-	LOG( "GetDesiredMoveForwardAmount %f: ", inInputState->GetDesiredMoveForwardAmount() );
-	// <- test
 
 	ApplyControlInputToVelocity( inDeltaTime );
 

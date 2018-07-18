@@ -2,56 +2,119 @@
 
 #ifdef __linux__
 
-#include <functional>
+#include <memory>
+#include <map>
 #include <vector>
 
-#include <muduo/base/Thread.h>
+#include <muduo/base/Logging.h>
+#include <muduo/base/Mutex.h>
+#include <muduo/net/EventLoopThread.h>
+#include <muduo/net/EventLoopThreadPool.h>
+#include <muduo/net/EventLoop.h>
+#include <muduo/net/Buffer.h>
+#include <muduo/net/Endian.h>
 
-#include <concurrent_queue/concurrentqueue.h>
-#include <concurrent_queue/blockingconcurrentqueue.h>
+#include <muduo_udp_support/UdpServer.h>
+#include <muduo_udp_support/UdpConnection.h>
 
-#include "realtime_srv/net/Packet.h"
+#include <realtime_srv/net/Packet.h>
+
 
 
 namespace realtime_srv
 {
 
+
 class PktHandler
 {
 public:
+	typedef std::function<
+		void( const muduo::net::UdpConnectionPtr& )
+	> UdpConnectionCallback;
+
 	typedef std::function<void( ReceivedPacketPtr& )> PktProcessCallback;
-	typedef std::function< void() > PendingFunc;
+	typedef std::function<void()> TickCallback;
+	typedef std::function<void()> CheckDisconnectCallback;
+
+	static const float	kSendPacketInterval;
+	static const float	kClientDisconnectTimeout;
 
 public:
 
-	PktHandler( ReceivedPacketBlockQueue* const inRecvPktBQ,
-		PktProcessCallback pktProcessCallback );
+	PktHandler( uint16_t _port, uint32_t _threadCount,
+		PktProcessCallback _pktProcessCallback,
+		TickCallback _tickCb,
+		CheckDisconnectCallback _checkDisconnCb = CheckDisconnectCallback() );
 
-	~PktHandler() { pktHandleThread_.join(); }
+	void Start() { assert( server_ ); server_->start(); baseLoop_.loop(); }
 
-	void Start()
-	{ assert( !pktHandleThread_.started() ); pktHandleThread_.start(); }
+	void SetInterval( std::function<void()> func, double interval )
+	{ baseLoop_.runEvery( interval, std::move( func ) ); }
 
-	void AppendToPendingFuncs( PendingFunc func );
+	void SetConnCallback( const UdpConnectionCallback& cb )
+	{ connCb_ = cb; }
+
+	muduo::net::EventLoop* GetBaseLoop() { return &baseLoop_; }
+
+	void AppendToPendingSndPktQ( const PendingSendPacketPtr& psp,
+		const pid_t threadId )
+	{
+		tidToPendingSndPktQMap_.at( threadId ).enqueue( psp );
+	}
+
+	ReceivedPacketBlockQueue* GetReceivedPacketBlockQueue()
+	{ return &recvedPktBQ_; }
+
+protected:
+	void SendPkt();
+	void ProcessPkt();
+
+	// long time no pkt to snd, then sleep
+	void CheckForSleep();
+	void CheckForWakingUp();
+	void AddToAutoSleepSystem( muduo::net::EventLoop* _loop,
+		muduo::net::TimerId _timerId );
+
+	void IoThreadInit( muduo::net::EventLoop* loop );
+
+	void OnPktComing( const muduo::net::UdpConnectionPtr& conn,
+		muduo::net::Buffer* buf, muduo::Timestamp receiveTime );
+
+	void OnConnection( const muduo::net::UdpConnectionPtr& conn )
+	{ if ( connCb_ ) connCb_( conn ); }
 
 private:
-	void ProcessPkt( PktProcessCallback inPktHandleCallback );
-	void DoPendingFuncs();
+	struct LoopAndTimerId
+	{
+		LoopAndTimerId() {}
+		LoopAndTimerId(
+			muduo::net::EventLoop* inLoop,
+			muduo::net::TimerId		inTimerId )
+			:
+			loop_( inLoop ),
+			timerId_( inTimerId )
+		{}
+		muduo::net::EventLoop* loop_;
+		muduo::net::TimerId		timerId_;
+	};
+	std::map<int, LoopAndTimerId> tidToLoopAndTimerIdMap_;
 
-	void Wakeup() { recvedPktBQ_->enqueue( ReceivedPacketPtr() ); }
+	std::map<int, PendingSendPacketQueue> tidToPendingSndPktQMap_;
 
-	bool IsInPktHandlerThread() const { return threadId_ == muduo::CurrentThread::tid(); }
+	CheckDisconnectCallback checkDisconnCb_;
+	PktProcessCallback pktProcessCb_;
+	TickCallback	tickCb_;
 
-private:
-	typedef moodycamel::ConcurrentQueue<PendingFunc> PendingFuncsQueue;
-	PendingFuncsQueue pendingFuncsQ_;
-	PendingFunc pendingFunc_;
-	bool isInvokingPendingFunc_;
+	UdpConnectionCallback connCb_;
 
-	ReceivedPacketBlockQueue* recvedPktBQ_;
+	ReceivedPacketBlockQueue recvedPktBQ_;
+	std::vector< ReceivedPacketPtr > pendingRecvedPkts_;
+	size_t pendingRecvedPktsCnt_;
 
-	muduo::Thread pktHandleThread_;
-	pid_t					threadId_;
+	muduo::net::EventLoop baseLoop_;
+	std::unique_ptr<muduo::net::UdpServer> server_;
+	pid_t baseThreadId_;
+	bool isBaseThreadSleep_;
 };
 
 }
