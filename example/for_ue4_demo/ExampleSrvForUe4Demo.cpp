@@ -8,7 +8,7 @@ using namespace realtime_srv;
 class ExampleSrvForUe4Demo : noncopyable
 {
 public:
-	ExampleSrvForUe4Demo( bool _willDaemonizeOnLinux = false )
+	ExampleSrvForUe4Demo( bool _willDaemonizeOnLinux = true )
 		: server_( _willDaemonizeOnLinux )
 	{
 		// for spawning your own controlled GameObject.
