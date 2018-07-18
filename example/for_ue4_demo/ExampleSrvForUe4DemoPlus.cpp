@@ -32,7 +32,7 @@ public:
 
 	InputState* MyInputState() { return new ExampleInputState; }
 
-	void Run() { server_.SimulateRealWorldOnWin();  AddRobot(); server_.Run(); }
+	void Run() { server_.SimulateRealWorldOnWin();  AddRobots(); server_.Run(); }
 
 
 	GameObj* OnNewPlayer( ClientProxyPtr& _newClientProxy )
@@ -48,10 +48,10 @@ public:
 		return newCharacter;
 	}
 
-	void AddRobot()
+	void AddRobots()
 	{
-		//server_.GetWorld()->RegistGameObj( GameObjPtr( new Robot ) );
-		//server_.GetWorld()->RegistGameObj( GameObjPtr( new Robot ) );
+		server_.GetWorld()->RegistGameObj( GameObjPtr( new Robot ) );
+		server_.GetWorld()->RegistGameObj( GameObjPtr( new Robot ) );
 		server_.GetWorld()->RegistGameObj( GameObjPtr( new Robot ) );
 	}
 

@@ -79,12 +79,12 @@ void PktHandler::CheckForSleep()
 			if ( CurrentThread::tid() == baseThreadId_ )
 			{
 				isBaseThreadSleep_ = true;
-				LOG_INFO << "BaseThread " << baseThreadId_ << " go to sleeeeeeeep";
+				LOG_INFO << "BaseThread go to sleeeeeeeep";
 			}
 			else
 			{
 				t_isDispatcherThreadSleeping_ = true;
-				LOG_INFO << "DispatcherThread " << CurrentThread::tid() << " go to sleeeeeeeep";
+				LOG_INFO << "DispatcherThread go to sleeeeeeeep";
 			}
 
 		}
@@ -109,7 +109,7 @@ void PktHandler::CheckForWakingUp()
 
 		lat.timerId_ = curTimerId;
 		isBaseThreadSleep_ = false;
-		LOG_INFO << "BaseThread " << baseThreadId_ << " wake uuuuuup";
+		LOG_INFO << "BaseThread wake uuuuuup";
 	}
 
 	if ( t_isDispatcherThreadSleeping_ )
@@ -122,7 +122,7 @@ void PktHandler::CheckForWakingUp()
 
 		lat.timerId_ = curTimerId;
 		t_isDispatcherThreadSleeping_ = false;
-		LOG_INFO << "DispatcherThread " << CurrentThread::tid() << " wake uuuuuup";
+		LOG_INFO << "DispatcherThread wake uuuuuup";
 	}
 }
 

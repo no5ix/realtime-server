@@ -10,12 +10,12 @@ class World : noncopyable, public std::enable_shared_from_this<World>
 {
 public:
 	typedef unordered_map< int, GameObjPtr > ObjIdToGameObjMap;
-	typedef std::function<void( GameObjPtr&, ReplicationAction )> NotifyAllClientCB;
+	typedef std::function<void( GameObjPtr&, ReplicationAction )> OnObjCreateOrDestoryCb;
 
 	void Update();
 
-	void SetNotifyAllClientCallback( const NotifyAllClientCB& cb )
-	{ notifyAllClientCB_ = cb; }
+	void OnObjCreateOrDestoryCallback( const OnObjCreateOrDestoryCb& cb )
+	{ onObjCreateOrDestoryCb_ = cb; }
 
 	bool IsGameObjectExist( int inObjId );
 	GameObjPtr GetGameObject( int inNetworkId );
@@ -31,7 +31,7 @@ private:
 	int	GetNewObjId();
 
 private:
-	NotifyAllClientCB notifyAllClientCB_;
+	OnObjCreateOrDestoryCb onObjCreateOrDestoryCb_;
 
 	ObjIdToGameObjMap		ObjIdToGameObjMap_;
 	static int					kNewObjId;

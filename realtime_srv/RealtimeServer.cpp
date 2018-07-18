@@ -24,6 +24,6 @@ realtime_srv::RealtimeServer::RealtimeServer(
 	networkManager_->SetWorldRegistryCallback( std::bind(
 		&World::Registry, world_.get(), _1, _2 ) );
                                    
-	world_->SetNotifyAllClientCallback( std::bind(
-		&NetworkMgr::OnObjCreateOrDestroy, networkManager_.get(), _1, _2 ) );
+	world_->OnObjCreateOrDestoryCallback( std::bind(
+		&NetworkMgr::OnObjCreateOrDestory, networkManager_.get(), _1, _2 ) );
 }

@@ -22,7 +22,7 @@ void World::RegistGameObj( GameObjPtr obj )
 	obj->SetWorld( shared_from_this() );
 	ObjIdToGameObjMap_[newObjId] = obj;
 
-	notifyAllClientCB_( obj, RA_Create );
+	onObjCreateOrDestoryCb_( obj, RA_Create );
 	auto newClientProxy = obj->GetOwner();
 	if ( newClientProxy )
 	{
@@ -37,7 +37,7 @@ void World::RegistGameObj( GameObjPtr obj )
 
 void World::UnregistGameObj( GameObjPtr _obj )
 {
-	notifyAllClientCB_( _obj, RA_Destroy );
+	onObjCreateOrDestoryCb_( _obj, RA_Destroy );
 	_obj->WhenDying();
 	ObjIdToGameObjMap_.erase( _obj->GetObjId() );
 }

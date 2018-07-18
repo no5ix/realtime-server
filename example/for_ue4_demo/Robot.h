@@ -7,52 +7,44 @@ using namespace realtime_srv;
 
 class Robot : public Character
 {
+public:
+	Robot()
+	{
+		SetLocation(
+			RealtimeSrvMath::GetRandomFloat() * 600.f,
+			RealtimeSrvMath::GetRandomFloat() * 500.f,
+			1000.f );
+	}
+
+protected:
 	virtual void AfterProcessInput() override
 	{
-
-		//curRotation_ = Vector3( 0.f,
-		//	realtime_srv::RealtimeSrvMath::GetRandomFloat() * 180.f,
-		//	0.f );
-
-		//curCameraRotation_ = Vector3(
-		//	realtime_srv::RealtimeSrvMath::GetRandomFloat() * 180.f,
-		//	realtime_srv::RealtimeSrvMath::GetRandomFloat() * 180.f,
-		//	realtime_srv::RealtimeSrvMath::GetRandomFloat() * 180.f );
-
-
-		//AddActionInput( curCameraRotation_.ToQuaternion() * Vector3::Forward(),
-		//	( realtime_srv::RealtimeSrvMath::GetRandomFloat() > 0.8 ? 1 : -1 ) );
-
-		//AddActionInput( curCameraRotation_.ToQuaternion() * Vector3::Right(),
-		//	( realtime_srv::RealtimeSrvMath::GetRandomFloat() > 0.8 ? 1 : -1 ) );
-
-		//float simulateDeltaTime = 0.016f;
-
-		//ApplyControlInputToVelocity( simulateDeltaTime );
-
-		//const Vector3& Delta = curVelocity_ * simulateDeltaTime;
-		//if ( !Delta.IsNearlyZero( 1e-6f ) )
-		//{
-		//	SetLocation( GetLocation() + Delta );
-		//}
-
-
+		static float moveDirection = 1.f;
+		static float yaw = RealtimeSrvMath::GetRandomFloat() * 360.f;
+		if ( yaw > 0 )
+		{
+			moveDirection = 1.f;
+			yaw -= 0.6f;
+			if ( yaw > 180.f )
+			{
+				moveDirection = -1.f;
+			}
+		}
+		else
+		{
+			yaw = 360.f;
+			moveDirection = 0.f;
+		}
 		realtime_srv::InputStatePtr simulateInputeState( new realtime_srv::InputState(
-			//realtime_srv::RealtimeSrvMath::GetRandomFloat() > 0.8 ? 1 : -1,
-			//realtime_srv::RealtimeSrvMath::GetRandomFloat() > 0.8 ? 1 : -1,
-			1.f,
-			1.f,
+			moveDirection,
+			moveDirection,
 
 			0.f,
-			//realtime_srv::RealtimeSrvMath::GetRandomFloat() * 180.f,
-			50.f,
+			yaw,
 			0.f,
 
-			//realtime_srv::RealtimeSrvMath::GetRandomFloat() * 180.f,
-			//realtime_srv::RealtimeSrvMath::GetRandomFloat() * 180.f,
-			//realtime_srv::RealtimeSrvMath::GetRandomFloat() * 180.f
 			0.f,
-			0.f,
+			yaw,
 			0.f
 		) );
 

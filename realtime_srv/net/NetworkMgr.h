@@ -38,7 +38,7 @@ public:
 
 	void SetRepStateDirty( int _objId, uint32_t inDirtyState );
 
-	void OnObjCreateOrDestroy( GameObjPtr& inGameObject, ReplicationAction inAction );
+	void OnObjCreateOrDestory( GameObjPtr& inGameObject, ReplicationAction inAction );
 
 	void SetNewPlayerCallback( const NewPlayerCallback& cb )
 	{ newPlayerCb_ = cb; }

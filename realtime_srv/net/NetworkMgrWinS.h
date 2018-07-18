@@ -288,7 +288,7 @@ void NetworkMgr::SetRepStateDirty( int _objId, uint32_t inDirtyState )
 			_objId, inDirtyState );
 }
 
-void NetworkMgr::OnObjCreateOrDestroy( GameObjPtr& inGameObject,
+void NetworkMgr::OnObjCreateOrDestory( GameObjPtr& inGameObject,
 	ReplicationAction inAction )
 {
 	for ( const auto& pair : addrToClientMap_ )

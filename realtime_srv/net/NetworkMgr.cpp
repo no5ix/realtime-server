@@ -171,14 +171,16 @@ void NetworkMgr::WelcomeNewClient( InputBitStream& inInputStream,
 	}
 }
 
-void NetworkMgr::OnObjCreateOrDestroy( GameObjPtr& inGameObject, ReplicationAction inAction )
+void NetworkMgr::OnObjCreateOrDestory( GameObjPtr& inGameObject, ReplicationAction inAction )
 {
+	if (inAction == RA_Create)
+		inGameObject->SetNetworkMgr( shared_from_this() );
+
 	for ( const auto& pair : udpConnToClientMap_ )
 	{
 		switch ( inAction )
 		{
 			case RA_Create:
-				inGameObject->SetNetworkMgr( shared_from_this() );
 				pair.second->GetReplicationManager().ReplicateCreate(
 					inGameObject->GetObjId(), inGameObject->GetAllStateMask() );
 				break;
