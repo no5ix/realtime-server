@@ -18,7 +18,7 @@
 #include <muduo_udp_support/UdpConnection.h>
 
 #include <realtime_srv/net/Packet.h>
-
+#include <realtime_srv/common/RealtimeSrvHelper.h>
 
 
 namespace realtime_srv
@@ -36,12 +36,9 @@ public:
 	typedef std::function<void()> TickCallback;
 	typedef std::function<void()> CheckDisconnectCallback;
 
-	static const float	kSendPacketInterval;
-	static const float	kClientDisconnectTimeout;
-
 public:
 
-	PktHandler( uint16_t _port, uint32_t _threadCount,
+	PktHandler( const ServerConfig _serverConfig,
 		PktProcessCallback _pktProcessCallback,
 		TickCallback _tickCb,
 		CheckDisconnectCallback _checkDisconnCb = CheckDisconnectCallback() );
@@ -61,6 +58,12 @@ public:
 
 	ReceivedPacketBlockQueue* GetReceivedPacketBlockQueue()
 	{ return &recvedPktBQ_; }
+
+	double GetSendPacketInterval() const
+	{ return sendPacketInterval_; }
+
+	double GetClientDisconnectTimeout() const
+	{ return clientDisconnectTimeout_; }
 
 protected:
 	void SendPkt();
@@ -112,6 +115,17 @@ private:
 	std::unique_ptr<muduo::net::UdpServer> server_;
 	pid_t baseThreadId_;
 	bool isBaseThreadSleeping_;
+
+	const int sleepRoundCountThreshold_;
+
+	// conf
+	uint16_t port_;
+	const double tickInterval_;
+	const size_t maxPacketsCountPerRound_;
+	const double sendPacketInterval_;
+	const double clientDisconnectTimeout_;
+	const uint8_t pktDispatcherThreadCnt_;
+
 };
 
 }

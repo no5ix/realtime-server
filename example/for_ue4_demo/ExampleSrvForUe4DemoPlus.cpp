@@ -15,11 +15,8 @@ using namespace realtime_srv;
 class ExampleSrvForUe4DemoPlus : noncopyable
 {
 public:
-	ExampleSrvForUe4DemoPlus( bool willDaemonizeOnLinux = false )
-		: server_( willDaemonizeOnLinux )
+	ExampleSrvForUe4DemoPlus()
 	{
-		db_.Init( server_.GetNetworkManager()->GetEventLoop() );
-
 		// for spawning your own controlled GameObject.
 		server_.GetNetworkManager()->SetNewPlayerCallback(
 			std::bind( &ExampleSrvForUe4DemoPlus::OnNewPlayer, this, _1 ) );
@@ -29,8 +26,8 @@ public:
 		server_.GetNetworkManager()->SetCustomInputStateCallback( std::bind(
 			&ExampleSrvForUe4DemoPlus::MyInputState, this ) );
 
-		// Server will run as 'Not Destroy GameObj When Client Disconnect' mode.
-		server_.GetNetworkManager()->SetUnregistObjWhenCliDisconn( true );
+		// init hiredis
+		db_.Init( server_.GetNetworkManager()->GetEventLoop() );
 	}
 
 	InputState* MyInputState() { return new ExampleInputState; }
@@ -42,7 +39,7 @@ public:
 
 	//	for spawning your own controlled GameObject to the World,
 	//	just return a GameObj* , 
-	//	realtime_srv will notify it to all the other clients.
+	//	realtime_srv will sync it to all the other clients.
 	//	of course u can do anything else for return nullptr or
 	//	u can regist ur GameObj to the World by urself.
 	GameObj* OnNewPlayer( ClientProxyPtr& _newClientProxy )
@@ -89,18 +86,8 @@ private:
 
 int main( int argc, const char** argv )
 {
-	RealtimeSrvHelper::SaveCommandLineArg( argc, argv );
-
-	// 在Linux上, 加上一个命令行参数 1 即可变为守护进程,   
-	// 如:	   ./rs_example_for_ue4_demo  1
-	// 不加即为前台运行
-	const uint8_t DaemonizeCmdIndexOnLinux = 1;
-	bool willDaemonizeOnLinux = RealtimeSrvHelper::GetCommandLineArg(
-		DaemonizeCmdIndexOnLinux ) == "1";
-
-	ExampleSrvForUe4DemoPlus exmaple_server( willDaemonizeOnLinux );
+	ExampleSrvForUe4DemoPlus exmaple_server;
 	exmaple_server.Run();
-
 }
 
 

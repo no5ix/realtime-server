@@ -3,8 +3,6 @@
 
 
 
-#define DEFAULT_REALTIME_SRV_PORT			(44444)
-
 
 #ifdef PI
 #undef PI
@@ -26,7 +24,7 @@ typedef unsigned short											PacketSN;
 #define HALF_MAX_PACKET_SEQUENCE_NUMBER     (32768)
 
 // ChunkPacketID
-typedef unsigned int						ChunkPacketID;
+typedef unsigned int									ChunkPacketID;
 #define CHUNK_PACKET_ID_BIT_WIDE			(32)
 #define MAX_CHUNK_PACKET_ID						(4294967296)
 #define HALF_MAX_CHUNK_PACKET_ID			(2147483648)
@@ -36,10 +34,6 @@ typedef unsigned int						ChunkPacketID;
 
 #define ACK_BIT_FIELD_BYTE_LEN				(4)
 
-// new to be equal or greater than 1 
-#define PACKET_DISPATCHER_THREAD_NUM	(7) 
-
-#define ACTION_COUNT_NUM							(2)
 
 
 #ifdef IS_LINUX

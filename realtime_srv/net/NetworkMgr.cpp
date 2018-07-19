@@ -1,4 +1,5 @@
 #include "realtime_srv/common/RealtimeSrvShared.h"
+#include <INIReader.h>
 
 
 using namespace realtime_srv;
@@ -12,18 +13,21 @@ using namespace muduo::net;
 
 AtomicInt32 NetworkMgr::kNewNetId;
 
-NetworkMgr::NetworkMgr( uint16_t inPort /*= DEFAULT_REALTIME_SRV_PORT*/ ) :
-	pktHandler_( inPort, PACKET_DISPATCHER_THREAD_NUM,
+NetworkMgr::NetworkMgr( const ServerConfig _serverConfig ) :
+	bUnregistObjWhenCliDisconn_( _serverConfig.is_unregist_obj_when_cli_disconn ),
+	actionCountPerRound_( _serverConfig.action_count_per_round ),
+	pktHandler_( _serverConfig,
 		std::bind( &NetworkMgr::DoProcessPkt, this, _1 ),
 		std::bind( &NetworkMgr::Tick, this ),
-		std::bind( &NetworkMgr::CheckForDisconnects, this ) ),
-	bUnregistObjWhenCliDisconn_( false )
+		std::bind( &NetworkMgr::CheckForDisconnects, this ) )
 {
+	assert( actionCountPerRound_ >= 1 );
 	kNewNetId.getAndSet( 1 );
 }
 
 void realtime_srv::NetworkMgr::Start()
 {
+
 	//assert( newPlayerCb_ );
 	//assert( customInputStatecb_ );
 
@@ -49,7 +53,7 @@ void NetworkMgr::DoPreparePacketToSend( ClientProxyPtr& _cliProxy, const uint32_
 			LOG_INFO << "Send Reset Packet";
 		case kWelcomeCC:
 			outputPacket->Write( _cliProxy->GetNetId() );
-			outputPacket->Write( PktHandler::kSendPacketInterval );
+			outputPacket->Write( pktHandler_.GetSendPacketInterval() );
 			break;
 		case kStateCC:
 			WriteLastMoveTimestampIfDirty( *outputPacket, _cliProxy );
@@ -98,10 +102,9 @@ void NetworkMgr::Tick()
 void NetworkMgr::CheckForDisconnects()
 {
 	float minAllowedTime =
-		RealtimeSrvTiming::sInst.GetCurrentGameTime() - PktHandler::kClientDisconnectTimeout;
+		RealtimeSrvTiming::sInst.GetCurrentGameTime() - pktHandler_.GetClientDisconnectTimeout();
 
-	for ( auto it = udpConnToClientMap_.begin();
-		it != udpConnToClientMap_.end(); )
+	for ( auto it = udpConnToClientMap_.begin(); it != udpConnToClientMap_.end(); )
 	{
 		if ( it->second->GetLastPacketFromClientTime() < minAllowedTime )
 		{
@@ -198,10 +201,8 @@ void NetworkMgr::OnObjCreateOrDestory( GameObjPtr& inGameObject, ReplicationActi
 void NetworkMgr::SetRepStateDirty( int _objId, uint32_t inDirtyState )
 {
 	for ( const auto& pair : udpConnToClientMap_ )
-	{
 		pair.second->GetReplicationManager().SetReplicationStateDirty(
 			_objId, inDirtyState );
-	}
 }
 
 void NetworkMgr::CheckPacketType( ClientProxyPtr& inClientProxy, InputBitStream& inInputStream )
@@ -216,9 +217,7 @@ void NetworkMgr::CheckPacketType( ClientProxyPtr& inClientProxy, InputBitStream&
 			break;
 		case kInputCC:
 			if ( inClientProxy->GetDeliveryNotifyManager().ReadAndProcessState( inInputStream ) )
-			{
 				HandleInputPacket( inClientProxy, inInputStream );
-			}
 			break;
 		case kNullCC:
 			break;
@@ -245,27 +244,19 @@ uint32_t NetworkMgr::HandleServerReset( ClientProxyPtr& inClientProxy, InputBitS
 		return kNullCC;
 	}
 	else
-	{
 		return packetType;
-	}
 }
 
 void NetworkMgr::HandleInputPacket( ClientProxyPtr& inClientProxy, InputBitStream& inInputStream )
 {
 	uint32_t actionCount = 0;
 	Action action( customInputStatecb_ ? customInputStatecb_() : ( new InputState ) );
-	inInputStream.Read( actionCount, ACTION_COUNT_NUM );
+	inInputStream.Read( actionCount, actionCountPerRound_ );
 
 	for ( ; actionCount > 0; --actionCount )
-	{
 		if ( action.Read( inInputStream ) )
-		{
 			if ( inClientProxy->GetUnprocessedActionList().AddMoveIfNew( action ) )
-			{
 				inClientProxy->SetIsLastMoveTimestampDirty( true );
-			}
-		}
-	}
 }
 
 void NetworkMgr::WriteLastMoveTimestampIfDirty( OutputBitStream& inOutputStream,

@@ -167,4 +167,7 @@
   <ItemGroup>
     <Text Include="..\..\realtime_srv\CMakeLists.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\realtime_srv\rs_config.ini" />
+  </ItemGroup>
 </Project>

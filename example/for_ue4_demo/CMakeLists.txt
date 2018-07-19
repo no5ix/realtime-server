@@ -3,10 +3,11 @@
 # support C++14
 add_definitions(-std=c++1y)
 
-set (PROJ_NAME rs_example_for_ue4_demo)
-set (PROJ_NAME_PLUS rs_example_for_ue4_demo_plus)
+set (EXAMPLE_NAME rs_example_for_ue4_demo)
 
 set (LIB_REALTIME_SRV realtime_srv)
+
+set (EXAMPLE_PLUS_NAME rs_example_for_ue4_demo_plus)
 set (LIB_MUDUO_HIREDIS muduo_hiredis)
 set (LIB_LUA_BIND lua_bind)
 
@@ -16,9 +17,9 @@ IF(UNIX)
         Character.cpp
         ExampleSrvForUe4Demo.cpp
     )
-    add_executable(${PROJ_NAME} ${SRCS})
-    target_link_libraries(${PROJ_NAME} ${LIB_REALTIME_SRV})
-    message(STATUS  "${PROJ_NAME} check finished")
+    add_executable(${EXAMPLE_NAME} ${SRCS})
+    target_link_libraries(${EXAMPLE_NAME} ${LIB_REALTIME_SRV})
+    message(STATUS  "${EXAMPLE_NAME} check finished")
     
 
     if (CMAKE_COMPILER_IS_GNUCC)
@@ -35,18 +36,18 @@ IF(UNIX)
                     CharacterLuaBind.cpp
                     ExampleRedisCli.cpp
                 )
-                add_executable(${PROJ_NAME_PLUS} ${SRCS})
-                target_link_libraries(${PROJ_NAME_PLUS} ${LIB_REALTIME_SRV} ${LIB_MUDUO_HIREDIS} ${LIB_LUA_BIND})
-                message(STATUS  "${PROJ_NAME_PLUS} check finished.")
+                add_executable(${EXAMPLE_PLUS_NAME} ${SRCS})
+                target_link_libraries(${EXAMPLE_PLUS_NAME} ${LIB_REALTIME_SRV} ${LIB_MUDUO_HIREDIS} ${LIB_LUA_BIND})
+                message(STATUS  "${EXAMPLE_PLUS_NAME} check finished.")
             endif()
 
         else()
 
-            message(WARNING  "${PROJ_NAME} check succeeded, but ${PROJ_NAME_PLUS} check failed, ${PROJ_NAME_PLUS} Requires :
+            message(WARNING  "${EXAMPLE_NAME} check succeeded, but ${EXAMPLE_PLUS_NAME} check failed, ${EXAMPLE_PLUS_NAME} Requires :
                     - Redis
                     - Hiredis 
                     - gcc Version >= 6.0 for compiling Sol2
-                so just do `sh ./run_rs.sh` to play ${PROJ_NAME} for now ."
+                so just do `sh ./run_rs.sh` to play ${EXAMPLE_NAME} for now ."
             )
                 
         endif()
@@ -54,7 +55,7 @@ IF(UNIX)
 
 # elseif(WIN32) # Check if we are on Windows
 
-#   create_win_proj(${PROJ_NAME})
+#   create_win_proj(${EXAMPLE_NAME})
   
 
 else()

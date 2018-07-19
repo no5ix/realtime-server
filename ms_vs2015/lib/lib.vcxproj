@@ -21,6 +21,8 @@
   <ItemGroup>
     <ClInclude Include="..\..\lib\concurrent_queue\blockingconcurrentqueue.h" />
     <ClInclude Include="..\..\lib\concurrent_queue\concurrentqueue.h" />
+    <ClInclude Include="..\..\lib\inih\include\ini.h" />
+    <ClInclude Include="..\..\lib\inih\include\INIReader.h" />
     <ClInclude Include="..\..\lib\lualib\lua53\lapi.h" />
     <ClInclude Include="..\..\lib\lualib\lua53\lauxlib.h" />
     <ClInclude Include="..\..\lib\lualib\lua53\lcode.h" />
@@ -100,6 +102,8 @@
     <ClInclude Include="..\..\lib\muduo_udp_support\UdpSocketsOps.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\lib\inih\lib\ini.c" />
+    <ClCompile Include="..\..\lib\inih\lib\INIReader.cpp" />
     <ClCompile Include="..\..\lib\lualib\lua53\lapi.c" />
     <ClCompile Include="..\..\lib\lualib\lua53\lauxlib.c" />
     <ClCompile Include="..\..\lib\lualib\lua53\lbaselib.c" />
@@ -177,6 +181,9 @@
     <ClCompile Include="..\..\lib\muduo_udp_support\UdpSocketsOps.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="..\..\lib\inih\CMakeLists.txt" />
+    <Text Include="..\..\lib\inih\include\CMakeLists.txt" />
+    <Text Include="..\..\lib\inih\lib\CMakeLists.txt" />
     <Text Include="..\..\lib\lualib\CMakeLists.txt" />
     <Text Include="..\..\lib\muduo\CMakeLists.txt" />
     <Text Include="..\..\lib\muduo_contrib\CMakeLists.txt" />
@@ -185,6 +192,11 @@
     <Text Include="..\..\lib\muduo_udp_support\test\chat\CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\lib\inih\.gitignore" />
+    <None Include="..\..\lib\inih\inih.pc.in" />
+    <None Include="..\..\lib\inih\inihcpp.pc.in" />
+    <None Include="..\..\lib\inih\LICENSE" />
+    <None Include="..\..\lib\inih\README" />
     <None Include="..\..\lib\lualib\lua53\Makefile" />
     <None Include="..\..\lib\lualib\lua53\README" />
     <None Include="..\..\lib\muduo_contrib\hiredis\README.md" />

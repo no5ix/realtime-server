@@ -3,7 +3,7 @@
 一个实时的专用游戏服务器
 
 
-![UE4DemoScreenshot.png](./img/UE4DemoScreenshot.png)
+![UE4DemoScreenshot.png](./img/UE4DemoScreenshot.jpg)
 
 
 
@@ -28,7 +28,8 @@
 # About This 
 
 
-- Linux / [Win](https://github.com/no5ix/realtime-server/tree/win_version)
+- master branch (focus on Linux) 
+-  [win_version](https://github.com/no5ix/realtime-server/tree/win_version) branch (Linux & Win both)
 - Multi-Thread
 - RUDP
 - Bit Stream

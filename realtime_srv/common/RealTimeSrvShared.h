@@ -84,6 +84,11 @@ using std::placeholders::_3;
 
 
 #include "realtime_srv/common/noncopyable.h"
+
+
+#include "realtime_srv/net/Packet.h"
+#include "realtime_srv/net/PktHandler.h"
+
 #include "realtime_srv/math/Vector3.h"
 #include "realtime_srv/math/Quaternion.h"
 #include "realtime_srv/math/Matrix3x3.h"
@@ -98,9 +103,7 @@ using std::placeholders::_3;
 #include "realtime_srv/net/SockAddrInterf.h"
 #include "realtime_srv/net/UdpSockInterf.h"
 
-
 #include "realtime_srv/rep/BitStream.h"
-
 
 #include "realtime_srv/game_obj/GameObj.h"
 
@@ -116,10 +119,8 @@ using std::placeholders::_3;
 #include "realtime_srv/game_obj/Action.h"
 #include "realtime_srv/game_obj/ActionList.h"
 
-
 #include "realtime_srv/net/ClientProxy.h"
 #include "realtime_srv/net/NetworkMgr.h"
-
 
 
 #endif // REALTIME_SRV_SHARED_H

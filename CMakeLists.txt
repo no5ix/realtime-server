@@ -2,7 +2,7 @@
 # CMake 最低版本号要求
 cmake_minimum_required (VERSION 2.8)
 
-# support C++14
+# upport C++14
 # add_definitions(-std=c++1y)
 
 # CMake disable -std=c++11 flag for C files
@@ -163,11 +163,13 @@ if(UNIX)
     include_directories(${PROJECT_SOURCE_DIR})
     include_directories(${PROJECT_SOURCE_DIR}/${LIB_PATH_NAME})
     include_directories(${PROJECT_SOURCE_DIR}/${LIB_PATH_NAME}/lualib/lua53)
+    include_directories(${PROJECT_SOURCE_DIR}/${LIB_PATH_NAME}/inih/include)
 
     add_subdirectory(${LIB_PATH_NAME}/muduo)
     add_subdirectory(${LIB_PATH_NAME}/muduo_udp_support)
     add_subdirectory(${LIB_PATH_NAME}/muduo_contrib)
     add_subdirectory(${LIB_PATH_NAME}/lualib)
+    add_subdirectory(${LIB_PATH_NAME}/inih)
 
     add_subdirectory(realtime_srv)
     add_subdirectory(example)

@@ -73,6 +73,9 @@
   <ItemGroup>
     <Text Include="..\..\realtime_srv\CMakeLists.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\realtime_srv\rs_config.ini" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{FBA19B08-A830-4090-94EA-A6559FD317F6}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>

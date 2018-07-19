@@ -10,8 +10,6 @@ using namespace muduo;
 using namespace muduo::net;
 
 
-const float PktHandler::kSendPacketInterval = 1.f / 30.f;
-const float PktHandler::kClientDisconnectTimeout = 6.f;
 
 namespace
 {
@@ -20,35 +18,44 @@ __thread int t_handleCountLastRound_ = 0;
 __thread int t_noPktHandleRoundCount_ = 0;
 
 __thread bool t_isDispatcherThreadSleeping_ = false;
-
-const float kTickInterval = 1.f / 30.f;
-const int sleepRoundCountThreshold = static_cast< int >( 1 / kTickInterval );
-const size_t kMaxPacketsCountPerRound = 10;
 }
 
 
-PktHandler::PktHandler( uint16_t _port, uint32_t _threadCount,
+PktHandler::PktHandler( const ServerConfig _serverConfig,
 	PktProcessCallback _pktProcessCallback,
 	TickCallback _tickCb,
 	CheckDisconnectCallback _checkDisconnCb /*= CheckDisconnectCallback()*/ )
 	:
+	sendPacketInterval_( _serverConfig.send_packet_interval ),
+	clientDisconnectTimeout_( _serverConfig.client_disconnect_timeout ),
+	maxPacketsCountPerRound_( _serverConfig.max_packets_count_per_round ),
+	tickInterval_( _serverConfig.tick_interval ),
+	port_( _serverConfig.port ),
+	pktDispatcherThreadCnt_( _serverConfig.packet_dispatcher_thread_count ),
+	sleepRoundCountThreshold_( static_cast< int >( 1 / tickInterval_ ) ),
 	isBaseThreadSleeping_( false ),
 	baseThreadId_( CurrentThread::tid() ),
 	pendingRecvedPktsCnt_( 0 ),
-	pendingRecvedPkts_( std::vector<ReceivedPacketPtr>( kMaxPacketsCountPerRound ) ),
+	pendingRecvedPkts_( std::vector<ReceivedPacketPtr>( maxPacketsCountPerRound_ ) ),
 	pktProcessCb_( _pktProcessCallback ),
 	tickCb_( _tickCb ),
 	checkDisconnCb_( _checkDisconnCb )
 {
-	assert( _threadCount >= 1 );
+	assert( sendPacketInterval_ >= 0 );
+	assert( clientDisconnectTimeout_ >= 0 );
+	assert( maxPacketsCountPerRound_ >= 1 );
+	assert( tickInterval_ >= 0 );
+	assert( port_ >= 1024 );
+	assert( pktDispatcherThreadCnt_ >= 1 );
+
 	assert( tickCb_ );
 	assert( pktProcessCb_ );
 
-	InetAddress serverAddr( _port );
+	InetAddress serverAddr( port_ );
 
 	server_.reset( new UdpServer( &baseLoop_, serverAddr, "rs_pkt_dispatcher" ) );
 
-	server_->setThreadNum( _threadCount );
+	server_->setThreadNum( pktDispatcherThreadCnt_ );
 
 	server_->setConnectionCallback(
 		std::bind( &PktHandler::OnConnection, this, _1 ) );
@@ -57,12 +64,12 @@ PktHandler::PktHandler( uint16_t _port, uint32_t _threadCount,
 	server_->setThreadInitCallback(
 		std::bind( &PktHandler::IoThreadInit, this, _1 ) );
 
-	TimerId procPktTimerId = baseLoop_.runEvery( static_cast< double >( kTickInterval ),
+	TimerId procPktTimerId = baseLoop_.runEvery( static_cast< double >( tickInterval_ ),
 		std::bind( &PktHandler::ProcessPkt, this ) );
 	AddToAutoSleepSystem( &baseLoop_, procPktTimerId );
 
 	if ( checkDisconnCb_ )
-		baseLoop_.runEvery( static_cast< double >( kClientDisconnectTimeout ),
+		baseLoop_.runEvery( static_cast< double >( clientDisconnectTimeout_ ),
 			checkDisconnCb_ );
 }
 
@@ -76,7 +83,7 @@ void PktHandler::CheckForSleep()
 {
 	if ( t_handleCountThisRound_ == 0 && t_handleCountLastRound_ == 0 )
 	{
-		if ( ++t_noPktHandleRoundCount_ > sleepRoundCountThreshold )
+		if ( ++t_noPktHandleRoundCount_ > sleepRoundCountThreshold_ )
 		{
 			t_noPktHandleRoundCount_ = 0;
 			LoopAndTimerId& lat = tidToLoopAndTimerIdMap_.at( CurrentThread::tid() );
@@ -108,7 +115,7 @@ void PktHandler::CheckForWakingUp()
 		muduo::net::TimerId curTimerId;
 		LoopAndTimerId& lat = tidToLoopAndTimerIdMap_.at( baseThreadId_ );
 		curTimerId = lat.loop_->runEvery(
-			static_cast< double >( kTickInterval ),
+			static_cast< double >( tickInterval_ ),
 			std::bind( &PktHandler::ProcessPkt, this ) );
 
 		lat.timerId_ = curTimerId;
@@ -121,7 +128,7 @@ void PktHandler::CheckForWakingUp()
 		muduo::net::TimerId curTimerId;
 		LoopAndTimerId& lat = tidToLoopAndTimerIdMap_.at( CurrentThread::tid() );
 		curTimerId = lat.loop_->runEvery(
-			static_cast< double >( kSendPacketInterval ),
+			static_cast< double >( sendPacketInterval_ ),
 			std::bind( &PktHandler::SendPkt, this ) );
 
 		lat.timerId_ = curTimerId;
@@ -133,7 +140,7 @@ void PktHandler::CheckForWakingUp()
 void PktHandler::ProcessPkt()
 {
 	while ( ( pendingRecvedPktsCnt_ = recvedPktBQ_.try_dequeue_bulk(
-		pendingRecvedPkts_.begin(), kMaxPacketsCountPerRound ) ) != 0 )
+		pendingRecvedPkts_.begin(), maxPacketsCountPerRound_ ) ) != 0 )
 	{
 		for ( size_t i = 0; i != pendingRecvedPktsCnt_; ++i )
 		{
@@ -148,7 +155,7 @@ void PktHandler::ProcessPkt()
 void PktHandler::IoThreadInit( EventLoop* loop )
 {
 	muduo::net::TimerId sndPktTimerId = loop->runEvery(
-		static_cast< double >( kSendPacketInterval ),
+		static_cast< double >( sendPacketInterval_ ),
 		std::bind( &PktHandler::SendPkt, this ) );
 
 	AddToAutoSleepSystem( loop, sndPktTimerId );

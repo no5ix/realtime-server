@@ -97,7 +97,7 @@ bool RealtimeSrvHelper::ChunkPacketIDGreaterThan( ChunkPacketID s1, ChunkPacketI
 		( ( s1 < s2 ) && ( s2 - s1 > HALF_MAX_CHUNK_PACKET_ID ) );
 }
 
-bool RealtimeSrvHelper::DaemonizeOnLinux()
+bool RealtimeSrvHelper::Daemonize()
 {
 #ifndef IS_LINUX
 
@@ -146,7 +146,7 @@ bool RealtimeSrvHelper::DaemonizeOnLinux()
 }
 
 void RealtimeSrvHelper::SimulateRealWorldNetCondition(
-	NetworkMgrPtr& networkManager,
+	std::shared_ptr<NetworkMgr>& networkManager,
 	uint8_t LatencyCmdIndex /*= 1*/,
 	uint8_t dropPacketChanceCmdIndex /*= 2*/,
 	uint8_t JitterCmdIndex /*= 3*/ )

@@ -29,14 +29,27 @@ else
 fi
 
 
+
 # copy lua file to bin path
 
 EXAMPLE_NAME="for_ue4_demo"
 EXAMPLE_DIR="${RS_DIR}/example/${EXAMPLE_NAME}"
 
-mkdir -p ${RS_BIN_DIR}/${EXAMPLE_NAME}/
+mkdir -p ${RS_BIN_DIR}/${EXAMPLE_NAME}
 cp  ${EXAMPLE_DIR}/*.lua  ${RS_BIN_DIR}/${EXAMPLE_NAME}/
 echo "copy lua file to bin path finished."
+
+
+
+# copy config file to bin path
+
+REALTIME_SRV_DIR="${RS_DIR}/realtime_srv"
+
+mkdir -p ${RS_BIN_DIR}/config/
+cp  ${REALTIME_SRV_DIR}/*.ini  ${RS_BIN_DIR}/config/
+echo "copy config file to bin path finished."
+
+
 
 # cmake
 

@@ -40,6 +40,15 @@
     <Filter Include="concurrent_queue">
       <UniqueIdentifier>{8a56e1ae-3e5a-4def-a48d-116a26b5ebc3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="inih">
+      <UniqueIdentifier>{ae792e25-2d47-4feb-aceb-219335d57e5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="inih\include">
+      <UniqueIdentifier>{37f22a41-b7bc-4820-9df9-3a575a5fba49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="inih\lib">
+      <UniqueIdentifier>{f81b1ea0-963d-4394-a584-501ea90d134e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\lib\muduo\base\Atomic.h">
@@ -279,6 +288,12 @@
     <ClInclude Include="..\..\lib\muduo\base\ThreadPool.h">
       <Filter>muduo\base</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\lib\inih\include\ini.h">
+      <Filter>inih\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\inih\include\INIReader.h">
+      <Filter>inih\include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\lib\muduo\base\Condition.cc">
@@ -506,6 +521,12 @@
     <ClCompile Include="..\..\lib\muduo\base\ThreadPool.cc">
       <Filter>muduo\base</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\lib\inih\lib\ini.c">
+      <Filter>inih\lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\inih\lib\INIReader.cpp">
+      <Filter>inih\lib</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\..\lib\muduo_contrib\hiredis\CMakeLists.txt">
@@ -526,6 +547,15 @@
     <Text Include="..\..\lib\lualib\CMakeLists.txt">
       <Filter>lualib</Filter>
     </Text>
+    <Text Include="..\..\lib\inih\include\CMakeLists.txt">
+      <Filter>inih\include</Filter>
+    </Text>
+    <Text Include="..\..\lib\inih\lib\CMakeLists.txt">
+      <Filter>inih\lib</Filter>
+    </Text>
+    <Text Include="..\..\lib\inih\CMakeLists.txt">
+      <Filter>inih</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\lib\muduo_contrib\hiredis\README.md">
@@ -536,6 +566,21 @@
     </None>
     <None Include="..\..\lib\lualib\lua53\README">
       <Filter>lualib\lua53</Filter>
+    </None>
+    <None Include="..\..\lib\inih\.gitignore">
+      <Filter>inih</Filter>
+    </None>
+    <None Include="..\..\lib\inih\inih.pc.in">
+      <Filter>inih</Filter>
+    </None>
+    <None Include="..\..\lib\inih\inihcpp.pc.in">
+      <Filter>inih</Filter>
+    </None>
+    <None Include="..\..\lib\inih\LICENSE">
+      <Filter>inih</Filter>
+    </None>
+    <None Include="..\..\lib\inih\README">
+      <Filter>inih</Filter>
     </None>
   </ItemGroup>
 </Project>

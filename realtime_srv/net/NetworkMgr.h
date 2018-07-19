@@ -33,7 +33,7 @@ public:
 
 public:
 
-	NetworkMgr( uint16_t inPort = DEFAULT_REALTIME_SRV_PORT );
+	NetworkMgr( const ServerConfig _serverConfig );
 
 	void Start();
 
@@ -60,6 +60,8 @@ public:
 
 	bool GetUnregistObjWhenCliDisconn() const
 	{ return bUnregistObjWhenCliDisconn_; }
+
+	// if true, Server will run as 'Not Destroy GameObj When Client Disconnect' mode.
 	void SetUnregistObjWhenCliDisconn( bool _whehter )
 	{ bUnregistObjWhenCliDisconn_ = _whehter; }
 
@@ -95,6 +97,7 @@ private:
 private:
 
 	bool bUnregistObjWhenCliDisconn_;
+	uint8_t actionCountPerRound_;
 
 	LetCliProxyGetWorldStateCb letCliProxyGetWorldState_;
 	NewPlayerCallback newPlayerCb_;

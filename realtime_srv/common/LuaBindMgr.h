@@ -1,10 +1,12 @@
 #pragma once
 
-#include <lualib/sol.hpp>
+#include <lualib/sol.hpp>	
 
 namespace realtime_srv
 {
 
+
+//remember to add ` add_definitions( -std = c++1y ) ` to ur CMakeLists.txt
 class LuaBindMgr
 {
 public:

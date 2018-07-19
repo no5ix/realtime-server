@@ -8,36 +8,30 @@
 namespace realtime_srv
 {
 
+
 class RealtimeServer : noncopyable
 {
 public:
 
-	//************************************
-	// @Parameter uint16_t Port : default is DEFAULT_REALTIME_SRV_PORT, see RealtimeSrvMacro.h
-	//************************************
-	RealtimeServer(
-		bool _willDaemonizeOnLinux = false,
-		uint16_t _port = DEFAULT_REALTIME_SRV_PORT );
+	RealtimeServer();
 
+	void Run() { networkMgr_->Start(); }
 
-	void Run()
-	{
-		LOG( "Server running as '%s Destroy GameObj When Client Disconnect' mode.",
-			( networkManager_->GetUnregistObjWhenCliDisconn() ? "" : "Not" ) );
-		networkManager_->Start();
-	}
+	std::shared_ptr<World> GetWorld() { return world_; }
 
+	std::shared_ptr<NetworkMgr> GetNetworkManager() { return networkMgr_; }
 
-	std::shared_ptr<World> GetWorld()
-	{ return world_; }
-
-	std::shared_ptr<NetworkMgr> GetNetworkManager()
-	{ return networkManager_; }
-
+	ServerConfig GetServerConfig() const { return srvConf_; }
 
 private:
+
+	void ReadConfigFile();
+
+private:
+
 	std::shared_ptr<World>	world_;
-	std::shared_ptr<NetworkMgr>	networkManager_;
+	std::shared_ptr<NetworkMgr>	networkMgr_;
+	ServerConfig srvConf_;
 };
 
 }
