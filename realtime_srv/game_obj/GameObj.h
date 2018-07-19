@@ -34,18 +34,21 @@ public:
 	virtual uint32_t	Write( OutputBitStream& inOutputStream,
 		uint32_t inDirtyState ) const = 0;
 
-	std::shared_ptr<ClientProxy>	GetOwner() { return owner_.lock(); }
-	void LoseOwner() { hasOwner_ = false; }
-	void SetOwner( std::shared_ptr<ClientProxy>& cp )
-	{ owner_ = cp; hasOwner_ = true; }
+	void SetWorld( const std::shared_ptr<World> _world ) { world_ = _world; }
 
-	void SetWorld( const std::shared_ptr<World>& _world ) { world_ = _world; }
+	void SetMaster( std::shared_ptr<ClientProxy> cp );
 
-	void SetNetworkMgr( const std::shared_ptr<NetworkMgr>& _networkMgr )
+	void SetNetworkMgr( const std::shared_ptr<NetworkMgr> _networkMgr )
 	{ networkMgr_ = _networkMgr; }
 
-	bool		IsPendingToDie() const { return isPendingToDie_; }
-	void		SetPendingToDie( bool whether ) { isPendingToDie_ = whether; }
+	bool HasMaster() const { return hasMaster_; }
+	std::shared_ptr<ClientProxy>	GetMaster() const { return master_.lock(); }
+	void LoseMaster();
+
+	bool IsPendingToDie() const
+	{ return isPendingToDie_; }
+
+	void SetPendingToDie();
 
 	int			GetObjId()				const { return objId_; }
 	void		SetObjId( int inObjId ) { objId_ = inObjId; }
@@ -63,11 +66,11 @@ protected:
 protected:
 
 	bool isPendingToDie_;
-	bool hasOwner_;
+	bool hasMaster_;
 
 	int	objId_;
 
-	std::weak_ptr<ClientProxy> owner_;
+	std::weak_ptr<ClientProxy> master_;
 	std::shared_ptr<World> world_;
 	std::shared_ptr<NetworkMgr> networkMgr_;
 };

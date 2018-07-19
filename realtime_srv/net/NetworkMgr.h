@@ -11,6 +11,7 @@ class GameObj;
 class ClientProxy;
 typedef std::function<GameObj*( ClientProxyPtr& )> NewPlayerCallback;
 typedef std::function<InputState*()> CustomInputStateCallback;
+typedef std::function<void( ClientProxyPtr )> LetCliProxyGetWorldStateCb;
 
 class NetworkMgr : noncopyable, public std::enable_shared_from_this<NetworkMgr>
 {
@@ -54,6 +55,9 @@ public:
 	void SetCustomInputStateCallback( const CustomInputStateCallback& cb )
 	{ customInputStatecb_ = cb; }
 
+	void SetLetCliProxyGetWorldStateCallback( const LetCliProxyGetWorldStateCb& cb )
+	{ letCliProxyGetWorldState_ = cb; }
+
 	bool GetUnregistObjWhenCliDisconn() const
 	{ return bUnregistObjWhenCliDisconn_; }
 	void SetUnregistObjWhenCliDisconn( bool _whehter )
@@ -92,6 +96,7 @@ private:
 
 	bool bUnregistObjWhenCliDisconn_;
 
+	LetCliProxyGetWorldStateCb letCliProxyGetWorldState_;
 	NewPlayerCallback newPlayerCb_;
 	std::function<void()> worldUpdateCb_;
 	WorldRegistryCb worldRegistryCb_;

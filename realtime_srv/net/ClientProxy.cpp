@@ -48,3 +48,23 @@ ClientProxy::ClientProxy(
 	UpdateLastPacketTime();
 }
 #endif //IS_LINUX
+
+
+void ClientProxy::SetAllOwnedGameObjsPendingToDie()
+{
+	for ( auto it = objIdToGameObjMap_.begin();
+		it != objIdToGameObjMap_.end(); )
+	{
+		it++->second->SetPendingToDie();
+	}
+}
+
+
+void ClientProxy::RealeaseAllOwnedGameObjs()
+{
+	for ( auto it = objIdToGameObjMap_.begin();
+		it != objIdToGameObjMap_.end(); )
+	{
+		it++->second->LoseMaster();
+	}
+}

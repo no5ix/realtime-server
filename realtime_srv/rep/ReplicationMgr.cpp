@@ -36,9 +36,9 @@ void ReplicationMgr::Write( OutputBitStream& inOutputStream, InFlightPacket* inI
 		ReplicationCmd& replicationCommand = pair.second;
 		if ( replicationCommand.HasDirtyState() )
 		{
-			int networkId = pair.first;
+			int objId = pair.first;
 
-			inOutputStream.Write( networkId );
+			inOutputStream.Write( objId );
 
 			ReplicationAction action = replicationCommand.GetAction();
 			inOutputStream.Write( action, 2 );
@@ -50,21 +50,21 @@ void ReplicationMgr::Write( OutputBitStream& inOutputStream, InFlightPacket* inI
 			{
 				case RA_Create:
 					writtenState = WriteCreateAction( inOutputStream,
-						networkId, dirtyState );
+						objId, dirtyState );
 					break;
 				case RA_Update:
 					writtenState = WriteUpdateAction( inOutputStream,
-						networkId, dirtyState );
+						objId, dirtyState );
 					break;
 				case RA_Destroy:
 					writtenState = WriteDestroyAction( inOutputStream,
-						networkId, dirtyState );
+						objId, dirtyState );
 					break;
 				default:
 					break;
 			}
 
-			inInFlightPacket->AddTransmission( networkId, action, writtenState );
+			inInFlightPacket->AddTransmission( objId, action, writtenState );
 
 			replicationCommand.ClearDirtyState( writtenState );
 

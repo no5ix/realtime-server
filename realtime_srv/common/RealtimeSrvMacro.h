@@ -36,7 +36,8 @@ typedef unsigned int						ChunkPacketID;
 
 #define ACK_BIT_FIELD_BYTE_LEN				(4)
 
-#define PACKET_DISPATCHER_THREAD_NUM	(7)
+// new to be equal or greater than 1 
+#define PACKET_DISPATCHER_THREAD_NUM	(7) 
 
 #define ACTION_COUNT_NUM							(2)
 

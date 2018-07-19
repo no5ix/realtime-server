@@ -1,6 +1,7 @@
 ﻿#include <realtime_srv/RealtimeServer.h>
 
-#ifdef IS_LINUX
+// #ifdef IS_LINUX
+
 
 #include "Character.h"
 #include "ExampleRedisCli.h"
@@ -28,30 +29,53 @@ public:
 		server_.GetNetworkManager()->SetCustomInputStateCallback( std::bind(
 			&ExampleSrvForUe4DemoPlus::MyInputState, this ) );
 
+		// Server will run as 'Not Destroy GameObj When Client Disconnect' mode.
 		server_.GetNetworkManager()->SetUnregistObjWhenCliDisconn( true );
 	}
 
 	InputState* MyInputState() { return new ExampleInputState; }
 
-	void Run() { server_.SimulateRealWorldOnWin();  AddRobot(); server_.Run(); }
+	void Run() { AddRobot(); server_.Run(); }
+
+	void AddRobot() { server_.GetWorld()->RegistGameObj( GameObjPtr( new Robot ) ); }
 
 
+	//	for spawning your own controlled GameObject to the World,
+	//	just return a GameObj* , 
+	//	realtime_srv will notify it to all the other clients.
+	//	of course u can do anything else for return nullptr or
+	//	u can regist ur GameObj to the World by urself.
 	GameObj* OnNewPlayer( ClientProxyPtr& _newClientProxy )
 	{
 		// test -> hiredis
 		db_.SaveNewPlayer( _newClientProxy->GetNetId(),
 			"realtime_srv_test_player" );
 
+
 		// test -> lua
 		CharacterLuaBind clb;
 		Character* newCharacter = clb.DoFile();
 		newCharacter->SetPlayerId( _newClientProxy->GetNetId() );
-		return newCharacter;
-	}
 
-	void AddRobot()
-	{
-		server_.GetWorld()->RegistGameObj( GameObjPtr( new Robot ) );
+
+		//  after 3 sec, your character die.
+		server_.GetNetworkManager()->GetEventLoop()->runAfter( 3.0, [=]() {
+			newCharacter->SetPendingToDie();
+		} );
+
+
+		//  after 6 sec, create a new character to play.
+		server_.GetNetworkManager()->GetEventLoop()->runAfter( 5.0, [=]() {
+			CharacterPtr anotherCharacter( new Character );
+			// one NetId, One Client.
+			anotherCharacter->SetPlayerId( _newClientProxy->GetNetId() );
+			// let the client controll the new character.
+			anotherCharacter->SetMaster( _newClientProxy );
+			// regist this character ( derived from GameObj class ) to World.
+			server_.GetWorld()->RegistGameObj( GameObjPtr( anotherCharacter ) );
+		} );
+
+		return newCharacter;
 	}
 
 
@@ -79,4 +103,5 @@ int main( int argc, const char** argv )
 
 }
 
-#endif // IS_LINUX
+
+// #endif // IS_LINUX

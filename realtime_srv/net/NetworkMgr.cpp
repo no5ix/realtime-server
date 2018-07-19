@@ -27,6 +27,7 @@ void realtime_srv::NetworkMgr::Start()
 	//assert( newPlayerCb_ );
 	//assert( customInputStatecb_ );
 
+	assert( letCliProxyGetWorldState_ );
 	assert( worldRegistryCb_ );
 	assert( worldUpdateCb_ );
 
@@ -72,9 +73,7 @@ void NetworkMgr::DoProcessPkt( ReceivedPacketPtr& recvedPacket )
 			recvedPacket->GetUdpConn(), recvedPacket->GetHoldedByThreadId() );
 	}
 	else
-	{
 		CheckPacketType( ( *it ).second, *recvedPacket->GetPacketBuffer() );
-	}
 }
 
 void NetworkMgr::PreparePacketToSend()
@@ -107,11 +106,9 @@ void NetworkMgr::CheckForDisconnects()
 		if ( it->second->GetLastPacketFromClientTime() < minAllowedTime )
 		{
 			if ( bUnregistObjWhenCliDisconn_ )
-				for ( auto& obj : it->second->GetAllOwnedGameObjs() )
-					worldRegistryCb_( obj, RA_Destroy );
+				it->second->SetAllOwnedGameObjsPendingToDie();
 			else
-				for ( auto& obj : it->second->GetAllOwnedGameObjs() )
-					obj->LoseOwner();
+				it->second->RealeaseAllOwnedGameObjs();
 
 			it->second->GetUdpConnection()->forceClose();
 			udpConnToClientMap_.erase( it++ );
@@ -132,14 +129,16 @@ ClientProxyPtr NetworkMgr::CreateNewClient(
 
 	udpConnToClientMap_[_udpConnetction] = newClientProxy;
 
+	letCliProxyGetWorldState_( newClientProxy );
+
 	if ( newPlayerCb_ )
 	{
-		GameObjPtr newGameObj( newPlayerCb_( newClientProxy ) );
-		assert( newGameObj );
-
-		newGameObj->SetOwner( newClientProxy );
-		worldRegistryCb_( newGameObj, RA_Create );
-		newClientProxy->AddGameObj( newGameObj );
+		GameObjPtr newControlledGameObj( newPlayerCb_( newClientProxy ) );
+		if ( newControlledGameObj )
+		{
+			worldRegistryCb_( newControlledGameObj, RA_Create );
+			newControlledGameObj->SetMaster( newClientProxy );
+		}
 	}
 	return newClientProxy;
 }

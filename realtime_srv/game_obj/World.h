@@ -5,6 +5,7 @@ namespace realtime_srv
 {
 
 class GameObj;
+class ClientProxy;
 
 class World : noncopyable, public std::enable_shared_from_this<World>
 {
@@ -26,6 +27,8 @@ public:
 	void Registry( GameObjPtr _obj, ReplicationAction _action );
 	void RegistGameObj( GameObjPtr _obj );
 	void UnregistGameObj( GameObjPtr _obj );
+
+	void WhenClientProxyHere( std::shared_ptr<ClientProxy> _cliProxy );
 
 private:
 	int	GetNewObjId();

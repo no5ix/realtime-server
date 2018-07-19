@@ -13,14 +13,21 @@ class NetworkMgr;
 class ClientProxy
 {
 public:
+	typedef std::unordered_map<int, GameObjPtr> ObjIdToGameObjMap;
 
 	int	GetNetId() const { return netId_; }
 
 	void AddGameObj( const GameObjPtr& _gameObj )
-	{ ownedGameObjs_.push_back( _gameObj ); }
+	{ objIdToGameObjMap_[_gameObj->GetObjId()] = _gameObj; }
 
-	std::vector<GameObjPtr>& GetAllOwnedGameObjs() { return ownedGameObjs_; }
-	const std::vector<GameObjPtr>& GetAllOwnedGameObjs() const { return ownedGameObjs_; }
+	ObjIdToGameObjMap& GetAllOwnedGameObjs() { return objIdToGameObjMap_; }
+	const ObjIdToGameObjMap& GetAllOwnedGameObjs() const { return objIdToGameObjMap_; }
+
+	void SetAllOwnedGameObjsPendingToDie();
+	void RealeaseAllOwnedGameObjs();
+
+	void RealeaseSpecificOwnedGameObj( int _objId )
+	{ objIdToGameObjMap_.erase( _objId ); }
 
 	void UpdateLastPacketTime()
 	{ mLastPacketFromClientTime = RealtimeSrvTiming::sInst.GetCurrentGameTime(); }
@@ -52,7 +59,8 @@ public:
 private:
 
 	int							netId_;
-	std::vector<GameObjPtr> ownedGameObjs_;
+
+	ObjIdToGameObjMap objIdToGameObjMap_;
 
 	float			mLastPacketFromClientTime;
 	float			mTimeToRespawn;

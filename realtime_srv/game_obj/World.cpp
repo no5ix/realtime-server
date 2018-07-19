@@ -23,13 +23,16 @@ void World::RegistGameObj( GameObjPtr _obj )
 	ObjIdToGameObjMap_[newObjId] = _obj;
 
 	onObjCreateOrDestoryCb_( _obj, RA_Create );
-	auto newClientProxy = _obj->GetOwner();
-	if ( newClientProxy )
+}
+
+void World::WhenClientProxyHere( std::shared_ptr<ClientProxy> _cliProxy )
+{
+	if ( _cliProxy )
 	{
-		newClientProxy->SetWorld( shared_from_this() );
+		_cliProxy->SetWorld( shared_from_this() );
 		for ( const auto& ipair : ObjIdToGameObjMap_ )
 		{
-			newClientProxy->GetReplicationManager().ReplicateCreate(
+			_cliProxy->GetReplicationManager().ReplicateCreate(
 				ipair.first, ipair.second->GetAllStateMask() );
 		}
 	}

@@ -11,13 +11,18 @@ public:
 	ExampleSrvForUe4Demo( bool _willDaemonizeOnLinux = true )
 		: server_( _willDaemonizeOnLinux )
 	{
-		// for spawning your own controlled GameObject.
 		server_.GetNetworkManager()->SetNewPlayerCallback(
 			std::bind( &ExampleSrvForUe4Demo::OnNewPlayer, this, _1 ) );
 	}
 
 	void Run() { server_.Run(); }
 
+
+	//	for spawning your own controlled GameObject to the World,
+	//	just return a GameObj* , 
+	//	realtime_srv will notify it to all the other clients.
+	//	of course u can do anything else for return nullptr or
+	//	u can regist ur GameObj to the World by urself. (see ExampleSrvForUe4DemoPlus.cpp)
 	GameObj* OnNewPlayer( ClientProxyPtr& _newClientProxy )
 	{
 		auto newCharacter( new Character );

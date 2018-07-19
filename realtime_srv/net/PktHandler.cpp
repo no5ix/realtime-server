@@ -1,4 +1,4 @@
-#ifdef __linux__
+//#ifdef __linux__
 
 #include <realtime_srv/net/PktHandler.h>
 #include <realtime_srv/common/RealtimeSrvTiming.h>
@@ -40,12 +40,18 @@ PktHandler::PktHandler( uint16_t _port, uint32_t _threadCount,
 	tickCb_( _tickCb ),
 	checkDisconnCb_( _checkDisconnCb )
 {
+	assert( _threadCount >= 1 );
+	assert( tickCb_ );
+	assert( pktProcessCb_ );
+
 	InetAddress serverAddr( _port );
 
 	server_.reset( new UdpServer( &baseLoop_, serverAddr, "rs_pkt_dispatcher" ) );
+
+	server_->setThreadNum( _threadCount );
+
 	server_->setConnectionCallback(
 		std::bind( &PktHandler::OnConnection, this, _1 ) );
-	server_->setThreadNum( _threadCount );
 	server_->setMessageCallback(
 		std::bind( &PktHandler::OnPktComing, this, _1, _2, _3 ) );
 	server_->setThreadInitCallback(
@@ -79,12 +85,12 @@ void PktHandler::CheckForSleep()
 			if ( CurrentThread::tid() == baseThreadId_ )
 			{
 				isBaseThreadSleeping_ = true;
-				LOG_INFO << "BaseThread go to sleeeeeeeep";
+				LOG_INFO << "BaseThread stop ticking";
 			}
 			else
 			{
 				t_isDispatcherThreadSleeping_ = true;
-				LOG_INFO << "DispatcherThread go to sleeeeeeeep";
+				LOG_INFO << "DispatcherThread stop dispatching";
 			}
 		}
 	}
@@ -107,7 +113,7 @@ void PktHandler::CheckForWakingUp()
 
 		lat.timerId_ = curTimerId;
 		isBaseThreadSleeping_ = false;
-		LOG_INFO << "BaseThread wake uuuuuup";
+		LOG_INFO << "BaseThread begin ticking";
 	}
 
 	if ( t_isDispatcherThreadSleeping_ )
@@ -120,7 +126,7 @@ void PktHandler::CheckForWakingUp()
 
 		lat.timerId_ = curTimerId;
 		t_isDispatcherThreadSleeping_ = false;
-		LOG_INFO << "DispatcherThread wake uuuuuup";
+		LOG_INFO << "DispatcherThread begin dispatching";
 	}
 }
 
@@ -182,4 +188,4 @@ void PktHandler::SendPkt()
 	CheckForSleep();
 }
 
-#endif // __linux__
+//#endif // __linux__

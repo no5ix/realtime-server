@@ -20,10 +20,13 @@ realtime_srv::RealtimeServer::RealtimeServer(
 
 	networkManager_.reset( new NetworkMgr( _port ) );
 	assert( networkManager_ );
+
 	networkManager_->SetWorldUpdateCallback( [&]() { world_->Update(); } );
 	networkManager_->SetWorldRegistryCallback( std::bind(
 		&World::Registry, world_.get(), _1, _2 ) );
-                                   
+	networkManager_->SetLetCliProxyGetWorldStateCallback( std::bind(
+		&World::WhenClientProxyHere, world_.get(), _1 ) );
+
 	world_->OnObjCreateOrDestoryCallback( std::bind(
 		&NetworkMgr::OnObjCreateOrDestory, networkManager_.get(), _1, _2 ) );
 }

@@ -9,10 +9,7 @@ public:
 	Character();
 
 	virtual ~Character()
-	{ realtime_srv::LOG( "Character (holded by Player %d) die.", playerId_ ); }
-
-	virtual void WhenDying()
-	{ realtime_srv::LOG( "Character (holded by Player %d) dying...", playerId_ ); }
+	{ realtime_srv::LOG( "Character (holded by Player %d, ObjId=%d) die.", playerId_, objId_ ); }
 
 	// 'CHRT' = 1128813140;
 	CLASS_IDENTIFICATION( 1128813140 );

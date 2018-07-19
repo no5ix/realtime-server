@@ -1,6 +1,6 @@
 #pragma once
 
-#ifdef __linux__
+//#ifdef __linux__
 
 #include <memory>
 #include <map>
@@ -116,4 +116,4 @@ private:
 
 }
 
-#endif // __linux__
+//#endif // __linux__
