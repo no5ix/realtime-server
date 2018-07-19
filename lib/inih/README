@@ -1,0 +1,11 @@
+inih is a simple .INI file parser written in C, released under the New BSD
+license (see LICENSE). The original project home page is localted at:
+
+http://code.google.com/p/inih/
+
+This version provides:
+
+ - source code syncronized with r29;
+ - CMake build system;
+ - pkg-config support;
+

@@ -1,0 +1,10 @@
+prefix=@CMAKE_INSTALL_PREFIX@
+exec_prefix=@CMAKE_INSTALL_PREFIX@
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include/inih
+
+Name: inihcpp
+Description: inih (INI Not Invented Here) is a simple .INI file parser for C++
+Version: @VERSION@
+Libs: -L${libdir} -linihcpp
+Cflags: -I${includedir}
