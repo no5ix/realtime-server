@@ -2,6 +2,13 @@
 
 //#ifdef IS_LINUX
 
+#include <memory>
+#include <unordered_map>
+#include <functional>
+#include "realtime_srv/common/noncopyable.h"
+#include "realtime_srv/common/RealtimeSrvHelper.h"
+#include "realtime_srv/rep/BitStream.h"
+
 #include <realtime_srv/net/PktHandler.h>
 
 namespace realtime_srv
@@ -9,6 +16,7 @@ namespace realtime_srv
 
 class GameObj;
 class ClientProxy;
+
 typedef std::function<GameObj*( ClientProxyPtr& )> NewPlayerCallback;
 typedef std::function<InputState*()> CustomInputStateCallback;
 typedef std::function<void( ClientProxyPtr )> LetCliProxyGetWorldStateCb;

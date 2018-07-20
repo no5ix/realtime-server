@@ -1,5 +1,7 @@
-#include "realtime_srv/common/RealtimeSrvShared.h"
-#include <INIReader.h>
+#include "realtime_srv/game_obj/GameObj.h"
+#include "realtime_srv/net/ClientProxy.h"
+
+#include "realtime_srv/net/NetworkMgr.h"
 
 
 using namespace realtime_srv;
@@ -43,7 +45,7 @@ void NetworkMgr::DoPreparePacketToSend( ClientProxyPtr& _cliProxy, const uint32_
 	shared_ptr< OutputBitStream > outputPacket( new OutputBitStream() );
 	outputPacket->Write( _connFlag );
 
-	InFlightPacket* ifp = _cliProxy->GetDeliveryNotifyManager()
+	InflightPacket* ifp = _cliProxy->GetDeliveryNotifyMgr()
 		.WriteState( *outputPacket, _cliProxy.get() );
 
 	switch ( _connFlag )
@@ -60,7 +62,7 @@ void NetworkMgr::DoPreparePacketToSend( ClientProxyPtr& _cliProxy, const uint32_
 		default:
 			break;
 	}
-	_cliProxy->GetReplicationManager().Write( *outputPacket, ifp );
+	_cliProxy->GetReplicationMgr().Write( *outputPacket, ifp );
 
 	pktHandler_.AddToPendingSndPktQ(
 		PendingSendPacketPtr( new PendingSendPacket(
@@ -185,11 +187,11 @@ void NetworkMgr::OnObjCreateOrDestory( GameObjPtr& inGameObject, ReplicationActi
 		switch ( inAction )
 		{
 			case RA_Create:
-				pair.second->GetReplicationManager().ReplicateCreate(
+				pair.second->GetReplicationMgr().ReplicateCreate(
 					inGameObject->GetObjId(), inGameObject->GetAllStateMask() );
 				break;
 			case RA_Destroy:
-				pair.second->GetReplicationManager().ReplicateDestroy(
+				pair.second->GetReplicationMgr().ReplicateDestroy(
 					inGameObject->GetObjId() );
 				break;
 			default:
@@ -201,7 +203,7 @@ void NetworkMgr::OnObjCreateOrDestory( GameObjPtr& inGameObject, ReplicationActi
 void NetworkMgr::SetRepStateDirty( int _objId, uint32_t inDirtyState )
 {
 	for ( const auto& pair : udpConnToClientMap_ )
-		pair.second->GetReplicationManager().SetReplicationStateDirty(
+		pair.second->GetReplicationMgr().SetReplicationStateDirty(
 			_objId, inDirtyState );
 }
 
@@ -216,7 +218,7 @@ void NetworkMgr::CheckPacketType( ClientProxyPtr& inClientProxy, InputBitStream&
 			DoPreparePacketToSend( inClientProxy, kWelcomeCC );
 			break;
 		case kInputCC:
-			if ( inClientProxy->GetDeliveryNotifyManager().ReadAndProcessState( inInputStream ) )
+			if ( inClientProxy->GetDeliveryNotifyMgr().ReadAndProcessState( inInputStream ) )
 				HandleInputPacket( inClientProxy, inInputStream );
 			break;
 		case kNullCC:

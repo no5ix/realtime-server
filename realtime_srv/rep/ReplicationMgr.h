@@ -1,7 +1,17 @@
 #pragma once
 
+#include <unordered_map>
+#include "realtime_srv/rep/ReplicationCmd.h"
+
+
 namespace realtime_srv
 {
+
+
+class OutputBitStream;
+class InflightPacket;
+class ClientProxy;
+
 
 class ReplicationMgr
 {
@@ -24,7 +34,7 @@ public:
 	void HandleCreateAckd( int inObjId )
 	{ objIdToRepCmd_[inObjId].HandleCreateAckd(); }
 
-	void Write( OutputBitStream& inOutputStream, InFlightPacket* inInFlightPacket );
+	void Write( OutputBitStream& inOutputStream, InflightPacket* inInFlightPacket );
 
 private:
 
@@ -36,7 +46,7 @@ private:
 		int _objId, uint32_t inDirtyState );
 
 private:
-	unordered_map< int, ReplicationCmd >	objIdToRepCmd_;
+	std::unordered_map< int, ReplicationCmd >	objIdToRepCmd_;
 
 	ClientProxy* owner_;
 };

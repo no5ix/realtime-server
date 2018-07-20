@@ -1,3 +1,7 @@
+//#include "realtime_srv/net/ClientProxy.h"
+//#include "realtime_srv/game_obj/GameObj.h"
+//#include "realtime_srv/net/NetworkMgr.h"
+//#include "realtime_srv/game_obj/ActionList.h"
 #include "realtime_srv/common/RealtimeSrvShared.h"
 
 
@@ -48,5 +52,5 @@ void GameObj::SetMaster( std::shared_ptr<ClientProxy> cp )
 { master_ = cp; hasMaster_ = true; cp->AddGameObj( shared_from_this() ); }
 
 
-void realtime_srv::GameObj::SetPendingToDie()
+void GameObj::SetPendingToDie()
 { isPendingToDie_ = true; LoseMaster(); }

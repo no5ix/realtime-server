@@ -2,8 +2,14 @@
 
 #pragma once
 
+#include <memory>
+#include "realtime_srv/math/Vector3.h"
+
 namespace realtime_srv
 {
+
+class OutputBitStream;
+class InputBitStream;
 
 class InputState
 {

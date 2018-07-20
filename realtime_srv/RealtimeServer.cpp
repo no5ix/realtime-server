@@ -46,10 +46,10 @@ void RealtimeServer::ReadConfigFile()
 
 	srvConf_.send_packet_interval =
 		reader.GetReal( "PktHandler", "send_packet_interval", 0.033333 );
-	srvConf_.fps =
-		reader.GetInteger( "PktHandler", "fps", 30);
 	srvConf_.client_disconnect_timeout =
 		reader.GetReal( "PktHandler", "client_disconnect_timeout", 6.0 );
+	srvConf_.fps =
+		reader.GetInteger( "PktHandler", "fps", 30 );
 	srvConf_.packet_dispatcher_thread_count =
 		reader.GetInteger( "PktHandler", "packet_dispatcher_thread_count", 7 );
 	srvConf_.max_packets_count_per_fetch =

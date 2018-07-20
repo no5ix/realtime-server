@@ -24,6 +24,7 @@
     <ClInclude Include="..\..\realtime_srv\common\RealtimeSrvMacro.h" />
     <ClInclude Include="..\..\realtime_srv\common\RealtimeSrvHelper.h" />
     <ClInclude Include="..\..\realtime_srv\common\RealtimeSrvShared.h" />
+    <ClInclude Include="..\..\realtime_srv\common\RealtimeSrvSharedMin.h" />
     <ClInclude Include="..\..\realtime_srv\common\RealtimeSrvTiming.h" />
     <ClInclude Include="..\..\realtime_srv\game_obj\Action.h" />
     <ClInclude Include="..\..\realtime_srv\game_obj\ActionList.h" />
@@ -39,13 +40,11 @@
     <ClInclude Include="..\..\realtime_srv\net\NetworkMgr.h" />
     <ClInclude Include="..\..\realtime_srv\net\Packet.h" />
     <ClInclude Include="..\..\realtime_srv\net\PktHandler.h" />
-    <ClInclude Include="..\..\realtime_srv\net\SockAddrInterf.h" />
-    <ClInclude Include="..\..\realtime_srv\net\UdpSockInterf.h" />
     <ClInclude Include="..\..\realtime_srv\RealtimeServer.h" />
     <ClInclude Include="..\..\realtime_srv\rep\AckBitField.h" />
     <ClInclude Include="..\..\realtime_srv\rep\BitStream.h" />
     <ClInclude Include="..\..\realtime_srv\rep\DeliveryNotifyMgr.h" />
-    <ClInclude Include="..\..\realtime_srv\rep\InFlightPacket.h" />
+    <ClInclude Include="..\..\realtime_srv\rep\InflightPacket.h" />
     <ClInclude Include="..\..\realtime_srv\rep\ReplicationCmd.h" />
     <ClInclude Include="..\..\realtime_srv\rep\ReplicationMgr.h" />
   </ItemGroup>
@@ -62,12 +61,11 @@
     <ClCompile Include="..\..\realtime_srv\net\ClientProxy.cpp" />
     <ClCompile Include="..\..\realtime_srv\net\NetworkMgr.cpp" />
     <ClCompile Include="..\..\realtime_srv\net\PktHandler.cpp" />
-    <ClCompile Include="..\..\realtime_srv\net\UdpSockInterf.cpp" />
     <ClCompile Include="..\..\realtime_srv\RealtimeServer.cpp" />
     <ClCompile Include="..\..\realtime_srv\rep\AckBitField.cpp" />
     <ClCompile Include="..\..\realtime_srv\rep\BitStream.cpp" />
     <ClCompile Include="..\..\realtime_srv\rep\DeliveryNotifyMgr.cpp" />
-    <ClCompile Include="..\..\realtime_srv\rep\InFlightPacket.cpp" />
+    <ClCompile Include="..\..\realtime_srv\rep\InflightPacket.cpp" />
     <ClCompile Include="..\..\realtime_srv\rep\ReplicationMgr.cpp" />
   </ItemGroup>
   <ItemGroup>

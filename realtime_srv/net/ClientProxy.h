@@ -1,23 +1,31 @@
 #pragma once
 
-#ifdef IS_LINUX
+#include <unordered_map>
+#include <memory>
+
 #include <muduo/base/Logging.h>
 #include <muduo_udp_support/UdpConnection.h>
-#endif //IS_LINUX
+
+#include "realtime_srv/common/RealtimeSrvTiming.h"
+#include "realtime_srv/game_obj/GameObj.h"
+#include "realtime_srv/game_obj/ActionList.h"
+#include "realtime_srv/rep/DeliveryNotifyMgr.h"
+#include "realtime_srv/rep/ReplicationMgr.h"
 
 namespace realtime_srv
 {
 
 class NetworkMgr;
+class World;
 
 class ClientProxy
 {
 public:
-	typedef std::unordered_map<int, GameObjPtr> ObjIdToGameObjMap;
+	typedef std::unordered_map<int, std::shared_ptr<GameObj>> ObjIdToGameObjMap;
 
 	int	GetNetId() const { return netId_; }
 
-	void AddGameObj( const GameObjPtr& _gameObj )
+	void AddGameObj( const std::shared_ptr<GameObj>& _gameObj )
 	{ objIdToGameObjMap_[_gameObj->GetObjId()] = _gameObj; }
 
 	ObjIdToGameObjMap& GetAllOwnedGameObjs() { return objIdToGameObjMap_; }
@@ -34,11 +42,11 @@ public:
 
 	float GetLastPacketFromClientTime()	const { return mLastPacketFromClientTime; }
 
-	DeliveryNotifyMgr&	GetDeliveryNotifyManager() { return deliveryNotifyManager_; }
-	ReplicationMgr&	GetReplicationManager() { return replicationManager_; }
+	DeliveryNotifyMgr&	GetDeliveryNotifyMgr() { return deliveryNotifyMgr_; }
+	ReplicationMgr&	GetReplicationMgr() { return replicationMgr_; }
 
-	WorldPtr& GetWorld() { return world_; }
-	void SetWorld( WorldPtr  world ) { world_ = world; }
+	std::shared_ptr<World>& GetWorld() { return world_; }
+	void SetWorld( std::shared_ptr<World>  world ) { world_ = world; }
 
 	std::shared_ptr<NetworkMgr>& GetNetworkManager() { return networkManager_; }
 
@@ -58,7 +66,7 @@ public:
 
 private:
 
-	int							netId_;
+	int				netId_;
 
 	ObjIdToGameObjMap objIdToGameObjMap_;
 
@@ -70,12 +78,11 @@ private:
 
 	bool			mRecvingServerResetFlag;
 
-	DeliveryNotifyMgr		deliveryNotifyManager_;
-	ReplicationMgr			replicationManager_;
-	WorldPtr							world_;
-	std::shared_ptr<NetworkMgr>					networkManager_;
+	DeliveryNotifyMgr		deliveryNotifyMgr_;
+	ReplicationMgr			replicationMgr_;
+	std::shared_ptr<World>			world_;
+	std::shared_ptr<NetworkMgr>		networkManager_;
 
-#ifdef IS_LINUX
 
 public:
 	ClientProxy( const std::shared_ptr<NetworkMgr>& inNetworkManager,
@@ -91,26 +98,6 @@ public:
 private:
 	muduo::net::UdpConnectionPtr	UdpConnection_;
 	pid_t													connHoldedByTid_;
-
-#else //IS_LINUX
-
-public:
-
-	ClientProxy( const std::shared_ptr<NetworkMgr>& inNetworkManager,
-		const SockAddrInterf& inSocketAddress,
-		int inNetId,
-		const UDPSocketPtr& inUDPSocket );
-
-	const SockAddrInterf& GetSocketAddress() const { return mSocketAddress; }
-	UDPSocketPtr GetUDPSocket() const { return mUDPSocket; }
-
-private:
-
-	SockAddrInterf	mSocketAddress;
-	UDPSocketPtr	mUDPSocket;
-
-#endif //IS_LINUX
-
 };
 
 typedef shared_ptr< ClientProxy >	ClientProxyPtr;

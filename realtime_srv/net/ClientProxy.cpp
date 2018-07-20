@@ -1,10 +1,7 @@
-#include "realtime_srv/common/RealtimeSrvShared.h"
+#include "realtime_srv/net/ClientProxy.h"
 
 
 using namespace realtime_srv;
-
-#ifdef IS_LINUX
-
 using namespace muduo::net;
 
 ClientProxy::ClientProxy(
@@ -15,9 +12,9 @@ ClientProxy::ClientProxy(
 	:
 	connHoldedByTid_( inHoldedByThreadId ),
 	networkManager_( inNetworkManager ),
-	replicationManager_( this ),
+	replicationMgr_( this ),
 	netId_( inNetId ),
-	deliveryNotifyManager_( false, true ),
+	deliveryNotifyMgr_( false, true ),
 	mIsLastMoveTimestampDirty( false ),
 	mLastPacketFromClientTime( 0.f ),
 	mTimeToRespawn( 0.f ),
@@ -26,28 +23,6 @@ ClientProxy::ClientProxy(
 {
 	UpdateLastPacketTime();
 }
-
-#else //IS_LINUX
-
-ClientProxy::ClientProxy(
-	const std::shared_ptr<NetworkMgr>& inNetworkManager,
-	const SockAddrInterf& inSocketAddress,
-	int inNetId,
-	const UDPSocketPtr& inUDPSocket )
-	:
-	networkManager_( inNetworkManager ),
-	replicationManager_( this ),
-	mSocketAddress( inSocketAddress ),
-	netId_( inNetId ),
-	mUDPSocket( inUDPSocket ),
-	deliveryNotifyManager_( false, true ),
-	mIsLastMoveTimestampDirty( false ),
-	mTimeToRespawn( 0.f ),
-	mRecvingServerResetFlag( false )
-{
-	UpdateLastPacketTime();
-}
-#endif //IS_LINUX
 
 
 void ClientProxy::SetAllOwnedGameObjsPendingToDie()

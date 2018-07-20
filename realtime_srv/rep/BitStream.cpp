@@ -1,4 +1,10 @@
-#include "realtime_srv/common/RealtimeSrvShared.h"
+
+#include "realtime_srv/math/Vector3.h"
+#include "realtime_srv/math/Quaternion.h"
+
+#include "realtime_srv/rep/BitStream.h"
+
+
 
 using namespace realtime_srv;
 

@@ -1,4 +1,20 @@
-#include "realtime_srv/common/RealtimeSrvShared.h"
+
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <sys/types.h>
+#include <netdb.h>
+#include <errno.h>
+#include <fcntl.h>
+#include <unistd.h>
+
+#include <signal.h>
+#include <sys/stat.h>
+#include <pthread.h>
+#include <arpa/inet.h>
+#include <sys/epoll.h>
+#include <cstdarg>
+
+#include "realtime_srv/common/RealtimeSrvHelper.h"
 
 using namespace realtime_srv;
 using namespace realtime_srv::RealtimeSrvHelper;
@@ -51,9 +67,6 @@ std::string RealtimeSrvHelper::Sprintf( const char* inFormat, ... )
 
 void RealtimeSrvHelper::Log( const char* inFormat, ... )
 {
-	if ( !REAL_TIME_SRV_SHOW_DEBUG_MESSAGE )
-		return;
-
 	char temp[4096];
 
 	va_list args;
@@ -99,86 +112,42 @@ bool RealtimeSrvHelper::ChunkPacketIDGreaterThan( ChunkPacketID s1, ChunkPacketI
 
 bool RealtimeSrvHelper::Daemonize()
 {
-#ifndef IS_LINUX
-
-	return true;
-
-#else
 	int maxfd, fd;
-	switch ( fork() )
+	switch ( ::fork() )
 	{                   /* Become background process */
 		case -1:
 			return false;
 		case 0:
 			break;                     /* Child falls through... */
 		default:
-			_exit( EXIT_SUCCESS );       /* while parent terminates */
+			::_exit( EXIT_SUCCESS );       /* while parent terminates */
 	}
-	if ( setsid() == -1 )                 /* Become leader of new session */
+	if ( ::setsid() == -1 )                 /* Become leader of new session */
 		return false;
-	switch ( fork() )
+	switch ( ::fork() )
 	{                   /* Ensure we are not session leader */
 		case -1:
 			return false;
 		case 0:
 			break;
 		default:
-			_exit( EXIT_SUCCESS );
+			::_exit( EXIT_SUCCESS );
 	}
-	umask( 0 );                       /* Clear file mode creation mask */
-	chdir( "/" );                     /* Change to root directory */
-	maxfd = sysconf( _SC_OPEN_MAX );
+	::umask( 0 );                       /* Clear file mode creation mask */
+	::chdir( "/" );                     /* Change to root directory */
+	maxfd = ::sysconf( _SC_OPEN_MAX );
 	if ( maxfd == -1 )                /* Limit is indeterminate... */
 		maxfd = 8192;				  /* so take a guess */
 	for ( fd = 0; fd < maxfd; fd++ )
-		close( fd );
-	close( STDIN_FILENO );            /* Reopen standard fd's to /dev/null */
-	fd = open( "/dev/null", O_RDWR ); // open 返回的文件描述符一定是最小的未被使用的描述符。
+		::close( fd );
+	::close( STDIN_FILENO );            /* Reopen standard fd's to /dev/null */
+	fd = ::open( "/dev/null", O_RDWR ); // open 返回的文件描述符一定是最小的未被使用的描述符。
 	if ( fd != STDIN_FILENO )         /* 'fd' should be 0 */
 		return false;
-	if ( dup2( STDIN_FILENO, STDOUT_FILENO ) != STDOUT_FILENO )
+	if ( ::dup2( STDIN_FILENO, STDOUT_FILENO ) != STDOUT_FILENO )
 		return false;
-	if ( dup2( STDIN_FILENO, STDERR_FILENO ) != STDERR_FILENO )
+	if ( ::dup2( STDIN_FILENO, STDERR_FILENO ) != STDERR_FILENO )
 		return false;
 
 	return true;
-#endif //IS_LINUX
-}
-
-void RealtimeSrvHelper::SimulateRealWorldNetCondition(
-	std::shared_ptr<NetworkMgr>& networkManager,
-	uint8_t LatencyCmdIndex /*= 1*/,
-	uint8_t dropPacketChanceCmdIndex /*= 2*/,
-	uint8_t JitterCmdIndex /*= 3*/ )
-{
-#ifndef IS_LINUX
-	assert( networkManager );
-
-	std::string latencyString = RealtimeSrvHelper::GetCommandLineArg(
-		LatencyCmdIndex );
-	if ( !latencyString.empty() )
-	{
-		float latency = stof( latencyString );
-		networkManager->SetSimulatedLatency( latency );
-	}
-
-	std::string dropPacketChanceString = RealtimeSrvHelper::GetCommandLineArg(
-		dropPacketChanceCmdIndex );
-	if ( !dropPacketChanceString.empty() )
-	{
-		float dropPacketChance = stof( dropPacketChanceString );
-		networkManager->SetDropPacketChance( dropPacketChance );
-	}
-
-	std::string IsSimulatedJitterString = RealtimeSrvHelper::GetCommandLineArg(
-		JitterCmdIndex );
-	if ( !IsSimulatedJitterString.empty() )
-	{
-		int IsSimulatedJitter = stoi( IsSimulatedJitterString );
-		if ( IsSimulatedJitter )
-		{
-			networkManager->SetIsSimulatedJitter( true );
-		}
-	}
-#endif
 }

@@ -45,9 +45,6 @@
     <ClInclude Include="..\..\realtime_srv\rep\DeliveryNotifyMgr.h">
       <Filter>rep</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\realtime_srv\rep\InFlightPacket.h">
-      <Filter>rep</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\realtime_srv\rep\ReplicationCmd.h">
       <Filter>rep</Filter>
     </ClInclude>
@@ -72,12 +69,6 @@
     <ClInclude Include="..\..\realtime_srv\RealtimeServer.h" />
     <ClInclude Include="..\..\realtime_srv\common\noncopyable.h">
       <Filter>common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\realtime_srv\net\SockAddrInterf.h">
-      <Filter>net</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\realtime_srv\net\UdpSockInterf.h">
-      <Filter>net</Filter>
     </ClInclude>
     <ClInclude Include="..\..\realtime_srv\game_obj\Action.h">
       <Filter>game_obj</Filter>
@@ -106,6 +97,12 @@
     <ClInclude Include="..\..\realtime_srv\net\PktHandler.h">
       <Filter>net</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\realtime_srv\common\RealtimeSrvSharedMin.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\realtime_srv\rep\InflightPacket.h">
+      <Filter>rep</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\realtime_srv\math\Vector3.cpp">
@@ -123,9 +120,6 @@
     <ClCompile Include="..\..\realtime_srv\rep\DeliveryNotifyMgr.cpp">
       <Filter>rep</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\realtime_srv\rep\InFlightPacket.cpp">
-      <Filter>rep</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\realtime_srv\rep\ReplicationMgr.cpp">
       <Filter>rep</Filter>
     </ClCompile>
@@ -139,9 +133,6 @@
       <Filter>common</Filter>
     </ClCompile>
     <ClCompile Include="..\..\realtime_srv\RealtimeServer.cpp" />
-    <ClCompile Include="..\..\realtime_srv\net\UdpSockInterf.cpp">
-      <Filter>net</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\realtime_srv\game_obj\Action.cpp">
       <Filter>game_obj</Filter>
     </ClCompile>
@@ -162,6 +153,9 @@
     </ClCompile>
     <ClCompile Include="..\..\realtime_srv\net\PktHandler.cpp">
       <Filter>net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\realtime_srv\rep\InflightPacket.cpp">
+      <Filter>rep</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

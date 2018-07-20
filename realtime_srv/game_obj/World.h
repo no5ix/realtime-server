@@ -1,4 +1,8 @@
 #pragma once
+#include <memory>
+#include <unordered_map>
+#include <functional>
+#include "realtime_srv/common/noncopyable.h"
 
 
 namespace realtime_srv
@@ -10,7 +14,7 @@ class ClientProxy;
 class World : noncopyable, public std::enable_shared_from_this<World>
 {
 public:
-	typedef unordered_map< int, GameObjPtr > ObjIdToGameObjMap;
+	typedef std::unordered_map< int, GameObjPtr > ObjIdToGameObjMap;
 	typedef std::function<void( GameObjPtr&, ReplicationAction )> OnObjCreateOrDestoryCb;
 
 	void Update();

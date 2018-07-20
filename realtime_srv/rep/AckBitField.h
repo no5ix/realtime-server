@@ -1,7 +1,14 @@
 #pragma once
 
+#include <cstring>
+#include "realtime_srv/common/RealtimeSrvMacro.h"
+
 namespace realtime_srv
 {
+
+
+class OutputBitStream;
+class InputBitStream;
 
 class AckBitField
 {

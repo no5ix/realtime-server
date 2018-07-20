@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 namespace realtime_srv
 {
 
@@ -11,6 +13,8 @@ class ClientProxy;
 class InputState;
 class World;
 class NetworkMgr;
+class InputBitStream;
+class OutputBitStream;
 
 class GameObj : public std::enable_shared_from_this<GameObj>
 {
@@ -24,6 +28,8 @@ public:
 		EPS_AllState = ERS_Pose
 	};
 	virtual uint32_t GetAllStateMask() const { return EPS_AllState; }
+
+public:
 
 	GameObj();
 	virtual ~GameObj() {}

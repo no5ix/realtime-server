@@ -1,9 +1,17 @@
-#include "realtime_srv/common/RealtimeSrvShared.h"
+
+#include "realtime_srv/rep/BitStream.h"
+#include "realtime_srv/game_obj/GameObj.h"
+#include "realtime_srv/game_obj/World.h"
+#include "realtime_srv/rep/InflightPacket.h"
+#include "realtime_srv/net/ClientProxy.h"
+
+#include "realtime_srv/rep/ReplicationMgr.h"
+
 
 using namespace realtime_srv;
 
 
-void ReplicationMgr::Write( OutputBitStream& inOutputStream, InFlightPacket* inInFlightPacket )
+void ReplicationMgr::Write( OutputBitStream& inOutputStream, InflightPacket* inInFlightPacket )
 {
 	for ( auto& pair : objIdToRepCmd_ )
 	{

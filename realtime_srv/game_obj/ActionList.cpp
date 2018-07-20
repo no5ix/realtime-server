@@ -1,11 +1,12 @@
-#include "realtime_srv/common/RealtimeSrvShared.h"
+
+#include "realtime_srv/game_obj/ActionList.h"
 
 
 using namespace realtime_srv;
 
 
 
-bool realtime_srv::ActionList::AddMoveIfNew( const Action& inAction )
+bool ActionList::AddMoveIfNew( const Action& inAction )
 {
 	float timeStamp = inAction.GetTimestamp();
 

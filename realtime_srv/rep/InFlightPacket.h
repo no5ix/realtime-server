@@ -1,16 +1,23 @@
 #pragma once
 
+#include <unordered_map>
+#include "realtime_srv/common/RealtimeSrvMacro.h"
+#include "realtime_srv/rep/ReplicationCmd.h"
+
+
 namespace realtime_srv
 {
 
 
 class DeliveryNotifyMgr;
 class ReplicationMgr;
+class ClientProxy;
 
-class InFlightPacket
+
+class InflightPacket
 {
 public:
-	InFlightPacket( PacketSN inSequenceNumber, ClientProxy* inClientProxy );
+	InflightPacket( PacketSN inSequenceNumber, ClientProxy* inClientProxy );
 
 	PacketSN GetSequenceNumber() const { return mSequenceNumber; }
 	float GetTimeDispatched() const { return mTimeDispatched; }
@@ -48,9 +55,16 @@ private:
 	void HandleCreateDeliveryFailure( int inObjId ) const;
 	void HandleUpdateStateDeliveryFailure( int inObjId, 
 		uint32_t inState ) const;
-	void HandleDestroyDeliveryFailure( int inObjId ) const;
-	void HandleCreateDeliverySuccess( int inObjId ) const;
-	void HandleDestroyDeliverySuccess( int inObjId ) const;
+
+	void HandleDestroyDeliveryFailure( int inObjId ) const
+	{ owner_->GetReplicationMgr().ReplicateDestroy( inObjId ); }
+
+	void HandleCreateDeliverySuccess( int inObjId ) const
+	{ owner_->GetReplicationMgr().HandleCreateAckd( inObjId ); }
+
+	void HandleDestroyDeliverySuccess( int inObjId ) const
+	{ owner_->GetReplicationMgr().RemoveFromReplication( inObjId ); }
+
 
 private:
 	std::unordered_map< int, ReplicationTransmission >	objIdToTransMap_;

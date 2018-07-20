@@ -1,4 +1,5 @@
-#include "realtime_srv/common/RealtimeSrvShared.h"
+#include "realtime_srv/rep/BitStream.h"
+#include "realtime_srv/game_obj/InputState.h"
 
 
 using namespace realtime_srv;

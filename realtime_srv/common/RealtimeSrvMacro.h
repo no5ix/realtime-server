@@ -36,7 +36,6 @@ typedef unsigned int									ChunkPacketID;
 
 
 
-#ifdef IS_LINUX
 
 // thread shared var util begin
 
@@ -77,6 +76,3 @@ AccessSpecifier:																	\
 	}												\
 
 // thread shared var util end
-
-
-#endif //IS_LINUX

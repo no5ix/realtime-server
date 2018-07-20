@@ -1,8 +1,16 @@
 #pragma once
 
+#include <deque>
+#include "realtime_srv/common/RealtimeSrvMacro.h"
+
 namespace realtime_srv
 {
 
+
+class OutputBitStream;
+class InputBitStream;
+class AckBitField;
+class InflightPacket;
 
 class ClientProxy;
 
@@ -14,7 +22,7 @@ public:
 	DeliveryNotifyMgr( bool inShouldSendAcks, bool inShouldProcessAcks );
 	~DeliveryNotifyMgr();
 
-	inline	InFlightPacket*		WriteState( OutputBitStream& inOutputStream,
+	inline	InflightPacket*		WriteState( OutputBitStream& inOutputStream,
 		ClientProxy* inClientProxy );
 	inline bool					ReadAndProcessState( InputBitStream& inInputStream );
 
@@ -24,25 +32,25 @@ public:
 	uint32_t					GetDeliveredPacketCount()	const { return mDeliveredPacketCount; }
 	uint32_t					GetDispatchedPacketCount()	const { return mDispatchedPacketCount; }
 
-	const deque< InFlightPacket >&	GetInFlightPackets()	const { return mInFlightPackets; }
+	const std::deque<InflightPacket>&	GetInflightPackets()	const { return inflightPackets_; }
 private:
 
 
 
-	InFlightPacket*		WriteSequenceNumber( OutputBitStream& inOutputStream,
+	InflightPacket*		WriteSequenceNumber( OutputBitStream& inOutputStream,
 		ClientProxy* inClientProxy );
 
 	bool				ProcessSequenceNumber( InputBitStream& inInputStream );
 
 
-	void				HandlePacketDeliveryFailure( const InFlightPacket& inFlightPacket );
-	void				HandlePacketDeliverySuccess( const InFlightPacket& inFlightPacket );
+	void				HandlePacketDeliveryFailure( const InflightPacket& inFlightPacket );
+	void				HandlePacketDeliverySuccess( const InflightPacket& inFlightPacket );
 
 
 	PacketSN	mNextOutgoingSequenceNumber;
 	PacketSN	mNextExpectedSequenceNumber;
 
-	deque< InFlightPacket >	mInFlightPackets;
+	std::deque<InflightPacket>	inflightPackets_;
 
 	bool					mShouldSendAcks;
 	bool					mShouldProcessAcks;
@@ -58,10 +66,10 @@ protected:
 
 
 
-inline InFlightPacket* DeliveryNotifyMgr::WriteState( OutputBitStream& inOutputStream,
+inline InflightPacket* DeliveryNotifyMgr::WriteState( OutputBitStream& inOutputStream,
 	ClientProxy* inClientProxy )
 {
-	InFlightPacket* toRet = WriteSequenceNumber( inOutputStream, inClientProxy );
+	InflightPacket* toRet = WriteSequenceNumber( inOutputStream, inClientProxy );
 	if ( mShouldSendAcks )
 	{
 		mAckBitField->Write( inOutputStream );

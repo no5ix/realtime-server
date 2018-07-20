@@ -1,4 +1,7 @@
-#include "realtime_srv/common/RealtimeSrvShared.h"
+#include "realtime_srv/net/ClientProxy.h"
+#include "realtime_srv/game_obj/GameObj.h"
+
+#include "realtime_srv/game_obj/World.h"
 
 
 using namespace realtime_srv;
@@ -32,7 +35,7 @@ void World::WhenClientProxyHere( std::shared_ptr<ClientProxy> _cliProxy )
 		_cliProxy->SetWorld( shared_from_this() );
 		for ( const auto& ipair : ObjIdToGameObjMap_ )
 		{
-			_cliProxy->GetReplicationManager().ReplicateCreate(
+			_cliProxy->GetReplicationMgr().ReplicateCreate(
 				ipair.first, ipair.second->GetAllStateMask() );
 		}
 	}

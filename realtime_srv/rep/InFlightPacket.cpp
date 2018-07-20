@@ -1,9 +1,15 @@
-#include "realtime_srv/common/RealtimeSrvShared.h"
+#include "realtime_srv/rep/DeliveryNotifyMgr.h"
+#include "realtime_srv/rep/ReplicationMgr.h"
+#include "realtime_srv/game_obj/GameObj.h"
+#include "realtime_srv/net/ClientProxy.h"
+
+#include "realtime_srv/rep/InflightPacket.h"
+
 
 using namespace realtime_srv;
 
 
-InFlightPacket::InFlightPacket(
+InflightPacket::InflightPacket(
 	PacketSN inSequenceNumber,
 	ClientProxy* inClientProxy ) :
 	mSequenceNumber( inSequenceNumber ),
@@ -11,7 +17,7 @@ InFlightPacket::InFlightPacket(
 	owner_( inClientProxy )
 {}
 
-void InFlightPacket::AddTransmission( int inObjId,
+void InflightPacket::AddTransmission( int inObjId,
 	ReplicationAction inAction, uint32_t inState )
 {
 	objIdToTransMap_.emplace( std::make_pair(
@@ -19,14 +25,13 @@ void InFlightPacket::AddTransmission( int inObjId,
 		ReplicationTransmission( inObjId, inAction, inState ) ) );
 }
 
-void InFlightPacket::HandleDeliveryFailure() const
+void InflightPacket::HandleDeliveryFailure() const
 {
 	const ReplicationTransmission *rt = nullptr;
 	for ( const auto& ipair : objIdToTransMap_ )
 	{
 		rt = &ipair.second;
 		int objId = rt->GetObjId();
-
 		switch ( rt->GetAction() )
 		{
 			case RA_Create:
@@ -44,49 +49,36 @@ void InFlightPacket::HandleDeliveryFailure() const
 	}
 }
 
-void InFlightPacket::HandleCreateDeliveryFailure( int inObjId ) const
+void InflightPacket::HandleCreateDeliveryFailure( int inObjId ) const
 {
 	GameObjPtr gameObject = owner_->GetWorld()->GetGameObject( inObjId );
 	if ( gameObject )
-	{
-		owner_->GetReplicationManager().ReplicateCreate(
+		owner_->GetReplicationMgr().ReplicateCreate(
 			inObjId, gameObject->GetAllStateMask() );
-	}
 }
 
-void InFlightPacket::HandleDestroyDeliveryFailure( int inObjId ) const
-{
-	owner_->GetReplicationManager().ReplicateDestroy( inObjId );
-}
-
-void realtime_srv::InFlightPacket::HandleUpdateStateDeliveryFailure( int inObjId,
+void InflightPacket::HandleUpdateStateDeliveryFailure( int inObjId,
 	uint32_t inState ) const
 {
 	if ( owner_->GetWorld()->IsGameObjectExist( inObjId ) )
 	{
-		for ( const auto& iFlightPacket : owner_->GetDeliveryNotifyManager().GetInFlightPackets() )
+		for ( const auto& fp : owner_->GetDeliveryNotifyMgr().GetInflightPackets() )
 		{
-			auto TransIt = iFlightPacket.objIdToTransMap_.find( inObjId );
+			auto TransIt = fp.objIdToTransMap_.find( inObjId );
 			if (TransIt != objIdToTransMap_.end())
-			{
 				inState &= ~( TransIt->second.GetState() );
-			}
 		}
-
 		if ( inState )
-		{
-			owner_->GetReplicationManager().SetReplicationStateDirty( inObjId, inState );
-		}
+			owner_->GetReplicationMgr().SetReplicationStateDirty( inObjId, inState );
 	}
 }
 
-void realtime_srv::InFlightPacket::HandleDeliverySuccess() const
+void InflightPacket::HandleDeliverySuccess() const
 {
 	const ReplicationTransmission *rt = nullptr;
 	for ( const auto& ipair : objIdToTransMap_ )
 	{
 		rt = &ipair.second;
-
 		switch ( rt->GetAction() )
 		{
 			case RA_Create:
@@ -99,14 +91,4 @@ void realtime_srv::InFlightPacket::HandleDeliverySuccess() const
 				break;
 		}
 	}
-}
-
-void InFlightPacket::HandleCreateDeliverySuccess( int inObjId ) const
-{
-	owner_->GetReplicationManager().HandleCreateAckd( inObjId );
-}
-
-void InFlightPacket::HandleDestroyDeliverySuccess( int inObjId ) const
-{
-	owner_->GetReplicationManager().RemoveFromReplication( inObjId );
 }

@@ -1,6 +1,6 @@
-#include "realtime_srv/common/RealtimeSrvShared.h"
-#include "Vector2.h"
-#include "Vector3.h"
+#include "realtime_srv/math/Vector3.h"
+#include "realtime_srv/math/Vector2.h"
+
 #include <random>
 
 using namespace realtime_srv;

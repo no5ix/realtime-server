@@ -1,22 +1,30 @@
 #pragma once
+#include <memory>
+#include "realtime_srv/game_obj/InputState.h"
+
 
 namespace realtime_srv
 {
+
+class InputState;
+class OutputBitStream;
+class InputBitStream;
+
 class Action
 {
 public:
 
 	Action( InputState* inInputState ) : inputState_( inInputState ) {}
 
-	Action( const InputStatePtr& inInputState, float inTimestamp, float inDeltaTime ) :
+	Action( const std::shared_ptr<InputState>& inInputState, float inTimestamp, float inDeltaTime ) :
 		inputState_( inInputState ),
 		mTimestamp( inTimestamp ),
 		mDeltaTime( inDeltaTime )
 	{}
 
 
-	InputStatePtr& GetInputState() { return inputState_; }
-	const InputStatePtr& GetInputState() const { return inputState_; }
+	std::shared_ptr<InputState>& GetInputState() { return inputState_; }
+	const std::shared_ptr<InputState>& GetInputState() const { return inputState_; }
 	float				GetTimestamp()	const { return mTimestamp; }
 	float				GetDeltaTime()	const { return mDeltaTime; }
 
@@ -24,7 +32,7 @@ public:
 	bool Read( InputBitStream& inInputStream );
 
 private:
-	InputStatePtr	inputState_;
+	std::shared_ptr<InputState>	inputState_;
 	float		mTimestamp;
 	float		mDeltaTime;
 
