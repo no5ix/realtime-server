@@ -96,12 +96,12 @@ void PktHandler::CheckForSleep()
 			if ( CurrentThread::tid() == baseThreadId_ )
 			{
 				isBaseThreadSleeping_ = true;
-				LOG_INFO << "BaseThread stop ticking";
+				LOG_INFO << "BaseThread's waiting for next packet";
 			}
 			else
 			{
 				t_isDispatcherThreadSleeping_ = true;
-				LOG_INFO << "DispatcherThread stop dispatching";
+				LOG_INFO << "DispatcherThread's waiting for next packet";
 			}
 		}
 	}
