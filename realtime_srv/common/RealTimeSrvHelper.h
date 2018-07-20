@@ -18,7 +18,7 @@ struct ServerConfig
 
 	// [NetworkMgr]
 	bool is_unregist_obj_when_cli_disconn;
-	uint8_t action_count_per_round;
+	uint8_t action_count_per_tick;
 
 	// [PktHandler]
 	uint16_t port;
@@ -26,7 +26,7 @@ struct ServerConfig
 	double client_disconnect_timeout;
 	uint8_t packet_dispatcher_thread_count;
 	double tick_interval;
-	double max_packets_count_per_round;
+	double max_packets_count_per_fetch;
 };
 
 namespace RealtimeSrvHelper

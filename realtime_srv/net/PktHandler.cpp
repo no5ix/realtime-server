@@ -28,7 +28,7 @@ PktHandler::PktHandler( const ServerConfig _serverConfig,
 	:
 	sendPacketInterval_( _serverConfig.send_packet_interval ),
 	clientDisconnectTimeout_( _serverConfig.client_disconnect_timeout ),
-	maxPacketsCountPerRound_( _serverConfig.max_packets_count_per_round ),
+	maxPacketsCountPerFetch_( _serverConfig.max_packets_count_per_fetch ),
 	tickInterval_( _serverConfig.tick_interval ),
 	port_( _serverConfig.port ),
 	pktDispatcherThreadCnt_( _serverConfig.packet_dispatcher_thread_count ),
@@ -36,14 +36,14 @@ PktHandler::PktHandler( const ServerConfig _serverConfig,
 	isBaseThreadSleeping_( false ),
 	baseThreadId_( CurrentThread::tid() ),
 	pendingRecvedPktsCnt_( 0 ),
-	pendingRecvedPkts_( std::vector<ReceivedPacketPtr>( maxPacketsCountPerRound_ ) ),
+	pendingRecvedPkts_( std::vector<ReceivedPacketPtr>( maxPacketsCountPerFetch_ ) ),
 	pktProcessCb_( _pktProcessCallback ),
 	tickCb_( _tickCb ),
 	checkDisconnCb_( _checkDisconnCb )
 {
 	assert( sendPacketInterval_ >= 0 );
 	assert( clientDisconnectTimeout_ >= 0 );
-	assert( maxPacketsCountPerRound_ >= 1 );
+	assert( maxPacketsCountPerFetch_ >= 1 );
 	assert( tickInterval_ >= 0 );
 	assert( port_ >= 1024 );
 	assert( pktDispatcherThreadCnt_ >= 1 );
@@ -140,7 +140,7 @@ void PktHandler::CheckForWakingUp()
 void PktHandler::ProcessPkt()
 {
 	while ( ( pendingRecvedPktsCnt_ = recvedPktBQ_.try_dequeue_bulk(
-		pendingRecvedPkts_.begin(), maxPacketsCountPerRound_ ) ) != 0 )
+		pendingRecvedPkts_.begin(), maxPacketsCountPerFetch_ ) ) != 0 )
 	{
 		for ( size_t i = 0; i != pendingRecvedPktsCnt_; ++i )
 		{

@@ -121,7 +121,7 @@ private:
 	// conf
 	uint16_t port_;
 	const double tickInterval_;
-	const size_t maxPacketsCountPerRound_;
+	const size_t maxPacketsCountPerFetch_;
 	const double sendPacketInterval_;
 	const double clientDisconnectTimeout_;
 	const uint8_t pktDispatcherThreadCnt_;

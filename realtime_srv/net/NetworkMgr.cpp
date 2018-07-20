@@ -15,13 +15,13 @@ AtomicInt32 NetworkMgr::kNewNetId;
 
 NetworkMgr::NetworkMgr( const ServerConfig _serverConfig ) :
 	bUnregistObjWhenCliDisconn_( _serverConfig.is_unregist_obj_when_cli_disconn ),
-	actionCountPerRound_( _serverConfig.action_count_per_round ),
+	actionCountPerTick_( _serverConfig.action_count_per_tick ),
 	pktHandler_( _serverConfig,
 		std::bind( &NetworkMgr::DoProcessPkt, this, _1 ),
 		std::bind( &NetworkMgr::Tick, this ),
 		std::bind( &NetworkMgr::CheckForDisconnects, this ) )
 {
-	assert( actionCountPerRound_ >= 1 );
+	assert( actionCountPerTick_ >= 1 );
 	kNewNetId.getAndSet( 1 );
 }
 
@@ -251,7 +251,7 @@ void NetworkMgr::HandleInputPacket( ClientProxyPtr& inClientProxy, InputBitStrea
 {
 	uint32_t actionCount = 0;
 	Action action( customInputStatecb_ ? customInputStatecb_() : ( new InputState ) );
-	inInputStream.Read( actionCount, actionCountPerRound_ );
+	inInputStream.Read( actionCount, actionCountPerTick_ );
 
 	for ( ; actionCount > 0; --actionCount )
 		if ( action.Read( inInputStream ) )

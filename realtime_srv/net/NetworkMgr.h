@@ -97,7 +97,7 @@ private:
 private:
 
 	bool bUnregistObjWhenCliDisconn_;
-	uint8_t actionCountPerRound_;
+	uint8_t actionCountPerTick_;
 
 	LetCliProxyGetWorldStateCb letCliProxyGetWorldState_;
 	NewPlayerCallback newPlayerCb_;

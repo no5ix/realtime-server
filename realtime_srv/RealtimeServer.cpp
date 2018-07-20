@@ -41,8 +41,8 @@ void RealtimeServer::ReadConfigFile()
 
 	srvConf_.is_unregist_obj_when_cli_disconn =
 		reader.GetBoolean( "NetworkMgr", "is_unregist_obj_when_cli_disconn", true );
-	srvConf_.action_count_per_round =
-		reader.GetInteger( "NetworkMgr", "action_count_per_round", 2 );
+	srvConf_.action_count_per_tick =
+		reader.GetInteger( "NetworkMgr", "action_count_per_tick", 2 );
 
 	srvConf_.send_packet_interval =
 		reader.GetReal( "PktHandler", "send_packet_interval", 0.033333 );
@@ -52,18 +52,18 @@ void RealtimeServer::ReadConfigFile()
 		reader.GetReal( "PktHandler", "client_disconnect_timeout", 6.0 );
 	srvConf_.packet_dispatcher_thread_count =
 		reader.GetInteger( "PktHandler", "packet_dispatcher_thread_count", 7 );
-	srvConf_.max_packets_count_per_round =
+	srvConf_.max_packets_count_per_fetch =
 		reader.GetInteger( "PktHandler", "max_packets_count_per_round", 10 );
 	srvConf_.port =
 		reader.GetInteger( "PktHandler", "port", 44444 );
 
 	LOG( "srvConf_.daemonize = %d", ( srvConf_.daemonize ? 1 : 0 ) );
 	LOG( "srvConf_.is_unregist_obj_when_cli_disconn = %d", ( srvConf_.is_unregist_obj_when_cli_disconn ? 1 : 0 ) );
-	LOG( "srvConf_.action_count_per_round = %d", srvConf_.action_count_per_round );
+	LOG( "srvConf_.action_count_per_tick = %d", srvConf_.action_count_per_tick );
 	LOG( "srvConf_.send_packet_interval = %f", srvConf_.send_packet_interval );
 	LOG( "srvConf_.tick_interval = %f", srvConf_.tick_interval );
 	LOG( "srvConf_.client_disconnect_timeout = %f", srvConf_.client_disconnect_timeout );
 	LOG( "srvConf_.packet_dispatcher_thread_count = %d", srvConf_.packet_dispatcher_thread_count );
-	LOG( "srvConf_.max_packets_count_per_round = %d", srvConf_.max_packets_count_per_round );
+	LOG( "srvConf_.max_packets_count_per_round = %d", srvConf_.max_packets_count_per_fetch );
 	LOG( "srvConf_.port = %d", srvConf_.port );
 }
