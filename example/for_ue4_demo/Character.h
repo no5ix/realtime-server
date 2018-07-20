@@ -102,4 +102,4 @@ protected:
 	int playerId_;
 };
 
-typedef shared_ptr< Character >	CharacterPtr;
+typedef std::shared_ptr< Character >	CharacterPtr;
