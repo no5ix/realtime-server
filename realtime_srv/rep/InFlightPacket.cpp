@@ -1,3 +1,4 @@
+#include "realtime_srv/game_obj/World.h"
 #include "realtime_srv/rep/DeliveryNotifyMgr.h"
 #include "realtime_srv/rep/ReplicationMgr.h"
 #include "realtime_srv/game_obj/GameObj.h"
@@ -49,6 +50,9 @@ void InflightPacket::HandleDeliveryFailure() const
 	}
 }
 
+void InflightPacket::HandleCreateDeliverySuccess( int inObjId ) const
+{ owner_->GetReplicationMgr().HandleCreateAckd( inObjId ); }
+
 void InflightPacket::HandleCreateDeliveryFailure( int inObjId ) const
 {
 	GameObjPtr gameObject = owner_->GetWorld()->GetGameObject( inObjId );
@@ -92,3 +96,9 @@ void InflightPacket::HandleDeliverySuccess() const
 		}
 	}
 }
+
+void InflightPacket::HandleDestroyDeliveryFailure( int inObjId ) const
+{ owner_->GetReplicationMgr().ReplicateDestroy( inObjId ); }
+
+void InflightPacket::HandleDestroyDeliverySuccess( int inObjId ) const
+{ owner_->GetReplicationMgr().RemoveFromReplication( inObjId ); }

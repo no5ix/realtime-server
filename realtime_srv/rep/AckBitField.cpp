@@ -1,4 +1,4 @@
-
+#include <cassert>
 #include "realtime_srv/rep/BitStream.h"
 #include "realtime_srv/common/RealtimeSrvHelper.h"
 

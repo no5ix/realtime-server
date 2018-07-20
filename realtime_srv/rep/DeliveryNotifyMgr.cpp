@@ -1,3 +1,4 @@
+#include "realtime_srv/common/RealtimeSrvHelper.h"
 #include "realtime_srv/rep/BitStream.h"
 #include "realtime_srv/rep/InflightPacket.h"
 #include "realtime_srv/rep/AckBitField.h"

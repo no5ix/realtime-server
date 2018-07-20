@@ -100,7 +100,7 @@ private:
 	pid_t													connHoldedByTid_;
 };
 
-typedef shared_ptr< ClientProxy >	ClientProxyPtr;
-typedef weak_ptr<ClientProxy>	ClientProxyWPtr;
+typedef std::shared_ptr<ClientProxy>	ClientProxyPtr;
+typedef std::weak_ptr<ClientProxy>	ClientProxyWPtr;
 
 }

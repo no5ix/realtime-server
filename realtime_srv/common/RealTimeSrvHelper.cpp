@@ -1,20 +1,12 @@
 
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <sys/types.h>
-#include <netdb.h>
-#include <errno.h>
 #include <fcntl.h>
 #include <unistd.h>
-
-#include <signal.h>
 #include <sys/stat.h>
-#include <pthread.h>
-#include <arpa/inet.h>
-#include <sys/epoll.h>
+
 #include <cstdarg>
 
 #include "realtime_srv/common/RealtimeSrvHelper.h"
+
 
 using namespace realtime_srv;
 using namespace realtime_srv::RealtimeSrvHelper;

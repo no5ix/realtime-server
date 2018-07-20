@@ -1,7 +1,9 @@
 #pragma once
 
+#include <stdint.h>
 #include <deque>
 #include "realtime_srv/common/RealtimeSrvMacro.h"
+#include "realtime_srv/rep/AckBitField.h"
 
 namespace realtime_srv
 {
@@ -9,9 +11,7 @@ namespace realtime_srv
 
 class OutputBitStream;
 class InputBitStream;
-class AckBitField;
 class InflightPacket;
-
 class ClientProxy;
 
 class DeliveryNotifyMgr
@@ -28,11 +28,13 @@ public:
 
 	void						ProcessTimedOutPackets();
 
-	uint32_t					GetDroppedPacketCount()		const { return mDroppedPacketCount; }
-	uint32_t					GetDeliveredPacketCount()	const { return mDeliveredPacketCount; }
-	uint32_t					GetDispatchedPacketCount()	const { return mDispatchedPacketCount; }
+	uint32_t GetDroppedPacketCount()		const { return mDroppedPacketCount; }
+	uint32_t GetDeliveredPacketCount()	const { return mDeliveredPacketCount; }
+	uint32_t GetDispatchedPacketCount()	const { return mDispatchedPacketCount; }
 
-	const std::deque<InflightPacket>&	GetInflightPackets()	const { return inflightPackets_; }
+	const std::deque<InflightPacket>&	GetInflightPackets() const
+	{ return inflightPackets_; }
+
 private:
 
 
@@ -52,12 +54,12 @@ private:
 
 	std::deque<InflightPacket>	inflightPackets_;
 
-	bool					mShouldSendAcks;
-	bool					mShouldProcessAcks;
+	bool mShouldSendAcks;
+	bool mShouldProcessAcks;
 
-	uint32_t				mDeliveredPacketCount;
-	uint32_t				mDroppedPacketCount;
-	uint32_t				mDispatchedPacketCount;
+	uint32_t mDeliveredPacketCount;
+	uint32_t mDroppedPacketCount;
+	uint32_t mDispatchedPacketCount;
 
 protected:
 	AckBitField*			mAckBitField;

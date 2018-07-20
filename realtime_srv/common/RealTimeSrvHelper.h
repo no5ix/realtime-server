@@ -6,9 +6,6 @@
 
 namespace realtime_srv
 {
-class NetworkMgr;
-
-
 
 struct ServerConfig
 {

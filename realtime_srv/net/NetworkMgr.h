@@ -17,17 +17,17 @@ namespace realtime_srv
 class GameObj;
 class ClientProxy;
 
-typedef std::function<GameObj*( ClientProxyPtr& )> NewPlayerCallback;
+typedef std::function<GameObj*( std::shared_ptr<ClientProxy>& )> NewPlayerCallback;
 typedef std::function<InputState*()> CustomInputStateCallback;
-typedef std::function<void( ClientProxyPtr )> LetCliProxyGetWorldStateCb;
+typedef std::function<void( std::shared_ptr<ClientProxy> )> LetCliProxyGetWorldStateCb;
 
 class NetworkMgr : noncopyable, public std::enable_shared_from_this<NetworkMgr>
 {
 public:
 	typedef std::function<void( GameObjPtr&, ReplicationAction )> WorldRegistryCb;
 
-	typedef unordered_map<muduo::net::UdpConnectionPtr,
-		ClientProxyPtr>	UdpConnToClientMap;
+	typedef std::unordered_map<muduo::net::UdpConnectionPtr,
+		std::shared_ptr<ClientProxy>>	UdpConnToClientMap;
 
 	typedef std::shared_ptr<UdpConnToClientMap> UdpConnToClientMapPtr;
 
@@ -79,26 +79,26 @@ private:
 	void PreparePacketToSend();
 	void CheckForDisconnects();
 
-	uint32_t	 HandleServerReset( ClientProxyPtr& inClientProxy,
+	uint32_t	 HandleServerReset( std::shared_ptr<ClientProxy>& inClientProxy,
 		InputBitStream& inInputStream );
 
-	void	HandleInputPacket( ClientProxyPtr& inClientProxy,
+	void	HandleInputPacket( std::shared_ptr<ClientProxy>& inClientProxy,
 		InputBitStream& inInputStream );
 
-	void	CheckPacketType( ClientProxyPtr& inClientProxy,
+	void	CheckPacketType( std::shared_ptr<ClientProxy>& inClientProxy,
 		InputBitStream& inInputStream );
 
 	void	WriteLastMoveTimestampIfDirty( OutputBitStream& inOutputStream,
-		ClientProxyPtr& inClientProxy );
+		std::shared_ptr<ClientProxy>& inClientProxy );
 
-	void DoPreparePacketToSend( ClientProxyPtr& inClientProxy,
+	void DoPreparePacketToSend( std::shared_ptr<ClientProxy>& inClientProxy,
 		const uint32_t inConnFlag );
 
 	void	WelcomeNewClient( InputBitStream& inInputStream,
 		const muduo::net::UdpConnectionPtr& inUdpConnetction,
 		const pid_t inHoldedByThreadId );
 
-	ClientProxyPtr CreateNewClient(
+	std::shared_ptr<ClientProxy> CreateNewClient(
 		const muduo::net::UdpConnectionPtr& _udpConnetction,
 		const pid_t _holdedByThreadId );
 

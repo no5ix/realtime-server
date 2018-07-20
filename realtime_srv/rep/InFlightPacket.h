@@ -56,14 +56,11 @@ private:
 	void HandleUpdateStateDeliveryFailure( int inObjId, 
 		uint32_t inState ) const;
 
-	void HandleDestroyDeliveryFailure( int inObjId ) const
-	{ owner_->GetReplicationMgr().ReplicateDestroy( inObjId ); }
+	void HandleDestroyDeliveryFailure( int inObjId ) const;
 
-	void HandleCreateDeliverySuccess( int inObjId ) const
-	{ owner_->GetReplicationMgr().HandleCreateAckd( inObjId ); }
+	void HandleCreateDeliverySuccess( int inObjId ) const;
 
-	void HandleDestroyDeliverySuccess( int inObjId ) const
-	{ owner_->GetReplicationMgr().RemoveFromReplication( inObjId ); }
+	void HandleDestroyDeliverySuccess( int inObjId ) const;
 
 
 private:

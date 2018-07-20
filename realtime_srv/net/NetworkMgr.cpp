@@ -1,5 +1,6 @@
 #include "realtime_srv/game_obj/GameObj.h"
 #include "realtime_srv/net/ClientProxy.h"
+#include "realtime_srv/rep/BitStream.h"
 
 #include "realtime_srv/net/NetworkMgr.h"
 
@@ -42,7 +43,7 @@ void realtime_srv::NetworkMgr::Start()
 
 void NetworkMgr::DoPreparePacketToSend( ClientProxyPtr& _cliProxy, const uint32_t _connFlag )
 {
-	shared_ptr< OutputBitStream > outputPacket( new OutputBitStream() );
+	OutputBitStreamPtr outputPacket( new OutputBitStream() );
 	outputPacket->Write( _connFlag );
 
 	InflightPacket* ifp = _cliProxy->GetDeliveryNotifyMgr()
@@ -86,7 +87,7 @@ void NetworkMgr::PreparePacketToSend()
 {
 	for ( auto& pair : udpConnToClientMap_ )
 	{
-		( pair.second )->GetDeliveryNotifyManager().ProcessTimedOutPackets();
+		( pair.second )->GetDeliveryNotifyMgr().ProcessTimedOutPackets();
 
 		if ( ( pair.second )->IsLastMoveTimestampDirty() )
 		{

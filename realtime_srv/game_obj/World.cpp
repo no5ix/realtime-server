@@ -1,5 +1,6 @@
-#include "realtime_srv/net/ClientProxy.h"
+#include "realtime_srv/common/RealtimeSrvHelper.h"
 #include "realtime_srv/game_obj/GameObj.h"
+#include "realtime_srv/net/ClientProxy.h"
 
 #include "realtime_srv/game_obj/World.h"
 
@@ -28,6 +29,12 @@ void World::RegistGameObj( GameObjPtr _obj )
 	onObjCreateOrDestoryCb_( _obj, RA_Create );
 }
 
+void World::UnregistGameObj( GameObjPtr _obj )
+{
+	onObjCreateOrDestoryCb_( _obj, RA_Destroy );
+	ObjIdToGameObjMap_.erase( _obj->GetObjId() );
+}
+
 void World::WhenClientProxyHere( std::shared_ptr<ClientProxy> _cliProxy )
 {
 	if ( _cliProxy )
@@ -39,12 +46,6 @@ void World::WhenClientProxyHere( std::shared_ptr<ClientProxy> _cliProxy )
 				ipair.first, ipair.second->GetAllStateMask() );
 		}
 	}
-}
-
-void World::UnregistGameObj( GameObjPtr _obj )
-{
-	onObjCreateOrDestoryCb_( _obj, RA_Destroy );
-	ObjIdToGameObjMap_.erase( _obj->GetObjId() );
 }
 
 int World::GetNewObjId()
@@ -72,15 +73,12 @@ GameObjPtr World::GetGameObject( int _objId )
 
 void World::Update()
 {
-	vector< GameObjPtr > GameObjsToRem;
-	for ( const auto& pair : ObjIdToGameObjMap_ )
+	for ( auto it = ObjIdToGameObjMap_.begin();
+		it != ObjIdToGameObjMap_.end(); )
 	{
-		auto curObj = pair.second;
-		if ( curObj->IsPendingToDie() )
-			GameObjsToRem.push_back( curObj );
+		if ( it->second->IsPendingToDie() )
+			UnregistGameObj( it++->second );
 		else
-			curObj->Update();
+			it++->second->Update();
 	}
-
-	for ( auto& obj : GameObjsToRem ) UnregistGameObj( obj );
 }

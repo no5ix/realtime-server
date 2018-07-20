@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstring>
+#include <stdlib.h>
 #include "realtime_srv/common/RealtimeSrvMacro.h"
 
 namespace realtime_srv
