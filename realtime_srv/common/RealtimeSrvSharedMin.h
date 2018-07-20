@@ -30,6 +30,12 @@
 #include <unordered_set>
 #include <cassert>
 
+#include "realtime_srv/common/noncopyable.h"
+
+
+namespace realtime_srv
+{
+
 using std::shared_ptr;
 using std::unique_ptr;
 using std::weak_ptr;
@@ -42,10 +48,10 @@ using std::map;
 using std::string;
 using std::set;
 using std::unordered_set;
+using std::function;
 
 using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
 
-
-#include "realtime_srv/common/noncopyable.h"
+}
