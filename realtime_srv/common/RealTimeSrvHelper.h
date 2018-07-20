@@ -26,7 +26,7 @@ struct ServerConfig
 	double client_disconnect_timeout;
 	uint8_t packet_dispatcher_thread_count;
 	double tick_interval;
-	double max_packets_count_per_fetch;
+	size_t max_packets_count_per_fetch;
 };
 
 namespace RealtimeSrvHelper
