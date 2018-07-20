@@ -29,27 +29,31 @@ PktHandler::PktHandler( const ServerConfig _serverConfig,
 	sendPacketInterval_( _serverConfig.send_packet_interval ),
 	clientDisconnectTimeout_( _serverConfig.client_disconnect_timeout ),
 	maxPacketsCountPerFetch_( _serverConfig.max_packets_count_per_fetch ),
-	tickInterval_( _serverConfig.tick_interval ),
 	port_( _serverConfig.port ),
 	pktDispatcherThreadCnt_( _serverConfig.packet_dispatcher_thread_count ),
-	sleepRoundCountThreshold_( static_cast< int >( 1 / tickInterval_ ) ),
+	sleepRoundCountThreshold_( _serverConfig.fps ),
 	isBaseThreadSleeping_( false ),
 	baseThreadId_( CurrentThread::tid() ),
 	pendingRecvedPktsCnt_( 0 ),
-	pendingRecvedPkts_( std::vector<ReceivedPacketPtr>( maxPacketsCountPerFetch_ ) ),
 	pktProcessCb_( _pktProcessCallback ),
 	tickCb_( _tickCb ),
 	checkDisconnCb_( _checkDisconnCb )
 {
-	assert( sendPacketInterval_ >= 0 );
-	assert( clientDisconnectTimeout_ >= 0 );
+	assert( _serverConfig.fps > 0 );
+
+	assert( sendPacketInterval_ > 0 );
+	assert( clientDisconnectTimeout_ > 0 );
 	assert( maxPacketsCountPerFetch_ >= 1 );
-	assert( tickInterval_ >= 0 );
 	assert( port_ >= 1024 );
 	assert( pktDispatcherThreadCnt_ >= 1 );
 
 	assert( tickCb_ );
 	assert( pktProcessCb_ );
+
+	tickInterval_ = 1.0 / _serverConfig.fps;
+	assert( tickInterval_ > 0 );
+
+	std::vector<ReceivedPacketPtr>( maxPacketsCountPerFetch_ ).swap( pendingRecvedPkts_ );
 
 	InetAddress serverAddr( port_ );
 

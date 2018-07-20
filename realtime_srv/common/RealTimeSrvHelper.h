@@ -25,7 +25,7 @@ struct ServerConfig
 	double send_packet_interval;
 	double client_disconnect_timeout;
 	uint8_t packet_dispatcher_thread_count;
-	double tick_interval;
+	uint8_t fps;
 	size_t max_packets_count_per_fetch;
 };
 

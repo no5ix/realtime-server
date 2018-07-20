@@ -108,7 +108,7 @@ private:
 	UdpConnectionCallback connCb_;
 
 	ReceivedPacketBlockQueue recvedPktBQ_;
-	std::vector< ReceivedPacketPtr > pendingRecvedPkts_;
+	std::vector<ReceivedPacketPtr> pendingRecvedPkts_;
 	size_t pendingRecvedPktsCnt_;
 
 	muduo::net::EventLoop baseLoop_;
@@ -120,7 +120,7 @@ private:
 
 	// conf
 	uint16_t port_;
-	const double tickInterval_;
+	double tickInterval_;
 	const size_t maxPacketsCountPerFetch_;
 	const double sendPacketInterval_;
 	const double clientDisconnectTimeout_;

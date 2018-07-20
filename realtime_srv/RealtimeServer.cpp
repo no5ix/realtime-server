@@ -46,8 +46,8 @@ void RealtimeServer::ReadConfigFile()
 
 	srvConf_.send_packet_interval =
 		reader.GetReal( "PktHandler", "send_packet_interval", 0.033333 );
-	srvConf_.tick_interval =
-		reader.GetReal( "PktHandler", "tick_interval", 0.033333 );
+	srvConf_.fps =
+		reader.GetInteger( "PktHandler", "fps", 30);
 	srvConf_.client_disconnect_timeout =
 		reader.GetReal( "PktHandler", "client_disconnect_timeout", 6.0 );
 	srvConf_.packet_dispatcher_thread_count =
@@ -61,9 +61,9 @@ void RealtimeServer::ReadConfigFile()
 	LOG( "srvConf_.is_unregist_obj_when_cli_disconn = %d", ( srvConf_.is_unregist_obj_when_cli_disconn ? 1 : 0 ) );
 	LOG( "srvConf_.action_count_per_tick = %d", srvConf_.action_count_per_tick );
 	LOG( "srvConf_.send_packet_interval = %f", srvConf_.send_packet_interval );
-	LOG( "srvConf_.tick_interval = %f", srvConf_.tick_interval );
+	LOG( "srvConf_.fps = %d", srvConf_.fps );
 	LOG( "srvConf_.client_disconnect_timeout = %f", srvConf_.client_disconnect_timeout );
 	LOG( "srvConf_.packet_dispatcher_thread_count = %d", srvConf_.packet_dispatcher_thread_count );
-	LOG( "srvConf_.max_packets_count_per_round = %d", srvConf_.max_packets_count_per_fetch );
+	LOG( "srvConf_.max_packets_count_per_fetch = %d", srvConf_.max_packets_count_per_fetch );
 	LOG( "srvConf_.port = %d", srvConf_.port );
 }
