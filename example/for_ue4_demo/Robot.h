@@ -22,7 +22,7 @@ protected:
 	// of course u can set location & rotation directly...XD
 	virtual void AfterProcessInput() override
 	{
-		MakeSimulativeInpute();
+		MakeSimulativeInput();
 
 		Character::ProcessInput( kSimulateDeltaTime_, simulateInputeState_ );
 
@@ -37,7 +37,7 @@ protected:
 			kYaw_ = 360.f;
 	}
 
-	void MakeSimulativeInpute()
+	void MakeSimulativeInput()
 	{
 		MoveInCircles();
 

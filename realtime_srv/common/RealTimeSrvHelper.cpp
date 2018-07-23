@@ -74,7 +74,7 @@ void RealtimeSrvHelper::Log( const char* inFormat, ... )
 	va_end( args );
 }
 
-bool RealtimeSrvHelper::SequenceGreaterThanOrEqual( PacketSN s1, PacketSN s2 )
+bool RealtimeSrvHelper::SNGreaterThanOrEqual( PacketSN s1, PacketSN s2 )
 {
 	return ( ( s1 >= s2 ) && ( s1 - s2 <= HALF_MAX_PACKET_SEQUENCE_NUMBER ) ) ||
 		( ( s1 < s2 ) && ( s2 - s1 > HALF_MAX_PACKET_SEQUENCE_NUMBER ) );
@@ -82,7 +82,7 @@ bool RealtimeSrvHelper::SequenceGreaterThanOrEqual( PacketSN s1, PacketSN s2 )
 }
 
 
-bool RealtimeSrvHelper::SequenceGreaterThan( PacketSN s1, PacketSN s2 )
+bool RealtimeSrvHelper::SNGreaterThan( PacketSN s1, PacketSN s2 )
 {
 	return ( ( s1 > s2 ) && ( s1 - s2 <= HALF_MAX_PACKET_SEQUENCE_NUMBER ) ) ||
 		( ( s1 < s2 ) && ( s2 - s1 > HALF_MAX_PACKET_SEQUENCE_NUMBER ) );

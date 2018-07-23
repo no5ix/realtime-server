@@ -40,7 +40,7 @@ namespace muduo
 			void restart();  // must be called in loop thread
 			void stop();  // can be called in any thread
 
-			const InetAddress& serverAddress() const { return serverAddr_; }
+			const InetAddress& serverAddress() const { return peerAddr_; }
 
 			/////////// new : for UDP
 			//const Socket& GetConnectSocket() const { return connectSocket_; }
@@ -67,7 +67,7 @@ namespace muduo
 
 
 			EventLoop* loop_;
-			InetAddress serverAddr_;
+			InetAddress peerAddr_;
 			uint16_t localPort_;
 			bool connect_; // atomic
 			States state_;  // FIXME: use atomic variable

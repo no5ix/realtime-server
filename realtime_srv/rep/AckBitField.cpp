@@ -41,7 +41,7 @@ void AckBitField::AddToAckBitField( PacketSN inSequenceNumber, PacketSN inLastSN
 		return;
 	}
 	uint32_t totalDifference = 0;
-	for ( ; RealtimeSrvHelper::SequenceGreaterThan(
+	for ( ; RealtimeSrvHelper::SNGreaterThan(
 		inSequenceNumber, inLastSN++ ); ++totalDifference );
 
 	uint32_t tempDiff = totalDifference;
@@ -72,7 +72,7 @@ void AckBitField::Read( InputBitStream& inInputStream )
 bool AckBitField::IsSetCorrespondingAckBit( PacketSN inAckSN )
 {
 	uint32_t difference = 0;
-	for ( ; RealtimeSrvHelper::SequenceGreaterThan(
+	for ( ; RealtimeSrvHelper::SNGreaterThan(
 		mLatestAckSN, inAckSN++ ); ++difference );
 
 	assert( difference );

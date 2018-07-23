@@ -1,9 +1,7 @@
-//#include "realtime_srv/net/ClientProxy.h"
-//#include "realtime_srv/game_obj/GameObj.h"
-//#include "realtime_srv/net/NetworkMgr.h"
-//#include "realtime_srv/game_obj/ActionList.h"
-#include "realtime_srv/common/RealtimeSrvShared.h"
+#include "realtime_srv/net/ClientProxy.h"
+#include "realtime_srv/net/NetworkMgr.h"
 
+#include "realtime_srv/game_obj/GameObj.h"
 
 using namespace realtime_srv;
 
@@ -21,7 +19,6 @@ void GameObj::SetStateDirty( uint32_t repState )
 
 void GameObj::Update()
 {
-
 	BeforeProcessInput();
 
 	if ( hasMaster_ )

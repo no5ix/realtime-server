@@ -67,7 +67,7 @@ bool DeliveryNotifyMgr::ProcessSequenceNumber( InputBitStream& inInputStream )
 	PacketSN	sequenceNumber;
 
 	inInputStream.Read( sequenceNumber );
-	if ( RealtimeSrvHelper::SequenceGreaterThanOrEqual( sequenceNumber, mNextExpectedSequenceNumber ) )
+	if ( RealtimeSrvHelper::SNGreaterThanOrEqual( sequenceNumber, mNextExpectedSequenceNumber ) )
 		//if ( sequenceNumber >= mNextExpectedSequenceNumber )
 	{
 		PacketSN lastSN = mNextExpectedSequenceNumber - 1;
@@ -131,14 +131,14 @@ void DeliveryNotifyMgr::ProcessAckBitField( InputBitStream& inInputStream )
 
 
 	while (
-		RealtimeSrvHelper::SequenceGreaterThanOrEqual( LastAckedSN, nextAckedSN )
+		RealtimeSrvHelper::SNGreaterThanOrEqual( LastAckedSN, nextAckedSN )
 		//LastAckedSN >= nextAckdSequenceNumber
 		&& !inflightPackets_.empty() )
 	{
 		const auto& nextInFlightPacket = inflightPackets_.front();
 		PacketSN nextInFlightPacketSN = nextInFlightPacket.GetSequenceNumber();
 
-		if ( RealtimeSrvHelper::SequenceGreaterThan( nextAckedSN, nextInFlightPacketSN ) )
+		if ( RealtimeSrvHelper::SNGreaterThan( nextAckedSN, nextInFlightPacketSN ) )
 			//if ( nextAckedSN > nextInFlightPacketSN )
 		{
 			auto copyOfInFlightPacket = nextInFlightPacket;
@@ -162,7 +162,7 @@ void DeliveryNotifyMgr::ProcessAckBitField( InputBitStream& inInputStream )
 				++nextAckedSN;
 			}
 		}
-		else if ( RealtimeSrvHelper::SequenceGreaterThan( nextInFlightPacketSN, nextAckedSN ) )
+		else if ( RealtimeSrvHelper::SNGreaterThan( nextInFlightPacketSN, nextAckedSN ) )
 	 //else if ( nextAckedSN < nextInFlightPacketSN )
 		{
 			nextAckedSN = nextInFlightPacketSN;

@@ -15,10 +15,11 @@ using namespace muduo::net;
 
 const int UdpConnector::kMaxRetryDelayMs;
 
-UdpConnector::UdpConnector( EventLoop* loop, const InetAddress& serverAddr, const uint16_t localPort )
+UdpConnector::UdpConnector( EventLoop* loop, const InetAddress& _peerAddr,
+	const uint16_t localPort )
 	: 
 	loop_( loop ),
-	serverAddr_( serverAddr ),
+	peerAddr_( _peerAddr ),
 	localPort_( localPort ),
 	//connectSocket_( sockets::createUdpNonblockingOrDie( serverAddr.family() ) ),
 	connect_( false ),
@@ -80,15 +81,15 @@ void UdpConnector::stopInLoop()
 void UdpConnector::connect()
 {
 	//int sockfd = connectSocket_.fd();
-	int sockfd = sockets::createUdpNonblockingOrDie( serverAddr_.family() );
+	int sockfd = sockets::createUdpNonblockingOrDie( peerAddr_.family() );
 
-	std::shared_ptr< Socket > connectSocket( new Socket( sockfd ) );
+	std::shared_ptr<Socket> connectSocket( new Socket( sockfd ) );
 	connectSocket->setReuseAddr( true );
 	connectSocket->setReusePort( true );
 	if ( localPort_ != 0 ) // not udp client call
 		connectSocket->bindAddress( InetAddress( localPort_ ) );
 
-	int ret = sockets::connect( sockfd, serverAddr_.getSockAddr() );
+	int ret = sockets::connect( sockfd, peerAddr_.getSockAddr() );
 	int savedErrno = ( ret == 0 ) ? 0 : errno;
 	switch ( savedErrno )
 	{
@@ -239,7 +240,7 @@ void UdpConnector::retry( int sockfd )
 	setState( kDisconnected );
 	if ( connect_ )
 	{
-		LOG_INFO << "Connector::retry - Retry connecting to " << serverAddr_.toIpPort()
+		LOG_INFO << "Connector::retry - Retry connecting to " << peerAddr_.toIpPort()
 			<< " in " << retryDelayMs_ << " milliseconds. ";
 		loop_->runAfter( retryDelayMs_ / 1000.0,
 			std::bind( &UdpConnector::startInLoop, shared_from_this() ) );

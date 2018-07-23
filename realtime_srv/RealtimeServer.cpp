@@ -40,7 +40,7 @@ void RealtimeServer::ReadConfigFile()
 		reader.GetBoolean( "RealtimeServer", "daemonize", true );
 
 	srvConf_.is_unregist_obj_when_cli_disconn =
-		reader.GetBoolean( "NetworkMgr", "is_unregist_obj_when_cli_disconn", true );
+		reader.GetBoolean( "NetworkMgr", "is_unregist_obj_when_cli_disconn", false );
 	srvConf_.action_count_per_tick =
 		reader.GetInteger( "NetworkMgr", "action_count_per_tick", 2 );
 

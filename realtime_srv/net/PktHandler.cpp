@@ -57,7 +57,7 @@ PktHandler::PktHandler( const ServerConfig _serverConfig,
 
 	InetAddress serverAddr( port_ );
 
-	server_.reset( new UdpServer( &baseLoop_, serverAddr, "rs_pkt_dispatcher" ) );
+	server_.reset( new UdpServer( &baseLoop_, serverAddr, "rs_pkt_disp" ) );
 
 	server_->setThreadNum( pktDispatcherThreadCnt_ );
 
