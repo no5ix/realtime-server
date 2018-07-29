@@ -18,6 +18,24 @@ else
 fi
 
 
+
+# cmake
+
+CUR_DIR=`pwd`
+SOURCE_DIR="${CUR_DIR}/../"
+BUILD_DIR="${CUR_DIR}/../build"
+
+if [ ! -d ${BUILD_DIR} ]; then
+  mkdir ${BUILD_DIR}
+fi
+
+if [ -x ${BUILD_DIR} ]; then
+    cd ${BUILD_DIR} && cmake ${SOURCE_DIR} && make $*
+fi
+
+
+
+
 RS_BIN_DIR=`cd ../build/bin && pwd`
 RS_BIN_SYMBOLIC_LINK=bin_rs
 
@@ -49,22 +67,5 @@ mkdir -p ${RS_BIN_DIR}/config/
 cp  ${REALTIME_SRV_DIR}/*.ini  ${RS_BIN_DIR}/config/
 echo "copy config file to bin path finished."
 
-
-
-# cmake
-
-CUR_DIR=`pwd`
-SOURCE_DIR="${CUR_DIR}/../"
-BUILD_DIR="${CUR_DIR}/../build"
-
-if [ ! -d ${BUILD_DIR} ]; then
-  mkdir ${BUILD_DIR}
-fi
-
-if [ -x ${BUILD_DIR} ]; then
-    cd ${BUILD_DIR} \
-        && cmake ${SOURCE_DIR} \
-        && make $*
-fi
 
 exit 0
