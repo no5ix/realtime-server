@@ -30,6 +30,8 @@
 #include <unordered_set>
 #include <cassert>
 
+#include "realtime_srv/common/any.h"
+#include "realtime_srv/common/copyable.h"
 #include "realtime_srv/common/noncopyable.h"
 
 

@@ -4,8 +4,10 @@
 
 #include <memory>
 #include <unordered_map>
+#include <list>
 #include <functional>
 #include "realtime_srv/common/noncopyable.h"
+#include "realtime_srv/common/copyable.h"
 #include "realtime_srv/common/RealtimeSrvHelper.h"
 #include "realtime_srv/rep/BitStream.h"
 
@@ -38,6 +40,13 @@ public:
 	static const uint32_t	kResetedCC = 'RSTD';
 	static const uint32_t	kStateCC = 'STAT';
 	static const uint32_t	kInputCC = 'INPT';
+
+	enum UpdateConnListFlag
+	{
+		INSERT,
+		DELETE,
+		UPDATE
+	};
 
 public:
 
@@ -73,6 +82,9 @@ public:
 	void SetUnregistObjWhenCliDisconn( bool _whehter )
 	{ bUnregistObjWhenCliDisconn_ = _whehter; }
 
+	double GetClientDisconnectTimeout() const
+	{ return clientDisconnTimeout_; }
+
 private:
 	void Tick();
 	void DoProcessPkt( ReceivedPacketPtr& recvedPacket );
@@ -102,6 +114,9 @@ private:
 		const muduo::net::UdpConnectionPtr& _udpConnetction,
 		const pid_t _holdedByThreadId );
 
+	void UpdateConnListForCheckDisconn(const muduo::net::UdpConnectionPtr& conn,
+		UpdateConnListFlag flag, muduo::Timestamp time = muduo::Timestamp());
+
 private:
 
 	bool bUnregistObjWhenCliDisconn_;
@@ -117,6 +132,18 @@ private:
 
 	UdpConnToClientMap					udpConnToClientMap_;
 	static muduo::AtomicInt32		kNewNetId;
+
+	// check disconn
+	typedef std::weak_ptr<muduo::net::UdpConnection> WeakUdpConnectionPtr;
+	typedef std::list<WeakUdpConnectionPtr> WeakConnectionList;
+
+	struct NodeForCheckDisconn : public realtime_srv::copyable
+	{
+		muduo::Timestamp lastRecvTime;
+		WeakConnectionList::iterator position;
+	};
+	WeakConnectionList connListForCheckDisconn_;
+	const double clientDisconnTimeout_;
 
 };
 typedef std::shared_ptr<NetworkMgr> NetworkMgrPtr;

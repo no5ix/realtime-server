@@ -20,7 +20,7 @@
 
 #include <memory>
 
-//#include <boost/any.hpp>
+#include "realtime_srv/common/any.h"
 
 // struct tcp_info is in <netinet/tcp.h>
 struct tcp_info;
@@ -102,6 +102,15 @@ namespace muduo
 										 // called when TcpServer has removed me from its map
 			void connectDestroyed();  // should be called only once
 
+			void setContext(const realtime_srv::any& context)
+			{ context_ = context; }
+
+			const realtime_srv::any& getContext() const
+			{ return context_; }
+
+			realtime_srv::any* getMutableContext()
+			{ return &context_; }
+
 		private:
 			enum StateE { kDisconnected, kConnecting, kConnected, kDisconnecting };
 			void handleRead( Timestamp receiveTime );
@@ -142,6 +151,7 @@ namespace muduo
 			// new
 			static const size_t kPacketBufSize = 1500;
 			char packetBuf_[kPacketBufSize];
+			realtime_srv::any context_;
 		};
 
 		typedef std::shared_ptr<UdpConnection> UdpConnectionPtr;

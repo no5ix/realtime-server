@@ -34,22 +34,19 @@ public:
 
 	typedef std::function<void( ReceivedPacketPtr& )> PktProcessCallback;
 	typedef std::function<void()> TickCallback;
-	typedef std::function<void()> CheckDisconnectCallback;
 
 public:
 
 	PktHandler( const ServerConfig _serverConfig,
 		PktProcessCallback _pktProcessCallback,
-		TickCallback _tickCb,
-		CheckDisconnectCallback _checkDisconnCb = CheckDisconnectCallback() );
+		TickCallback _tickCb );
 
 	void Start() { assert( server_ ); server_->start(); baseLoop_.loop(); }
 
 	void SetInterval( std::function<void()> func, double interval )
 	{ baseLoop_.runEvery( interval, std::move( func ) ); }
 
-	void SetConnCallback( const UdpConnectionCallback& cb )
-	{ connCb_ = cb; }
+	void SetConnCallback(const UdpConnectionCallback& cb);
 
 	muduo::net::EventLoop* GetBaseLoop() { return &baseLoop_; }
 
@@ -61,9 +58,6 @@ public:
 
 	double GetSendPacketInterval() const
 	{ return sendPacketInterval_; }
-
-	double GetClientDisconnectTimeout() const
-	{ return clientDisconnectTimeout_; }
 
 protected:
 	void SendPkt();
@@ -101,7 +95,6 @@ private:
 
 	std::unordered_map<int, PendingSendPacketQueue> tidToPendingSndPktQMap_;
 
-	CheckDisconnectCallback checkDisconnCb_;
 	PktProcessCallback pktProcessCb_;
 	TickCallback	tickCb_;
 
@@ -123,7 +116,6 @@ private:
 	double tickInterval_;
 	const size_t maxPacketsCountPerFetch_;
 	const double sendPacketInterval_;
-	const double clientDisconnectTimeout_;
 	const uint8_t pktDispatcherThreadCnt_;
 
 };

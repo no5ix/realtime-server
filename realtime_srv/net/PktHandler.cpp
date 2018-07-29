@@ -23,11 +23,9 @@ __thread bool t_isDispatcherThreadSleeping_ = false;
 
 PktHandler::PktHandler( const ServerConfig _serverConfig,
 	PktProcessCallback _pktProcessCallback,
-	TickCallback _tickCb,
-	CheckDisconnectCallback _checkDisconnCb /*= CheckDisconnectCallback()*/ )
+	TickCallback _tickCb)
 	:
 	sendPacketInterval_( _serverConfig.send_packet_interval ),
-	clientDisconnectTimeout_( _serverConfig.client_disconnect_timeout ),
 	maxPacketsCountPerFetch_( _serverConfig.max_packets_count_per_fetch ),
 	port_( _serverConfig.port ),
 	pktDispatcherThreadCnt_( _serverConfig.packet_dispatcher_thread_count ),
@@ -36,13 +34,11 @@ PktHandler::PktHandler( const ServerConfig _serverConfig,
 	baseThreadId_( CurrentThread::tid() ),
 	pendingRecvedPktsCnt_( 0 ),
 	pktProcessCb_( _pktProcessCallback ),
-	tickCb_( _tickCb ),
-	checkDisconnCb_( _checkDisconnCb )
+	tickCb_( _tickCb )
 {
 	assert( _serverConfig.fps > 0 );
 
 	assert( sendPacketInterval_ > 0 );
-	assert( clientDisconnectTimeout_ > 0 );
 	assert( maxPacketsCountPerFetch_ >= 1 );
 	assert( port_ >= 1024 );
 	assert( pktDispatcherThreadCnt_ >= 1 );
@@ -61,8 +57,6 @@ PktHandler::PktHandler( const ServerConfig _serverConfig,
 
 	server_->setThreadNum( pktDispatcherThreadCnt_ );
 
-	server_->setConnectionCallback(
-		std::bind( &PktHandler::OnConnection, this, _1 ) );
 	server_->setMessageCallback(
 		std::bind( &PktHandler::OnPktComing, this, _1, _2, _3, std::placeholders::_4 ) );
 	server_->setThreadInitCallback(
@@ -71,11 +65,15 @@ PktHandler::PktHandler( const ServerConfig _serverConfig,
 	TimerId procPktTimerId = baseLoop_.runEvery( static_cast< double >( tickInterval_ ),
 		std::bind( &PktHandler::ProcessPkt, this ) );
 	AddToAutoSleepSystem( &baseLoop_, procPktTimerId );
-
-	if ( checkDisconnCb_ )
-		baseLoop_.runEvery( static_cast< double >( clientDisconnectTimeout_ ),
-			checkDisconnCb_ );
 }
+
+void PktHandler::SetConnCallback(const UdpConnectionCallback& cb)
+{
+	connCb_ = cb;
+	server_->setConnectionCallback(
+		std::bind(&PktHandler::OnConnection, this, _1));
+}
+
 
 void PktHandler::AddToAutoSleepSystem( EventLoop* _loop, TimerId _timerId )
 {

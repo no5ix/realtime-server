@@ -103,6 +103,12 @@
     <ClInclude Include="..\..\realtime_srv\rep\InflightPacket.h">
       <Filter>rep</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\realtime_srv\common\copyable.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\realtime_srv\common\any.h">
+      <Filter>common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\realtime_srv\math\Vector3.cpp">
