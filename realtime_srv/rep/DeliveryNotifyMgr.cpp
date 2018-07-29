@@ -68,7 +68,6 @@ bool DeliveryNotifyMgr::ProcessSequenceNumber( InputBitStream& inInputStream )
 
 	inInputStream.Read( sequenceNumber );
 	if ( RealtimeSrvHelper::SNGreaterThanOrEqual( sequenceNumber, mNextExpectedSequenceNumber ) )
-		//if ( sequenceNumber >= mNextExpectedSequenceNumber )
 	{
 		PacketSN lastSN = mNextExpectedSequenceNumber - 1;
 		mNextExpectedSequenceNumber = sequenceNumber + 1;
@@ -125,21 +124,19 @@ void DeliveryNotifyMgr::ProcessAckBitField( InputBitStream& inInputStream )
 	AckBitField recvedAckBitField;
 	recvedAckBitField.Read( inInputStream );
 
-	PacketSN LastAckedSN = recvedAckBitField.GetLatestAckSN();
+	PacketSN LatestAckedSN = recvedAckBitField.GetLatestAckSN();
 	PacketSN nextAckedSN =
-		LastAckedSN - ( ACK_BIT_FIELD_BYTE_LEN << 3 );
+		LatestAckedSN - ( ACK_BIT_FIELD_BYTE_LEN << 3 );
 
 
 	while (
-		RealtimeSrvHelper::SNGreaterThanOrEqual( LastAckedSN, nextAckedSN )
-		//LastAckedSN >= nextAckdSequenceNumber
+		RealtimeSrvHelper::SNGreaterThanOrEqual( LatestAckedSN, nextAckedSN )
 		&& !inflightPackets_.empty() )
 	{
 		const auto& nextInFlightPacket = inflightPackets_.front();
 		PacketSN nextInFlightPacketSN = nextInFlightPacket.GetSequenceNumber();
 
 		if ( RealtimeSrvHelper::SNGreaterThan( nextAckedSN, nextInFlightPacketSN ) )
-			//if ( nextAckedSN > nextInFlightPacketSN )
 		{
 			auto copyOfInFlightPacket = nextInFlightPacket;
 			inflightPackets_.pop_front();
@@ -147,7 +144,7 @@ void DeliveryNotifyMgr::ProcessAckBitField( InputBitStream& inInputStream )
 		}
 		else if ( nextAckedSN == nextInFlightPacketSN )
 		{
-			if ( nextAckedSN == LastAckedSN
+			if ( nextAckedSN == LatestAckedSN
 				|| recvedAckBitField.IsSetCorrespondingAckBit( nextAckedSN ) )
 			{
 				HandlePacketDeliverySuccess( nextInFlightPacket );
@@ -163,9 +160,6 @@ void DeliveryNotifyMgr::ProcessAckBitField( InputBitStream& inInputStream )
 			}
 		}
 		else if ( RealtimeSrvHelper::SNGreaterThan( nextInFlightPacketSN, nextAckedSN ) )
-	 //else if ( nextAckedSN < nextInFlightPacketSN )
-		{
 			nextAckedSN = nextInFlightPacketSN;
-		}
 	}
 }

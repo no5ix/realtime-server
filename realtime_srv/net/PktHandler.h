@@ -3,7 +3,7 @@
 //#ifdef __linux__
 
 #include <memory>
-#include <map>
+#include <unordered_map>
 #include <vector>
 
 #include <muduo/base/Logging.h>
@@ -97,9 +97,9 @@ private:
 		muduo::net::EventLoop* loop_;
 		muduo::net::TimerId		timerId_;
 	};
-	std::map<int, LoopAndTimerId> tidToLoopAndTimerIdMap_;
+	std::unordered_map<int, LoopAndTimerId> tidToLoopAndTimerIdMap_;
 
-	std::map<int, PendingSendPacketQueue> tidToPendingSndPktQMap_;
+	std::unordered_map<int, PendingSendPacketQueue> tidToPendingSndPktQMap_;
 
 	CheckDisconnectCallback checkDisconnCb_;
 	PktProcessCallback pktProcessCb_;
