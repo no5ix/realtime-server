@@ -63,7 +63,7 @@ void UdpServer::start()
 	}
 }
 
-void UdpServer::newConnection( std::shared_ptr< Socket > connectedSocket,
+void UdpServer::newConnection( Socket* connectedSocket,
 	const InetAddress& peerAddr )
 {
 	loop_->assertInLoopThread();

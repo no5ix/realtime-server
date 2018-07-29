@@ -83,7 +83,7 @@ void UdpConnector::connect()
 	//int sockfd = connectSocket_.fd();
 	int sockfd = sockets::createUdpNonblockingOrDie( peerAddr_.family() );
 
-	std::shared_ptr<Socket> connectSocket( new Socket( sockfd ) );
+	Socket* connectSocket( new Socket( sockfd ) );
 	connectSocket->setReuseAddr( true );
 	connectSocket->setReusePort( true );
 	if ( localPort_ != 0 ) // not udp client call
@@ -137,7 +137,7 @@ void UdpConnector::restart()
 	startInLoop();
 }
 
-void UdpConnector::connected( std::shared_ptr< Socket > connectedSocket )
+void UdpConnector::connected( Socket* connectedSocket )
 {
 	/////////// new : for UDP
 	setState( kConnecting );

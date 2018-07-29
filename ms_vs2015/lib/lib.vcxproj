@@ -92,7 +92,6 @@
     <ClInclude Include="..\..\lib\muduo\net\TimerId.h" />
     <ClInclude Include="..\..\lib\muduo\net\TimerQueue.h" />
     <ClInclude Include="..\..\lib\muduo_contrib\hiredis\Hiredis.h" />
-    <ClInclude Include="..\..\lib\muduo_udp_support\test\chat\udpChatCodec.h" />
     <ClInclude Include="..\..\lib\muduo_udp_support\UdpAcceptor.h" />
     <ClInclude Include="..\..\lib\muduo_udp_support\UdpCallbacks.h" />
     <ClInclude Include="..\..\lib\muduo_udp_support\UdpClient.h" />
@@ -170,9 +169,6 @@
     <ClCompile Include="..\..\lib\muduo\net\TimerQueue.cc" />
     <ClCompile Include="..\..\lib\muduo_contrib\hiredis\Hiredis.cc" />
     <ClCompile Include="..\..\lib\muduo_contrib\hiredis\mrediscli.cc" />
-    <ClCompile Include="..\..\lib\muduo_udp_support\test\chat\udpChatCli.cpp" />
-    <ClCompile Include="..\..\lib\muduo_udp_support\test\chat\udpChatSrv.cpp" />
-    <ClCompile Include="..\..\lib\muduo_udp_support\test\chat\udpChatSrv_highperformance.cpp" />
     <ClCompile Include="..\..\lib\muduo_udp_support\UdpAcceptor.cpp" />
     <ClCompile Include="..\..\lib\muduo_udp_support\UdpClient.cpp" />
     <ClCompile Include="..\..\lib\muduo_udp_support\UdpConnection.cpp" />
@@ -189,7 +185,6 @@
     <Text Include="..\..\lib\muduo_contrib\CMakeLists.txt" />
     <Text Include="..\..\lib\muduo_contrib\hiredis\CMakeLists.txt" />
     <Text Include="..\..\lib\muduo_udp_support\CMakeLists.txt" />
-    <Text Include="..\..\lib\muduo_udp_support\test\chat\CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\lib\inih\.gitignore" />

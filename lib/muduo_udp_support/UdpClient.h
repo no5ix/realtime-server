@@ -56,7 +56,7 @@ namespace muduo
 
 		private:
 			/// Not thread safe, but in loop
-			void newConnection( std::shared_ptr< Socket > connectedSocket );
+			void newConnection( Socket* connectedSocket );
 			/// Not thread safe, but in loop
 			void removeConnection( const UdpConnectionPtr& conn );
 

@@ -29,16 +29,9 @@ void muduo::net::UdpDefaultConnectionCallback( const UdpConnectionPtr& conn )
 	// do not call conn->forceClose(), because some users want to register message callback only.
 }
 
-void muduo::net::UdpDefaultMessageCallback( const UdpConnectionPtr&,
-	Buffer* buf,
-	Timestamp )
-{
-	buf->retrieveAll();
-}
-
 UdpConnection::UdpConnection( EventLoop* loop,
 	const string& nameArg,
-	const std::shared_ptr< Socket >& connectedSocket,
+	Socket* connectedSocket,
 	const InetAddress& localAddr,
 	const InetAddress& peerAddr )
 	:
@@ -80,7 +73,24 @@ UdpConnection::~UdpConnection()
 
 void UdpConnection::send( const void* data, int len )
 {
-	send( StringPiece( static_cast< const char* >( data ), len ) );
+	if (state_ == kConnected)
+	{
+		if (loop_->isInLoopThread())
+		{
+			//sendInLoop(message);
+			sendInLoop(data, static_cast<size_t>(len));
+		}
+		else
+		{
+			void (UdpConnection::*fp)(const void* data, size_t len)
+				= &UdpConnection::sendInLoop;
+			loop_->runInLoop(
+				std::bind(fp,
+					this,     // FIXME
+					data,
+					static_cast<size_t>(len)));
+		}
+	}
 }
 
 void UdpConnection::send( const StringPiece& message )
@@ -312,11 +322,10 @@ void UdpConnection::connectDestroyed()
 void UdpConnection::handleRead( Timestamp receiveTime )
 {
 	loop_->assertInLoopThread();
-	int savedErrno = 0;
-	ssize_t n = inputBuffer_.readFd( channel_->fd(), &savedErrno );
+	ssize_t n = sockets::read(channel_->fd(), static_cast<void*>(packetBuf_), kPacketBufSize);
 	if ( n > 0 )
 	{
-		messageCallback_( shared_from_this(), &inputBuffer_, receiveTime );
+		messageCallback_( shared_from_this(), packetBuf_, n, receiveTime );
 	}
 	else if ( n == 0 )
 	{
@@ -324,7 +333,6 @@ void UdpConnection::handleRead( Timestamp receiveTime )
 	}
 	else
 	{
-		errno = savedErrno;
 		LOG_SYSERR << "UdpConnection::handleRead";
 		handleError();
 	}

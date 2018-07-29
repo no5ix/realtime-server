@@ -34,13 +34,16 @@ namespace muduo
 
 		// the data has been read to (buf, len)
 		typedef std::function<void( const UdpConnectionPtr&,
-			Buffer*,
+			char*,
+			size_t,
 			Timestamp )> UdpMessageCallback;
 
 		void UdpDefaultConnectionCallback( const UdpConnectionPtr& conn );
-		void UdpDefaultMessageCallback( const UdpConnectionPtr& conn,
-			Buffer* buffer,
-			Timestamp receiveTime );
+		void UdpDefaultMessageCallback(const UdpConnectionPtr& conn,
+			char*,
+			size_t,
+			Timestamp)
+		{}
 
 	}
 }

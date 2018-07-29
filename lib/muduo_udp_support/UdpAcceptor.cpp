@@ -78,7 +78,7 @@ void UdpAcceptor::handleRead()
 	}
 }
 
-void UdpAcceptor::newConnection( std::shared_ptr< Socket > connectedSocket,
+void UdpAcceptor::newConnection( Socket* connectedSocket,
 	const InetAddress& peerAddr )
 {
 	loop_->assertInLoopThread();

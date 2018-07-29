@@ -77,8 +77,8 @@ protected:
 
 	void IoThreadInit( muduo::net::EventLoop* loop );
 
-	void OnPktComing( const muduo::net::UdpConnectionPtr& conn,
-		muduo::net::Buffer* buf, muduo::Timestamp receiveTime );
+	void OnPktComing(const muduo::net::UdpConnectionPtr& conn,
+		char* buf, size_t bufBytes, muduo::Timestamp receiveTime);
 
 	void OnConnection( const muduo::net::UdpConnectionPtr& conn )
 	{ if ( connCb_ ) connCb_( conn ); }

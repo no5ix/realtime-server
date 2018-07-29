@@ -23,7 +23,7 @@ namespace muduo
 		{
 		public:
 			typedef std::function<void( 
-				std::shared_ptr< Socket > connectedSocket, 
+				Socket* connectedSocket, 
 				const InetAddress& )> NewConnectionCallback;
 
 			UdpAcceptor( EventLoop* loop, const InetAddress& listenAddr, bool reuseport );
@@ -42,7 +42,7 @@ namespace muduo
 
 		private:
 			void handleRead();
-			void newConnection( std::shared_ptr< Socket > connectedSocket,
+			void newConnection( Socket* connectedSocket,
 				const InetAddress& peerAddr );
 
 			EventLoop* loop_;

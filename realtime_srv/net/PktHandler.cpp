@@ -64,7 +64,7 @@ PktHandler::PktHandler( const ServerConfig _serverConfig,
 	server_->setConnectionCallback(
 		std::bind( &PktHandler::OnConnection, this, _1 ) );
 	server_->setMessageCallback(
-		std::bind( &PktHandler::OnPktComing, this, _1, _2, _3 ) );
+		std::bind( &PktHandler::OnPktComing, this, _1, _2, _3, std::placeholders::_4 ) );
 	server_->setThreadInitCallback(
 		std::bind( &PktHandler::IoThreadInit, this, _1 ) );
 
@@ -166,21 +166,17 @@ void PktHandler::IoThreadInit( EventLoop* loop )
 	tidToPendingSndPktQMap_[CurrentThread::tid()] = PendingSendPacketQueue();
 }
 
-void PktHandler::OnPktComing( const muduo::net::UdpConnectionPtr& conn,
-	muduo::net::Buffer* buf, muduo::Timestamp receiveTime )
+void PktHandler::OnPktComing(const muduo::net::UdpConnectionPtr& conn,
+	char* buf, size_t bufBytes, muduo::Timestamp receiveTime)
 {
-	if ( buf->readableBytes() > 0 )
-	{
 		std::shared_ptr<InputBitStream> inputStreamPtr(
-			new InputBitStream( buf->peek(), buf->readableBytes() * 8 ) );
-		buf->retrieveAll();
+			new InputBitStream( buf, bufBytes * 8 ) );
 
 		recvedPktBQ_.enqueue( ReceivedPacketPtr( new ReceivedPacket(
 			RealtimeSrvTiming::sInst.GetCurrentGameTime(),
 			CurrentThread::tid(), inputStreamPtr, conn ) ) );
 
 		CheckForWakingUp();
-	}
 }
 
 void PktHandler::SendPkt()

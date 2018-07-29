@@ -122,7 +122,7 @@ void UdpClient::stop()
 	connector_->stop();
 }
 
-void UdpClient::newConnection( std::shared_ptr< Socket > connectedSocket )
+void UdpClient::newConnection( Socket* connectedSocket )
 {
 	loop_->assertInLoopThread();
 	InetAddress peerAddr( sockets::getPeerAddr( connectedSocket->fd() ) );

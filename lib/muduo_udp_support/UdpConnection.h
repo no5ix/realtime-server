@@ -47,7 +47,7 @@ namespace muduo
 			/// User should not create this object.
 			UdpConnection( EventLoop* loop,
 				const string& name,
-				const std::shared_ptr< Socket >& connectedSocket,
+				Socket* connectedSocket,
 				const InetAddress& localAddr,
 				const InetAddress& peerAddr );
 			~UdpConnection();
@@ -124,7 +124,7 @@ namespace muduo
 			StateE state_;  // FIXME: use atomic variable
 			bool reading_;
 			// we don't expose those classes to client.
-			std::shared_ptr<Socket> socket_;
+			std::unique_ptr<Socket> socket_;
 			std::unique_ptr<Channel> channel_;
 			const InetAddress localAddr_;
 			const InetAddress peerAddr_;
@@ -138,6 +138,10 @@ namespace muduo
 			Buffer outputBuffer_; // FIXME: use list<Buffer> as output buffer.
 								  // FIXME: creationTime_, lastReceiveTime_
 								  //        bytesReceived_, bytesSent_
+
+			// new
+			static const size_t kPacketBufSize = 1500;
+			char packetBuf_[kPacketBufSize];
 		};
 
 		typedef std::shared_ptr<UdpConnection> UdpConnectionPtr;

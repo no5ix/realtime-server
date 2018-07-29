@@ -28,7 +28,7 @@ namespace muduo
 			public std::enable_shared_from_this<UdpConnector>
 		{
 		public:
-			typedef std::function<void( std::shared_ptr< Socket > )> NewConnectionCallback;
+			typedef std::function<void( Socket* )> NewConnectionCallback;
 
 			UdpConnector( EventLoop* loop, const InetAddress& serverAddr, const uint16_t localPort );
 			~UdpConnector();
@@ -62,7 +62,7 @@ namespace muduo
 			void resetChannel();
 
 			/////////// new : for UDP
-			void connected( std::shared_ptr< Socket > );
+			void connected( Socket* connectedSocket );
 			//Socket connectSocket_;
 
 
