@@ -42,9 +42,7 @@ namespace muduo
 		void UdpDefaultMessageCallback(const UdpConnectionPtr& conn,
 			char*,
 			size_t,
-			Timestamp)
-		{}
-
+			Timestamp);
 	}
 }
 

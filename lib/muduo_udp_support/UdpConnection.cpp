@@ -29,6 +29,12 @@ void muduo::net::UdpDefaultConnectionCallback( const UdpConnectionPtr& conn )
 	// do not call conn->forceClose(), because some users want to register message callback only.
 }
 
+void muduo::net::UdpDefaultMessageCallback( const UdpConnectionPtr&,
+	char*,
+	size_t,
+	Timestamp )
+{}
+
 UdpConnection::UdpConnection( EventLoop* loop,
 	const string& nameArg,
 	Socket* connectedSocket,
