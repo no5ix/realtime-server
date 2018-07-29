@@ -35,7 +35,7 @@ NetworkMgr::NetworkMgr( const ServerConfig _serverConfig ) :
 }
 
 void NetworkMgr::UpdateConnListForCheckDisconn(const UdpConnectionPtr& conn,
-	UpdateConnListFlag flag, Timestamp time)
+	UpdateConnListFlag flag, const Timestamp& time)
 {
 	switch (flag)
 	{

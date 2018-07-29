@@ -115,7 +115,7 @@ private:
 		const pid_t _holdedByThreadId );
 
 	void UpdateConnListForCheckDisconn(const muduo::net::UdpConnectionPtr& conn,
-		UpdateConnListFlag flag, muduo::Timestamp time = muduo::Timestamp());
+		UpdateConnListFlag flag, const muduo::Timestamp& time = muduo::Timestamp());
 
 private:
 
