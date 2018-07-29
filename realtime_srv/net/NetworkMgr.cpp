@@ -1,8 +1,7 @@
 #include "realtime_srv/game_obj/GameObj.h"
 #include "realtime_srv/net/ClientProxy.h"
 #include "realtime_srv/rep/BitStream.h"
-//#include "realtime_srv/common/any.h"
-#include <any>
+#include "realtime_srv/common/any.h"
 
 #include "realtime_srv/net/NetworkMgr.h"
 
@@ -68,12 +67,13 @@ void NetworkMgr::UpdateConnListForCheckDisconn(const UdpConnectionPtr& conn,
 			if (conn->connected())
 			{
 				assert(!conn->getContext().empty());
-				NodeForCheckDisconn& node =
-					realtime_srv::any_cast<NodeForCheckDisconn>(*conn->getMutableContext());
-				node.lastRecvTime = time;
+				assert(time.valid());
+				NodeForCheckDisconn* node =
+					realtime_srv::any_cast<NodeForCheckDisconn>(conn->getMutableContext());
+				node->lastRecvTime = time;
 				connListForCheckDisconn_.splice(
-					connListForCheckDisconn_.end(), connListForCheckDisconn_, node.position);
-				assert(node.position == --connListForCheckDisconn_.end());
+					connListForCheckDisconn_.end(), connListForCheckDisconn_, node->position);
+				assert(node->position == --connListForCheckDisconn_.end());
 			}
 			break;
 		}
@@ -135,7 +135,8 @@ void NetworkMgr::DoProcessPkt( ReceivedPacketPtr& recvedPacket )
 	}
 	else
 	{
-		UpdateConnListForCheckDisconn(recvedPacket->GetUdpConn(), UpdateConnListFlag::UPDATE);
+		UpdateConnListForCheckDisconn(recvedPacket->GetUdpConn(),
+			UpdateConnListFlag::UPDATE, recvedPacket->GetReceivedTime());
 		CheckPacketType((*it).second, *recvedPacket->GetPacketBuffer());
 	}
 }
@@ -168,11 +169,10 @@ void NetworkMgr::CheckForDisconnects()
 		UdpConnectionPtr conn = it->lock();
 		if (conn)
 		{
-			//NodeForCheckDisconn* curNode =
-				//realtime_srv::any_cast<NodeForCheckDisconn>(conn->getMutableContext());
-			NodeForCheckDisconn& curNode =
-				realtime_srv::any_cast<NodeForCheckDisconn&>(*conn->getMutableContext());
-			double age = timeDifference(now, curNode.lastRecvTime);
+			++it;
+			NodeForCheckDisconn* curNode =
+				realtime_srv::any_cast<NodeForCheckDisconn>(conn->getMutableContext());
+			double age = timeDifference(now, curNode->lastRecvTime);
 			if (age > clientDisconnTimeout_)
 			{
 				if (conn->connected())
@@ -190,12 +190,10 @@ void NetworkMgr::CheckForDisconnects()
 			else if (age < 0)
 			{
 				LOG_WARN << "Time jump";
-				curNode.lastRecvTime = now;
+				curNode->lastRecvTime = now;
 			}
 			else
 				break;
-
-			++it;
 		}
 		else
 		{

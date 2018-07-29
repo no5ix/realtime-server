@@ -171,8 +171,7 @@ void PktHandler::OnPktComing(const muduo::net::UdpConnectionPtr& conn,
 			new InputBitStream( buf, bufBytes * 8 ) );
 
 		recvedPktBQ_.enqueue( ReceivedPacketPtr( new ReceivedPacket(
-			RealtimeSrvTiming::sInst.GetCurrentGameTime(),
-			CurrentThread::tid(), inputStreamPtr, conn ) ) );
+			receiveTime, CurrentThread::tid(), inputStreamPtr, conn ) ) );
 
 		CheckForWakingUp();
 }
