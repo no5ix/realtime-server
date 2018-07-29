@@ -2,7 +2,6 @@
 
 # support C++14
 add_definitions(-std=c++1y)
-add_definitions(-std=c++1z)
 
 set (EXAMPLE_NAME rs_example_for_ue4_demo)
 
