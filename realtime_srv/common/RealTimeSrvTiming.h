@@ -14,27 +14,27 @@ public:
 
 	void Update();
 
-	float GetDeltaTime() const { return mDeltaTime; }
+	float GetDeltaTime() const { return deltaTime_; }
 
 	double GetGameTimeD() const;
 
 	float GetCurrentGameTime() const
 	{
-		return static_cast< float >( GetGameTimeD() );
+		return static_cast<float>(GetGameTimeD());
 	}
 
-	float GetFrameStartTime() const { return mFrameStartTimef; }
+	float GetFrameStartTime() const { return frameStartTimef_; }
 
 
 	static RealtimeSrvTiming sInst;
 
 private:
-	float		mDeltaTime;
-	uint64_t	mDeltaTick;
+	float		deltaTime_;
+	uint64_t	deltaTick_;
 
-	double		mLastFrameStartTime;
-	float		mFrameStartTimef;
-	double		mPerfCountDuration;
+	double		lastFrameStartTime_;
+	float		frameStartTimef_;
+	double		perfCountDuration_;
 
 #ifdef IS_LINUX
 	muduo::Timestamp sStartTime;

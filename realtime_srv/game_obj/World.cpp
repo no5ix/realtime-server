@@ -11,39 +11,39 @@ using namespace realtime_srv;
 
 int World::kNewObjId = 1;
 
-void World::Registry( GameObjPtr _obj, ReplicationAction _repAction )
+void World::Registry(std::shared_ptr<GameObj> object, ReplicationAction repAction)
 {
-	if ( _repAction == RA_Create )
-		return RegistGameObj( _obj );
-	else if ( _repAction == RA_Destroy )
-		return UnregistGameObj( _obj );
+	if (repAction == RA_Create)
+		return RegistGameObj(object);
+	else if (repAction == RA_Destroy)
+		return UnregistGameObj(object);
 }
 
-void World::RegistGameObj( GameObjPtr _obj )
+void World::RegistGameObj(std::shared_ptr<GameObj> object)
 {
 	int newObjId = GetNewObjId();
-	_obj->SetObjId( newObjId );
-	_obj->SetWorld( shared_from_this() );
-	ObjIdToGameObjMap_[newObjId] = _obj;
+	object->SetObjId(newObjId);
+	object->SetWorld(shared_from_this());
+	ObjIdToGameObjMap_[newObjId] = object;
 
-	onObjCreateOrDestoryCb_( _obj, RA_Create );
+	onObjCreateOrDestoryCb_(object, RA_Create);
 }
 
-void World::UnregistGameObj( GameObjPtr _obj )
+void World::UnregistGameObj(std::shared_ptr<GameObj> object)
 {
-	onObjCreateOrDestoryCb_( _obj, RA_Destroy );
-	ObjIdToGameObjMap_.erase( _obj->GetObjId() );
+	onObjCreateOrDestoryCb_(object, RA_Destroy);
+	ObjIdToGameObjMap_.erase(object->GetObjId());
 }
 
-void World::WhenClientProxyHere( std::shared_ptr<ClientProxy> _cliProxy )
+void World::WhenClientProxyHere(std::shared_ptr<ClientProxy> clientProxy)
 {
-	if ( _cliProxy )
+	if (clientProxy)
 	{
-		_cliProxy->SetWorld( shared_from_this() );
-		for ( const auto& ipair : ObjIdToGameObjMap_ )
+		clientProxy->SetWorld(shared_from_this());
+		for (const auto& ipair : ObjIdToGameObjMap_)
 		{
-			_cliProxy->GetReplicationMgr().ReplicateCreate(
-				ipair.first, ipair.second->GetAllStateMask() );
+			clientProxy->GetReplicationMgr().ReplicateCreate(
+				ipair.first, ipair.second->GetAllStateMask());
 		}
 	}
 }
@@ -51,21 +51,21 @@ void World::WhenClientProxyHere( std::shared_ptr<ClientProxy> _cliProxy )
 int World::GetNewObjId()
 {
 	int toRet = kNewObjId++;
-	if ( kNewObjId < toRet )
-		LOG( "GameObj ID Wrap Around!!! You've been playing way too long..." );
+	if (kNewObjId < toRet)
+		LOG("GameObj ID Wrap Around!!! You've been playing way too long...");
 	return toRet;
 }
 
-bool World::IsGameObjectExist( int _objId )
+bool World::IsGameObjectExist(int objectId)
 {
-	auto gameObjectIt = ObjIdToGameObjMap_.find( _objId );
+	auto gameObjectIt = ObjIdToGameObjMap_.find(objectId);
 	return gameObjectIt != ObjIdToGameObjMap_.end();
 }
 
-GameObjPtr World::GetGameObject( int _objId )
+GameObjPtr World::GetGameObject(int objectId)
 {
-	auto gameObjectIt = ObjIdToGameObjMap_.find( _objId );
-	if ( gameObjectIt != ObjIdToGameObjMap_.end() )
+	auto gameObjectIt = ObjIdToGameObjMap_.find(objectId);
+	if (gameObjectIt != ObjIdToGameObjMap_.end())
 		return gameObjectIt->second;
 	else
 		return GameObjPtr();
@@ -73,11 +73,11 @@ GameObjPtr World::GetGameObject( int _objId )
 
 void World::Update()
 {
-	for ( auto it = ObjIdToGameObjMap_.begin();
+	for (auto it = ObjIdToGameObjMap_.begin();
 		it != ObjIdToGameObjMap_.end(); )
 	{
-		if ( it->second->IsPendingToDie() )
-			UnregistGameObj( it++->second );
+		if (it->second->IsPendingToDie())
+			UnregistGameObj(it++->second);
 		else
 			it++->second->Update();
 	}

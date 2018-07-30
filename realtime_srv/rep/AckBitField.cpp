@@ -7,33 +7,33 @@
 
 using namespace realtime_srv;
 
-void AckBitField::AddLastBit( uint32_t inTotalDifference )
+void AckBitField::AddLastBit( uint32_t totalDifference )
 {
-	uint32_t byteOffset = ( inTotalDifference - 1 ) >> 3;
-	uint32_t bitOffset = ( inTotalDifference - 1 ) & 0x7;
+	uint32_t byteOffset = ( totalDifference - 1 ) >> 3;
+	uint32_t bitOffset = ( totalDifference - 1 ) & 0x7;
 	uint8_t tempMask = 0x01 << bitOffset;
-	*( mAckBitField + byteOffset ) |= tempMask;
+	*( ackBitField_ + byteOffset ) |= tempMask;
 }
 
-void AckBitField::DoAddToAckBitField( uint32_t inDifference )
+void AckBitField::DoAddToAckBitField( uint32_t difference )
 {
 	uint8_t temp_uint8 = 0;
 	for ( int i = ACK_BIT_FIELD_BYTE_LEN - 1; i > 0; --i )
 	{
-		*( mAckBitField + i ) = ( *( mAckBitField + i ) << inDifference );
+		*( ackBitField_ + i ) = ( *( ackBitField_ + i ) << difference );
 		if ( i - 1 >= 0 )
 		{
-			temp_uint8 = *( mAckBitField + i - 1 );
-			*( mAckBitField + i ) |=
-				( temp_uint8 >> ( 8 - inDifference ) );
+			temp_uint8 = *( ackBitField_ + i - 1 );
+			*( ackBitField_ + i ) |=
+				( temp_uint8 >> ( 8 - difference ) );
 		}
 	}
-	*mAckBitField = ( *mAckBitField ) << inDifference;
+	*ackBitField_ = ( *ackBitField_ ) << difference;
 }
 
-void AckBitField::AddToAckBitField( PacketSN inSequenceNumber, PacketSN inLastSN )
+void AckBitField::AddToAckBitField( PacketSN sequenceNum, PacketSN lastSN )
 {
-	mLatestAckSN = inSequenceNumber;
+	latestAckSN_ = sequenceNum;
 	static bool isFirstTime = true;
 	if ( isFirstTime )
 	{
@@ -42,7 +42,7 @@ void AckBitField::AddToAckBitField( PacketSN inSequenceNumber, PacketSN inLastSN
 	}
 	uint32_t totalDifference = 0;
 	for ( ; RealtimeSrvHelper::SNGreaterThan(
-		inSequenceNumber, inLastSN++ ); ++totalDifference );
+		sequenceNum, lastSN++ ); ++totalDifference );
 
 	uint32_t tempDiff = totalDifference;
 	while ( tempDiff > 8 )
@@ -57,27 +57,27 @@ void AckBitField::AddToAckBitField( PacketSN inSequenceNumber, PacketSN inLastSN
 	AddLastBit( totalDifference );
 }
 
-void AckBitField::Write( OutputBitStream& inOutputStream )
+void AckBitField::Write( OutputBitStream& outputStream )
 {
-	inOutputStream.Write( mLatestAckSN );
-	inOutputStream.WriteBytes( mAckBitField, ACK_BIT_FIELD_BYTE_LEN );
+	outputStream.Write( latestAckSN_ );
+	outputStream.WriteBytes( ackBitField_, ACK_BIT_FIELD_BYTE_LEN );
 }
 
-void AckBitField::Read( InputBitStream& inInputStream )
+void AckBitField::Read( InputBitStream& inputStream )
 {
-	inInputStream.Read( mLatestAckSN );
-	inInputStream.ReadBytes( mAckBitField, ACK_BIT_FIELD_BYTE_LEN );
+	inputStream.Read( latestAckSN_ );
+	inputStream.ReadBytes( ackBitField_, ACK_BIT_FIELD_BYTE_LEN );
 }
 
-bool AckBitField::IsSetCorrespondingAckBit( PacketSN inAckSN )
+bool AckBitField::IsSetCorrespondingAckBit( PacketSN ackSN )
 {
 	uint32_t difference = 0;
 	for ( ; RealtimeSrvHelper::SNGreaterThan(
-		mLatestAckSN, inAckSN++ ); ++difference );
+		latestAckSN_, ackSN++ ); ++difference );
 
 	assert( difference );
 	uint32_t byteOffset = ( difference - 1 ) >> 3;
 	uint32_t bitOffset = ( difference - 1 ) & 0x7;
 	uint8_t tempMask = 0x01 << bitOffset;
-	return ( tempMask & ( *( mAckBitField + byteOffset ) ) ) ? true : false;
+	return ( tempMask & ( *( ackBitField_ + byteOffset ) ) ) ? true : false;
 }

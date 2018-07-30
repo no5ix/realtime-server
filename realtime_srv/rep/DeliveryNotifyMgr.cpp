@@ -14,18 +14,18 @@ namespace
 const float kDelayBeforeAckTimeout = 0.6f;
 }
 
-DeliveryNotifyMgr::DeliveryNotifyMgr( bool inShouldSendAcks, bool inShouldProcessAcks ) :
-	mNextOutgoingSequenceNumber( 0 ),
-	mNextExpectedSequenceNumber( 0 ),
-	mShouldSendAcks( inShouldSendAcks ),
-	mShouldProcessAcks( inShouldProcessAcks ),
-	mDeliveredPacketCount( 0 ),
-	mDroppedPacketCount( 0 ),
-	mDispatchedPacketCount( 0 )
+DeliveryNotifyMgr::DeliveryNotifyMgr(bool willSendAcks, bool willProcessAcks) :
+	nextOutgoingSN_(0),
+	nextExpectedSN_(0),
+	willSendAcks_(willSendAcks),
+	willProcessAcks_(willProcessAcks),
+	deliveredPacketCnt_(0),
+	droppedPacketCnt_(0),
+	dispatchedPacketCnt_(0)
 {
-	if ( mShouldSendAcks )
+	if (willSendAcks_)
 	{
-		mAckBitField = new AckBitField();
+		ackBitField_ = new AckBitField();
 	}
 }
 
@@ -35,24 +35,24 @@ DeliveryNotifyMgr::~DeliveryNotifyMgr()
 	//	( 100 * mDeliveredPacketCount ) / mDispatchedPacketCount,
 	//	( 100 * mDroppedPacketCount ) / mDispatchedPacketCount );
 
-	if ( mShouldSendAcks && mAckBitField )
+	if (willSendAcks_ && ackBitField_)
 	{
-		delete mAckBitField;
+		delete ackBitField_;
 	}
 }
 
-InflightPacket* DeliveryNotifyMgr::WriteSequenceNumber( OutputBitStream& inOutputStream,
-	ClientProxy* inClientProxy )
+InflightPacket* DeliveryNotifyMgr::WriteSequenceNumber(OutputBitStream& outputStream,
+	ClientProxy* clientProxy)
 {
 
-	PacketSN sequenceNumber = mNextOutgoingSequenceNumber++;
-	inOutputStream.Write( sequenceNumber );
+	PacketSN sequenceNumber = nextOutgoingSN_++;
+	outputStream.Write(sequenceNumber);
 
-	++mDispatchedPacketCount;
+	++dispatchedPacketCnt_;
 
-	if ( mShouldProcessAcks )
+	if (willProcessAcks_)
 	{
-		inflightPackets_.emplace_back( sequenceNumber, inClientProxy );
+		inflightPackets_.emplace_back(sequenceNumber, clientProxy);
 
 		return &inflightPackets_.back();
 	}
@@ -62,19 +62,19 @@ InflightPacket* DeliveryNotifyMgr::WriteSequenceNumber( OutputBitStream& inOutpu
 	}
 }
 
-bool DeliveryNotifyMgr::ProcessSequenceNumber( InputBitStream& inInputStream )
+bool DeliveryNotifyMgr::ProcessSequenceNumber(InputBitStream& inputStream)
 {
 	PacketSN	sequenceNumber;
 
-	inInputStream.Read( sequenceNumber );
-	if ( RealtimeSrvHelper::SNGreaterThanOrEqual( sequenceNumber, mNextExpectedSequenceNumber ) )
+	inputStream.Read(sequenceNumber);
+	if (RealtimeSrvHelper::SNGreaterThanOrEqual(sequenceNumber, nextExpectedSN_))
 	{
-		PacketSN lastSN = mNextExpectedSequenceNumber - 1;
-		mNextExpectedSequenceNumber = sequenceNumber + 1;
+		PacketSN lastSN = nextExpectedSN_ - 1;
+		nextExpectedSN_ = sequenceNumber + 1;
 
-		if ( mShouldSendAcks )
+		if (willSendAcks_)
 		{
-			mAckBitField->AddToAckBitField( sequenceNumber, lastSN );
+			ackBitField_->AddToAckBitField(sequenceNumber, lastSN);
 		}
 
 		return true;
@@ -91,13 +91,13 @@ void DeliveryNotifyMgr::ProcessTimedOutPackets()
 {
 	float timeoutTime = RealtimeSrvTiming::sInst.GetCurrentGameTime() - kDelayBeforeAckTimeout;
 
-	while ( !inflightPackets_.empty() )
+	while (!inflightPackets_.empty())
 	{
 		const auto& nextInFlightPacket = inflightPackets_.front();
 
-		if ( nextInFlightPacket.GetTimeDispatched() < timeoutTime )
+		if (nextInFlightPacket.GetTimeDispatched() < timeoutTime)
 		{
-			HandlePacketDeliveryFailure( nextInFlightPacket );
+			HandlePacketDeliveryFailure(nextInFlightPacket);
 			inflightPackets_.pop_front();
 		}
 		else
@@ -107,59 +107,59 @@ void DeliveryNotifyMgr::ProcessTimedOutPackets()
 	}
 }
 
-void DeliveryNotifyMgr::HandlePacketDeliveryFailure( const InflightPacket& inFlightPacket )
+void DeliveryNotifyMgr::HandlePacketDeliveryFailure(const InflightPacket& inflightPkt)
 {
-	++mDroppedPacketCount;
-	inFlightPacket.HandleDeliveryFailure();
+	++droppedPacketCnt_;
+	inflightPkt.HandleDeliveryFailure();
 }
 
-void DeliveryNotifyMgr::HandlePacketDeliverySuccess( const InflightPacket& inFlightPacket )
+void DeliveryNotifyMgr::HandlePacketDeliverySuccess(const InflightPacket& inflightPkt)
 {
-	++mDeliveredPacketCount;
-	inFlightPacket.HandleDeliverySuccess();
+	++deliveredPacketCnt_;
+	inflightPkt.HandleDeliverySuccess();
 }
 
-void DeliveryNotifyMgr::ProcessAckBitField( InputBitStream& inInputStream )
+void DeliveryNotifyMgr::ProcessAckBitField(InputBitStream& inputStream)
 {
 	AckBitField recvedAckBitField;
-	recvedAckBitField.Read( inInputStream );
+	recvedAckBitField.Read(inputStream);
 
-	PacketSN LatestAckedSN = recvedAckBitField.GetLatestAckSN();
+	PacketSN latestAckedSN = recvedAckBitField.GetLatestAckSN();
 	PacketSN nextAckedSN =
-		LatestAckedSN - ( ACK_BIT_FIELD_BYTE_LEN << 3 );
+		latestAckedSN - (ACK_BIT_FIELD_BYTE_LEN << 3);
 
 
 	while (
-		RealtimeSrvHelper::SNGreaterThanOrEqual( LatestAckedSN, nextAckedSN )
-		&& !inflightPackets_.empty() )
+		RealtimeSrvHelper::SNGreaterThanOrEqual(latestAckedSN, nextAckedSN)
+		&& !inflightPackets_.empty())
 	{
-		const auto& nextInFlightPacket = inflightPackets_.front();
-		PacketSN nextInFlightPacketSN = nextInFlightPacket.GetSequenceNumber();
+		const auto& nextInflightPacket = inflightPackets_.front();
+		PacketSN nextInFlightPacketSN = nextInflightPacket.GetSequenceNumber();
 
-		if ( RealtimeSrvHelper::SNGreaterThan( nextAckedSN, nextInFlightPacketSN ) )
+		if (RealtimeSrvHelper::SNGreaterThan(nextAckedSN, nextInFlightPacketSN))
 		{
-			auto copyOfInFlightPacket = nextInFlightPacket;
+			auto copyOfInFlightPacket = nextInflightPacket;
 			inflightPackets_.pop_front();
-			HandlePacketDeliveryFailure( copyOfInFlightPacket );
+			HandlePacketDeliveryFailure(copyOfInFlightPacket);
 		}
-		else if ( nextAckedSN == nextInFlightPacketSN )
+		else if (nextAckedSN == nextInFlightPacketSN)
 		{
-			if ( nextAckedSN == LatestAckedSN
-				|| recvedAckBitField.IsSetCorrespondingAckBit( nextAckedSN ) )
+			if (nextAckedSN == latestAckedSN
+				|| recvedAckBitField.IsSetCorrespondingAckBit(nextAckedSN))
 			{
-				HandlePacketDeliverySuccess( nextInFlightPacket );
+				HandlePacketDeliverySuccess(nextInflightPacket);
 				inflightPackets_.pop_front();
 				++nextAckedSN;
 			}
 			else
 			{
-				auto copyOfInFlightPacket = nextInFlightPacket;
+				auto copyOfInFlightPacket = nextInflightPacket;
 				inflightPackets_.pop_front();
-				HandlePacketDeliveryFailure( copyOfInFlightPacket );
+				HandlePacketDeliveryFailure(copyOfInFlightPacket);
 				++nextAckedSN;
 			}
 		}
-		else if ( RealtimeSrvHelper::SNGreaterThan( nextInFlightPacketSN, nextAckedSN ) )
+		else if (RealtimeSrvHelper::SNGreaterThan(nextInFlightPacketSN, nextAckedSN))
 			nextAckedSN = nextInFlightPacketSN;
 	}
 }

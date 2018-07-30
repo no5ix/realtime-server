@@ -16,14 +16,14 @@ class Vector3;
 class Quaternion;
 
 
-inline uint32_t ConvertToFixed( float inNumber, float inMin, float inPrecision )
+inline uint32_t ConvertToFixed(float data, float min, float precision)
 {
-	return static_cast< int > ( ( inNumber - inMin ) / inPrecision );
+	return static_cast<int> ((data - min) / precision);
 }
 
-inline float ConvertFromFixed( uint32_t inNumber, float inMin, float inPrecision )
+inline float ConvertFromFixed(uint32_t data, float min, float precision)
 {
-	return static_cast< float >( inNumber ) * inPrecision + inMin;
+	return static_cast<float>(data) * precision + min;
 }
 
 
@@ -32,59 +32,59 @@ class OutputBitStream
 public:
 
 	OutputBitStream() :
-		mBuffer( nullptr ),
-		mSlicePoint( 0 ),
-		mBitHead( 0 )
+		buffer_(nullptr),
+		slicePoint_(0),
+		bitHead_(0)
 	{
-		ReallocBuffer( MAX_PACKET_BYTE_LENGTH * 8 );
+		ReallocBuffer(MAX_PACKET_BYTE_LENGTH * 8);
 	}
 
-	~OutputBitStream() { std::free( mBuffer ); }
+	~OutputBitStream() { std::free(buffer_); }
 
-	bool SliceTo( OutputBitStream& refOutputBitStream );
-	void SliceTo( OutputBitStream& refOutputBitStream, uint8_t inData, uint32_t inBitCount );
+	bool SliceTo(OutputBitStream& outputStream);
+	void SliceTo(OutputBitStream& outputStream, uint8_t data, uint32_t bitCnt);
 
-	void		WriteBits( uint8_t inData, uint32_t inBitCount );
-	void		WriteBits( const void* inData, uint32_t inBitCount );
+	void		WriteBits(uint8_t data, uint32_t bitCnt);
+	void		WriteBits(const void* data, uint32_t bitCnt);
 
-	const 	char*	GetBufferPtr()		const { return mBuffer; }
-	uint32_t		GetBitLength()		const { return mBitHead; }
-	uint32_t		GetByteLength()		const { return ( mBitHead + 7 ) >> 3; }
+	const 	char*	GetBufferPtr()		const { return buffer_; }
+	uint32_t		GetBitLength()		const { return bitHead_; }
+	uint32_t		GetByteLength()		const { return (bitHead_ + 7) >> 3; }
 
-	void WriteBytes( const void* inData, uint32_t inByteCount ) { WriteBits( inData, inByteCount << 3 ); }
+	void WriteBytes(const void* data, uint32_t byteCnt) { WriteBits(data, byteCnt << 3); }
 
 	/*
-	void Write( uint32_t inData, uint32_t inBitCount = 32 )	{ WriteBits( &inData, inBitCount ); }
-	void Write( int inData, uint32_t inBitCount = 32 )		{ WriteBits( &inData, inBitCount ); }
-	void Write( float inData )								{ WriteBits( &inData, 32 ); }
+	void Write( uint32_t data, uint32_t bitCnt = 32 )	{ WriteBits( &data, bitCnt ); }
+	void Write( int data, uint32_t bitCnt = 32 )		{ WriteBits( &data, bitCnt ); }
+	void Write( float data )								{ WriteBits( &data, 32 ); }
 
-	void Write( uint16_t inData, uint32_t inBitCount = 16 )	{ WriteBits( &inData, inBitCount ); }
-	void Write( int16_t inData, uint32_t inBitCount = 16 )	{ WriteBits( &inData, inBitCount ); }
+	void Write( uint16_t data, uint32_t bitCnt = 16 )	{ WriteBits( &data, bitCnt ); }
+	void Write( int16_t data, uint32_t bitCnt = 16 )	{ WriteBits( &data, bitCnt ); }
 
-	void Write( uint8_t inData, uint32_t inBitCount = 8 )	{ WriteBits( &inData, inBitCount ); }
+	void Write( uint8_t data, uint32_t bitCnt = 8 )	{ WriteBits( &data, bitCnt ); }
 	*/
 
 	template< typename T >
-	void Write( T inData, uint32_t inBitCount = sizeof( T ) * 8 )
+	void Write(T data, uint32_t bitCnt = sizeof(T) * 8)
 	{
-		static_assert( std::is_arithmetic< T >::value ||
+		static_assert(std::is_arithmetic< T >::value ||
 			std::is_enum< T >::value,
-			"Generic Write only supports primitive data types" );
-		WriteBits( &inData, inBitCount );
+			"Generic Write only supports primitive data types");
+		WriteBits(&data, bitCnt);
 	}
 
-	void 		Write( bool inData ) { WriteBits( &inData, 1 ); }
+	void 		Write(bool data) { WriteBits(&data, 1); }
 
-	void		Write( const Vector3& inVector );
-	void		Write( const Quaternion& inQuat );
+	void		Write(const Vector3& vec);
+	void		Write(const Quaternion& quat);
 
-	void Write( const std::string& inString )
+	void Write(const std::string& str)
 	{
-		uint32_t elementCount = static_cast< uint32_t >( inString.size() );
-		Write( elementCount );
-		for ( const auto& element : inString )
+		uint32_t elementCount = static_cast<uint32_t>(str.size());
+		Write(elementCount);
+		for (const auto& element : str)
 		{
-			Write( element );
+			Write(element);
 		}
 	}
 
@@ -93,14 +93,14 @@ public:
 	//	inPacketSN.Write( *this );
 	//}
 
-	void		ReallocBuffer( uint32_t inNewBitCapacity );
+	void		ReallocBuffer(uint32_t newBitCapacity);
 
 private:
 
-	char*		mBuffer;
-	uint32_t	mSlicePoint;
-	uint32_t	mBitHead;
-	uint32_t	mBitCapacity;
+	char*		buffer_;
+	uint32_t	slicePoint_;
+	uint32_t	bitHead_;
+	uint32_t	bitCapacity_;
 };
 typedef std::shared_ptr<OutputBitStream> OutputBitStreamPtr;
 
@@ -109,128 +109,128 @@ class InputBitStream
 {
 public:
 
-	InputBitStream( const char* inBuffer = nullptr, const uint32_t inBitCount = 0 ) :
-		mBitHead( 0 ),
-		mBitCapacity( inBitCount ),
-		mRecombinePoint( 0 )
+	InputBitStream(const char* buffer = nullptr, const uint32_t bitCnt = 0) :
+		bitHead_(0),
+		bitCapacity_(bitCnt),
+		recombinePoint_(0)
 	{
-		if ( inBuffer )
+		if (buffer)
 		{
-			int byteCount = mBitCapacity / 8;
-			mBuffer = static_cast< char* >( malloc( inBitCount ) );
-			memcpy( mBuffer, inBuffer, byteCount );
-			mIsBufferOwner = true;
+			int byteCount = bitCapacity_ / 8;
+			buffer_ = static_cast<char*>(malloc(bitCnt));
+			memcpy(buffer_, buffer, byteCount);
+			isBufferOwner_ = true;
 		}
 		else
 		{
-			mBuffer = nullptr;
-			mIsBufferOwner = false;
+			buffer_ = nullptr;
+			isBufferOwner_ = false;
 		}
 	}
 
-	InputBitStream( const InputBitStream& inOther ) :
-		mBitHead( inOther.mBitHead ),
-		mBitCapacity( inOther.mBitCapacity ),
-		mRecombinePoint( inOther.mRecombinePoint ),
-		mIsBufferOwner( true )
+	InputBitStream(const InputBitStream& other) :
+		bitHead_(other.bitHead_),
+		bitCapacity_(other.bitCapacity_),
+		recombinePoint_(other.recombinePoint_),
+		isBufferOwner_(true)
 	{
-		int byteCount = mBitCapacity / 8;
-		mBuffer = static_cast< char* >( malloc( byteCount ) );
-		memcpy( mBuffer, inOther.mBuffer, byteCount );
+		int byteCount = bitCapacity_ / 8;
+		buffer_ = static_cast<char*>(malloc(byteCount));
+		memcpy(buffer_, other.buffer_, byteCount);
 	}
 
-	InputBitStream& operator=( const InputBitStream& inOther )
+	InputBitStream& operator=(const InputBitStream& other)
 	{
-		if ( this == &inOther )
+		if (this == &other)
 		{
 			return *this;
 		}
 
-		mBitCapacity = inOther.mBitCapacity;
-		mBitHead = inOther.mBitHead;
-		mRecombinePoint = inOther.mRecombinePoint;
-		if ( mIsBufferOwner && mBuffer )
+		bitCapacity_ = other.bitCapacity_;
+		bitHead_ = other.bitHead_;
+		recombinePoint_ = other.recombinePoint_;
+		if (isBufferOwner_ && buffer_)
 		{
-			free( mBuffer );
+			free(buffer_);
 		}
-		int byteCount = mBitCapacity / 8;
-		mBuffer = static_cast< char* >( malloc( byteCount ) );
-		memcpy( mBuffer, inOther.mBuffer, byteCount );
-		mIsBufferOwner = true;
+		int byteCount = bitCapacity_ / 8;
+		buffer_ = static_cast<char*>(malloc(byteCount));
+		memcpy(buffer_, other.buffer_, byteCount);
+		isBufferOwner_ = true;
 		return *this;
 	}
 
 	~InputBitStream()
 	{
-		if ( mIsBufferOwner && mBuffer )
+		if (isBufferOwner_ && buffer_)
 		{
-			free( mBuffer );
-			mBuffer = nullptr;
+			free(buffer_);
+			buffer_ = nullptr;
 		}
 	}
-	const 	char*	GetBufferPtr()		const { return mBuffer; }
-	uint32_t	GetRemainingBitCount() 	const { return mBitCapacity - mBitHead; }
+	const 	char*	GetBufferPtr()		const { return buffer_; }
+	uint32_t	GetRemainingBitCount() 	const { return bitCapacity_ - bitHead_; }
 
-	void		ReadBits( uint8_t& outData, uint32_t inBitCount );
-	void		ReadBits( void* outData, uint32_t inBitCount );
+	void		ReadBits(uint8_t& outData, uint32_t bitCnt);
+	void		ReadBits(void* outData, uint32_t bitCnt);
 
-	void		ReadBytes( void* outData, uint32_t inByteCount ) { ReadBits( outData, inByteCount << 3 ); }
+	void		ReadBytes(void* outData, uint32_t byteCnt) { ReadBits(outData, byteCnt << 3); }
 
 	template< typename T >
-	void Read( T& inData, uint32_t inBitCount = sizeof( T ) * 8 )
+	void Read(T& data, uint32_t bitCnt = sizeof(T) * 8)
 	{
-		static_assert( std::is_arithmetic< T >::value ||
+		static_assert(std::is_arithmetic< T >::value ||
 			std::is_enum< T >::value,
-			"Generic Read only supports primitive data types" );
-		ReadBits( &inData, inBitCount );
+			"Generic Read only supports primitive data types");
+		ReadBits(&data, bitCnt);
 	}
 
-	void		Read( uint32_t& outData, uint32_t inBitCount = 32 ) { ReadBits( &outData, inBitCount ); }
-	void		Read( int& outData, uint32_t inBitCount = 32 ) { ReadBits( &outData, inBitCount ); }
-	void		Read( float& outData ) { ReadBits( &outData, 32 ); }
+	void		Read(uint32_t& outData, uint32_t bitCnt = 32) { ReadBits(&outData, bitCnt); }
+	void		Read(int& outData, uint32_t bitCnt = 32) { ReadBits(&outData, bitCnt); }
+	void		Read(float& outData) { ReadBits(&outData, 32); }
 
-	void		Read( uint16_t& outData, uint32_t inBitCount = 16 ) { ReadBits( &outData, inBitCount ); }
-	void		Read( int16_t& outData, uint32_t inBitCount = 16 ) { ReadBits( &outData, inBitCount ); }
+	void		Read(uint16_t& outData, uint32_t bitCnt = 16) { ReadBits(&outData, bitCnt); }
+	void		Read(int16_t& outData, uint32_t bitCnt = 16) { ReadBits(&outData, bitCnt); }
 
-	void		Read( uint8_t& outData, uint32_t inBitCount = 8 ) { ReadBits( &outData, inBitCount ); }
-	void		Read( bool& outData ) { ReadBits( &outData, 1 ); }
+	void		Read(uint8_t& outData, uint32_t bitCnt = 8) { ReadBits(&outData, bitCnt); }
+	void		Read(bool& outData) { ReadBits(&outData, 1); }
 
-	void		Read( Quaternion& outQuat );
+	void		Read(Quaternion& outQuat);
 
-	void		ResetToCapacity( uint32_t inByteCapacity ) { mBitCapacity = inByteCapacity << 3; mBitHead = 0; }
-	void		ResetToCapacityFromBit( uint32_t inBitCapacity ) { mBitCapacity = inBitCapacity; mBitHead = 0; }
+	void		ResetToCapacity(uint32_t inByteCapacity) { bitCapacity_ = inByteCapacity << 3; bitHead_ = 0; }
+	void		ResetToCapacityFromBit(uint32_t inBitCapacity) { bitCapacity_ = inBitCapacity; bitHead_ = 0; }
 
-	void		RecombineTo( InputBitStream& refInputBitStream );
+	void		RecombineTo(InputBitStream& inputStream);
 
-	void Reinit( uint32_t inBitCount )
+	void Reinit(uint32_t bitCnt)
 	{
-		if ( mIsBufferOwner && mBuffer )
+		if (isBufferOwner_ && buffer_)
 		{
-			free( mBuffer );
+			free(buffer_);
 		}
-		int byteCount = inBitCount / 8;
-		mBuffer = static_cast< char* >( malloc( byteCount ) );
-		mBitCapacity = inBitCount;
-		mBitHead = 0;
-		mRecombinePoint = 0;
-		mIsBufferOwner = true;
+		int byteCount = bitCnt / 8;
+		buffer_ = static_cast<char*>(malloc(byteCount));
+		bitCapacity_ = bitCnt;
+		bitHead_ = 0;
+		recombinePoint_ = 0;
+		isBufferOwner_ = true;
 	}
 
-	uint32_t	GetRecombinePoint() const { return mRecombinePoint; }
+	uint32_t	GetRecombinePoint() const { return recombinePoint_; }
 
 
-	void Read( std::string& inString )
+	void Read(std::string& str)
 	{
 		uint32_t elementCount;
-		Read( elementCount );
-		inString.resize( elementCount );
-		for ( auto& element : inString )
+		Read(elementCount);
+		str.resize(elementCount);
+		for (auto& element : str)
 		{
-			Read( element );
+			Read(element);
 		}
 	}
 
-	void Read( Vector3& inVector );
+	void Read(Vector3& vec);
 
 	//void Read( PacketSN& inPacketSN )
 	//{
@@ -238,11 +238,11 @@ public:
 	//}
 
 private:
-	char*		mBuffer;
-	uint32_t	mBitHead;
-	uint32_t	mBitCapacity;
-	uint32_t	mRecombinePoint;
-	bool		mIsBufferOwner;
+	char*		buffer_;
+	uint32_t	bitHead_;
+	uint32_t	bitCapacity_;
+	uint32_t	recombinePoint_;
+	bool		isBufferOwner_;
 
 };
 typedef std::shared_ptr<InputBitStream> InputBitStreamPtr;

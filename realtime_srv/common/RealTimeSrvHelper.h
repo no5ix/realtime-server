@@ -28,18 +28,18 @@ struct ServerConfig
 namespace RealtimeSrvHelper
 {
 
-void SaveCommandLineArg( const int argc, const char** argv );
-std::string GetCommandLineArg( int inIndex );
+void SaveCommandLineArg(const int argc, const char** argv);
+std::string GetCommandLineArg(int index);
 
-std::string Sprintf( const char* inFormat, ... );
+std::string Sprintf(const char* format, ...);
 
-void	Log( const char* inFormat, ... );
+void	Log(const char* format, ...);
 
-bool	SNGreaterThanOrEqual( PacketSN s1, PacketSN s2 );
-bool	SNGreaterThan( PacketSN s1, PacketSN s2 );
+bool	SNGreaterThanOrEqual(PacketSN s1, PacketSN s2);
+bool	SNGreaterThan(PacketSN s1, PacketSN s2);
 
-bool ChunkPacketIDGreaterThanOrEqual( ChunkPacketID s1, ChunkPacketID s2 );
-bool ChunkPacketIDGreaterThan( ChunkPacketID s1, ChunkPacketID s2 );
+bool ChunkPacketIDGreaterThanOrEqual(ChunkPacketID s1, ChunkPacketID s2);
+bool ChunkPacketIDGreaterThan(ChunkPacketID s1, ChunkPacketID s2);
 
 bool Daemonize();
 

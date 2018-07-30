@@ -18,18 +18,18 @@ class ExampleRedisCli
 {
 public:
 	ExampleRedisCli();
-	void Init( muduo::net::EventLoop *loop );
+	void Init(muduo::net::EventLoop *loop);
 	~ExampleRedisCli();
 
-	void connectCallback( hiredis::Hiredis* c, int status );
-	void disconnectCallback( hiredis::Hiredis* c, int status );
+	void connectCallback(hiredis::Hiredis* c, int status);
+	void disconnectCallback(hiredis::Hiredis* c, int status);
 
-	std::string toString( long long value );
-	std::string redisReplyToString( const redisReply* reply );
+	std::string toString(long long value);
+	std::string redisReplyToString(const redisReply* reply);
 
-	void SaveNewPlayer( int newPlayerId, const std::string&  newPlayerName );
-	void SaveNewPlayerCb( hiredis::Hiredis *c, redisReply *reply,
-		int playerId, const std::string& playerName );
+	void SaveNewPlayer(int newPlayerId, const std::string&  newPlayerName);
+	void SaveNewPlayerCb(hiredis::Hiredis *c, redisReply *reply,
+		int playerId, const std::string& playerName);
 
 private:
 	std::unique_ptr<hiredis::Hiredis> redisCli_;

@@ -9,12 +9,12 @@ class Robot : public Character
 {
 public:
 
-	Robot() : simulateInputeState_( new realtime_srv::InputState )
+	Robot() : simulateInputeState_(new realtime_srv::InputState)
 	{
 		SetLocation(
 			RealtimeSrvMath::GetRandomFloat() * 600.f,
 			RealtimeSrvMath::GetRandomFloat() * 500.f,
-			0.f );
+			0.f);
 	}
 
 protected:
@@ -24,14 +24,14 @@ protected:
 	{
 		MakeSimulativeInput();
 
-		Character::ProcessInput( kSimulateDeltaTime_, simulateInputeState_ );
+		Character::ProcessInput(kSimulateDeltaTime_, simulateInputeState_);
 
 		Character::AfterProcessInput();
 	}
 
 	void MoveInCircles()
 	{
-		if ( kYaw_ > 0 )
+		if (kYaw_ > 0)
 			kYaw_ -= 1.6f;
 		else
 			kYaw_ = 360.f;
@@ -41,16 +41,16 @@ protected:
 	{
 		MoveInCircles();
 
-		simulateInputeState_->mDesiredMoveForwardAmount = 1.f;
-		simulateInputeState_->mDesiredMoveRightAmount = 1.f;
+		simulateInputeState_->desiredMoveForwardAmount_ = 1.f;
+		simulateInputeState_->desiredMoveRightAmount_ = 1.f;
 
-		simulateInputeState_->mDesiredTurnAmountX = 0.f;
-		simulateInputeState_->mDesiredTurnAmountY = kYaw_;
-		simulateInputeState_->mDesiredTurnAmountZ = 0.f;
+		simulateInputeState_->desiredTurnAmountX_ = 0.f;
+		simulateInputeState_->desiredTurnAmountY_ = kYaw_;
+		simulateInputeState_->desiredTurnAmountZ_ = 0.f;
 
-		simulateInputeState_->mDesiredLookUpAmountX = 0.f;
-		simulateInputeState_->mDesiredLookUpAmountY = kYaw_;
-		simulateInputeState_->mDesiredLookUpAmountZ = 0.f;
+		simulateInputeState_->desiredLookUpAmountX_ = 0.f;
+		simulateInputeState_->desiredLookUpAmountY_ = kYaw_;
+		simulateInputeState_->desiredLookUpAmountZ_ = 0.f;
 	}
 
 

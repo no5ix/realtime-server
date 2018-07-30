@@ -22,8 +22,6 @@
 
 #include "realtime_srv/common/any.h"
 
-// struct tcp_info is in <netinet/tcp.h>
-struct tcp_info;
 
 namespace muduo
 {
@@ -34,10 +32,6 @@ namespace muduo
 		class EventLoop;
 		class Socket;
 
-		///
-		/// TCP connection, for both client and server usage.
-		///
-		/// This is an interface class, so don't expose too much details.
 		class UdpConnection : noncopyable,
 			public std::enable_shared_from_this<UdpConnection>
 		{

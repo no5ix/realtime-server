@@ -5,29 +5,25 @@ using namespace realtime_srv;
 using namespace muduo::net;
 
 ClientProxy::ClientProxy(
-	const std::shared_ptr<NetworkMgr>& inNetworkManager,
-	const int inNetId,
-	const pid_t inHoldedByThreadId,
-	const UdpConnectionPtr& inUdpConnection )
+	const std::shared_ptr<NetworkMgr>& networkManager,
+	const int netId,
+	const pid_t holdedByThreadId,
+	const UdpConnectionPtr& udpConnection)
 	:
-	connHoldedByTid_( inHoldedByThreadId ),
-	networkManager_( inNetworkManager ),
-	replicationMgr_( this ),
-	netId_( inNetId ),
-	deliveryNotifyMgr_( false, true ),
-	mIsLastMoveTimestampDirty( false ),
-	mLastPacketFromClientTime( 0.f ),
-	mTimeToRespawn( 0.f ),
-	mRecvingServerResetFlag( false ),
-	UdpConnection_( inUdpConnection )
-{
-	UpdateLastPacketTime();
-}
+	connHoldedByTid_(holdedByThreadId),
+	networkManager_(networkManager),
+	replicationMgr_(this),
+	netId_(netId),
+	deliveryNotifyMgr_(false, true),
+	isLastActionTimestampDirty_(false),
+	recvingSrvResetFlag_(false),
+	UdpConnection_(udpConnection)
+{}
 
 
 void ClientProxy::SetAllOwnedGameObjsPendingToDie()
 {
-	for ( auto it = objIdToGameObjMap_.begin();
+	for (auto it = objIdToGameObjMap_.begin();
 		it != objIdToGameObjMap_.end(); )
 	{
 		it++->second->SetPendingToDie();
@@ -37,7 +33,7 @@ void ClientProxy::SetAllOwnedGameObjsPendingToDie()
 
 void ClientProxy::RealeaseAllOwnedGameObjs()
 {
-	for ( auto it = objIdToGameObjMap_.begin();
+	for (auto it = objIdToGameObjMap_.begin();
 		it != objIdToGameObjMap_.end(); )
 	{
 		it++->second->LoseMaster();

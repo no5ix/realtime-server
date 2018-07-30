@@ -6,6 +6,7 @@
 #include <unordered_map>
 #include <list>
 #include <functional>
+
 #include "realtime_srv/common/noncopyable.h"
 #include "realtime_srv/common/copyable.h"
 #include "realtime_srv/common/RealtimeSrvHelper.h"
@@ -19,14 +20,14 @@ namespace realtime_srv
 class GameObj;
 class ClientProxy;
 
-typedef std::function<GameObj*( std::shared_ptr<ClientProxy>& )> NewPlayerCallback;
+typedef std::function<GameObj*(std::shared_ptr<ClientProxy>&)> NewPlayerCallback;
 typedef std::function<InputState*()> CustomInputStateCallback;
-typedef std::function<void( std::shared_ptr<ClientProxy> )> LetCliProxyGetWorldStateCb;
+typedef std::function<void(std::shared_ptr<ClientProxy>)> LetCliProxyGetWorldStateCb;
 
 class NetworkMgr : noncopyable, public std::enable_shared_from_this<NetworkMgr>
 {
 public:
-	typedef std::function<void( GameObjPtr&, ReplicationAction )> WorldRegistryCb;
+	typedef std::function<void(GameObjPtr&, ReplicationAction)> WorldRegistryCb;
 
 	typedef std::unordered_map<muduo::net::UdpConnectionPtr,
 		std::shared_ptr<ClientProxy>>	UdpConnToClientMap;
@@ -50,69 +51,69 @@ public:
 
 public:
 
-	NetworkMgr( const ServerConfig _serverConfig );
+	NetworkMgr(const ServerConfig serverConfig);
 
 	void Start();
 
 	muduo::net::EventLoop* GetEventLoop() { return pktHandler_.GetBaseLoop(); }
 
-	void SetRepStateDirty( int _objId, uint32_t inDirtyState );
+	void SetRepStateDirty(int objectId, uint32_t dirtyState);
 
-	void OnObjCreateOrDestory( GameObjPtr& inGameObject, ReplicationAction inAction );
+	void OnObjCreateOrDestory(GameObjPtr& gameObject, ReplicationAction repAction);
 
-	void SetNewPlayerCallback( const NewPlayerCallback& cb )
+	void SetNewPlayerCallback(const NewPlayerCallback& cb)
 	{ newPlayerCb_ = cb; }
 
-	void SetWorldUpdateCallback( const std::function<void()>& cb )
+	void SetWorldUpdateCallback(const std::function<void()>& cb)
 	{ worldUpdateCb_ = cb; }
 
-	void SetWorldRegistryCallback( const WorldRegistryCb& cb )
+	void SetWorldRegistryCallback(const WorldRegistryCb& cb)
 	{ worldRegistryCb_ = cb; }
 
-	void SetCustomInputStateCallback( const CustomInputStateCallback& cb )
+	void SetCustomInputStateCallback(const CustomInputStateCallback& cb)
 	{ customInputStatecb_ = cb; }
 
-	void SetLetCliProxyGetWorldStateCallback( const LetCliProxyGetWorldStateCb& cb )
+	void SetLetCliProxyGetWorldStateCallback(const LetCliProxyGetWorldStateCb& cb)
 	{ letCliProxyGetWorldState_ = cb; }
 
 	bool GetUnregistObjWhenCliDisconn() const
 	{ return bUnregistObjWhenCliDisconn_; }
 
 	// if true, Server will run as 'Not Destroy GameObj When Client Disconnect' mode.
-	void SetUnregistObjWhenCliDisconn( bool _whehter )
-	{ bUnregistObjWhenCliDisconn_ = _whehter; }
+	void SetUnregistObjWhenCliDisconn(bool want)
+	{ bUnregistObjWhenCliDisconn_ = want; }
 
 	double GetClientDisconnectTimeout() const
 	{ return clientDisconnTimeout_; }
 
 private:
 	void Tick();
-	void DoProcessPkt( ReceivedPacketPtr& recvedPacket );
+	void DoProcessPkt(ReceivedPacketPtr& recvedPacket);
 	void PreparePacketToSend();
 	void CheckForDisconnects();
 
-	uint32_t	 HandleServerReset( std::shared_ptr<ClientProxy>& inClientProxy,
-		InputBitStream& inInputStream );
+	uint32_t	 HandleServerReset(std::shared_ptr<ClientProxy>& clientProxy,
+		InputBitStream& inputStream);
 
-	void	HandleInputPacket( std::shared_ptr<ClientProxy>& inClientProxy,
-		InputBitStream& inInputStream );
+	void	HandleInputPacket(std::shared_ptr<ClientProxy>& clientProxy,
+		InputBitStream& inputStream);
 
-	void	CheckPacketType( std::shared_ptr<ClientProxy>& inClientProxy,
-		InputBitStream& inInputStream );
+	void	CheckPacketType(std::shared_ptr<ClientProxy>& clientProxy,
+		InputBitStream& inputStream);
 
-	void	WriteLastMoveTimestampIfDirty( OutputBitStream& inOutputStream,
-		std::shared_ptr<ClientProxy>& inClientProxy );
+	void	WriteLastMoveTimestampIfDirty(OutputBitStream& outputStream,
+		std::shared_ptr<ClientProxy>& clientProxy);
 
-	void DoPreparePacketToSend( std::shared_ptr<ClientProxy>& inClientProxy,
-		const uint32_t inConnFlag );
+	void DoPreparePacketToSend(std::shared_ptr<ClientProxy>& clientProxy,
+		const uint32_t inConnFlag);
 
-	void	WelcomeNewClient( InputBitStream& inInputStream,
-		const muduo::net::UdpConnectionPtr& inUdpConnetction,
-		const pid_t inHoldedByThreadId );
+	void	WelcomeNewClient(InputBitStream& inputStream,
+		const muduo::net::UdpConnectionPtr& udpConnetction,
+		const pid_t holdedByThreadId);
 
 	std::shared_ptr<ClientProxy> CreateNewClient(
-		const muduo::net::UdpConnectionPtr& _udpConnetction,
-		const pid_t _holdedByThreadId );
+		const muduo::net::UdpConnectionPtr& udpConnetction,
+		const pid_t holdedByThreadId);
 
 	void UpdateConnListForCheckDisconn(const muduo::net::UdpConnectionPtr& conn,
 		UpdateConnListFlag flag, const muduo::Timestamp& time = muduo::Timestamp());

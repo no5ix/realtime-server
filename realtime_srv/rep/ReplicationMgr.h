@@ -16,34 +16,34 @@ class ClientProxy;
 class ReplicationMgr
 {
 public:
-	ReplicationMgr( ClientProxy* clientProxy ) : owner_( clientProxy ) {}
+	ReplicationMgr(ClientProxy* clientProxy) : owner_(clientProxy) {}
 public:
 
-	void ReplicateCreate( int inObjId, uint32_t inInitDirtyState )
-	{ objIdToRepCmd_[inObjId] = ReplicationCmd( inInitDirtyState ); }
+	void ReplicateCreate(int objId, uint32_t initDirtyState)
+	{ objIdToRepCmd_[objId] = ReplicationCmd(initDirtyState); }
 
-	void ReplicateDestroy( int inObjId )
-	{ objIdToRepCmd_[inObjId].SetDestroy(); }
+	void ReplicateDestroy(int objId)
+	{ objIdToRepCmd_[objId].SetDestroy(); }
 
-	void RemoveFromReplication( int inObjId )
-	{ objIdToRepCmd_.erase( inObjId ); }
+	void RemoveFromReplication(int objId)
+	{ objIdToRepCmd_.erase(objId); }
 
-	void SetReplicationStateDirty( int inObjId, uint32_t inDirtyState )
-	{ objIdToRepCmd_[inObjId].AddDirtyState( inDirtyState ); }
+	void SetReplicationStateDirty(int objId, uint32_t dirtyState)
+	{ objIdToRepCmd_[objId].AddDirtyState(dirtyState); }
 
-	void HandleCreateAckd( int inObjId )
-	{ objIdToRepCmd_[inObjId].HandleCreateAckd(); }
+	void HandleCreateAckd(int objId)
+	{ objIdToRepCmd_[objId].HandleCreateAckd(); }
 
-	void Write( OutputBitStream& inOutputStream, InflightPacket* inInFlightPacket );
+	void Write(OutputBitStream& outputStream, InflightPacket* inflightPkt);
 
 private:
 
-	uint32_t WriteCreateAction( OutputBitStream& inOutputStream,
-		int _objId, uint32_t inDirtyState );
-	uint32_t WriteUpdateAction( OutputBitStream& inOutputStream,
-		int _objId, uint32_t inDirtyState );
-	uint32_t WriteDestroyAction( OutputBitStream& inOutputStream,
-		int _objId, uint32_t inDirtyState );
+	uint32_t WriteCreateAction(OutputBitStream& outputStream,
+		int objectId, uint32_t dirtyState);
+	uint32_t WriteUpdateAction(OutputBitStream& outputStream,
+		int objectId, uint32_t dirtyState);
+	uint32_t WriteDestroyAction(OutputBitStream& outputStream,
+		int objectId, uint32_t dirtyState);
 
 private:
 	std::unordered_map< int, ReplicationCmd >	objIdToRepCmd_;

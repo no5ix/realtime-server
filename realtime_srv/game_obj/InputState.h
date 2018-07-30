@@ -16,54 +16,54 @@ class InputState
 public:
 
 	InputState(
-		float _DesiredMoveForwardAmount = 0.f,
-		float _DesiredMoveRightAmount = 0.f,
+		float desiredMoveForwardAmount = 0.f,
+		float desiredMoveRightAmount = 0.f,
 
-		float _DesiredTurnAmountX = 0.f,
-		float _DesiredTurnAmountY = 0.f,
-		float _DesiredTurnAmountZ = 0.f,
+		float desiredTurnAmountX = 0.f,
+		float desiredTurnAmountY = 0.f,
+		float desiredTurnAmountZ = 0.f,
 
-		float _DesiredLookUpAmountX = 0.f,
-		float _DesiredLookUpAmountY = 0.f,
-		float _DesiredLookUpAmountZ = 0.f )
+		float desiredLookUpAmountX = 0.f,
+		float desiredLookUpAmountY = 0.f,
+		float desiredLookUpAmountZ = 0.f)
 		:
-		mDesiredMoveForwardAmount( _DesiredMoveForwardAmount ),
-		mDesiredMoveRightAmount( _DesiredMoveRightAmount ),
+		desiredMoveForwardAmount_(desiredMoveForwardAmount),
+		desiredMoveRightAmount_(desiredMoveRightAmount),
 
-		mDesiredTurnAmountX( _DesiredTurnAmountX ),
-		mDesiredTurnAmountY( _DesiredTurnAmountY ),
-		mDesiredTurnAmountZ( _DesiredTurnAmountZ ),
+		desiredTurnAmountX_(desiredTurnAmountX),
+		desiredTurnAmountY_(desiredTurnAmountY),
+		desiredTurnAmountZ_(desiredTurnAmountZ),
 
-		mDesiredLookUpAmountX( _DesiredLookUpAmountX ),
-		mDesiredLookUpAmountY( _DesiredLookUpAmountY ),
-		mDesiredLookUpAmountZ( _DesiredLookUpAmountZ )
+		desiredLookUpAmountX_(desiredLookUpAmountX),
+		desiredLookUpAmountY_(desiredLookUpAmountY),
+		desiredLookUpAmountZ_(desiredLookUpAmountZ)
 	{}
 
-	float GetDesiredMoveForwardAmount()	const { return mDesiredMoveForwardAmount; }
-	float GetDesiredMoveRightAmount()	const { return mDesiredMoveRightAmount; }
+	float GetDesiredMoveForwardAmount()	const { return desiredMoveForwardAmount_; }
+	float GetDesiredMoveRightAmount()	const { return desiredMoveRightAmount_; }
 
 	Vector3 GetDesiredTurnRot()	const
-	{ return Vector3( mDesiredTurnAmountX, mDesiredTurnAmountY, mDesiredTurnAmountZ ); }
+	{ return Vector3(desiredTurnAmountX_, desiredTurnAmountY_, desiredTurnAmountZ_); }
 	Vector3 GetDesiredLookUpRot()	const
-	{ return Vector3( mDesiredLookUpAmountX, mDesiredLookUpAmountY, mDesiredLookUpAmountZ ); }
+	{ return Vector3(desiredLookUpAmountX_, desiredLookUpAmountY_, desiredLookUpAmountZ_); }
 
 
-	virtual bool Write( OutputBitStream& inOutputStream ) const;
-	virtual bool Read( InputBitStream& inInputStream );
+	virtual bool Write(OutputBitStream& outputStream) const;
+	virtual bool Read(InputBitStream& inputStream);
 
 
 public:
 
-	float	mDesiredMoveForwardAmount;
-	float	mDesiredMoveRightAmount;
+	float	desiredMoveForwardAmount_;
+	float	desiredMoveRightAmount_;
 
-	float	mDesiredTurnAmountX;
-	float	mDesiredTurnAmountY;
-	float	mDesiredTurnAmountZ;
+	float	desiredTurnAmountX_;
+	float	desiredTurnAmountY_;
+	float	desiredTurnAmountZ_;
 
-	float mDesiredLookUpAmountX;
-	float mDesiredLookUpAmountY;
-	float mDesiredLookUpAmountZ;
+	float desiredLookUpAmountX_;
+	float desiredLookUpAmountY_;
+	float desiredLookUpAmountZ_;
 
 };
 typedef std::shared_ptr<InputState> InputStatePtr;

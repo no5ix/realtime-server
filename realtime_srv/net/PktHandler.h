@@ -37,9 +37,9 @@ public:
 
 public:
 
-	PktHandler( const ServerConfig _serverConfig,
-		PktProcessCallback _pktProcessCallback,
-		TickCallback _tickCb );
+	PktHandler( const ServerConfig serverConfig,
+		PktProcessCallback pktProcessCallback,
+		TickCallback tickCb );
 
 	void Start() { assert( server_ ); server_->start(); baseLoop_.loop(); }
 
@@ -66,8 +66,8 @@ protected:
 	// long time no pkt to snd, then sleep
 	void CheckForSleep();
 	void CheckForWakingUp();
-	void AddToAutoSleepSystem( muduo::net::EventLoop* _loop,
-		muduo::net::TimerId _timerId );
+	void AddToAutoSleepSystem( muduo::net::EventLoop* loop,
+		muduo::net::TimerId timerId );
 
 	void IoThreadInit( muduo::net::EventLoop* loop );
 

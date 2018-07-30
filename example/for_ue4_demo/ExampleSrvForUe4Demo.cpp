@@ -11,7 +11,7 @@ public:
 	ExampleSrvForUe4Demo()
 	{
 		server_.GetNetworkManager()->SetNewPlayerCallback(
-			std::bind( &ExampleSrvForUe4Demo::OnNewPlayer, this, _1 ) );
+			std::bind(&ExampleSrvForUe4Demo::OnNewPlayer, this, _1));
 	}
 
 	void Run() { server_.Run(); }
@@ -22,10 +22,10 @@ public:
 	//	realtime_srv will sync it to all the other clients.
 	//	of course u can do anything else for return nullptr or
 	//	u can regist ur GameObj to the World by urself. (see ExampleSrvForUe4DemoPlus.cpp)
-	GameObj* OnNewPlayer( ClientProxyPtr& _newClientProxy )
+	GameObj* OnNewPlayer(ClientProxyPtr& newClientProxy)
 	{
-		auto newCharacter( new Character );
-		newCharacter->SetPlayerId( _newClientProxy->GetNetId() );
+		auto newCharacter(new Character);
+		newCharacter->SetPlayerId(newClientProxy->GetNetId());
 		return newCharacter;
 	}
 
@@ -36,7 +36,7 @@ private:
 
 
 
-int main( int argc, const char** argv )
+int main(int argc, const char** argv)
 {
 	ExampleSrvForUe4Demo exmaple_server;
 	exmaple_server.Run();

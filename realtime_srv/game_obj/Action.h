@@ -14,27 +14,27 @@ class Action
 {
 public:
 
-	Action( InputState* inInputState ) : inputState_( inInputState ) {}
+	Action(InputState* inputState) : inputState_(inputState) {}
 
-	Action( const std::shared_ptr<InputState>& inInputState, float inTimestamp, float inDeltaTime ) :
-		inputState_( inInputState ),
-		mTimestamp( inTimestamp ),
-		mDeltaTime( inDeltaTime )
+	Action(const std::shared_ptr<InputState>& inputState, float timestamp, float deltaTime) :
+		inputState_(inputState),
+		timestamp_(timestamp),
+		deltaTime_(deltaTime)
 	{}
 
 
 	std::shared_ptr<InputState>& GetInputState() { return inputState_; }
 	const std::shared_ptr<InputState>& GetInputState() const { return inputState_; }
-	float				GetTimestamp()	const { return mTimestamp; }
-	float				GetDeltaTime()	const { return mDeltaTime; }
+	float				GetTimestamp()	const { return timestamp_; }
+	float				GetDeltaTime()	const { return deltaTime_; }
 
-	bool Write( OutputBitStream& inOutputStream ) const;
-	bool Read( InputBitStream& inInputStream );
+	bool Write(OutputBitStream& outputStream) const;
+	bool Read(InputBitStream& inputStream);
 
 private:
 	std::shared_ptr<InputState>	inputState_;
-	float		mTimestamp;
-	float		mDeltaTime;
+	float		timestamp_;
+	float		deltaTime_;
 
 };
 

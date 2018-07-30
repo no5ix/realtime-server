@@ -21,15 +21,15 @@ public:
 	ReceivedPacket() {}
 
 	ReceivedPacket(
-		const muduo::Timestamp& inReceivedTime,
-		const pid_t inHoldByThreadId,
-		const std::shared_ptr<InputBitStream>& inInputMemoryBitStreamPtr,
-		const muduo::net::UdpConnectionPtr& inUdpConnetction )
+		const muduo::Timestamp& receivedTime,
+		const pid_t holdByThreadId,
+		const std::shared_ptr<InputBitStream>& inputMemoryBitStreamPtr,
+		const muduo::net::UdpConnectionPtr& udpConnetction )
 		:
-		recvedTime_( inReceivedTime ),
-		holdedByThreadId_( inHoldByThreadId ),
-		recvedPacketBuf_( inInputMemoryBitStreamPtr ),
-		udpConn_( inUdpConnetction )
+		recvedTime_( receivedTime ),
+		holdedByThreadId_( holdByThreadId ),
+		recvedPacketBuf_( inputMemoryBitStreamPtr ),
+		udpConn_( udpConnetction )
 	{}
 
 	ReceivedPacket( ReceivedPacket &&Other ) noexcept

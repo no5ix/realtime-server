@@ -14,34 +14,34 @@ class InputBitStream;
 class AckBitField
 {
 public:
-	AckBitField() : mLatestAckSN( 0 )
+	AckBitField() : latestAckSN_( 0 )
 	{
-		mAckBitField = ( char * )malloc( ACK_BIT_FIELD_BYTE_LEN );
-		memset( mAckBitField, 0, ACK_BIT_FIELD_BYTE_LEN );
+		ackBitField_ = ( char * )malloc( ACK_BIT_FIELD_BYTE_LEN );
+		memset( ackBitField_, 0, ACK_BIT_FIELD_BYTE_LEN );
 	}
 
 	~AckBitField()
 	{
-		if ( mAckBitField )
+		if ( ackBitField_ )
 		{
-			free( mAckBitField );
+			free( ackBitField_ );
 		}
 	}
-	void					AddToAckBitField( PacketSN inSequenceNumber, PacketSN inLastSN );
-	bool					IsSetCorrespondingAckBit( PacketSN inAckSN );
+	void					AddToAckBitField( PacketSN sequenceNum, PacketSN lastSN );
+	bool					IsSetCorrespondingAckBit( PacketSN ackSN );
 
-	void					Write( OutputBitStream& inOutputStream );
-	void					Read( InputBitStream& inInputStream );
+	void					Write( OutputBitStream& outputStream );
+	void					Read( InputBitStream& inputStream );
 
-	char *					GetAckBitField()		const { return mAckBitField; }
-	PacketSN 				GetLatestAckSN()		const { return mLatestAckSN; }
+	char *					GetAckBitField()		const { return ackBitField_; }
+	PacketSN 				GetLatestAckSN()		const { return latestAckSN_; }
 private:
-	void					AddLastBit( uint32_t inTotalDifference );
-	void					DoAddToAckBitField( uint32_t inDifference );
+	void					AddLastBit( uint32_t totalDifference );
+	void					DoAddToAckBitField( uint32_t difference );
 
 private:
-	char* 					mAckBitField;
-	PacketSN				mLatestAckSN;
+	char* 					ackBitField_;
+	PacketSN				latestAckSN_;
 };
 
 }

@@ -25,8 +25,8 @@ public:
 
 	int	GetNetId() const { return netId_; }
 
-	void AddGameObj( const std::shared_ptr<GameObj>& _gameObj )
-	{ objIdToGameObjMap_[_gameObj->GetObjId()] = _gameObj; }
+	void AddGameObj(const std::shared_ptr<GameObj>& gameObj)
+	{ objIdToGameObjMap_[gameObj->GetObjId()] = gameObj; }
 
 	ObjIdToGameObjMap& GetAllOwnedGameObjs() { return objIdToGameObjMap_; }
 	const ObjIdToGameObjMap& GetAllOwnedGameObjs() const { return objIdToGameObjMap_; }
@@ -34,34 +34,29 @@ public:
 	void SetAllOwnedGameObjsPendingToDie();
 	void RealeaseAllOwnedGameObjs();
 
-	void RealeaseSpecificOwnedGameObj( int _objId )
-	{ objIdToGameObjMap_.erase( _objId ); }
-
-	void UpdateLastPacketTime()
-	{ mLastPacketFromClientTime = RealtimeSrvTiming::sInst.GetCurrentGameTime(); }
-
-	float GetLastPacketFromClientTime()	const { return mLastPacketFromClientTime; }
+	void RealeaseSpecificOwnedGameObj(int objectId)
+	{ objIdToGameObjMap_.erase(objectId); }
 
 	DeliveryNotifyMgr&	GetDeliveryNotifyMgr() { return deliveryNotifyMgr_; }
 	ReplicationMgr&	GetReplicationMgr() { return replicationMgr_; }
 
 	std::shared_ptr<World>& GetWorld() { return world_; }
-	void SetWorld( std::shared_ptr<World>  world ) { world_ = world; }
+	void SetWorld(std::shared_ptr<World>  world) { world_ = world; }
 
 	std::shared_ptr<NetworkMgr>& GetNetworkManager() { return networkManager_; }
 
-	const ActionList& GetUnprocessedActionList() const { return mUnprocessedMoveList; }
-	ActionList&	 GetUnprocessedActionList() { return mUnprocessedMoveList; }
+	const ActionList& GetUnprocessedActionList() const { return unprocessedActionList_; }
+	ActionList&	 GetUnprocessedActionList() { return unprocessedActionList_; }
 
-	void SetIsLastMoveTimestampDirty( bool inIsDirty )
-	{ mIsLastMoveTimestampDirty = inIsDirty; }
+	void SetIsLastMoveTimestampDirty(bool isDirty)
+	{ isLastActionTimestampDirty_ = isDirty; }
 	bool IsLastMoveTimestampDirty()	const
-	{ return mIsLastMoveTimestampDirty; }
+	{ return isLastActionTimestampDirty_; }
 
 	bool GetRecvingServerResetFlag() const
-	{ return mRecvingServerResetFlag; }
-	void SetRecvingServerResetFlag( bool inRecvingServerResetFlag )
-	{ mRecvingServerResetFlag = inRecvingServerResetFlag; }
+	{ return recvingSrvResetFlag_; }
+	void SetRecvingServerResetFlag(bool recvingServerResetFlag)
+	{ recvingSrvResetFlag_ = recvingServerResetFlag; }
 
 
 private:
@@ -70,13 +65,10 @@ private:
 
 	ObjIdToGameObjMap objIdToGameObjMap_;
 
-	float			mLastPacketFromClientTime;
-	float			mTimeToRespawn;
+	ActionList		unprocessedActionList_;
+	bool			isLastActionTimestampDirty_;
 
-	ActionList		mUnprocessedMoveList;
-	bool			mIsLastMoveTimestampDirty;
-
-	bool			mRecvingServerResetFlag;
+	bool			recvingSrvResetFlag_;
 
 	DeliveryNotifyMgr		deliveryNotifyMgr_;
 	ReplicationMgr			replicationMgr_;
@@ -85,10 +77,10 @@ private:
 
 
 public:
-	ClientProxy( const std::shared_ptr<NetworkMgr>& inNetworkManager,
-		const int inNetId,
-		const pid_t inHoldedByThreadId,
-		const muduo::net::UdpConnectionPtr& inUdpConnection );
+	ClientProxy(const std::shared_ptr<NetworkMgr>& networkManager,
+		const int netId,
+		const pid_t holdedByThreadId,
+		const muduo::net::UdpConnectionPtr& udpConnection);
 
 	~ClientProxy() { LOG_INFO << "Netid " << netId_ << " disconnect"; }
 

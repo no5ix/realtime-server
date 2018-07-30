@@ -17,15 +17,15 @@ using namespace muduo::net;
 
 AtomicInt32 NetworkMgr::kNewNetId;
 
-NetworkMgr::NetworkMgr( const ServerConfig _serverConfig ) :
-	bUnregistObjWhenCliDisconn_( _serverConfig.is_unregist_obj_when_cli_disconn ),
-	clientDisconnTimeout_(_serverConfig.client_disconnect_timeout),
-	actionCountPerTick_(_serverConfig.action_count_per_tick),
-	pktHandler_( _serverConfig,
-		std::bind( &NetworkMgr::DoProcessPkt, this, _1 ),
-		std::bind( &NetworkMgr::Tick, this ))
+NetworkMgr::NetworkMgr(const ServerConfig serverConfig) :
+	bUnregistObjWhenCliDisconn_(serverConfig.is_unregist_obj_when_cli_disconn),
+	clientDisconnTimeout_(serverConfig.client_disconnect_timeout),
+	actionCountPerTick_(serverConfig.action_count_per_tick),
+	pktHandler_(serverConfig,
+		std::bind(&NetworkMgr::DoProcessPkt, this, _1),
+		std::bind(&NetworkMgr::Tick, this))
 {
-	assert( actionCountPerTick_ >= 1 );
+	assert(actionCountPerTick_ >= 1);
 	assert(clientDisconnTimeout_ > 0);
 
 	kNewNetId.getAndSet(1);
@@ -87,51 +87,51 @@ void NetworkMgr::Start()
 	//assert( newPlayerCb_ );
 	//assert( customInputStatecb_ );
 
-	assert( letCliProxyGetWorldState_ );
-	assert( worldRegistryCb_ );
-	assert( worldUpdateCb_ );
+	assert(letCliProxyGetWorldState_);
+	assert(worldRegistryCb_);
+	assert(worldUpdateCb_);
 
 	pktHandler_.Start();
 }
 
-void NetworkMgr::DoPreparePacketToSend( std::shared_ptr<ClientProxy>& _cliProxy,
-	const uint32_t _connFlag )
+void NetworkMgr::DoPreparePacketToSend(std::shared_ptr<ClientProxy>& clientProxy,
+	const uint32_t connectionFlag)
 {
-	OutputBitStreamPtr outputPacket( new OutputBitStream() );
-	outputPacket->Write( _connFlag );
+	OutputBitStreamPtr outputPacket(new OutputBitStream());
+	outputPacket->Write(connectionFlag);
 
-	InflightPacket* ifp = _cliProxy->GetDeliveryNotifyMgr()
-		.WriteState( *outputPacket, _cliProxy.get() );
+	InflightPacket* ifp = clientProxy->GetDeliveryNotifyMgr()
+		.WriteState(*outputPacket, clientProxy.get());
 
-	switch ( _connFlag )
+	switch (connectionFlag)
 	{
 		case kResetCC:
-			_cliProxy->SetRecvingServerResetFlag( true );
+			clientProxy->SetRecvingServerResetFlag(true);
 			LOG_INFO << "Send Reset Packet";
 		case kWelcomeCC:
-			outputPacket->Write( _cliProxy->GetNetId() );
-			outputPacket->Write( pktHandler_.GetSendPacketInterval() );
+			outputPacket->Write(clientProxy->GetNetId());
+			outputPacket->Write(pktHandler_.GetSendPacketInterval());
 			break;
 		case kStateCC:
-			WriteLastMoveTimestampIfDirty( *outputPacket, _cliProxy );
+			WriteLastMoveTimestampIfDirty(*outputPacket, clientProxy);
 		default:
 			break;
 	}
-	_cliProxy->GetReplicationMgr().Write( *outputPacket, ifp );
+	clientProxy->GetReplicationMgr().Write(*outputPacket, ifp);
 
 	pktHandler_.AddToPendingSndPktQ(
-		PendingSendPacketPtr( new PendingSendPacket(
-			outputPacket, _cliProxy->GetUdpConnection() ) ),
-		_cliProxy->GetConnHoldedByThreadId() );
+		PendingSendPacketPtr(new PendingSendPacket(
+			outputPacket, clientProxy->GetUdpConnection())),
+		clientProxy->GetConnHoldedByThreadId());
 }
 
-void NetworkMgr::DoProcessPkt( ReceivedPacketPtr& recvedPacket )
+void NetworkMgr::DoProcessPkt(ReceivedPacketPtr& recvedPacket)
 {
-	auto it = udpConnToClientMap_.find( recvedPacket->GetUdpConn() );
-	if ( it == udpConnToClientMap_.end() )
+	auto it = udpConnToClientMap_.find(recvedPacket->GetUdpConn());
+	if (it == udpConnToClientMap_.end())
 	{
-		WelcomeNewClient( *recvedPacket->GetPacketBuffer(),
-			recvedPacket->GetUdpConn(), recvedPacket->GetHoldedByThreadId() );
+		WelcomeNewClient(*recvedPacket->GetPacketBuffer(),
+			recvedPacket->GetUdpConn(), recvedPacket->GetHoldedByThreadId());
 	}
 	else
 	{
@@ -143,14 +143,11 @@ void NetworkMgr::DoProcessPkt( ReceivedPacketPtr& recvedPacket )
 
 void NetworkMgr::PreparePacketToSend()
 {
-	for ( auto& pair : udpConnToClientMap_ )
+	for (auto& pair : udpConnToClientMap_)
 	{
-		( pair.second )->GetDeliveryNotifyMgr().ProcessTimedOutPackets();
-
-		if ( ( pair.second )->IsLastMoveTimestampDirty() )
-		{
-			DoPreparePacketToSend( ( pair.second ), kStateCC );
-		}
+		(pair.second)->GetDeliveryNotifyMgr().ProcessTimedOutPackets();
+		if ((pair.second)->IsLastMoveTimestampDirty())
+			DoPreparePacketToSend((pair.second), kStateCC);
 	}
 }
 
@@ -204,49 +201,49 @@ void NetworkMgr::CheckForDisconnects()
 }
 
 ClientProxyPtr NetworkMgr::CreateNewClient(
-	const UdpConnectionPtr& udpConnetction, const pid_t _holdedByThreadId )
+	const UdpConnectionPtr& udpConnetction, const pid_t holdedByThreadId)
 {
 	ClientProxyPtr newClientProxy = std::make_shared<ClientProxy>(
 		shared_from_this(),
-		kNewNetId.getAndAdd( 1 ),
-		_holdedByThreadId,
-		udpConnetction );
+		kNewNetId.getAndAdd(1),
+		holdedByThreadId,
+		udpConnetction);
 
 	udpConnToClientMap_[udpConnetction] = newClientProxy;
 	UpdateConnListForCheckDisconn(udpConnetction, UpdateConnListFlag::INSERT);
 
-	letCliProxyGetWorldState_( newClientProxy );
+	letCliProxyGetWorldState_(newClientProxy);
 
-	if ( newPlayerCb_ )
+	if (newPlayerCb_)
 	{
-		GameObjPtr newControlledGameObj( newPlayerCb_( newClientProxy ) );
-		if ( newControlledGameObj )
+		GameObjPtr newControlledGameObj(newPlayerCb_(newClientProxy));
+		if (newControlledGameObj)
 		{
-			worldRegistryCb_( newControlledGameObj, RA_Create );
-			newControlledGameObj->SetMaster( newClientProxy );
+			worldRegistryCb_(newControlledGameObj, RA_Create);
+			newControlledGameObj->SetMaster(newClientProxy);
 		}
 	}
 	return newClientProxy;
 }
 
-void NetworkMgr::WelcomeNewClient( InputBitStream& _inputStream,
-	const UdpConnectionPtr& udpConnetction, const pid_t _holdedByThreadId )
+void NetworkMgr::WelcomeNewClient(InputBitStream& inputStream,
+	const UdpConnectionPtr& udpConnetction, const pid_t holdedByThreadId)
 {
 	uint32_t	packetType;
-	_inputStream.Read( packetType );
+	inputStream.Read(packetType);
 
-	switch ( packetType )
+	switch (packetType)
 	{
 		case kHelloCC:
 		case kInputCC:
 		case kResetedCC:
 		{
 			ClientProxyPtr newClientProxy =
-				CreateNewClient( udpConnetction, _holdedByThreadId );
-			if ( packetType == kHelloCC )
-				DoPreparePacketToSend( newClientProxy, kWelcomeCC );
+				CreateNewClient(udpConnetction, holdedByThreadId);
+			if (packetType == kHelloCC)
+				DoPreparePacketToSend(newClientProxy, kWelcomeCC);
 			else
-				DoPreparePacketToSend( newClientProxy, kResetCC );
+				DoPreparePacketToSend(newClientProxy, kResetCC);
 			LOG_INFO << "a new client as Net ID " << newClientProxy->GetNetId();
 			break;
 		}
@@ -258,22 +255,22 @@ void NetworkMgr::WelcomeNewClient( InputBitStream& _inputStream,
 	}
 }
 
-void NetworkMgr::OnObjCreateOrDestory( GameObjPtr& inGameObject, ReplicationAction inAction )
+void NetworkMgr::OnObjCreateOrDestory(GameObjPtr& gameObject, ReplicationAction repAction)
 {
-	if ( inAction == RA_Create )
-		inGameObject->SetNetworkMgr( shared_from_this() );
+	if (repAction == RA_Create)
+		gameObject->SetNetworkMgr(shared_from_this());
 
-	for ( const auto& pair : udpConnToClientMap_ )
+	for (const auto& pair : udpConnToClientMap_)
 	{
-		switch ( inAction )
+		switch (repAction)
 		{
 			case RA_Create:
 				pair.second->GetReplicationMgr().ReplicateCreate(
-					inGameObject->GetObjId(), inGameObject->GetAllStateMask() );
+					gameObject->GetObjId(), gameObject->GetAllStateMask());
 				break;
 			case RA_Destroy:
 				pair.second->GetReplicationMgr().ReplicateDestroy(
-					inGameObject->GetObjId() );
+					gameObject->GetObjId());
 				break;
 			default:
 				break;
@@ -281,80 +278,78 @@ void NetworkMgr::OnObjCreateOrDestory( GameObjPtr& inGameObject, ReplicationActi
 	}
 }
 
-void NetworkMgr::SetRepStateDirty( int _objId, uint32_t inDirtyState )
+void NetworkMgr::SetRepStateDirty(int objectId, uint32_t dirtyState)
 {
-	for ( const auto& pair : udpConnToClientMap_ )
+	for (const auto& pair : udpConnToClientMap_)
 		pair.second->GetReplicationMgr().SetReplicationStateDirty(
-			_objId, inDirtyState );
+			objectId, dirtyState);
 }
 
-void NetworkMgr::CheckPacketType( std::shared_ptr<ClientProxy>& inClientProxy,
-	InputBitStream& inInputStream )
+void NetworkMgr::CheckPacketType(std::shared_ptr<ClientProxy>& clientProxy,
+	InputBitStream& inputStream)
 {
-	inClientProxy->UpdateLastPacketTime();
-
-	uint32_t packetType = HandleServerReset( inClientProxy, inInputStream );
-	switch ( packetType )
+	uint32_t packetType = HandleServerReset(clientProxy, inputStream);
+	switch (packetType)
 	{
 		case kHelloCC:
-			DoPreparePacketToSend( inClientProxy, kWelcomeCC );
+			DoPreparePacketToSend(clientProxy, kWelcomeCC);
 			break;
 		case kInputCC:
-			if ( inClientProxy->GetDeliveryNotifyMgr().ReadAndProcessState( inInputStream ) )
-				HandleInputPacket( inClientProxy, inInputStream );
+			if (clientProxy->GetDeliveryNotifyMgr().ReadAndProcessState(inputStream))
+				HandleInputPacket(clientProxy, inputStream);
 			break;
 		case kNullCC:
 			break;
 		default:
 			LOG_INFO << "Unknown packet type received from "
-				<< inClientProxy->GetUdpConnection()->peerAddress().toIpPort();
+				<< clientProxy->GetUdpConnection()->peerAddress().toIpPort();
 			break;
 	}
 }
 
-uint32_t NetworkMgr::HandleServerReset( std::shared_ptr<ClientProxy>& inClientProxy,
-	InputBitStream& inInputStream )
+uint32_t NetworkMgr::HandleServerReset(std::shared_ptr<ClientProxy>& clientProxy,
+	InputBitStream& inputStream)
 {
 	uint32_t packetType;
-	inInputStream.Read( packetType );
+	inputStream.Read(packetType);
 
-	if ( packetType == kResetedCC )
+	if (packetType == kResetedCC)
 	{
-		inClientProxy->SetRecvingServerResetFlag( false );
-		inInputStream.Read( packetType );
+		clientProxy->SetRecvingServerResetFlag(false);
+		inputStream.Read(packetType);
 	}
-	if ( inClientProxy->GetRecvingServerResetFlag() == true )
+	if (clientProxy->GetRecvingServerResetFlag() == true)
 	{
-		DoPreparePacketToSend( inClientProxy, kWelcomeCC );
+		DoPreparePacketToSend(clientProxy, kWelcomeCC);
 		return kNullCC;
 	}
 	else
 		return packetType;
 }
 
-void NetworkMgr::HandleInputPacket( std::shared_ptr<ClientProxy>& inClientProxy,
-	InputBitStream& inInputStream )
+void NetworkMgr::HandleInputPacket(std::shared_ptr<ClientProxy>& clientProxy,
+	InputBitStream& inputStream)
 {
 	uint32_t actionCount = 0;
-	Action action( customInputStatecb_ ? customInputStatecb_() : ( new InputState ) );
-	inInputStream.Read( actionCount, actionCountPerTick_ );
+	Action action(customInputStatecb_ ? customInputStatecb_() : (new InputState));
+	inputStream.Read(actionCount, actionCountPerTick_);
 
-	for ( ; actionCount > 0; --actionCount )
-		if ( action.Read( inInputStream ) )
-			if ( inClientProxy->GetUnprocessedActionList().AddMoveIfNew( action ) )
-				inClientProxy->SetIsLastMoveTimestampDirty( true );
+	for (; actionCount > 0; --actionCount)
+		if (action.Read(inputStream))
+			if (clientProxy->GetUnprocessedActionList().AddMoveIfNew(action))
+				clientProxy->SetIsLastMoveTimestampDirty(true);
 }
 
-void NetworkMgr::WriteLastMoveTimestampIfDirty( OutputBitStream& inOutputStream,
-	std::shared_ptr<ClientProxy>& inClientProxy )
+void NetworkMgr::WriteLastMoveTimestampIfDirty(OutputBitStream& outputStream,
+	std::shared_ptr<ClientProxy>& clientProxy)
 {
-	bool isTimestampDirty = inClientProxy->IsLastMoveTimestampDirty();
-	inOutputStream.Write( isTimestampDirty );
-	if ( isTimestampDirty )
+	bool isTimestampDirty = clientProxy->IsLastMoveTimestampDirty();
+	outputStream.Write(isTimestampDirty);
+	if (isTimestampDirty)
 	{
-		inOutputStream.Write( inClientProxy->GetUnprocessedActionList()
-			.GetLastMoveTimestamp() );
-		inClientProxy->SetIsLastMoveTimestampDirty( false );
+		outputStream.Write(clientProxy->GetUnprocessedActionList()
+			.GetLastMoveTimestamp());
+		clientProxy->SetIsLastMoveTimestampDirty(false);
 	}
 }
 

@@ -4,37 +4,37 @@
 
 using namespace realtime_srv;
 
-bool InputState::Write( OutputBitStream& inOutputStream ) const
+bool InputState::Write(OutputBitStream& outputStream) const
 {
-	inOutputStream.Write( mDesiredMoveForwardAmount );
-	inOutputStream.Write( mDesiredMoveRightAmount );
+	outputStream.Write(desiredMoveForwardAmount_);
+	outputStream.Write(desiredMoveRightAmount_);
 
 
-	inOutputStream.Write( mDesiredTurnAmountX );
-	inOutputStream.Write( mDesiredTurnAmountY );
-	inOutputStream.Write( mDesiredTurnAmountZ );
+	outputStream.Write(desiredTurnAmountX_);
+	outputStream.Write(desiredTurnAmountY_);
+	outputStream.Write(desiredTurnAmountZ_);
 
-	inOutputStream.Write( mDesiredLookUpAmountX );
-	inOutputStream.Write( mDesiredLookUpAmountY );
-	inOutputStream.Write( mDesiredLookUpAmountZ );
+	outputStream.Write(desiredLookUpAmountX_);
+	outputStream.Write(desiredLookUpAmountY_);
+	outputStream.Write(desiredLookUpAmountZ_);
 
 
 	return true;
 }
 
-bool InputState::Read( InputBitStream& inInputStream )
+bool InputState::Read(InputBitStream& inputStream)
 {
-	inInputStream.Read( mDesiredMoveForwardAmount );
-	inInputStream.Read( mDesiredMoveRightAmount );
+	inputStream.Read(desiredMoveForwardAmount_);
+	inputStream.Read(desiredMoveRightAmount_);
 
 
-	inInputStream.Read( mDesiredTurnAmountX );
-	inInputStream.Read( mDesiredTurnAmountY );
-	inInputStream.Read( mDesiredTurnAmountZ );
+	inputStream.Read(desiredTurnAmountX_);
+	inputStream.Read(desiredTurnAmountY_);
+	inputStream.Read(desiredTurnAmountZ_);
 
-	inInputStream.Read( mDesiredLookUpAmountX );
-	inInputStream.Read( mDesiredLookUpAmountY );
-	inInputStream.Read( mDesiredLookUpAmountZ );
+	inputStream.Read(desiredLookUpAmountX_);
+	inputStream.Read(desiredLookUpAmountY_);
+	inputStream.Read(desiredLookUpAmountZ_);
 
 	return true;
 }

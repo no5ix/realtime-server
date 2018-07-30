@@ -9,43 +9,43 @@ class ExampleInputState : public realtime_srv::InputState
 public:
 
 	ExampleInputState() :
-		mDesiredTurnRateAmount( 0.f ),
-		mDesiredLookUpRateAmount( 0.f ),
+		desiredTurnRateAmount_(0.f),
+		desiredLookUpRateAmount_(0.f),
 
-		mDesiredOnStartJumpAmount( 0.f ),
-		mDesiredOnStopJumpAmount( 0.f ),
+		desiredOnStartJumpAmount_(0.f),
+		desiredOnStopJumpAmount_(0.f),
 
-		mDesiredMoveUpAmount( 0.f ),
+		desiredMoveUpAmount_(0.f),
 
-		mIsShooting( false )
+		isShooting_(false)
 	{}
 
-	float GetDesiredTurnRateAmount()	const { return mDesiredTurnRateAmount; }
-	float GetDesiredLookUpRateAmount()	const { return mDesiredLookUpRateAmount; }
+	float GetDesiredTurnRateAmount()	const { return desiredTurnRateAmount_; }
+	float GetDesiredLookUpRateAmount()	const { return desiredLookUpRateAmount_; }
 
-	float GetDesiredOnStartJumpAmount()	const { return mDesiredOnStartJumpAmount; }
-	float GetDesiredOnStopJumpAmount()	const { return mDesiredOnStopJumpAmount; }
+	float GetDesiredOnStartJumpAmount()	const { return desiredOnStartJumpAmount_; }
+	float GetDesiredOnStopJumpAmount()	const { return desiredOnStopJumpAmount_; }
 
-	float GetDesiredOnMoveUpAmount()	const { return mDesiredMoveUpAmount; }
+	float GetDesiredOnMoveUpAmount()	const { return desiredMoveUpAmount_; }
 
-	bool  IsShooting()					const { return mIsShooting; }
+	bool  IsShooting()					const { return isShooting_; }
 
-	virtual bool Write( realtime_srv::OutputBitStream& inOutputStream ) const override
-	{ return realtime_srv::InputState::Write( inOutputStream ); }
+	virtual bool Write(realtime_srv::OutputBitStream& outputStream) const override
+	{ return realtime_srv::InputState::Write(outputStream); }
 
-	virtual bool Read( realtime_srv::InputBitStream& inInputStream ) override
-	{ return realtime_srv::InputState::Read( inInputStream ); }
+	virtual bool Read(realtime_srv::InputBitStream& inputStream) override
+	{ return realtime_srv::InputState::Read(inputStream); }
 
 protected:
 
-	float	mDesiredTurnRateAmount;
-	float	mDesiredLookUpRateAmount;
+	float	desiredTurnRateAmount_;
+	float	desiredLookUpRateAmount_;
 
-	float	mDesiredOnStartJumpAmount;
-	float	mDesiredOnStopJumpAmount;
+	float	desiredOnStartJumpAmount_;
+	float	desiredOnStopJumpAmount_;
 
-	float	mDesiredMoveUpAmount;
+	float	desiredMoveUpAmount_;
 
-	bool	mIsShooting;
+	bool	isShooting_;
 };
 typedef std::shared_ptr<ExampleInputState> ExampleInputStatePtr;

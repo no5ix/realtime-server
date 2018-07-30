@@ -18,24 +18,24 @@ public:
 	typedef std::unordered_map< int, std::shared_ptr<GameObj> > ObjIdToGameObjMap;
 
 	typedef std::function<void(
-		std::shared_ptr<GameObj>&, ReplicationAction )> OnObjCreateOrDestoryCb;
+		std::shared_ptr<GameObj>&, ReplicationAction)> OnObjCreateOrDestoryCb;
 
 	void Update();
 
-	void OnObjCreateOrDestoryCallback( const OnObjCreateOrDestoryCb& _cb )
-	{ onObjCreateOrDestoryCb_ = _cb; }
+	void OnObjCreateOrDestoryCallback(const OnObjCreateOrDestoryCb& cb)
+	{ onObjCreateOrDestoryCb_ = cb; }
 
-	bool IsGameObjectExist( int _objId );
-	std::shared_ptr<GameObj> GetGameObject( int _objId );
+	bool IsGameObjectExist(int objectId);
+	std::shared_ptr<GameObj> GetGameObject(int objectId);
 
 	ObjIdToGameObjMap& GetAllGameObj() { return ObjIdToGameObjMap_; }
 	const ObjIdToGameObjMap& GetAllGameObj() const { return ObjIdToGameObjMap_; }
 
-	void Registry( std::shared_ptr<GameObj> _obj, ReplicationAction _action );
-	void RegistGameObj( std::shared_ptr<GameObj> _obj );
-	void UnregistGameObj( std::shared_ptr<GameObj> _obj );
+	void Registry(std::shared_ptr<GameObj> obj, ReplicationAction repAction);
+	void RegistGameObj(std::shared_ptr<GameObj> object);
+	void UnregistGameObj(std::shared_ptr<GameObj> object);
 
-	void WhenClientProxyHere( std::shared_ptr<ClientProxy> _cliProxy );
+	void WhenClientProxyHere(std::shared_ptr<ClientProxy> clientProxy);
 
 private:
 	int	GetNewObjId();

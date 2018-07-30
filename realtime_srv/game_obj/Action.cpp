@@ -7,18 +7,18 @@
 
 using namespace realtime_srv;
 
-bool Action::Write( OutputBitStream& inOutputStream ) const
+bool Action::Write(OutputBitStream& outputStream) const
 {
-	inputState_->Write( inOutputStream );
-	inOutputStream.Write( mTimestamp );
+	inputState_->Write(outputStream);
+	outputStream.Write(timestamp_);
 
 	return true;
 }
 
-bool Action::Read( InputBitStream& inInputStream )
+bool Action::Read(InputBitStream& inputStream)
 {
-	inputState_->Read( inInputStream );
-	inInputStream.Read( mTimestamp );
+	inputState_->Read(inputStream);
+	inputStream.Read(timestamp_);
 
 	return true;
 }

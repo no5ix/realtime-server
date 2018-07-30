@@ -19,73 +19,70 @@ class DeliveryNotifyMgr
 public:
 
 
-	DeliveryNotifyMgr( bool inShouldSendAcks, bool inShouldProcessAcks );
+	DeliveryNotifyMgr(bool willSendAcks, bool willProcessAcks);
 	~DeliveryNotifyMgr();
 
-	inline	InflightPacket*		WriteState( OutputBitStream& inOutputStream,
-		ClientProxy* inClientProxy );
-	inline bool					ReadAndProcessState( InputBitStream& inInputStream );
+	inline	InflightPacket*		WriteState(OutputBitStream& outputStream,
+		ClientProxy* clientProxy);
 
-	void						ProcessTimedOutPackets();
+	inline bool ReadAndProcessState(InputBitStream& inputStream);
 
-	uint32_t GetDroppedPacketCount()		const { return mDroppedPacketCount; }
-	uint32_t GetDeliveredPacketCount()	const { return mDeliveredPacketCount; }
-	uint32_t GetDispatchedPacketCount()	const { return mDispatchedPacketCount; }
+	void ProcessTimedOutPackets();
+
+	uint32_t GetDroppedPacketCount()		const { return droppedPacketCnt_; }
+	uint32_t GetDeliveredPacketCount()	const { return deliveredPacketCnt_; }
+	uint32_t GetDispatchedPacketCount()	const { return dispatchedPacketCnt_; }
 
 	const std::deque<InflightPacket>&	GetInflightPackets() const
 	{ return inflightPackets_; }
 
 private:
 
+	void					ProcessAckBitField(InputBitStream& inputStream);
 
+	InflightPacket*		WriteSequenceNumber(OutputBitStream& outputStream,
+		ClientProxy* clientProxy);
 
-	InflightPacket*		WriteSequenceNumber( OutputBitStream& inOutputStream,
-		ClientProxy* inClientProxy );
+	bool				ProcessSequenceNumber(InputBitStream& inputStream);
 
-	bool				ProcessSequenceNumber( InputBitStream& inInputStream );
+	void				HandlePacketDeliveryFailure(const InflightPacket& inflightPkt);
+	void				HandlePacketDeliverySuccess(const InflightPacket& inflightPkt);
 
+protected:
 
-	void				HandlePacketDeliveryFailure( const InflightPacket& inFlightPacket );
-	void				HandlePacketDeliverySuccess( const InflightPacket& inFlightPacket );
-
-
-	PacketSN	mNextOutgoingSequenceNumber;
-	PacketSN	mNextExpectedSequenceNumber;
+	PacketSN	nextOutgoingSN_;
+	PacketSN	nextExpectedSN_;
 
 	std::deque<InflightPacket>	inflightPackets_;
 
-	bool mShouldSendAcks;
-	bool mShouldProcessAcks;
+	bool willSendAcks_;
+	bool willProcessAcks_;
 
-	uint32_t mDeliveredPacketCount;
-	uint32_t mDroppedPacketCount;
-	uint32_t mDispatchedPacketCount;
+	uint32_t deliveredPacketCnt_;
+	uint32_t droppedPacketCnt_;
+	uint32_t dispatchedPacketCnt_;
 
-protected:
-	AckBitField*			mAckBitField;
-	void					ProcessAckBitField( InputBitStream& inInputStream );
+	AckBitField*			ackBitField_;
 };
 
 
 
-inline InflightPacket* DeliveryNotifyMgr::WriteState( OutputBitStream& inOutputStream,
-	ClientProxy* inClientProxy )
+inline InflightPacket* DeliveryNotifyMgr::WriteState(OutputBitStream& outputStream,
+	ClientProxy* clientProxy)
 {
-	InflightPacket* toRet = WriteSequenceNumber( inOutputStream, inClientProxy );
-	if ( mShouldSendAcks )
-	{
-		mAckBitField->Write( inOutputStream );
-	}
+	InflightPacket* toRet = WriteSequenceNumber(outputStream, clientProxy);
+	if (willSendAcks_)
+		ackBitField_->Write(outputStream);
+
 	return toRet;
 }
 
-inline bool DeliveryNotifyMgr::ReadAndProcessState( InputBitStream& inInputStream )
+inline bool DeliveryNotifyMgr::ReadAndProcessState(InputBitStream& inputStream)
 {
-	bool toRet = ProcessSequenceNumber( inInputStream );
-	if ( mShouldProcessAcks )
-	{
-		ProcessAckBitField( inInputStream );
-	}
+	bool toRet = ProcessSequenceNumber(inputStream);
+	if (willProcessAcks_)
+		ProcessAckBitField(inputStream);
+
 	return toRet;
 }
 

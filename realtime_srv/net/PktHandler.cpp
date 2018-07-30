@@ -21,22 +21,22 @@ __thread bool t_isDispatcherThreadSleeping_ = false;
 }
 
 
-PktHandler::PktHandler( const ServerConfig _serverConfig,
-	PktProcessCallback _pktProcessCallback,
-	TickCallback _tickCb)
+PktHandler::PktHandler( const ServerConfig serverConfig,
+	PktProcessCallback pktProcessCallback,
+	TickCallback tickCb)
 	:
-	sendPacketInterval_( _serverConfig.send_packet_interval ),
-	maxPacketsCountPerFetch_( _serverConfig.max_packets_count_per_fetch ),
-	port_( _serverConfig.port ),
-	pktDispatcherThreadCnt_( _serverConfig.packet_dispatcher_thread_count ),
-	sleepRoundCountThreshold_( _serverConfig.fps ),
+	sendPacketInterval_( serverConfig.send_packet_interval ),
+	maxPacketsCountPerFetch_( serverConfig.max_packets_count_per_fetch ),
+	port_( serverConfig.port ),
+	pktDispatcherThreadCnt_( serverConfig.packet_dispatcher_thread_count ),
+	sleepRoundCountThreshold_( serverConfig.fps ),
 	isBaseThreadSleeping_( false ),
 	baseThreadId_( CurrentThread::tid() ),
 	pendingRecvedPktsCnt_( 0 ),
-	pktProcessCb_( _pktProcessCallback ),
-	tickCb_( _tickCb )
+	pktProcessCb_( pktProcessCallback ),
+	tickCb_( tickCb )
 {
-	assert( _serverConfig.fps > 0 );
+	assert( serverConfig.fps > 0 );
 
 	assert( sendPacketInterval_ > 0 );
 	assert( maxPacketsCountPerFetch_ >= 1 );
@@ -46,7 +46,7 @@ PktHandler::PktHandler( const ServerConfig _serverConfig,
 	assert( tickCb_ );
 	assert( pktProcessCb_ );
 
-	tickInterval_ = 1.0 / _serverConfig.fps;
+	tickInterval_ = 1.0 / serverConfig.fps;
 	assert( tickInterval_ > 0 );
 
 	std::vector<ReceivedPacketPtr>( maxPacketsCountPerFetch_ ).swap( pendingRecvedPkts_ );
@@ -75,10 +75,10 @@ void PktHandler::SetConnCallback(const UdpConnectionCallback& cb)
 }
 
 
-void PktHandler::AddToAutoSleepSystem( EventLoop* _loop, TimerId _timerId )
+void PktHandler::AddToAutoSleepSystem( EventLoop* loop, TimerId timerId )
 {
 	tidToLoopAndTimerIdMap_[CurrentThread::tid()] =
-		LoopAndTimerId( _loop, _timerId );
+		LoopAndTimerId( loop, timerId );
 }
 
 void PktHandler::CheckForSleep()
