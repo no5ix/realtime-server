@@ -21,32 +21,32 @@ void ReplicationMgr::Write(OutputBitStream& outputStream, InflightPacket* inflig
 			int objId = pair.first;
 			outputStream.Write(objId);
 
-			ReplicationAction action = repCmd.GetAction();
-			outputStream.Write(action, 2);
+			ReplicationAction repAction = repCmd.GetAction();
+			outputStream.Write(repAction, 2);
 
 			uint32_t dirtyState = repCmd.GetDirtyState();
 
-			uint32_t writtenState = 0;
-			switch (action)
+			uint32_t writtenRepState = 0;
+			switch (repAction)
 			{
 				case RA_Create:
-					writtenState = WriteCreateAction(outputStream,
+					writtenRepState = WriteCreateAction(outputStream,
 						objId, dirtyState);
 					break;
 				case RA_Update:
-					writtenState = WriteUpdateAction(outputStream,
+					writtenRepState = WriteUpdateAction(outputStream,
 						objId, dirtyState);
 					break;
 				case RA_Destroy:
-					writtenState = WriteDestroyAction(outputStream,
+					writtenRepState = WriteDestroyAction(outputStream,
 						objId, dirtyState);
 					break;
 				default:
 					break;
 			}
 
-			inflightPkt->AddTransmission(objId, action, writtenState);
-			repCmd.ClearDirtyState(writtenState);
+			inflightPkt->AddTransmission(objId, repAction, writtenRepState);
+			repCmd.ClearDirtyState(writtenRepState);
 			if (outputStream.GetByteLength() > MAX_PACKET_BYTE_LENGTH)
 				break;
 		}

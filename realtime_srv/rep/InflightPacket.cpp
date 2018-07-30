@@ -19,11 +19,11 @@ InflightPacket::InflightPacket(
 {}
 
 void InflightPacket::AddTransmission(int objId,
-	ReplicationAction repAction, uint32_t writtenState)
+	ReplicationAction repAction, uint32_t writtenRepState)
 {
 	objIdToTransMap_.emplace(std::make_pair(
 		objId,
-		ReplicationTransmission(objId, repAction, writtenState)));
+		ReplicationTransmission(objId, repAction, writtenRepState)));
 }
 
 void InflightPacket::HandleDeliveryFailure() const
@@ -62,7 +62,7 @@ void InflightPacket::HandleCreateDeliveryFailure(int objId) const
 }
 
 void InflightPacket::HandleUpdateStateDeliveryFailure(int objId,
-	uint32_t writtenState) const
+	uint32_t writtenRepState) const
 {
 	if (owner_->GetWorld()->IsGameObjectExist(objId))
 	{
@@ -70,10 +70,10 @@ void InflightPacket::HandleUpdateStateDeliveryFailure(int objId,
 		{
 			auto TransIt = fp.objIdToTransMap_.find(objId);
 			if (TransIt != objIdToTransMap_.end())
-				writtenState &= ~(TransIt->second.GetState());
+				writtenRepState &= ~(TransIt->second.GetState());
 		}
-		if (writtenState)
-			owner_->GetReplicationMgr().SetReplicationStateDirty(objId, writtenState);
+		if (writtenRepState)
+			owner_->GetReplicationMgr().SetReplicationStateDirty(objId, writtenRepState);
 	}
 }
 

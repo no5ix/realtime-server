@@ -31,17 +31,17 @@ public:
 			:
 			ObjId_(objId),
 			repAction_(repAction),
-			writtenState_(writtenState)
+			writtenRepState_(writtenState)
 		{}
 
 		int								GetObjId()		const { return ObjId_; }
 		ReplicationAction	GetAction()			const { return repAction_; }
-		uint32_t					GetState()			const { return writtenState_; }
+		uint32_t					GetState()			const { return writtenRepState_; }
 
 	private:
 		int							ObjId_;
 		ReplicationAction			repAction_;
-		uint32_t					writtenState_;
+		uint32_t					writtenRepState_;
 	};
 
 	void AddTransmission(int objId, ReplicationAction repAction, uint32_t writtenState);

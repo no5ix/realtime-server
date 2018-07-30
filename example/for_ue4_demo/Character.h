@@ -29,12 +29,12 @@ public:
 public:
 
 	const realtime_srv::Vector3&	GetRotation() const { return curRotation_; }
-	void SetRotation(realtime_srv::Vector3 inRotation) { curRotation_ = inRotation; }
+	void SetRotation(realtime_srv::Vector3 rot) { curRotation_ = rot; }
 	void SetRotation(const float x, const float y, const float z)
 	{ curRotation_ = realtime_srv::Vector3(x, y, z); }
 
 	const realtime_srv::Vector3&	GetLocation() const { return curLocation_; }
-	void SetLocation(const realtime_srv::Vector3& inLocation) { curLocation_ = inLocation; }
+	void SetLocation(const realtime_srv::Vector3& loc) { curLocation_ = loc; }
 	void SetLocation(const float x, const float y, const float z)
 	{ curLocation_ = realtime_srv::Vector3(x, y, z); }
 
