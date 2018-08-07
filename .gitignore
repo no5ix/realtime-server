@@ -5,3 +5,7 @@
   
 # VisualStudioCode  
 .vscode
+
+build/
+
+bin_rs

@@ -119,6 +119,7 @@ void DeliveryNotifyMgr::HandlePacketDeliverySuccess(const InflightPacket& inflig
 	inflightPkt.HandleDeliverySuccess();
 }
 
+// FIXME
 void DeliveryNotifyMgr::ProcessAckBitField(InputBitStream& inputStream)
 {
 	AckBitField recvedAckBitField;
@@ -127,7 +128,6 @@ void DeliveryNotifyMgr::ProcessAckBitField(InputBitStream& inputStream)
 	PacketSN latestAckedSN = recvedAckBitField.GetLatestAckSN();
 	PacketSN nextAckedSN =
 		latestAckedSN - (ACK_BIT_FIELD_BYTE_LEN << 3);
-
 
 	while (
 		RealtimeSrvHelper::SNGreaterThanOrEqual(latestAckedSN, nextAckedSN)
