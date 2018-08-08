@@ -70,7 +70,6 @@ void UdpServer::newConnection( Socket* connectedSocket,
 	EventLoop* ioLoop = threadPool_->getNextLoop();
 	char buf[64];
 	snprintf( buf, sizeof buf, "-%s#%d", ipPort_.c_str(), nextConnId_ );
-	++nextConnId_;
 	string connName = name_ + buf;
 
 	//LOG_INFO << "UdpServer::newConnection [" << name_
@@ -85,8 +84,11 @@ void UdpServer::newConnection( Socket* connectedSocket,
 	UdpConnectionPtr conn( new UdpConnection( ioLoop,
 		connName,
 		connectedSocket,
+		nextConnId_,
 		localAddr,
 		peerAddr ) );
+
+	++nextConnId_;
 
 	connections_[connName] = conn;
 	conn->setConnectionCallback( connectionCallback_ );

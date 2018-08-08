@@ -1,0 +1,18 @@
+set (PROJ_NAME kcp)
+
+IF(UNIX)
+
+    set(kcp_SRCS
+      ikcp.c
+    )
+
+    add_library(${PROJ_NAME} ${kcp_SRCS})
+    target_link_libraries(${PROJ_NAME})
+
+# elseif(WIN32) # Check if we are on Windows
+
+#   create_win_proj(${PROJ_NAME})
+    
+else()
+  	message(SEND_ERROR "You are on an unsupported platform! (Not Win32 or Unix)")
+ENDIF()

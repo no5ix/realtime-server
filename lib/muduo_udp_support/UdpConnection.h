@@ -20,8 +20,8 @@
 
 #include <memory>
 
-#include "realtime_srv/common/any.h"
-
+#include <realtime_srv/common/any.h>
+#include <kcp_annotated/KcpSession.h>
 
 namespace muduo
 {
@@ -42,22 +42,30 @@ namespace muduo
 			UdpConnection( EventLoop* loop,
 				const string& name,
 				Socket* connectedSocket,
+				int ConnectionId,
 				const InetAddress& localAddr,
 				const InetAddress& peerAddr );
 			~UdpConnection();
+
+			enum StateE { kDisconnected, kConnecting, kConnected, kDisconnecting };
 
 			EventLoop* getLoop() const { return loop_; }
 			const string& name() const { return name_; }
 			const InetAddress& localAddress() const { return localAddr_; }
 			const InetAddress& peerAddress() const { return peerAddr_; }
+
 			bool connected() const { return state_ == kConnected; }
 			bool disconnected() const { return state_ == kDisconnected; }
 
+			bool IsKcpConnected() const { return kcpConnectState_ == kConnected; }
+			bool IsKcpDisconnected() const { return kcpConnectState_ == kDisconnected; }
+
 			// void send(string&& message); // C++11
 			void send( const void* message, int len );
-			void send( const StringPiece& message );
+			void DoSend( const void* message, int len );
+			void DoSend( const StringPiece& message );
 			// void send(Buffer&& message); // C++11
-			void send( Buffer* message );  // this one will swap data
+			void DoSend( Buffer* message );  // this one will swap data
 			void shutdown(); // NOT thread safe, no simultaneous calling
 							 // void shutdownAndForceCloseAfter(double seconds); // NOT thread safe, no simultaneous calling
 			void forceClose();
@@ -105,8 +113,12 @@ namespace muduo
 			realtime_srv::any* getMutableContext()
 			{ return &context_; }
 
+			int GetConvIdForKcp() const
+			{ return convIdForKcp_; }
+
+			void SetKcpConnectState(StateE s) { kcpConnectState_ = s; }
+
 		private:
-			enum StateE { kDisconnected, kConnecting, kConnected, kDisconnecting };
 			void handleRead( Timestamp receiveTime );
 			void handleWrite();
 			void handleClose();
@@ -146,6 +158,11 @@ namespace muduo
 			static const size_t kPacketBufSize = 1500;
 			char packetBuf_[kPacketBufSize];
 			realtime_srv::any context_;
+
+			// kcp
+			int convIdForKcp_;
+			std::unique_ptr<KcpSession> kcpSession_;
+			StateE kcpConnectState_;
 		};
 
 		typedef std::shared_ptr<UdpConnection> UdpConnectionPtr;

@@ -35,20 +35,25 @@ void muduo::net::UdpDefaultMessageCallback( const UdpConnectionPtr&,
 	Timestamp )
 {}
 
-UdpConnection::UdpConnection( EventLoop* loop,
+UdpConnection::UdpConnection(EventLoop* loop,
 	const string& nameArg,
 	Socket* connectedSocket,
+	int ConnectionId,
 	const InetAddress& localAddr,
-	const InetAddress& peerAddr )
+	const InetAddress& peerAddr)
 	:
-	loop_( CHECK_NOTNULL( loop ) ),
-	name_( nameArg ),
-	state_( kConnecting ),
-	reading_( true ),
-	socket_( connectedSocket ),
-	channel_( new Channel( loop, socket_->fd() ) ),
-	localAddr_( localAddr ),
-	peerAddr_( peerAddr ),
+	loop_(CHECK_NOTNULL(loop)),
+	name_(nameArg),
+	convIdForKcp_(ConnectionId),
+	state_(kConnecting),
+	reading_(true),
+	socket_(connectedSocket),
+	channel_(new Channel(loop, socket_->fd())),
+	localAddr_(localAddr),
+	peerAddr_(peerAddr),
+	kcpConnectState_(kConnecting),
+	kcpSession_(new KcpSession(convIdForKcp_, std::bind((void(UdpConnection::*)
+		(const void*, int))&UdpConnection::DoSend, this, _1, _2))),
 	highWaterMark_( 64 * 1024 * 1024 )
 {
 	channel_->setReadCallback(
@@ -77,7 +82,73 @@ UdpConnection::~UdpConnection()
 	assert( state_ == kDisconnected );
 }
 
-void UdpConnection::send( const void* data, int len )
+void UdpConnection::send(const void* data, int len)
+{
+	if (IsKcpConnected())
+	{
+		int success = kcpSession_->Send(static_cast<const char*>(data), len);
+		if (success < 0)
+		{
+			LOG_ERROR << "ikcp_send data failed, len = " << len;
+		}
+		muduo::Timestamp now_ts = muduo::Timestamp::now();
+		uint32_t now_in_ms = (now_ts.microSecondsSinceEpoch() / 1000) & 0xFFFFFFFFu;
+		kcpSession_->Update(now_in_ms);
+	}
+	else
+	{
+		DoSend(data, len);
+	}
+}
+
+void UdpConnection::handleRead(Timestamp receiveTime)
+{
+	loop_->assertInLoopThread();
+	ssize_t n = sockets::read(channel_->fd(), static_cast<void*>(packetBuf_), kPacketBufSize);
+	if (n > 0)
+	{
+		int inputResult = kcpSession_->Input(packetBuf_, n);
+		if (inputResult == 0)
+		{
+			if (!IsKcpConnected())
+				SetKcpConnectState(kConnected);
+			n = kcpSession_->Recv(packetBuf_);
+		}
+		else
+		{
+			if (IsKcpConnected())
+			{
+				switch (inputResult)
+				{
+					case -1:
+						LOG_ERROR << "kcp ikcp_input conv error";
+						break;
+					case -2:
+						LOG_ERROR << "kcp ikcp_input size error";
+						break;
+					case -3:
+						LOG_ERROR << "kcp ikcp_input cmd error";
+						break;
+					default:
+						LOG_ERROR << "kcp ikcp_input impossible error";
+						break;
+				}
+			}
+		}
+		messageCallback_(shared_from_this(), packetBuf_, n, receiveTime);
+	}
+	else if (n == 0)
+	{
+		handleClose();
+	}
+	else
+	{
+		LOG_SYSERR << "UdpConnection::handleRead";
+		handleError();
+	}
+}
+
+void UdpConnection::DoSend( const void* data, int len )
 {
 	if (state_ == kConnected)
 	{
@@ -99,7 +170,7 @@ void UdpConnection::send( const void* data, int len )
 	}
 }
 
-void UdpConnection::send( const StringPiece& message )
+void UdpConnection::DoSend( const StringPiece& message )
 {
 	if ( state_ == kConnected )
 	{
@@ -120,7 +191,7 @@ void UdpConnection::send( const StringPiece& message )
 }
 
 // FIXME efficiency!!!
-void UdpConnection::send( Buffer* buf )
+void UdpConnection::DoSend( Buffer* buf )
 {
 	if ( state_ == kConnected )
 	{
@@ -323,25 +394,6 @@ void UdpConnection::connectDestroyed()
 		connectionCallback_( shared_from_this() );
 	}
 	channel_->remove();
-}
-
-void UdpConnection::handleRead( Timestamp receiveTime )
-{
-	loop_->assertInLoopThread();
-	ssize_t n = sockets::read(channel_->fd(), static_cast<void*>(packetBuf_), kPacketBufSize);
-	if ( n > 0 )
-	{
-		messageCallback_( shared_from_this(), packetBuf_, n, receiveTime );
-	}
-	else if ( n == 0 )
-	{
-		handleClose();
-	}
-	else
-	{
-		LOG_SYSERR << "UdpConnection::handleRead";
-		handleError();
-	}
 }
 
 void UdpConnection::handleWrite()

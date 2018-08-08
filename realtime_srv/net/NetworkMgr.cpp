@@ -201,11 +201,11 @@ void NetworkMgr::CheckForDisconnects()
 }
 
 ClientProxyPtr NetworkMgr::CreateNewClient(
-	const UdpConnectionPtr& udpConnetction, const pid_t holdedByThreadId)
+	UdpConnectionPtr& udpConnetction, const pid_t holdedByThreadId)
 {
 	ClientProxyPtr newClientProxy = std::make_shared<ClientProxy>(
 		shared_from_this(),
-		kNewNetId.getAndAdd(1),
+		udpConnetction->GetConvIdForKcp(),
 		holdedByThreadId,
 		udpConnetction);
 
@@ -223,11 +223,12 @@ ClientProxyPtr NetworkMgr::CreateNewClient(
 			newControlledGameObj->SetMaster(newClientProxy);
 		}
 	}
+
 	return newClientProxy;
 }
 
 void NetworkMgr::WelcomeNewClient(InputBitStream& inputStream,
-	const UdpConnectionPtr& udpConnetction, const pid_t holdedByThreadId)
+	UdpConnectionPtr& udpConnetction, const pid_t holdedByThreadId)
 {
 	uint32_t	packetType;
 	inputStream.Read(packetType);
@@ -295,9 +296,12 @@ void NetworkMgr::CheckPacketType(std::shared_ptr<ClientProxy>& clientProxy,
 			DoPreparePacketToSend(clientProxy, kWelcomeCC);
 			break;
 		case kInputCC:
+		{
+			//clientProxy->GetUdpConnection()->SetKcpConnectState(UdpConnection::kConnected);
 			if (clientProxy->GetDeliveryNotifyMgr().ReadAndProcessState(inputStream))
 				HandleInputPacket(clientProxy, inputStream);
 			break;
+		}
 		case kNullCC:
 			break;
 		default:

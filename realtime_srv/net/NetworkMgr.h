@@ -108,11 +108,11 @@ private:
 		const uint32_t inConnFlag);
 
 	void	WelcomeNewClient(InputBitStream& inputStream,
-		const muduo::net::UdpConnectionPtr& udpConnetction,
+		muduo::net::UdpConnectionPtr& udpConnetction,
 		const pid_t holdedByThreadId);
 
 	std::shared_ptr<ClientProxy> CreateNewClient(
-		const muduo::net::UdpConnectionPtr& udpConnetction,
+		muduo::net::UdpConnectionPtr& udpConnetction,
 		const pid_t holdedByThreadId);
 
 	void UpdateConnListForCheckDisconn(const muduo::net::UdpConnectionPtr& conn,

@@ -20,6 +20,7 @@ fi
 echo "[`date '+%x %X'`] Start a new server."
 
 cd ${BIN_PATH};
+chmod +x ${SRV_NAME}
 ./${SRV_NAME} $*;
 cd -;
 

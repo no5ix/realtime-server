@@ -128,7 +128,6 @@ void UdpClient::newConnection( Socket* connectedSocket )
 	InetAddress peerAddr( sockets::getPeerAddr( connectedSocket->fd() ) );
 	char buf[32];
 	snprintf( buf, sizeof buf, ":%s#%d", peerAddr.toIpPort().c_str(), nextConnId_ );
-	++nextConnId_;
 	string connName = name_ + buf;
 
 	InetAddress localAddr( sockets::getLocalAddr( connectedSocket->fd() ) );
@@ -137,8 +136,11 @@ void UdpClient::newConnection( Socket* connectedSocket )
 	UdpConnectionPtr conn( new UdpConnection( loop_,
 		connName,
 		connectedSocket,
+		nextConnId_,
 		localAddr,
 		peerAddr ) );
+
+	++nextConnId_;
 
 	conn->setConnectionCallback( connectionCallback_ );
 	conn->setMessageCallback( messageCallback_ );

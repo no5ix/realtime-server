@@ -43,6 +43,9 @@
     <Filter Include="inih\lib">
       <UniqueIdentifier>{f81b1ea0-963d-4394-a584-501ea90d134e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="kcp_annotated">
+      <UniqueIdentifier>{3191639a-a1ac-47af-a64c-f4894b1ba156}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\lib\muduo\base\Atomic.h">
@@ -285,6 +288,15 @@
     <ClInclude Include="..\..\lib\inih\include\INIReader.h">
       <Filter>inih\include</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\lib\kcp_annotated\ikcp.h">
+      <Filter>kcp_annotated</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\kcp_annotated\test.h">
+      <Filter>kcp_annotated</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\kcp_annotated\KcpSession.h">
+      <Filter>kcp_annotated</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\lib\muduo\base\Condition.cc">
@@ -509,6 +521,12 @@
     <ClCompile Include="..\..\lib\inih\lib\INIReader.cpp">
       <Filter>inih\lib</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\lib\kcp_annotated\ikcp.c">
+      <Filter>kcp_annotated</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\kcp_annotated\test.cpp">
+      <Filter>kcp_annotated</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\..\lib\muduo_contrib\hiredis\CMakeLists.txt">
@@ -535,6 +553,9 @@
     <Text Include="..\..\lib\inih\CMakeLists.txt">
       <Filter>inih</Filter>
     </Text>
+    <Text Include="..\..\lib\kcp_annotated\CMakeLists.txt">
+      <Filter>kcp_annotated</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\lib\muduo_contrib\hiredis\README.md">
@@ -560,6 +581,9 @@
     </None>
     <None Include="..\..\lib\inih\README">
       <Filter>inih</Filter>
+    </None>
+    <None Include="..\..\lib\kcp_annotated\README.md">
+      <Filter>kcp_annotated</Filter>
     </None>
   </ItemGroup>
 </Project>

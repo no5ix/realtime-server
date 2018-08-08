@@ -1,5 +1,6 @@
 set (PROJ_NAME muduo_udp_support)
 set (MUDUO_LIB_NAME muduo)
+set (KCP_LIB_NAME kcp)
 
 IF(UNIX)
 
@@ -13,7 +14,7 @@ IF(UNIX)
     )
 
     add_library(${PROJ_NAME} ${muduo_udp_support_SRCS})
-    target_link_libraries(${PROJ_NAME} muduo)
+    target_link_libraries(${PROJ_NAME} ${MUDUO_LIB_NAME} ${KCP_LIB_NAME})
 
     set (test_chat_path "${CMAKE_CURRENT_SOURCE_DIR}/test/chat")
     if (EXISTS ${test_chat_path})

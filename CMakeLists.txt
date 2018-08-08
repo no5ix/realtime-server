@@ -170,6 +170,7 @@ if(UNIX)
     add_subdirectory(${LIB_PATH_NAME}/muduo_contrib)
     add_subdirectory(${LIB_PATH_NAME}/lualib)
     add_subdirectory(${LIB_PATH_NAME}/inih)
+    add_subdirectory(${LIB_PATH_NAME}/kcp_annotated)
 
     add_subdirectory(realtime_srv)
     add_subdirectory(example)
