@@ -194,16 +194,25 @@ typedef struct IQUEUEHEAD iqueue_head;
 //---------------------------------------------------------------------
 // queue operation                     
 //---------------------------------------------------------------------
-#define IQUEUE_ADD(node, head) ( \
+
+// 插到队列某一元素的后面
+// 如 head = rcv_queue, node = A 则变为 rcv_queue <-> A <-> rcv_queue
+// 若然后在A后面加个B之后(即head = A, node = B)则变为 rcv_queue <-> A <-> B <-> rcv_queue
+#define IQUEUE_ADD(node, head) (\
 	(node)->prev = (head), (node)->next = (head)->next, \
 	(head)->next->prev = (node), (head)->next = (node))
 
-#define IQUEUE_ADD_TAIL(node, head) ( \
+// 插到队列尾部
+// 如 rcv_queue 变为 rcv_queue <-> A <-> rcv_queue
+// 然后加个B之后变为 rcv_queue <-> A <-> B <-> rcv_queue
+// 然后加个node之后变为 rcv_queue <-> A <-> B <-> node <-> rcv_queue
+#define IQUEUE_ADD_TAIL(node, head) (\
 	(node)->prev = (head)->prev, (node)->next = (head), \
 	(head)->prev->next = (node), (head)->prev = (node))
 
 #define IQUEUE_DEL_BETWEEN(p, n) ((n)->prev = (p), (p)->next = (n))
 
+// 如 A <-> entry <-> C 变为 A <-> C
 #define IQUEUE_DEL(entry) (\
 	(entry)->next->prev = (entry)->prev, \
 	(entry)->prev->next = (entry)->next, \
@@ -406,7 +415,17 @@ struct IKCPSEG
 //	
 //	snd_queue	发送消息的队列
 //	rcv_queue	接收消息的队列
+
 //	snd_buf 发送消息的缓存
+//  如下图所示
+//	+---+---+---+---+---+---+---+---+---+---+
+//	...	|	2 |	3 |	4 |	5 |	6 |	7 |	8 |	9 |	...
+//	+---+---+---+---+---+---+---+---+---+---+
+//							^								^				
+//							|								|				
+//					 snd_una				 snd_nxt		
+//
+//
 //	rcv_buf 接收消息的缓存
 //	
 //	acklist 待发送的ack列表

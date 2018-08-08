@@ -135,7 +135,8 @@ void UdpConnection::handleRead(Timestamp receiveTime)
 				}
 			}
 		}
-		messageCallback_(shared_from_this(), packetBuf_, n, receiveTime);
+		if (n > 0 )
+			messageCallback_(shared_from_this(), packetBuf_, n, receiveTime);
 	}
 	else if (n == 0)
 	{

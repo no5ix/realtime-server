@@ -356,6 +356,8 @@ void ikcp_setoutput(ikcpcb *kcp, int (*output)(const char *buf, int len,
 
 //---------------------------------------------------------------------
 // user/upper level recv: returns size, returns below zero for EAGAIN
+// kcp_recv函数，用户获取接收到数据（去除kcp头的用户数据）。
+// 该函数根据frg，把kcp包数据进行组合返回给用户。
 //
 // 上层调用kcp的receive函数，
 // 会将rcv_queue中的数据分段整理好填入用户数据区(即 ikcp_recv 函数中的形参char *buffer)中，
@@ -366,7 +368,7 @@ void ikcp_setoutput(ikcpcb *kcp, int (*output)(const char *buf, int len,
 // 如果找到则将该Segment转移到rcv_queue中等待下次用户再调用receive接收数据 。
 //
 // 需要注意的是，Segment在从buf转到queue中时会确保转移的Segment的sn号为下次需要接收的，
-// 否则将不做转移，因此queue中的Segment将是有序的，而buf中的Segment可能会是乱序的。
+// 否则将不做转移，rcv_queue的数据是连续的，rcv_buf可能是间隔的
 //
 // 之后根据用户接收数据后的窗口变化来告诉远端进行窗口恢复。
 //---------------------------------------------------------------------
@@ -403,7 +405,7 @@ int ikcp_recv(ikcpcb *kcp, char *buffer, int len)
 	// merge fragment
 	// 拷贝rcv_queue到buffer
 	// 先将 rcv_queue 中的数据根据分片编号 frg merge 起来，
-	// 然后拷贝到用户的 buffer 中。这里 ikcp_recv 循环遍历 rcv_queue，
+	// 然后拷贝到用户的 buffer 中。循环遍历 rcv_queue，
 	// 按序拷贝数据，当碰到某个 segment 的 frg 为 0 时跳出循环，
 	// 表明本次数据接收结束。这点应该很好理解，经过 ikcp_send 发送的数据会进行分片，
 	// 分片编号为倒序序号，因此 frg 为 0 的数据包标记着完整接收到了一次 send 发送过来的数据；
@@ -497,11 +499,22 @@ int ikcp_peeksize(const ikcpcb *kcp)
 //---------------------------------------------------------------------
 // user/upper level send, returns below zero for error
 //
+// 该函数的功能非常简单，把用户发送的数据根据MSS进行分片。
+// 用户发送1900字节的数据，MTU为1400byte。
+// 因此，该函数会把1900byte的用户数据分成两个包，一个数据大小为1400，头frg设置为1，
+// len设置为1400；第二个包，头frg设置为0，len设置为500。
+// 切好KCP包之后，放入到名为snd_queue的待发送队列中。
+// 注：
+// - 流模式情况下，kcp会把两次发送的数据衔接为一个完整的kcp包。
+// - 非流模式下，用户数据%MSS的包，也会作为一个包发送出去。
+//
 // 当设置好输出函数之后，上层应用可以调用 ikcp_send 来发送数据。
 // ikcpcb 中定义了发送相关的缓冲队列和 buf，分别是 snd_queue 和 snd_buf。
 // 应用层调用 ikcp_send 后，数据将会进入到 snd_queue 中，
 // 而下层函数 ikcp_flush 将会决定将多少数据从 snd_queue 中移到 snd_buf 中，
-// 进行发送。我们首先来看 ikcp_send 的主要功能:
+// 进行发送。
+//
+// 我们首先来看 ikcp_send 的主要功能 :
 //
 // kcp发送的数据包分为2种模式，包模式和流模式。
 // 
@@ -528,7 +541,7 @@ int ikcp_send(ikcpcb *kcp, const char *buffer, int len)
 	if (len < 0) return -1;
 
 	// append to previous segment in streaming mode (if possible)
-	// 1. 如果当前的 KCP 开启流模式，取出 `snd_queue` 中的最后一个报文
+	// 1. 如果当前的 KCP 开启流模式，取出 `snd_queue` 中的最后一个报文(即 kcp->snd_queue.prev)
 	// 将其填充到 mss 的长度，并设置其 frg 为 0.
 	if (kcp->stream != 0) {
 		if (!iqueue_is_empty(&kcp->snd_queue)) {
@@ -580,7 +593,7 @@ int ikcp_send(ikcpcb *kcp, const char *buffer, int len)
 			memcpy(seg->data, buffer, size);
 		}
 		seg->len = size;
-		// //frg用来表示被分片的序号，从大到小递减; 流模式情况下分片编号不用填写
+		// frg用来表示被分片的序号，从大到小递减; 流模式情况下分片编号不用填写
 		seg->frg = (kcp->stream == 0)? (count - i - 1) : 0;
 		iqueue_init(&seg->node);
 		iqueue_add_tail(&seg->node, &kcp->snd_queue); // 加入到 snd_queue 中
@@ -618,14 +631,14 @@ static void ikcp_update_ack(ikcpcb *kcp, IINT32 rtt)
 	kcp->rx_rto = _ibound_(kcp->rx_minrto, rto, IKCP_RTO_MAX);
 }
 
-//** 更新本地snd_una数据，如snd_buff为空，snd_una指向snd_nxt，否则指向send_buff首端
+//** 更新本地 snd_una 数据，如snd_buf为空，snd_una 指向 snd_nxt，否则指向 snd_buf 首端
 static void ikcp_shrink_buf(ikcpcb *kcp)
 {
 	struct IQUEUEHEAD *p = kcp->snd_buf.next;
 	if (p != &kcp->snd_buf) { // 若snd_buff不为空
 		IKCPSEG *seg = iqueue_entry(p, IKCPSEG, node);
-		kcp->snd_una = seg->sn; // snd_una指向send_buff首端
-	}	else { // 如snd_buff为空，snd_una指向snd_nxt
+		kcp->snd_una = seg->sn; // snd_una指向snd_buf首端
+	}	else { // 如snd_buf为空，snd_una指向snd_nxt
 		kcp->snd_una = kcp->snd_nxt;
 	}
 }
@@ -711,7 +724,7 @@ static void ikcp_ack_push(ikcpcb *kcp, IUINT32 sn, IUINT32 ts)
 		IUINT32 *acklist;
 		size_t newblock;
 
-		for (newblock = 8; newblock < newsize; newblock <<= 1);
+		for (newblock = 8; newblock < newsize; newblock <<= 1); // newblock <<= 1 等价于 newblock *= 2;
 		acklist = (IUINT32*)ikcp_malloc(newblock * sizeof(IUINT32) * 2);
 
 		if (acklist == NULL) {
@@ -756,9 +769,8 @@ void ikcp_parse_data(ikcpcb *kcp, IKCPSEG *newseg)
 	IUINT32 sn = newseg->sn;
 	int repeat = 0;
 	
-	// 接收窗口大小不够了
-	if (_itimediff(sn, kcp->rcv_nxt + kcp->rcv_wnd) >= 0 ||
-		_itimediff(sn, kcp->rcv_nxt) < 0) {
+	// 接收窗口大小不够了 或 已经接收过这个sn的数据包了
+	if (_itimediff(sn, kcp->rcv_nxt + kcp->rcv_wnd) >= 0 || _itimediff(sn, kcp->rcv_nxt) < 0) {
 		ikcp_segment_delete(kcp, newseg);
 		return;
 	}
@@ -1245,14 +1257,16 @@ void ikcp_flush(ikcpcb *kcp)
 
 	// calculate window size
 	// 计算本次发送可用的窗口大小，这里 KCP 采用了可以配置的策略，
-	// 正常情况下，KCP 的窗口大小由发送窗口 snd_wnd，
-	// 远端接收窗口 rmt_wnd 以及根据流控计算得到的 kcp->cwnd 共同决定；
+	// 正常情况下，KCP 的窗口大小由
+	// 发送窗口 snd_wnd 和 远端接收窗口 rmt_wnd 以及 根据流控计算得到的 kcp->cwnd 三者共同决定；
 	// 但是当开启了 nocwnd 模式时，窗口大小仅由前两者决定
 	cwnd = _imin_(kcp->snd_wnd, kcp->rmt_wnd);
 	if (kcp->nocwnd == 0) cwnd = _imin_(kcp->cwnd, cwnd);
 
 	// move data from snd_queue to snd_buf
 	// 将缓存在 snd_queue 中的数据移到 snd_buf 中等待发送
+	// 移动的包的数量不会超过snd_una+cwnd-snd_nxt，确保发送的数据不会让接收方的接收队列溢出。
+	// 该功能类似于TCP协议中的滑动窗口。
 	while (_itimediff(kcp->snd_nxt, kcp->snd_una + cwnd) < 0) {
 		IKCPSEG *newseg;
 		if (iqueue_is_empty(&kcp->snd_queue))
@@ -1282,8 +1296,8 @@ void ikcp_flush(ikcpcb *kcp)
 	// KCP 允许设置快重传的次数，即 fastresend 参数。
 	// 例如设置 fastresend 为2，并且发送端发送了1,2,3,4,5几个包，
 	// 收到远端的ACK: 1, 3, 4, 5，当收到ACK3时，KCP知道2被跳过1次，
-	// 收到ACK4时，知道2被“跳过”了2次，此时可以认为2号丢失，不用等超时，
-	// 直接重传2号包；每个报文的 fastack 记录了该报文被跳过了几次，
+	// 收到ACK4时，知道2被“跳过”了2次，此时可以认为2号丢失，不用等超时，直接重传2号包；
+	// 每个报文的 fastack 记录了该报文被跳过了几次，
 	// 由函数 ikcp_parse_fastack 更新。于此同时，KCP 也允许设置 nodelay 参数,
 	// 当激活该参数时，每个报文的超时重传时间将由 x2 变为 x1.5，即加快报文重传：
 	resent = (kcp->fastresend > 0)? (IUINT32)kcp->fastresend : 0xffffffff; // 是否设置了快重传次数
@@ -1308,7 +1322,7 @@ void ikcp_flush(ikcpcb *kcp)
 			kcp->xmit++;
 			// 更新重传时间信息，根据kcp的设置选择rto*2或rto*1.5，并记录lost标志。
 			if (kcp->nodelay == 0) {
-				segment->rto += kcp->rx_rto; // TCP的RTO也是以2倍的方式来增长的。
+				segment->rto += kcp->rx_rto; // 以2倍的方式来增长(TCP的RTO默认也是2倍增长)
 			}	else {
 				segment->rto += kcp->rx_rto / 2; // 可以以1.5倍的速度增长
 			}
@@ -1395,6 +1409,9 @@ void ikcp_flush(ikcpcb *kcp)
 // ikcp_check when to call it again (without ikcp_input/_send calling).
 // 'current' - current timestamp in millisec. 
 //
+//  ikcp_update函数的作用是 : 
+//			设置下一次flush刷新时间戳, 并调用 ikcp_flush 函数
+//
 // kcp需要上层通过update来驱动kcp数据包的发送，每次驱动的时间间隔由interval来决定，
 // interval可以通过函数ikcp_interval来设置，间隔时间在10毫秒到5秒之间，
 // 初始默认值为100毫秒。
@@ -1411,7 +1428,7 @@ void ikcp_update(ikcpcb *kcp, IUINT32 current)
 
 	if (kcp->updated == 0) {
 		kcp->updated = 1;
-		kcp->ts_flush = kcp->current;
+		kcp->ts_flush = kcp->current; // 设置下一次flush刷新时间戳
 	}
 
 	slap = _itimediff(kcp->current, kcp->ts_flush);
@@ -1422,7 +1439,7 @@ void ikcp_update(ikcpcb *kcp, IUINT32 current)
 	}
 
 	if (slap >= 0) {
-		kcp->ts_flush += kcp->interval;
+		kcp->ts_flush += kcp->interval; // 设置下一次flush刷新时间戳
 		if (_itimediff(kcp->current, kcp->ts_flush) >= 0) {
 			kcp->ts_flush = kcp->current + kcp->interval;
 		}

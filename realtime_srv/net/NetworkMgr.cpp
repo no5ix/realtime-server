@@ -297,7 +297,6 @@ void NetworkMgr::CheckPacketType(std::shared_ptr<ClientProxy>& clientProxy,
 			break;
 		case kInputCC:
 		{
-			//clientProxy->GetUdpConnection()->SetKcpConnectState(UdpConnection::kConnected);
 			if (clientProxy->GetDeliveryNotifyMgr().ReadAndProcessState(inputStream))
 				HandleInputPacket(clientProxy, inputStream);
 			break;
