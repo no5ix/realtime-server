@@ -95,13 +95,13 @@
     <ClInclude Include="..\..\lib\muduo\net\TimerId.h" />
     <ClInclude Include="..\..\lib\muduo\net\TimerQueue.h" />
     <ClInclude Include="..\..\lib\muduo_contrib\hiredis\Hiredis.h" />
-    <ClInclude Include="..\..\lib\muduo_udp_support\UdpAcceptor.h" />
-    <ClInclude Include="..\..\lib\muduo_udp_support\UdpCallbacks.h" />
-    <ClInclude Include="..\..\lib\muduo_udp_support\UdpClient.h" />
-    <ClInclude Include="..\..\lib\muduo_udp_support\UdpConnection.h" />
-    <ClInclude Include="..\..\lib\muduo_udp_support\UdpConnector.h" />
-    <ClInclude Include="..\..\lib\muduo_udp_support\UdpServer.h" />
-    <ClInclude Include="..\..\lib\muduo_udp_support\UdpSocketsOps.h" />
+    <ClInclude Include="..\..\lib\muduo_kcp_support\UdpAcceptor.h" />
+    <ClInclude Include="..\..\lib\muduo_kcp_support\UdpCallbacks.h" />
+    <ClInclude Include="..\..\lib\muduo_kcp_support\UdpClient.h" />
+    <ClInclude Include="..\..\lib\muduo_kcp_support\UdpConnection.h" />
+    <ClInclude Include="..\..\lib\muduo_kcp_support\UdpConnector.h" />
+    <ClInclude Include="..\..\lib\muduo_kcp_support\UdpServer.h" />
+    <ClInclude Include="..\..\lib\muduo_kcp_support\UdpSocketsOps.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\lib\inih\lib\ini.c" />
@@ -174,12 +174,12 @@
     <ClCompile Include="..\..\lib\muduo\net\TimerQueue.cc" />
     <ClCompile Include="..\..\lib\muduo_contrib\hiredis\Hiredis.cc" />
     <ClCompile Include="..\..\lib\muduo_contrib\hiredis\mrediscli.cc" />
-    <ClCompile Include="..\..\lib\muduo_udp_support\UdpAcceptor.cpp" />
-    <ClCompile Include="..\..\lib\muduo_udp_support\UdpClient.cpp" />
-    <ClCompile Include="..\..\lib\muduo_udp_support\UdpConnection.cpp" />
-    <ClCompile Include="..\..\lib\muduo_udp_support\UdpConnector.cpp" />
-    <ClCompile Include="..\..\lib\muduo_udp_support\UdpServer.cpp" />
-    <ClCompile Include="..\..\lib\muduo_udp_support\UdpSocketsOps.cpp" />
+    <ClCompile Include="..\..\lib\muduo_kcp_support\UdpAcceptor.cpp" />
+    <ClCompile Include="..\..\lib\muduo_kcp_support\UdpClient.cpp" />
+    <ClCompile Include="..\..\lib\muduo_kcp_support\UdpConnection.cpp" />
+    <ClCompile Include="..\..\lib\muduo_kcp_support\UdpConnector.cpp" />
+    <ClCompile Include="..\..\lib\muduo_kcp_support\UdpServer.cpp" />
+    <ClCompile Include="..\..\lib\muduo_kcp_support\UdpSocketsOps.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\..\lib\inih\CMakeLists.txt" />
@@ -190,7 +190,7 @@
     <Text Include="..\..\lib\muduo\CMakeLists.txt" />
     <Text Include="..\..\lib\muduo_contrib\CMakeLists.txt" />
     <Text Include="..\..\lib\muduo_contrib\hiredis\CMakeLists.txt" />
-    <Text Include="..\..\lib\muduo_udp_support\CMakeLists.txt" />
+    <Text Include="..\..\lib\muduo_kcp_support\CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\lib\inih\.gitignore" />

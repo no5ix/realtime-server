@@ -1,4 +1,4 @@
-set (PROJ_NAME muduo_udp_support)
+set (PROJ_NAME muduo_kcp_support)
 set (MUDUO_LIB_NAME muduo)
 set (KCP_LIB_NAME kcp)
 

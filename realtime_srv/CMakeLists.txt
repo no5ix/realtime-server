@@ -4,7 +4,7 @@ add_definitions(-std=c++1y)
 
 
 set (PROJ_NAME realtime_srv)
-set (LIB_MUDUO_UDP_SUPPORT muduo_udp_support)
+set (LIB_MUDUO_UDP_SUPPORT muduo_kcp_support)
 set (LIB_INIH inihcpp) # config file parser
 
 IF(UNIX)

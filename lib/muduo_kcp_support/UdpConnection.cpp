@@ -6,7 +6,7 @@
 
 // Author: Shuo Chen (chenshuo at chenshuo dot com)
 
-#include <muduo_udp_support/UdpConnection.h>
+#include <muduo_kcp_support/UdpConnection.h>
 
 #include <muduo/base/Logging.h>
 #include <muduo/base/WeakCallback.h>
@@ -14,7 +14,7 @@
 #include <muduo/net/EventLoop.h>
 #include <muduo/net/Socket.h>
 #include <muduo/net/SocketsOps.h>
-#include <muduo_udp_support/UdpSocketsOps.h>
+#include <muduo_kcp_support/UdpSocketsOps.h>
 
 #include <errno.h>
 

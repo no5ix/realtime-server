@@ -97,7 +97,7 @@ set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 #     include_directories(${PROJECT_SOURCE_DIR})
 
 #     add_subdirectory(muduo)
-#     add_subdirectory(muduo_udp_support)
+#     add_subdirectory(muduo_kcp_support)
 #     add_subdirectory(realtime_srv)
     
 #     add_subdirectory(example)
@@ -161,13 +161,12 @@ if(UNIX)
 
 
     include_directories(${PROJECT_SOURCE_DIR})
-    include_directories(${PROJECT_SOURCE_DIR}/realtime_srv/common)
     include_directories(${PROJECT_SOURCE_DIR}/${LIB_PATH_NAME})
     include_directories(${PROJECT_SOURCE_DIR}/${LIB_PATH_NAME}/lualib/lua53)
     include_directories(${PROJECT_SOURCE_DIR}/${LIB_PATH_NAME}/inih/include)
 
     add_subdirectory(${LIB_PATH_NAME}/muduo)
-    add_subdirectory(${LIB_PATH_NAME}/muduo_udp_support)
+    add_subdirectory(${LIB_PATH_NAME}/muduo_kcp_support)
     add_subdirectory(${LIB_PATH_NAME}/muduo_contrib)
     add_subdirectory(${LIB_PATH_NAME}/lualib)
     add_subdirectory(${LIB_PATH_NAME}/inih)

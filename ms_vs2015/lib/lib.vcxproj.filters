@@ -12,7 +12,7 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="muduo_udp_support">
+    <Filter Include="muduo_kcp_support">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
@@ -171,26 +171,26 @@
     <ClInclude Include="..\..\lib\muduo_contrib\hiredis\Hiredis.h">
       <Filter>muduo_contrib\hiredis</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\lib\muduo_udp_support\UdpAcceptor.h">
-      <Filter>muduo_udp_support</Filter>
+    <ClInclude Include="..\..\lib\muduo_kcp_support\UdpAcceptor.h">
+      <Filter>muduo_kcp_support</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\lib\muduo_udp_support\UdpCallbacks.h">
-      <Filter>muduo_udp_support</Filter>
+    <ClInclude Include="..\..\lib\muduo_kcp_support\UdpCallbacks.h">
+      <Filter>muduo_kcp_support</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\lib\muduo_udp_support\UdpClient.h">
-      <Filter>muduo_udp_support</Filter>
+    <ClInclude Include="..\..\lib\muduo_kcp_support\UdpClient.h">
+      <Filter>muduo_kcp_support</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\lib\muduo_udp_support\UdpConnection.h">
-      <Filter>muduo_udp_support</Filter>
+    <ClInclude Include="..\..\lib\muduo_kcp_support\UdpConnection.h">
+      <Filter>muduo_kcp_support</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\lib\muduo_udp_support\UdpConnector.h">
-      <Filter>muduo_udp_support</Filter>
+    <ClInclude Include="..\..\lib\muduo_kcp_support\UdpConnector.h">
+      <Filter>muduo_kcp_support</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\lib\muduo_udp_support\UdpServer.h">
-      <Filter>muduo_udp_support</Filter>
+    <ClInclude Include="..\..\lib\muduo_kcp_support\UdpServer.h">
+      <Filter>muduo_kcp_support</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\lib\muduo_udp_support\UdpSocketsOps.h">
-      <Filter>muduo_udp_support</Filter>
+    <ClInclude Include="..\..\lib\muduo_kcp_support\UdpSocketsOps.h">
+      <Filter>muduo_kcp_support</Filter>
     </ClInclude>
     <ClInclude Include="..\..\lib\lualib\sol.hpp">
       <Filter>lualib</Filter>
@@ -389,23 +389,23 @@
     <ClCompile Include="..\..\lib\muduo_contrib\hiredis\mrediscli.cc">
       <Filter>muduo_contrib\hiredis</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\lib\muduo_udp_support\UdpAcceptor.cpp">
-      <Filter>muduo_udp_support</Filter>
+    <ClCompile Include="..\..\lib\muduo_kcp_support\UdpAcceptor.cpp">
+      <Filter>muduo_kcp_support</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\lib\muduo_udp_support\UdpClient.cpp">
-      <Filter>muduo_udp_support</Filter>
+    <ClCompile Include="..\..\lib\muduo_kcp_support\UdpClient.cpp">
+      <Filter>muduo_kcp_support</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\lib\muduo_udp_support\UdpConnection.cpp">
-      <Filter>muduo_udp_support</Filter>
+    <ClCompile Include="..\..\lib\muduo_kcp_support\UdpConnection.cpp">
+      <Filter>muduo_kcp_support</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\lib\muduo_udp_support\UdpConnector.cpp">
-      <Filter>muduo_udp_support</Filter>
+    <ClCompile Include="..\..\lib\muduo_kcp_support\UdpConnector.cpp">
+      <Filter>muduo_kcp_support</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\lib\muduo_udp_support\UdpServer.cpp">
-      <Filter>muduo_udp_support</Filter>
+    <ClCompile Include="..\..\lib\muduo_kcp_support\UdpServer.cpp">
+      <Filter>muduo_kcp_support</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\lib\muduo_udp_support\UdpSocketsOps.cpp">
-      <Filter>muduo_udp_support</Filter>
+    <ClCompile Include="..\..\lib\muduo_kcp_support\UdpSocketsOps.cpp">
+      <Filter>muduo_kcp_support</Filter>
     </ClCompile>
     <ClCompile Include="..\..\lib\lualib\lua53\lapi.c">
       <Filter>lualib\lua53</Filter>
@@ -538,8 +538,8 @@
     <Text Include="..\..\lib\muduo\CMakeLists.txt">
       <Filter>muduo</Filter>
     </Text>
-    <Text Include="..\..\lib\muduo_udp_support\CMakeLists.txt">
-      <Filter>muduo_udp_support</Filter>
+    <Text Include="..\..\lib\muduo_kcp_support\CMakeLists.txt">
+      <Filter>muduo_kcp_support</Filter>
     </Text>
     <Text Include="..\..\lib\lualib\CMakeLists.txt">
       <Filter>lualib</Filter>
