@@ -703,7 +703,7 @@ static void ikcp_parse_fastack(ikcpcb *kcp, IUINT32 sn)
 		if (_itimediff(sn, seg->sn) < 0) {
 			break;
 		}
-		else if (sn != seg->sn) { // seg的sn小于接收到的ack包的sn
+		else if (sn != seg->sn) { // seg的sn小于接收到的所有ack包中的最大sn
 			seg->fastack++;
 		}
 	}
@@ -1284,7 +1284,7 @@ void ikcp_flush(ikcpcb *kcp)
 		newseg->wnd = seg.wnd;
 		newseg->ts = current;
 		newseg->sn = kcp->snd_nxt++;  //下一个待发报的序号
-		newseg->una = kcp->rcv_nxt;   //待收消息序号
+		newseg->una = kcp->rcv_nxt;   //待接收的下一个消息序号
 		newseg->resendts = current;   //下次超时重传的时间戳
 		newseg->rto = kcp->rx_rto;    //由ack接收延迟计算出来的重传超时时间
 		newseg->fastack = 0;          //收到ack时计算的该分片被跳过的累计次数

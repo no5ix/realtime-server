@@ -57,11 +57,8 @@ namespace muduo
 			bool connected() const { return state_ == kConnected; }
 			bool disconnected() const { return state_ == kDisconnected; }
 
-			bool IsKcpConnected() const { return kcpConnectState_ == kConnected; }
-			bool IsKcpDisconnected() const { return kcpConnectState_ == kDisconnected; }
-
 			// void send(string&& message); // C++11
-			void send( const void* message, int len );
+			void send( const void* message, int len, IUINT8 dataType = KcpSession::DATA_TYPE_UNRELIABLE );
 			void DoSend( const void* message, int len );
 			void DoSend( const StringPiece& message );
 			// void send(Buffer&& message); // C++11
@@ -113,10 +110,8 @@ namespace muduo
 			realtime_srv::any* getMutableContext()
 			{ return &context_; }
 
-			int GetConvIdForKcp() const
-			{ return convIdForKcp_; }
-
-			void SetKcpConnectState(StateE s) { kcpConnectState_ = s; }
+			int GetConnId() const
+			{ return connId_; }
 
 		private:
 			void handleRead( Timestamp receiveTime );
@@ -160,9 +155,8 @@ namespace muduo
 			realtime_srv::any context_;
 
 			// kcp
-			int convIdForKcp_;
+			int connId_;
 			std::unique_ptr<KcpSession> kcpSession_;
-			StateE kcpConnectState_;
 		};
 
 		typedef std::shared_ptr<UdpConnection> UdpConnectionPtr;

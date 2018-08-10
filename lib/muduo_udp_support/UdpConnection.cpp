@@ -44,16 +44,18 @@ UdpConnection::UdpConnection(EventLoop* loop,
 	:
 	loop_(CHECK_NOTNULL(loop)),
 	name_(nameArg),
-	convIdForKcp_(ConnectionId),
+	connId_(ConnectionId),
 	state_(kConnecting),
 	reading_(true),
 	socket_(connectedSocket),
 	channel_(new Channel(loop, socket_->fd())),
 	localAddr_(localAddr),
 	peerAddr_(peerAddr),
-	kcpConnectState_(kConnecting),
-	kcpSession_(new KcpSession(convIdForKcp_, std::bind((void(UdpConnection::*)
-		(const void*, int))&UdpConnection::DoSend, this, _1, _2))),
+	kcpSession_(new KcpSession(std::bind(
+		(void(UdpConnection::*)(const void*, int))&UdpConnection::DoSend, this, _1, _2),
+		[]() { return static_cast<IUINT32>((muduo::Timestamp::now().microSecondsSinceEpoch() / 1000) & 0xFFFFFFFFu); },
+		connId_
+		)),
 	highWaterMark_( 64 * 1024 * 1024 )
 {
 	channel_->setReadCallback(
@@ -82,22 +84,53 @@ UdpConnection::~UdpConnection()
 	assert( state_ == kDisconnected );
 }
 
-void UdpConnection::send(const void* data, int len)
+//void UdpConnection::send(const void* data, int len)
+//{
+//	if (IsKcpConnected())
+//	{
+//		int success = kcpSession_->Send(static_cast<const char*>(data), len);
+//		if (success < 0)
+//		{
+//			LOG_ERROR << "ikcp_send data failed, len = " << len;
+//		}
+//		muduo::Timestamp now_ts = muduo::Timestamp::now();
+//		uint32_t now_in_ms = (now_ts.microSecondsSinceEpoch() / 1000) & 0xFFFFFFFFu;
+//		kcpSession_->Update(now_in_ms);
+//	}
+//	else
+//	{
+//		DoSend(data, len);
+//	}
+//}
+
+//void UdpConnection::send(const void* data, int len,
+//	IUINT8 dataType/* = KcpSession::DATA_TYPE_UNRELIABLE*/)
+//{
+//	len = kcpSession_->Send(data, len, dataType);
+//	if (len < 0)
+//	{
+//		LOG_ERROR << "ikcp_send failed";
+//	}
+//	else if (len == 0)
+//	{
+//		muduo::Timestamp now_ts = muduo::Timestamp::now();
+//		uint32_t now_in_ms = (now_ts.microSecondsSinceEpoch() / 1000) & 0xFFFFFFFFu;
+//		//[]() { return static_cast<IUINT32>((muduo::Timestamp::now().microSecondsSinceEpoch() / 1000) & 0xFFFFFFFFu); }
+//		kcpSession_->Update(now_in_ms);
+//	}
+//	else
+//	{
+//		DoSend(data, len);
+//	}
+//}
+
+void UdpConnection::send(const void* data, int len,
+	IUINT8 dataType/* = KcpSession::DATA_TYPE_UNRELIABLE*/)
 {
-	if (IsKcpConnected())
+	len = kcpSession_->Send(data, len, dataType);
+	if (len < 0)
 	{
-		int success = kcpSession_->Send(static_cast<const char*>(data), len);
-		if (success < 0)
-		{
-			LOG_ERROR << "ikcp_send data failed, len = " << len;
-		}
-		muduo::Timestamp now_ts = muduo::Timestamp::now();
-		uint32_t now_in_ms = (now_ts.microSecondsSinceEpoch() / 1000) & 0xFFFFFFFFu;
-		kcpSession_->Update(now_in_ms);
-	}
-	else
-	{
-		DoSend(data, len);
+		LOG_SYSERR << "ikcp_send failed";
 	}
 }
 
@@ -107,35 +140,10 @@ void UdpConnection::handleRead(Timestamp receiveTime)
 	ssize_t n = sockets::read(channel_->fd(), static_cast<void*>(packetBuf_), kPacketBufSize);
 	if (n > 0)
 	{
-		int inputResult = kcpSession_->Input(packetBuf_, n);
-		if (inputResult == 0)
-		{
-			if (!IsKcpConnected())
-				SetKcpConnectState(kConnected);
-			n = kcpSession_->Recv(packetBuf_);
-		}
-		else
-		{
-			if (IsKcpConnected())
-			{
-				switch (inputResult)
-				{
-					case -1:
-						LOG_ERROR << "kcp ikcp_input conv error";
-						break;
-					case -2:
-						LOG_ERROR << "kcp ikcp_input size error";
-						break;
-					case -3:
-						LOG_ERROR << "kcp ikcp_input cmd error";
-						break;
-					default:
-						LOG_ERROR << "kcp ikcp_input impossible error";
-						break;
-				}
-			}
-		}
-		if (n > 0 )
+		n = kcpSession_->Feed(packetBuf_, n);
+		if (n < 0 )
+			LOG_ERROR << "kcpSession Feed() Error, Feed() = " << n;
+		else if(n > 0)
 			messageCallback_(shared_from_this(), packetBuf_, n, receiveTime);
 	}
 	else if (n == 0)
@@ -222,8 +230,6 @@ void UdpConnection::sendInLoop( const void* data, size_t len )
 {
 	loop_->assertInLoopThread();
 	ssize_t nwrote = 0;
-	size_t remaining = len;
-	bool faultError = false;
 	if ( state_ == kDisconnected )
 	{
 		LOG_WARN << "disconnected, give up writing";
@@ -235,40 +241,15 @@ void UdpConnection::sendInLoop( const void* data, size_t len )
 		nwrote = sockets::write( channel_->fd(), data, len );
 		if ( nwrote >= 0 )
 		{
-			remaining = len - nwrote;
-			if ( remaining == 0 && writeCompleteCallback_ )
+			if ( len - nwrote == 0 && writeCompleteCallback_ )
 			{
 				loop_->queueInLoop( std::bind( writeCompleteCallback_, shared_from_this() ) );
 			}
 		}
 		else // nwrote < 0
 		{
-			nwrote = 0;
 			if ( errno != EWOULDBLOCK )
-			{
 				LOG_SYSERR << "UdpConnection::sendInLoop";
-				if ( errno == EPIPE || errno == ECONNRESET ) // FIXME: any others?
-				{
-					faultError = true;
-				}
-			}
-		}
-	}
-
-	assert( remaining <= len );
-	if ( !faultError && remaining > 0 )
-	{
-		size_t oldLen = outputBuffer_.readableBytes();
-		if ( oldLen + remaining >= highWaterMark_
-			&& oldLen < highWaterMark_
-			&& highWaterMarkCallback_ )
-		{
-			loop_->queueInLoop( std::bind( highWaterMarkCallback_, shared_from_this(), oldLen + remaining ) );
-		}
-		outputBuffer_.append( static_cast< const char* >( data ) + nwrote, remaining );
-		if ( !channel_->isWriting() )
-		{
-			channel_->enableWriting();
 		}
 	}
 }

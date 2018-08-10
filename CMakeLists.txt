@@ -161,6 +161,7 @@ if(UNIX)
 
 
     include_directories(${PROJECT_SOURCE_DIR})
+    include_directories(${PROJECT_SOURCE_DIR}/realtime_srv/common)
     include_directories(${PROJECT_SOURCE_DIR}/${LIB_PATH_NAME})
     include_directories(${PROJECT_SOURCE_DIR}/${LIB_PATH_NAME}/lualib/lua53)
     include_directories(${PROJECT_SOURCE_DIR}/${LIB_PATH_NAME}/inih/include)

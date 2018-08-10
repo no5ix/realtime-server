@@ -389,7 +389,7 @@ struct IKCPSEG
 //	state 连接状态（0xFFFFFFFF表示断开连接）
 //	snd_una 第一个未确认的包
 //	snd_nxt 下一个待分配的包的序号
-//	rcv_nxt 待接收消息序号
+//	rcv_nxt 待接收的下一个消息序号
 //	ssthresh 拥塞窗口阈值
 //	rx_rttval	ack接收rtt浮动值
 //	rx_srtt ack接收rtt静态值

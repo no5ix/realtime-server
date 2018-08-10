@@ -205,7 +205,7 @@ ClientProxyPtr NetworkMgr::CreateNewClient(
 {
 	ClientProxyPtr newClientProxy = std::make_shared<ClientProxy>(
 		shared_from_this(),
-		udpConnetction->GetConvIdForKcp(),
+		udpConnetction->GetConnId(),
 		holdedByThreadId,
 		udpConnetction);
 

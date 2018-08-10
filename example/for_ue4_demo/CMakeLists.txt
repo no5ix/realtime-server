@@ -26,8 +26,8 @@ IF(UNIX)
         execute_process(COMMAND ${CMAKE_C_COMPILER} -dumpversion OUTPUT_VARIABLE GCC_VERSION)
         message(STATUS "current gcc Version is ${GCC_VERSION}")
 
-        # (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 6.0) is not working.
-        if (GCC_VERSION VERSION_GREATER 6.0 OR GCC_VERSION VERSION_EQUAL 6.0)
+        # (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 5.4) is not working.
+        if (GCC_VERSION VERSION_GREATER 5.4 OR GCC_VERSION VERSION_EQUAL 5.4)
 
             if(HIREDIS_INCLUDE_DIR AND HIREDIS_LIBRARY)
                 set(SRCS
@@ -46,7 +46,7 @@ IF(UNIX)
             message(WARNING  "${EXAMPLE_NAME} check succeeded, but ${EXAMPLE_PLUS_NAME} check failed, ${EXAMPLE_PLUS_NAME} Requires :
                     - Redis
                     - Hiredis 
-                    - gcc Version >= 6.0 for compiling Sol2
+                    - gcc Version >= 5.4 for compiling Sol2
                 so just do `sh ./run_rs.sh` to play ${EXAMPLE_NAME} for now ."
             )
                 
