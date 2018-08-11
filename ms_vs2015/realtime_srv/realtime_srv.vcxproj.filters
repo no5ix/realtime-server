@@ -109,9 +109,6 @@
     <ClInclude Include="..\..\realtime_srv\common\any.h">
       <Filter>common</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\realtime_srv\common\Buf.h">
-      <Filter>common</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\realtime_srv\math\Vector3.cpp">

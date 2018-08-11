@@ -84,54 +84,12 @@ UdpConnection::~UdpConnection()
 	assert( state_ == kDisconnected );
 }
 
-//void UdpConnection::send(const void* data, int len)
-//{
-//	if (IsKcpConnected())
-//	{
-//		int success = kcpSession_->Send(static_cast<const char*>(data), len);
-//		if (success < 0)
-//		{
-//			LOG_ERROR << "ikcp_send data failed, len = " << len;
-//		}
-//		muduo::Timestamp now_ts = muduo::Timestamp::now();
-//		uint32_t now_in_ms = (now_ts.microSecondsSinceEpoch() / 1000) & 0xFFFFFFFFu;
-//		kcpSession_->Update(now_in_ms);
-//	}
-//	else
-//	{
-//		DoSend(data, len);
-//	}
-//}
-
-//void UdpConnection::send(const void* data, int len,
-//	IUINT8 dataType/* = KcpSession::DATA_TYPE_UNRELIABLE*/)
-//{
-//	len = kcpSession_->Send(data, len, dataType);
-//	if (len < 0)
-//	{
-//		LOG_ERROR << "ikcp_send failed";
-//	}
-//	else if (len == 0)
-//	{
-//		muduo::Timestamp now_ts = muduo::Timestamp::now();
-//		uint32_t now_in_ms = (now_ts.microSecondsSinceEpoch() / 1000) & 0xFFFFFFFFu;
-//		//[]() { return static_cast<IUINT32>((muduo::Timestamp::now().microSecondsSinceEpoch() / 1000) & 0xFFFFFFFFu); }
-//		kcpSession_->Update(now_in_ms);
-//	}
-//	else
-//	{
-//		DoSend(data, len);
-//	}
-//}
-
 void UdpConnection::send(const void* data, int len,
 	IUINT8 dataType/* = KcpSession::DATA_TYPE_UNRELIABLE*/)
 {
 	len = kcpSession_->Send(data, len, dataType);
 	if (len < 0)
-	{
-		LOG_SYSERR << "ikcp_send failed";
-	}
+		LOG_SYSERR << "kcpSession send failed";
 }
 
 void UdpConnection::handleRead(Timestamp receiveTime)
@@ -140,9 +98,10 @@ void UdpConnection::handleRead(Timestamp receiveTime)
 	ssize_t n = sockets::read(channel_->fd(), static_cast<void*>(packetBuf_), kPacketBufSize);
 	if (n > 0)
 	{
-		n = kcpSession_->Feed(packetBuf_, n);
+		n = kcpSession_->Recv(packetBuf_, n);
+		LOG_INFO << "kcpSession_->IsKcpConnected() = " << (kcpSession_->IsKcpConnected() ? 1 : 0);
 		if (n < 0 )
-			LOG_ERROR << "kcpSession Feed() Error, Feed() = " << n;
+			LOG_ERROR << "kcpSession Recv() Error, Recv() = " << n;
 		else if(n > 0)
 			messageCallback_(shared_from_this(), packetBuf_, n, receiveTime);
 	}

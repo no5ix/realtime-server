@@ -1,9 +1,9 @@
 #pragma once
 
-#include "ikcp.h"
-#include "Buf.h"
 #include <functional>
 #include <memory>
+#include "ikcp.h"
+#include "Buf.h"
 
 typedef std::function<void(const void* data, int len)> OutputFunction;
 typedef std::function<IUINT32()> CurrentTimeCallBack;
@@ -16,8 +16,16 @@ public:
 	static const IUINT8 DATA_TYPE_RELIABLE = 1;
 
 public:
-	KcpSession(OutputFunction outputFunc, CurrentTimeCallBack currentTimeCb, IUINT32 conv = 0)
-		: kcpcb_(ikcp_create(conv, this)), outputFunc_(outputFunc), curTimeCb_(currentTimeCb)
+	// 创建两个端点的 kcp会话对象，第一个参数设置kcp的下层输出
+	// 第二个是获取当前时间的函数
+	// 最后一个参数是conv是会话编号，同一个会话需要相同
+	KcpSession(OutputFunction outputFunc, CurrentTimeCallBack currentTimeCb,
+		IUINT32 conv = 0, StateE kcpConnectState = kConnecting)
+		:
+		kcpcb_(ikcp_create(conv, this)),
+		outputFunc_(outputFunc),
+		curTimeCb_(currentTimeCb),
+		kcpConnectState_(kcpConnectState)
 	{
 		ikcp_wndsize(kcpcb_, 128, 128);
 		ikcp_nodelay(kcpcb_, 1, 10, 2, 1);
@@ -28,19 +36,14 @@ public:
 
 	~KcpSession() { ikcp_release(kcpcb_); }
 
-	static int OutputFuncRaw(const char* buf, int len, IKCPCB* kcp, void* user)
-	{
-		(void)kcp;
+	bool IsKcpConnected() const { return kcpConnectState_ == kConnected; }
+	bool IsKcpDisconnected() const { return kcpConnectState_ == kDisconnected; }
+	void SetKcpConnectState(StateE s) { kcpConnectState_ = s; }
 
-		auto thisPtr = reinterpret_cast<KcpSession *>(user);
-		assert(thisPtr->outputFunc_ != nullptr);
-		thisPtr->outputFunc_(buf, len);
-
-		return 0;
-	}
+	void Update() { ikcp_update(kcpcb_, curTimeCb_()); }
 
 	// returns below zero for error
-	int Feed(char* data, size_t len)
+	int Recv(char* data, size_t len, bool justInput = false)
 	{
 		if (len > 0)
 		{
@@ -52,14 +55,14 @@ public:
 				memcpy(data, data + 1, len);
 				return len;
 			}
-			if (dataType == DATA_TYPE_RELIABLE)
+			else if (dataType == DATA_TYPE_RELIABLE)
 			{
 				int result = ikcp_input(kcpcb_, data + 1, len);
 				if (result == 0)
 				{
 					if (!IsKcpConnected())
 						SetKcpConnectState(kConnected);
-					return Recv(data);
+					return justInput ? 0 : KcpRecv(data);
 				}
 				else if (result < 0)
 				{
@@ -81,18 +84,8 @@ public:
 			return -5; // len err
 	}
 
-	int Recv(char* userBuffer)
-	{
-		int msgLen = ikcp_peeksize(kcpcb_);
-		if (msgLen <= 0)
-		{
-			return 0;
-		}
-		return ikcp_recv(kcpcb_, userBuffer, msgLen);
-	}
-
 	// returns below zero for error
-	int Send(const void* data, int len, IUINT8 dataType = DATA_TYPE_RELIABLE)
+	int Send(const void* data, int len, IUINT8 dataType = DATA_TYPE_RELIABLE, bool update = true)
 	{
 		output_buf_.appendInt8(dataType);
 		output_buf_.append(data, len);
@@ -107,7 +100,7 @@ public:
 
 			if (result < 0)
 				return result;
-			else
+			else if (update)
 				ikcp_update(kcpcb_, curTimeCb_());
 		}
 		else
@@ -118,11 +111,26 @@ public:
 		return 0;
 	}
 
-	void Update(IUINT32 currentTimestamp) { ikcp_update(kcpcb_, currentTimestamp); }
+	int KcpRecv(char* userBuffer)
+	{
+		int msgLen = ikcp_peeksize(kcpcb_);
+		if (msgLen <= 0)
+		{
+			return 0;
+		}
+		return ikcp_recv(kcpcb_, userBuffer, msgLen);
+	}
 
-	bool IsKcpConnected() const { return kcpConnectState_ == kConnected; }
-	bool IsKcpDisconnected() const { return kcpConnectState_ == kDisconnected; }
-	void SetKcpConnectState(StateE s) { kcpConnectState_ = s; }
+private:
+
+	static int OutputFuncRaw(const char* buf, int len, IKCPCB* kcp, void* user)
+	{
+		(void)kcp;
+		auto thisPtr = reinterpret_cast<KcpSession *>(user);
+		assert(thisPtr->outputFunc_ != nullptr);
+		thisPtr->outputFunc_(buf, len);
+		return 0;
+	}
 
 private:
 	ikcpcb* kcpcb_;

@@ -20,7 +20,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\realtime_srv\common\any.h" />
-    <ClInclude Include="..\..\realtime_srv\common\Buf.h" />
     <ClInclude Include="..\..\realtime_srv\common\copyable.h" />
     <ClInclude Include="..\..\realtime_srv\common\LuaBindMgr.h" />
     <ClInclude Include="..\..\realtime_srv\common\noncopyable.h" />
