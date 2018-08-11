@@ -51,24 +51,20 @@ UdpConnection::UdpConnection(EventLoop* loop,
 	channel_(new Channel(loop, socket_->fd())),
 	localAddr_(localAddr),
 	peerAddr_(peerAddr),
-	kcpSession_(new KcpSession(std::bind(
-		(void(UdpConnection::*)(const void*, int))&UdpConnection::DoSend, this, _1, _2),
+	kcpSession_(new KcpSession(
+		std::bind((void(UdpConnection::*)(const void*, int))&UdpConnection::DoSend, this, _1, _2),
 		[]() { return static_cast<IUINT32>((muduo::Timestamp::now().microSecondsSinceEpoch() / 1000) & 0xFFFFFFFFu); },
 		connId_
-		)),
-	highWaterMark_( 64 * 1024 * 1024 )
+		))
 {
 	channel_->setReadCallback(
 		std::bind( &UdpConnection::handleRead, this, _1 ) );
-	channel_->setWriteCallback(
-		std::bind( &UdpConnection::handleWrite, this ) );
 	channel_->setCloseCallback(
 		std::bind( &UdpConnection::handleClose, this ) );
 	channel_->setErrorCallback(
 		std::bind( &UdpConnection::handleError, this ) );
 	LOG_DEBUG << "UdpConnection::ctor[" << name_ << "] at " << this
 		<< " fd=" << socket_->fd();
-	//socket_->setKeepAlive( true );
 }
 
 UdpConnection::~UdpConnection()
@@ -100,7 +96,7 @@ void UdpConnection::handleRead(Timestamp receiveTime)
 	{
 		n = kcpSession_->Recv(packetBuf_, n);
 		LOG_INFO << "kcpSession_->IsKcpConnected() = " << (kcpSession_->IsKcpConnected() ? 1 : 0);
-		if (n < 0 )
+		if (n < 0)
 			LOG_ERROR << "kcpSession Recv() Error, Recv() = " << n;
 		else if(n > 0)
 			messageCallback_(shared_from_this(), packetBuf_, n, receiveTime);
@@ -219,18 +215,6 @@ void UdpConnection::shutdown()
 	if ( state_ == kConnected )
 	{
 		setState( kDisconnecting );
-		// FIXME: shared_from_this()?
-		loop_->runInLoop( std::bind( &UdpConnection::shutdownInLoop, this ) );
-	}
-}
-
-void UdpConnection::shutdownInLoop()
-{
-	loop_->assertInLoopThread();
-	if ( !channel_->isWriting() )
-	{
-		// we are not writing
-		socket_->shutdownWrite();
 	}
 }
 
@@ -335,46 +319,6 @@ void UdpConnection::connectDestroyed()
 		connectionCallback_( shared_from_this() );
 	}
 	channel_->remove();
-}
-
-void UdpConnection::handleWrite()
-{
-	loop_->assertInLoopThread();
-	if ( channel_->isWriting() )
-	{
-		ssize_t n = sockets::write( channel_->fd(),
-			outputBuffer_.peek(),
-			outputBuffer_.readableBytes() );
-		if ( n > 0 )
-		{
-			outputBuffer_.retrieve( n );
-			if ( outputBuffer_.readableBytes() == 0 )
-			{
-				channel_->disableWriting();
-				if ( writeCompleteCallback_ )
-				{
-					loop_->queueInLoop( std::bind( writeCompleteCallback_, shared_from_this() ) );
-				}
-				if ( state_ == kDisconnecting )
-				{
-					shutdownInLoop();
-				}
-			}
-		}
-		else
-		{
-			LOG_SYSERR << "UdpConnection::handleWrite";
-			// if (state_ == kDisconnecting)
-			// {
-			//   shutdownInLoop();
-			// }
-		}
-	}
-	else
-	{
-		LOG_TRACE << "Connection fd = " << channel_->fd()
-			<< " is down, no more writing";
-	}
 }
 
 void UdpConnection::handleClose()

@@ -299,6 +299,9 @@
     <ClInclude Include="..\..\lib\muduo_kcp_support\UdpSocketsOps.h">
       <Filter>muduo_kcp_support</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\lib\kcp_annotated\RandGen.h">
+      <Filter>kcp_annotated</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\lib\muduo\base\Condition.cc">
@@ -528,9 +531,6 @@
     </ClCompile>
     <ClCompile Include="..\..\lib\muduo_kcp_support\UdpSocketsOps.cpp">
       <Filter>muduo_kcp_support</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\lib\kcp_annotated\TestKcpSession.cpp">
-      <Filter>kcp_annotated</Filter>
     </ClCompile>
     <ClCompile Include="..\..\lib\kcp_annotated\TestKcpSessionClient.cpp">
       <Filter>kcp_annotated</Filter>

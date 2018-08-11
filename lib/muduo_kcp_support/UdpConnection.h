@@ -82,9 +82,6 @@ namespace muduo
 			void setWriteCompleteCallback( const UdpWriteCompleteCallback& cb )
 			{ writeCompleteCallback_ = cb; }
 
-			void setHighWaterMarkCallback( const UdpHighWaterMarkCallback& cb, size_t highWaterMark )
-			{ highWaterMarkCallback_ = cb; highWaterMark_ = highWaterMark; }
-
 			/// Advanced interface
 			Buffer* inputBuffer()
 			{ return &inputBuffer_; }
@@ -115,13 +112,11 @@ namespace muduo
 
 		private:
 			void handleRead( Timestamp receiveTime );
-			void handleWrite();
 			void handleClose();
 			void handleError();
 			// void sendInLoop(string&& message);
 			void sendInLoop( const StringPiece& message );
 			void sendInLoop( const void* message, size_t len );
-			void shutdownInLoop();
 			// void shutdownAndForceCloseInLoop(double seconds);
 			void forceCloseInLoop();
 			void setState( StateE s ) { state_ = s; }
@@ -141,9 +136,7 @@ namespace muduo
 			UdpConnectionCallback connectionCallback_;
 			UdpMessageCallback messageCallback_;
 			UdpWriteCompleteCallback writeCompleteCallback_;
-			UdpHighWaterMarkCallback highWaterMarkCallback_;
 			UdpCloseCallback closeCallback_;
-			size_t highWaterMark_;
 			Buffer inputBuffer_;
 			Buffer outputBuffer_; // FIXME: use list<Buffer> as output buffer.
 								  // FIXME: creationTime_, lastReceiveTime_

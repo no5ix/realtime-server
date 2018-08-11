@@ -5,6 +5,7 @@
 #include "ikcp.h"
 #include "Buf.h"
 
+
 typedef std::function<void(const void* data, int len)> OutputFunction;
 typedef std::function<IUINT32()> CurrentTimeCallBack;
 
@@ -16,16 +17,15 @@ public:
 	static const IUINT8 DATA_TYPE_RELIABLE = 1;
 
 public:
-	// 创建两个端点的 kcp会话对象，第一个参数设置kcp的下层输出
-	// 第二个是获取当前时间的函数
-	// 最后一个参数是conv是会话编号，同一个会话需要相同
-	KcpSession(OutputFunction outputFunc, CurrentTimeCallBack currentTimeCb,
-		IUINT32 conv = 0, StateE kcpConnectState = kConnecting)
+	KcpSession(const OutputFunction& outputFunc,
+		const CurrentTimeCallBack& currentTimeCb,
+		IUINT8 conv = 0,
+		StateE kcpConnectState = kConnecting)
 		:
 		kcpcb_(ikcp_create(conv, this)),
 		outputFunc_(outputFunc),
 		curTimeCb_(currentTimeCb),
-		kcpConnectState_(kcpConnectState)
+		kcpConnState_(kcpConnectState)
 	{
 		ikcp_wndsize(kcpcb_, 128, 128);
 		ikcp_nodelay(kcpcb_, 1, 10, 2, 1);
@@ -36,9 +36,9 @@ public:
 
 	~KcpSession() { ikcp_release(kcpcb_); }
 
-	bool IsKcpConnected() const { return kcpConnectState_ == kConnected; }
-	bool IsKcpDisconnected() const { return kcpConnectState_ == kDisconnected; }
-	void SetKcpConnectState(StateE s) { kcpConnectState_ = s; }
+	bool IsKcpConnected() const { return kcpConnState_ == kConnected; }
+	bool IsKcpDisconnected() const { return kcpConnState_ == kDisconnected; }
+	void SetKcpConnectState(StateE s) { kcpConnState_ = s; }
 
 	void Update() { ikcp_update(kcpcb_, curTimeCb_()); }
 
@@ -87,16 +87,17 @@ public:
 	// returns below zero for error
 	int Send(const void* data, int len, IUINT8 dataType = DATA_TYPE_RELIABLE, bool update = true)
 	{
-		output_buf_.appendInt8(dataType);
-		output_buf_.append(data, len);
+
+		outputBuf_.appendUInt8(dataType);
+		outputBuf_.append(data, len);
 
 		if (dataType == DATA_TYPE_RELIABLE && IsKcpConnected())
 		{
 			int result = ikcp_send(
 				kcpcb_,
-				static_cast<const char*>(output_buf_.peek()),
-				output_buf_.readableBytes());
-			output_buf_.retrieveAll();
+				static_cast<const char*>(outputBuf_.peek()),
+				outputBuf_.readableBytes());
+			outputBuf_.retrieveAll();
 
 			if (result < 0)
 				return result;
@@ -105,11 +106,15 @@ public:
 		}
 		else
 		{
-			outputFunc_(output_buf_.peek(), output_buf_.readableBytes());
-			output_buf_.retrieveAll();
+			outputFunc_(outputBuf_.peek(), outputBuf_.readableBytes());
+			outputBuf_.retrieveAll();
 		}
 		return 0;
 	}
+
+
+
+private:
 
 	int KcpRecv(char* userBuffer)
 	{
@@ -120,8 +125,6 @@ public:
 		}
 		return ikcp_recv(kcpcb_, userBuffer, msgLen);
 	}
-
-private:
 
 	static int OutputFuncRaw(const char* buf, int len, IKCPCB* kcp, void* user)
 	{
@@ -135,8 +138,8 @@ private:
 private:
 	ikcpcb* kcpcb_;
 	OutputFunction outputFunc_;
-	StateE kcpConnectState_;
-	realtime_srv::Buf output_buf_;
+	StateE kcpConnState_;
+	realtime_srv::Buf outputBuf_;
 	CurrentTimeCallBack curTimeCb_;
 };
 typedef std::shared_ptr<KcpSession> KcpSessionPtr;
