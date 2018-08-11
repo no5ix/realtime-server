@@ -52,7 +52,7 @@ UdpConnection::UdpConnection(EventLoop* loop,
 	localAddr_(localAddr),
 	peerAddr_(peerAddr),
 	kcpSession_(new KcpSession(
-		std::bind((void(UdpConnection::*)(const void*, int))&UdpConnection::DoSend, this, _1, _2),
+		std::bind(&UdpConnection::DoSend, this, _1, _2),
 		[]() { return static_cast<IUINT32>((muduo::Timestamp::now().microSecondsSinceEpoch() / 1000) & 0xFFFFFFFFu); },
 		connId_
 		))
@@ -81,7 +81,7 @@ UdpConnection::~UdpConnection()
 }
 
 void UdpConnection::send(const void* data, int len,
-	IUINT8 dataType/* = KcpSession::DATA_TYPE_UNRELIABLE*/)
+	KcpSession::DataTypeE dataType /*= KcpSession::DataTypeE::kUnreliable*/)
 {
 	len = kcpSession_->Send(data, len, dataType);
 	if (len < 0)
@@ -112,13 +112,12 @@ void UdpConnection::handleRead(Timestamp receiveTime)
 	}
 }
 
-void UdpConnection::DoSend( const void* data, int len )
+void UdpConnection::DoSend( const void* data, int len)
 {
 	if (state_ == kConnected)
 	{
 		if (loop_->isInLoopThread())
 		{
-			//sendInLoop(message);
 			sendInLoop(data, static_cast<size_t>(len));
 		}
 		else
@@ -134,53 +133,6 @@ void UdpConnection::DoSend( const void* data, int len )
 	}
 }
 
-void UdpConnection::DoSend( const StringPiece& message )
-{
-	if ( state_ == kConnected )
-	{
-		if ( loop_->isInLoopThread() )
-		{
-			sendInLoop( message );
-		}
-		else
-		{
-			void ( UdpConnection::*fp )( const StringPiece& message ) = &UdpConnection::sendInLoop;
-			loop_->runInLoop(
-				std::bind( fp,
-					this,     // FIXME
-					message.as_string() ) );
-			//std::forward<string>(message)));
-		}
-	}
-}
-
-// FIXME efficiency!!!
-void UdpConnection::DoSend( Buffer* buf )
-{
-	if ( state_ == kConnected )
-	{
-		if ( loop_->isInLoopThread() )
-		{
-			sendInLoop( buf->peek(), buf->readableBytes() );
-			buf->retrieveAll();
-		}
-		else
-		{
-			void ( UdpConnection::*fp )( const StringPiece& message ) = &UdpConnection::sendInLoop;
-			loop_->runInLoop(
-				std::bind( fp,
-					this,     // FIXME
-					buf->retrieveAllAsString() ) );
-			//std::forward<string>(message)));
-		}
-	}
-}
-
-void UdpConnection::sendInLoop( const StringPiece& message )
-{
-	sendInLoop( message.data(), message.size() );
-}
-
 void UdpConnection::sendInLoop( const void* data, size_t len )
 {
 	loop_->assertInLoopThread();
@@ -190,22 +142,16 @@ void UdpConnection::sendInLoop( const void* data, size_t len )
 		LOG_WARN << "disconnected, give up writing";
 		return;
 	}
-	// if no thing in output queue, try writing directly
-	if ( !channel_->isWriting() && outputBuffer_.readableBytes() == 0 )
+	nwrote = sockets::write( channel_->fd(), data, len );
+	if (nwrote >= 0)
 	{
-		nwrote = sockets::write( channel_->fd(), data, len );
-		if ( nwrote >= 0 )
-		{
-			if ( len - nwrote == 0 && writeCompleteCallback_ )
-			{
-				loop_->queueInLoop( std::bind( writeCompleteCallback_, shared_from_this() ) );
-			}
-		}
-		else // nwrote < 0
-		{
-			if ( errno != EWOULDBLOCK )
-				LOG_SYSERR << "UdpConnection::sendInLoop";
-		}
+		if (len - nwrote == 0 && writeCompleteCallback_)
+			loop_->queueInLoop(std::bind(writeCompleteCallback_, shared_from_this()));
+	}
+	else // nwrote < 0
+	{
+		if (errno != EWOULDBLOCK)
+			LOG_SYSERR << "UdpConnection::sendInLoop";
 	}
 }
 

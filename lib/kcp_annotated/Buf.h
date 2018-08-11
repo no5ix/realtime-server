@@ -7,10 +7,9 @@
 #include <assert.h>
 #include <string.h>
 //#include <unistd.h>  // ssize_t
-#include "ikcp.h"
 
 // a light weight buf.
-// thx chensuo, inspired from muduo & kcp.
+// thx chensuo, copy from muduo.
 
 namespace realtime_srv
 {
@@ -181,59 +180,26 @@ public:
 		writerIndex_ -= len;
 	}
 
-	///
-	/// Append IUINT32 using network endian
-	///
-	void appendUInt32(IUINT32 x)
-	{
-		ensureWritableBytes(4);
-
-	#if IWORDS_BIG_ENDIAN
-		*(unsigned char*)(beginWrite() + 0) = (unsigned char)((x >> 0) & 0xff);
-		*(unsigned char*)(beginWrite() + 1) = (unsigned char)((x >> 8) & 0xff);
-		*(unsigned char*)(beginWrite() + 2) = (unsigned char)((x >> 16) & 0xff);
-		*(unsigned char*)(beginWrite() + 3) = (unsigned char)((x >> 24) & 0xff);
-	#else
-		*(IUINT32*)beginWrite() = x;
-	#endif
-
-		hasWritten(4);
-	}
-
-	void appendUInt16(unsigned short w)
-	{
-		ensureWritableBytes(2);
-
-	#if IWORDS_BIG_ENDIAN
-		*(unsigned char*)(beginWrite() + 0) = (w & 255);
-		*(unsigned char*)(beginWrite() + 1) = (w >> 8);
-	#else
-		*(unsigned short*)(beginWrite()) = w;
-	#endif
-
-		hasWritten(2);
-	}
-
-	void appendUInt8(unsigned char x)
+	void appendInt8(int8_t x)
 	{
 		append(&x, sizeof x);
 	}
 
-	unsigned char readUInt8()
+	int8_t readInt8()
 	{
-		unsigned char result = peekUInt8();
+		int8_t result = peekInt8();
 		retrieveInt8();
 		return result;
 	}
 
-	unsigned char peekUInt8() const
+	int8_t peekInt8() const
 	{
-		assert(readableBytes() >= sizeof(unsigned char));
-		unsigned char x = *peek();
+		assert(readableBytes() >= sizeof(int8_t));
+		int8_t x = *peek();
 		return x;
 	}
 
-	void prependUInt8(unsigned char x)
+	void prependInt8(int8_t x)
 	{
 		prepend(&x, sizeof x);
 	}

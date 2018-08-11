@@ -58,11 +58,11 @@ namespace muduo
 			bool disconnected() const { return state_ == kDisconnected; }
 
 			// void send(string&& message); // C++11
-			void send( const void* message, int len, IUINT8 dataType = KcpSession::DATA_TYPE_UNRELIABLE );
-			void DoSend( const void* message, int len );
-			void DoSend( const StringPiece& message );
-			// void send(Buffer&& message); // C++11
-			void DoSend( Buffer* message );  // this one will swap data
+			void send( const void* message, int len,
+				KcpSession::DataTypeE dataType = KcpSession::DataTypeE::kUnreliable);
+
+			void DoSend(const void* message, int len);
+
 			void shutdown(); // NOT thread safe, no simultaneous calling
 							 // void shutdownAndForceCloseAfter(double seconds); // NOT thread safe, no simultaneous calling
 			void forceClose();
@@ -81,13 +81,6 @@ namespace muduo
 
 			void setWriteCompleteCallback( const UdpWriteCompleteCallback& cb )
 			{ writeCompleteCallback_ = cb; }
-
-			/// Advanced interface
-			Buffer* inputBuffer()
-			{ return &inputBuffer_; }
-
-			Buffer* outputBuffer()
-			{ return &outputBuffer_; }
 
 			/// Internal use only.
 			void setCloseCallback( const UdpCloseCallback& cb )
@@ -115,7 +108,6 @@ namespace muduo
 			void handleClose();
 			void handleError();
 			// void sendInLoop(string&& message);
-			void sendInLoop( const StringPiece& message );
 			void sendInLoop( const void* message, size_t len );
 			// void shutdownAndForceCloseInLoop(double seconds);
 			void forceCloseInLoop();
@@ -137,18 +129,14 @@ namespace muduo
 			UdpMessageCallback messageCallback_;
 			UdpWriteCompleteCallback writeCompleteCallback_;
 			UdpCloseCallback closeCallback_;
-			Buffer inputBuffer_;
-			Buffer outputBuffer_; // FIXME: use list<Buffer> as output buffer.
-								  // FIXME: creationTime_, lastReceiveTime_
-								  //        bytesReceived_, bytesSent_
 
 			// new
+			int connId_;
 			static const size_t kPacketBufSize = 1500;
 			char packetBuf_[kPacketBufSize];
 			realtime_srv::any context_;
 
 			// kcp
-			int connId_;
 			std::unique_ptr<KcpSession> kcpSession_;
 		};
 
