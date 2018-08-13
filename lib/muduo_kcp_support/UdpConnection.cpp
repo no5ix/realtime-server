@@ -21,18 +21,18 @@
 using namespace muduo;
 using namespace muduo::net;
 
-void muduo::net::UdpDefaultConnectionCallback( const UdpConnectionPtr& conn )
+void muduo::net::UdpDefaultConnectionCallback(const UdpConnectionPtr& conn)
 {
 	LOG_TRACE << conn->localAddress().toIpPort() << " -> "
 		<< conn->peerAddress().toIpPort() << " is "
-		<< ( conn->connected() ? "UP" : "DOWN" );
+		<< (conn->connected() ? "UP" : "DOWN");
 	// do not call conn->forceClose(), because some users want to register message callback only.
 }
 
-void muduo::net::UdpDefaultMessageCallback( const UdpConnectionPtr&,
+void muduo::net::UdpDefaultMessageCallback(const UdpConnectionPtr&,
 	char*,
 	size_t,
-	Timestamp )
+	Timestamp)
 {}
 
 UdpConnection::UdpConnection(EventLoop* loop,
@@ -53,16 +53,15 @@ UdpConnection::UdpConnection(EventLoop* loop,
 	peerAddr_(peerAddr),
 	kcpSession_(new KcpSession(
 		std::bind(&UdpConnection::DoSend, this, _1, _2),
-		[]() { return static_cast<IUINT32>((muduo::Timestamp::now().microSecondsSinceEpoch() / 1000) & 0xFFFFFFFFu); },
-		connId_
-		))
+		[]() { return static_cast<IUINT32>((
+			Timestamp::now().microSecondsSinceEpoch() / 1000) & 0xFFFFFFFFu); }))
 {
 	channel_->setReadCallback(
-		std::bind( &UdpConnection::handleRead, this, _1 ) );
+		std::bind(&UdpConnection::handleRead, this, _1));
 	channel_->setCloseCallback(
-		std::bind( &UdpConnection::handleClose, this ) );
+		std::bind(&UdpConnection::handleClose, this));
 	channel_->setErrorCallback(
-		std::bind( &UdpConnection::handleError, this ) );
+		std::bind(&UdpConnection::handleError, this));
 	LOG_DEBUG << "UdpConnection::ctor[" << name_ << "] at " << this
 		<< " fd=" << socket_->fd();
 }
@@ -75,9 +74,9 @@ UdpConnection::~UdpConnection()
 
 	LOG_INFO << localAddress().toIpPort() << " -> "
 		<< peerAddress().toIpPort() << " is "
-		<< ( connected() ? "UP" : "DOWN" );
+		<< (connected() ? "UP" : "DOWN");
 
-	assert( state_ == kDisconnected );
+	assert(state_ == kDisconnected);
 }
 
 void UdpConnection::send(const void* data, int len,
@@ -98,7 +97,7 @@ void UdpConnection::handleRead(Timestamp receiveTime)
 		LOG_INFO << "kcpSession_->IsKcpConnected() = " << (kcpSession_->IsKcpConnected() ? 1 : 0);
 		if (n < 0)
 			LOG_ERROR << "kcpSession Recv() Error, Recv() = " << n;
-		else if(n > 0)
+		else if (n > 0)
 			messageCallback_(shared_from_this(), packetBuf_, n, receiveTime);
 	}
 	else if (n == 0)
@@ -112,7 +111,7 @@ void UdpConnection::handleRead(Timestamp receiveTime)
 	}
 }
 
-void UdpConnection::DoSend( const void* data, int len)
+void UdpConnection::DoSend(const void* data, int len)
 {
 	if (state_ == kConnected)
 	{
@@ -133,16 +132,16 @@ void UdpConnection::DoSend( const void* data, int len)
 	}
 }
 
-void UdpConnection::sendInLoop( const void* data, size_t len )
+void UdpConnection::sendInLoop(const void* data, size_t len)
 {
 	loop_->assertInLoopThread();
 	ssize_t nwrote = 0;
-	if ( state_ == kDisconnected )
+	if (state_ == kDisconnected)
 	{
 		LOG_WARN << "disconnected, give up writing";
 		return;
 	}
-	nwrote = sockets::write( channel_->fd(), data, len );
+	nwrote = sockets::write(channel_->fd(), data, len);
 	if (nwrote >= 0)
 	{
 		if (len - nwrote == 0 && writeCompleteCallback_)
@@ -158,38 +157,38 @@ void UdpConnection::sendInLoop( const void* data, size_t len )
 void UdpConnection::shutdown()
 {
 	// FIXME: use compare and swap
-	if ( state_ == kConnected )
+	if (state_ == kConnected)
 	{
-		setState( kDisconnecting );
+		setState(kDisconnecting);
 	}
 }
 
 void UdpConnection::forceClose()
 {
 	// FIXME: use compare and swap
-	if ( state_ == kConnected || state_ == kDisconnecting )
+	if (state_ == kConnected || state_ == kDisconnecting)
 	{
-		setState( kDisconnecting );
-		loop_->queueInLoop( std::bind( &UdpConnection::forceCloseInLoop, shared_from_this() ) );
+		setState(kDisconnecting);
+		loop_->queueInLoop(std::bind(&UdpConnection::forceCloseInLoop, shared_from_this()));
 	}
 }
 
-void UdpConnection::forceCloseWithDelay( double seconds )
+void UdpConnection::forceCloseWithDelay(double seconds)
 {
-	if ( state_ == kConnected || state_ == kDisconnecting )
+	if (state_ == kConnected || state_ == kDisconnecting)
 	{
-		setState( kDisconnecting );
+		setState(kDisconnecting);
 		loop_->runAfter(
 			seconds,
-			makeWeakCallback( shared_from_this(),
-				&UdpConnection::forceClose ) );  // not forceCloseInLoop to avoid race condition
+			makeWeakCallback(shared_from_this(),
+				&UdpConnection::forceClose));  // not forceCloseInLoop to avoid race condition
 	}
 }
 
 void UdpConnection::forceCloseInLoop()
 {
 	loop_->assertInLoopThread();
-	if ( state_ == kConnected || state_ == kDisconnecting )
+	if (state_ == kConnected || state_ == kDisconnecting)
 	{
 		// as if we received 0 byte in handleRead();
 		handleClose();
@@ -198,7 +197,7 @@ void UdpConnection::forceCloseInLoop()
 
 const char* UdpConnection::stateToString() const
 {
-	switch ( state_ )
+	switch (state_)
 	{
 		case kDisconnected:
 			return "kDisconnected";
@@ -215,13 +214,13 @@ const char* UdpConnection::stateToString() const
 
 void UdpConnection::startRead()
 {
-	loop_->runInLoop( std::bind( &UdpConnection::startReadInLoop, this ) );
+	loop_->runInLoop(std::bind(&UdpConnection::startReadInLoop, this));
 }
 
 void UdpConnection::startReadInLoop()
 {
 	loop_->assertInLoopThread();
-	if ( !reading_ || !channel_->isReading() )
+	if (!reading_ || !channel_->isReading())
 	{
 		channel_->enableReading();
 		reading_ = true;
@@ -230,13 +229,13 @@ void UdpConnection::startReadInLoop()
 
 void UdpConnection::stopRead()
 {
-	loop_->runInLoop( std::bind( &UdpConnection::stopReadInLoop, this ) );
+	loop_->runInLoop(std::bind(&UdpConnection::stopReadInLoop, this));
 }
 
 void UdpConnection::stopReadInLoop()
 {
 	loop_->assertInLoopThread();
-	if ( reading_ || channel_->isReading() )
+	if (reading_ || channel_->isReading())
 	{
 		channel_->disableReading();
 		reading_ = false;
@@ -246,23 +245,23 @@ void UdpConnection::stopReadInLoop()
 void UdpConnection::connectEstablished()
 {
 	loop_->assertInLoopThread();
-	assert( state_ == kConnecting );
-	setState( kConnected );
-	channel_->tie( shared_from_this() );
+	assert(state_ == kConnecting);
+	setState(kConnected);
+	channel_->tie(shared_from_this());
 	channel_->enableReading();
 
-	connectionCallback_( shared_from_this() );
+	connectionCallback_(shared_from_this());
 }
 
 void UdpConnection::connectDestroyed()
 {
 	loop_->assertInLoopThread();
-	if ( state_ == kConnected )
+	if (state_ == kConnected)
 	{
-		setState( kDisconnected );
+		setState(kDisconnected);
 		channel_->disableAll();
 
-		connectionCallback_( shared_from_this() );
+		connectionCallback_(shared_from_this());
 	}
 	channel_->remove();
 }
@@ -271,28 +270,28 @@ void UdpConnection::handleClose()
 {
 	loop_->assertInLoopThread();
 	LOG_TRACE << "fd = " << channel_->fd() << " state = " << stateToString();
-	assert( state_ == kConnected || state_ == kDisconnecting );
+	assert(state_ == kConnected || state_ == kDisconnecting);
 	// we don't close fd, leave it to dtor, so we can find leaks easily.
-	setState( kDisconnected );
+	setState(kDisconnected);
 	channel_->disableAll();
 
-	UdpConnectionPtr guardThis( shared_from_this() );
-	connectionCallback_( guardThis );
+	UdpConnectionPtr guardThis(shared_from_this());
+	connectionCallback_(guardThis);
 	// must be the last line
-	closeCallback_( guardThis );
+	closeCallback_(guardThis);
 }
 
 void UdpConnection::handleError()
 {
-	int err = sockets::getSocketError( channel_->fd() );
-	if ( err == ECONNREFUSED )
+	int err = sockets::getSocketError(channel_->fd());
+	if (err == ECONNREFUSED)
 	{
 		LOG_INFO << peerAddr_.toIpPort() << " is disconnected";
 	}
 	else
 	{
 		LOG_ERROR << "UdpConnection::handleError [" << name_
-			<< "] - SO_ERROR = " << err << " " << strerror_tl( err );
+			<< "] - SO_ERROR = " << err << " " << strerror_tl(err);
 	}
 	handleClose();
 }

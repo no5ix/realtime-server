@@ -69,9 +69,9 @@ static inline IUINT32 iclock()
 static inline void isleep(unsigned long millisecond)
 {
 	#ifdef __unix 	/* usleep( time * 1000 ); */
-	struct timespec ts;
-	ts.tv_sec = (time_t)(millisecond / 1000);
-	ts.tv_nsec = (long)((millisecond % 1000) * 1000000);
+	//struct timespec ts;
+	//ts.tv_sec = (time_t)(millisecond / 1000);
+	//ts.tv_nsec = (long)((millisecond % 1000) * 1000000);
 	/*nanosleep(&ts, NULL);*/
 	usleep((millisecond << 10) - (millisecond << 4) - (millisecond << 3));
 	#elif defined(_WIN32)

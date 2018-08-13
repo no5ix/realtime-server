@@ -26,6 +26,7 @@
     <ClInclude Include="..\..\lib\kcp_annotated\Buf.h" />
     <ClInclude Include="..\..\lib\kcp_annotated\ikcp.h" />
     <ClInclude Include="..\..\lib\kcp_annotated\KcpSession.h" />
+    <ClInclude Include="..\..\lib\kcp_annotated\PortableEndian.h" />
     <ClInclude Include="..\..\lib\kcp_annotated\RandGen.h" />
     <ClInclude Include="..\..\lib\kcp_annotated\test.h" />
     <ClInclude Include="..\..\lib\lualib\lua53\lapi.h" />

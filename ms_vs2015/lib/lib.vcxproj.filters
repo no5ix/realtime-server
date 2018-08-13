@@ -302,6 +302,9 @@
     <ClInclude Include="..\..\lib\kcp_annotated\RandGen.h">
       <Filter>kcp_annotated</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\lib\kcp_annotated\PortableEndian.h">
+      <Filter>kcp_annotated</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\lib\muduo\base\Condition.cc">

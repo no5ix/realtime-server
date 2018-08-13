@@ -1,4 +1,4 @@
-set (PROJ_NAME kcp)
+set (LIB_KCP kcp)
 
 IF(UNIX)
 
@@ -6,8 +6,17 @@ IF(UNIX)
       ikcp.c
     )
 
-    add_library(${PROJ_NAME} ${kcp_SRCS})
-    target_link_libraries(${PROJ_NAME})
+    add_library(${LIB_KCP} ${kcp_SRCS})
+    target_link_libraries(${LIB_KCP})
+
+    add_executable(TestKcpSessionServer TestKcpSessionServer.cpp)
+    target_link_libraries(TestKcpSessionServer ${LIB_KCP})
+
+
+    add_executable(TestKcpSessionClient TestKcpSessionClient.cpp)
+    target_link_libraries(TestKcpSessionClient ${LIB_KCP})
+
+    message(STATUS  "TestKcpSession build finished")
 
 # elseif(WIN32) # Check if we are on Windows
 
