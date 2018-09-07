@@ -52,9 +52,10 @@ UdpConnection::UdpConnection(EventLoop* loop,
 	localAddr_(localAddr),
 	peerAddr_(peerAddr),
 	kcpSession_(new KcpSession(
+		KcpSession::RoleTypeE::kSrv,
 		std::bind(&UdpConnection::DoSend, this, _1, _2),
-		[]() { return static_cast<IUINT32>((
-			Timestamp::now().microSecondsSinceEpoch() / 1000) & 0xFFFFFFFFu); }))
+		[]() { return static_cast<IUINT32>(
+			(Timestamp::now().microSecondsSinceEpoch() / 1000)); }))
 {
 	channel_->setReadCallback(
 		std::bind(&UdpConnection::handleRead, this, _1));
@@ -94,7 +95,8 @@ void UdpConnection::handleRead(Timestamp receiveTime)
 	if (n > 0)
 	{
 		n = kcpSession_->Recv(packetBuf_, n);
-		LOG_INFO << "kcpSession_->IsKcpConnected() = " << (kcpSession_->IsKcpConnected() ? 1 : 0);
+		//LOG_INFO << "kcpSession_->IsKcpConnected() = " << (kcpSession_->IsKcpConnected() ? 1 : 0);
+		//LOG_INFO << "n = kcpSession_->Recv(packetBuf_, n) = " << n;
 		if (n < 0)
 			LOG_ERROR << "kcpSession Recv() Error, Recv() = " << n;
 		else if (n > 0)

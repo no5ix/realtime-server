@@ -35,7 +35,6 @@ public:
 	~KcpSession() { if (kcpcb_) ikcp_release(kcpcb_); }
 
 	bool IsKcpConnected() const { return kcpConnState_ == kConnected; }
-	bool IsKcpDisconnected() const { return kcpConnState_ == kDisconnected; }
 
 	void Update() { if (kcpcb_) ikcp_update(kcpcb_, curTimeCb_()); }
 
@@ -159,7 +158,6 @@ public:
 			return -9; // dataType err
 		}
 	}
-
 
 private:
 

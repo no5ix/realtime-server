@@ -89,7 +89,7 @@ public:
 private:
 	void Tick();
 	void DoProcessPkt(ReceivedPacketPtr& recvedPacket);
-	void PreparePacketToSend();
+	void PreparePacketToSendAndUpdateConn();
 	void CheckForDisconnects();
 
 	uint32_t	 HandleServerReset(std::shared_ptr<ClientProxy>& clientProxy,

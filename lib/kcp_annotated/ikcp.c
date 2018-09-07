@@ -479,12 +479,14 @@ int ikcp_peeksize(const ikcpcb *kcp)
 
 	assert(kcp);
 
-	if (iqueue_is_empty(&kcp->rcv_queue)) return -1;
+	if (iqueue_is_empty(&kcp->rcv_queue)) 
+		return -1;
 
 	seg = iqueue_entry(kcp->rcv_queue.next, IKCPSEG, node);
 	if (seg->frg == 0) return seg->len;
 
-	if (kcp->nrcv_que < seg->frg + 1) return -1;
+	if (kcp->nrcv_que < seg->frg + 1) 
+		return -1;
 
 	for (p = kcp->rcv_queue.next; p != &kcp->rcv_queue; p = p->next) {
 		seg = iqueue_entry(p, IKCPSEG, node);

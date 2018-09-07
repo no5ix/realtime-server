@@ -141,10 +141,11 @@ void NetworkMgr::DoProcessPkt(ReceivedPacketPtr& recvedPacket)
 	}
 }
 
-void NetworkMgr::PreparePacketToSend()
+void NetworkMgr::PreparePacketToSendAndUpdateConn()
 {
 	for (auto& pair : udpConnToClientMap_)
 	{
+		(pair.first)->KcpSessionUpdate();
 		(pair.second)->GetDeliveryNotifyMgr().ProcessTimedOutPackets();
 		if ((pair.second)->IsLastMoveTimestampDirty())
 			DoPreparePacketToSend((pair.second), kStateCC);
@@ -154,7 +155,7 @@ void NetworkMgr::PreparePacketToSend()
 void NetworkMgr::Tick()
 {
 	worldUpdateCb_();
-	PreparePacketToSend();
+	PreparePacketToSendAndUpdateConn();
 }
 
 void NetworkMgr::CheckForDisconnects()

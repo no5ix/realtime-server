@@ -146,12 +146,12 @@ void PktHandler::ProcessPkt()
 	{
 		for ( size_t i = 0; i != pendingRecvedPktsCnt_; ++i )
 		{
-			++t_handleCountThisRound_;
+			//++t_handleCountThisRound_;
 			pktProcessCb_( pendingRecvedPkts_[i] ); pendingRecvedPkts_[i].reset();
 		}
 	}
 	tickCb_();
-	CheckForSleep();
+	//CheckForSleep();
 }
 
 void PktHandler::IoThreadInit( EventLoop* loop )

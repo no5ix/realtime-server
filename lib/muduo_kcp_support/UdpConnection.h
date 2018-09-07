@@ -61,6 +61,8 @@ namespace muduo
 			void send( const void* message, int len,
 				KcpSession::DataTypeE dataType = KcpSession::DataTypeE::kUnreliable);
 
+			void KcpSessionUpdate() { kcpSession_->Update(); }
+
 			void DoSend(const void* message, int len);
 
 			void shutdown(); // NOT thread safe, no simultaneous calling
