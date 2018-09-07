@@ -27,8 +27,8 @@
 
 #define SND_BUFF_LEN 666
 #define RCV_BUFF_LEN 1500
-//#define SERVER_IP "172.96.239.56"
-#define SERVER_IP "127.0.0.1"
+#define SERVER_IP "172.96.239.56"
+//#define SERVER_IP "127.0.0.1"
 
 
 void udp_output(const void *buf, int len, int fd, struct sockaddr* dst)
@@ -39,6 +39,7 @@ void udp_output(const void *buf, int len, int fd, struct sockaddr* dst)
 void udp_msg_sender(int fd, struct sockaddr* dst)
 {
 	KcpSession kcpClient(
+		KcpSession::RoleTypeE::kCli,
 		std::bind(udp_output, std::placeholders::_1, std::placeholders::_2, fd, dst),
 		std::bind(iclock));
 
@@ -46,7 +47,7 @@ void udp_msg_sender(int fd, struct sockaddr* dst)
 	int len = 0;
 	struct sockaddr_in from;
 	uint32_t index = 11;
-
+	const uint32_t maxIndex = 222;
 	while (1)
 	{
 		char sndBuf[SND_BUFF_LEN];
@@ -54,9 +55,9 @@ void udp_msg_sender(int fd, struct sockaddr* dst)
 
 		((uint32_t*)sndBuf)[0] = index++;
 
-		uint32_t sn = *(uint32_t*)(sndBuf + 0);
-		printf("client:%d\n", (int)sn);  //打印自己发送的信息
+		printf("client:%d\n", ((uint32_t*)sndBuf)[0]);  //打印自己发送的信息
 
+		kcpClient.Update();
 		len = kcpClient.Send(sndBuf, SND_BUFF_LEN);
 		//len = kcpClient.Send(sndBuf, SND_BUFF_LEN, KcpSession::DataTypeE::kUnreliable);
 		printf("kcpClient.Send() = %d \n", len);
@@ -83,9 +84,9 @@ void udp_msg_sender(int fd, struct sockaddr* dst)
 			}
 			else if (result > 0)
 			{
-				uint32_t sn = *(uint32_t*)(rcvBuf + 0);
-				printf("server: have recieved sn = %d\n", (int)sn);  //打印server发过来的信息
-				if (sn == 222) break;
+				uint32_t srvRcvMaxIndex = *(uint32_t*)(rcvBuf + 0);
+				printf("server: have recieved the max index = %d\n", (int)srvRcvMaxIndex);  //打印server发过来的信息
+				if (srvRcvMaxIndex == maxIndex) break;
 			}
 		}
 		else if (len < 0)
@@ -93,7 +94,7 @@ void udp_msg_sender(int fd, struct sockaddr* dst)
 			printf("recieve data fail!\n");
 			//return;
 		}
-		//sleep(1);
+		usleep(16666); // 60fps
 	}
 }
 

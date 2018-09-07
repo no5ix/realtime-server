@@ -50,16 +50,15 @@ void handle_udp_msg(int fd)
 	struct sockaddr_in clientAddr;  //clent_addr用于记录发送方的地址信息
 
 	KcpSession kcpServer(
-		std::bind(udp_output, std::placeholders::_1, std::placeholders::_2, fd,
-			//clientAddr),
-			std::ref(clientAddr)),
+		KcpSession::RoleTypeE::kCli,
+		std::bind(udp_output, std::placeholders::_1, std::placeholders::_2, fd, std::ref(clientAddr)),
 		std::bind(iclock));
 
 	char sndBuf[SND_BUFF_LEN];
 	char rcvBuf[RCV_BUFF_LEN];  //接收缓冲区，1024字节
 	socklen_t clientAddrLen = sizeof(clientAddr);
 	int len = 0;
-	uint32_t nextSn = 11;
+	uint32_t nextRcvIndex = 11;
 	bool lost = false;
 
 	while (1)
@@ -70,25 +69,21 @@ void handle_udp_msg(int fd)
 		//recvfrom是拥塞函数，没有数据就一直拥塞
 		len = ::recvfrom(fd, rcvBuf, RCV_BUFF_LEN, 0, (struct sockaddr*)&clientAddr, &clientAddrLen);
 
-		printf(" kcpServer.IsKcpConnected() = %d\n",(kcpServer.IsKcpConnected() ? 1 : 0));
 		printf("recvfrom() = %d \n", len);
-		//uint32_t sn = *(uint32_t*)(rcvBuf + 0);
-		//printf("sn = %d \n", sn);
 
 		if (len > 0)
 		{
 			// 模拟丢包
 			lost = GetRandomFloat() > 0.8 ? true : false;
-			//lost = false;
 			if (lost && kcpServer.IsKcpConnected())
 			{
-				sprintf(sndBuf, "packet lost!!\n");  //回复client
-				printf("server:%s\n", sndBuf);
+				printf("server:packet lost!!\n");
 			}
 			else
 			{
 				len = kcpServer.Recv(rcvBuf, len);
 				printf("kcpClient.Recv() = %d \n", len);
+				printf(" kcpServer.IsKcpConnected() = %d\n", (kcpServer.IsKcpConnected() ? 1 : 0));
 				if (len < 0)
 				{
 					printf("kcpSession Recv failed, Recv() = %d \n", len);
@@ -96,16 +91,16 @@ void handle_udp_msg(int fd)
 				}
 				else if (len > 0)
 				{
-					uint32_t sn = *(uint32_t*)(rcvBuf + 0);
-					printf("client:%d\n", (int)sn);  //打印client发过来的信息
-					if (kcpServer.IsKcpConnected() && sn != nextSn)
+					uint32_t index = *(uint32_t*)(rcvBuf + 0);
+					printf("client:%d\n", (int)index);  //打印client发过来的信息
+					if (kcpServer.IsKcpConnected() && index != nextRcvIndex)
 					{
 						// 如果收到的包不连续
-						printf("ERROR sn<->nextSn : %d<->%d, kcpServer.IsKcpConnected() = %d\n",
-							(int)sn, (int)nextSn, (kcpServer.IsKcpConnected() ? 1 : 0));
+						printf("ERROR index<->nextRcvIndex : %d<->%d, kcpServer.IsKcpConnected() = %d\n",
+							(int)index, (int)nextRcvIndex, (kcpServer.IsKcpConnected() ? 1 : 0));
 						return;
 					}
-					++nextSn;
+					++nextRcvIndex;
 				}
 			}
 		}
@@ -114,18 +109,19 @@ void handle_udp_msg(int fd)
 			printf("recieve data fail!\n");
 		}
 
+		kcpServer.Update();
+
 		//发送信息给client，注意使用了clientAddr结构体指针
 		//sprintf(sndBuf, "I have recieved %d bytes data!\n", len);  //回复client
 		//len = ::sendto(fd, sndBuf, SND_BUFF_LEN, 0, (struct sockaddr*)&clientAddr, clientAddrLen);
 		//printf("sendto() = %d \n", len);
 
 		{
-			printf("server:I have recieved %d bytes data!\n\n", len);  //打印自己发送的信息给
+			printf("I have recieved the max index = %d\n", nextRcvIndex - 1);  //回复client
+			((uint32_t*)sndBuf)[0] = nextRcvIndex - 1;
 
-			sprintf(sndBuf, "I have recieved sn = %d!\n", nextSn - 1);  //回复client
-			((uint32_t*)sndBuf)[0] = nextSn - 1;
-
-			int result = kcpServer.Send(sndBuf, SND_BUFF_LEN);
+			//int result = kcpServer.Send(sndBuf, SND_BUFF_LEN);
+			int result = kcpServer.Send(sndBuf, SND_BUFF_LEN, KcpSession::DataTypeE::kUnreliable);
 			printf("kcpServer.Send() = %d \n", result);
 			if (result < 0)
 			{

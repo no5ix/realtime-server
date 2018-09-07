@@ -14,13 +14,17 @@ public:
 	enum StateE { kDisconnected, kConnecting, kConnected, kDisconnecting, kResetting };
 	enum DataTypeE { kUnreliable = 88, kReliable };
 	enum PktTypeE { kSyn = 66, kAck, kPsh, kFin, kRst };
+	enum RoleTypeE { kSrv, kCli };
 
 	typedef std::function<void(const void* data, int len)> OutputFunction;
 	typedef std::function<IUINT32()> CurrentTimeCallBack;
 
 public:
-	KcpSession(const OutputFunction& outputFunc, const CurrentTimeCallBack& currentTimeCb)
+	KcpSession(const RoleTypeE role,
+		const OutputFunction& outputFunc,
+		const CurrentTimeCallBack& currentTimeCb)
 		:
+		role_(role),
 		conv_(0),
 		outputFunc_(outputFunc),
 		curTimeCb_(currentTimeCb),
@@ -28,12 +32,12 @@ public:
 		kcpConnState_(kConnecting)
 	{}
 
-	~KcpSession() { if(kcpcb_) ikcp_release(kcpcb_); }
+	~KcpSession() { if (kcpcb_) ikcp_release(kcpcb_); }
 
 	bool IsKcpConnected() const { return kcpConnState_ == kConnected; }
 	bool IsKcpDisconnected() const { return kcpConnState_ == kDisconnected; }
 
-	void Update() { ikcp_update(kcpcb_, curTimeCb_()); }
+	void Update() { if (kcpcb_) ikcp_update(kcpcb_, curTimeCb_()); }
 
 	// returns below zero for error
 	int Send(const void* data, int len, DataTypeE dataType = kReliable)
@@ -45,11 +49,13 @@ public:
 			outputBuf_.appendInt8(kUnreliable);
 			outputBuf_.append(data, len);
 			outputFunc_(outputBuf_.peek(), outputBuf_.readableBytes());
+			if (!IsKcpConnected() && role_ == kCli)
+				SendSyn();
 			return 0;
 		}
 		else if (dataType == kReliable)
 		{
-			if (!IsKcpConnected())
+			if (!IsKcpConnected() && role_ == kCli)
 			{
 				SendSyn();
 				sndQueueBeforeConned_.push(std::string(static_cast<const char*>(data), len));
@@ -159,6 +165,7 @@ private:
 
 	void SendRst()
 	{
+		outputBuf_.retrieveAll();
 		outputBuf_.appendInt8(kReliable);
 		outputBuf_.appendInt8(kRst);
 		outputFunc_(outputBuf_.peek(), outputBuf_.readableBytes());
@@ -167,6 +174,7 @@ private:
 
 	void SendSyn()
 	{
+		outputBuf_.retrieveAll();
 		outputBuf_.appendInt8(kReliable);
 		outputBuf_.appendInt8(kSyn);
 		outputFunc_(outputBuf_.peek(), outputBuf_.readableBytes());
@@ -175,6 +183,7 @@ private:
 
 	void SendAckAndConv()
 	{
+		outputBuf_.retrieveAll();
 		outputBuf_.appendInt8(kReliable);
 		outputBuf_.appendInt8(kAck);
 		outputBuf_.appendInt32(conv_);
@@ -186,7 +195,7 @@ private:
 	{
 		if (reinit)
 		{
-			if(kcpcb_) ikcp_release(kcpcb_);
+			if (kcpcb_) ikcp_release(kcpcb_);
 		}
 		conv_ = conv;
 		kcpcb_ = ikcp_create(conv, this);
@@ -206,6 +215,7 @@ private:
 
 	int KcpRecv(char* userBuffer)
 	{
+		assert(kcpcb_);
 		int msgLen = ikcp_peeksize(kcpcb_);
 		if (msgLen <= 0)
 		{
@@ -220,6 +230,7 @@ private:
 		auto thisPtr = reinterpret_cast<KcpSession *>(user);
 		assert(thisPtr->outputFunc_ != nullptr);
 
+		thisPtr->outputBuf_.retrieveAll();
 		thisPtr->outputBuf_.appendInt8(kReliable);
 		thisPtr->outputBuf_.appendInt8(kPsh);
 		thisPtr->outputBuf_.append(data, len);
@@ -237,6 +248,7 @@ private:
 	Buf inputBuf_;
 	CurrentTimeCallBack curTimeCb_;
 	IUINT32 conv_;
+	RoleTypeE role_;
 	std::queue<std::string> sndQueueBeforeConned_;
 };
 typedef std::shared_ptr<KcpSession> KcpSessionPtr;
