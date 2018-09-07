@@ -11,9 +11,9 @@
 class KcpSession
 {
 public:
-	enum StateE { kDisconnected, kConnecting, kConnected, kDisconnecting };
+	enum StateE { kDisconnected, kConnecting, kConnected, kDisconnecting, kResetting };
 	enum DataTypeE { kUnreliable = 88, kReliable };
-	enum PktTypeE { kSyn = 66, kAck, kPsh, kFin };
+	enum PktTypeE { kSyn = 66, kAck, kPsh, kFin, kRst };
 
 	typedef std::function<void(const void* data, int len)> OutputFunction;
 	typedef std::function<IUINT32()> CurrentTimeCallBack;
@@ -28,10 +28,12 @@ public:
 		kcpConnState_(kConnecting)
 	{}
 
-	~KcpSession() { ikcp_release(kcpcb_); }
+	~KcpSession() { if(kcpcb_) ikcp_release(kcpcb_); }
 
 	bool IsKcpConnected() const { return kcpConnState_ == kConnected; }
 	bool IsKcpDisconnected() const { return kcpConnState_ == kDisconnected; }
+
+	void Update() { ikcp_update(kcpcb_, curTimeCb_()); }
 
 	// returns below zero for error
 	int Send(const void* data, int len, DataTypeE dataType = kReliable)
@@ -50,21 +52,21 @@ public:
 			if (!IsKcpConnected())
 			{
 				SendSyn();
-				//sndQueueBeforeConned_.push(std::string(static_cast<const char*>(data), len));
+				sndQueueBeforeConned_.push(std::string(static_cast<const char*>(data), len));
 				return 0;
 			}
 			else if (IsKcpConnected())
 			{
-				//while (sndQueueBeforeConned_.size() > 0)
-				//{
-				//	std::string msg = sndQueueBeforeConned_.front();
-				//	int sendRet = ikcp_send(kcpcb_, msg.c_str(), msg.size());
-				//	if (sendRet < 0)
-				//		return sendRet; // ikcp_send err
-				//	else
-				//		ikcp_update(kcpcb_, curTimeCb_());
-				//	sndQueueBeforeConned_.pop();
-				//}
+				while (sndQueueBeforeConned_.size() > 0)
+				{
+					std::string msg = sndQueueBeforeConned_.front();
+					int sendRet = ikcp_send(kcpcb_, msg.c_str(), msg.size());
+					if (sendRet < 0)
+						return sendRet; // ikcp_send err
+					else
+						Update();
+					sndQueueBeforeConned_.pop();
+				}
 
 				int result = ikcp_send(
 					kcpcb_,
@@ -73,13 +75,14 @@ public:
 				if (result < 0)
 					return result; // ikcp_send err
 				else
-					ikcp_update(kcpcb_, curTimeCb_());
+					Update();
 				return 0;
 			}
 		}
 		return 0;
 	}
 
+	// returns size, returns below zero for err
 	int Recv(char* data, size_t len)
 	{
 		inputBuf_.retrieveAll();
@@ -101,6 +104,10 @@ public:
 					SetKcpConnectState(kConnected);
 					InitKcp(GetNewConv());
 				}
+				else
+				{
+					InitKcp(conv_, true);
+				}
 				SendAckAndConv();
 				return 0;
 			}
@@ -111,6 +118,12 @@ public:
 					SetKcpConnectState(kConnected);
 					InitKcp(inputBuf_.readInt32());
 				}
+				return 0;
+			}
+			else if (pktType == kRst)
+			{
+				SetKcpConnectState(kResetting);
+				SendSyn();
 				return 0;
 			}
 			else if (pktType == kPsh)
@@ -124,9 +137,9 @@ public:
 					else // if (result < 0)
 						return result - 3; // ikcp_input err, -4, -5, -6
 				}
-				else // !IsKcpConnected
+				else  // pktType == kPsh, but kcp not connected
 				{
-					//return -7; // pktType == kPsh, but kcp not connected err
+					SendRst();
 					return 0;
 				}
 			}
@@ -143,6 +156,14 @@ public:
 
 
 private:
+
+	void SendRst()
+	{
+		outputBuf_.appendInt8(kReliable);
+		outputBuf_.appendInt8(kRst);
+		outputFunc_(outputBuf_.peek(), outputBuf_.readableBytes());
+		outputBuf_.retrieveAll();
+	}
 
 	void SendSyn()
 	{
@@ -161,14 +182,18 @@ private:
 		outputBuf_.retrieveAll();
 	}
 
-	void InitKcp(IUINT32 conv)
+	void InitKcp(IUINT32 conv, bool reinit = false)
 	{
+		if (reinit)
+		{
+			if(kcpcb_) ikcp_release(kcpcb_);
+		}
 		conv_ = conv;
 		kcpcb_ = ikcp_create(conv, this);
 		ikcp_wndsize(kcpcb_, 128, 128);
 		ikcp_nodelay(kcpcb_, 1, 5, 1, 1); // 设置成1次ACK跨越直接重传, 这样反应速度会更快. 内部时钟5毫秒.
 		kcpcb_->rx_minrto = 5;
-		kcpcb_->output = KcpSession::KcpOutputFuncRaw;
+		kcpcb_->output = KcpSession::KcpPshOutputFuncRaw;
 	}
 
 	IUINT32 GetNewConv()
@@ -189,7 +214,7 @@ private:
 		return ikcp_recv(kcpcb_, userBuffer, msgLen);
 	}
 
-	static int KcpOutputFuncRaw(const char* data, int len, IKCPCB* kcp, void* user)
+	static int KcpPshOutputFuncRaw(const char* data, int len, IKCPCB* kcp, void* user)
 	{
 		(void)kcp;
 		auto thisPtr = reinterpret_cast<KcpSession *>(user);

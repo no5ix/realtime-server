@@ -3,7 +3,7 @@
 // TestKcpSessionServer.cpp - KcpSession 测试用例
 //
 // 说明：
-// g++ TestKcpSessionServer.cpp -o TestKcpSessionServer -std=c++11
+// g++ TestKcpSessionServer.cpp -o ServerTestKcpSession -std=c++11
 //
 //=====================================================================
 
@@ -58,8 +58,8 @@ void handle_udp_msg(int fd)
 	char sndBuf[SND_BUFF_LEN];
 	char rcvBuf[RCV_BUFF_LEN];  //接收缓冲区，1024字节
 	socklen_t clientAddrLen = sizeof(clientAddr);
-	int len;
-	IUINT32 nextSn = 0;
+	int len = 0;
+	uint32_t nextSn = 11;
 	bool lost = false;
 
 	while (1)
@@ -72,16 +72,18 @@ void handle_udp_msg(int fd)
 
 		printf(" kcpServer.IsKcpConnected() = %d\n",(kcpServer.IsKcpConnected() ? 1 : 0));
 		printf("recvfrom() = %d \n", len);
+		//uint32_t sn = *(uint32_t*)(rcvBuf + 0);
+		//printf("sn = %d \n", sn);
+
 		if (len > 0)
 		{
 			// 模拟丢包
 			lost = GetRandomFloat() > 0.8 ? true : false;
 			//lost = false;
-
-			if (lost)
+			if (lost && kcpServer.IsKcpConnected())
 			{
 				sprintf(sndBuf, "packet lost!!\n");  //回复client
-				printf("server:%s\n", sndBuf);  //打印自己发送的信息给
+				printf("server:%s\n", sndBuf);
 			}
 			else
 			{
@@ -94,46 +96,38 @@ void handle_udp_msg(int fd)
 				}
 				else if (len > 0)
 				{
-					IUINT32 sn = *(IUINT32*)(rcvBuf + 0);
-					//if (kcpServer.IsKcpConnected() && sn != nextSn)
+					uint32_t sn = *(uint32_t*)(rcvBuf + 0);
+					printf("client:%d\n", (int)sn);  //打印client发过来的信息
+					if (kcpServer.IsKcpConnected() && sn != nextSn)
 					{
 						// 如果收到的包不连续
 						printf("ERROR sn<->nextSn : %d<->%d, kcpServer.IsKcpConnected() = %d\n",
 							(int)sn, (int)nextSn, (kcpServer.IsKcpConnected() ? 1 : 0));
-						//return;
+						return;
 					}
 					++nextSn;
-					printf("client:%d\n", (int)sn);  //打印client发过来的信息
-
-					//memset(buf, 0, BUFF_LEN);
-					//sprintf(buf, "I have recieved %d bytes data!\n", len);  //回复client
-					//printf("server:%s\n", buf);  //打印自己发送的信息给
-				}
-				else
-				{
-					//printf("kcpClient.Recv() = %d \n", len);
 				}
 			}
 		}
 		else if (len < 0)
 		{
-			//printf("recieve data fail!\n");
-			//return;
-		}
-		else
-		{
-			printf("recvfrom() len = 0\n");
+			printf("recieve data fail!\n");
 		}
 
 		//发送信息给client，注意使用了clientAddr结构体指针
-		//sendto(fd, buf, BUFF_LEN, 0, (struct sockaddr*)&clientAddr, clientAddrLen);
-		{
-			//memset(buf, 0, BUFF_LEN);
+		//sprintf(sndBuf, "I have recieved %d bytes data!\n", len);  //回复client
+		//len = ::sendto(fd, sndBuf, SND_BUFF_LEN, 0, (struct sockaddr*)&clientAddr, clientAddrLen);
+		//printf("sendto() = %d \n", len);
 
-			sprintf(sndBuf, "I have recieved %d bytes data!\n", len);  //回复client
-			printf("server:%s\n", sndBuf);  //打印自己发送的信息给
-			len = kcpServer.Send(sndBuf, SND_BUFF_LEN);
-			if (len < 0)
+		{
+			printf("server:I have recieved %d bytes data!\n\n", len);  //打印自己发送的信息给
+
+			sprintf(sndBuf, "I have recieved sn = %d!\n", nextSn - 1);  //回复client
+			((uint32_t*)sndBuf)[0] = nextSn - 1;
+
+			int result = kcpServer.Send(sndBuf, SND_BUFF_LEN);
+			printf("kcpServer.Send() = %d \n", result);
+			if (result < 0)
 			{
 				printf("kcpSession Send failed\n");
 				return;
@@ -163,11 +157,11 @@ int main(int argc, char* argv[])
 	}
 
 
-	// set socket non-blocking
-	{
-		int flags = fcntl(server_fd, F_GETFL, 0);
-		fcntl(server_fd, F_SETFL, flags | O_NONBLOCK);
-	}
+	//// set socket non-blocking
+	//{
+	//	int flags = fcntl(server_fd, F_GETFL, 0);
+	//	fcntl(server_fd, F_SETFL, flags | O_NONBLOCK);
+	//}
 
 	memset(&ser_addr, 0, sizeof(ser_addr));
 	ser_addr.sin_family = AF_INET;

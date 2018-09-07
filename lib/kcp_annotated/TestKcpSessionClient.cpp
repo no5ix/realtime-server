@@ -3,7 +3,7 @@
 // TestKcpSessionClient.cpp - KcpSession 测试用例
 //
 // 说明：
-// g++ TestKcpSessionClient.cpp -o TestKcpSessionClient -std=c++11
+// g++ TestKcpSessionClient.cpp -o ClientTestKcpSession -std=c++11
 //
 //=====================================================================
 
@@ -44,55 +44,56 @@ void udp_msg_sender(int fd, struct sockaddr* dst)
 
 	socklen_t dstAddrLen = sizeof(*dst);
 	int len = 0;
-	struct sockaddr_in src;
-	IUINT32 index = 0;
+	struct sockaddr_in from;
+	uint32_t index = 11;
 
 	while (1)
 	{
 		char sndBuf[SND_BUFF_LEN];
 		char rcvBuf[RCV_BUFF_LEN];
-		((IUINT32*)sndBuf)[0] = index++;
 
-		IUINT32 sn = *(IUINT32*)(sndBuf + 0);
+		((uint32_t*)sndBuf)[0] = index++;
+
+		uint32_t sn = *(uint32_t*)(sndBuf + 0);
 		printf("client:%d\n", (int)sn);  //打印自己发送的信息
 
 		len = kcpClient.Send(sndBuf, SND_BUFF_LEN);
+		//len = kcpClient.Send(sndBuf, SND_BUFF_LEN, KcpSession::DataTypeE::kUnreliable);
+		printf("kcpClient.Send() = %d \n", len);
+		//len = ::sendto(fd, sndBuf, SND_BUFF_LEN, 0, dst, sizeof(*dst));
 		if (len < 0)
 		{
 			printf("kcpSession Send failed\n");
 			return;
 		}
 
-		len = recvfrom(fd, rcvBuf, RCV_BUFF_LEN, 0, (struct sockaddr*)&src, &dstAddrLen);  //接收来自server的信息
-		printf(" kcpServer.IsKcpConnected() = %d\n", (kcpClient.IsKcpConnected() ? 1 : 0));
+		len = ::recvfrom(fd, rcvBuf, RCV_BUFF_LEN, 0, (struct sockaddr*)&from, &dstAddrLen);  //接收来自server的信息
+		printf(" kcpClient.IsKcpConnected() = %d\n", (kcpClient.IsKcpConnected() ? 1 : 0));
 		printf("recvfrom() = %d \n", len);
+		//printf("server:%s\n", rcvBuf);
+
 		if (len > 0)
 		{
-			len = kcpClient.Recv(rcvBuf, len);
-			printf("kcpClient.Recv() = %d \n", len);
-			if (len < 0)
+			int result = kcpClient.Recv(rcvBuf, len);
+			printf("kcpClient.Recv() = %d \n", result);
+			if (result < 0)
 			{
-				printf("kcpSession Recv failed, Recv() = %d \n", len);
+				printf("kcpSession Recv failed, Recv() = %d \n", result);
 				return;
 			}
-			else if (len > 0)
+			else if (result > 0)
 			{
-				printf("server:%s\n", rcvBuf);
+				uint32_t sn = *(uint32_t*)(rcvBuf + 0);
+				printf("server: have recieved sn = %d\n", (int)sn);  //打印server发过来的信息
+				if (sn == 222) break;
 			}
 		}
 		else if (len < 0)
 		{
-			//printf("recieve data fail!\n");
+			printf("recieve data fail!\n");
 			//return;
 		}
-		else
-		{
-			printf("recvfrom() len = 0\n");
-		}
-
-		sleep(0.1);  //一秒发送一次消息
-
-		if (index > 1000) break;
+		//sleep(1);
 	}
 }
 
