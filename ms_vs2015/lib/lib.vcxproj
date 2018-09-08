@@ -23,11 +23,8 @@
     <ClInclude Include="..\..\lib\concurrent_queue\concurrentqueue.h" />
     <ClInclude Include="..\..\lib\inih\include\ini.h" />
     <ClInclude Include="..\..\lib\inih\include\INIReader.h" />
-    <ClInclude Include="..\..\lib\kcp_annotated\Buf.h" />
     <ClInclude Include="..\..\lib\kcp_annotated\ikcp.h" />
     <ClInclude Include="..\..\lib\kcp_annotated\KcpSession.h" />
-    <ClInclude Include="..\..\lib\kcp_annotated\PortableEndian.h" />
-    <ClInclude Include="..\..\lib\kcp_annotated\test.h" />
     <ClInclude Include="..\..\lib\lualib\lua53\lapi.h" />
     <ClInclude Include="..\..\lib\lualib\lua53\lauxlib.h" />
     <ClInclude Include="..\..\lib\lualib\lua53\lcode.h" />
@@ -109,7 +106,6 @@
     <ClCompile Include="..\..\lib\inih\lib\ini.c" />
     <ClCompile Include="..\..\lib\inih\lib\INIReader.cpp" />
     <ClCompile Include="..\..\lib\kcp_annotated\ikcp.c" />
-    <ClCompile Include="..\..\lib\kcp_annotated\test.cpp" />
     <ClCompile Include="..\..\lib\kcp_annotated\TestKcpSessionClient.cpp" />
     <ClCompile Include="..\..\lib\kcp_annotated\TestKcpSessionServer.cpp" />
     <ClCompile Include="..\..\lib\lualib\lua53\lapi.c" />

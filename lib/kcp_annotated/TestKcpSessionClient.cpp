@@ -1,13 +1,3 @@
-//=====================================================================
-//
-// TestKcpSessionClient.cpp - KcpSession 测试用例
-//
-// 说明：
-// g++ TestKcpSessionClient.cpp -o ClientTestKcpSession -std=c++11
-//
-//=====================================================================
-
-
 #include <stdio.h>
 #include <sys/types.h>
 
@@ -16,19 +6,43 @@
 #include <fcntl.h>
 #include <arpa/inet.h>
 
+#include <sys/time.h>
 #include <string.h>
 #include <unistd.h>
 
-#include "test.h" // for iclock
 #include "KcpSession.h"
 
 #define SERVER_PORT 8888
 
 #define SND_BUFF_LEN 666
 #define RCV_BUFF_LEN 1500
+
 // #define SERVER_IP "172.96.239.56"
 #define SERVER_IP "127.0.0.1"
 
+
+
+void itimeofday(long *sec, long *usec)
+{
+	struct timeval time;
+	gettimeofday(&time, NULL);
+	if (sec) *sec = time.tv_sec;
+	if (usec) *usec = time.tv_usec;
+}
+
+IUINT64 iclock64(void)
+{
+	long s, u;
+	IUINT64 value;
+	itimeofday(&s, &u);
+	value = ((IUINT64)s) * 1000 + (u / 1000);
+	return value;
+}
+
+IUINT32 iclock()
+{
+	return (IUINT32)(iclock64() & 0xfffffffful);
+}
 
 void udp_output(const void *buf, int len, int fd, struct sockaddr* dst)
 {
