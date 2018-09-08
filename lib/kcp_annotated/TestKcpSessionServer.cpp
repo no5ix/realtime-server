@@ -22,7 +22,6 @@
 #include <random>
 
 #include "test.h" // for iclock
-#include "ikcp.c"
 #include "KcpSession.h"
 
 

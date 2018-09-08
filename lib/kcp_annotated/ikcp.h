@@ -367,7 +367,7 @@ struct IKCPSEG
 	IUINT32 conv;     // Conversation, 会话序号: 接收到的数据包与发送的一致才接收此数据包
 	IUINT32 cmd;      // Command, 指令类型: 代表这个Segment的类型
 	IUINT32 frg;      // Fragment 记录了分片时的倒序序号, 当输出数据大于 MSS 时，需要将数据进行分片；
-	IUINT32 wnd;      // Window, 填写己方的可用窗口大小，
+	IUINT32 wnd;      // Window, 己方的可用窗口大小, 也就是 rcv_queue 的可用大小即 rcv_wnd - nrcv_que, 见 ikcp_wnd_unused 函数
 	IUINT32 ts;       // Timestamp, 记录了发送时的时间戳，用来估计 RTT
 	IUINT32 sn;       // Sequence Number, Segment序号
 	IUINT32 una;      // Unacknowledged, 当前未收到的序号: 即代表这个序号之前的包均收到
@@ -389,14 +389,14 @@ struct IKCPSEG
 //	state 连接状态（0xFFFFFFFF表示断开连接）
 //	snd_una 第一个未确认的包
 //	snd_nxt 下一个待分配的包的序号
-//	rcv_nxt 待接收的下一个消息序号
+//	rcv_nxt 待接收的下一个消息序号, 当把segment移出rcv_buf移入rcv_queue时, rcv_nxt会自增 
 //	ssthresh 拥塞窗口阈值
 //	rx_rttval	ack接收rtt浮动值
 //	rx_srtt ack接收rtt静态值
 //	rx_rto 由ack接收延迟计算出来的重传超时时间
 //	rx_minrto 最小重传超时时间
-//	snd_wnd	发送窗口大小
-//	rcv_wnd	接收窗口大小
+//	snd_wnd	发送窗口大小, 一旦设置之后就不会变了, 默认32
+//	rcv_wnd	接收窗口大小, 一旦设置之后就不会变了, 默认128
 //	rmt_wnd, 远端接收窗口大小
 //	cwnd, 拥塞窗口大小
 //	probe 探查变量，IKCP_ASK_TELL表示告知远端窗口大小。IKCP_ASK_SEND表示请求远端告知窗口大小
@@ -412,22 +412,38 @@ struct IKCPSEG
 //	fastresend 触发快速重传的重复ack个数
 //	nocwnd	取消拥塞控制
 //	stream 是否采用流传输模式
-//	
+//
+//  nrcv_buf, nsnd_buf; // 收发缓存区中的Segment数量
+//
+//  nsnd_que // 发送队列snd_queue中的Segment数量
 //	snd_queue	发送消息的队列
-//	rcv_queue	接收消息的队列
-
+//
+//	rcv_queue	接收消息的队列, rcv_queue的数据是连续的，rcv_buf可能是间隔的
+//  nrcv_que // 接收队列rcv_queue中的Segment数量, 需要小于 rcv_wnd
+//  rcv_queue 如下图所示
+//	+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
+//	...	|	2 |	3 |	4 |	............................................... 
+//	+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
+//							^												^												^				
+//							|												|												|				
+//					 rcv_nxt						rcv_nxt + nrcv_que			rcv_nxt + rcv_wnd		
+//
 //	snd_buf 发送消息的缓存
-//  如下图所示
-//	+---+---+---+---+---+---+---+---+---+---+
-//	...	|	2 |	3 |	4 |	5 |	6 |	7 |	8 |	9 |	...
-//	+---+---+---+---+---+---+---+---+---+---+
-//							^								^				
-//							|								|				
-//					 snd_una				 snd_nxt		
+//  snd_buf 如下图所示
+//	+---+---+---+---+---+---+---+---+---+---+---+---+---+
+//	...	|	2 |	3 |	4 |	5 |	6 |	7 |	8 |	9 |	...........
+//	+---+---+---+---+---+---+---+---+---+---+---+---+---+
+//							^								^								^
+//							|								|								|
+//					 snd_una				 snd_nxt		snd_una + snd_wnd	
 //
 //
 //	rcv_buf 接收消息的缓存
-//	
+//  rcv_buf 如下图所示, rcv_queue的数据是连续的，rcv_buf可能是间隔的
+//	+---+---+---+---+---+---+---+---+---+---+---+---+---+
+//	...	|	2 |	4 |	6 |	7 |	8 |	9 |	...........
+//	+---+---+---+---+---+---+---+---+---+---+---+---+---+	
+//
 //	acklist 待发送的ack列表
 //	
 //	buffer 存储消息字节流的内存

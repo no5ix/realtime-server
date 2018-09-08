@@ -368,7 +368,7 @@ void ikcp_setoutput(ikcpcb *kcp, int (*output)(const char *buf, int len,
 // 如果找到则将该Segment转移到rcv_queue中等待下次用户再调用receive接收数据 。
 //
 // 需要注意的是，Segment在从buf转到queue中时会确保转移的Segment的sn号为下次需要接收的，
-// 否则将不做转移，rcv_queue的数据是连续的，rcv_buf可能是间隔的
+// 否则将不做转移，rcv_queue 的数据是连续的，rcv_buf 可能是间隔的
 //
 // 之后根据用户接收数据后的窗口变化来告诉远端进行窗口恢复。
 //---------------------------------------------------------------------
@@ -403,7 +403,7 @@ int ikcp_recv(ikcpcb *kcp, char *buffer, int len)
 		recover = 1; // 标记可以开始窗口恢复
 
 	// merge fragment
-	// 拷贝rcv_queue到buffer
+	// 拷贝rcv_queue到用户buffer
 	// 先将 rcv_queue 中的数据根据分片编号 frg merge 起来，
 	// 然后拷贝到用户的 buffer 中。循环遍历 rcv_queue，
 	// 按序拷贝数据，当碰到某个 segment 的 frg 为 0 时跳出循环，
@@ -479,13 +479,13 @@ int ikcp_peeksize(const ikcpcb *kcp)
 
 	assert(kcp);
 
-	if (iqueue_is_empty(&kcp->rcv_queue)) 
+	if (iqueue_is_empty(&kcp->rcv_queue))
 		return -1;
 
 	seg = iqueue_entry(kcp->rcv_queue.next, IKCPSEG, node);
 	if (seg->frg == 0) return seg->len;
 
-	if (kcp->nrcv_que < seg->frg + 1) 
+	if (kcp->nrcv_que < seg->frg + 1)
 		return -1;
 
 	for (p = kcp->rcv_queue.next; p != &kcp->rcv_queue; p = p->next) {
@@ -578,7 +578,7 @@ int ikcp_send(ikcpcb *kcp, const char *buffer, int len)
 	if (len <= (int)kcp->mss) count = 1;
 	else count = (len + kcp->mss - 1) / kcp->mss;
 
-	if ((IUINT32)count > IKCP_WND_RCV ) return -2;
+	if ((IUINT32)count >= IKCP_WND_RCV) return -2;
 
 	if (count == 0) count = 1;
 
@@ -705,7 +705,7 @@ static void ikcp_parse_fastack(ikcpcb *kcp, IUINT32 sn)
 		if (_itimediff(sn, seg->sn) < 0) {
 			break;
 		}
-		else if (sn != seg->sn) { // seg的sn小于接收到的所有ack包中的最大sn
+		else if (sn != seg->sn) { // 若seg的sn小于接收到的所有ack包中的最大sn
 			seg->fastack++;
 		}
 	}
@@ -771,12 +771,13 @@ void ikcp_parse_data(ikcpcb *kcp, IKCPSEG *newseg)
 	IUINT32 sn = newseg->sn;
 	int repeat = 0;
 	
-	// 接收窗口大小不够了 或 已经接收过这个sn的数据包了
+	// 超出接收窗口大小了 或 rcv_queue已经接收过这个sn的数据包了
 	if (_itimediff(sn, kcp->rcv_nxt + kcp->rcv_wnd) >= 0 || _itimediff(sn, kcp->rcv_nxt) < 0) {
 		ikcp_segment_delete(kcp, newseg);
 		return;
 	}
 
+	// rcv_buf 从后往前遍历，判断是否已经接收过这个数据包, 并且找到新数据newseg应该插入到 rcv_buf 的位置
 	for (p = kcp->rcv_buf.prev; p != &kcp->rcv_buf; p = prev) {
 		IKCPSEG *seg = iqueue_entry(p, IKCPSEG, node);
 		prev = p->prev;
@@ -793,7 +794,7 @@ void ikcp_parse_data(ikcpcb *kcp, IKCPSEG *newseg)
 
 	if (repeat == 0) {
 		iqueue_init(&newseg->node);
-		iqueue_add(&newseg->node, p);
+		iqueue_add(&newseg->node, p); // 新数据newseg插入到p的后面
 		kcp->nrcv_buf++;
 	}	else {
 		// 如果已经接收过了，则丢弃
@@ -807,7 +808,7 @@ void ikcp_parse_data(ikcpcb *kcp, IKCPSEG *newseg)
 
 	// move available data from rcv_buf to rcv_queue
 	// 扫描rcv_buf，segment的id等于rcv_nxt，则rcv_nxt右移，
-	// 同时segment移出rcv_buff移入rcv_queue，rcv_nxt的连续性保证rcv_queue的完备性
+	// 同时segment移出rcv_buf移入rcv_queue，rcv_nxt的连续性保证rcv_queue的完备性
 	while (! iqueue_is_empty(&kcp->rcv_buf)) {
 		IKCPSEG *seg = iqueue_entry(kcp->rcv_buf.next, IKCPSEG, node);
 		if (seg->sn == kcp->rcv_nxt && kcp->nrcv_que < kcp->rcv_wnd) {
@@ -959,7 +960,7 @@ int ikcp_input(ikcpcb *kcp, const char *data, long size)
 			//** 因为snd_buf可能改变了，更新当前的 snd_una
 			ikcp_shrink_buf(kcp);
 
-			// 记录最大的ack snd值
+			// 记录最大的ack包的sn值
 			if (flag == 0) {
 				flag = 1;
 				maxack = sn;
@@ -1040,8 +1041,8 @@ int ikcp_input(ikcpcb *kcp, const char *data, long size)
 	}
 
 	if (flag != 0) {
-		// 根据记录的最大ack的snd值，扫描snd_buff，小于max ack的segment的fastack ++，
-		// 超过指定阈值，启动快速重传
+		// 根据记录的最大ack的snd值，扫描 snd_buf ，小于max ack的segment的fastack ++，
+		// 在 ikcp_flush 函数中会判断是否超过指定快速重传次数阈值，超过了就会启动快速重传
 		ikcp_parse_fastack(kcp, maxack);
 	}
 
@@ -1057,11 +1058,11 @@ int ikcp_input(ikcpcb *kcp, const char *data, long size)
 				kcp->cwnd++;
 				kcp->incr += mss;
 			}	else { // 拥塞控制阶段
-				if (kcp->incr < mss) kcp->incr = mss;
+				if (kcp->incr < mss)
+					kcp->incr = mss;
 				kcp->incr += (mss * mss) / kcp->incr + (mss / 16);
-				if ((kcp->cwnd + 1) * mss <= kcp->incr) {
+				if ((kcp->cwnd + 1) * mss <= kcp->incr)
 					kcp->cwnd++;
-				}
 			}
 			if (kcp->cwnd > kcp->rmt_wnd) {
 				kcp->cwnd = kcp->rmt_wnd;
@@ -1260,7 +1261,7 @@ void ikcp_flush(ikcpcb *kcp)
 	// calculate window size
 	// 计算本次发送可用的窗口大小，这里 KCP 采用了可以配置的策略，
 	// 正常情况下，KCP 的窗口大小由
-	// 发送窗口 snd_wnd 和 远端接收窗口 rmt_wnd 以及 根据流控计算得到的 kcp->cwnd 三者共同决定；
+	// 发送窗口 snd_wnd 和 远端接收窗口 rmt_wnd 以及 根据拥塞控制计算得到的 kcp->cwnd 三者共同决定；
 	// 但是当开启了 nocwnd 模式时，窗口大小仅由前两者决定
 	cwnd = _imin_(kcp->snd_wnd, kcp->rmt_wnd);
 	if (kcp->nocwnd == 0) cwnd = _imin_(kcp->cwnd, cwnd);
@@ -1357,6 +1358,9 @@ void ikcp_flush(ikcpcb *kcp)
 			ptr = ikcp_encode_seg(ptr, segment);
 
 			if (segment->len > 0) {
+				// 因为ptr初始值是指向buffer的, 而buffer是指向kcp->buffer的, 
+				// 所以这里实际上是把segment->data拷贝到kcp->buffer中, 
+				// 之后再求ptr与buffer的差值是否大于mtu决定是否要ikcp_output
 				memcpy(ptr, segment->data, segment->len);
 				ptr += segment->len;
 			}
@@ -1374,13 +1378,13 @@ void ikcp_flush(ikcpcb *kcp)
 	}
 
 	// update ssthresh
-	// 如发生快速重传，将慢启动阈值调整为当前发送窗口的一半，
+	// 如发生快速重传，将拥塞窗口阈值ssthresh调整为当前发送窗口的一半，
 	// 将拥塞窗口调整为 ssthresh + resent，resent是触发快速重传的丢包的次数，
 	// resent的值代表的意思在被弄丢的包后面收到了resent个数的包的ack。
 	// 这样调整后kcp就进入了拥塞控制状态。
 	if (change) {
 		IUINT32 inflight = kcp->snd_nxt - kcp->snd_una;
-		kcp->ssthresh = inflight / 2; // 将慢启动阈值调整为当前发送窗口的一半
+		kcp->ssthresh = inflight / 2; // 将拥塞窗口阈值ssthresh调整为当前发送窗口的一半
 		if (kcp->ssthresh < IKCP_THRESH_MIN)
 			kcp->ssthresh = IKCP_THRESH_MIN;
 		kcp->cwnd = kcp->ssthresh + resent;

@@ -20,15 +20,14 @@
 #include <unistd.h>
 
 #include "test.h" // for iclock
-#include "ikcp.c"
 #include "KcpSession.h"
 
 #define SERVER_PORT 8888
 
 #define SND_BUFF_LEN 666
 #define RCV_BUFF_LEN 1500
-#define SERVER_IP "172.96.239.56"
-//#define SERVER_IP "127.0.0.1"
+// #define SERVER_IP "172.96.239.56"
+#define SERVER_IP "127.0.0.1"
 
 
 void udp_output(const void *buf, int len, int fd, struct sockaddr* dst)
@@ -86,7 +85,7 @@ void udp_msg_sender(int fd, struct sockaddr* dst)
 			{
 				uint32_t srvRcvMaxIndex = *(uint32_t*)(rcvBuf + 0);
 				printf("server: have recieved the max index = %d\n", (int)srvRcvMaxIndex);  //打印server发过来的信息
-				if (srvRcvMaxIndex == maxIndex) break;
+				if (srvRcvMaxIndex >= maxIndex) break;
 			}
 		}
 		else if (len < 0)
