@@ -64,6 +64,7 @@ namespace muduo
 			void KcpSessionUpdate() { kcpSession_->Update(); }
 
 			void DoSend(const void* message, int len);
+			ssize_t DoRecv();
 
 			void shutdown(); // NOT thread safe, no simultaneous calling
 							 // void shutdownAndForceCloseAfter(double seconds); // NOT thread safe, no simultaneous calling

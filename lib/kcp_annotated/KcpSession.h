@@ -508,16 +508,19 @@ public:
 	enum RoleTypeE { kSrv, kCli };
 
 	typedef std::function<void(const void* data, int len)> OutputFunction;
+	typedef std::function<ssize_t()> InputFunction;
 	typedef std::function<IUINT32()> CurrentTimeCallBack;
 
 public:
 	KcpSession(const RoleTypeE role,
 		const OutputFunction& outputFunc,
+		const InputFunction& inputFunc,
 		const CurrentTimeCallBack& currentTimeCb)
 		:
 		role_(role),
 		conv_(0),
 		outputFunc_(outputFunc),
+		inputFunc_(inputFunc),
 		curTimeCb_(currentTimeCb),
 		kcp_(nullptr),
 		kcpConnState_(kConnecting)
@@ -575,10 +578,14 @@ public:
 	}
 
 	// returns size, returns below zero for err
-	int Recv(char* data, size_t len)
+	int Recv(char* data)
 	{
+		ssize_t rawRecvlen = inputFunc_();
+		if (rawRecvlen <= 0)
+			return -10;
+
 		inputBuf_.retrieveAll();
-		inputBuf_.append(data, len);
+		inputBuf_.append(data, static_cast<size_t>(rawRecvlen));
 		auto dataType = inputBuf_.readInt8();
 		if (dataType == kUnreliable)
 		{
@@ -745,6 +752,7 @@ private:
 private:
 	ikcpcb* kcp_;
 	OutputFunction outputFunc_;
+	InputFunction inputFunc_;
 	StateE kcpConnState_;
 	Buf outputBuf_;
 	Buf inputBuf_;

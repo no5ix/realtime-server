@@ -54,8 +54,9 @@ UdpConnection::UdpConnection(EventLoop* loop,
 	kcpSession_(new KcpSession(
 		KcpSession::RoleTypeE::kSrv,
 		std::bind(&UdpConnection::DoSend, this, _1, _2),
+		std::bind(&UdpConnection::DoRecv, this),
 		[]() { return static_cast<IUINT32>(
-			(Timestamp::now().microSecondsSinceEpoch() / 1000)); }))
+		(Timestamp::now().microSecondsSinceEpoch() / 1000)); }))
 {
 	channel_->setReadCallback(
 		std::bind(&UdpConnection::handleRead, this, _1));
@@ -91,27 +92,35 @@ void UdpConnection::send(const void* data, int len,
 void UdpConnection::handleRead(Timestamp receiveTime)
 {
 	loop_->assertInLoopThread();
-	ssize_t n = sockets::read(channel_->fd(), static_cast<void*>(packetBuf_), kPacketBufSize);
-	if (n > 0)
-	{
-		n = kcpSession_->Recv(packetBuf_, n);
-		//LOG_INFO << "kcpSession_->IsKcpConnected() = " << (kcpSession_->IsKcpConnected() ? 1 : 0);
-		//LOG_INFO << "n = kcpSession_->Recv(packetBuf_, n) = " << n;
-		if (n < 0)
-			LOG_ERROR << "kcpSession Recv() Error, Recv() = " << n;
-		else if (n > 0)
-			messageCallback_(shared_from_this(), packetBuf_, n, receiveTime);
-	}
-	else if (n == 0)
-	{
-		handleClose();
-	}
-	else
-	{
-		LOG_SYSERR << "UdpConnection::handleRead";
-		handleError();
-	}
+	int n = kcpSession_->Recv(packetBuf_);
+	if (n < 0)
+		LOG_ERROR << "kcpSession Recv() Error, Recv() = " << n;
+	else if (n > 0)
+		messageCallback_(shared_from_this(), packetBuf_, n, receiveTime);
 }
+
+//void UdpConnection::handleRead(Timestamp receiveTime)
+//{
+//	loop_->assertInLoopThread();
+//	ssize_t n = sockets::read(channel_->fd(), static_cast<void*>(packetBuf_), kPacketBufSize);
+//	if (n > 0)
+//	{
+//		n = kcpSession_->Recv(packetBuf_, n);
+//		if (n < 0)
+//			LOG_ERROR << "kcpSession Recv() Error, Recv() = " << n;
+//		else if (n > 0)
+//			messageCallback_(shared_from_this(), packetBuf_, n, receiveTime);
+//	}
+//	else if (n == 0)
+//	{
+//		handleClose();
+//	}
+//	else
+//	{
+//		LOG_SYSERR << "UdpConnection::handleRead";
+//		handleError();
+//	}
+//}
 
 void UdpConnection::DoSend(const void* data, int len)
 {
@@ -132,6 +141,21 @@ void UdpConnection::DoSend(const void* data, int len)
 					static_cast<size_t>(len)));
 		}
 	}
+}
+
+ssize_t UdpConnection::DoRecv()
+{
+	ssize_t n = sockets::read(channel_->fd(), static_cast<void*>(packetBuf_), kPacketBufSize);
+	if (n == 0)
+	{
+		handleClose();
+	}
+	else if (n < 0)
+	{
+		LOG_SYSERR << "UdpConnection::handleRead";
+		handleError();
+	}
+	return n;
 }
 
 void UdpConnection::sendInLoop(const void* data, size_t len)

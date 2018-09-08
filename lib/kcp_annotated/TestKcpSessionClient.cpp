@@ -22,92 +22,88 @@
 
 
 
-void itimeofday(long *sec, long *usec)
-{
-	struct timeval time;
-	gettimeofday(&time, NULL);
-	if (sec) *sec = time.tv_sec;
-	if (usec) *usec = time.tv_usec;
-}
-
-IUINT64 iclock64(void)
+IUINT32 iclock()
 {
 	long s, u;
 	IUINT64 value;
-	itimeofday(&s, &u);
-	value = ((IUINT64)s) * 1000 + (u / 1000);
-	return value;
-}
 
-IUINT32 iclock()
-{
-	return (IUINT32)(iclock64() & 0xfffffffful);
+	struct timeval time;
+	gettimeofday(&time, NULL);
+	s = time.tv_sec;
+	u = time.tv_usec;
+
+	value = ((IUINT64)s) * 1000 + (u / 1000);
+	return (IUINT32)(value & 0xfffffffful);
 }
 
 void udp_output(const void *buf, int len, int fd, struct sockaddr* dst)
 {
-	sendto(fd, buf, len, 0, dst, sizeof(*dst));
+	::sendto(fd, buf, len, 0, dst, sizeof(*dst));
+}
+
+ssize_t udp_input(void *buf, int len, int fd, struct sockaddr_in from)
+{
+	socklen_t fromAddrLen = sizeof(from);
+	ssize_t recvLen = ::recvfrom(fd, buf, len, 0,
+		(struct sockaddr*)&from, &fromAddrLen);
+	//printf("recvfrom() = %d \n", static_cast<int>(recvLen));
+	if (recvLen < 0)
+	{
+		printf("recieve data fail!\n");
+	}
+	return recvLen;
 }
 
 void udp_msg_sender(int fd, struct sockaddr* dst)
 {
+	char sndBuf[SND_BUFF_LEN];
+	char rcvBuf[RCV_BUFF_LEN];
+
+	struct sockaddr_in from;
+	int len = 0;
+	uint32_t index = 11;
+	const uint32_t maxIndex = 222;
+
 	KcpSession kcpClient(
 		KcpSession::RoleTypeE::kCli,
 		std::bind(udp_output, std::placeholders::_1, std::placeholders::_2, fd, dst),
+		std::bind(udp_input, rcvBuf, RCV_BUFF_LEN, fd, std::ref(from)),
 		std::bind(iclock));
 
-	socklen_t dstAddrLen = sizeof(*dst);
-	int len = 0;
-	struct sockaddr_in from;
-	uint32_t index = 11;
-	const uint32_t maxIndex = 222;
 	while (1)
 	{
-		char sndBuf[SND_BUFF_LEN];
-		char rcvBuf[RCV_BUFF_LEN];
+		memset(rcvBuf, 0, RCV_BUFF_LEN);
+		memset(sndBuf, 0, SND_BUFF_LEN);
 
 		((uint32_t*)sndBuf)[0] = index++;
 
 		printf("client:%d\n", ((uint32_t*)sndBuf)[0]);  //打印自己发送的信息
 
-		kcpClient.Update();
 		len = kcpClient.Send(sndBuf, SND_BUFF_LEN);
-		//len = kcpClient.Send(sndBuf, SND_BUFF_LEN, KcpSession::DataTypeE::kUnreliable);
-		printf("kcpClient.Send() = %d \n", len);
-		//len = ::sendto(fd, sndBuf, SND_BUFF_LEN, 0, dst, sizeof(*dst));
 		if (len < 0)
 		{
 			printf("kcpSession Send failed\n");
 			return;
 		}
 
-		len = ::recvfrom(fd, rcvBuf, RCV_BUFF_LEN, 0, (struct sockaddr*)&from, &dstAddrLen);  //接收来自server的信息
-		printf(" kcpClient.IsKcpConnected() = %d\n", (kcpClient.IsKcpConnected() ? 1 : 0));
-		printf("recvfrom() = %d \n", len);
-		//printf("server:%s\n", rcvBuf);
-
-		if (len > 0)
+		int result = kcpClient.Recv(rcvBuf);
+		if (result < 0)
 		{
-			int result = kcpClient.Recv(rcvBuf, len);
-			printf("kcpClient.Recv() = %d \n", result);
-			if (result < 0)
+			printf("kcpSession Recv failed, Recv() = %d \n", result);
+		}
+		else if (result > 0)
+		{
+			uint32_t srvRcvMaxIndex = *(uint32_t*)(rcvBuf + 0);
+			printf("server: have recieved the max index = %d\n", (int)srvRcvMaxIndex);  //打印server发过来的信息
+			if (srvRcvMaxIndex >= maxIndex)
 			{
-				printf("kcpSession Recv failed, Recv() = %d \n", result);
-				return;
-			}
-			else if (result > 0)
-			{
-				uint32_t srvRcvMaxIndex = *(uint32_t*)(rcvBuf + 0);
-				printf("server: have recieved the max index = %d\n", (int)srvRcvMaxIndex);  //打印server发过来的信息
-				if (srvRcvMaxIndex >= maxIndex) break;
+				printf("when server have recieved the max index >= %d, test passes, yay! \n", maxIndex);  //打印server发过来的信息
+				break;
 			}
 		}
-		else if (len < 0)
-		{
-			printf("recieve data fail!\n");
-			//return;
-		}
+		kcpClient.Update();
 		usleep(16666); // 60fps
+			//sleep(1);
 	}
 }
 
@@ -115,7 +111,6 @@ void udp_msg_sender(int fd, struct sockaddr* dst)
 		client:
 						socket-->sendto-->revcfrom-->close
 */
-
 int main(int argc, char* argv[])
 {
 	int client_fd;
@@ -137,8 +132,7 @@ int main(int argc, char* argv[])
 	memset(&ser_addr, 0, sizeof(ser_addr));
 	ser_addr.sin_family = AF_INET;
 	ser_addr.sin_addr.s_addr = inet_addr(SERVER_IP);
-	//ser_addr.sin_addr.s_addr = htonl(INADDR_ANY);  //注意网络序转换
-	ser_addr.sin_port = htons(SERVER_PORT);  //注意网络序转换
+	ser_addr.sin_port = htons(SERVER_PORT);
 
 	udp_msg_sender(client_fd, (struct sockaddr*)&ser_addr);
 
