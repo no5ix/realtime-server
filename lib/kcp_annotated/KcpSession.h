@@ -523,7 +523,16 @@ public:
 		inputFunc_(inputFunc),
 		curTimeCb_(currentTimeCb),
 		kcp_(nullptr),
-		kcpConnState_(kConnecting)
+		kcpConnState_(kConnecting),
+		sndWnd_(128),
+		rcvWnd_(128),
+		nodelay_(1),
+		interval_(5),
+		resend_(1),
+		nc_(1),
+		streamMode_(0),
+		mtu_(512),
+		rx_minrto_(5)
 	{}
 
 	void Update() { if (kcp_) ikcp_update(kcp_, curTimeCb_()); }
@@ -563,10 +572,7 @@ public:
 					sndQueueBeforeConned_.pop();
 				}
 
-				int result = ikcp_send(
-					kcp_,
-					static_cast<const char*>(data),
-					len);
+				int result = ikcp_send(kcp_, static_cast<const char*>(data), len);
 				if (result < 0)
 					return result; // ikcp_send err
 				else
@@ -657,18 +663,16 @@ public:
 
 	bool IsKcpConnected() const { return kcpConnState_ == kConnected; }
 
-	void SetStreamMode(bool enable) { kcp_->stream = enable ? 1 : 0; }
-
-	int SetNoDelay(int nodelay, int interval, int resend, int nc)
-	{ return ikcp_nodelay(kcp_, nodelay, interval, resend, nc); }
-
-	int SetWndSize(int sndwnd, int rcvwnd)
-	{ return ikcp_wndsize(kcp_, sndwnd, rcvwnd); }
-
-	int SetMtu(int mtu) { return ikcp_setmtu(kcp_, mtu); }
+	void SetKcpConfig(const int sndWnd, const int rcvWnd, const int nodelay,
+		const int interval, const int resend, const int nc, 
+		const int streamMode, const int mtu, const int rx_minrto)
+	{ 
+		sndWnd_ = sndWnd; rcvWnd_ = rcvWnd; nodelay_ = nodelay;
+		interval_ = interval; resend_ = resend; nc_ = nc;
+		streamMode_ = streamMode; mtu_ = mtu; rx_minrto_ = rx_minrto;
+	}
 
 	~KcpSession() { if (kcp_) ikcp_release(kcp_); }
-
 
 private:
 
@@ -700,17 +704,16 @@ private:
 		outputBuf_.retrieveAll();
 	}
 
-	void InitKcp(IUINT32 conv, bool reinit = false)
+	void InitKcp(const IUINT32 conv, bool reinit = false)
 	{
-		if (reinit)
-		{
-			if (kcp_) ikcp_release(kcp_);
-		}
+		if (reinit) if (kcp_) ikcp_release(kcp_);
 		conv_ = conv;
 		kcp_ = ikcp_create(conv, this);
-		ikcp_wndsize(kcp_, 128, 128);
-		ikcp_nodelay(kcp_, 1, 5, 1, 1); // 设置成1次ACK跨越直接重传, 这样反应速度会更快. 内部时钟5毫秒.
-		kcp_->rx_minrto = 5;
+		ikcp_wndsize(kcp_, sndWnd_, rcvWnd_);
+		ikcp_nodelay(kcp_, nodelay_, interval_, resend_, nc_);
+		ikcp_setmtu(kcp_, mtu_);
+		kcp_->stream = streamMode_;
+		kcp_->rx_minrto = rx_minrto_;
 		kcp_->output = KcpSession::KcpPshOutputFuncRaw;
 	}
 
@@ -727,9 +730,7 @@ private:
 		assert(kcp_);
 		int msgLen = ikcp_peeksize(kcp_);
 		if (msgLen <= 0)
-		{
 			return 0;
-		}
 		return ikcp_recv(kcp_, userBuffer, msgLen);
 	}
 
@@ -760,5 +761,17 @@ private:
 	IUINT32 conv_;
 	RoleTypeE role_;
 	std::queue<std::string> sndQueueBeforeConned_;
+
+private:
+	// kcp config...
+	int sndWnd_;
+	int rcvWnd_;
+	int nodelay_;
+	int interval_;
+	int resend_;
+	int nc_;
+	int streamMode_;
+	int mtu_;
+	int rx_minrto_;
 };
 typedef std::shared_ptr<KcpSession> KcpSessionPtr;
