@@ -49,10 +49,10 @@ void udp_output(const void *buf, int len, int fd, struct sockaddr_in* dst)
 }
 
 bool isSimulatingPackageLoss = false;
-ssize_t udp_input(char* rcvData, char* buf, int len, int fd, struct sockaddr_in* from)
+int udp_input(char* rcvData, char* buf, int len, int fd, struct sockaddr_in* from)
 {
 	socklen_t fromAddrLen = sizeof(*from);
-	ssize_t recvLen = ::recvfrom(fd, buf, len, 0,
+	int recvLen = ::recvfrom(fd, buf, len, 0,
 		(struct sockaddr*)from, &fromAddrLen);
 	//printf("recvfrom() = %d \n", static_cast<int>(recvLen));
 	rcvData = buf;

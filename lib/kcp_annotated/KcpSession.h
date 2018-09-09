@@ -537,7 +537,7 @@ public:
 		}
 		if (count_ == kRedundancyCnt_)
 			outputQueue_.pop_front();
-		//printf("\nooooooBuf->readableBytes = %d\n", (int)oBuf->readableBytes());
+		printf("\nooooooBuf->readableBytes = %d\n", (int)oBuf->readableBytes());
 	}
 
 	bool Input(char* data, int& len, Buf* iBuf)
@@ -619,7 +619,7 @@ public:
 	enum FecStateE { kFecEnable = 233, kFecDisable };
 
 	typedef std::function<void(const void* data, int len)> OutputFunction;
-	typedef std::function<ssize_t(char* data)> InputFunction;
+	typedef std::function<int(char* data)> InputFunction;
 	typedef std::function<IUINT32()> CurrentTimeCallBack;
 
 public:
@@ -654,7 +654,9 @@ public:
 	// returns below zero for error
 	int Send(const void* data, int len, DataTypeE dataType = kReliable)
 	{
-		outputBuf_.retrieveAll();
+		//outputBuf_.retrieveAll();
+		assert(data != nullptr);
+		assert(len > 0);
 		assert(dataType == kReliable || dataType == kUnreliable);
 		if (dataType == kUnreliable)
 		{
@@ -705,7 +707,7 @@ public:
 		if (fec_.IsFinishedThisRound_())
 		{
 			// printf("ssize_t rawRecvlen = inputFunc_(data);ssize_t rawRecvlen = inputFunc_(data);\n");
-			ssize_t rawRecvlen = inputFunc_(data);
+			auto rawRecvlen = inputFunc_(data);
 			if (rawRecvlen <= 0)
 			{
 				len = -10;
@@ -739,7 +741,7 @@ public:
 		if (dataType == kUnreliable)
 		{
 			memcpy(data, inputBuf_.peek(), readableLen);
-			inputBuf_.retrieve(readableLen);
+			//inputBuf_.retrieve(readableLen);
 			len = readableLen;
 		}
 		else if (dataType == kReliable)
@@ -764,7 +766,7 @@ public:
 				// printf("snd kAck 12 \n");
 				SendAckAndConv();
 				len = 0;
-				return;
+				//return;
 			}
 			else if (pktType == kAck)
 			{
@@ -773,9 +775,10 @@ public:
 				{
 					SetKcpConnectState(kConnected);
 					InitKcp(inputBuf_.readInt32());
+					readableLen -= 4;
 				}
 				len = 0;
-				return;
+				//return;
 			}
 			else if (pktType == kRst)
 			{
@@ -783,7 +786,7 @@ public:
 				assert(role_ == kCli);
 				SendSyn();
 				len = 0;
-				return;
+				//return;
 			}
 			else if (pktType == kPsh)
 			{
@@ -791,7 +794,7 @@ public:
 				if (IsKcpConnected())
 				{
 					int result = ikcp_input(kcp_, inputBuf_.peek(), readableLen);
-					inputBuf_.retrieve(readableLen);
+					//inputBuf_.retrieve(readableLen);
 					if (result == 0)
 						len = KcpRecv(data); // if err, -1, -2, -3
 					else // if (result < 0)
@@ -801,19 +804,23 @@ public:
 				{
 					if (role_ == kSrv)
 						SendRst();
+					//inputBuf_.retrieve(readableLen);
 					len = 0;
-					return;
+					//return;
 				}
 			}
 			else
 			{
+				//inputBuf_.retrieve(readableLen);
 				len = -8; // pktType err
 			}
 		}
 		else
 		{
+			//inputBuf_.retrieve(readableLen);
 			len = -9; // dataType err
 		}
+		inputBuf_.retrieve(readableLen);
 	}
 
 	~KcpSession() { if (kcp_) ikcp_release(kcp_); }
@@ -823,33 +830,33 @@ private:
 	void SendRst()
 	{
 		assert(role_ == kSrv);
-		outputBuf_.retrieveAll();
+		//outputBuf_.retrieveAll();
 		outputBuf_.appendInt8(kReliable);
 		outputBuf_.appendInt8(kRst);
 		OutputAfterCheckingFec();
-		outputBuf_.retrieveAll();
+		//outputBuf_.retrieveAll();
 	}
 
 	void SendSyn()
 	{
 		assert(role_ == kCli);
-		outputBuf_.retrieveAll();
+		//outputBuf_.retrieveAll();
 		outputBuf_.appendInt8(kReliable);
 		outputBuf_.appendInt8(kSyn);
 		//outputBuf_.appendInt8(isFecEnable_ ? kFecEnable : kFecDisable);
 		OutputAfterCheckingFec();
-		outputBuf_.retrieveAll();
+		//outputBuf_.retrieveAll();
 	}
 
 	void SendAckAndConv()
 	{
 		assert(role_ == kSrv);
-		outputBuf_.retrieveAll();
+		//outputBuf_.retrieveAll();
 		outputBuf_.appendInt8(kReliable);
 		outputBuf_.appendInt8(kAck);
 		outputBuf_.appendInt32(conv_);
 		OutputAfterCheckingFec();
-		outputBuf_.retrieveAll();
+		//outputBuf_.retrieveAll();
 	}
 
 	void InitKcp(const IUINT32 conv, bool reinit = false)
@@ -889,13 +896,13 @@ private:
 		auto thisPtr = reinterpret_cast<KcpSession *>(user);
 		assert(thisPtr->outputFunc_ != nullptr);
 
-		thisPtr->outputBuf_.retrieveAll();
+		//thisPtr->outputBuf_.retrieveAll();
 		thisPtr->outputBuf_.appendInt8(kReliable);
 		thisPtr->outputBuf_.appendInt8(kPsh);
 		thisPtr->outputBuf_.append(data, len);
 		//printf("KcpPshOutputFuncRaw len = %d\n", (int)len);
 		thisPtr->OutputAfterCheckingFec();
-		thisPtr->outputBuf_.retrieveAll();
+		//thisPtr->outputBuf_.retrieveAll();
 
 		return 0;
 	}
@@ -906,6 +913,7 @@ private:
 		fec_.Output(&outputBuf_);
 		//printf("outputBuf_.readableBytes() len = %d\n", (int)outputBuf_.readableBytes());
 		outputFunc_(outputBuf_.peek(), outputBuf_.readableBytes());
+		outputBuf_.retrieveAll();
 	}
 
 	//void InputAfterCheckingFec()

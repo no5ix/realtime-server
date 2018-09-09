@@ -59,12 +59,13 @@ namespace muduo
 
 			// void send(string&& message); // C++11
 			void send( const void* message, int len,
-				KcpSession::DataTypeE dataType = KcpSession::DataTypeE::kUnreliable);
+				//KcpSession::DataTypeE dataType = KcpSession::DataTypeE::kUnreliable);
+				KcpSession::DataTypeE dataType = KcpSession::DataTypeE::kReliable);
 
 			void KcpSessionUpdate() { kcpSession_->Update(); }
 
 			void DoSend(const void* message, int len);
-			ssize_t DoRecv(char* rcvData);
+			int DoRecv(char* rcvData);
 
 			void shutdown(); // NOT thread safe, no simultaneous calling
 							 // void shutdownAndForceCloseAfter(double seconds); // NOT thread safe, no simultaneous calling

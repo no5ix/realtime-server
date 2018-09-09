@@ -82,7 +82,8 @@ UdpConnection::~UdpConnection()
 }
 
 void UdpConnection::send(const void* data, int len,
-	KcpSession::DataTypeE dataType /*= KcpSession::DataTypeE::kUnreliable*/)
+	//KcpSession::DataTypeE dataType /*= KcpSession::DataTypeE::kUnreliable*/)
+	KcpSession::DataTypeE dataType /*= KcpSession::DataTypeE::kReliable*/)
 {
 	len = kcpSession_->Send(data, len, dataType);
 	if (len < 0)
@@ -95,7 +96,8 @@ void UdpConnection::handleRead(Timestamp receiveTime)
 	int n = 0;
 	while (kcpSession_->Recv(packetBuf_, n))
 	{
-		//int n = kcpSession_->Recv(packetBuf_);
+		//LOG_INFO << "kcpSession_->IsKcpConnected() = "
+		//	<< (kcpSession_->IsKcpConnected() ? 1 : 0);
 		if (n < 0)
 			LOG_ERROR << "kcpSession Recv() Error, Recv() = " << n;
 		else if (n > 0)
@@ -147,9 +149,9 @@ void UdpConnection::DoSend(const void* data, int len)
 	}
 }
 
-ssize_t UdpConnection::DoRecv(char* rcvData)
+int UdpConnection::DoRecv(char* rcvData)
 {
-	ssize_t n = sockets::read(channel_->fd(), static_cast<void*>(packetBuf_), kPacketBufSize);
+	int n = sockets::read(channel_->fd(), static_cast<void*>(packetBuf_), kPacketBufSize);
 	rcvData = packetBuf_;
 	(void)rcvData;
 	if (n == 0)

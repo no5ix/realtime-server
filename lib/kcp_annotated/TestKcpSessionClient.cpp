@@ -14,7 +14,7 @@
 
 #define SERVER_PORT 8888
 
-#define SND_BUFF_LEN 666
+#define SND_BUFF_LEN 1500
 #define RCV_BUFF_LEN 1500
 
 // #define SERVER_IP "172.96.239.56"
@@ -41,10 +41,10 @@ void udp_output(const void *buf, int len, int fd, struct sockaddr* dst)
 	::sendto(fd, buf, len, 0, dst, sizeof(*dst));
 }
 
-ssize_t udp_input(char* rcvData, char *buf, int len, int fd, struct sockaddr_in from)
+int udp_input(char* rcvData, char *buf, int len, int fd, struct sockaddr_in from)
 {
 	socklen_t fromAddrLen = sizeof(from);
-	ssize_t recvLen = ::recvfrom(fd, buf, len, 0,
+	int recvLen = ::recvfrom(fd, buf, len, 0,
 		(struct sockaddr*)&from, &fromAddrLen);
 	//printf("recvfrom() = %d \n", static_cast<int>(recvLen));
 	rcvData = buf;
