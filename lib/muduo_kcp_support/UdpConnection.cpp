@@ -54,7 +54,7 @@ UdpConnection::UdpConnection(EventLoop* loop,
 	kcpSession_(new KcpSession(
 		KcpSession::RoleTypeE::kSrv,
 		std::bind(&UdpConnection::DoSend, this, _1, _2),
-		std::bind(&UdpConnection::DoRecv, this),
+		std::bind(&UdpConnection::DoRecv, this, _1),
 		[]() { return static_cast<IUINT32>(
 		(Timestamp::now().microSecondsSinceEpoch() / 1000)); }))
 {
@@ -92,11 +92,15 @@ void UdpConnection::send(const void* data, int len,
 void UdpConnection::handleRead(Timestamp receiveTime)
 {
 	loop_->assertInLoopThread();
-	int n = kcpSession_->Recv(packetBuf_);
-	if (n < 0)
-		LOG_ERROR << "kcpSession Recv() Error, Recv() = " << n;
-	else if (n > 0)
-		messageCallback_(shared_from_this(), packetBuf_, n, receiveTime);
+	int n = 0;
+	while (kcpSession_->Recv(packetBuf_, n))
+	{
+		//int n = kcpSession_->Recv(packetBuf_);
+		if (n < 0)
+			LOG_ERROR << "kcpSession Recv() Error, Recv() = " << n;
+		else if (n > 0)
+			messageCallback_(shared_from_this(), packetBuf_, n, receiveTime);
+	}
 }
 
 //void UdpConnection::handleRead(Timestamp receiveTime)
@@ -143,9 +147,11 @@ void UdpConnection::DoSend(const void* data, int len)
 	}
 }
 
-ssize_t UdpConnection::DoRecv()
+ssize_t UdpConnection::DoRecv(char* rcvData)
 {
 	ssize_t n = sockets::read(channel_->fd(), static_cast<void*>(packetBuf_), kPacketBufSize);
+	rcvData = packetBuf_;
+	(void)rcvData;
 	if (n == 0)
 	{
 		handleClose();

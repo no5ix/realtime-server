@@ -3,6 +3,7 @@
 #include <functional>
 #include <memory>
 #include <queue>
+#include <deque>
 #include <string>
 #include <algorithm>
 #include <vector>
@@ -129,6 +130,7 @@
 #endif
 
 #endif
+
 
 
 
@@ -273,6 +275,11 @@ public:
 		std::string result(peek(), len);
 		retrieve(len);
 		return result;
+	}
+
+	void append(const std::string& str)
+	{
+		append(str.data(), str.size());
 	}
 
 	void append(const char* /*restrict*/ data, size_t len)
@@ -498,17 +505,114 @@ private:
 };
 
 
+class Fec
+{
+public:
+	const static size_t kDataLen = sizeof(int16_t);
+	const static size_t kSnLen = sizeof(int32_t);
+	static const int kRedundancyCnt_ = 3;
+	typedef std::function<void(char*, int&, int)> RecvFuncion;
+public:
+	Fec(const RecvFuncion& rcvFunc)
+		: count_(0), nextSndSn_(0), nextRcvSn_(0),
+		index_(0), rcvFunc_(rcvFunc), isFinishedThisRound_(true)
+	{}
+
+	void Output(Buf* oBuf)
+	{
+		oBuf->prependInt16(oBuf->readableBytes());
+		oBuf->prependInt32(nextSndSn_++);
+		outputQueue_.push_back(oBuf->retrieveAllAsString());
+
+		count_ = outputQueue_.size();
+		printf("count_ = %d\n", (int)count_);
+
+		for (index_ = 0; index_ < count_; ++index_)
+			oBuf->append(*(outputQueue_.begin() + index_));
+		if (count_ == kRedundancyCnt_)
+			outputQueue_.pop_front();
+		printf("\nooooooBuf->readableBytes = %d\n", (int)oBuf->readableBytes());
+	}
+
+	bool Input(char* data, int& len, Buf* iBuf)
+	{
+		bool hasData = IsThereAnyDataLeft(iBuf);
+		printf("\niiiiiiBuf->readableBytes = %d\n", (int)iBuf->readableBytes());
+		if (hasData)
+		{
+			isFinishedThisRound_ = false;
+			printf("isFinishedThisRound_ = falseeeeeeeeeeeee \n");
+			int32_t recvSn = iBuf->readInt32();
+			printf("iBuf->readInt32() , iBuf->readableBytes = %d\n", (int)iBuf->readableBytes());
+			if (recvSn >= nextRcvSn_)
+			{
+				printf("recvSn >= nextRcvSnnnnnnnnnnnn_eeeee \n");
+				nextRcvSn_ = ++recvSn;
+				rcvFunc_(data, len, iBuf->readInt16());
+			}
+			else
+			{
+				printf("recvSn nnonono>= nextRcvSn_eeeee \n");
+				iBuf->retrieve(iBuf->readInt16());
+				len = 0;
+			}
+		}
+		else
+		{
+			iBuf->retrieveAll();
+			printf("isFinishedThisRound_ = trueeeeeeeeeeee \n");
+			isFinishedThisRound_ = true;
+		}
+		return hasData;
+	}
+
+	bool IsFinishedThisRound_() const { return isFinishedThisRound_; }
+
+private:
+	bool IsThereAnyDataLeft(const Buf* buf) const
+	{
+		if (buf->readableBytes() == 4)
+			printf("mmp");
+		if (buf->readableBytes() >= Fec::kSnLen)
+		{
+			int16_t be16 = 0;
+			::memcpy(&be16, buf->peek() + Fec::kSnLen, sizeof be16);
+			const uint16_t dataLen = be16toh(be16);
+
+			if (dataLen > 1024)
+				return false;
+
+			printf("mmp dataLen = %d\n", (int)dataLen);
+			printf("mmp buf->readableBytes() = %d, (dataLen + Fec::kSnLen + Fec::kDataLen) = %d\n",
+				(int)buf->readableBytes(), (int)(dataLen + Fec::kSnLen + Fec::kDataLen));
+
+			return buf->readableBytes() >= (dataLen + Fec::kSnLen + Fec::kDataLen);
+		}
+		return false;
+	}
+
+private:
+	RecvFuncion rcvFunc_;
+	std::deque<std::string> outputQueue_;
+	int32_t nextSndSn_;
+	int32_t nextRcvSn_;
+	int index_;
+	int count_;
+	bool isFinishedThisRound_;
+};
+
 
 class KcpSession
 {
 public:
 	enum StateE { kDisconnected, kConnecting, kConnected, kDisconnecting, kResetting };
+	enum RoleTypeE { kSrv, kCli };
 	enum DataTypeE { kUnreliable = 88, kReliable };
 	enum PktTypeE { kSyn = 66, kAck, kPsh, kFin, kRst };
-	enum RoleTypeE { kSrv, kCli };
+	enum FecStateE { kFecEnable = 233, kFecDisable };
 
 	typedef std::function<void(const void* data, int len)> OutputFunction;
-	typedef std::function<ssize_t()> InputFunction;
+	typedef std::function<ssize_t(char* data)> InputFunction;
 	typedef std::function<IUINT32()> CurrentTimeCallBack;
 
 public:
@@ -524,6 +628,9 @@ public:
 		curTimeCb_(currentTimeCb),
 		kcp_(nullptr),
 		kcpConnState_(kConnecting),
+		//isFecEnable_(true),
+		fec_(std::bind(&KcpSession::DoRecv, this, std::placeholders::_1,
+			std::placeholders::_2, std::placeholders::_3)),
 		sndWnd_(128),
 		rcvWnd_(128),
 		nodelay_(1),
@@ -531,7 +638,7 @@ public:
 		resend_(1),
 		nc_(1),
 		streamMode_(0),
-		mtu_(512),
+		mtu_(300),
 		rx_minrto_(5)
 	{}
 
@@ -546,7 +653,7 @@ public:
 		{
 			outputBuf_.appendInt8(kUnreliable);
 			outputBuf_.append(data, len);
-			outputFunc_(outputBuf_.peek(), outputBuf_.readableBytes());
+			OutputAfterCheckingFec();
 			if (!IsKcpConnected() && role_ == kCli)
 				SendSyn();
 			return 0;
@@ -555,6 +662,7 @@ public:
 		{
 			if (!IsKcpConnected() && role_ == kCli)
 			{
+				printf("snd ksyn 8\n");
 				SendSyn();
 				sndQueueBeforeConned_.push(std::string(static_cast<const char*>(data), len));
 				return 0;
@@ -583,27 +691,57 @@ public:
 		return 0;
 	}
 
-	// returns size, returns below zero for err
-	int Recv(char* data)
+	// returns IsAnyDataLeft
+	bool Recv(char* data, int& len)
 	{
-		ssize_t rawRecvlen = inputFunc_();
-		if (rawRecvlen <= 0)
-			return -10;
+		if (fec_.IsFinishedThisRound_())
+		{
+			printf("ssize_t rawRecvlen = inputFunc_(data);ssize_t rawRecvlen = inputFunc_(data);\n");
+			ssize_t rawRecvlen = inputFunc_(data);
+			if (rawRecvlen <= 0)
+			{
+				len = -10;
+				return false;
+			}
+			inputBuf_.append(data, static_cast<size_t>(rawRecvlen));
+		}
+		return fec_.Input(data, len, &inputBuf_);
+	}
 
-		inputBuf_.retrieveAll();
-		inputBuf_.append(data, static_cast<size_t>(rawRecvlen));
+public:
+	bool IsKcpConnected() const { return kcpConnState_ == kConnected; }
+
+	// should set before Send()
+	void SetConfig(
+		//const bool isFecEnable,
+		const int sndWnd, const int rcvWnd, const int nodelay,
+		const int interval, const int resend, const int nc,
+		const int streamMode, const int mtu, const int rx_minrto)
+	{
+		//isFecEnable_ = isFecEnable;
+		sndWnd_ = sndWnd; rcvWnd_ = rcvWnd; nodelay_ = nodelay;
+		interval_ = interval; resend_ = resend; nc_ = nc;
+		streamMode_ = streamMode; mtu_ = mtu; rx_minrto_ = rx_minrto;
+	}
+
+	void DoRecv(char* data, int& len, int readableLen)
+	{
 		auto dataType = inputBuf_.readInt8();
+		readableLen -= 1;
 		if (dataType == kUnreliable)
 		{
-			auto readableBytes = inputBuf_.readableBytes();
-			memcpy(data, inputBuf_.peek(), readableBytes);
-			return readableBytes;
+			memcpy(data, inputBuf_.peek(), readableLen);
+			inputBuf_.retrieve(readableLen);
+			len = readableLen;
 		}
 		else if (dataType == kReliable)
 		{
 			auto pktType = inputBuf_.readInt8();
+			readableLen -= 1;
 			if (pktType == kSyn)
 			{
+				printf("recv ksyn \n");
+				assert(role_ == kSrv);
 				if (!IsKcpConnected())
 				{
 					SetKcpConnectState(kConnected);
@@ -613,63 +751,61 @@ public:
 				{
 					InitKcp(conv_, true);
 				}
+				//auto isFecEnable = inputBuf_.readInt8();
+				//isFecEnable_ = isFecEnable == kFecEnable;
+				printf("snd kAck 12 \n");
 				SendAckAndConv();
-				return 0;
+				len = 0;
+				return;
 			}
 			else if (pktType == kAck)
 			{
+				printf("recv kAck \n");
 				if (!IsKcpConnected())
 				{
 					SetKcpConnectState(kConnected);
 					InitKcp(inputBuf_.readInt32());
 				}
-				return 0;
+				len = 0;
+				return;
 			}
 			else if (pktType == kRst)
 			{
 				SetKcpConnectState(kResetting);
+				assert(role_ == kCli);
 				SendSyn();
-				return 0;
+				len = 0;
+				return;
 			}
 			else if (pktType == kPsh)
 			{
+				printf("recv kPsh \n");
 				if (IsKcpConnected())
 				{
-					auto readableBytes = inputBuf_.readableBytes();
-					int result = ikcp_input(kcp_, inputBuf_.peek(), readableBytes);
+					int result = ikcp_input(kcp_, inputBuf_.peek(), readableLen);
+					inputBuf_.retrieve(readableLen);
 					if (result == 0)
-						return KcpRecv(data); // if err, -1, -2, -3
+						len = KcpRecv(data); // if err, -1, -2, -3
 					else // if (result < 0)
-						return result - 3; // ikcp_input err, -4, -5, -6
+						len = result - 3; // ikcp_input err, -4, -5, -6
 				}
 				else  // pktType == kPsh, but kcp not connected
 				{
-					SendRst();
-					return 0;
+					if (role_ == kSrv)
+						SendRst();
+					len = 0;
+					return;
 				}
 			}
 			else
 			{
-				return -8; // pktType err
+				len = -8; // pktType err
 			}
 		}
 		else
 		{
-			return -9; // dataType err
+			len = -9; // dataType err
 		}
-	}
-
-public:
-
-	bool IsKcpConnected() const { return kcpConnState_ == kConnected; }
-
-	void SetKcpConfig(const int sndWnd, const int rcvWnd, const int nodelay,
-		const int interval, const int resend, const int nc, 
-		const int streamMode, const int mtu, const int rx_minrto)
-	{ 
-		sndWnd_ = sndWnd; rcvWnd_ = rcvWnd; nodelay_ = nodelay;
-		interval_ = interval; resend_ = resend; nc_ = nc;
-		streamMode_ = streamMode; mtu_ = mtu; rx_minrto_ = rx_minrto;
 	}
 
 	~KcpSession() { if (kcp_) ikcp_release(kcp_); }
@@ -678,29 +814,33 @@ private:
 
 	void SendRst()
 	{
+		assert(role_ == kSrv);
 		outputBuf_.retrieveAll();
 		outputBuf_.appendInt8(kReliable);
 		outputBuf_.appendInt8(kRst);
-		outputFunc_(outputBuf_.peek(), outputBuf_.readableBytes());
+		OutputAfterCheckingFec();
 		outputBuf_.retrieveAll();
 	}
 
 	void SendSyn()
 	{
+		assert(role_ == kCli);
 		outputBuf_.retrieveAll();
 		outputBuf_.appendInt8(kReliable);
 		outputBuf_.appendInt8(kSyn);
-		outputFunc_(outputBuf_.peek(), outputBuf_.readableBytes());
+		//outputBuf_.appendInt8(isFecEnable_ ? kFecEnable : kFecDisable);
+		OutputAfterCheckingFec();
 		outputBuf_.retrieveAll();
 	}
 
 	void SendAckAndConv()
 	{
+		assert(role_ == kSrv);
 		outputBuf_.retrieveAll();
 		outputBuf_.appendInt8(kReliable);
 		outputBuf_.appendInt8(kAck);
 		outputBuf_.appendInt32(conv_);
-		outputFunc_(outputBuf_.peek(), outputBuf_.readableBytes());
+		OutputAfterCheckingFec();
 		outputBuf_.retrieveAll();
 	}
 
@@ -719,6 +859,7 @@ private:
 
 	IUINT32 GetNewConv()
 	{
+		assert(role_ == kSrv);
 		static IUINT32 newConv = 666;
 		return newConv++;
 	}
@@ -744,11 +885,24 @@ private:
 		thisPtr->outputBuf_.appendInt8(kReliable);
 		thisPtr->outputBuf_.appendInt8(kPsh);
 		thisPtr->outputBuf_.append(data, len);
-		thisPtr->outputFunc_(thisPtr->outputBuf_.peek(), thisPtr->outputBuf_.readableBytes());
+		thisPtr->OutputAfterCheckingFec();
 		thisPtr->outputBuf_.retrieveAll();
 
 		return 0;
 	}
+
+	void OutputAfterCheckingFec()
+	{
+		//if (isFecEnable_)
+		fec_.Output(&outputBuf_);
+		outputFunc_(outputBuf_.peek(), outputBuf_.readableBytes());
+	}
+
+	//void InputAfterCheckingFec()
+	//{
+		//if (isFecEnable_)
+		//fec_.Input(&inputBuf_);
+	//}
 
 private:
 	ikcpcb* kcp_;
@@ -761,6 +915,8 @@ private:
 	IUINT32 conv_;
 	RoleTypeE role_;
 	std::queue<std::string> sndQueueBeforeConned_;
+	Fec fec_;
+	bool isFecEnable_;
 
 private:
 	// kcp config...

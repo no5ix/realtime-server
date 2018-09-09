@@ -47,19 +47,21 @@ void udp_output(const void *buf, int len, int fd, struct sockaddr_in* dst)
 }
 
 bool isSimulatingPackageLoss = false;
-ssize_t udp_input(void *buf, int len, int fd, struct sockaddr_in* from)
+ssize_t udp_input(char* rcvData, char* buf, int len, int fd, struct sockaddr_in* from)
 {
 	socklen_t fromAddrLen = sizeof(*from);
 	ssize_t recvLen = ::recvfrom(fd, buf, len, 0,
 		(struct sockaddr*)from, &fromAddrLen);
 	//printf("recvfrom() = %d \n", static_cast<int>(recvLen));
+	rcvData = buf;
+	(void)rcvData;
 	if (recvLen < 0)
 	{
 		printf("recieve data fail!\n");
 	}
 	else if (recvLen > 0)
 	{
-		isSimulatingPackageLoss = GetRandomFloat() > 0.8 ? true : false; // simulate package loss
+		//isSimulatingPackageLoss = GetRandomFloat() > 0.8 ? true : false; // simulate package loss
 		if (isSimulatingPackageLoss)
 		{
 			printf("server: simulate package loss!!\n");
@@ -77,9 +79,9 @@ void handle_udp_msg(int fd)
 	struct sockaddr_in* clientAddr = new struct sockaddr_in;  //clent_addr用于记录发送方的地址信息
 
 	KcpSession kcpServer(
-		KcpSession::RoleTypeE::kCli,
+		KcpSession::RoleTypeE::kSrv,
 		std::bind(udp_output, std::placeholders::_1, std::placeholders::_2, fd, clientAddr),
-		std::bind(udp_input, rcvBuf, RCV_BUFF_LEN, fd, clientAddr),
+		std::bind(udp_input, std::placeholders::_1, rcvBuf, RCV_BUFF_LEN, fd, clientAddr),
 		std::bind(iclock));
 
 	int len = 0;
@@ -90,8 +92,11 @@ void handle_udp_msg(int fd)
 		memset(rcvBuf, 0, RCV_BUFF_LEN);
 		memset(sndBuf, 0, SND_BUFF_LEN);
 
+		while (kcpServer.Recv(rcvBuf, len))
 		{
-			len = kcpServer.Recv(rcvBuf);
+			//len = kcpServer.Recv(rcvBuf);
+			printf("IsKcpConnected() = %d\n", kcpServer.IsKcpConnected());
+			printf("len = kcpServer.Recv(rcvBuf) = %d\n", len);
 			if (len < 0 && !isSimulatingPackageLoss)
 			{
 				printf("kcpSession Recv failed, Recv() = %d \n", len);
@@ -109,21 +114,17 @@ void handle_udp_msg(int fd)
 				}
 				++nextRcvIndex;
 
+				((uint32_t*)sndBuf)[0] = nextRcvIndex - 1;
+				int result = kcpServer.Send(sndBuf, SND_BUFF_LEN, KcpSession::DataTypeE::kUnreliable);
+				printf("kcpServer.Sendddddd()d\n");
+				if (result < 0)
 				{
-					//printf("I have recieved the max index = %d\n", nextRcvIndex - 1);  //回复client
-					((uint32_t*)sndBuf)[0] = nextRcvIndex - 1;
-
-					int result = kcpServer.Send(sndBuf, SND_BUFF_LEN, KcpSession::DataTypeE::kUnreliable);
-					if (result < 0)
-					{
-						printf("kcpSession Send failed\n");
-						return;
-					}
+					printf("kcpSession Send failed\n");
+					return;
 				}
-
 			}
 		}
-
+		printf("kcpServer.Uuuuuuuuuupdate()d\n");
 		kcpServer.Update();
 	}
 }
