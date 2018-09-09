@@ -14,7 +14,9 @@
 
 #define SERVER_PORT 8888
 
-#define SND_BUFF_LEN 888
+// because `int result = kcpServer.Send(sndBuf, SND_BUFF_LEN, KcpSession::DataTypeE::kUnreliable);`
+// in `KcpSession::DataTypeE::kUnreliable` mode, SND_BUFF_LEN should less than `KcpSession::mtu_`
+#define SND_BUFF_LEN KcpSession::kSeparatePktSize
 #define RCV_BUFF_LEN 1500
 
 
@@ -86,6 +88,7 @@ void handle_udp_msg(int fd)
 
 	int len = 0;
 	uint32_t nextRcvIndex = 11;
+	const uint32_t maxIndex = 222;
 
 	while (1)
 	{
@@ -95,8 +98,8 @@ void handle_udp_msg(int fd)
 		while (kcpServer.Recv(rcvBuf, len))
 		{
 			//len = kcpServer.Recv(rcvBuf);
-			printf("IsKcpConnected() = %d\n", kcpServer.IsKcpConnected());
-			printf("len = kcpServer.Recv(rcvBuf) = %d\n", len);
+			//printf("IsKcpConnected() = %d\n", kcpServer.IsKcpConnected());
+			//printf("len = kcpServer.Recv(rcvBuf) = %d\n", len);
 			if (len < 0 && !isSimulatingPackageLoss)
 			{
 				printf("kcpSession Recv failed, Recv() = %d \n", len);
@@ -104,7 +107,18 @@ void handle_udp_msg(int fd)
 			else if (len > 0)
 			{
 				uint32_t index = *(uint32_t*)(rcvBuf + 0);
-				printf("client:%d\n", (int)index);
+
+				if (index == maxIndex)
+				{
+					printf("client:%d\n", (int)index);
+					//printf("when server have recieved the max index >= %d, test passes, yay! \n", maxIndex);  //打印server发过来的信息
+					printf("test passes, yay! \n");
+				}
+				else if (index < maxIndex)
+				{
+					printf("client:%d\n", (int)index);
+				}
+
 				if (kcpServer.IsKcpConnected() && index != nextRcvIndex)
 				{
 					// 如果收到的包不连续
@@ -116,7 +130,7 @@ void handle_udp_msg(int fd)
 
 				((uint32_t*)sndBuf)[0] = nextRcvIndex - 1;
 				int result = kcpServer.Send(sndBuf, SND_BUFF_LEN, KcpSession::DataTypeE::kUnreliable);
-				printf("kcpServer.Sendddddd()d\n");
+				//printf("kcpServer.Sendddddd()d\n");
 				if (result < 0)
 				{
 					printf("kcpSession Send failed\n");
@@ -124,7 +138,7 @@ void handle_udp_msg(int fd)
 				}
 			}
 		}
-		printf("kcpServer.Uuuuuuuuuupdate()d\n");
+		//printf("kcpServer.Uuuuuuuuuupdate()d\n");
 		kcpServer.Update();
 	}
 }

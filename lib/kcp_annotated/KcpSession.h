@@ -520,39 +520,45 @@ public:
 
 	void Output(Buf* oBuf)
 	{
+		//printf("\nFEC::Outputtt oBuf->readableBytes() = %d\n", (int)oBuf->readableBytes());
 		oBuf->prependInt16(oBuf->readableBytes());
 		oBuf->prependInt32(nextSndSn_++);
+		//printf("FEC::Outputafterprepend oBuf->readableBytes() = %d\n", (int)oBuf->readableBytes());
 		outputQueue_.push_back(oBuf->retrieveAllAsString());
+		//printf("FEC::Outputafterpush_back oBuf->readableBytes() = %d\n", (int)oBuf->readableBytes());
 
 		count_ = outputQueue_.size();
-		printf("count_ = %d\n", (int)count_);
+		//printf("count_ = %d\n", (int)count_);
 
 		for (index_ = 0; index_ < count_; ++index_)
+		{
 			oBuf->append(*(outputQueue_.begin() + index_));
+			//printf("FEC::Outputaaaappend oBuf->readableBytes() = %d\n\n", (int)oBuf->readableBytes());
+		}
 		if (count_ == kRedundancyCnt_)
 			outputQueue_.pop_front();
-		printf("\nooooooBuf->readableBytes = %d\n", (int)oBuf->readableBytes());
+		//printf("\nooooooBuf->readableBytes = %d\n", (int)oBuf->readableBytes());
 	}
 
 	bool Input(char* data, int& len, Buf* iBuf)
 	{
 		bool hasData = IsThereAnyDataLeft(iBuf);
-		printf("\niiiiiiBuf->readableBytes = %d\n", (int)iBuf->readableBytes());
+		//printf("\niiiiiiBuf->readableBytes = %d\n", (int)iBuf->readableBytes());
 		if (hasData)
 		{
 			isFinishedThisRound_ = false;
-			printf("isFinishedThisRound_ = falseeeeeeeeeeeee \n");
+			//printf("isFinishedThisRound_ = falseeeeeeeeeeeee \n");
 			int32_t recvSn = iBuf->readInt32();
-			printf("iBuf->readInt32() , iBuf->readableBytes = %d\n", (int)iBuf->readableBytes());
+			//printf("iBuf->readInt32() , iBuf->readableBytes = %d\n", (int)iBuf->readableBytes());
 			if (recvSn >= nextRcvSn_)
 			{
-				printf("recvSn >= nextRcvSnnnnnnnnnnnn_eeeee \n");
+				//printf("recvSn >= nextRcvSnnnnnnnnnnnn_eeeee \n");
 				nextRcvSn_ = ++recvSn;
 				rcvFunc_(data, len, iBuf->readInt16());
 			}
 			else
 			{
-				printf("recvSn nnonono>= nextRcvSn_eeeee \n");
+				//printf("recvSn nnonono>= nextRcvSn_eeeee \n");
 				iBuf->retrieve(iBuf->readInt16());
 				len = 0;
 			}
@@ -560,7 +566,7 @@ public:
 		else
 		{
 			iBuf->retrieveAll();
-			printf("isFinishedThisRound_ = trueeeeeeeeeeee \n");
+			//printf("isFinishedThisRound_ = trueeeeeeeeeeee \n");
 			isFinishedThisRound_ = true;
 		}
 		return hasData;
@@ -571,8 +577,8 @@ public:
 private:
 	bool IsThereAnyDataLeft(const Buf* buf) const
 	{
-		if (buf->readableBytes() == 4)
-			printf("mmp");
+		//if (buf->readableBytes() == 4)
+			//printf("mmp");
 		if (buf->readableBytes() >= Fec::kSnLen)
 		{
 			int16_t be16 = 0;
@@ -582,9 +588,9 @@ private:
 			if (dataLen > 1024)
 				return false;
 
-			printf("mmp dataLen = %d\n", (int)dataLen);
-			printf("mmp buf->readableBytes() = %d, (dataLen + Fec::kSnLen + Fec::kDataLen) = %d\n",
-				(int)buf->readableBytes(), (int)(dataLen + Fec::kSnLen + Fec::kDataLen));
+			//printf("mmp dataLen = %d\n", (int)dataLen);
+			//printf("mmp buf->readableBytes() = %d, (dataLen + Fec::kSnLen + Fec::kDataLen) = %d\n",
+				//(int)buf->readableBytes(), (int)(dataLen + Fec::kSnLen + Fec::kDataLen));
 
 			return buf->readableBytes() >= (dataLen + Fec::kSnLen + Fec::kDataLen);
 		}
@@ -605,6 +611,7 @@ private:
 class KcpSession
 {
 public:
+	static const int kSeparatePktSize = 300;
 	enum StateE { kDisconnected, kConnecting, kConnected, kDisconnecting, kResetting };
 	enum RoleTypeE { kSrv, kCli };
 	enum DataTypeE { kUnreliable = 88, kReliable };
@@ -638,7 +645,7 @@ public:
 		resend_(1),
 		nc_(1),
 		streamMode_(0),
-		mtu_(300),
+		mtu_(kSeparatePktSize),
 		rx_minrto_(5)
 	{}
 
@@ -651,6 +658,7 @@ public:
 		assert(dataType == kReliable || dataType == kUnreliable);
 		if (dataType == kUnreliable)
 		{
+			assert(len <= kSeparatePktSize);
 			outputBuf_.appendInt8(kUnreliable);
 			outputBuf_.append(data, len);
 			OutputAfterCheckingFec();
@@ -662,7 +670,7 @@ public:
 		{
 			if (!IsKcpConnected() && role_ == kCli)
 			{
-				printf("snd ksyn 8\n");
+				// printf("snd ksyn 8\n");
 				SendSyn();
 				sndQueueBeforeConned_.push(std::string(static_cast<const char*>(data), len));
 				return 0;
@@ -696,7 +704,7 @@ public:
 	{
 		if (fec_.IsFinishedThisRound_())
 		{
-			printf("ssize_t rawRecvlen = inputFunc_(data);ssize_t rawRecvlen = inputFunc_(data);\n");
+			// printf("ssize_t rawRecvlen = inputFunc_(data);ssize_t rawRecvlen = inputFunc_(data);\n");
 			ssize_t rawRecvlen = inputFunc_(data);
 			if (rawRecvlen <= 0)
 			{
@@ -740,7 +748,7 @@ public:
 			readableLen -= 1;
 			if (pktType == kSyn)
 			{
-				printf("recv ksyn \n");
+				// printf("recv ksyn \n");
 				assert(role_ == kSrv);
 				if (!IsKcpConnected())
 				{
@@ -753,14 +761,14 @@ public:
 				}
 				//auto isFecEnable = inputBuf_.readInt8();
 				//isFecEnable_ = isFecEnable == kFecEnable;
-				printf("snd kAck 12 \n");
+				// printf("snd kAck 12 \n");
 				SendAckAndConv();
 				len = 0;
 				return;
 			}
 			else if (pktType == kAck)
 			{
-				printf("recv kAck \n");
+				// printf("recv kAck \n");
 				if (!IsKcpConnected())
 				{
 					SetKcpConnectState(kConnected);
@@ -779,7 +787,7 @@ public:
 			}
 			else if (pktType == kPsh)
 			{
-				printf("recv kPsh \n");
+				// printf("recv kPsh \n");
 				if (IsKcpConnected())
 				{
 					int result = ikcp_input(kcp_, inputBuf_.peek(), readableLen);
@@ -885,6 +893,7 @@ private:
 		thisPtr->outputBuf_.appendInt8(kReliable);
 		thisPtr->outputBuf_.appendInt8(kPsh);
 		thisPtr->outputBuf_.append(data, len);
+		//printf("KcpPshOutputFuncRaw len = %d\n", (int)len);
 		thisPtr->OutputAfterCheckingFec();
 		thisPtr->outputBuf_.retrieveAll();
 
@@ -895,6 +904,7 @@ private:
 	{
 		//if (isFecEnable_)
 		fec_.Output(&outputBuf_);
+		//printf("outputBuf_.readableBytes() len = %d\n", (int)outputBuf_.readableBytes());
 		outputFunc_(outputBuf_.peek(), outputBuf_.readableBytes());
 	}
 

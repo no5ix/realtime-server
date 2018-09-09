@@ -79,10 +79,10 @@ void udp_msg_sender(int fd, struct sockaddr* dst)
 
 		((uint32_t*)sndBuf)[0] = index++;
 
-		printf("client:%d\n", ((uint32_t*)sndBuf)[0]);  //打印自己发送的信息
+		//printf("client:%d\n", ((uint32_t*)sndBuf)[0]);  //打印自己发送的信息
 
 		len = kcpClient.Send(sndBuf, SND_BUFF_LEN);
-		printf("kcpClient.Sendddddd()d\n");
+		//printf("kcpClient.Sendddddd()d\n");
 		if (len < 0)
 		{
 			printf("kcpSession Send failed\n");
@@ -92,7 +92,7 @@ void udp_msg_sender(int fd, struct sockaddr* dst)
 		while (kcpClient.Recv(rcvBuf, len))
 		{
 			//int result = kcpClient.Recv(rcvBuf);
-			printf("IsKcpConnected() = %d\n", kcpClient.IsKcpConnected());
+			//printf("IsKcpConnected() = %d\n", kcpClient.IsKcpConnected());
 			if (len < 0)
 			{
 				printf("kcpSession Recv failed, Recv() = %d \n", len);
@@ -100,16 +100,17 @@ void udp_msg_sender(int fd, struct sockaddr* dst)
 			else if (len > 0)
 			{
 				uint32_t srvRcvMaxIndex = *(uint32_t*)(rcvBuf + 0);
-				printf("server: have recieved the max index = %d\n", (int)srvRcvMaxIndex);  //打印server发过来的信息
+				printf("server: have recieved the max index = %d\n", (int)srvRcvMaxIndex);
 				if (srvRcvMaxIndex >= maxIndex)
 				{
-					printf("when server have recieved the max index >= %d, test passes, yay! \n", maxIndex);  //打印server发过来的信息
+					//printf("when server have recieved the max index >= %d, test passes, yay! \n", maxIndex);
+					printf("test passes, yay! \n");
 					return;
 				}
 			}
 		}
 
-		printf("kcpClient.Uuuuuuuuuupdate()d\n");
+		//printf("kcpClient.Uuuuuuuuuupdate()d\n");
 		kcpClient.Update();
 		usleep(16666); // 60fps
 		//sleep(1);
