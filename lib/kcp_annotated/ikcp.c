@@ -1532,7 +1532,7 @@ int ikcp_interval(ikcpcb *kcp, int interval)
 	return 0;
 }
 
-//nodelay:   0 不启用，1启用快速重传模式
+//nodelay:   0 不启用，1启用nodelay模式(即使用更小的 rx_minrto, 以更快检测到丢包)
 //interval： 内部flush刷新时间
 //resend:    0（默认）表示关闭。可以自己设置值，若设置为2（则2次ACK跨越将会直接重传）
 //nc:        即 no congest 的缩写, 是否关闭拥塞控制，0（默认）代表不关闭，1代表关闭

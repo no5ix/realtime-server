@@ -18,8 +18,6 @@
 // be "dual licensed" under the BSD, MIT and Apache licenses, if you want to. This code is trivial anyway. Consider it
 // an example on how to get the endian conversion functions on different platforms.
 
-#ifndef PORTABLE_ENDIAN_H__
-#define PORTABLE_ENDIAN_H__
 
 #if (defined(_WIN16) || defined(_WIN32) || defined(_WIN64)) && !defined(__WINDOWS__)
 
@@ -75,7 +73,19 @@
 #elif defined(__WINDOWS__)
 
 #	include <winsock2.h>
-#	include <sys/param.h>
+//#	include <sys/param.h>
+
+#if !defined(BYTE_ORDER) && defined(__BYTE_ORDER)
+#define BYTE_ORDER __BYTE_ORDER
+
+#ifndef LITTLE_ENDIAN
+#define LITTLE_ENDIAN __LITTLE_ENDIAN
+#endif /* LITTLE_ENDIAN */
+
+#ifndef BIG_ENDIAN
+#define BIG_ENDIAN __LITTLE_ENDIAN
+#endif /* BIG_ENDIAN */
+#endif /* BYTE_ORDER */
 
 #	if BYTE_ORDER == LITTLE_ENDIAN
 
@@ -88,6 +98,14 @@
 #		define htole32(x) (x)
 #		define be32toh(x) ntohl(x)
 #		define le32toh(x) (x)
+
+#ifndef htonll
+#define htonll(x) ((1==htonl(1)) ? (x) : ((uint64_t)htonl((x) & 0xFFFFFFFF) << 32) | htonl((x) >> 32))
+#endif
+
+#ifndef ntohll
+#define ntohll(x) ((1==ntohl(1)) ? (x) : ((uint64_t)ntohl((x) & 0xFFFFFFFF) << 32) | ntohl((x) >> 32))
+#endif
 
 #		define htobe64(x) htonll(x)
 #		define htole64(x) (x)
@@ -129,13 +147,11 @@
 
 #endif
 
-#endif
-
 
 
 
 // a light weight buf.
-// thx chensuo, copy from muduo.
+// thx chensuo, copy from muduo and make it safe to prepend data of any length.
 
 /// A buffer class modeled after org.jboss.netty.buffer.ChannelBuffer
 ///
@@ -150,8 +166,8 @@
 class Buf
 {
 public:
-	static const size_t kCheapPrepend = 8;
-	static const size_t kInitialSize = 1024;
+	static const size_t kCheapPrepend = 1024;
+	static const size_t kInitialSize = 512;
 
 	explicit Buf(size_t initialSize = kInitialSize)
 		: buffer_(kCheapPrepend + initialSize),
@@ -454,12 +470,34 @@ public:
 		prepend(&x, sizeof x);
 	}
 
+	void prepend(const std::string& str)
+	{
+		prepend(str.data(), str.size());
+	}
+
+	//void prepend(const void* /*restrict*/ data, size_t len)
+	//{
+	//	assert(len <= prependableBytes());
+	//	readerIndex_ -= len;
+	//	const char* d = static_cast<const char*>(data);
+	//	std::copy(d, d + len, begin() + readerIndex_);
+	//}
+
 	void prepend(const void* /*restrict*/ data, size_t len)
 	{
-		assert(len <= prependableBytes());
+		ensurePrependableBytes(len);
 		readerIndex_ -= len;
 		const char* d = static_cast<const char*>(data);
 		std::copy(d, d + len, begin() + readerIndex_);
+	}
+
+	void ensurePrependableBytes(size_t len)
+	{
+		if (len > prependableBytes())
+		{
+			makeSpaceForPrepend(len);
+		}
+		assert(prependableBytes() >= len);
 	}
 
 	size_t internalCapacity() const
@@ -496,6 +534,22 @@ private:
 		}
 	}
 
+	void makeSpaceForPrepend(size_t len)
+	{
+		if (len - readerIndex_ > writableBytes())
+		{
+			buffer_.resize(writerIndex_ + (len - readerIndex_));
+		}
+		// move readable data to then end
+		size_t readable = readableBytes();
+		std::copy(begin() + readerIndex_,
+			begin() + writerIndex_,
+			begin() + len);
+		readerIndex_ = len;
+		writerIndex_ = readerIndex_ + readable;
+		assert(readable == readableBytes());
+	}
+
 private:
 	std::vector<char> buffer_;
 	size_t readerIndex_;
@@ -508,9 +562,10 @@ private:
 class Fec
 {
 public:
-	const static size_t kDataLen = sizeof(int16_t);
-	const static size_t kSnLen = sizeof(int32_t);
+	static const size_t kDataLen = sizeof(int16_t);
+	static const size_t kSnLen = sizeof(int32_t);
 	static const int kRedundancyCnt_ = 3;
+	static const int kMaxDataLen = 1460 - kDataLen - kSnLen;
 	typedef std::function<void(char*, int&, int)> RecvFuncion;
 public:
 	Fec(const RecvFuncion& rcvFunc)
@@ -520,26 +575,39 @@ public:
 
 	void Output(Buf* oBuf)
 	{
-		//printf("\nFEC::Outputtt oBuf->readableBytes() = %d\n", (int)oBuf->readableBytes());
-		//printf("\nFEC::Outputtt oBuf->prependableBytes() = %d\n", (int)oBuf->prependableBytes());
 		oBuf->prependInt16(static_cast<int16_t>(oBuf->readableBytes()));
 		oBuf->prependInt32(nextSndSn_++);
-		//printf("FEC::Outputafterprepend oBuf->readableBytes() = %d\n", (int)oBuf->readableBytes());
-		outputQueue_.push_back(oBuf->retrieveAllAsString());
-		//printf("FEC::Outputafterpush_back oBuf->readableBytes() = %d\n", (int)oBuf->readableBytes());
+		outputQueue_.push_back(std::string(oBuf->peek(), oBuf->readableBytes()));
 
 		count_ = outputQueue_.size();
-		//printf("count_ = %d\n", (int)count_);
-
-		for (index_ = 0; index_ < count_; ++index_)
+		for (index_ = count_ - 1; index_ >= 0; --index_)
 		{
-			oBuf->append(*(outputQueue_.begin() + index_));
-			//printf("FEC::Outputaaaappend oBuf->readableBytes() = %d\n\n", (int)oBuf->readableBytes());
+			oBuf->prepend(*(outputQueue_.begin() + index_));
 		}
 		if (count_ == kRedundancyCnt_)
 			outputQueue_.pop_front();
-		//printf("\nooooooBuf->readableBytes = %d\n", (int)oBuf->readableBytes());
 	}
+
+	//void Output(Buf* oBuf)
+	//{
+	//	//printf("\nFEC::Outputtt oBuf->readableBytes() = %d\n", (int)oBuf->readableBytes());
+	//	//printf("\nFEC::Outputtt oBuf->prependableBytes() = %d\n", (int)oBuf->prependableBytes());
+	//	oBuf->prependInt16(static_cast<int16_t>(oBuf->readableBytes()));
+	//	oBuf->prependInt32(nextSndSn_++);
+	//	printf("FEC::Outputafterprepend oBuf->readableBytes() = %d\n", (int)oBuf->readableBytes());
+	//	outputQueue_.push_back(oBuf->retrieveAllAsString());
+	//	//printf("FEC::Outputafterpush_back oBuf->readableBytes() = %d\n", (int)oBuf->readableBytes());
+	//	count_ = outputQueue_.size();
+	//	//printf("count_ = %d\n", (int)count_);
+	//	for (index_ = 0; index_ < count_; ++index_)
+	//	{
+	//		oBuf->append(*(outputQueue_.begin() + index_));
+	//		//printf("FEC::Outputaaaappend oBuf->readableBytes() = %d\n\n", (int)oBuf->readableBytes());
+	//	}
+	//	if (count_ == kRedundancyCnt_)
+	//		outputQueue_.pop_front();
+	//	printf("\nooooooBuf->readableBytes = %d\n", (int)oBuf->readableBytes());
+	//}
 
 	bool Input(char* data, int& len, Buf* iBuf)
 	{
@@ -579,19 +647,19 @@ private:
 	bool IsThereAnyDataLeft(const Buf* buf) const
 	{
 		//if (buf->readableBytes() == 4)
-			//printf("mmp");
+		//printf("mmp");
 		if (buf->readableBytes() >= Fec::kSnLen)
 		{
 			int16_t be16 = 0;
 			::memcpy(&be16, buf->peek() + Fec::kSnLen, sizeof be16);
 			const uint16_t dataLen = be16toh(be16);
 
-			if (dataLen > 1024)
+			if (dataLen > kMaxDataLen)
 				return false;
 
 			//printf("mmp dataLen = %d\n", (int)dataLen);
 			//printf("mmp buf->readableBytes() = %d, (dataLen + Fec::kSnLen + Fec::kDataLen) = %d\n",
-				//(int)buf->readableBytes(), (int)(dataLen + Fec::kSnLen + Fec::kDataLen));
+			//(int)buf->readableBytes(), (int)(dataLen + Fec::kSnLen + Fec::kDataLen));
 
 			return buf->readableBytes() >= (dataLen + Fec::kSnLen + Fec::kDataLen);
 		}
@@ -612,7 +680,8 @@ private:
 class KcpSession
 {
 public:
-	static const int kSeparatePktSize = 300;
+	static const int kMaxSeparatePktSize =
+		(1460 - (Fec::kRedundancyCnt_ * (Fec::kSnLen + Fec::kDataLen))) / Fec::kRedundancyCnt_;
 	enum ConnectionStateE { kDisconnected, kConnecting, kConnected, kDisconnecting, kResetting };
 	enum RoleTypeE { kSrv, kCli };
 	enum TransmitModeE { kUnreliable = 88, kReliable };
@@ -642,12 +711,12 @@ public:
 		sndWnd_(128),
 		rcvWnd_(128),
 		nodelay_(1),
-		interval_(5),
+		interval_(10),
 		resend_(1),
 		nc_(1),
 		streamMode_(0),
-		mtu_(kSeparatePktSize),
-		rx_minrto_(5)
+		mtu_(300),
+		rx_minrto_(10)
 	{}
 
 	void Update() { if (kcp_) ikcp_update(kcp_, curTimeCb_()); }
@@ -661,7 +730,7 @@ public:
 		assert(dataType == kReliable || dataType == kUnreliable);
 		if (dataType == kUnreliable)
 		{
-			assert(len <= kSeparatePktSize);
+			//assert(len <= kSeparatePktSize);
 			outputBuf_.appendInt8(kUnreliable);
 			outputBuf_.append(data, len);
 			OutputAfterCheckingFec();
@@ -720,17 +789,23 @@ public:
 	bool IsKcpConnected() const { return kcpConnState_ == kConnected; }
 
 	// should set before Send()
-	void SetConfig(
+	void SetKcpConfig(
 		//const bool isFecEnable,
 		const int sndWnd, const int rcvWnd, const int nodelay,
 		const int interval, const int resend, const int nc,
 		const int streamMode, const int mtu, const int rx_minrto)
 	{
 		//isFecEnable_ = isFecEnable;
+		assert(mtu <= kMaxSeparatePktSize);
 		sndWnd_ = sndWnd; rcvWnd_ = rcvWnd; nodelay_ = nodelay;
 		interval_ = interval; resend_ = resend; nc_ = nc;
 		streamMode_ = streamMode; mtu_ = mtu; rx_minrto_ = rx_minrto;
 	}
+
+	~KcpSession() { if (kcp_) ikcp_release(kcp_); }
+
+private:
+	friend void Fec::Output(Buf*);
 
 	void DoRecv(char* data, int& len, int readableLen)
 	{
@@ -820,10 +895,6 @@ public:
 		}
 		inputBuf_.retrieve(readableLen);
 	}
-
-	~KcpSession() { if (kcp_) ikcp_release(kcp_); }
-
-private:
 
 	void SendRst()
 	{
@@ -916,8 +987,8 @@ private:
 
 	//void InputAfterCheckingFec()
 	//{
-		//if (isFecEnable_)
-		//fec_.Input(&inputBuf_);
+	//if (isFecEnable_)
+	//fec_.Input(&inputBuf_);
 	//}
 
 private:

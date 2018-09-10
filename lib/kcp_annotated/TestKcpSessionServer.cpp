@@ -16,7 +16,7 @@
 
 // because `int result = kcpServer.Send(sndBuf, SND_BUFF_LEN, KcpSession::DataTypeE::kUnreliable);`
 // in `KcpSession::DataTypeE::kUnreliable` mode, SND_BUFF_LEN should less than `KcpSession::mtu_`
-#define SND_BUFF_LEN KcpSession::kSeparatePktSize
+#define SND_BUFF_LEN KcpSession::kMaxSeparatePktSize
 #define RCV_BUFF_LEN 1500
 
 
