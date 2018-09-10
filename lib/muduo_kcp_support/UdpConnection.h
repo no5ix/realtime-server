@@ -59,10 +59,10 @@ namespace muduo
 
 			// void send(string&& message); // C++11
 			void send( const void* message, int len,
-				//KcpSession::DataTypeE dataType = KcpSession::DataTypeE::kUnreliable);
-				KcpSession::DataTypeE dataType = KcpSession::DataTypeE::kReliable);
+				//KcpSession::TransmitModeE dataType = KcpSession::TransmitModeE::kUnreliable);
+				KcpSession::TransmitModeE dataType = KcpSession::TransmitModeE::kReliable);
 
-			void KcpSessionUpdate() { kcpSession_->Update(); }
+			void KcpSessionUpdate();
 
 			void DoSend(const void* message, int len);
 			int DoRecv(char* rcvData);

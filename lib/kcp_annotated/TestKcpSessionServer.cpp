@@ -129,7 +129,7 @@ void handle_udp_msg(int fd)
 				++nextRcvIndex;
 
 				((uint32_t*)sndBuf)[0] = nextRcvIndex - 1;
-				int result = kcpServer.Send(sndBuf, SND_BUFF_LEN, KcpSession::DataTypeE::kUnreliable);
+				int result = kcpServer.Send(sndBuf, SND_BUFF_LEN, KcpSession::TransmitModeE::kUnreliable);
 				//printf("kcpServer.Sendddddd()d\n");
 				if (result < 0)
 				{

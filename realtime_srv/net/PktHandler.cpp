@@ -151,7 +151,7 @@ void PktHandler::ProcessPkt()
 		}
 	}
 	tickCb_();
-	//CheckForSleep();
+	CheckForSleep();
 }
 
 void PktHandler::IoThreadInit( EventLoop* loop )

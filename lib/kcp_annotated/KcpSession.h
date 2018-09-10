@@ -521,7 +521,8 @@ public:
 	void Output(Buf* oBuf)
 	{
 		//printf("\nFEC::Outputtt oBuf->readableBytes() = %d\n", (int)oBuf->readableBytes());
-		oBuf->prependInt16(oBuf->readableBytes());
+		//printf("\nFEC::Outputtt oBuf->prependableBytes() = %d\n", (int)oBuf->prependableBytes());
+		oBuf->prependInt16(static_cast<int16_t>(oBuf->readableBytes()));
 		oBuf->prependInt32(nextSndSn_++);
 		//printf("FEC::Outputafterprepend oBuf->readableBytes() = %d\n", (int)oBuf->readableBytes());
 		outputQueue_.push_back(oBuf->retrieveAllAsString());
@@ -537,7 +538,7 @@ public:
 		}
 		if (count_ == kRedundancyCnt_)
 			outputQueue_.pop_front();
-		printf("\nooooooBuf->readableBytes = %d\n", (int)oBuf->readableBytes());
+		//printf("\nooooooBuf->readableBytes = %d\n", (int)oBuf->readableBytes());
 	}
 
 	bool Input(char* data, int& len, Buf* iBuf)
@@ -612,9 +613,9 @@ class KcpSession
 {
 public:
 	static const int kSeparatePktSize = 300;
-	enum StateE { kDisconnected, kConnecting, kConnected, kDisconnecting, kResetting };
+	enum ConnectionStateE { kDisconnected, kConnecting, kConnected, kDisconnecting, kResetting };
 	enum RoleTypeE { kSrv, kCli };
-	enum DataTypeE { kUnreliable = 88, kReliable };
+	enum TransmitModeE { kUnreliable = 88, kReliable };
 	enum PktTypeE { kSyn = 66, kAck, kPsh, kFin, kRst };
 	enum FecStateE { kFecEnable = 233, kFecDisable };
 
@@ -652,7 +653,7 @@ public:
 	void Update() { if (kcp_) ikcp_update(kcp_, curTimeCb_()); }
 
 	// returns below zero for error
-	int Send(const void* data, int len, DataTypeE dataType = kReliable)
+	int Send(const void* data, int len, TransmitModeE dataType = kReliable)
 	{
 		//outputBuf_.retrieveAll();
 		assert(data != nullptr);
@@ -666,7 +667,6 @@ public:
 			OutputAfterCheckingFec();
 			if (!IsKcpConnected() && role_ == kCli)
 				SendSyn();
-			return 0;
 		}
 		else if (dataType == kReliable)
 		{
@@ -675,7 +675,6 @@ public:
 				// printf("snd ksyn 8\n");
 				SendSyn();
 				sndQueueBeforeConned_.push(std::string(static_cast<const char*>(data), len));
-				return 0;
 			}
 			else if (IsKcpConnected())
 			{
@@ -695,7 +694,6 @@ public:
 					return result; // ikcp_send err
 				else
 					Update();
-				return 0;
 			}
 		}
 		return 0;
@@ -879,7 +877,7 @@ private:
 		return newConv++;
 	}
 
-	void SetKcpConnectState(StateE s) { kcpConnState_ = s; }
+	void SetKcpConnectState(ConnectionStateE s) { kcpConnState_ = s; }
 
 	int KcpRecv(char* userBuffer)
 	{
@@ -926,7 +924,7 @@ private:
 	ikcpcb* kcp_;
 	OutputFunction outputFunc_;
 	InputFunction inputFunc_;
-	StateE kcpConnState_;
+	ConnectionStateE kcpConnState_;
 	Buf outputBuf_;
 	Buf inputBuf_;
 	CurrentTimeCallBack curTimeCb_;

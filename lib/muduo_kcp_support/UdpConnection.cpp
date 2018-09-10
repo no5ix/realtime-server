@@ -83,11 +83,11 @@ UdpConnection::~UdpConnection()
 
 void UdpConnection::send(const void* data, int len,
 	//KcpSession::DataTypeE dataType /*= KcpSession::DataTypeE::kUnreliable*/)
-	KcpSession::DataTypeE dataType /*= KcpSession::DataTypeE::kReliable*/)
+	KcpSession::TransmitModeE dataType /*= KcpSession::DataTypeE::kReliable*/)
 {
 	len = kcpSession_->Send(data, len, dataType);
 	if (len < 0)
-		LOG_SYSERR << "kcpSession send failed";
+		LOG_ERROR << "kcpSession send failed";
 }
 
 void UdpConnection::handleRead(Timestamp receiveTime)
@@ -105,28 +105,13 @@ void UdpConnection::handleRead(Timestamp receiveTime)
 	}
 }
 
-//void UdpConnection::handleRead(Timestamp receiveTime)
-//{
-//	loop_->assertInLoopThread();
-//	ssize_t n = sockets::read(channel_->fd(), static_cast<void*>(packetBuf_), kPacketBufSize);
-//	if (n > 0)
-//	{
-//		n = kcpSession_->Recv(packetBuf_, n);
-//		if (n < 0)
-//			LOG_ERROR << "kcpSession Recv() Error, Recv() = " << n;
-//		else if (n > 0)
-//			messageCallback_(shared_from_this(), packetBuf_, n, receiveTime);
-//	}
-//	else if (n == 0)
-//	{
-//		handleClose();
-//	}
-//	else
-//	{
-//		LOG_SYSERR << "UdpConnection::handleRead";
-//		handleError();
-//	}
-//}
+void UdpConnection::KcpSessionUpdate()
+{
+	if (loop_->isInLoopThread())
+		kcpSession_->Update();
+	else
+		loop_->runInLoop([&]() { kcpSession_->Update(); });
+}
 
 void UdpConnection::DoSend(const void* data, int len)
 {
