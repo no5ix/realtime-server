@@ -13,15 +13,15 @@
 
 #include <muduo/base/StringPiece.h>
 #include <muduo/base/Types.h>
-#include <muduo_kcp_support/UdpCallbacks.h>
+#include <realtinet/UdpCallbacks.h>
 #include <muduo/net/Callbacks.h>
 #include <muduo/net/Buffer.h>
 #include <muduo/net/InetAddress.h>
 
 #include <memory>
 
-#include <realtime_srv/common/any.h>
-#include <kcp_annotated/KcpSession.h>
+#include "any.h"
+#include <kcpsess/kcpsess.h>
 
 namespace muduo
 {
@@ -59,13 +59,13 @@ namespace muduo
 
 			// void send(string&& message); // C++11
 			void send( const void* message, int len,
-				//KcpSession::TransmitModeE dataType = KcpSession::TransmitModeE::kUnreliable);
-				KcpSession::TransmitModeE dataType = KcpSession::TransmitModeE::kReliable);
+				//kcpsess::KcpSession::TransmitModeE transmitMode = kcpsess::KcpSession::TransmitModeE::kUnreliable);
+				kcpsess::KcpSession::TransmitModeE transmitMode = kcpsess::KcpSession::TransmitModeE::kReliable);
 
 			void KcpSessionUpdate();
 
 			void DoSend(const void* message, int len);
-			int DoRecv(char* rcvData);
+			kcpsess::KcpSession::InputData DoRecv();
 
 			void shutdown(); // NOT thread safe, no simultaneous calling
 							 // void shutdownAndForceCloseAfter(double seconds); // NOT thread safe, no simultaneous calling
@@ -95,13 +95,13 @@ namespace muduo
 										 // called when TcpServer has removed me from its map
 			void connectDestroyed();  // should be called only once
 
-			void setContext(const realtime_srv::any& context)
+			void setContext(const realtinet::any& context)
 			{ context_ = context; }
 
-			const realtime_srv::any& getContext() const
+			const realtinet::any& getContext() const
 			{ return context_; }
 
-			realtime_srv::any* getMutableContext()
+			realtinet::any* getMutableContext()
 			{ return &context_; }
 
 			int GetConnId() const
@@ -138,10 +138,11 @@ namespace muduo
 			int connId_;
 			static const size_t kPacketBufSize = 1500;
 			char packetBuf_[kPacketBufSize];
-			realtime_srv::any context_;
+			realtinet::any context_;
 
 			// kcp
-			std::unique_ptr<KcpSession> kcpSession_;
+			std::unique_ptr<kcpsess::KcpSession> kcpSession_;
+			kcpsess::KcpSession::InputData kcpsessInputData_;
 		};
 
 		typedef std::shared_ptr<UdpConnection> UdpConnectionPtr;

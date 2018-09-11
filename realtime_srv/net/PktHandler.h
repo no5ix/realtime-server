@@ -14,8 +14,8 @@
 #include <muduo/net/Buffer.h>
 #include <muduo/net/Endian.h>
 
-#include <muduo_kcp_support/UdpServer.h>
-#include <muduo_kcp_support/UdpConnection.h>
+#include <realtinet/UdpServer.h>
+#include <realtinet/UdpConnection.h>
 
 #include <realtime_srv/net/Packet.h>
 #include <realtime_srv/common/RealtimeSrvHelper.h>

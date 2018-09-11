@@ -8,8 +8,9 @@
 #include <string.h>
 #include <unistd.h>
 #include <random>
+#include <string>
 
-#include "KcpSession.h"
+#include "kcpsess.h"
 
 
 #define SERVER_PORT 8888
@@ -19,6 +20,7 @@
 #define SND_BUFF_LEN KcpSession::kMaxSeparatePktSize
 #define RCV_BUFF_LEN 1500
 
+using kcpsess::KcpSession;
 
 
 IUINT32 iclock()
@@ -35,7 +37,7 @@ IUINT32 iclock()
 	return (IUINT32)(value & 0xfffffffful);
 }
 
-float GetRandomFloat()
+float GetRandomFloatFromZeroToOne()
 {
 	static std::random_device rd;
 	static std::mt19937 gen(rd());
@@ -48,29 +50,30 @@ void udp_output(const void *buf, int len, int fd, struct sockaddr_in* dst)
 	sendto(fd, buf, len, 0, (struct sockaddr*)dst, sizeof(*(struct sockaddr*)dst));
 }
 
+const uint32_t testPassIndex = 222;
+uint32_t nextRcvIndex = 11;
 bool isSimulatingPackageLoss = false;
-int udp_input(char* rcvData, char* buf, int len, int fd, struct sockaddr_in* from)
+KcpSession::InputData udp_input(char* buf, int len, int fd, struct sockaddr_in* from)
 {
 	socklen_t fromAddrLen = sizeof(*from);
 	int recvLen = ::recvfrom(fd, buf, len, 0,
 		(struct sockaddr*)from, &fromAddrLen);
 	//printf("recvfrom() = %d \n", static_cast<int>(recvLen));
-	rcvData = buf;
-	(void)rcvData;
-	if (recvLen < 0)
+	if (recvLen <= 0)
 	{
 		printf("recieve data fail!\n");
 	}
-	else if (recvLen > 0)
+	else
 	{
-		//isSimulatingPackageLoss = GetRandomFloat() > 0.8 ? true : false; // simulate package loss
-		if (isSimulatingPackageLoss)
+		isSimulatingPackageLoss = 
+			GetRandomFloatFromZeroToOne() > 0.8 ? true : false; // simulate package loss rate 80%
+		if (isSimulatingPackageLoss && nextRcvIndex <= testPassIndex)
 		{
 			printf("server: simulate package loss!!\n");
 			recvLen = 0;
 		}
 	}
-	return recvLen;
+	return KcpSession::InputData(buf, recvLen);
 }
 
 void handle_udp_msg(int fd)
@@ -83,12 +86,10 @@ void handle_udp_msg(int fd)
 	KcpSession kcpServer(
 		KcpSession::RoleTypeE::kSrv,
 		std::bind(udp_output, std::placeholders::_1, std::placeholders::_2, fd, clientAddr),
-		std::bind(udp_input, std::placeholders::_1, rcvBuf, RCV_BUFF_LEN, fd, clientAddr),
+		std::bind(udp_input, rcvBuf, RCV_BUFF_LEN, fd, clientAddr),
 		std::bind(iclock));
 
 	int len = 0;
-	uint32_t nextRcvIndex = 11;
-	const uint32_t maxIndex = 222;
 
 	while (1)
 	{
@@ -108,13 +109,13 @@ void handle_udp_msg(int fd)
 			{
 				uint32_t index = *(uint32_t*)(rcvBuf + 0);
 
-				if (index == maxIndex)
+				if (index == testPassIndex)
 				{
 					printf("client:%d\n", (int)index);
 					//printf("when server have recieved the max index >= %d, test passes, yay! \n", maxIndex);  //打印server发过来的信息
 					printf("test passes, yay! \n");
 				}
-				else if (index < maxIndex)
+				else if (index < testPassIndex)
 				{
 					printf("client:%d\n", (int)index);
 				}

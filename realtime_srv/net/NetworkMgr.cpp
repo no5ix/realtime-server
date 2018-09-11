@@ -57,7 +57,7 @@ void NetworkMgr::UpdateConnListForCheckDisconn(const UdpConnectionPtr& conn,
 			{
 				assert(!conn->getContext().empty());
 				const NodeForCheckDisconn& node =
-					realtime_srv::any_cast<const NodeForCheckDisconn&>(conn->getContext());
+					realtinet::any_cast<const NodeForCheckDisconn&>(conn->getContext());
 				connListForCheckDisconn_.erase(node.position);
 			}
 			break;
@@ -69,7 +69,7 @@ void NetworkMgr::UpdateConnListForCheckDisconn(const UdpConnectionPtr& conn,
 				assert(!conn->getContext().empty());
 				assert(time.valid());
 				NodeForCheckDisconn* node =
-					realtime_srv::any_cast<NodeForCheckDisconn>(conn->getMutableContext());
+					realtinet::any_cast<NodeForCheckDisconn>(conn->getMutableContext());
 				node->lastRecvTime = time;
 				connListForCheckDisconn_.splice(
 					connListForCheckDisconn_.end(), connListForCheckDisconn_, node->position);
@@ -169,7 +169,7 @@ void NetworkMgr::CheckForDisconnects()
 		{
 			++it;
 			NodeForCheckDisconn* curNode =
-				realtime_srv::any_cast<NodeForCheckDisconn>(conn->getMutableContext());
+				realtinet::any_cast<NodeForCheckDisconn>(conn->getMutableContext());
 			double age = timeDifference(now, curNode->lastRecvTime);
 			if (age > clientDisconnTimeout_)
 			{

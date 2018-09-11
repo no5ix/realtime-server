@@ -4,7 +4,7 @@
 #include <memory>
 
 #include <muduo/base/Logging.h>
-#include <muduo_kcp_support/UdpConnection.h>
+#include <realtinet/UdpConnection.h>
 
 #include "realtime_srv/common/RealtimeSrvTiming.h"
 #include "realtime_srv/game_obj/GameObj.h"

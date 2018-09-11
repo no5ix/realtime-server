@@ -10,7 +10,7 @@
 #include <string.h>
 #include <unistd.h>
 
-#include "KcpSession.h"
+#include "kcpsess.h"
 
 #define SERVER_PORT 8888
 
@@ -20,7 +20,7 @@
 // #define SERVER_IP "172.96.239.56"
 #define SERVER_IP "127.0.0.1"
 
-
+using kcpsess::KcpSession;
 
 IUINT32 iclock()
 {
@@ -41,20 +41,21 @@ void udp_output(const void *buf, int len, int fd, struct sockaddr* dst)
 	::sendto(fd, buf, len, 0, dst, sizeof(*dst));
 }
 
-int udp_input(char* rcvData, char *buf, int len, int fd, struct sockaddr_in from)
+KcpSession::InputData kcpsessInputData;
+KcpSession::InputData udp_input(char *buf, int len, int fd, struct sockaddr_in from)
 {
 	socklen_t fromAddrLen = sizeof(from);
 	int recvLen = ::recvfrom(fd, buf, len, 0,
 		(struct sockaddr*)&from, &fromAddrLen);
 	//printf("recvfrom() = %d \n", static_cast<int>(recvLen));
-	rcvData = buf;
-	(void)rcvData;
-	if (recvLen < 0)
+	if (recvLen <= 0)
 	{
 		printf("recieve data fail!\n");
 	}
-	return recvLen;
+	return kcpsessInputData.SetAndReturnSelf(buf, recvLen);
 }
+
+
 
 void udp_msg_sender(int fd, struct sockaddr* dst)
 {
@@ -64,12 +65,12 @@ void udp_msg_sender(int fd, struct sockaddr* dst)
 	struct sockaddr_in from;
 	int len = 0;
 	uint32_t index = 11;
-	const uint32_t maxIndex = 222;
+	const uint32_t testPassIndex = 222;
 
 	KcpSession kcpClient(
 		KcpSession::RoleTypeE::kCli,
 		std::bind(udp_output, std::placeholders::_1, std::placeholders::_2, fd, dst),
-		std::bind(udp_input, std::placeholders::_1, rcvBuf, RCV_BUFF_LEN, fd, std::ref(from)),
+		std::bind(udp_input, rcvBuf, RCV_BUFF_LEN, fd, std::ref(from)),
 		std::bind(iclock));
 
 	while (1)
@@ -101,7 +102,7 @@ void udp_msg_sender(int fd, struct sockaddr* dst)
 			{
 				uint32_t srvRcvMaxIndex = *(uint32_t*)(rcvBuf + 0);
 				printf("server: have recieved the max index = %d\n", (int)srvRcvMaxIndex);
-				if (srvRcvMaxIndex >= maxIndex)
+				if (srvRcvMaxIndex >= testPassIndex)
 				{
 					//printf("when server have recieved the max index >= %d, test passes, yay! \n", maxIndex);
 					printf("test passes, yay! \n");

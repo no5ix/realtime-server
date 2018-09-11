@@ -7,7 +7,7 @@
 #include <concurrent_queue/concurrentqueue.h>
 #include <concurrent_queue/blockingconcurrentqueue.h>
 
-#include <muduo_kcp_support/UdpConnection.h>
+#include <realtinet/UdpConnection.h>
 
 #include "realtime_srv/rep/BitStream.h"
 

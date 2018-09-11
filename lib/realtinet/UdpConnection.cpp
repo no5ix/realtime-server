@@ -6,7 +6,7 @@
 
 // Author: Shuo Chen (chenshuo at chenshuo dot com)
 
-#include <muduo_kcp_support/UdpConnection.h>
+#include <realtinet/UdpConnection.h>
 
 #include <muduo/base/Logging.h>
 #include <muduo/base/WeakCallback.h>
@@ -14,12 +14,14 @@
 #include <muduo/net/EventLoop.h>
 #include <muduo/net/Socket.h>
 #include <muduo/net/SocketsOps.h>
-#include <muduo_kcp_support/UdpSocketsOps.h>
+#include <realtinet/UdpSocketsOps.h>
 
 #include <errno.h>
 
 using namespace muduo;
 using namespace muduo::net;
+using kcpsess::KcpSession;
+
 
 void muduo::net::UdpDefaultConnectionCallback(const UdpConnectionPtr& conn)
 {
@@ -54,7 +56,7 @@ UdpConnection::UdpConnection(EventLoop* loop,
 	kcpSession_(new KcpSession(
 		KcpSession::RoleTypeE::kSrv,
 		std::bind(&UdpConnection::DoSend, this, _1, _2),
-		std::bind(&UdpConnection::DoRecv, this, _1),
+		std::bind(&UdpConnection::DoRecv, this),
 		[]() { return static_cast<IUINT32>(
 		(Timestamp::now().microSecondsSinceEpoch() / 1000)); }))
 {
@@ -82,10 +84,10 @@ UdpConnection::~UdpConnection()
 }
 
 void UdpConnection::send(const void* data, int len,
-	//KcpSession::DataTypeE dataType /*= KcpSession::DataTypeE::kUnreliable*/)
-	KcpSession::TransmitModeE dataType /*= KcpSession::DataTypeE::kReliable*/)
+	//KcpSession::DataTypeE transmitMode /*= KcpSession::DataTypeE::kUnreliable*/)
+	KcpSession::TransmitModeE transmitMode /*= KcpSession::DataTypeE::kReliable*/)
 {
-	len = kcpSession_->Send(data, len, dataType);
+	len = kcpSession_->Send(data, len, transmitMode);
 	if (len < 0)
 		LOG_ERROR << "kcpSession send failed";
 }
@@ -96,8 +98,6 @@ void UdpConnection::handleRead(Timestamp receiveTime)
 	int n = 0;
 	while (kcpSession_->Recv(packetBuf_, n))
 	{
-		//LOG_INFO << "kcpSession_->IsKcpConnected() = "
-		//	<< (kcpSession_->IsKcpConnected() ? 1 : 0);
 		if (n < 0)
 			LOG_ERROR << "kcpSession Recv() Error, Recv() = " << n;
 		else if (n > 0)
@@ -134,11 +134,9 @@ void UdpConnection::DoSend(const void* data, int len)
 	}
 }
 
-int UdpConnection::DoRecv(char* rcvData)
+KcpSession::InputData UdpConnection::DoRecv()
 {
 	int n = sockets::read(channel_->fd(), static_cast<void*>(packetBuf_), kPacketBufSize);
-	rcvData = packetBuf_;
-	(void)rcvData;
 	if (n == 0)
 	{
 		handleClose();
@@ -148,7 +146,7 @@ int UdpConnection::DoRecv(char* rcvData)
 		LOG_SYSERR << "UdpConnection::handleRead";
 		handleError();
 	}
-	return n;
+	return kcpsessInputData_.SetAndReturnSelf(packetBuf_, n);
 }
 
 void UdpConnection::sendInLoop(const void* data, size_t len)
