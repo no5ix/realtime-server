@@ -6,7 +6,7 @@
 
 // Author: Shuo Chen (chenshuo at chenshuo dot com)
 
-#include <realtinet/UdpConnection.h>
+#include "UdpConnection.h"
 
 #include <muduo/base/Logging.h>
 #include <muduo/base/WeakCallback.h>
@@ -14,7 +14,7 @@
 #include <muduo/net/EventLoop.h>
 #include <muduo/net/Socket.h>
 #include <muduo/net/SocketsOps.h>
-#include <realtinet/UdpSocketsOps.h>
+#include "UdpSocketsOps.h"
 
 #include <errno.h>
 

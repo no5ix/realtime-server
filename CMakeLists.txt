@@ -164,13 +164,14 @@ if(UNIX)
     include_directories(${PROJECT_SOURCE_DIR}/${LIB_PATH_NAME})
     include_directories(${PROJECT_SOURCE_DIR}/${LIB_PATH_NAME}/lualib/lua53)
     include_directories(${PROJECT_SOURCE_DIR}/${LIB_PATH_NAME}/inih/include)
-    include_directories(${PROJECT_SOURCE_DIR}/${LIB_PATH_NAME}/realtinet)
+    include_directories(${PROJECT_SOURCE_DIR}/${LIB_PATH_NAME}/realtinet/core)
     include_directories(${PROJECT_SOURCE_DIR}/${LIB_PATH_NAME}/realtinet/third)
 
+
+    add_subdirectory(${LIB_PATH_NAME}/realtinet)
     add_subdirectory(${LIB_PATH_NAME}/muduo_contrib)
     add_subdirectory(${LIB_PATH_NAME}/lualib)
     add_subdirectory(${LIB_PATH_NAME}/inih)
-    add_subdirectory(${LIB_PATH_NAME}/realtinet)
 
     add_subdirectory(realtime_srv)
     add_subdirectory(example)

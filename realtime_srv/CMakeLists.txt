@@ -4,7 +4,7 @@ add_definitions(-std=c++1y)
 
 
 set (PROJ_NAME realtime_srv)
-set (LIB_MUDUO_UDP_SUPPORT realtinet)
+set (LIB_REALTINET realtinet)
 set (LIB_INIH inihcpp) # config file parser
 
 IF(UNIX)
@@ -12,7 +12,7 @@ IF(UNIX)
     file(GLOB_RECURSE all_files "./*.*")
 
     add_library(${PROJ_NAME} ${all_files})
-    target_link_libraries(${PROJ_NAME} ${LIB_MUDUO_UDP_SUPPORT} ${LIB_INIH})
+    target_link_libraries(${PROJ_NAME} ${LIB_REALTINET} ${LIB_INIH})
 
 # elseif(WIN32) # Check if we are on Windows
 
