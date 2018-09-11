@@ -1,22 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="muduo">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
-    <Filter Include="muduo\base">
-      <UniqueIdentifier>{10268349-abac-4b71-8fee-6133afa1cdd7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="muduo_contrib">
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="muduo\net">
-      <UniqueIdentifier>{4be05a5f-384f-42a2-b41d-8816c6835905}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="muduo\net\poller">
-      <UniqueIdentifier>{bf2ddd45-7e27-479a-8553-ddb84f081a6b}</UniqueIdentifier>
     </Filter>
     <Filter Include="muduo_contrib\hiredis">
       <UniqueIdentifier>{e5458f11-736d-4b90-9866-f8091ecde939}</UniqueIdentifier>
@@ -39,134 +26,33 @@
     <Filter Include="inih\lib">
       <UniqueIdentifier>{f81b1ea0-963d-4394-a584-501ea90d134e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="kcp_annotated">
+    <Filter Include="realtinet">
+      <UniqueIdentifier>{e44ff434-0bc1-4404-99b9-08cbda0e1608}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="realtinet\third">
+      <UniqueIdentifier>{b2924d70-75ab-44a8-b0c0-822dfbd75c33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="realtinet\third\muduo">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="realtinet\third\muduo\base">
+      <UniqueIdentifier>{10268349-abac-4b71-8fee-6133afa1cdd7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="realtinet\third\muduo\net">
+      <UniqueIdentifier>{4be05a5f-384f-42a2-b41d-8816c6835905}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="realtinet\third\muduo\net\poller">
+      <UniqueIdentifier>{bf2ddd45-7e27-479a-8553-ddb84f081a6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="realtinet\third\kcpsess">
       <UniqueIdentifier>{3191639a-a1ac-47af-a64c-f4894b1ba156}</UniqueIdentifier>
     </Filter>
-    <Filter Include="muduo_kcp_support">
-      <UniqueIdentifier>{3758d386-7b27-419d-afd2-17f9aee99d2a}</UniqueIdentifier>
+    <Filter Include="realtinet\core">
+      <UniqueIdentifier>{09c7a21b-53c7-4bc0-985c-bf1f1e4b2a49}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\lib\muduo\base\Atomic.h">
-      <Filter>muduo\base</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\lib\muduo\base\Condition.h">
-      <Filter>muduo\base</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\lib\muduo\base\copyable.h">
-      <Filter>muduo\base</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\lib\muduo\base\CountDownLatch.h">
-      <Filter>muduo\base</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\lib\muduo\base\CurrentThread.h">
-      <Filter>muduo\base</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\lib\muduo\base\Date.h">
-      <Filter>muduo\base</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\lib\muduo\base\Exception.h">
-      <Filter>muduo\base</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\lib\muduo\base\Logging.h">
-      <Filter>muduo\base</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\lib\muduo\base\LogStream.h">
-      <Filter>muduo\base</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\lib\muduo\base\Mutex.h">
-      <Filter>muduo\base</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\lib\muduo\base\noncopyable.h">
-      <Filter>muduo\base</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\lib\muduo\base\StringPiece.h">
-      <Filter>muduo\base</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\lib\muduo\base\Thread.h">
-      <Filter>muduo\base</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\lib\muduo\base\ThreadLocal.h">
-      <Filter>muduo\base</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\lib\muduo\base\ThreadLocalSingleton.h">
-      <Filter>muduo\base</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\lib\muduo\base\Timestamp.h">
-      <Filter>muduo\base</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\lib\muduo\base\TimeZone.h">
-      <Filter>muduo\base</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\lib\muduo\base\Types.h">
-      <Filter>muduo\base</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\lib\muduo\base\WeakCallback.h">
-      <Filter>muduo\base</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\lib\muduo\net\Acceptor.h">
-      <Filter>muduo\net</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\lib\muduo\net\Buffer.h">
-      <Filter>muduo\net</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\lib\muduo\net\Callbacks.h">
-      <Filter>muduo\net</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\lib\muduo\net\Channel.h">
-      <Filter>muduo\net</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\lib\muduo\net\Connector.h">
-      <Filter>muduo\net</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\lib\muduo\net\Endian.h">
-      <Filter>muduo\net</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\lib\muduo\net\EventLoop.h">
-      <Filter>muduo\net</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\lib\muduo\net\EventLoopThread.h">
-      <Filter>muduo\net</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\lib\muduo\net\EventLoopThreadPool.h">
-      <Filter>muduo\net</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\lib\muduo\net\InetAddress.h">
-      <Filter>muduo\net</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\lib\muduo\net\Poller.h">
-      <Filter>muduo\net</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\lib\muduo\net\Socket.h">
-      <Filter>muduo\net</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\lib\muduo\net\SocketsOps.h">
-      <Filter>muduo\net</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\lib\muduo\net\TcpClient.h">
-      <Filter>muduo\net</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\lib\muduo\net\TcpConnection.h">
-      <Filter>muduo\net</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\lib\muduo\net\TcpServer.h">
-      <Filter>muduo\net</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\lib\muduo\net\Timer.h">
-      <Filter>muduo\net</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\lib\muduo\net\TimerId.h">
-      <Filter>muduo\net</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\lib\muduo\net\TimerQueue.h">
-      <Filter>muduo\net</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\lib\muduo\net\poller\EPollPoller.h">
-      <Filter>muduo\net\poller</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\lib\muduo\net\poller\PollPoller.h">
-      <Filter>muduo\net\poller</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\lib\muduo_contrib\hiredis\Hiredis.h">
       <Filter>muduo_contrib\hiredis</Filter>
     </ClInclude>
@@ -257,128 +143,167 @@
     <ClInclude Include="..\..\lib\concurrent_queue\concurrentqueue.h">
       <Filter>concurrent_queue</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\lib\muduo\base\ThreadPool.h">
-      <Filter>muduo\base</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\lib\inih\include\ini.h">
       <Filter>inih\include</Filter>
     </ClInclude>
     <ClInclude Include="..\..\lib\inih\include\INIReader.h">
       <Filter>inih\include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\lib\kcp_annotated\ikcp.h">
-      <Filter>kcp_annotated</Filter>
+    <ClInclude Include="..\..\lib\realtinet\third\kcpsess\ikcp.h">
+      <Filter>realtinet\third\kcpsess</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\lib\kcp_annotated\KcpSession.h">
-      <Filter>kcp_annotated</Filter>
+    <ClInclude Include="..\..\lib\realtinet\third\kcpsess\kcpsess.h">
+      <Filter>realtinet\third\kcpsess</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\lib\muduo_kcp_support\UdpAcceptor.h">
-      <Filter>muduo_kcp_support</Filter>
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\base\Atomic.h">
+      <Filter>realtinet\third\muduo\base</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\lib\muduo_kcp_support\UdpCallbacks.h">
-      <Filter>muduo_kcp_support</Filter>
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\base\Condition.h">
+      <Filter>realtinet\third\muduo\base</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\lib\muduo_kcp_support\UdpClient.h">
-      <Filter>muduo_kcp_support</Filter>
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\base\copyable.h">
+      <Filter>realtinet\third\muduo\base</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\lib\muduo_kcp_support\UdpConnection.h">
-      <Filter>muduo_kcp_support</Filter>
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\base\CountDownLatch.h">
+      <Filter>realtinet\third\muduo\base</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\lib\muduo_kcp_support\UdpConnector.h">
-      <Filter>muduo_kcp_support</Filter>
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\base\CurrentThread.h">
+      <Filter>realtinet\third\muduo\base</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\lib\muduo_kcp_support\UdpServer.h">
-      <Filter>muduo_kcp_support</Filter>
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\base\Date.h">
+      <Filter>realtinet\third\muduo\base</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\lib\muduo_kcp_support\UdpSocketsOps.h">
-      <Filter>muduo_kcp_support</Filter>
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\base\Exception.h">
+      <Filter>realtinet\third\muduo\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\base\Logging.h">
+      <Filter>realtinet\third\muduo\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\base\LogStream.h">
+      <Filter>realtinet\third\muduo\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\base\Mutex.h">
+      <Filter>realtinet\third\muduo\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\base\noncopyable.h">
+      <Filter>realtinet\third\muduo\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\base\StringPiece.h">
+      <Filter>realtinet\third\muduo\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\base\Thread.h">
+      <Filter>realtinet\third\muduo\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\base\ThreadLocal.h">
+      <Filter>realtinet\third\muduo\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\base\ThreadLocalSingleton.h">
+      <Filter>realtinet\third\muduo\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\base\ThreadPool.h">
+      <Filter>realtinet\third\muduo\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\base\Timestamp.h">
+      <Filter>realtinet\third\muduo\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\base\TimeZone.h">
+      <Filter>realtinet\third\muduo\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\base\Types.h">
+      <Filter>realtinet\third\muduo\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\base\WeakCallback.h">
+      <Filter>realtinet\third\muduo\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\net\Acceptor.h">
+      <Filter>realtinet\third\muduo\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\net\Buffer.h">
+      <Filter>realtinet\third\muduo\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\net\Callbacks.h">
+      <Filter>realtinet\third\muduo\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\net\Channel.h">
+      <Filter>realtinet\third\muduo\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\net\Connector.h">
+      <Filter>realtinet\third\muduo\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\net\Endian.h">
+      <Filter>realtinet\third\muduo\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\net\EventLoop.h">
+      <Filter>realtinet\third\muduo\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\net\EventLoopThread.h">
+      <Filter>realtinet\third\muduo\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\net\EventLoopThreadPool.h">
+      <Filter>realtinet\third\muduo\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\net\InetAddress.h">
+      <Filter>realtinet\third\muduo\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\net\Poller.h">
+      <Filter>realtinet\third\muduo\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\net\Socket.h">
+      <Filter>realtinet\third\muduo\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\net\SocketsOps.h">
+      <Filter>realtinet\third\muduo\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\net\TcpClient.h">
+      <Filter>realtinet\third\muduo\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\net\TcpConnection.h">
+      <Filter>realtinet\third\muduo\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\net\TcpServer.h">
+      <Filter>realtinet\third\muduo\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\net\Timer.h">
+      <Filter>realtinet\third\muduo\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\net\TimerId.h">
+      <Filter>realtinet\third\muduo\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\net\TimerQueue.h">
+      <Filter>realtinet\third\muduo\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\net\poller\EPollPoller.h">
+      <Filter>realtinet\third\muduo\net\poller</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\net\poller\PollPoller.h">
+      <Filter>realtinet\third\muduo\net\poller</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\realtinet\core\any.h">
+      <Filter>realtinet\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\realtinet\core\UdpAcceptor.h">
+      <Filter>realtinet\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\realtinet\core\UdpCallbacks.h">
+      <Filter>realtinet\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\realtinet\core\UdpClient.h">
+      <Filter>realtinet\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\realtinet\core\UdpConnection.h">
+      <Filter>realtinet\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\realtinet\core\UdpConnector.h">
+      <Filter>realtinet\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\realtinet\core\UdpServer.h">
+      <Filter>realtinet\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\realtinet\core\UdpSocketsOps.h">
+      <Filter>realtinet\core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\lib\muduo\base\Condition.cc">
-      <Filter>muduo\base</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\lib\muduo\base\CountDownLatch.cc">
-      <Filter>muduo\base</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\lib\muduo\base\Date.cc">
-      <Filter>muduo\base</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\lib\muduo\base\Exception.cc">
-      <Filter>muduo\base</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\lib\muduo\base\Logging.cc">
-      <Filter>muduo\base</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\lib\muduo\base\LogStream.cc">
-      <Filter>muduo\base</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\lib\muduo\base\Thread.cc">
-      <Filter>muduo\base</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\lib\muduo\base\Timestamp.cc">
-      <Filter>muduo\base</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\lib\muduo\base\TimeZone.cc">
-      <Filter>muduo\base</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\lib\muduo\net\Acceptor.cc">
-      <Filter>muduo\net</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\lib\muduo\net\Buffer.cc">
-      <Filter>muduo\net</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\lib\muduo\net\Channel.cc">
-      <Filter>muduo\net</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\lib\muduo\net\Connector.cc">
-      <Filter>muduo\net</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\lib\muduo\net\EventLoop.cc">
-      <Filter>muduo\net</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\lib\muduo\net\EventLoopThread.cc">
-      <Filter>muduo\net</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\lib\muduo\net\EventLoopThreadPool.cc">
-      <Filter>muduo\net</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\lib\muduo\net\InetAddress.cc">
-      <Filter>muduo\net</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\lib\muduo\net\Poller.cc">
-      <Filter>muduo\net</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\lib\muduo\net\Socket.cc">
-      <Filter>muduo\net</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\lib\muduo\net\SocketsOps.cc">
-      <Filter>muduo\net</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\lib\muduo\net\TcpClient.cc">
-      <Filter>muduo\net</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\lib\muduo\net\TcpConnection.cc">
-      <Filter>muduo\net</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\lib\muduo\net\TcpServer.cc">
-      <Filter>muduo\net</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\lib\muduo\net\Timer.cc">
-      <Filter>muduo\net</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\lib\muduo\net\TimerQueue.cc">
-      <Filter>muduo\net</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\lib\muduo\net\poller\DefaultPoller.cc">
-      <Filter>muduo\net\poller</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\lib\muduo\net\poller\EPollPoller.cc">
-      <Filter>muduo\net\poller</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\lib\muduo\net\poller\PollPoller.cc">
-      <Filter>muduo\net\poller</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\lib\muduo_contrib\hiredis\Hiredis.cc">
       <Filter>muduo_contrib\hiredis</Filter>
     </ClCompile>
@@ -490,41 +415,125 @@
     <ClCompile Include="..\..\lib\lualib\lua53\lzio.c">
       <Filter>lualib\lua53</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\lib\muduo\base\ThreadPool.cc">
-      <Filter>muduo\base</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\lib\inih\lib\ini.c">
       <Filter>inih\lib</Filter>
     </ClCompile>
     <ClCompile Include="..\..\lib\inih\lib\INIReader.cpp">
       <Filter>inih\lib</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\lib\kcp_annotated\ikcp.c">
-      <Filter>kcp_annotated</Filter>
+    <ClCompile Include="..\..\lib\realtinet\third\kcpsess\ikcp.c">
+      <Filter>realtinet\third\kcpsess</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\lib\muduo_kcp_support\UdpAcceptor.cpp">
-      <Filter>muduo_kcp_support</Filter>
+    <ClCompile Include="..\..\lib\realtinet\third\kcpsess\TestKcpSessionClient.cpp">
+      <Filter>realtinet\third\kcpsess</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\lib\muduo_kcp_support\UdpClient.cpp">
-      <Filter>muduo_kcp_support</Filter>
+    <ClCompile Include="..\..\lib\realtinet\third\kcpsess\TestKcpSessionServer.cpp">
+      <Filter>realtinet\third\kcpsess</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\lib\muduo_kcp_support\UdpConnection.cpp">
-      <Filter>muduo_kcp_support</Filter>
+    <ClCompile Include="..\..\lib\realtinet\third\muduo\base\Condition.cc">
+      <Filter>realtinet\third\muduo\base</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\lib\muduo_kcp_support\UdpConnector.cpp">
-      <Filter>muduo_kcp_support</Filter>
+    <ClCompile Include="..\..\lib\realtinet\third\muduo\base\CountDownLatch.cc">
+      <Filter>realtinet\third\muduo\base</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\lib\muduo_kcp_support\UdpServer.cpp">
-      <Filter>muduo_kcp_support</Filter>
+    <ClCompile Include="..\..\lib\realtinet\third\muduo\base\Date.cc">
+      <Filter>realtinet\third\muduo\base</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\lib\muduo_kcp_support\UdpSocketsOps.cpp">
-      <Filter>muduo_kcp_support</Filter>
+    <ClCompile Include="..\..\lib\realtinet\third\muduo\base\Exception.cc">
+      <Filter>realtinet\third\muduo\base</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\lib\kcp_annotated\TestKcpSessionClient.cpp">
-      <Filter>kcp_annotated</Filter>
+    <ClCompile Include="..\..\lib\realtinet\third\muduo\base\Logging.cc">
+      <Filter>realtinet\third\muduo\base</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\lib\kcp_annotated\TestKcpSessionServer.cpp">
-      <Filter>kcp_annotated</Filter>
+    <ClCompile Include="..\..\lib\realtinet\third\muduo\base\LogStream.cc">
+      <Filter>realtinet\third\muduo\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\realtinet\third\muduo\base\Thread.cc">
+      <Filter>realtinet\third\muduo\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\realtinet\third\muduo\base\ThreadPool.cc">
+      <Filter>realtinet\third\muduo\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\realtinet\third\muduo\base\Timestamp.cc">
+      <Filter>realtinet\third\muduo\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\realtinet\third\muduo\base\TimeZone.cc">
+      <Filter>realtinet\third\muduo\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\realtinet\third\muduo\net\Acceptor.cc">
+      <Filter>realtinet\third\muduo\net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\realtinet\third\muduo\net\Buffer.cc">
+      <Filter>realtinet\third\muduo\net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\realtinet\third\muduo\net\Channel.cc">
+      <Filter>realtinet\third\muduo\net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\realtinet\third\muduo\net\Connector.cc">
+      <Filter>realtinet\third\muduo\net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\realtinet\third\muduo\net\EventLoop.cc">
+      <Filter>realtinet\third\muduo\net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\realtinet\third\muduo\net\EventLoopThread.cc">
+      <Filter>realtinet\third\muduo\net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\realtinet\third\muduo\net\EventLoopThreadPool.cc">
+      <Filter>realtinet\third\muduo\net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\realtinet\third\muduo\net\InetAddress.cc">
+      <Filter>realtinet\third\muduo\net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\realtinet\third\muduo\net\Poller.cc">
+      <Filter>realtinet\third\muduo\net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\realtinet\third\muduo\net\Socket.cc">
+      <Filter>realtinet\third\muduo\net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\realtinet\third\muduo\net\SocketsOps.cc">
+      <Filter>realtinet\third\muduo\net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\realtinet\third\muduo\net\TcpClient.cc">
+      <Filter>realtinet\third\muduo\net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\realtinet\third\muduo\net\TcpConnection.cc">
+      <Filter>realtinet\third\muduo\net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\realtinet\third\muduo\net\TcpServer.cc">
+      <Filter>realtinet\third\muduo\net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\realtinet\third\muduo\net\Timer.cc">
+      <Filter>realtinet\third\muduo\net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\realtinet\third\muduo\net\TimerQueue.cc">
+      <Filter>realtinet\third\muduo\net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\realtinet\third\muduo\net\poller\DefaultPoller.cc">
+      <Filter>realtinet\third\muduo\net\poller</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\realtinet\third\muduo\net\poller\EPollPoller.cc">
+      <Filter>realtinet\third\muduo\net\poller</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\realtinet\third\muduo\net\poller\PollPoller.cc">
+      <Filter>realtinet\third\muduo\net\poller</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\realtinet\core\UdpAcceptor.cpp">
+      <Filter>realtinet\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\realtinet\core\UdpClient.cpp">
+      <Filter>realtinet\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\realtinet\core\UdpConnection.cpp">
+      <Filter>realtinet\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\realtinet\core\UdpConnector.cpp">
+      <Filter>realtinet\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\realtinet\core\UdpServer.cpp">
+      <Filter>realtinet\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\realtinet\core\UdpSocketsOps.cpp">
+      <Filter>realtinet\core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -533,9 +542,6 @@
     </Text>
     <Text Include="..\..\lib\muduo_contrib\CMakeLists.txt">
       <Filter>muduo_contrib</Filter>
-    </Text>
-    <Text Include="..\..\lib\muduo\CMakeLists.txt">
-      <Filter>muduo</Filter>
     </Text>
     <Text Include="..\..\lib\lualib\CMakeLists.txt">
       <Filter>lualib</Filter>
@@ -549,11 +555,17 @@
     <Text Include="..\..\lib\inih\CMakeLists.txt">
       <Filter>inih</Filter>
     </Text>
-    <Text Include="..\..\lib\kcp_annotated\CMakeLists.txt">
-      <Filter>kcp_annotated</Filter>
+    <Text Include="..\..\lib\realtinet\third\kcpsess\CMakeLists.txt">
+      <Filter>realtinet\third\kcpsess</Filter>
     </Text>
-    <Text Include="..\..\lib\muduo_kcp_support\CMakeLists.txt">
-      <Filter>muduo_kcp_support</Filter>
+    <Text Include="..\..\lib\realtinet\third\muduo\CMakeLists.txt">
+      <Filter>realtinet\third\muduo</Filter>
+    </Text>
+    <Text Include="..\..\lib\realtinet\core\CMakeLists.txt">
+      <Filter>realtinet\core</Filter>
+    </Text>
+    <Text Include="..\..\lib\realtinet\CMakeLists.txt">
+      <Filter>realtinet</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>
@@ -581,8 +593,17 @@
     <None Include="..\..\lib\inih\README">
       <Filter>inih</Filter>
     </None>
-    <None Include="..\..\lib\kcp_annotated\README.md">
-      <Filter>kcp_annotated</Filter>
+    <None Include="..\..\lib\realtinet\third\kcpsess\.gitignore">
+      <Filter>realtinet\third\kcpsess</Filter>
+    </None>
+    <None Include="..\..\lib\realtinet\third\kcpsess\README.md">
+      <Filter>realtinet\third\kcpsess</Filter>
+    </None>
+    <None Include="..\..\lib\realtinet\.gitignore">
+      <Filter>realtinet</Filter>
+    </None>
+    <None Include="..\..\lib\realtinet\README.md">
+      <Filter>realtinet</Filter>
     </None>
   </ItemGroup>
 </Project>
