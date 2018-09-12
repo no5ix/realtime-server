@@ -3,7 +3,8 @@
 一个实时的专用游戏服务器
 
 
-![UE4DemoScreenshot.png](./img/UE4DemoScreenshot.jpg)
+<!-- ![UE4DemoScreenshot.png](./img/UE4DemoScreenshot.jpg) -->
+![UE4DemoScreenshot.png](./img/UE4DemoScreenshot.gif)
 
 
 
@@ -30,10 +31,10 @@
 
 - master branch (focus on Linux) 
 -  [win_version](https://github.com/no5ix/realtime-server/tree/win_version) branch (Linux & Win both)
+- Bit Stream
+- Powered by my another project [realtinet](https://github.com/no5ix/realtinet) (A fast and two-channel (reliable & unreliable) udp lib, based on muduo + kcp.)
 - Multi-Thread
 - RUDP
-- Bit Stream
-- Add KCP support for [muduo](https://github.com/chenshuo/muduo)
 - C++11
 
 
