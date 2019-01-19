@@ -108,12 +108,14 @@ void NetworkMgr::DoPreparePacketToSend(std::shared_ptr<ClientProxy>& clientProxy
 		case kResetCC:
 			clientProxy->SetRecvingServerResetFlag(true);
 			LOG_INFO << "Send Reset Packet";
+			break;
 		case kWelcomeCC:
 			outputPacket->Write(clientProxy->GetNetId());
 			outputPacket->Write(pktHandler_.GetSendPacketInterval());
 			break;
 		case kStateCC:
 			WriteLastMoveTimestampIfDirty(*outputPacket, clientProxy);
+			break;
 		default:
 			break;
 	}
