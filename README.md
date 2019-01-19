@@ -32,7 +32,7 @@
 - master branch (focus on Linux) 
 -  [win_version](https://github.com/no5ix/realtime-server/tree/win_version) branch (Linux & Win both)
 - Bit Stream
-- Powered by my another project [realtinet](https://github.com/no5ix/realtinet) (A fast and two-channel (reliable & unreliable) udp lib, based on muduo + kcp.)
+- Powered by my another project [kcpp](https://github.com/no5ix/kcpp) (A kcp session single-header-only implementation, dynamic redundancy + reliable udp/unreliable channel)
 - Multi-Thread
 - RUDP
 - C++11
