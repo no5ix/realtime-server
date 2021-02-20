@@ -25,14 +25,28 @@ def ext_hook(code, data):
     return msgpack.ExtType(code, data)
 
 
-encode = lambda p: msgpack.packb(p, use_bin_type=True, default=msgpackext)
-decode = lambda p: msgpack.unpackb(p,
-                                   # encoding='utf-8',
-                                   ext_hook=ext_hook, use_list=False,
-                                   max_str_len=16384,
-                                   max_array_len=1024,
-                                   max_map_len=1024,
-                                   max_ext_len=1024)
+def encode(p):
+    return msgpack.packb(p, use_bin_type=True, default=msgpackext)
+
+
+def decode(p):
+    return msgpack.unpackb(
+        p,
+        # encoding='utf-8',
+        ext_hook=ext_hook,
+        use_list=False,
+        max_str_len=16384,
+        max_array_len=1024,
+        max_map_len=1024,
+        max_ext_len=1024)
+
+
+# def handle_rpc():
+#     pass
+#
+#
+# def handle_msg():
+
 
 
 async def tcp_echo_client(message):
