@@ -107,30 +107,76 @@ def handle_message(msg_data):
             pass
 
 
-def handle_rpc(rpc_msg):
-    pass
+def handle_rpc(connection, rpc_msg):
+    if not connection.entity:
+        # self.logger.error("call direct client entity method, but do not bind")
+        return
+    _entity = connection.entity
+    _method_name, _parameters = rpc_msg
+    _method = getattr(_entity, _method_name, None)
+
+    if not _method:
+        # self.logger.error("entity:%s  method:%s not exist", entity, method_name)
+        return
+    try:
+        _method(_parameters)
+    except:
+        pass
 
 
-async def handle_echo(reader, writer):
-    data = await reader.read(100)
-    # message = data.decode()
-    message = decode(data)
+# async def handle_echo(reader, writer):
+#     data = await reader.read(100)
+#     # message = data.decode()
+#     message = decode(data)
+#
+#     addr = writer.get_extra_info('peername')
+#
+#     print(f"Received {message!r} from {addr!r}")
+#
+#     print(f"Send: {message!r}")
+#     writer.write(data)
+#     await writer.drain()
+#
+#     print("Close the connection")
+#     writer.close()
 
+
+writers = []
+
+
+def forward(writer, addr, message):
+    for w in writers:
+        if w != writer:
+            # w.write(f"{addr!r}: {message!r}\n".encode())
+            w.write(encode(f"{addr!r}: {message!r}\n"))
+
+
+async def handle_client_connected(reader, writer):
+    writers.append(writer)
     addr = writer.get_extra_info('peername')
-
-    print(f"Received {message!r} from {addr!r}")
-
-    print(f"Send: {message!r}")
-    writer.write(data)
-    await writer.drain()
-
-    print("Close the connection")
+    message = f"{addr!r} is connected !!!!"
+    print(message)
+    forward(writer, addr, message)
+    while True:
+        data = await reader.read(100)
+        # message = data.decode().strip()
+        message = decode(data)
+        forward(writer, addr, message)
+        await writer.drain()
+        if message == "exit":
+            message = f"{addr!r} wants to close the connection."
+            print(message)
+            forward(writer, "Server", message)
+            break
+    writers.remove(writer)
     writer.close()
 
 
 async def main():
+    # server = await asyncio.start_server(
+    #     handle_echo, '127.0.0.1', 8888)
     server = await asyncio.start_server(
-        handle_echo, '127.0.0.1', 8888)
+        handle_client_connected, '127.0.0.1', 8888)
 
     addr = server.sockets[0].getsockname()
     print(f'Server on {addr}')
