@@ -6,6 +6,8 @@ from core.common.RpcSupport import rpc_method, CLIENT_ONLY
 
 class CompPuppetTest(Component):
 
+    VAR_NAME = 'CompPuppetTest'
+
     def __init__(self):
         super().__init__()
         pass

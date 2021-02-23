@@ -9,5 +9,10 @@ from client.BattleEntity import BattleEntity
     CompPuppetTest
 )
 class Puppet(BattleEntity, ComponentSupport):
-    super().__init__()
-    pass
+
+    def __init__(self):
+        super().__init__()
+        pass
+
+    def init_from_dict(self, bdict):
+        ComponentSupport.init_from_dict(self, bdict)

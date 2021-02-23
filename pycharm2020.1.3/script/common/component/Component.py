@@ -11,9 +11,9 @@
 
 import copy
 import inspect
-import gr
+# import gr
 from common.component import ComponentRegister
-from common.aoi.Property import get_class_properties, is_sync_client, is_sync_other_client, is_persist
+# from common.aoi.Property import get_class_properties, is_sync_client, is_sync_other_client, is_persist
 
 # 依赖的component
 ClassAllDependency = {}
@@ -52,35 +52,35 @@ def __get_dependency(klass):
     return dependency
 
 
-def __get_require(klass):
-    require = set()
-
-    if klass is object:
-        return require
-
-    if klass in ClassAllRequire:
-        return ClassAllRequire[klass]
-
-    for base in list(klass.__bases__):
-        require.update(__get_require(base))
-
-    if "__require__" in klass.__dict__:
-        require.update(klass.__require__)
-    ClassAllRequire[klass] = require
-    klass.__require_all__ = require
-
-    return require
+# def __get_require(klass):
+#     require = set()
+#
+#     if klass is object:
+#         return require
+#
+#     if klass in ClassAllRequire:
+#         return ClassAllRequire[klass]
+#
+#     for base in list(klass.__bases__):
+#         require.update(__get_require(base))
+#
+#     if "__require__" in klass.__dict__:
+#         require.update(klass.__require__)
+#     ClassAllRequire[klass] = require
+#     klass.__require_all__ = require
+#
+#     return require
 
 
 # 支持component的类装饰器, 声明entity拥有哪些component
 # 参数：传入列表，可以是字符串形式的类名，也可以直接类名
 def components(*component_list):
-    def _components(klass):
-        klass.__components__ = {}
-        klass.__sorted_components__ = []
+    def _components(entity_klass):
+        entity_klass.__components__ = {}
+        entity_klass.__sorted_components__ = []
         fix_components = list(component_list)
 
-        bases = list(klass.__bases__)
+        bases = list(entity_klass.__bases__)
         bases.reverse()
 
         for base in bases:
@@ -104,61 +104,61 @@ def components(*component_list):
                 # 在entity里面用VAR_NAME来引用该component
                 name = component.VAR_NAME
                 assert name != "Component"
-                __add_component(klass, name, component)
+                __add_component(entity_klass, name, component)
             else:
                 raise RuntimeError("Can't find component: %s (type %s)." % (name, type(component)))
 
-        for component in klass.__components__.itervalues():
+        for component in entity_klass.__components__.values():
             # 处理component的特殊逻辑
             if hasattr(component, "init_after_bind"):
-                component.init_after_bind(klass)
+                component.init_after_bind(entity_klass)
 
         # dependency
         # 根据依赖关系进行拓扑排序, 生成__sorted_components__作为后面初始化和遍历的顺序
         graph = {}
-        for name, component in klass.__components__.iteritems():
+        for name, component in entity_klass.__components__.items():
             graph[name] = __get_dependency(component)
 
-        sorted_list = toposort(graph, klass.__name__)
+        sorted_list = toposort(graph, entity_klass.__name__)
         for name in sorted_list:
-            klass.__sorted_components__.append((name, klass.__components__[name]))
+            entity_klass.__sorted_components__.append((name, entity_klass.__components__[name]))
 
-        # print 'sorted_components: ', klass.__sorted_components__
-        var_names = set()
-        for name, _ in klass.__sorted_components__:
-            var_names.add(name)
-
-        # require
-        all_requires = set()
-        for _, component in klass.__sorted_components__:
-            all_requires.update(__get_require(component))
-
-        # print "[chh]!!!!!!!",all_requires
-        # print "[ccc]",ClassAllRequire
-
-        for name in all_requires:
-            # print "aaa",name
-            if type(name) == str:
-                component = ComponentRegister.get_component(name)
-            elif inspect.isclass(name):
-                component = name
-            else:
-                component = None
-
-            # print "name",name, component
-            if inspect.isclass(component):
-                v_name = component.VAR_NAME
-                if v_name not in var_names:
-                    raise RuntimeError("Entity must have a named component:%s" % v_name)
-            else:
-                raise RuntimeError("Can't find component: %s (type %s)." % (name, type(component)))
+        # # print 'sorted_components: ', klass.__sorted_components__
+        # var_names = set()
+        # for name, _ in entity_klass.__sorted_components__:
+        #     var_names.add(name)
+        #
+        # # require
+        # all_requires = set()
+        # for _, component in entity_klass.__sorted_components__:
+        #     all_requires.update(__get_require(component))
+        #
+        # # print "[chh]!!!!!!!",all_requires
+        # # print "[ccc]",ClassAllRequire
+        #
+        # for name in all_requires:
+        #     # print "aaa",name
+        #     if type(name) == str:
+        #         component = ComponentRegister.get_component(name)
+        #     elif inspect.isclass(name):
+        #         component = name
+        #     else:
+        #         component = None
+        #
+        #     # print "name",name, component
+        #     if inspect.isclass(component):
+        #         v_name = component.VAR_NAME
+        #         if v_name not in var_names:
+        #             raise RuntimeError("Entity must have a named component:%s" % v_name)
+        #     else:
+        #         raise RuntimeError("Can't find component: %s (type %s)." % (name, type(component)))
 
         # if gr.is_client:
         # 	import Property
         # 	for name, component in klass.__sorted_components__:
         # 		Property.scan_property_changed_listener(klass, name, component)
 
-        return klass
+        return entity_klass
 
     return _components
 
@@ -375,33 +375,33 @@ def dependency(*component_list):
     return _dependency
 
 
-# 需要某些组件或者其扩展组件
-def require(*component_list):
-    def _require(klass):
-        klass.__require__ = set()
-        '''
-        bases = []
-        #bases = Utils.GetClassAllBases(klass)
-        for base in klass.__bases__:
-            if "__require__" in base.__dict__:
-                for name in base.__require__:
-                    klass.__require__.add(name)
-        '''
-        for name in component_list:
-            if type(name) == str:
-                component = ComponentRegister.get_component(name)
-            elif inspect.isclass(name):
-                component = name
-            else:
-                component = None
-            if inspect.isclass(component):
-                name = component.VAR_NAME
-                klass.__require__.add(name)
-            else:
-                raise RuntimeError("Something Strange Slip Into Components: %s (type %s)." % (name, type(component)))
-        return klass
-
-    return _require
+# # 需要某些组件或者其扩展组件
+# def require(*component_list):
+#     def _require(klass):
+#         klass.__require__ = set()
+#         '''
+#         bases = []
+#         #bases = Utils.GetClassAllBases(klass)
+#         for base in klass.__bases__:
+#             if "__require__" in base.__dict__:
+#                 for name in base.__require__:
+#                     klass.__require__.add(name)
+#         '''
+#         for name in component_list:
+#             if type(name) == str:
+#                 component = ComponentRegister.get_component(name)
+#             elif inspect.isclass(name):
+#                 component = name
+#             else:
+#                 component = None
+#             if inspect.isclass(component):
+#                 name = component.VAR_NAME
+#                 klass.__require__.add(name)
+#             else:
+#                 raise RuntimeError("Something Strange Slip Into Components: %s (type %s)." % (name, type(component)))
+#         return klass
+#
+#     return _require
 
 
 '''
@@ -435,7 +435,7 @@ def toposort(graph, class_name):
             break
         else:
             for node, depends in graph.items():
-                print "Node: {0}, Dependency: {1}".format(node, depends)
+                print("Node: {0}, Dependency: {1}".format(node, depends))
             raise RuntimeError("toposort graph has loop or has undefined node %s" % class_name)
 
     return result

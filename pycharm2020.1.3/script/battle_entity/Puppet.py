@@ -12,3 +12,5 @@ class Puppet(BattleEntity, ComponentSupport):
     def __init__(self):
         super().__init__()
 
+    def init_from_dict(self, bdict):
+        ComponentSupport.init_from_dict(self, bdict)
