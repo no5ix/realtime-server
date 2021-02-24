@@ -6,9 +6,9 @@
 增加组件的方式直接在类中增加修饰符components即可
 """
 
-from core.mobilelog.LogManager import LogManager
-from common.utils import tb_helper
-import gr
+# from core.mobilelog.LogManager import LogManager
+# from common.utils import tb_helper
+from common import gr
 
 # 让entity支持Component框架
 # 需要支持component框架的entity继承这个类
@@ -20,7 +20,7 @@ class ComponentSupport(object):
         self._is_aoi_property = False
         self._components = None
 
-        self.logger = LogManager.get_logger(self.__class__.__name__ + "." + self.__class__.__name__)
+        # self.logger = LogManager.get_logger(self.__class__.__name__ + "." + self.__class__.__name__)
 
         if hasattr(self, "__sorted_components__"):
             self._components = {}
@@ -56,30 +56,30 @@ class ComponentSupport(object):
             nn = self.name
         return "<%s:%s>"%(self.__class__.__name__, nn)
 
-    def on_entity_destroy(self):
-        for name, _ in reversed(self.__sorted_components__):
-            component_obj = getattr(self, name, None)
-            if component_obj:
-                try:
-                    component_obj.before_destroy()
-                except:
-                    tb_helper.upload(self.logger)
-
-        for name, _ in reversed(self.__sorted_components__):
-            component_obj = getattr(self, name, None)
-            if component_obj:
-                try:
-                    component_obj.destroy()
-                except:
-                    tb_helper.upload(self.logger)
-
-        for name, _ in reversed(self.__sorted_components__):
-            component_obj = getattr(self, name, None)
-            if component_obj:
-                try:
-                    component_obj.post_destroy()
-                except:
-                    tb_helper.upload(self.logger)
+    # def on_entity_destroy(self):
+    #     for name, _ in reversed(self.__sorted_components__):
+    #         component_obj = getattr(self, name, None)
+    #         if component_obj:
+    #             try:
+    #                 component_obj.before_destroy()
+    #             except:
+    #                 tb_helper.upload(self.logger)
+    #
+    #     for name, _ in reversed(self.__sorted_components__):
+    #         component_obj = getattr(self, name, None)
+    #         if component_obj:
+    #             try:
+    #                 component_obj.destroy()
+    #             except:
+    #                 tb_helper.upload(self.logger)
+    #
+    #     for name, _ in reversed(self.__sorted_components__):
+    #         component_obj = getattr(self, name, None)
+    #         if component_obj:
+    #             try:
+    #                 component_obj.post_destroy()
+    #             except:
+    #                 tb_helper.upload(self.logger)
 
     def init_from_dict(self, info_dict):
         self.init_component_data_from_dict(info_dict)
@@ -179,10 +179,10 @@ class ComponentSupport(object):
         self.is_destroying = False
         self.is_destroyed = True
 
-    def set_logger(self, logger, adapter_name, extra):
-        self.logger = logger
-        for name, _ in self.__sorted_components__:
-            getattr(self, name).set_logger(logger, adapter_name, extra)
+    # def set_logger(self, logger, adapter_name, extra):
+    #     self.logger = logger
+    #     for name, _ in self.__sorted_components__:
+    #         getattr(self, name).set_logger(logger, adapter_name, extra)
 
     def is_like_destroy(self):
         return self.is_destroyed or self.is_destroying

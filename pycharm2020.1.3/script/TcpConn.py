@@ -9,16 +9,18 @@ class TcpConn(object):
         self.asyncio_writer = asyncio_writer
         self.asyncio_reader = asyncio_reader
 
+        self.send_cnt = 0
+
     def set_entity(self, entity):
         self.entity = entity
 
     def set_asyncio_writer(self, asyncio_writer):
         self.asyncio_writer = asyncio_writer
 
-    def send_data(self, data):
-        self.asyncio_writer.write(MsgpackSupport.encode(data))
+    def send_msg(self, msg):
+        self.asyncio_writer.write(MsgpackSupport.encode(msg))
 
-    def loop(self):
+    async def loop(self):
         while True:
             # self.asyncio_writer
             data = await self.asyncio_reader.read(100)
@@ -61,3 +63,66 @@ class TcpConn(object):
             _method(_parameters)
         except:
             pass
+
+    def request_rpc(
+            # self, address, service_id, method_name, args=[], service_id_type=0, method_name_type=0,
+            self, method_name, args=None,
+            # method_name_type=0,
+            # need_reply=False, timeout=2
+    ):
+            # need_reply=False, timeout=2, target_con=None):
+        """
+        向远端的进程发起一个rpc请求，如果当前已经有连接了，那么直接用这个连接发送数据就行，如果没有可用的连接，
+        那么建立一个连接，将发送的数据缓存起来，等到连接建立成功之后再发送
+        @param address:            (ip，port)
+        @param service_id:         远端服务的id  一般情况下是一个字符串表示，可以通过service_id_type来指定
+        @param method_name:        调用的服务对象的方法名字
+        @param args:               调用的参数，这个必须要是一个list
+        @param service_id_type:    服务id类型，默认为0，字符串
+        @param method_name_type:   方法名字类型，默认为0，字符串
+        @param need_reply:         当前rpc是否需要返回值
+        @param timeout:            返回超时，配合need_reply
+        @param target_con:         指定使用的连接对象
+        """
+        # assert isinstance(args, list)
+
+        # message = [RPC_REQUEST, service_id_type, service_id, method_name_type, method_name, args]
+        message = [method_name, args]
+        future = None
+        # if need_reply:
+        #     now_rid = self._get_rid()
+        #     future = Future(now_rid, time_out=timeout)
+        #     message.append(now_rid)
+        # use_con = target_con if target_con else self.get_connection(address)
+        # if use_con:
+        #     if future:
+                # use_con.add_future(future)
+            # self._send_rpc_message(message, use_con)
+        # else:
+        #     self.logger.warn("request rpc but no connection exist, will connect: %s", address)
+        #     if future:
+        #         future.stop_time_out()     # 关闭超时计时，等到真正发送数据的时候再开启
+        #         message.append(future)
+        #     self.buffer_send_message(address, message)
+        #     self._create_connection(address)
+
+        try:
+            data = self.do_encode(message)
+        except:
+            # self.logger.error("encode request message error")
+            # self.logger.log_last_except()
+            # self.handle_traceback()
+            print("encode request message error")
+        else:
+            # con.send_data_and_count(data)
+            # if gr.flow_backups:
+            #     gr.flow_msg('[BATTLE] NET UP ', len(data), message)
+            self.send_data_and_count(data)
+        return future
+
+    def do_encode(self, message):
+        return MsgpackSupport.encode(message)
+
+    def send_data_and_count(self, data):
+        self.send_cnt += 1
+        self.asyncio_writer.write(data)

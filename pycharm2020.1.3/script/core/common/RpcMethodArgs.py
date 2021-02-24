@@ -10,7 +10,7 @@
 
 # from ..common.IdManager import IdManager
 
-class ConvertError(StandardError):
+class ConvertError(BaseException):
     pass
 
 class RpcMethodArg(object):
@@ -23,16 +23,16 @@ class RpcMethodArg(object):
         return self.name
 
     def convert(self, _data):
-        raise StandardError('Not implemented!')
+        raise BaseException('Not implemented!')
 
     def get_type(self):
-        raise StandardError('Not implemented!')
+        raise BaseException('Not implemented!')
 
     def genametype(self):
         return '%s(%s)' % (self.getname(), self.get_type())
 
     def default_val(self):
-        raise StandardError('Not implemented!')
+        raise BaseException('Not implemented!')
 
     def errstr(self, data):
         return '%s is not valid %s' % (data, self.get_type())

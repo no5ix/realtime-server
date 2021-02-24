@@ -20,20 +20,21 @@ def select_hero(self, heroname):
 	pass
 """
 
-from ..mobilelog.LogManager import LogManager
-from ..common.RpcMethodArgs import RpcMethodArg, ConvertError, Avatar, MailBox, ClientInfo, GateMailBox, Response
-from ..common.EntityManager import EntityManager
-from ..servercommon.PostmanDelayGuard import PostmanDelayGuard
-from const import server_const
-from common.utils import utility
+# from ..mobilelog.LogManager import LogManager
+# from ..common.RpcMethodArgs import RpcMethodArg, ConvertError, Avatar, MailBox, ClientInfo, GateMailBox, Response
+# from ..common.EntityManager import EntityManager
+# from ..servercommon.PostmanDelayGuard import PostmanDelayGuard
+# from const import server_const
+# from common.utils import utility
+from core.common.RpcMethodArgs import ConvertError, RpcMethodArg
 
 CLIENT_ONLY = 0  # client call server
 SERVER_ONLY = 1  # server call server
 CLIENT_SERVER = 2  # client or server call server
 CLIENT_STUB = 3    # server call client
 
-_logger = LogManager.get_logger("server.RpcMethod")
-_delay_guard = PostmanDelayGuard('rpc', server_const.POSTMAN_WARN_LIMIT_RPC)
+# _logger = LogManager.get_logger("server.RpcMethod")
+# _delay_guard = PostmanDelayGuard('rpc', server_const.POSTMAN_WARN_LIMIT_RPC)
 
 #pylint: disable=W0142, W0622, E1101
 class RpcMethod(object):
@@ -47,109 +48,57 @@ class RpcMethod(object):
         self.pub = pub
         self.need_mailbox = False
         self.cd = cd
-        self._check_index()
+        # self._check_index()
 
-    def _check_index(self):
-        """
-        检测是否有Response参数的定义并保证参数类型的排序:
-        (MailBox, Response.....)
-        (MailBox......)
-        (Response.....)
-        (.....)
-        @return:
-        """
-        placeholder_index, response_index = -1, -1
-        for index in xrange(len(self.argtypes)):
-            argtype = self.argtypes[index]
-            if isinstance(argtype, Avatar) or type(argtype) in (MailBox, ClientInfo, GateMailBox):
-                placeholder_index = index
-            if isinstance(argtype, Response) or type(argtype) is Response:
-                response_index = index
-        if response_index > -1:
-            self._has_response = True
-        if placeholder_index > -1:
-            self.need_mailbox = True
-        if response_index > 1 or placeholder_index > 0:
-            raise Exception("argtype index error")
+    # def _check_index(self):
+    #     """
+    #     检测是否有Response参数的定义并保证参数类型的排序:
+    #     (MailBox, Response.....)
+    #     (MailBox......)
+    #     (Response.....)
+    #     (.....)
+    #     @return:
+    #     """
+    #     placeholder_index, response_index = -1, -1
+    #     for index in range(len(self.argtypes)):
+    #         argtype = self.argtypes[index]
+    #         if isinstance(argtype, Avatar) or type(argtype) in (MailBox, ClientInfo, GateMailBox):
+    #             placeholder_index = index
+    #         if isinstance(argtype, Response) or type(argtype) is Response:
+    #             response_index = index
+    #     if response_index > -1:
+    #         self._has_response = True
+    #     if placeholder_index > -1:
+    #         self.need_mailbox = True
+    #     if response_index > 1 or placeholder_index > 0:
+    #         raise Exception("argtype index error")
 
-    def get_placeholder(self, argtype, placeholder):
-        if not self.need_mailbox:
-            return None
-        if isinstance(argtype, Avatar):
-            avatar = EntityManager.getentity(placeholder)
-            return avatar
-
-        if type(argtype) in (MailBox, ClientInfo, GateMailBox):
-            return placeholder
-
-        return None
+    # def get_placeholder(self, argtype, placeholder):
+    #     if not self.need_mailbox:
+    #         return None
+    #     if isinstance(argtype, Avatar):
+    #         avatar = EntityManager.getentity(placeholder)
+    #         return avatar
+    #
+    #     if type(argtype) in (MailBox, ClientInfo, GateMailBox):
+    #         return placeholder
+    #
+    #     return None
 
     def call(self, entity, placeholder, parameters):
-        """
-        调用服务端的rpc 方法
-        :@note game进程的直连通信扩展了带Response的通信模式，为了保持与原API的一致，如果有Response对象，那么placeholder参数
-            将会传一个tuple进来 (Response, MailBox)
-        """
-        #parameters = BSON(bson_string).decode()
         if not isinstance(parameters, dict):
-            _logger.warn("call: bson parameter decode failed in RPC call %s (%s), ",
+            print("call: bson parameter decode failed in RPC call %s (%s), ",
                          self.func.__name__,  "" .join(str(x) for x in self.argtypes))
             return
 
-        if self.cd > 0:
-            now = utility.get_time()
-            last_call_ts_name = 'last_call_%s_ts' % self.func.__name__
-            last_call_ts = getattr(entity, last_call_ts_name, 0)
-            if now - last_call_ts < self.cd:
-                return
-            setattr(entity, last_call_ts_name, now)
-
-        if not self.argtypes:
-            return self.func(entity)
-
-        # 检测当前调用的rpc方法的Response参数的定义情况是否与调用的情况一致
-        # 例如被调用的方法定义了Response，但是调用者却没有设置need_reply参数
-        # 调用者设置了need_reply参数，但是被调用的方法没有定义Response
-        if not (self._has_response is isinstance(placeholder, tuple)):
-            if self._has_response:
-                raise Exception("%s need a response, check you call define" % self.func)
-            else:
-                placeholder[0].send_response(error="%s do not have response define" % self.func)
-                raise Exception("%s do not have response define, check your caller or %s define" % (self.func, self.func))
-
-        auto_parameters = parameters.get('_')
-        if auto_parameters:
-            parameters = auto_parameters
-
-        if isinstance(parameters, dict):
-            return self.call_with_key(entity, placeholder, parameters)
-        else:
-            return self.call_without_key(entity, placeholder, parameters)
-
-    def call_without_key(self, entity, placeholder, parameters):
-        response = None
-        if isinstance(placeholder, tuple):
-            response = placeholder[0]
-            placeholder = placeholder[1]
-
         args = []
         argtypes = self.argtypes
-        holder = self.get_placeholder(argtypes[0], placeholder)
-        if holder:
-            args.append(holder)
-            argtypes = argtypes[1:]
-
-        if response:
-            assert isinstance(argtypes[0], Response)
-            argtypes = argtypes[1:]
-            args.append(response)
-
-        for index in xrange(len(argtypes)):
+        for index in range(len(argtypes)):
             argtype = argtypes[index]
             try:
                 arg = parameters[index]
             except KeyError:
-                _logger.warn("call: parameter %s not found in RPC call %s, using default value",
+                print("call: parameter %s not found in RPC call %s, using default value",
                              argtype.getname(), self.func.__name__)
                 arg = argtype.default_val()
             try:
@@ -158,51 +107,134 @@ class RpcMethod(object):
                     arg = None
                 else:
                     arg = argtype.convert(arg)
-            except ConvertError, e:    # we will call the method if the conversion failed
-                _logger.error("call: parameter %s can't convert input %s for RPC call %s exception %s",
+            except ConvertError as e:    # we will call the method if the conversion failed
+                print("call: parameter %s can't convert input %s for RPC call %s exception %s",
                               argtype.getname(),  str(arg),  self.func.__name__, str(e))
                 return
             args.append(arg)
         return self.func(entity, *args)
+        # return self.func(entity, *args)
 
-    def call_with_key(self, entity, placeholder, parameters):
-        response = None
-        if isinstance(placeholder, tuple):
-            response = placeholder[0]
-            placeholder = placeholder[1]
 
-        args = []
-        argtypes = self.argtypes
-        # 如果第一个参数是Avatar，则我们把对端调用Entity的Avatar传给方法
-        holder = self.get_placeholder(argtypes[0], placeholder)
-        if holder:
-            args.append(holder)
-            argtypes = argtypes[1:]
-
-        if response:
-            assert isinstance(argtypes[0], Response)
-            argtypes = argtypes[1:]
-            args.append(response)
-
-        for argtype in argtypes:
-            try:
-                arg = parameters[argtype.getname()]
-            except KeyError:
-                _logger.warn("call: parameter %s not found in RPC call %s, using default value",
-                             argtype.getname(), self.func.__name__)
-                arg = argtype.default_val()
-            try:
-                if arg == None and argtype.get_type() == 'Uuid':
-                    #让uuid类型的参数可以是None
-                    arg = None
-                else:
-                    arg = argtype.convert(arg)
-            except ConvertError, e: # we will call the method if the conversion failed
-                _logger.error("call: parameter %s can't convert input %s for RPC call %s exception %s",
-                              argtype.getname(),  str(arg),  self.func.__name__, str(e))
-                return
-            args.append(arg)
-        return self.func(entity, *args)
+    # def call(self, entity, placeholder, parameters):
+    #     """
+    #     调用服务端的rpc 方法
+    #     :@note game进程的直连通信扩展了带Response的通信模式，为了保持与原API的一致，如果有Response对象，那么placeholder参数
+    #         将会传一个tuple进来 (Response, MailBox)
+    #     """
+    #     #parameters = BSON(bson_string).decode()
+    #     if not isinstance(parameters, dict):
+    #         # _logger.warn("call: bson parameter decode failed in RPC call %s (%s), ",
+    #         #              self.func.__name__,  "" .join(str(x) for x in self.argtypes))
+    #         return
+    #
+    #     if self.cd > 0:
+    #         now = utility.get_time()
+    #         last_call_ts_name = 'last_call_%s_ts' % self.func.__name__
+    #         last_call_ts = getattr(entity, last_call_ts_name, 0)
+    #         if now - last_call_ts < self.cd:
+    #             return
+    #         setattr(entity, last_call_ts_name, now)
+    #
+    #     if not self.argtypes:
+    #         return self.func(entity)
+    #
+    #     # 检测当前调用的rpc方法的Response参数的定义情况是否与调用的情况一致
+    #     # 例如被调用的方法定义了Response，但是调用者却没有设置need_reply参数
+    #     # 调用者设置了need_reply参数，但是被调用的方法没有定义Response
+    #     if not (self._has_response is isinstance(placeholder, tuple)):
+    #         if self._has_response:
+    #             raise Exception("%s need a response, check you call define" % self.func)
+    #         else:
+    #             placeholder[0].send_response(error="%s do not have response define" % self.func)
+    #             raise Exception("%s do not have response define, check your caller or %s define" % (self.func, self.func))
+    #
+    #     auto_parameters = parameters.get('_')
+    #     if auto_parameters:
+    #         parameters = auto_parameters
+    #
+    #     if isinstance(parameters, dict):
+    #         return self.call_with_key(entity, placeholder, parameters)
+    #     else:
+    #         return self.call_without_key(entity, placeholder, parameters)
+    #
+    # def call_without_key(self, entity, placeholder, parameters):
+    #     response = None
+    #     if isinstance(placeholder, tuple):
+    #         response = placeholder[0]
+    #         placeholder = placeholder[1]
+    #
+    #     args = []
+    #     argtypes = self.argtypes
+    #     holder = self.get_placeholder(argtypes[0], placeholder)
+    #     if holder:
+    #         args.append(holder)
+    #         argtypes = argtypes[1:]
+    #
+    #     if response:
+    #         assert isinstance(argtypes[0], Response)
+    #         argtypes = argtypes[1:]
+    #         args.append(response)
+    #
+    #     for index in xrange(len(argtypes)):
+    #         argtype = argtypes[index]
+    #         try:
+    #             arg = parameters[index]
+    #         except KeyError:
+    #             _logger.warn("call: parameter %s not found in RPC call %s, using default value",
+    #                          argtype.getname(), self.func.__name__)
+    #             arg = argtype.default_val()
+    #         try:
+    #             if arg == None and argtype.get_type() == 'Uuid':
+    #                 #让uuid类型的参数可以是None
+    #                 arg = None
+    #             else:
+    #                 arg = argtype.convert(arg)
+    #         except ConvertError, e:    # we will call the method if the conversion failed
+    #             _logger.error("call: parameter %s can't convert input %s for RPC call %s exception %s",
+    #                           argtype.getname(),  str(arg),  self.func.__name__, str(e))
+    #             return
+    #         args.append(arg)
+    #     return self.func(entity, *args)
+    #
+    # def call_with_key(self, entity, placeholder, parameters):
+    #     response = None
+    #     if isinstance(placeholder, tuple):
+    #         response = placeholder[0]
+    #         placeholder = placeholder[1]
+    #
+    #     args = []
+    #     argtypes = self.argtypes
+    #     # 如果第一个参数是Avatar，则我们把对端调用Entity的Avatar传给方法
+    #     holder = self.get_placeholder(argtypes[0], placeholder)
+    #     if holder:
+    #         args.append(holder)
+    #         argtypes = argtypes[1:]
+    #
+    #     if response:
+    #         assert isinstance(argtypes[0], Response)
+    #         argtypes = argtypes[1:]
+    #         args.append(response)
+    #
+    #     for argtype in argtypes:
+    #         try:
+    #             arg = parameters[argtype.getname()]
+    #         except KeyError:
+    #             _logger.warn("call: parameter %s not found in RPC call %s, using default value",
+    #                          argtype.getname(), self.func.__name__)
+    #             arg = argtype.default_val()
+    #         try:
+    #             if arg == None and argtype.get_type() == 'Uuid':
+    #                 #让uuid类型的参数可以是None
+    #                 arg = None
+    #             else:
+    #                 arg = argtype.convert(arg)
+    #         except ConvertError, e: # we will call the method if the conversion failed
+    #             _logger.error("call: parameter %s can't convert input %s for RPC call %s exception %s",
+    #                           argtype.getname(),  str(arg),  self.func.__name__, str(e))
+    #             return
+    #         args.append(arg)
+    #     return self.func(entity, *args)
 
 
 def rpc_method( rpctype, argtypes = (),  pub=True, cd=-1):

@@ -7,8 +7,8 @@ class BattleEntity(object):
         self.be_id = 0
 
     def call_server_method(self, method_name, parameters):
-        if not gr.bind_entity:
-            return
+        # if not gr.bind_entity:
+        #     return
         # if gr.IS_RECORD_PLAY:
         #     return
         # if not self.dungeon:
@@ -18,7 +18,9 @@ class BattleEntity(object):
         #         if gr.is_client:
         #             gr.logger.warn("[aoi c=>s]: %s", method_name)
 
+        # gr.bind_entity.call_server_method(
         gr.bind_entity.call_server_method(
             'local_entity_message',
-            {'m': RpcIndexer.send_rpc_index(method_name), 'p': parameters}
+            # {'m': RpcIndexer.send_rpc_index(method_name), 'p': parameters}
+            {'m': method_name, 'p': parameters}
         )

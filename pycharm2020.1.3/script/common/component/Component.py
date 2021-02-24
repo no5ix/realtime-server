@@ -11,7 +11,7 @@
 
 import copy
 import inspect
-# import gr
+from common import gr
 from common.component import ComponentRegister
 # from common.aoi.Property import get_class_properties, is_sync_client, is_sync_other_client, is_persist
 
@@ -328,20 +328,20 @@ class Component(object):
     def call_server_method_direct(self, remote_mb, method_name, parameters, *args, **kwargs):
         return self.entity.call_server_method_direct(remote_mb, method_name, parameters, *args, **kwargs)
 
-    def set_logger(self, logger, entity_name, extra):
-        import logging
-        from util import LoggerAdapter
-
-        lg = logger
-        extra_for_comp = {'comp': self.VAR_NAME, 'class': self.__class__.__name__}
-        if isinstance(logger, logging.LoggerAdapter):
-            lg = logger.logger
-        extra_for_comp.update(extra)
-        adapter_class_name = entity_name + 'CompLoggerAdapter'
-        comp_adapter_class = getattr(LoggerAdapter, adapter_class_name, None)
-        if comp_adapter_class is None:
-            return
-        self.logger = comp_adapter_class(lg, extra_for_comp)
+    # def set_logger(self, logger, entity_name, extra):
+    #     import logging
+    #     from util import LoggerAdapter
+    #
+    #     lg = logger
+    #     extra_for_comp = {'comp': self.VAR_NAME, 'class': self.__class__.__name__}
+    #     if isinstance(logger, logging.LoggerAdapter):
+    #         lg = logger.logger
+    #     extra_for_comp.update(extra)
+    #     adapter_class_name = entity_name + 'CompLoggerAdapter'
+    #     comp_adapter_class = getattr(LoggerAdapter, adapter_class_name, None)
+    #     if comp_adapter_class is None:
+    #         return
+    #     self.logger = comp_adapter_class(lg, extra_for_comp)
 
 
 # 依赖某些组件，组件Init必然在依赖组件Init之后

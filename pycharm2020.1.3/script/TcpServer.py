@@ -1,4 +1,7 @@
 import asyncio
+
+from PuppetBindEntity import PuppetBindEntity
+from battle_entity.Puppet import Puppet
 from core.common import MsgpackSupport
 from TcpConn import TcpConn
 
@@ -14,16 +17,27 @@ class TcpServer(object):
             # if w != writer:
                 # w.write(f"{addr!r}: {message!r}\n".encode())
                 # w.write(MsgpackSupport.encode(f"{addr!r}: {message!r}\n"))
-            _tcp_conn.send_data(f"{addr!r}: {message!r}\n")
+            _tcp_conn.send_msg(f"{addr!r}: {message!r}\n")
 
     async def handle_client_connected(self, reader, writer):
         # self.writers.append(writer)
         addr = writer.get_extra_info('peername')
-        tcp_conn = TcpConn(addr, writer, reader)
-        self.tcp_conn_map[addr] = tcp_conn
+        _tcp_conn = TcpConn(addr, writer, reader)
+
+        _ppt = Puppet()
+
+        _tcp_conn.set_entity(_ppt)
+        _pbe = PuppetBindEntity()
+        _pbe.set_connection(_tcp_conn)
+
+        _ppt.init_from_dict({})
+
+        _ppt.set_bind_entity(_pbe)
+
+        self.tcp_conn_map[addr] = _tcp_conn
         message = f"{addr!r} is connected !!!!"
         print(message)
-        tcp_conn.loop()
+        _tcp_conn.loop()
         # self.forward(writer, addr, message)
         # while True:
         #     data = await reader.read(100)
