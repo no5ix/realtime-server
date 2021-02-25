@@ -156,7 +156,8 @@ class Str(RpcMethodArg):
         super(Str, self).__init__(name)
 
     def convert(self, data):
-        if not type(data) in (str, unicode):
+        # if not type(data) in (str, unicode):
+        if not type(data) in (str, ):
             raise ConvertError(self.errstr(data))
         return str(data)
 
@@ -222,7 +223,6 @@ class List(RpcMethodArg):
         return []
 
 
-
 class Dict(RpcMethodArg):
     def __init__(self, name):
         super(Dict, self).__init__(name)
@@ -254,24 +254,24 @@ class Bool(RpcMethodArg):
     def default_val(self):
         return False
 
-class Uuid(RpcMethodArg):
-    def __init__(self, name):
-        super(Uuid, self).__init__(name)
-
-    def convert(self, data):
-        if IdManager.is_id_type(data):
-            return data
-        elif type(data) in (str, unicode):
-            if type(data) == unicode:
-                data = str(data)
-            try:
-                return IdManager.bytes2id(data)
-            except:
-                return IdManager.str2id(data)
-        raise ConvertError(self.errstr(data))
-
-    def get_type(self):
-        return 'Uuid'
-
-    def default_val(self):
-        return None
+# class Uuid(RpcMethodArg):
+#     def __init__(self, name):
+#         super(Uuid, self).__init__(name)
+#
+#     def convert(self, data):
+#         if IdManager.is_id_type(data):
+#             return data
+#         elif type(data) in (str, unicode):
+#             if type(data) == unicode:
+#                 data = str(data)
+#             try:
+#                 return IdManager.bytes2id(data)
+#             except:
+#                 return IdManager.str2id(data)
+#         raise ConvertError(self.errstr(data))
+#
+#     def get_type(self):
+#         return 'Uuid'
+#
+#     def default_val(self):
+#         return None

@@ -170,14 +170,14 @@ class Component(object):
 
     def __init__(self):
         self.entity = None
-        self.logger = None
+        # self.logger = None
         self._client_tick_cache = []
 
     # 绑定entity到自己. 每个component有个归属的entity
     # 如果有args, 则初始化property, 否则等到后面entity读取数据库后，再主动调用init_properties
     def init(self, entity):
         self.entity = entity
-        self.logger = entity.logger
+        # self.logger = entity.logger
         if self._client_tick_cache and hasattr(self.entity, 'add_tick'):
             for tick_func in self._client_tick_cache:
                 self.add_tick(tick_func)
@@ -188,57 +188,57 @@ class Component(object):
     def init_properties(self, info_dict):
         if gr.is_client:
             return
-        # TODO 等服务器编译好C++版的AOI_DATA就可以统一了
-        cls = self.__class__
-        all_properties = get_class_properties(cls)
-        for property_name, attr in all_properties.iteritems():
-            info = info_dict.get(property_name)
-            default_val = attr['default']
-            # if gr.is_server:
-            # 	self.entity.create_property(default_val, self.VAR_NAME + '.' + property_name, info, attr['sync'])
-            # else:
-            # 	if info_dict.get(property_name) is None:
-            # 		setattr(self, property_name, default_val)
-            # 	else:
-            # 		setattr(self, property_name, info_dict.get(property_name))
-            self.entity.create_property(default_val, self.VAR_NAME + '.' + property_name, info, attr['sync'])
+        # # TODO 等服务器编译好C++版的AOI_DATA就可以统一了
+        # cls = self.__class__
+        # all_properties = get_class_properties(cls)
+        # for property_name, attr in all_properties.iteritems():
+        #     info = info_dict.get(property_name)
+        #     default_val = attr['default']
+        #     # if gr.is_server:
+        #     # 	self.entity.create_property(default_val, self.VAR_NAME + '.' + property_name, info, attr['sync'])
+        #     # else:
+        #     # 	if info_dict.get(property_name) is None:
+        #     # 		setattr(self, property_name, default_val)
+        #     # 	else:
+        #     # 		setattr(self, property_name, info_dict.get(property_name))
+        #     self.entity.create_property(default_val, self.VAR_NAME + '.' + property_name, info, attr['sync'])
 
-    def get_persistent_properties(self):
-        return self.get_properties_data(is_persist)
-
-    def get_client_properties(self):
-        return self.get_properties_data(is_sync_client)
-
-    def get_other_properties(self):
-        return self.get_properties_data(is_sync_other_client)
-
-    def get_properties_data(self, checker=lambda x: True):
-        # 获得属性对应的数据
-        cls = self.__class__
-        all_properties = get_class_properties(cls)
-        mp = {}
-        for var_name, attr in all_properties.iteritems():
-            if not checker(attr):
-                continue
-            v = getattr(self, var_name)
-            default_val = attr['default']
-            if v is None:
-                v = default_val
-            if isinstance(default_val, list) or isinstance(default_val, dict) or isinstance(default_val, tuple):
-                if not hasattr(v, 'object'):
-                    raise AttributeError("'%s' object has no attribute 'object', path=%s.%s" % (
-                        v.__class__.__name__, cls.__name__, var_name
-                    ))
-                mp[var_name] = v.object()
-            elif isinstance(default_val, type):
-                if not hasattr(v, 'get_properties_data'):
-                    raise AttributeError("'%s' object has no attribute 'get_properties_data', path=%s.%s" % (
-                        v.__class__.__name__, cls.__name__, var_name
-                    ))
-                mp[var_name] = v.get_properties_data(checker)
-            else:
-                mp[var_name] = v
-        return mp
+    # def get_persistent_properties(self):
+    #     return self.get_properties_data(is_persist)
+    #
+    # def get_client_properties(self):
+    #     return self.get_properties_data(is_sync_client)
+    #
+    # def get_other_properties(self):
+    #     return self.get_properties_data(is_sync_other_client)
+    #
+    # def get_properties_data(self, checker=lambda x: True):
+    #     # 获得属性对应的数据
+    #     cls = self.__class__
+    #     all_properties = get_class_properties(cls)
+    #     mp = {}
+    #     for var_name, attr in all_properties.iteritems():
+    #         if not checker(attr):
+    #             continue
+    #         v = getattr(self, var_name)
+    #         default_val = attr['default']
+    #         if v is None:
+    #             v = default_val
+    #         if isinstance(default_val, list) or isinstance(default_val, dict) or isinstance(default_val, tuple):
+    #             if not hasattr(v, 'object'):
+    #                 raise AttributeError("'%s' object has no attribute 'object', path=%s.%s" % (
+    #                     v.__class__.__name__, cls.__name__, var_name
+    #                 ))
+    #             mp[var_name] = v.object()
+    #         elif isinstance(default_val, type):
+    #             if not hasattr(v, 'get_properties_data'):
+    #                 raise AttributeError("'%s' object has no attribute 'get_properties_data', path=%s.%s" % (
+    #                     v.__class__.__name__, cls.__name__, var_name
+    #                 ))
+    #             mp[var_name] = v.get_properties_data(checker)
+    #         else:
+    #             mp[var_name] = v
+    #     return mp
 
     # 初始化后的回调
     def post_init(self):

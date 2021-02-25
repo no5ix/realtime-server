@@ -5,6 +5,10 @@ class PuppetBindEntity(object):
     def __init__(self):
         self._bind_ok = False
         self._connection = None
+        self._puppet = None
+
+    def set_puppet(self, ppt):
+        self._puppet = ppt
 
     def call_server_method(self, method_name, parameters=None):
         """
@@ -23,3 +27,6 @@ class PuppetBindEntity(object):
 
     def set_connection(self, conn):
         self._connection = conn
+
+    def set_bind_ok(self):
+        self._bind_ok = True

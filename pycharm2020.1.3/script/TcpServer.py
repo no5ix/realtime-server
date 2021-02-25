@@ -26,10 +26,11 @@ class TcpServer(object):
 
         _ppt = Puppet()
 
-        _tcp_conn.set_entity(_ppt)
+        # _tcp_conn.set_entity(_ppt)
         _pbe = PuppetBindEntity()
+        _tcp_conn.set_entity(_pbe)
         _pbe.set_connection(_tcp_conn)
-
+        _pbe.set_puppet(_ppt)
         _ppt.init_from_dict({})
 
         _ppt.set_bind_entity(_pbe)
@@ -37,7 +38,7 @@ class TcpServer(object):
         self.tcp_conn_map[addr] = _tcp_conn
         message = f"{addr!r} is connected !!!!"
         print(message)
-        _tcp_conn.loop()
+        await _tcp_conn.loop()
         # self.forward(writer, addr, message)
         # while True:
         #     data = await reader.read(100)

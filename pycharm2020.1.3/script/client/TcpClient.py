@@ -13,8 +13,9 @@ async def tcp_echo_client(message):
 
     _ppt = Puppet()
     _tcp_conn = TcpConn(writer.get_extra_info('peername'), writer, reader)
-    _tcp_conn.set_entity(_ppt)
     _pbe = PuppetBindEntity()
+    _tcp_conn.set_entity(_pbe)
+    _pbe.set_puppet(_ppt)
     _pbe.set_connection(_tcp_conn)
 
     _ppt.init_from_dict({})
@@ -24,13 +25,13 @@ async def tcp_echo_client(message):
 
     _ppt.CompPuppetTest.puppet_chat_to_channel({'content: test_chat_msg'})
 
-    return
-
-    print('return')
-
-    print(f'Send: {message!r}')
-    # writer.write(message.encode())
-    writer.write(MsgpackSupport.encode(message))
+    # return
+    #
+    # print('return')
+    #
+    # print(f'Send: {message!r}')
+    # # writer.write(message.encode())
+    # writer.write(MsgpackSupport.encode(message))
 
     while True:
         data = await reader.read(100)

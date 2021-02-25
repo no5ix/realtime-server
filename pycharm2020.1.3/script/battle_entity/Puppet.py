@@ -10,7 +10,11 @@ from component.puppet.CompPuppetTest import CompPuppetTest
 class Puppet(BattleEntity, ComponentSupport):
     
     def __init__(self):
-        super().__init__()
+        # super(BattleEntity).__init__()
+        # super(ComponentSupport).__init__()
+
+        BattleEntity.__init__(self)
+        ComponentSupport.__init__(self)
         self.bind_entity = None
 
     def init_from_dict(self, bdict):

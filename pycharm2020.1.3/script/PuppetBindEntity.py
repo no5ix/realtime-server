@@ -1,3 +1,5 @@
+from core.common.RpcMethodArgs import Int, Dict, Str
+from core.common.RpcSupport import rpc_method, CLIENT_ONLY
 
 
 class PuppetBindEntity(object):
@@ -5,6 +7,10 @@ class PuppetBindEntity(object):
     def __init__(self):
         self._bind_ok = False
         self._connection = None
+        self._puppet = None
+
+    def set_puppet(self, ppt):
+        self._puppet = ppt
 
     def call_server_method(self, method_name, parameters=None):
         """
@@ -23,3 +29,33 @@ class PuppetBindEntity(object):
 
     def set_connection(self, conn):
         self._connection = conn
+
+    def set_bind_ok(self):
+        self._bind_ok = True
+
+    @rpc_method(CLIENT_ONLY, (Str('m'), Dict('p')))
+    def local_entity_message(self, method_name, parameters):
+        # try:
+        #     method_name = RpcIndexer.INDEX2RPC[method_name]
+        # except KeyError:
+        #     self.logger.error('Failed to decode method_name for uid=%s index=%s', self.uid, method_name)
+        #     return
+        puppet = self._puppet
+        if not puppet:
+            # self.logger.error('Failed to get puppet, method_name=%s', method_name)
+            print('Failed to get puppet, method_name=%s', method_name)
+            return
+        method_list = method_name.split('.')
+        if len(method_list) == 1:
+            ent = puppet
+            name = method_name
+        else:
+            ent = puppet.get_component(method_list[0])
+            name = method_list[1]
+        method = getattr(ent, name, None)
+        if method:
+            # optimized after tick，降低客户端延迟，不然需要等下一次tick才做统计
+            # if puppet.delay_calls:
+            #     puppet.delay_calls.callback('opt-at', 0.001, puppet.flush_aoi_data)
+            # method(ent, parameters)
+            method(parameters)

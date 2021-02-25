@@ -8,7 +8,7 @@
 
 # from core.mobilelog.LogManager import LogManager
 # from common.utils import tb_helper
-from common import gr
+# from common import gr
 
 # 让entity支持Component框架
 # 需要支持component框架的entity继承这个类
@@ -32,7 +32,8 @@ class ComponentSupport(object):
 
     def _create_components(self, local_id):
         for name, component in self.__sorted_components__:
-            if local_id and name in gr.CPP_ECS_CLASS_LIST:
+            # if local_id and name in gr.CPP_ECS_CLASS_LIST:
+            if local_id:
                 # print 'name', name, component
                 com_obj = component(local_id)
             else:

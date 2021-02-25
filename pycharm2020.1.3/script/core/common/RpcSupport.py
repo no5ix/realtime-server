@@ -85,7 +85,8 @@ class RpcMethod(object):
     #
     #     return None
 
-    def call(self, entity, placeholder, parameters):
+    # def call(self, entity, placeholder, parameters):
+    def call(self, entity, parameters):
         if not isinstance(parameters, dict):
             print("call: bson parameter decode failed in RPC call %s (%s), ",
                          self.func.__name__,  "" .join(str(x) for x in self.argtypes))
@@ -93,10 +94,10 @@ class RpcMethod(object):
 
         args = []
         argtypes = self.argtypes
-        for index in range(len(argtypes)):
-            argtype = argtypes[index]
+
+        for argtype in argtypes:
             try:
-                arg = parameters[index]
+                arg = parameters[argtype.getname()]
             except KeyError:
                 print("call: parameter %s not found in RPC call %s, using default value",
                              argtype.getname(), self.func.__name__)
@@ -107,7 +108,7 @@ class RpcMethod(object):
                     arg = None
                 else:
                     arg = argtype.convert(arg)
-            except ConvertError as e:    # we will call the method if the conversion failed
+            except ConvertError as e:  # we will call the method if the conversion failed
                 print("call: parameter %s can't convert input %s for RPC call %s exception %s",
                               argtype.getname(),  str(arg),  self.func.__name__, str(e))
                 return
@@ -249,15 +250,15 @@ def rpc_method( rpctype, argtypes = (),  pub=True, cd=-1):
         rpcmethod = RpcMethod(func, rpctype, argtypes, pub, cd=cd)
         call_func = rpcmethod.call
 
-        def call_rpc_method_CLIENT_STUB(self, *args):
+        def call_rpc_method_CLIENT_STUB(self, args):
             fun_for_reload = func       # do not remove this, it is usefull for reload
-            return call_func(self, None, *args)
+            return call_func(self, args)
 
-        def call_rpc_method_Others(self, *args):
+        def call_rpc_method_Others(self, args):
             fun_for_reload = func       # do not remove this, it is usefull for reload
             # return call_func(self, *args)
-            with _delay_guard:
-                ret = call_func(self, *args)
+            # with _delay_guard:
+            ret = call_func(self, args)
             return ret
 
         if rpctype == CLIENT_STUB:
