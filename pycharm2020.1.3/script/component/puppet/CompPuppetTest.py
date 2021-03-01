@@ -10,8 +10,11 @@ class CompPuppetTest(Component):
 
     def __init__(self):
         super().__init__()
+        self._cnt = 100
         pass
 
     @rpc_method(CLIENT_ONLY, (Dict('i'), ))
     def puppet_chat_to_channel(self, chat_info):
         print(chat_info)
+        self._cnt -= 1
+        print("self._cnt:" + str(self._cnt))

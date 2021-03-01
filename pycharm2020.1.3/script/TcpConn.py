@@ -1,4 +1,10 @@
+import asyncio
+from struct import unpack as s_unpack, pack as s_pack
+
 from core.common import MsgpackSupport
+
+HEAD_LEN = 4
+MAX_BODY_LEN = 4294967296
 
 
 class TcpConn(object):
@@ -10,6 +16,7 @@ class TcpConn(object):
         self.asyncio_reader = asyncio_reader
 
         self.send_cnt = 0
+        self._recv_cnt = 0
 
     def set_entity(self, entity):
         self.entity = entity
@@ -23,11 +30,22 @@ class TcpConn(object):
     async def loop(self):
         while True:
             # self.asyncio_writer
-            data = await self.asyncio_reader.read(100)
-            # message = data.decode().strip()
-            self.handle_message(data)
+            _data = await self.asyncio_reader.read(8192)
+            while True:
+                if len(_data) >= HEAD_LEN:
+                    _body_len = s_unpack('i', _data[0:HEAD_LEN])
+                    if _body_len > MAX_BODY_LEN:
+                        print("body too big, Close the connection")
+                        self.asyncio_writer.close()
+                        return
+                    _body_data = _data[HEAD_LEN:]
+            self._recv_cnt += 1
+            print("self._recv_cnt:" + str(self._recv_cnt))
 
-            # message = MsgpackSupport.decode(data)
+        # message = _data.decode().strip()
+            self.handle_message(_data)
+
+            # message = MsgpackSupport.decode(_data)
             # self.forward(self.asyncio_writer, addr, message)
             # await self.asyncio_writer.drain()
             # if message == "exit":
@@ -64,7 +82,7 @@ class TcpConn(object):
         except:
             pass
 
-    def request_rpc(
+    async def request_rpc(
             # self, address, service_id, method_name, args=[], service_id_type=0, method_name_type=0,
             self, method_name, args=None,
             # method_name_type=0,
@@ -89,6 +107,7 @@ class TcpConn(object):
         # message = [RPC_REQUEST, service_id_type, service_id, method_name_type, method_name, args]
         message = [method_name, args]
         future = None
+        _task = None
         # if need_reply:
         #     now_rid = self._get_rid()
         #     future = Future(now_rid, time_out=timeout)
@@ -117,12 +136,21 @@ class TcpConn(object):
             # con.send_data_and_count(data)
             # if gr.flow_backups:
             #     gr.flow_msg('[BATTLE] NET UP ', len(data), message)
-            self.send_data_and_count(data)
-        return future
+            await self.send_data_and_count(data)
+            # _task = asyncio.create_task(self.send_data_and_count(data))
+        return _task
 
     def do_encode(self, message):
         return MsgpackSupport.encode(message)
 
-    def send_data_and_count(self, data):
+    # def send_data_and_count(self, data):
+    async def send_data_and_count(self, data):
         self.send_cnt += 1
+        # _len = len(data)
+        data_len = len(data) if data else 0
+        header_data = s_pack("i", data_len)             # 构建数据的头部
+        data = header_data + data
+
         self.asyncio_writer.write(data)
+        await self.asyncio_writer.drain()
+        # self.asyncio_writer.drain()
