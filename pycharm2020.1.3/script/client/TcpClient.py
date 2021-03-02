@@ -33,18 +33,20 @@ async def tcp_echo_client(message):
     # # writer.write(message.encode())
     # writer.write(MsgpackSupport.encode(message))
 
-    _cnt = 1000000
+    _cnt = 1
     while _cnt > 0:
-        _ppt.CompPuppetTest.puppet_chat_to_channel({'content': 'test_chat_msg'})
+        _ppt.CompPuppetTest.puppet_chat_to_ppt({'content': 'puppet_chat_to_ppt'})
         _cnt -= 1
         print(_cnt)
         # await asyncio.sleep(1)
-    while True:
-        data = await reader.read(100)
-        # print(f'Received: {data.decode()!r}')
-        print(f'Received: {MsgpackSupport.decode(data)!r}')
 
-    print('Close the connection')
-    writer.close()
+    await _tcp_conn.loop()
+    # while True:
+    #     data = await reader.read(100)
+    #     # print(f'Received: {data.decode()!r}')
+    #     print(f'Received: {MsgpackSupport.decode(data)!r}')
+
+    # print('Close the connection')
+    # writer.close()
 
 asyncio.run(tcp_echo_client('Hello World!'))

@@ -6,6 +6,9 @@ from core.common import MsgpackSupport
 from TcpConn import TcpConn
 
 
+TCP_SERVER = None
+
+
 class TcpServer(object):
 
     def __init__(self):
@@ -31,9 +34,9 @@ class TcpServer(object):
         _tcp_conn.set_entity(_pbe)
         _pbe.set_connection(_tcp_conn)
         _pbe.set_puppet(_ppt)
+        _ppt.set_puppet_bind_entity(_pbe)
         _ppt.init_from_dict({})
 
-        _ppt.set_bind_entity(_pbe)
 
         self.tcp_conn_map[addr] = _tcp_conn
         message = f"{addr!r} is connected !!!!"
@@ -69,7 +72,20 @@ class TcpServer(object):
     def run(self):
         asyncio.run(self.main())
 
+    # async def main2(self):
+    #     loop = asyncio.get_running_loop()
+    #     server = await loop.create_server()
+
+    # def test_delay_func(self):
+    #     print('test_delay_func')
+    #
+    # def call_later(self):
+    #     loop = asyncio.get_event_loop()
+    #     loop.call_later(4, self.test_delay_func)
+
+
 
 if __name__ == '__main__':
     tcp_server = TcpServer()
+    TCP_SERVER = tcp_server
     tcp_server.run()
