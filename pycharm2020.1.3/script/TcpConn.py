@@ -18,6 +18,8 @@ class TcpConn(object):
         self.send_cnt = 0
         self._recv_cnt = 0
 
+        self._recv_data = b''
+
     def set_entity(self, entity):
         self.entity = entity
 
@@ -31,19 +33,25 @@ class TcpConn(object):
         while True:
             # self.asyncio_writer
             _data = await self.asyncio_reader.read(8192)
+            self._recv_data += _data
             while True:
-                if len(_data) >= HEAD_LEN:
-                    _body_len = s_unpack('i', _data[0:HEAD_LEN])
-                    if _body_len > MAX_BODY_LEN:
-                        print("body too big, Close the connection")
-                        self.asyncio_writer.close()
-                        return
-                    _body_data = _data[HEAD_LEN:]
-            self._recv_cnt += 1
-            print("self._recv_cnt:" + str(self._recv_cnt))
-
-        # message = _data.decode().strip()
-            self.handle_message(_data)
+                _len_recv_data = len(self._recv_data)
+                if _len_recv_data < HEAD_LEN:
+                    break
+                _body_len, = s_unpack('i', self._recv_data[:HEAD_LEN])
+                _input_data_len = HEAD_LEN + _body_len
+                if _body_len > MAX_BODY_LEN or _body_len < 0:
+                    print("body too big, Close the connection")
+                    self.asyncio_writer.close()
+                    return
+                elif _len_recv_data >= _input_data_len:
+                    _body_data = self._recv_data[HEAD_LEN:_input_data_len]
+                    self._recv_cnt += 1
+                    print("self._recv_cnt:" + str(self._recv_cnt))
+                    self.handle_message(_body_data)
+                    self._recv_data = self._recv_data[_input_data_len:]
+                else:
+                    break
 
             # message = MsgpackSupport.decode(_data)
             # self.forward(self.asyncio_writer, addr, message)
