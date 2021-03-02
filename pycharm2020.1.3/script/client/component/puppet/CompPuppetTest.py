@@ -12,6 +12,7 @@ class CompPuppetTest(Component):
         super().__init__()
         pass
 
-    async def puppet_chat_to_channel(self, chat_info):
-        await self.call_server_comp_method(
+    def puppet_chat_to_channel(self, chat_info):
+        self.call_server_comp_method(
             self.VAR_NAME, 'puppet_chat_to_channel', {'i': chat_info})
+

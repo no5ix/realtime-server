@@ -3,6 +3,8 @@ from common.component.Component import Component
 from core.common.RpcMethodArgs import Dict
 from core.common.RpcSupport import rpc_method, CLIENT_ONLY
 
+import random
+
 
 class CompPuppetTest(Component):
 
@@ -10,11 +12,11 @@ class CompPuppetTest(Component):
 
     def __init__(self):
         super().__init__()
-        self._cnt = 100
+        self._cnt = random.randint(0, 10)
         pass
 
     @rpc_method(CLIENT_ONLY, (Dict('i'), ))
     def puppet_chat_to_channel(self, chat_info):
         print(chat_info)
-        self._cnt -= 1
+        # self._cnt -= 1
         print("self._cnt:" + str(self._cnt))

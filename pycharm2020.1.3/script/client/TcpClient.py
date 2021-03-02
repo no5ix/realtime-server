@@ -23,7 +23,7 @@ async def tcp_echo_client(message):
     _ppt.set_bind_entity(_pbe)
     gr.bind_entity = _pbe
 
-    await _ppt.CompPuppetTest.puppet_chat_to_channel({'content': 'test_chat_msg'})
+    _ppt.CompPuppetTest.puppet_chat_to_channel({'content': 'test_chat_msg'})
 
     # return
     #
@@ -33,9 +33,9 @@ async def tcp_echo_client(message):
     # # writer.write(message.encode())
     # writer.write(MsgpackSupport.encode(message))
 
-    _cnt = 100
+    _cnt = 1000000
     while _cnt > 0:
-        await _ppt.CompPuppetTest.puppet_chat_to_channel({'content': 'test_chat_msg'})
+        _ppt.CompPuppetTest.puppet_chat_to_channel({'content': 'test_chat_msg'})
         _cnt -= 1
         print(_cnt)
         # await asyncio.sleep(1)

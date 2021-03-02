@@ -12,7 +12,7 @@ class PuppetBindEntity(object):
     def set_puppet(self, ppt):
         self._puppet = ppt
 
-    async def call_server_method(self, method_name, parameters=None):
+    def call_server_method(self, method_name, parameters=None):
         """
         @param method_name:    服务端entity方法的名字
         @param parameters:     参数，与call_server_method方法参数类似
@@ -23,7 +23,7 @@ class PuppetBindEntity(object):
         # method_name = RpcInde.send_rpc_index(method_name)
         if self._bind_ok:
             # self._connection.request_rpc("", "", args=[method_name, parameters])
-            await self._connection.request_rpc(method_name, parameters)
+            self._connection.request_rpc(method_name, parameters)
         else:
             pass # raise Exception("call rpc in a connection do not bind any server entity")
 

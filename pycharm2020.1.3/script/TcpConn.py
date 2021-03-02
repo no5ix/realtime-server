@@ -1,6 +1,5 @@
 import asyncio
 from struct import unpack as s_unpack, pack as s_pack
-
 from core.common import MsgpackSupport
 
 HEAD_LEN = 4
@@ -90,7 +89,7 @@ class TcpConn(object):
         except:
             pass
 
-    async def request_rpc(
+    def request_rpc(
             # self, address, service_id, method_name, args=[], service_id_type=0, method_name_type=0,
             self, method_name, args=None,
             # method_name_type=0,
@@ -144,15 +143,16 @@ class TcpConn(object):
             # con.send_data_and_count(data)
             # if gr.flow_backups:
             #     gr.flow_msg('[BATTLE] NET UP ', len(data), message)
-            await self.send_data_and_count(data)
+            # await self.send_data_and_count(data)
+            self.send_data_and_count(data)
             # _task = asyncio.create_task(self.send_data_and_count(data))
         return _task
 
     def do_encode(self, message):
         return MsgpackSupport.encode(message)
 
-    # def send_data_and_count(self, data):
-    async def send_data_and_count(self, data):
+    def send_data_and_count(self, data):
+    # async def send_data_and_count(self, data):
         self.send_cnt += 1
         # _len = len(data)
         data_len = len(data) if data else 0
@@ -160,5 +160,5 @@ class TcpConn(object):
         data = header_data + data
 
         self.asyncio_writer.write(data)
-        await self.asyncio_writer.drain()
+        # await self.asyncio_writer.drain()
         # self.asyncio_writer.drain()

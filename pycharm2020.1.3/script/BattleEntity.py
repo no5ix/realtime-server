@@ -6,7 +6,7 @@ class BattleEntity(object):
     def __init__(self):
         self.be_id = 0
 
-    async def call_server_method(self, method_name, parameters):
+    def call_server_method(self, method_name, parameters):
         # if not gr.bind_entity:
         #     return
         # if gr.IS_RECORD_PLAY:
@@ -19,7 +19,7 @@ class BattleEntity(object):
         #             gr.logger.warn("[aoi c=>s]: %s", method_name)
 
         # gr.bind_entity.call_server_method(
-        await gr.bind_entity.call_server_method(
+        gr.bind_entity.call_server_method(
             'local_entity_message',
             # {'m': RpcIndexer.send_rpc_index(method_name), 'p': parameters}
             {'m': method_name, 'p': parameters}

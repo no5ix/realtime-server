@@ -319,8 +319,8 @@ class Component(object):
     def call_all_client_method(self, method_name, parameters):
         self.entity.call_all_client_method(method_name, parameters)
 
-    async def call_server_comp_method(self, component_name, method_name, parameters):
-        await self.entity.call_server_method(component_name + '.' + method_name, parameters)
+    def call_server_comp_method(self, component_name, method_name, parameters):
+        self.entity.call_server_method(component_name + '.' + method_name, parameters)
 
     def call_server_method(self, method_name, parameters):
         self.entity.call_server_method(method_name, parameters)
