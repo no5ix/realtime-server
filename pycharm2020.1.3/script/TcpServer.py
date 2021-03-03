@@ -1,8 +1,11 @@
 import asyncio
+import functools
+import signal
+import platform
 
 from PuppetBindEntity import PuppetBindEntity
 from battle_entity.Puppet import Puppet
-from core.common import MsgpackSupport
+# from core.common import MsgpackSupport
 from TcpConn import TcpConn
 
 
@@ -58,6 +61,9 @@ class TcpServer(object):
         # writer.close()
 
     async def main(self):
+
+        self.handle_sig()
+
         # server = await asyncio.start_server(
         #     handle_echo, '127.0.0.1', 8888)
         server = await asyncio.start_server(
@@ -68,6 +74,20 @@ class TcpServer(object):
 
         async with server:
             await server.serve_forever()
+
+    @staticmethod
+    def handle_sig():
+
+        def ask_exit(sig_name, loop):
+            print('got signal %s: exit' % sig_name)
+            loop.stop()
+
+        if platform.system() != 'Linux':
+            return
+        _loop = asyncio.get_running_loop()
+        for _sig_name in {'SIGINT', 'SIGTERM'}:
+            _loop.add_signal_handler(
+                getattr(signal, _sig_name), functools.partial(ask_exit, _sig_name, _loop))
 
     def run(self):
         asyncio.run(self.main())

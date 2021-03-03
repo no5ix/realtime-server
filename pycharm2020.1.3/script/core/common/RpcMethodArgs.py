@@ -9,9 +9,12 @@
 # sys.setdefaultencoding( "utf-8" )
 
 # from ..common.IdManager import IdManager
+from core.common.IdManager import IdManager
+
 
 class ConvertError(BaseException):
     pass
+
 
 class RpcMethodArg(object):
     def __init__(self, name):
@@ -254,24 +257,26 @@ class Bool(RpcMethodArg):
     def default_val(self):
         return False
 
-# class Uuid(RpcMethodArg):
-#     def __init__(self, name):
-#         super(Uuid, self).__init__(name)
-#
-#     def convert(self, data):
-#         if IdManager.is_id_type(data):
-#             return data
-#         elif type(data) in (str, unicode):
-#             if type(data) == unicode:
-#                 data = str(data)
-#             try:
-#                 return IdManager.bytes2id(data)
-#             except:
-#                 return IdManager.str2id(data)
-#         raise ConvertError(self.errstr(data))
-#
-#     def get_type(self):
-#         return 'Uuid'
-#
-#     def default_val(self):
-#         return None
+
+class Uuid(RpcMethodArg):
+    def __init__(self, name):
+        super(Uuid, self).__init__(name)
+
+    def convert(self, data):
+        if IdManager.is_id_type(data):
+            return data
+        elif type(data) in (str, ):
+        # elif type(data) in (str, unicode):
+            # if type(data) == unicode:
+            #     data = str(data)
+            try:
+                return IdManager.bytes2id(data)
+            except:
+                return IdManager.str2id(data)
+        raise ConvertError(self.errstr(data))
+
+    def get_type(self):
+        return 'Uuid'
+
+    def default_val(self):
+        return None

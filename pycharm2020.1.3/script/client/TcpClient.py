@@ -33,11 +33,11 @@ async def tcp_echo_client(message):
     # # writer.write(message.encode())
     # writer.write(MsgpackSupport.encode(message))
 
-    _cnt = 1
-    while _cnt > 0:
-        _ppt.CompPuppetTest.puppet_chat_to_ppt({'content': 'puppet_chat_to_ppt'})
-        _cnt -= 1
-        print(_cnt)
+    # _cnt = 1000000
+    # while _cnt > 0:
+    _ppt.CompPuppetTest.puppet_chat_to_ppt({'content': 'puppet_chat_to_ppt'})
+        # _cnt -= 1
+        # print(_cnt)
         # await asyncio.sleep(1)
 
     await _tcp_conn.loop()
