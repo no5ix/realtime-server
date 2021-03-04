@@ -20,7 +20,10 @@ class CompPuppetTest(Component):
         self.call_server_comp_method(
             self.VAR_NAME, 'puppet_chat_to_ppt', {'p': chat_info})
 
-    @rpc_method(CLIENT_STUB, (Dict('i'),))
+    # @rpc_method(CLIENT_STUB, (Dict('i'),))
+    # @rpc_method(CLIENT_STUB, Dict('i'))
+    @rpc_method(CLIENT_STUB, [Dict('i')])
+    # @rpc_method(CLIENT_STUB, {Dict('i')})
     def puppet_chat_from_srv(self, chat_info):
         print(chat_info)
         self._cnt -= 1

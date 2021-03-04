@@ -1,0 +1,44 @@
+DEBUG:root:This message should go to the log file
+INFO:root:So should this
+WARNING:root:And this, too
+DEBUG:root:This message should go to the log file
+INFO:root:So should this
+WARNING:root:And this, too
+2021-03-04 17:05:58,600-DEBUG:This message should go to the log file
+2021-03-04 17:05:58,600-INFO:So should this
+2021-03-04 17:05:58,601-WARNING:And this, too
+2021-03-04 17:12:04,423-DEBUG:This message should go to the log file
+2021-03-04 17:12:04,423-INFO:So should this
+2021-03-04 17:12:04,423-WARNING:And this, too
+2021-03-04 17:12:04,423-DEBUG:debug message
+2021-03-04 17:12:04,423-INFO:info message
+2021-03-04 17:12:04,423-WARNING:warn message
+2021-03-04 17:12:04,423-ERROR:error message
+2021-03-04 17:12:04,423-CRITICAL:critical message
+2021-03-04 17:23:42,064-DEBUG:This message should go to the log file
+2021-03-04 17:23:42,064-INFO:So should this
+2021-03-04 17:23:42,064-WARNING:And this, too
+2021-03-04 17:23:42,065-DEBUG:debug message
+2021-03-04 17:23:42,065-INFO:info message
+2021-03-04 17:23:42,065-WARNING:warn message
+2021-03-04 17:23:42,065-ERROR:error message
+2021-03-04 17:23:42,065-CRITICAL:critical message
+2021-03-04 17:24:33,132-DEBUG:This message should go to the log file
+2021-03-04 17:24:33,132-INFO:So should this
+2021-03-04 17:24:33,132-WARNING:And this, too
+2021-03-04 17:24:38,836-DEBUG:This message should go to the log file
+2021-03-04 17:24:38,836-INFO:So should this
+2021-03-04 17:24:38,837-WARNING:And this, too
+2021-03-04 17:24:38,837-DEBUG:debug message
+2021-03-04 17:24:38,837-INFO:info message
+2021-03-04 17:24:38,837-WARNING:warn message
+2021-03-04 17:24:38,837-ERROR:error message
+2021-03-04 17:24:38,837-CRITICAL:critical message
+2021-03-04 17:25:08,469-DEBUG:This message should go to the log file
+2021-03-04 17:25:08,469-INFO:So should this
+2021-03-04 17:25:08,469-WARNING:And this, too
+2021-03-04 17:25:08,470-DEBUG:debug message
+2021-03-04 17:25:08,470-INFO:info message
+2021-03-04 17:25:08,470-WARNING:warn message
+2021-03-04 17:25:08,470-ERROR:error message
+2021-03-04 17:25:08,470-CRITICAL:critical message

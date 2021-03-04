@@ -2,12 +2,15 @@ import asyncio
 import functools
 import signal
 import platform
+from random import random
+import socket
 
 from PuppetBindEntity import PuppetBindEntity
 from battle_entity.Puppet import Puppet
 # from core.common import MsgpackSupport
 from TcpConn import TcpConn
-
+from common import gr
+from util.SingletonEntityManager import SingletonEntityManager
 
 TCP_SERVER = None
 
@@ -64,6 +67,8 @@ class TcpServer(object):
 
         self.handle_sig()
 
+        asyncio.get_event_loop().call_later(4, self._check_game_start)
+
         # server = await asyncio.start_server(
         #     handle_echo, '127.0.0.1', 8888)
         server = await asyncio.start_server(
@@ -92,17 +97,24 @@ class TcpServer(object):
     def run(self):
         asyncio.run(self.main())
 
-    # async def main2(self):
-    #     loop = asyncio.get_running_loop()
-    #     server = await loop.create_server()
+    def _check_game_start(self):
+        # 随机种子
+        random.seed()
+        # 得到本机ip
+        try:
+            gr.local_ip = socket.gethostbyname(socket.gethostname())
+        except socket.gaierror:
+            gr.local_ip = '127.0.0.1'
+        self._register_singleton()
 
-    # def test_delay_func(self):
-    #     print('test_delay_func')
-    #
-    # def call_later(self):
-    #     loop = asyncio.get_event_loop()
-    #     loop.call_later(4, self.test_delay_func)
+    def _register_singleton(self):
+        # 创建各种server/cluster singleton
+        SingletonEntityManager.instance().register_centers_and_stubs(
+            gr.game_server_name,
+            lambda flag: self._register_centers_and_stubs_cb(flag))
 
+    def _register_centers_and_stubs_cb(self, flag):
+        pass
 
 
 if __name__ == '__main__':

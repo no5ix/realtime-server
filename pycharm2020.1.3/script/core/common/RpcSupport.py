@@ -238,13 +238,23 @@ class RpcMethod(object):
     #     return self.func(entity, *args)
 
 
-def rpc_method( rpctype, argtypes = (),  pub=True, cd=-1):
+def rpc_method(rpctype, argtypes=(),  pub=True, cd=-1):
     """ decorator """
     assert (rpctype in (CLIENT_ONLY, SERVER_ONLY, CLIENT_SERVER, CLIENT_STUB)), str(type) + ": type must be one of (CLIENT_ONLY, SERVER_ONLY, CLIENT_SERVER) "
     assert (pub in (True, False)), str(pub) + "should be True of False"
 
-    for argtype in argtypes:
-        assert (isinstance(argtype, RpcMethodArg)), str(argtype) + ": args Type error"
+    if type(argtypes) is tuple or type(argtypes) is set or type(argtypes) is list:
+        for argtype in argtypes:
+            assert (isinstance(argtype, RpcMethodArg)), str(argtype) + ": args Type error"
+    elif isinstance(argtypes, RpcMethodArg):
+        argtypes = (argtypes, )
+    else:
+        assert (
+                type(argtypes) is tuple or
+                type(argtypes) is list or
+                type(argtypes) is set or
+                isinstance(argtypes, RpcMethodArg)), \
+            str(argtypes) + ": argtypes error"
 
     def _rpc_method(func):
         rpcmethod = RpcMethod(func, rpctype, argtypes, pub, cd=cd)
@@ -278,16 +288,17 @@ def rpc_method( rpctype, argtypes = (),  pub=True, cd=-1):
 def expose_to_client( method ):
     try:
         rpctype = method.rpcmethod.rpctype
-        if ( rpctype == CLIENT_ONLY or rpctype == CLIENT_SERVER):
+        if (rpctype == CLIENT_ONLY or rpctype == CLIENT_SERVER):
             return True
         return False
     except AttributeError:
         return False
 
+
 def expose_to_server( method ):
     try:
         rpctype = method.rpcmethod.rpctype
-        if ( rpctype == SERVER_ONLY or rpctype == CLIENT_SERVER):
+        if (rpctype == SERVER_ONLY or rpctype == CLIENT_SERVER):
             return True
         return False
     except AttributeError:
