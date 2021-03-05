@@ -8,8 +8,7 @@ def get_logger(logger_name):
     fh = TimedRotatingFileHandler('test_log.log', when='D')
     fh.setLevel(logging.DEBUG)
 
-    # create formatter
-    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - [%(filename)s:%(lineno)d] : %(message)s')
     fh.setFormatter(formatter)
     logger.addHandler(fh)
     return logger
