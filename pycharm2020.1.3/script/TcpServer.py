@@ -99,7 +99,7 @@ class TcpServer(object):
 
     def _check_game_start(self):
         # 随机种子
-        random.seed()
+        # random.seed()
         # 得到本机ip
         try:
             gr.local_ip = socket.gethostbyname(socket.gethostname())
