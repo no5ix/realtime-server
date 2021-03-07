@@ -33,7 +33,10 @@ _MOBILE_SERVICE_DOMAIN = "/v2/keys" + _MOBILE_SERVICE_PREFIX
 
 _HEADER = {"Content-Type": "application/x-www-form-urlencoded"}
 
-
+# etcd Version: 3.2.11
+# Git SHA: 1e1dbb2
+# Go Version: go1.8.5
+# Go OS/Arch: linux/amd64
 class EtcdProcessor(object):
     def __init__(self, etcd_address_list):
         self._fail_time = 0
