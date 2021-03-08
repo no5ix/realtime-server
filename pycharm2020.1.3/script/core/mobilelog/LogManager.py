@@ -1,4 +1,5 @@
 import os
+import sys
 # import platform
 import logging
 from concurrent.futures.thread import ThreadPoolExecutor
@@ -72,10 +73,14 @@ class AsyncLogger:
     def critical(self, msg):
         _tp_executor.submit(self._logger.critical, self.join_caller_filename_lineno(msg))
 
+    def log_last_except(self):
+        tp, value, traceback = sys.exc_info()
+        tb_cont = convert_python_tb_to_str(tp, value, traceback)
+        _tp_executor.submit(self._logger.error, f'on_traceback, type:{tp}, value:{value}, traceback:{tb_cont}')
+
 
 class LogManager:
 
-    # def
     @staticmethod
     def get_logger(logger_name):
         return AsyncLogger(logger_name)
@@ -137,6 +142,43 @@ class LogManager:
         # #     return logger
 
 
+def convert_python_tb_to_str(t, v, tb, limit=None):
+    tbinfo = [str(t), str(v)]
+    if tb is None:
+        return
+    n = 0
+    while tb and (limit is None or n < limit):
+        frame = tb.tb_frame
+        # 上传服务器的文件名筛选
+        # script_idx = frame.f_code.co_filename.find('script', 0)
+        # if script_idx != -1:
+        #	filename = frame.f_code.co_filename[script_idx:]
+
+        MAX_TRACE_LEN = 1024
+        try:
+            locals = dict(frame.f_locals)
+            local_self = locals.pop('self', None)
+            if local_self:
+                local_str = "{'self': " + str(local_self) + ", " + str(locals)[1:]
+            else:
+                local_str = str(locals)
+        except:
+            local_str = 'Cannot print locals'
+        if len(local_str) > MAX_TRACE_LEN:
+            local_str = local_str[:MAX_TRACE_LEN] + '...'
+
+        line = [
+            '  File "%s"' % frame.f_code.co_filename,
+            'line %d' % tb.tb_lineno,
+            'in %s' % frame.f_code.co_name,
+            ]
+        tbinfo.append(', '.join(line))
+        tbinfo.append('    locals=' + local_str)
+        tb = tb.tb_next
+        n = n + 1
+    return '\n'.join(tbinfo)
+
+
 if __name__ == '__main__':
 
     # async def main():
@@ -193,3 +235,14 @@ if __name__ == '__main__':
     logger.warning('warn message')
     logger.error('error message')
     logger.critical('critical message')
+
+    try:
+        1/0
+    except:
+        # import sys
+        # tp, value, traceback = sys.exc_info()
+        #
+        # tb_cont = convert_python_tb_to_str(tp, value, traceback)
+        # logger.error(f'on_traceback, type:{tp}, value:{value}, traceback:{tb_cont}')
+        # logging.exception("Deliberate divide by zero traceback")
+        logger.log_last_except()

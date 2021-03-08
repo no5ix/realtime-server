@@ -1,0 +1,5 @@
+2021-03-08 14:45:11,910 - test_log - DEBUG : [LogManager.py:194]: debug message
+2021-03-08 14:45:11,910 - test_log - INFO : [LogManager.py:195]: info message
+2021-03-08 14:45:11,910 - test_log - WARNING : [LogManager.py:196]: warn message
+2021-03-08 14:45:11,911 - test_log - ERROR : [LogManager.py:197]: error message
+2021-03-08 14:45:11,911 - test_log - CRITICAL : [LogManager.py:198]: critical message

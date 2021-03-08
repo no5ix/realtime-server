@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 import sys
 import requests
+import asyncio
 
 # from ..distserver.game import GameServerRepo
 from common import gr
 from core.mobilelog.LogManager import LogManager
-import urllib
+import urllib.parse
 import json
 import gevent
 import gevent.event
@@ -71,23 +72,27 @@ class ServiceRegister(EtcdProcessor):
         self._my_address = my_address                                            # 当前节点的监听地址(ip, port)
         self._address_str = my_address[0] + "|" + str(my_address[1])             # 当前节点的监听地址的字符串描述
         self._service_module_dict = service_module_dict                          # 服务模块的name->module字典
-        self._stop_event = gevent.event.Event()
+        # self._stop_event = gevent.event.Event()
         self._service_regist_status = dict()
         self._threads = []
-        self._die_event = gevent.event.Event()
+        # self._die_event = gevent.event.Event()
 
         for name in self._service_module_dict.keys():
-            self._threads.append(gevent.spawn(self._process_regist_and_ttl, name))
+            # self._threads.append(gevent.spawn(self._process_regist_and_ttl, name))
+            self._threads.append(self._process_regist_and_ttl(name))
+            # self._threads.append(asyncio.create_task(self._process_regist_and_ttl(name)))
 
-        gevent.spawn(self._dead_check_process)
+        # gevent.spawn(self._dead_check_process)
+        self._dead_check_process()
 
     def _dead_check_process(self):
-        for thread in self._threads:
-            thread.join()
-        self._die_event.set()
+        # for thread in self._threads:
+        #     thread.join()
+        # self._die_event.set()
+        await asyncio.gather(*self._threads)
 
-    def wait_dead(self, timeout):
-        return self._die_event.wait(timeout=timeout)
+    # def wait_dead(self, timeout):
+    #     return self._die_event.wait(timeout=timeout)
 
     def _get_url(self, service_name):
         path = self._get_server_info() + _MOBILE_SERVICE_DOMAIN + service_name + "/" + self._address_str
@@ -103,7 +108,7 @@ class ServiceRegister(EtcdProcessor):
         service_module = self._service_module_dict[service_name]
         singleton = service_module.singleton
         # assert service_name == service_module.service_name
-        data = urllib.urlencode({"ttl": _KEY_TIME_OUT})
+        data = urllib.parse.urlencode({"ttl": _KEY_TIME_OUT})
 
         if singleton:
             """
@@ -124,9 +129,9 @@ class ServiceRegister(EtcdProcessor):
                     self._fail_time += 1
                     self._logger.error("check singleton service : %s error", service_name)
                     self._logger.log_last_except()
-                    if GameServerRepo.game_event_callback is not None:
-                        t, v, tb = sys.exc_info()
-                        GameServerRepo.game_event_callback.on_traceback(t, v, tb)
+                    # if GameServerRepo.game_event_callback is not None:
+                    #     t, v, tb = sys.exc_info()
+                    #     GameServerRepo.game_event_callback.on_traceback(t, v, tb)
 
         while self.check_ok():
             try:
@@ -146,12 +151,12 @@ class ServiceRegister(EtcdProcessor):
                 self._fail_time += 1
                 self._logger.error("regist service : %s error", service_name)
                 self._logger.log_last_except()
-                if GameServerRepo.game_event_callback is not None:
-                    t, v, tb = sys.exc_info()
-                    GameServerRepo.game_event_callback.on_traceback(t, v, tb)
+                # if GameServerRepo.game_event_callback is not None:
+                #     t, v, tb = sys.exc_info()
+                #     GameServerRepo.game_event_callback.on_traceback(t, v, tb)
         return False
 
-    def _process_regist_and_ttl(self, service_name):
+    async def _process_regist_and_ttl(self, service_name):
         """
         为每一个服务启动一个单独的协程来处理注册与ttl的刷新
         """
@@ -159,9 +164,10 @@ class ServiceRegister(EtcdProcessor):
             self._logger.error("regist service %s fail", service_name)
             return
 
-        ttl_refresh_data = urllib.urlencode({"ttl": _KEY_TIME_OUT, "refresh": True})
+        ttl_refresh_data = urllib.parse.urlencode({"ttl": _KEY_TIME_OUT, "refresh": True})
         while self.check_ok():
-            self._stop_event.wait(random.randint(_TTL_INTERVAL, _TTL_INTERVAL + 10))
+            # self._stop_event.wait(random.randint(_TTL_INTERVAL, _TTL_INTERVAL + 10))
+            await asyncio.sleep(random.randint(_TTL_INTERVAL, _TTL_INTERVAL + 10))
             while self.check_ok():
                 try:
                     now_url = self._get_url(service_name)
@@ -176,10 +182,10 @@ class ServiceRegister(EtcdProcessor):
                 except:
                     self._fail_time += 1
                     self._logger.log_last_except()
-                    if GameServerRepo.game_event_callback is not None:
-                        t, v, tb = sys.exc_info()
-                        GameServerRepo.game_event_callback.on_traceback(t, v, tb)
-        for _ in xrange(10):
+                    # if GameServerRepo.game_event_callback is not None:
+                    #     t, v, tb = sys.exc_info()
+                    #     GameServerRepo.game_event_callback.on_traceback(t, v, tb)
+        for _ in range(10):
             """在退出的时候，将注册的信息删除掉，如果删除失败，那就靠ttl自动删除吧"""
             try:
                 r = requests.request("DELETE", self._get_url(service_name))
@@ -189,14 +195,14 @@ class ServiceRegister(EtcdProcessor):
                     break
             except:
                 self._logger.log_last_except()
-                if GameServerRepo.game_event_callback is not None:
-                    t, v, tb = sys.exc_info()
-                    GameServerRepo.game_event_callback.on_traceback(t, v, tb)
+                # if GameServerRepo.game_event_callback is not None:
+                #     t, v, tb = sys.exc_info()
+                #     GameServerRepo.game_event_callback.on_traceback(t, v, tb)
 
     def stop(self):
         if not self._stop:
             self._stop = True
-            self._stop_event.set()
+            # self._stop_event.set()
             for thread in self._threads:
                 thread.join()
             self._threads = []
@@ -246,9 +252,9 @@ class ServiceFinder(EtcdProcessor):
             self._services[service_name].remove(address)
         except:
             self._logger.log_last_except()
-            if GameServerRepo.game_event_callback is not None:
-                t, v, tb = sys.exc_info()
-                GameServerRepo.game_event_callback.on_traceback(t, v, tb)
+            # if GameServerRepo.game_event_callback is not None:
+            #     t, v, tb = sys.exc_info()
+            #     GameServerRepo.game_event_callback.on_traceback(t, v, tb)
 
     def _init_node_info(self, nodes):
         """
@@ -307,9 +313,9 @@ class ServiceFinder(EtcdProcessor):
             except:
                 self._fail_time += 1
                 self._logger.log_last_except()
-                if GameServerRepo.game_event_callback is not None:
-                    t, v, tb = sys.exc_info()
-                    GameServerRepo.game_event_callback.on_traceback(t, v, tb)
+                # if GameServerRepo.game_event_callback is not None:
+                #     t, v, tb = sys.exc_info()
+                #     GameServerRepo.game_event_callback.on_traceback(t, v, tb)
 
     def _form_etcd_url(self, address_list):
         out = []
@@ -327,6 +333,51 @@ class ServiceFinder(EtcdProcessor):
         ip, port = str(address_str.split("|")[0]), int(address_str.split("|")[1])
         return service_name, (ip, port)
 
+    async def _watch_process_impl(self):
+        r = requests.request("GET", self._get_server_info() + _ETCD_KEY_PREFIX)
+        self._etcd_index = int(r.headers["x-etcd-index"])
+        now_url = self._get_server_info() + _ETCD_KEY_PREFIX + "?wait=true&recursive=true"
+        if self._watch_index:
+            now_url += "&waitIndex=" + str(self._watch_index + 1)
+        r = requests.request("GET", now_url)
+        res = json.loads(r.text)
+        action = res.get("action", "")
+        key_path = res.get("node", {}).get("key", "")
+        etcd_modify_index = res.get("node", {}).get("modifiedIndex", 0)
+        if etcd_modify_index:
+            self._watch_index = etcd_modify_index
+        if action in ("create", "set"):
+            """key的创建"""
+            if key_path.startswith(_MOBILE_SERVICE_PREFIX):
+                service_name, address = self._get_service_node_info(key_path)
+                self._logger.info("recv watch %s service node info--> %s: %s - [%s]", action, service_name, address, self._watch_index)
+                self._add_service_info(service_name, address)
+            elif key_path.startswith(_NAME_ENTITY_PREFIX):
+                self._logger.info("recv watch %s entity info -> %s", action, res)
+                self._process_add_entity_info(res.get("node", {}))
+        elif action in ("expire", "delete"):
+            """key超时销毁或删除"""
+            if key_path.startswith(_MOBILE_SERVICE_PREFIX):
+                service_name, address = self._get_service_node_info(key_path)
+                self._logger.info("recv wath %s, info--> %s: %s - [%s]", action, service_name, address, self._watch_index)
+                self._delete_service_info(service_name, address)
+            elif key_path.startswith(_NAME_ENTITY_PREFIX):
+                self._logger.info("recv watch %s entity info -> %s", action, res)
+                self._process_delete_enttiy_info(key_path)
+        elif res.get("errorCode", 0) == 401:
+            """
+            当前etcd的watch index已经失效了，也就是index已经落后当前etcd服务器的index超过了1000次更改
+            由于现在是全量更新，所以这种情况出现的可能性应该很小很小，除非同时启动或者停止大量的服务，不过如果
+            出现了这种情况，还是重置一下数据吧
+            """
+            self._logger.info("recv watch index out of date, %s", r.text)
+            if not self._init_info():
+                self._logger.error("reset etcd data error, will stop")
+                return
+        else:
+            self._logger.error("recv unknown watch info, %s", r.text)
+        self._fail_time = 0
+
     def _watch_process(self):
         """
         在一个单独的协程中执行watch的操作，这里watch的路径是/v2/keys，表示跟踪所有数据的变动，做全量的数据的监听
@@ -337,68 +388,29 @@ class ServiceFinder(EtcdProcessor):
         x-etcd-index值即可，这样可以减少因为ttl的刷新导致watch index失效带来的数据全量更新
         """
         while self.check_ok():
-            now_timeout = gevent.Timeout(random.randint(_WATCH_TIMEOUT, _WATCH_TIMEOUT + 10))
-            now_timeout.start()
+            # now_timeout = gevent.Timeout(random.randint(_WATCH_TIMEOUT, _WATCH_TIMEOUT + 10))
+            # now_timeout.start()
             try:
-                r = requests.request("GET", self._get_server_info() + _ETCD_KEY_PREFIX)
-                self._etcd_index = int(r.headers["x-etcd-index"])
-                now_url = self._get_server_info() + _ETCD_KEY_PREFIX + "?wait=true&recursive=true"
-                if self._watch_index:
-                    now_url += "&waitIndex=" + str(self._watch_index + 1)
-                r = requests.request("GET", now_url)
-                res = json.loads(r.text)
-                action = res.get("action", "")
-                key_path = res.get("node", {}).get("key", "")
-                etcd_modify_index = res.get("node", {}).get("modifiedIndex", 0)
-                if etcd_modify_index:
-                    self._watch_index = etcd_modify_index
-                if action in ("create", "set"):
-                    """key的创建"""
-                    if key_path.startswith(_MOBILE_SERVICE_PREFIX):
-                        service_name, address = self._get_service_node_info(key_path)
-                        self._logger.info("recv watch %s service node info--> %s: %s - [%s]", action, service_name, address, self._watch_index)
-                        self._add_service_info(service_name, address)
-                    elif key_path.startswith(_NAME_ENTITY_PREFIX):
-                        self._logger.info("recv watch %s entity info -> %s", action, res)
-                        self._process_add_entity_info(res.get("node", {}))
-                elif action in ("expire", "delete"):
-                    """key超时销毁或删除"""
-                    if key_path.startswith(_MOBILE_SERVICE_PREFIX):
-                        service_name, address = self._get_service_node_info(key_path)
-                        self._logger.info("recv wath %s, info--> %s: %s - [%s]", action, service_name, address, self._watch_index)
-                        self._delete_service_info(service_name, address)
-                    elif key_path.startswith(_NAME_ENTITY_PREFIX):
-                        self._logger.info("recv watch %s entity info -> %s", action, res)
-                        self._process_delete_enttiy_info(key_path)
-                elif res.get("errorCode", 0) == 401:
-                    """
-                    当前etcd的watch index已经失效了，也就是index已经落后当前etcd服务器的index超过了1000次更改
-                    由于现在是全量更新，所以这种情况出现的可能性应该很小很小，除非同时启动或者停止大量的服务，不过如果
-                    出现了这种情况，还是重置一下数据吧
-                    """
-                    self._logger.info("recv watch index out of date, %s", r.text)
-                    if not self._init_info():
-                        self._logger.error("reset etcd data error, will stop")
-                        return
-                else:
-                    self._logger.error("recv unknown watch info, %s", r.text)
-                self._fail_time = 0
-            except gevent.Timeout, e:
-                if e is now_timeout:
+                await asyncio.wait_for(
+                    self._watch_process_impl(),
+                    random.randint(_WATCH_TIMEOUT, _WATCH_TIMEOUT + 10))
+            # except gevent.Timeout, e:
+            except asyncio.TimeoutError:
+                # if e is now_timeout:
                     # watch的timeout，将watch的index更新到上一次get更新的是时候etcd服务器的index
-                    self._fail_time = 0
-                    self._logger.info("etcd watch timeout, rest watch index %s -> %s", self._watch_index, self._etcd_index)
-                    self._watch_index = self._etcd_index
-                else:
-                    raise
+                self._fail_time = 0
+                self._logger.info("etcd watch timeout, rest watch index %s -> %s", self._watch_index, self._etcd_index)
+                self._watch_index = self._etcd_index
+                # else:
+                #     raise
             except:
                 self._fail_time += 1
                 self._logger.log_last_except()
-                if GameServerRepo.game_event_callback is not None:
-                    t, v, tb = sys.exc_info()
-                    GameServerRepo.game_event_callback.on_traceback(t, v, tb)
-            finally:
-                now_timeout.cancel()
+                # if GameServerRepo.game_event_callback is not None:
+                #     t, v, tb = sys.exc_info()
+                #     GameServerRepo.game_event_callback.on_traceback(t, v, tb)
+            # finally:
+            #     now_timeout.cancel()
 
     def get_service_info(self, service_name):
         """
