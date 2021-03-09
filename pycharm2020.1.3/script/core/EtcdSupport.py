@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
-import sys
 import requests
 import asyncio
 
+from core.util import AioApi
 # from ..distserver.game import GameServerRepo
 from common import gr
 from core.mobilelog.LogManager import LogManager
 import urllib.parse
 import json
-import gevent
-import gevent.event
+# import gevent
+# import gevent.event
 import random
 
 _WATCH_TIMEOUT = 60                             # watch执行的超时时间
@@ -33,6 +33,7 @@ _MOBILE_SERVICE_DOMAIN = "/v2/keys" + _MOBILE_SERVICE_PREFIX
 
 
 _HEADER = {"Content-Type": "application/x-www-form-urlencoded"}
+
 
 # etcd Version: 3.2.11
 # Git SHA: 1e1dbb2
@@ -64,7 +65,6 @@ class EtcdProcessor(object):
         self._stop = True
 
 
-
 class ServiceRegister(EtcdProcessor):
     def __init__(self, etcd_address_list, my_address, service_module_dict):
         EtcdProcessor.__init__(self, etcd_address_list)
@@ -83,13 +83,13 @@ class ServiceRegister(EtcdProcessor):
             # self._threads.append(asyncio.create_task(self._process_regist_and_ttl(name)))
 
         # gevent.spawn(self._dead_check_process)
-        self._dead_check_process()
-
-    def _dead_check_process(self):
-        # for thread in self._threads:
-        #     thread.join()
-        # self._die_event.set()
         await asyncio.gather(*self._threads)
+
+    # async def _dead_check_process(self):
+    #     # for thread in self._threads:
+    #     #     thread.join()
+    #     # self._die_event.set()
+    #     await asyncio.gather(*self._threads)
 
     # def wait_dead(self, timeout):
     #     return self._die_event.wait(timeout=timeout)
@@ -118,7 +118,7 @@ class ServiceRegister(EtcdProcessor):
             while self.check_ok():
                 try:
                     now_url = self._get_server_info() + _MOBILE_SERVICE_DOMAIN + service_name
-                    r = requests.request("GET", now_url, timeout=2)
+                    r = await AioApi.async_wrap(lambda: requests.request("GET", now_url, timeout=2))
                     res = json.loads(r.text)
                     self._fail_time = 0
                     if res.get("action") == "get" and res.get("node", {}).get("nodes", []):
@@ -138,7 +138,9 @@ class ServiceRegister(EtcdProcessor):
                 now_url = self._get_url(service_name)
                 if singleton:
                     now_url = self._get_url(service_name) + "?prevExist=false"
-                r = requests.request("PUT", now_url, data=data, headers=_HEADER, timeout=2)
+                # r = requests.request("PUT", now_url, data=data, headers=_HEADER, timeout=2)
+                r = await AioApi.async_wrap(
+                    lambda: requests.request("PUT", now_url, data=data, headers=_HEADER, timeout=2))
                 res = json.loads(r.text)
                 if res.get("action") in ("create", "set"):
                     self._logger.info("regist service : %s success, %s", service_name, r.text)
@@ -171,7 +173,8 @@ class ServiceRegister(EtcdProcessor):
             while self.check_ok():
                 try:
                     now_url = self._get_url(service_name)
-                    r = requests.request("PUT", now_url, data=ttl_refresh_data, headers=_HEADER, timeout=2)
+                    r = await AioApi.async_wrap(
+                        lambda: requests.request("PUT", now_url, data=ttl_refresh_data, headers=_HEADER, timeout=2))
                     res = json.loads(r.text)
                     if res.get("action", "") == "set":
                         self._fail_time = 0
@@ -188,7 +191,8 @@ class ServiceRegister(EtcdProcessor):
         for _ in range(10):
             """在退出的时候，将注册的信息删除掉，如果删除失败，那就靠ttl自动删除吧"""
             try:
-                r = requests.request("DELETE", self._get_url(service_name))
+                r = await AioApi.async_wrap(
+                    lambda: requests.request("DELETE", self._get_url(service_name)))
                 res = json.loads(r.text)
                 if res.get("action", "") == "delete":
                     self._logger.info("delete service : %s success", service_name)
@@ -226,12 +230,14 @@ class ServiceFinder(EtcdProcessor):
 
         if self._init_info():
             self._logger.info("init service info from etcd success, will going to watch, at etcd index -> %s", self._etcd_index)
-            gevent.spawn(self._watch_process)
+            # gevent.spawn(self._watch_process)
+            await self._watch_process()
         else:
             self.stop()
             raise Exception("init service info from etcd fail")
 
-    def _get_node_name(self, prefix, key_path):
+    @staticmethod
+    def _get_node_name(prefix, key_path):
         if prefix in key_path:
             return key_path[len(prefix):]
         raise Exception("what")
@@ -296,7 +302,7 @@ class ServiceFinder(EtcdProcessor):
         while self.check_ok():
             try:
                 now_url = self._get_server_info() + _ETCD_KEY_PREFIX + "?recursive=true"
-                r = requests.request("GET", now_url)
+                r = await AioApi.async_wrap(lambda: requests.request("GET", now_url))
                 res = json.loads(r.text)
                 self._fail_time = 0
                 self._etcd_index = int(r.headers["x-etcd-index"])
@@ -334,12 +340,12 @@ class ServiceFinder(EtcdProcessor):
         return service_name, (ip, port)
 
     async def _watch_process_impl(self):
-        r = requests.request("GET", self._get_server_info() + _ETCD_KEY_PREFIX)
+        r = await AioApi.async_wrap(lambda: requests.request("GET", self._get_server_info() + _ETCD_KEY_PREFIX))
         self._etcd_index = int(r.headers["x-etcd-index"])
         now_url = self._get_server_info() + _ETCD_KEY_PREFIX + "?wait=true&recursive=true"
         if self._watch_index:
             now_url += "&waitIndex=" + str(self._watch_index + 1)
-        r = requests.request("GET", now_url)
+        r = await AioApi.async_wrap(lambda: requests.request("GET", now_url))
         res = json.loads(r.text)
         action = res.get("action", "")
         key_path = res.get("node", {}).get("key", "")
@@ -378,7 +384,7 @@ class ServiceFinder(EtcdProcessor):
             self._logger.error("recv unknown watch info, %s", r.text)
         self._fail_time = 0
 
-    def _watch_process(self):
+    async def _watch_process(self):
         """
         在一个单独的协程中执行watch的操作，这里watch的路径是/v2/keys，表示跟踪所有数据的变动，做全量的数据的监听
         根据watch收到的数据类型，包括set，create，delete，expire做数据的增量更新即可
@@ -414,7 +420,7 @@ class ServiceFinder(EtcdProcessor):
 
     def get_service_info(self, service_name):
         """
-        获取servcie_name的服务地址列表，如果没有信息的话，返回的是一个空的列表，这里是返回的一个随机的list副本,
+        获取service_name的服务地址列表，如果没有信息的话，返回的是一个空的列表，这里是返回的一个随机的list副本,
         用于实现一个简单的负载均衡
 
         :todo 本身这里是应该有很多策略和控制的，类似于更具延迟，吞吐来返回一个优先权的排序列表
@@ -454,7 +460,8 @@ class ServiceNode(object):
         self._logger = LogManager.get_logger("ServiceNode")
         self._register = ServiceRegister(etcd_address_list, my_address, service_module_dict)
         self._logger.info("we have create ServiceRegister, wait 5 seconds")
-        gevent.sleep(5)
+        # gevent.sleep(5)
+        asyncio.sleep(5)
         self._finder = ServiceFinder(etcd_address_list)
         self._logger.info("we have create ServiceFinder")
 
@@ -462,8 +469,8 @@ class ServiceNode(object):
         self._register.stop()
         self._finder.stop()
 
-    def wait_dead(self, timeout):
-        return self._register.wait_dead(timeout)
+    # def wait_dead(self, timeout):
+    #     return self._register.wait_dead(timeout)
 
     def get_service_info(self, service_name):
         return self._finder.get_service_info(service_name)

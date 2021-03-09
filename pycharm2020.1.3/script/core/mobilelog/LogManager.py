@@ -29,7 +29,7 @@ from logging.handlers import TimedRotatingFileHandler
 import inspect
 
 
-_tp_executor = ThreadPoolExecutor(max_workers=1)
+_log_tp_executor = ThreadPoolExecutor(max_workers=1)
 # _th_executor.submit()
 
 
@@ -59,24 +59,24 @@ class AsyncLogger:
         return ''.join(('[', os.path.basename(caller.filename), ':', str(caller.lineno), ']: ', msg))
 
     def debug(self, msg):
-        _tp_executor.submit(self._logger.debug, self.join_caller_filename_lineno(msg))
+        _log_tp_executor.submit(self._logger.debug, self.join_caller_filename_lineno(msg))
 
     def info(self, msg):
-        _tp_executor.submit(self._logger.info, self.join_caller_filename_lineno(msg))
+        _log_tp_executor.submit(self._logger.info, self.join_caller_filename_lineno(msg))
 
     def warning(self, msg):
-        _tp_executor.submit(self._logger.warning, self.join_caller_filename_lineno(msg))
+        _log_tp_executor.submit(self._logger.warning, self.join_caller_filename_lineno(msg))
 
     def error(self, msg):
-        _tp_executor.submit(self._logger.error, self.join_caller_filename_lineno(msg))
+        _log_tp_executor.submit(self._logger.error, self.join_caller_filename_lineno(msg))
 
     def critical(self, msg):
-        _tp_executor.submit(self._logger.critical, self.join_caller_filename_lineno(msg))
+        _log_tp_executor.submit(self._logger.critical, self.join_caller_filename_lineno(msg))
 
     def log_last_except(self):
         tp, value, traceback = sys.exc_info()
         tb_cont = convert_python_tb_to_str(tp, value, traceback)
-        _tp_executor.submit(self._logger.error, f'on_traceback, type:{tp}, value:{value}, traceback:{tb_cont}')
+        _log_tp_executor.submit(self._logger.error, f'on_traceback, type:{tp}, value:{value}, traceback:{tb_cont}')
 
 
 class LogManager:
