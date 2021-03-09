@@ -1,0 +1,6 @@
+2021-03-09 17:18:44,344 - ServiceNode - INFO : [EtcdSupport.py:466]: we have create ServiceRegister, wait 5 seconds
+2021-03-09 17:18:44,345 - ServiceNode - INFO : [EtcdSupport.py:469]: we have create ServiceFinder
+2021-03-09 17:18:49,350 - ServiceFinder - INFO : [EtcdSupport.py:234]: init service info from etcd success, will going to watch, at etcd index -> 3
+2021-03-09 17:34:57,376 - ServiceNode - INFO : [EtcdSupport.py:466]: we have create ServiceRegister, wait 5 seconds
+2021-03-09 17:34:57,378 - ServiceNode - INFO : [EtcdSupport.py:469]: we have create ServiceFinder
+2021-03-09 17:35:02,382 - ServiceFinder - INFO : [EtcdSupport.py:234]: init service info from etcd success, will going to watch, at etcd index -> 3

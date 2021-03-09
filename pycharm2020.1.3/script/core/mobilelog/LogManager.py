@@ -58,20 +58,20 @@ class AsyncLogger:
         # return ''.join(('[', inspect.stack()[2].filename, ':', str(inspect.stack()[2].lineno), ']', msg))
         return ''.join(('[', os.path.basename(caller.filename), ':', str(caller.lineno), ']: ', msg))
 
-    def debug(self, msg):
-        _log_tp_executor.submit(self._logger.debug, self.join_caller_filename_lineno(msg))
+    def debug(self, msg, *args, **kwargs):
+        _log_tp_executor.submit(self._logger.debug, self.join_caller_filename_lineno(msg), *args, **kwargs)
 
-    def info(self, msg):
-        _log_tp_executor.submit(self._logger.info, self.join_caller_filename_lineno(msg))
+    def info(self, msg, *args, **kwargs):
+        _log_tp_executor.submit(self._logger.info, self.join_caller_filename_lineno(msg), *args, **kwargs)
 
-    def warning(self, msg):
-        _log_tp_executor.submit(self._logger.warning, self.join_caller_filename_lineno(msg))
+    def warning(self, msg, *args, **kwargs):
+        _log_tp_executor.submit(self._logger.warning, self.join_caller_filename_lineno(msg), *args, **kwargs)
 
-    def error(self, msg):
-        _log_tp_executor.submit(self._logger.error, self.join_caller_filename_lineno(msg))
+    def error(self, msg, *args, **kwargs):
+        _log_tp_executor.submit(self._logger.error, self.join_caller_filename_lineno(msg), *args, **kwargs)
 
-    def critical(self, msg):
-        _log_tp_executor.submit(self._logger.critical, self.join_caller_filename_lineno(msg))
+    def critical(self, msg, *args, **kwargs):
+        _log_tp_executor.submit(self._logger.critical, self.join_caller_filename_lineno(msg), *args, **kwargs)
 
     def log_last_except(self):
         tp, value, traceback = sys.exc_info()

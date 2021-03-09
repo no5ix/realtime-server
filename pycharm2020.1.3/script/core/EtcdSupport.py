@@ -83,13 +83,14 @@ class ServiceRegister(EtcdProcessor):
             # self._threads.append(asyncio.create_task(self._process_regist_and_ttl(name)))
 
         # gevent.spawn(self._dead_check_process)
-        await asyncio.gather(*self._threads)
+        # await asyncio.gather(*self._threads)
 
     # async def _dead_check_process(self):
-    #     # for thread in self._threads:
-    #     #     thread.join()
-    #     # self._die_event.set()
-    #     await asyncio.gather(*self._threads)
+    async def start(self):
+        # for thread in self._threads:
+        #     thread.join()
+        # self._die_event.set()
+        await asyncio.gather(*self._threads)
 
     # def wait_dead(self, timeout):
     #     return self._die_event.wait(timeout=timeout)
@@ -101,43 +102,43 @@ class ServiceRegister(EtcdProcessor):
     def _do_unregist(self, service_name):
         pass
 
-    def _do_regist(self, service_name):
+    async def _do_regist(self, service_name):
         """
         注册service，如果注册成功，返回True
         """
-        service_module = self._service_module_dict[service_name]
-        singleton = service_module.singleton
+        # service_module = self._service_module_dict[service_name]
+        # singleton = service_module.singleton
         # assert service_name == service_module.service_name
         data = urllib.parse.urlencode({"ttl": _KEY_TIME_OUT})
 
-        if singleton:
-            """
-            如果是有状态的服务，那么在注册的时候需要确保etcd没有相关的服务信息的注册
-            :todo 由于没有原子操作的保证，所以还是可能会出现多个的情况
-            """
-            while self.check_ok():
-                try:
-                    now_url = self._get_server_info() + _MOBILE_SERVICE_DOMAIN + service_name
-                    r = await AioApi.async_wrap(lambda: requests.request("GET", now_url, timeout=2))
-                    res = json.loads(r.text)
-                    self._fail_time = 0
-                    if res.get("action") == "get" and res.get("node", {}).get("nodes", []):
-                        self._logger.info("servcie : %s not stateless, but exist, %s", service_name, r.text)
-                        return False
-                    break
-                except:
-                    self._fail_time += 1
-                    self._logger.error("check singleton service : %s error", service_name)
-                    self._logger.log_last_except()
-                    # if GameServerRepo.game_event_callback is not None:
-                    #     t, v, tb = sys.exc_info()
-                    #     GameServerRepo.game_event_callback.on_traceback(t, v, tb)
+        # if singleton:
+        #     """
+        #     如果是有状态的服务，那么在注册的时候需要确保etcd没有相关的服务信息的注册
+        #     :todo 由于没有原子操作的保证，所以还是可能会出现多个的情况
+        #     """
+        #     while self.check_ok():
+        #         try:
+        #             now_url = self._get_server_info() + _MOBILE_SERVICE_DOMAIN + service_name
+        #             r = await AioApi.async_wrap(lambda: requests.request("GET", now_url, timeout=2))
+        #             res = json.loads(r.text)
+        #             self._fail_time = 0
+        #             if res.get("action") == "get" and res.get("node", {}).get("nodes", []):
+        #                 self._logger.info("servcie : %s not stateless, but exist, %s", service_name, r.text)
+        #                 return False
+        #             break
+        #         except:
+        #             self._fail_time += 1
+        #             self._logger.error("check singleton service : %s error", service_name)
+        #             self._logger.log_last_except()
+        #             # if GameServerRepo.game_event_callback is not None:
+        #             #     t, v, tb = sys.exc_info()
+        #             #     GameServerRepo.game_event_callback.on_traceback(t, v, tb)
 
         while self.check_ok():
             try:
                 now_url = self._get_url(service_name)
-                if singleton:
-                    now_url = self._get_url(service_name) + "?prevExist=false"
+                # if singleton:
+                #     now_url = self._get_url(service_name) + "?prevExist=false"
                 # r = requests.request("PUT", now_url, data=data, headers=_HEADER, timeout=2)
                 r = await AioApi.async_wrap(
                     lambda: requests.request("PUT", now_url, data=data, headers=_HEADER, timeout=2))
@@ -225,12 +226,15 @@ class ServiceFinder(EtcdProcessor):
         self._server_len = len(self._etcd_address_list) - 1
         self._services = dict()
         self._es = dict()
-        self._etcd_index = 0           # 最近一次get获取的etcd服务器所处的index
-        self._watch_index = 0          # 当前watch所在的index
+        self._etcd_index = 0  # 最近一次get获取的etcd服务器所处的index
+        self._watch_index = 0  # 当前watch所在的index
 
-        if self._init_info():
-            self._logger.info("init service info from etcd success, will going to watch, at etcd index -> %s", self._etcd_index)
+    async def start(self):
+        if await self._init_info():
+            self._logger.info(
+                "init service info from etcd success, will going to watch, at etcd index -> %s", self._etcd_index)
             # gevent.spawn(self._watch_process)
+            # await asyncio.create_task(self._watch_process())
             await self._watch_process()
         else:
             self.stop()
@@ -295,7 +299,7 @@ class ServiceFinder(EtcdProcessor):
         except:
             pass
 
-    def _init_info(self):
+    async def _init_info(self):
         """
         从etcd服务器一次性拉取所有的注册信息来初始化
         """
@@ -377,7 +381,7 @@ class ServiceFinder(EtcdProcessor):
             出现了这种情况，还是重置一下数据吧
             """
             self._logger.info("recv watch index out of date, %s", r.text)
-            if not self._init_info():
+            if not await self._init_info():
                 self._logger.error("reset etcd data error, will stop")
                 return
         else:
@@ -461,9 +465,13 @@ class ServiceNode(object):
         self._register = ServiceRegister(etcd_address_list, my_address, service_module_dict)
         self._logger.info("we have create ServiceRegister, wait 5 seconds")
         # gevent.sleep(5)
-        asyncio.sleep(5)
         self._finder = ServiceFinder(etcd_address_list)
         self._logger.info("we have create ServiceFinder")
+
+    async def start(self):
+        await self._register.start()
+        await asyncio.sleep(5)
+        await self._finder.start()
 
     def stop(self):
         self._register.stop()

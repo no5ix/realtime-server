@@ -10,6 +10,7 @@ from battle_entity.Puppet import Puppet
 # from core.common import MsgpackSupport
 from TcpConn import TcpConn
 from common import gr
+from core.EtcdSupport import ServiceNode
 from util.SingletonEntityManager import SingletonEntityManager
 
 TCP_SERVER = None
@@ -19,7 +20,8 @@ class TcpServer(object):
 
     def __init__(self):
         self.tcp_conn_map = {}
-        # self.writers = []
+        self._etcd_service_node = None
+        # self.writers = []my_addr,
 
     def forward(self, addr, message):
         for _addr, _tcp_conn in self.tcp_conn_map.items():
@@ -63,22 +65,49 @@ class TcpServer(object):
         # self.writers.remove(writer)
         # writer.close()
 
-    async def main(self):
-
-        self.handle_sig()
-
-        asyncio.get_event_loop().call_later(4, self._check_game_start)
-
+    async def start_server_task(self):
         # server = await asyncio.start_server(
         #     handle_echo, '127.0.0.1', 8888)
-        server = await asyncio.start_server(
-            self.handle_client_connected, '127.0.0.1', 8888)
+        server = await asyncio.start_server(self.handle_client_connected, '127.0.0.1', 8888)
+        # _start_srv_task = asyncio.create_task(asyncio.start_server(self.handle_client_connected, '127.0.0.1', 8888))
+        # await _etcd_support_task
+        # server = await _start_srv_task
 
         addr = server.sockets[0].getsockname()
         print(f'Server on {addr}')
 
         async with server:
             await server.serve_forever()
+
+    async def main(self):
+
+        self.handle_sig()
+
+        etcd_addr_list = [('127.0.0.1', '2379'),]
+        my_addr = ('127.0.0.1', '12001')
+        self._etcd_service_node = ServiceNode(
+            etcd_addr_list, my_addr, {}
+        )
+        asyncio.get_event_loop().call_later(4, self._check_game_start)
+
+        _etcd_support_task = asyncio.create_task(self._etcd_service_node.start())
+        _start_srv_task = asyncio.create_task(self.start_server_task())
+        # await (self._etcd_service_node.start())
+
+
+        # server = await asyncio.start_server(
+        #     handle_echo, '127.0.0.1', 8888)
+        # server = await asyncio.start_server(self.handle_client_connected, '127.0.0.1', 8888)
+        # _start_srv_task = asyncio.create_task(asyncio.start_server(self.handle_client_connected, '127.0.0.1', 8888))
+        await _start_srv_task
+        await _etcd_support_task
+        # server = await _start_srv_task
+
+        # addr = server.sockets[0].getsockname()
+        # print(f'Server on {addr}')
+        #
+        # async with server:
+        #     await server.serve_forever()
 
     @staticmethod
     def handle_sig():
@@ -96,6 +125,7 @@ class TcpServer(object):
 
     def run(self):
         asyncio.run(self.main())
+        # ev_loop.run_until_complete(self.main())
 
     def _check_game_start(self):
         # 随机种子
@@ -121,3 +151,6 @@ if __name__ == '__main__':
     tcp_server = TcpServer()
     TCP_SERVER = tcp_server
     tcp_server.run()
+
+    # loop = asyncio.get_event_loop()
+    # loop.run_until_complete(main())
