@@ -2,7 +2,7 @@
 import requests
 import asyncio
 
-from core.util import AioApi
+from core.util import UtilApi
 # from ..distserver.game import GameServerRepo
 from common import gr
 from core.mobilelog.LogManager import LogManager
@@ -140,7 +140,7 @@ class ServiceRegister(EtcdProcessor):
                 # if singleton:
                 #     now_url = self._get_url(service_name) + "?prevExist=false"
                 # r = requests.request("PUT", now_url, data=data, headers=_HEADER, timeout=2)
-                r = await AioApi.async_wrap(
+                r = await UtilApi.async_wrap(
                     lambda: requests.request("PUT", now_url, data=data, headers=_HEADER, timeout=2))
                 res = json.loads(r.text)
                 if res.get("action") in ("create", "set"):
@@ -174,7 +174,7 @@ class ServiceRegister(EtcdProcessor):
             while self.check_ok():
                 try:
                     now_url = self._get_url(service_name)
-                    r = await AioApi.async_wrap(
+                    r = await UtilApi.async_wrap(
                         lambda: requests.request("PUT", now_url, data=ttl_refresh_data, headers=_HEADER, timeout=2))
                     res = json.loads(r.text)
                     if res.get("action", "") == "set":
@@ -192,7 +192,7 @@ class ServiceRegister(EtcdProcessor):
         for _ in range(10):
             """在退出的时候，将注册的信息删除掉，如果删除失败，那就靠ttl自动删除吧"""
             try:
-                r = await AioApi.async_wrap(
+                r = await UtilApi.async_wrap(
                     lambda: requests.request("DELETE", self._get_url(service_name)))
                 res = json.loads(r.text)
                 if res.get("action", "") == "delete":
@@ -306,7 +306,7 @@ class ServiceFinder(EtcdProcessor):
         while self.check_ok():
             try:
                 now_url = self._get_server_info() + _ETCD_KEY_PREFIX + "?recursive=true"
-                r = await AioApi.async_wrap(lambda: requests.request("GET", now_url))
+                r = await UtilApi.async_wrap(lambda: requests.request("GET", now_url))
                 res = json.loads(r.text)
                 self._fail_time = 0
                 self._etcd_index = int(r.headers["x-etcd-index"])
@@ -344,12 +344,12 @@ class ServiceFinder(EtcdProcessor):
         return service_name, (ip, port)
 
     async def _watch_process_impl(self):
-        r = await AioApi.async_wrap(lambda: requests.request("GET", self._get_server_info() + _ETCD_KEY_PREFIX))
+        r = await UtilApi.async_wrap(lambda: requests.request("GET", self._get_server_info() + _ETCD_KEY_PREFIX))
         self._etcd_index = int(r.headers["x-etcd-index"])
         now_url = self._get_server_info() + _ETCD_KEY_PREFIX + "?wait=true&recursive=true"
         if self._watch_index:
             now_url += "&waitIndex=" + str(self._watch_index + 1)
-        r = await AioApi.async_wrap(lambda: requests.request("GET", now_url))
+        r = await UtilApi.async_wrap(lambda: requests.request("GET", now_url))
         res = json.loads(r.text)
         action = res.get("action", "")
         key_path = res.get("node", {}).get("key", "")

@@ -3,13 +3,13 @@
 管理所有的Entity创建的工厂类
 """
 from ..mobilelog.LogManager import LogManager
-from Md5OrIndexCodec import  Md5OrIndexDecoder
-from mobilecommon import extendabletype
-from RpcIndex import RpcIndexer
+# from Md5OrIndexCodec import  Md5OrIndexDecoder
+# from mobilecommon import extendabletype
+# from RpcIndex import RpcIndexer
 
 
 class EntityFactory(object):
-    __metaclass__ = extendabletype
+    # __metaclass__ = extendabletype
 
     _instance = None
 

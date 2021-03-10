@@ -1,6 +1,3 @@
-from common.EntityFactory import EntityFactory
-
-
 class DungeonManager(object):
 
     def __init__(self):

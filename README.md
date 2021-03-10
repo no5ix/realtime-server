@@ -11,7 +11,7 @@ python 3.7.9
 - [ ] tick loop
 - [ ] reload
 - [ ] etcd
-- [ ] server call cli
+<!-- - [ ] server call cli -->
 <!-- - [ ] rpc_method装饰器的参数不一定要是tuple -->
 - [ ] 加上type hint
 - [ ] 配表导表工具
@@ -24,3 +24,4 @@ python 3.7.9
 - [ ] 客户端拿着令牌来和战斗服务器连接并交互
 - [ ] 各个战斗服务器之间的协同center stub
 - [ ] 录像回放, 直播
+- [ ] 配置json解析与初始化

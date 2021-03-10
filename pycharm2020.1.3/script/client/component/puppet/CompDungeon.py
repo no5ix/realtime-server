@@ -1,4 +1,4 @@
-from common.EntityFactory import EntityFactory
+from core.common.EntityFactory import EntityFactory
 from common.component.Component import Component
 from common import gr
 
