@@ -9,6 +9,7 @@ import pkgutil
 # import importlib
 
 # import syspathhelper
+# from _importlib_modulespec import ModuleSpec
 
 
 def _get_module_files(module_dir):
@@ -22,7 +23,7 @@ def _get_module_files(module_dir):
     for fileName in files:
         list = fileName.split('.')
         if len(list) == 2:
-            module_anme = list[0]
+            # module_name = list[0]
             extension = list[1]
             if extension in ("py", "pyc"):
                 module_name_set.add(list[0])
@@ -117,20 +118,32 @@ def walk_packages(path=None, prefix='', pkg_filter=None):
 
 
 def _load_all_submodules(package_name):
-    import imp
-    file_obj, pathname, description = imp.find_module(package_name)
-    if file_obj:
+    # import imp
+    from importlib import util
+    import importlib
+    # file_obj, pathname, description = imp.find_module(package_name)
+    _spec = importlib.util.find_spec(package_name)
+    if _spec is None:
+    # if file_obj:
         raise ImportError('Not a package: %r', package_name)
     module_set = set()
+    # for _sub_m in _spec.submodule_search_locations:
+
+
     name_prefix = package_name + '.'
     for outer_importer in pkgutil.iter_importers():
+        if outer_importer is None:
+            continue
         module = outer_importer.find_module(package_name)
         if not module:
             continue
         # load base module
         if package_name not in sys.modules:
             outer_importer.find_module(package_name).load_module(package_name)
-        for importer, name, _ in walk_packages(outer_importer.path, pkg_filter=lambda n: n.startswith(package_name)):
+        # if not hasattr(outer_importer, 'path'):
+        #     continue
+        # for importer, name, _ in walk_packages(outer_importer.path, pkg_filter=lambda n: n.startswith(package_name)):
+        for importer, name, _ in walk_packages(_spec.submodule_search_locations, pkg_filter=lambda n: n.startswith(package_name)):
             if not name.startswith(name_prefix):
                 continue
             if name not in sys.modules:
@@ -144,8 +157,22 @@ def _load_all_submodules(package_name):
 def scan_entity_package(package_name, entity_base_class):
     """从给定package下面搜寻模块，并注册类型"""
     class_dict = {}
-    for module in _load_all_submodules(package_name):
-        clist = _get_class_list(module, entity_base_class)
-        for claz in clist:
-            class_dict[claz.__name__] = claz
+    for _cls in entity_base_class.__subclasses__():
+        class_dict[_cls.__name__] = _cls
+    # for module in _load_all_submodules(package_name):
+    #     clist = _get_class_list(module, entity_base_class)
+    #     for claz in clist:
+    #         class_dict[claz.__name__] = claz
     return class_dict
+
+
+if __name__ == '__main__':
+    from common.component.Component import Component
+    from component import avatar
+
+    # scan_entity_package('component', Component)
+    # clist = _get_class_list(avatar, Component)
+    from component.avatar import CompAvatarTest
+    clist = _get_class_list(CompAvatarTest, Component)
+    ss = Component.__subclasses__()
+    pass

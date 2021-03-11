@@ -2,5 +2,8 @@
     "etcd_servers":[
         {"ip":"127.0.0.1", "port":2379},
         {"ip":"127.0.0.1", "port":2380}
-    ]
+    ],
+    "entity_root":"server_entities",
+    "battle_entity_root":"battle_entity",
+    "component_root": "component"
 }

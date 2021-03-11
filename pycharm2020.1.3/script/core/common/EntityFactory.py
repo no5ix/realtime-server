@@ -13,32 +13,32 @@ class EntityFactory(object):
 
     _instance = None
 
-    def __init__( self ):
+    def __init__(self):
         # logger for EntityFactory
         self.logger = LogManager.get_logger("server.EntityFactory")
         #registered classed for EntityFactory
         self.entity_classes = {}
 
     @classmethod
-    def instance( cls ):
-        if cls._instance == None:
+    def instance(cls):
+        if cls._instance is None:
             cls._instance = EntityFactory()
         return cls._instance
 
-    def register_entity( self, entitytype, entityclass):
+    def register_entity(self, entitytype, entityclass):
         """注册entity 类"""
         self.entity_classes[entitytype] = entityclass
         # 把自己的字符串注册到底层
-        RpcIndexer.register_rpc(entityclass.__name__)
-        Md5OrIndexDecoder.register_str(entityclass.__name__)
-        import inspect
-        methods  = inspect.getmembers(entityclass, predicate=inspect.ismethod)
-        # 排序以保证注册的顺序是一样的
-        methods.sort(lambda a, b : cmp(a[0], b[0]))
-        for method in methods:
-            if not method[0].startswith("_"):
-                RpcIndexer.register_rpc(method[0])
-                Md5OrIndexDecoder.register_str(method[0])
+        # RpcIndexer.register_rpc(entityclass.__name__)
+        # Md5OrIndexDecoder.register_str(entityclass.__name__)
+        # import inspect
+        # methods  = inspect.getmembers(entityclass, predicate=inspect.ismethod)
+        # # 排序以保证注册的顺序是一样的
+        # methods.sort(lambda a, b : cmp(a[0], b[0]))
+        # for method in methods:
+        #     if not method[0].startswith("_"):
+        #         RpcIndexer.register_rpc(method[0])
+        #         Md5OrIndexDecoder.register_str(method[0])
 
     def get_entity_class(self, entitytype):
         EntityClass = None

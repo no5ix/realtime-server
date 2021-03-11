@@ -5,7 +5,7 @@ import sys
 # from core.common.Md5OrIndexCodec import Md5OrIndexDecoder
 # from core.common.RpcIndex import RpcIndexer
 #
-# ComponentClass = {}
+ComponentClass = {}
 #
 #
 # def register_rpc_class(cls, prefix=None):
@@ -27,22 +27,22 @@ import sys
 #                 # print "RegisterRPCClass ", func.__name__
 #             else:
 #                 pass
-#
-#
-# def register_by_name(name, component):
-#     ComponentClass[name] = component
-#     register_rpc_class(component)
-# # Property.register_property_class(component)
-#
-#
-# def register(component):
-#     if 'VAR_NAME' in component.__dict__:
-#         name = component.VAR_NAME
-#     else:
-#         name = component.__name__
-#
-#     # print "register", name,component
-#     register_by_name(name, component)
+
+
+def register_by_name(name, component):
+    ComponentClass[name] = component
+    # register_rpc_class(component)
+# Property.register_property_class(component)
+
+
+def register(component):
+    if 'VAR_NAME' in component.__dict__:
+        name = component.VAR_NAME
+    else:
+        name = component.__name__
+
+    # print "register", name,component
+    register_by_name(name, component)
 
 
 def get_component(name, default=None):

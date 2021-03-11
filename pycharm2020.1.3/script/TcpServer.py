@@ -1,5 +1,6 @@
 import asyncio
 import functools
+import json
 import signal
 import platform
 from random import random
@@ -11,6 +12,8 @@ from battle_entity.Puppet import Puppet
 from TcpConn import TcpConn
 from common import gr
 from core.EtcdSupport import ServiceNode
+from core.common import EntityScanner
+from core.common.EntityFactory import EntityFactory
 from core.mobilelog.LogManager import LogManager
 from util.SingletonEntityManager import SingletonEntityManager
 
@@ -24,45 +27,54 @@ class TcpServer(object):
         self._etcd_service_node = None
 
         self._logger = LogManager.get_logger('TcpServer')
-        self.register_entities()
+        # self.register_entities()
+        self._config = self.parse_json_conf()
 
-    def parse_json_conf(self):
-
-
-    def register_entities(self):
-        """
-        推荐使用entity_package的形式来自动搜索注册entity类型，通过entity_package配置项指定entity所在，这种方式经过迭代
-        后不会污染全局的path
-        @note entity_package指定的package，必须是可以直接import成功的
-        """
-        gameconfig = self.config[self.config_sections.game]
-        entity_root = gameconfig.get('entity_root')
-        if entity_root:
-            entity_root = str(entity_root)
-            # store for further usage
-            Netease.entity_root = entity_root
-            entity_classes = EntityScanner.scan_entity_package(entity_root, ServerEntity.ServerEntity)
-        else:
-            entity_path = str(gameconfig["entity_path"])
-            # store for further usage
-            Netease.entity_path = entity_path
-            entity_classes = EntityScanner.scan_entity_classes(entity_path, ServerEntity.ServerEntity)
-        entity_classes = entity_classes.items()
-        # 这里进行排序是为了保证register_entity函数中注册md5的index时是按照一致的顺序
-        entity_classes.sort(lambda a, b: cmp(a[0], b[0]))
-        for etype, claz in entity_classes:
-            self.logger.info(" Entity %s registered with class %s", etype, claz)
-            EntityFactory.instance().register_entity(etype, claz)
-        # register classes in ServerEntity module
-        cls_list = EntityScanner._get_class_list(ServerEntity, ServerEntity.ServerEntity)
-        # 这里进行排序是为了保证register_entity函数中注册md5的index时是按照一致的顺序
-        cls_list.sort(lambda a, b: cmp(a.__name__, b.__name__))
-        for cls in cls_list:
-            EntityFactory.instance().register_entity(cls.__name__, cls)
-
-        self.register_local_entity()
+        self.register_battle_entities()
         self.register_component()
-        RpcIndexer.calculate_recv_rpc_salt()
+
+    @staticmethod
+    def parse_json_conf():
+        file_name = '../bin/win/conf/battle_server.json'
+        conf_file = open(file_name)
+        json_conf = json.load(conf_file)
+        conf_file.close()
+        return json_conf
+
+    def register_component(self):
+        from common.component.Component import Component
+        from common.component import ComponentRegister
+        # gameconfig = self.config[self.config_sections.game]
+        component_root = self._config.get('component_root')
+        if component_root is None:
+            self._logger.error('conf file has no component_root!')
+            return
+        component_classes = EntityScanner.scan_entity_package(component_root, Component)
+        component_classes = component_classes.items()
+        # component_classes.sort(lambda a, b: cmp(a[0], b[0]))
+        for comp_type, comp_cls in component_classes:
+            ComponentRegister.register(comp_cls)
+
+    def register_battle_entities(self):
+        from BattleEntity import BattleEntity
+        _ber = self._config.get('battle_entity_root', None)
+        if _ber is None:
+            self._logger.error('conf file has no battle_entity_root!')
+            return
+        entity_classes = EntityScanner.scan_entity_package(_ber, BattleEntity)
+        entity_classes = entity_classes.items()
+
+        # def cmp(x, y):
+        #     if x < y:
+        #         return -1
+        #     elif x == y:
+        #         return 0
+        #     else:
+        #         return 1
+        #
+        # entity_classes.sort(lambda a, b: cmp(a[0], b[0]))
+        for cls_name, cls in entity_classes:
+            EntityFactory.instance().register_entity(cls_name, cls)
 
     def forward(self, addr, message):
         for _addr, _tcp_conn in self.tcp_conn_map.items():
