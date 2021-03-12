@@ -727,3 +727,5 @@ HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: 
     locals={'self': <requests.sessions.Session object at 0x000002A8A528BC40>, 'request': <PreparedRequest [GET]>, 'kwargs': {'timeout': None, 'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}, 'allow_redirects': True, 'stream': False, 'hooks': {'response': []}, 'adapter': <requests.adapters.HTTPAdapter object at 0x000002A8A5F0CF40>, 'start': 909.072692211}
   File "C:\Program Files\Python38\lib\site-packages\requests\adapters.py", line 516, in send
     locals={'self': <requests.adapters.HTTPAdapter object at 0x000002A8A5F0CF40>, 'request': <PreparedRequest [GET]>, 'stream': False, 'timeout': Timeout(connect=None, read=None, total=None), 'verify': True, 'cert': None, 'proxies': OrderedDict(), 'conn': <urllib3.connectionpool.HTTPConnectionPool object at 0x000002A8A5F0CD90>, 'url': '/v2/keys?recursive=true', 'chunked': False}
+2021-03-12 14:11:02,960 - ServiceNode - INFO : [EtcdSupport.py:466]: we have create ServiceRegister, wait 5 seconds
+2021-03-12 14:11:02,961 - ServiceNode - INFO : [EtcdSupport.py:469]: we have create ServiceFinder
