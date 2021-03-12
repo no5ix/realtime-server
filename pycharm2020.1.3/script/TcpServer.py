@@ -39,6 +39,7 @@ class TcpServer(object):
         conf_file = open(file_name)
         json_conf = json.load(conf_file)
         conf_file.close()
+        gr.game_json_conf = json_conf
         return json_conf
 
     def register_component(self):
@@ -141,6 +142,7 @@ class TcpServer(object):
         self._etcd_service_node = ServiceNode(
             etcd_addr_list, my_addr, {}
         )
+        gr.etcd_service_node = self._etcd_service_node
         asyncio.get_running_loop().call_later(4, self._check_game_start)
 
         _etcd_support_task = asyncio.create_task(self._etcd_service_node.start())

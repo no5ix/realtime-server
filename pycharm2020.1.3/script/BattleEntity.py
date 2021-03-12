@@ -1,3 +1,6 @@
+from typing import Union
+
+from PuppetBindEntity import PuppetBindEntity
 from common import gr
 
 
@@ -5,7 +8,7 @@ class BattleEntity(object):
 
     def __init__(self):
         self.be_id = 0
-        self.bind_entity = None
+        self.bind_entity = None  # type: Union[PuppetBindEntity, None]
 
     def set_puppet_bind_entity(self, pbe):
         self.bind_entity = pbe

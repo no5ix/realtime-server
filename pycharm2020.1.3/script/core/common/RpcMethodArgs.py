@@ -108,6 +108,7 @@ class Int(RpcMethodArg):
     def default_val(self):
         return 0
 
+
 class Long(RpcMethodArg):
     def __init__(self, name, min=None, max=None, range=None):
         super(Long, self).__init__(name)
@@ -130,6 +131,7 @@ class Long(RpcMethodArg):
 
     def default_val(self):
         return 0
+
 
 class Float(RpcMethodArg):
     def __init__(self, name, min=None, max=None, range=None):
@@ -154,6 +156,7 @@ class Float(RpcMethodArg):
     def default_val(self):
         return 0
 
+
 class Str(RpcMethodArg):
     def __init__(self, name):
         super(Str, self).__init__(name)
@@ -170,6 +173,7 @@ class Str(RpcMethodArg):
     def default_val(self):
         return ''
 
+
 class BinData(RpcMethodArg):
     def __init__(self, name):
         super(BinData, self).__init__(name)
@@ -183,25 +187,30 @@ class BinData(RpcMethodArg):
     def default_val(self):
         return ''
 
+
 class Avatar(RpcMethodArg):
     """客户端调用服务端的时候，自动把对应的Avatar对象找出来"""
     def __init__(self, name="Avatar"):
         super(Avatar, self).__init__(name)
+
 
 class MailBox(RpcMethodArg):
     """服务端调用服务端的时候，传递远程的proxy对象"""
     def __init__(self, name="MailBox"):
         super(MailBox, self).__init__(name)
 
+
 class Response(RpcMethodArg):
     """ Response对象"""
     def __init__(self, name="Response"):
         super(Response, self).__init__(name)
 
+
 class ClientInfo(RpcMethodArg):
     """客户端调用service的时候，传到service的路由信息"""
     def __init__(self, name="ClientInfo"):
         super(ClientInfo, self).__init__(name)
+
 
 class GateMailBox(RpcMethodArg):
     """客户端调用service的时候，传到service的路由信息"""
