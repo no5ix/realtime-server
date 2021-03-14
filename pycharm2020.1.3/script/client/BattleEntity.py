@@ -20,7 +20,7 @@ class BattleEntity(object):
 
         # gr.bind_entity.call_server_method(
         gr.bind_entity.call_server_method(
-            'local_entity_message',
+            'battle_entity_message',
             # {'m': RpcIndexer.send_rpc_index(method_name), 'p': parameters}
             {'m': method_name, 'p': parameters}
         )

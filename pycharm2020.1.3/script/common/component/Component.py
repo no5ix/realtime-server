@@ -9,6 +9,8 @@
 
 ###
 
+import typing
+from server_entity.ServerEntity import ServerEntity
 import copy
 import inspect
 from common import gr
@@ -169,7 +171,7 @@ class Component(object):
     __use_descriptor__ = True
 
     def __init__(self):
-        self.entity = None
+        self.entity = None  # type: typing.Type[typing.Union[ServerEntity, None]
         # self.logger = None
         self._client_tick_cache = []
 

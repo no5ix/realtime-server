@@ -1,22 +1,17 @@
 import asyncio
 
 from TcpConn import TcpConn
+from core.common.EntityManager import EntityManager
 from core.common.IdManager import IdManager
-from ..common.IdManager import IdManager
-from ..common.EntityManager import EntityManager, EntityIdOrLocalId
-from ..common.EntityFactory import EntityFactory
-from ..mobilelog.LogManager import LogManager
-
+from core.mobilelog.LogManager import LogManager
 
 
 # pylint: disable = E1101
 class ServerEntity(object):
-    """ 游戏中所有服务端对象的父类"""
-    def __init__(self, entityid = None):
+    def __init__(self, entity_id=None):
         super(ServerEntity, self).__init__()
-        # if we have entityid passed in, used it, otherwise use generated one
-        self.id = (entityid == None) and IdManager.genid() or entityid
-        self.localid = -1
+        self.id = (entity_id is None) and IdManager.genid() or entity_id
+        self.local_id = -1
         self.logger = LogManager.get_logger("ServerEntity." + self.__class__.__name__)
         self.logger.info("__init__ create entity %s with id %s mem_id=%s", self.__class__.__name__, self.id, id(self))
         # entity所对应的gate proxy, 使用请调_get_gate_proxy方法，不要直接使用此变量
@@ -24,13 +19,31 @@ class ServerEntity(object):
         self._src_mailbox_info = None                              # 缓存自己的src_mailbox_info信息
         EntityManager.addentity(self.id, self, False)
         self._save_timer = None
-        self.isdestroty = False
-        savetime = self.get_persistent_time()
+        self.is_destroy = False
+        # save_time = self.get_persistent_time()
 
-    def call_server_method(self, remote_mailbox, methodname, parameters={}, callback=None):
+        self._conn = None
+
+    def set_connection(self, conn):
+        self._conn = conn
+
+    def call_client_method(self, method_name, parameters):
+        self._conn.request_rpc(method_name, parameters)
+
+    def call_other_client_method(self):
+        pass
+
+    def call_all_client_method(self):
+        pass
+
+    def call_server_method_direct(self):
+        pass
+
+    def call_server_method(self, remote_mailbox, method_name, parameters=None):
         remote_ip = remote_mailbox.ip
         remote_port = remote_mailbox.port
         reader, writer = await asyncio.open_connection(remote_ip, remote_port)
         _tcp_conn = TcpConn(writer.get_extra_info('peername'), writer, reader)
-        _tcp_conn.request_rpc(methodname, parameters)
+        self.set_connection(_tcp_conn)
+        self._conn.request_rpc(method_name, parameters)
         await _tcp_conn.loop()

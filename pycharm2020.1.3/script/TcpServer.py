@@ -92,13 +92,14 @@ class TcpServer(object):
         _ppt = Puppet()
 
         # _tcp_conn.set_entity(_ppt)
-        _pbe = PuppetBindEntity()
-        _tcp_conn.set_entity(_pbe)
-        _pbe.set_connection(_tcp_conn)
-        _pbe.set_puppet(_ppt)
-        _ppt.set_puppet_bind_entity(_pbe)
+        # _pbe = PuppetBindEntity()
+        # _tcp_conn.set_entity(_pbe)
+        _tcp_conn.set_entity(_ppt)
+        _ppt.set_connection(_tcp_conn)
+        # _pbe.set_connection(_tcp_conn)
+        # _pbe.set_puppet(_ppt)
+        # _ppt.set_puppet_bind_entity(_pbe)
         _ppt.init_from_dict({})
-
 
         self.tcp_conn_map[addr] = _tcp_conn
         message = f"{addr!r} is connected !!!!"

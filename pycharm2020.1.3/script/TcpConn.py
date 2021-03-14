@@ -1,6 +1,10 @@
 import asyncio
+import typing
+
 from struct import unpack as s_unpack, pack as s_pack
 from core.common import MsgpackSupport
+from core.mobilelog.LogManager import LogManager
+from server_entity.ServerEntity import ServerEntity
 
 HEAD_LEN = 4
 MAX_BODY_LEN = 4294967296
@@ -10,7 +14,7 @@ class TcpConn(object):
 
     def __init__(self, addr_str, asyncio_writer, asyncio_reader, entity=None):
         self.addr_str = addr_str
-        self.entity = entity
+        self.entity = entity  # type: typing.Type[ServerEntity]
         self.asyncio_writer = asyncio_writer
         self.asyncio_reader = asyncio_reader
 
@@ -18,6 +22,7 @@ class TcpConn(object):
         self._recv_cnt = 0
 
         self._recv_data = b''
+        self._logger = LogManager.get_logger(self.__class__.__name__)
 
     def set_entity(self, entity):
         self.entity = entity
@@ -65,13 +70,9 @@ class TcpConn(object):
     def handle_message(self, msg_data):
         try:
             rpc_message = MsgpackSupport.decode(msg_data)
+            self.handle_rpc(rpc_message)
         except:
-            pass
-        else:
-            try:
-                self.handle_rpc(rpc_message)
-            except:
-                pass
+            self._logger.log_last_except()
 
     def handle_rpc(self, rpc_msg):
         if not self.entity:
