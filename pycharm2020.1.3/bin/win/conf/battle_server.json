@@ -5,11 +5,13 @@
     ],
     "entity_root": "server_entities",
     "battle_entity_root": "battle_entity",
+    "server_entity_root": "server_entity",
     "component_root": "component",
     "battle_0": {
-        "is_center": true
+        "is_center": true,
+        "game_server_name": "battle_0"
     },
     "battle_1": {
-
+        "game_server_name": "battle_1"
     }
 }

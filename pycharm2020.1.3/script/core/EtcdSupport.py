@@ -163,7 +163,7 @@ class ServiceRegister(EtcdProcessor):
         """
         为每一个服务启动一个单独的协程来处理注册与ttl的刷新
         """
-        if not self._do_regist(service_name):
+        if not await self._do_regist(service_name):
             self._logger.error("regist service %s fail", service_name)
             return
 

@@ -102,7 +102,7 @@ class SingletonEntityManager(object):
             game_server_name,)
             # lambda flag: self._register_relevant_centers_cb(flag, game_server_name))
         self.register_stubs(game_server_name)
-        self.register_and_subscript_service()
+        # self.register_and_subscript_service()
 
     def register_relevant_centers(self, game_server_name):
         conf = gr.game_json_conf
@@ -112,18 +112,20 @@ class SingletonEntityManager(object):
             return
         if game_conf_info.get("is_center", False):
             EntityFactory.instance().create_entity('BattleAllocatorCenter')
-        else:
-            EntityFactory.instance().create_entity('BattleAllocatorStub')
+        # else:
+        #     EntityFactory.instance().create_entity('BattleAllocatorStub')
         self.logger.debug('_register_relevant_centers_cb, status:%s', 'good')
 
     # def _register_relevant_centers_cb(self, status, game_server_name):
     #     self.register_stubs(lambda flag: self._register_stubs_cb(flag), game_server_name)
 
     def register_stubs(self, game_server_name):
-        # self._finish_stubs_cb = finish_cb
-        game_server_prefix = game_server_name.split('_')[0]
-        stub_names = self.stub_names.get(game_server_prefix, [])
-        for name in stub_names:
+        # conf = gr.game_json_conf
+        game_conf_info = gr.game_json_conf.get(game_server_name, None)
+        if not game_conf_info.get("is_center", False):
+            # EntityFactory.instance().create_entity('BattleAllocatorCenter')
+        # else:
+            name = 'BattleAllocatorStub'
             stub = EntityFactory.instance().create_entity(name)
             gr.add_server_singleton(stub)
             name_prefix = name[:-4]
@@ -133,44 +135,57 @@ class SingletonEntityManager(object):
         # self._stubs_connect_success()
         self.logger.debug('_register_stubs_cb, status:%s', 'good')
 
-    @staticmethod
-    def get_register_and_subscript_service():
-        return {
-            'reg': {
-                'battle_0': [RegInfo('BattleAllocatorCenter', '%s-bac' % str(GameServerRepo.hostid),
-                                     service_const.TAG_SERVICE_BATTLE_CREATOR)],
-                'game_0': [RegInfo('ForwardCenter', str(GameServerRepo.hostnum), service_const.TAG_SERVICE_GAME)],
-            },
-            'sub': {
-                'battle_0': [
-                    service_const.TAG_SERVICE_GAME,
-                    service_const.TAG_SERVICE_MATCH,
-                ],
-                'game': [
-                    service_const.TAG_SERVICE_BATTLE_CREATOR,
-                    service_const.TAG_SERVICE_MATCH,
-                    service_const.TAG_SERVICE_ROOM,
-                ],
-            }
-        }
+        # # self._finish_stubs_cb = finish_cb
+        # game_server_prefix = game_server_name.split('_')[0]
+        # stub_names = self.stub_names.get(game_server_prefix, [])
+        # for name in stub_names:
+        #     stub = EntityFactory.instance().create_entity(name)
+        #     gr.add_server_singleton(stub)
+        #     name_prefix = name[:-4]
+        #     center_name = name_prefix + 'Center'
+        #     stub.start_connect(center_name)
+        #     self.logger.info("%s connected to center" % stub.__class__.__name__)
+        # # self._stubs_connect_success()
+        # self.logger.debug('_register_stubs_cb, status:%s', 'good')
 
-    def register_and_subscript_service(self):
-        game_server_name = gr.game_server_name
-        game_server_prefix = game_server_name.split('_')[0]
-
-        all_rss = self.get_register_and_subscript_service()
-        # register service
-        reg_dict = all_rss.get('reg', {})
-        reg_list = reg_dict.get(game_server_prefix, [])
-        reg_list.extend(reg_dict.get(game_server_name, []))
-
-        for reg_info in reg_list:
-            center = gr.get_server_singleton(reg_info.entity_name)
-            UtilApi.register_entity_to_etcd(center, reg_info.etcd_name, tag=reg_info.tag)
-
-        # subscript tag service
-        sub_dict = all_rss.get('sub', {})
-        sub_list = sub_dict.get(game_server_prefix, [])
-        sub_list.extend(sub_dict.get(game_server_name, []))
-        for sub_tag in sub_list:
-            UtilApi.subscribe_entity_tag(sub_tag)
+    # @staticmethod
+    # def get_register_and_subscript_service():
+    #     return {
+    #         'reg': {
+    #             'battle_0': [RegInfo('BattleAllocatorCenter', '%s-bac' % str(GameServerRepo.hostid),
+    #                                  service_const.TAG_SERVICE_BATTLE_CREATOR)],
+    #             'game_0': [RegInfo('ForwardCenter', str(GameServerRepo.hostnum), service_const.TAG_SERVICE_GAME)],
+    #         },
+    #         'sub': {
+    #             'battle_0': [
+    #                 service_const.TAG_SERVICE_GAME,
+    #                 service_const.TAG_SERVICE_MATCH,
+    #             ],
+    #             'game': [
+    #                 service_const.TAG_SERVICE_BATTLE_CREATOR,
+    #                 service_const.TAG_SERVICE_MATCH,
+    #                 service_const.TAG_SERVICE_ROOM,
+    #             ],
+    #         }
+    #     }
+    #
+    # def register_and_subscript_service(self):
+    #     game_server_name = gr.game_server_name
+    #     game_server_prefix = game_server_name.split('_')[0]
+    #
+    #     all_rss = self.get_register_and_subscript_service()
+    #     # register service
+    #     reg_dict = all_rss.get('reg', {})
+    #     reg_list = reg_dict.get(game_server_prefix, [])
+    #     reg_list.extend(reg_dict.get(game_server_name, []))
+    #
+    #     for reg_info in reg_list:
+    #         center = gr.get_server_singleton(reg_info.entity_name)
+    #         UtilApi.register_entity_to_etcd(center, reg_info.etcd_name, tag=reg_info.tag)
+    #
+    #     # subscript tag service
+    #     sub_dict = all_rss.get('sub', {})
+    #     sub_list = sub_dict.get(game_server_prefix, [])
+    #     sub_list.extend(sub_dict.get(game_server_name, []))
+    #     for sub_tag in sub_list:
+    #         UtilApi.subscribe_entity_tag(sub_tag)

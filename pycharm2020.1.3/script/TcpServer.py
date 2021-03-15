@@ -30,12 +30,13 @@ class TcpServer(object):
         # self.register_entities()
         self._config = self.parse_json_conf()
 
+        self.register_server_entities()
         self.register_battle_entities()
         self.register_component()
 
     @staticmethod
     def parse_json_conf():
-        file_name = '../bin/win/conf/battle_server.json'
+        file_name = r'D:\Documents\github\realtime-server\pycharm2020.1.3\bin\win\conf\battle_server.json'
         conf_file = open(file_name)
         json_conf = json.load(conf_file)
         conf_file.close()
@@ -63,6 +64,28 @@ class TcpServer(object):
             self._logger.error('conf file has no battle_entity_root!')
             return
         entity_classes = EntityScanner.scan_entity_package(_ber, BattleEntity)
+        entity_classes = entity_classes.items()
+
+        # def cmp(x, y):
+        #     if x < y:
+        #         return -1
+        #     elif x == y:
+        #         return 0
+        #     else:
+        #         return 1
+        #
+        # entity_classes.sort(lambda a, b: cmp(a[0], b[0]))
+        for cls_name, cls in entity_classes:
+            EntityFactory.instance().register_entity(cls_name, cls)
+
+    def register_server_entities(self):
+        # from BattleEntity import BattleEntity
+        from server_entity.ServerEntity import ServerEntity
+        _ber = self._config.get('server_entity_root', None)
+        if _ber is None:
+            self._logger.error('conf file has no server_entity_root!')
+            return
+        entity_classes = EntityScanner.scan_entity_package(_ber, ServerEntity)
         entity_classes = entity_classes.items()
 
         # def cmp(x, y):
@@ -140,14 +163,14 @@ class TcpServer(object):
 
         etcd_addr_list = [('127.0.0.1', '2379'),]
         my_addr = ('127.0.0.1', '12001')
-        # self._etcd_service_node = ServiceNode(etcd_addr_list, my_addr, {})
+        self._etcd_service_node = ServiceNode(etcd_addr_list, my_addr, {"BattleAllocatorCenter": ""})
         gr.etcd_service_node = self._etcd_service_node
-        # asyncio.get_running_loop().call_later(4, self._check_game_start)
+        asyncio.get_running_loop().call_later(4, self._check_game_start)
 
-        # _etcd_support_task = asyncio.create_task(self._etcd_service_node.start())
+        _etcd_support_task = asyncio.create_task(self._etcd_service_node.start())
         _start_srv_task = asyncio.create_task(self.start_server_task())
 
-        # await _etcd_support_task
+        await _etcd_support_task
         await _start_srv_task
 
     @staticmethod
