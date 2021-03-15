@@ -89,17 +89,17 @@ class TcpServer(object):
         addr = writer.get_extra_info('peername')
         _tcp_conn = TcpConn(addr, writer, reader)
 
-        _ppt = Puppet()
+        # _ppt = Puppet()
 
         # _tcp_conn.set_entity(_ppt)
         # _pbe = PuppetBindEntity()
         # _tcp_conn.set_entity(_pbe)
-        _tcp_conn.set_entity(_ppt)
-        _ppt.set_connection(_tcp_conn)
+        # _tcp_conn.set_entity(_ppt)
+        # _ppt.set_connection(_tcp_conn)
         # _pbe.set_connection(_tcp_conn)
         # _pbe.set_puppet(_ppt)
         # _ppt.set_puppet_bind_entity(_pbe)
-        _ppt.init_from_dict({})
+        # _ppt.init_from_dict({})
 
         self.tcp_conn_map[addr] = _tcp_conn
         message = f"{addr!r} is connected !!!!"
@@ -140,32 +140,15 @@ class TcpServer(object):
 
         etcd_addr_list = [('127.0.0.1', '2379'),]
         my_addr = ('127.0.0.1', '12001')
-        self._etcd_service_node = ServiceNode(
-            etcd_addr_list, my_addr, {}
-        )
+        # self._etcd_service_node = ServiceNode(etcd_addr_list, my_addr, {})
         gr.etcd_service_node = self._etcd_service_node
-        asyncio.get_running_loop().call_later(4, self._check_game_start)
+        # asyncio.get_running_loop().call_later(4, self._check_game_start)
 
-        _etcd_support_task = asyncio.create_task(self._etcd_service_node.start())
+        # _etcd_support_task = asyncio.create_task(self._etcd_service_node.start())
         _start_srv_task = asyncio.create_task(self.start_server_task())
-        # await self._etcd_service_node.start()
-        # await self.start_server_task()
 
-        # server = await asyncio.start_server(
-        #     handle_echo, '127.0.0.1', 8888)
-        # server = await asyncio.start_server(self.handle_client_connected, '127.0.0.1', 8888)
-        # _start_srv_task = asyncio.create_task(asyncio.start_server(self.handle_client_connected, '127.0.0.1', 8888))
-        # await _start_srv_task
-
-        await _etcd_support_task
+        # await _etcd_support_task
         await _start_srv_task
-        # server = await _start_srv_task
-
-        # addr = server.sockets[0].getsockname()
-        # print(f'Server on {addr}')
-        #
-        # async with server:
-        #     await server.serve_forever()
 
     @staticmethod
     def handle_sig():

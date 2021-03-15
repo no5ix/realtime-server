@@ -1,6 +1,6 @@
-import asyncio
+# import asyncio
 
-from TcpConn import TcpConn
+# from TcpConn import TcpConn
 from core.common.EntityManager import EntityManager
 from core.common.IdManager import IdManager
 from core.mobilelog.LogManager import LogManager
@@ -28,7 +28,7 @@ class ServerEntity(object):
         self._conn = conn
 
     def call_client_method(self, method_name, parameters):
-        self._conn.request_rpc(method_name, parameters)
+        self._conn.request_rpc(self.__class__.__name__, method_name, parameters)
 
     def call_other_client_method(self):
         pass
@@ -39,11 +39,11 @@ class ServerEntity(object):
     def call_server_method_direct(self):
         pass
 
-    def call_server_method(self, remote_mailbox, method_name, parameters=None):
-        remote_ip = remote_mailbox.ip
-        remote_port = remote_mailbox.port
-        reader, writer = await asyncio.open_connection(remote_ip, remote_port)
-        _tcp_conn = TcpConn(writer.get_extra_info('peername'), writer, reader)
-        self.set_connection(_tcp_conn)
-        self._conn.request_rpc(method_name, parameters)
-        await _tcp_conn.loop()
+    # def call_server_method(self, remote_mailbox, method_name, parameters=None):
+    #     remote_ip = remote_mailbox.ip
+    #     remote_port = remote_mailbox.port
+    #     reader, writer = await asyncio.open_connection(remote_ip, remote_port)
+    #     _tcp_conn = TcpConn(writer.get_extra_info('peername'), writer, reader)
+    #     self.set_connection(_tcp_conn)
+    #     self._conn.request_rpc(method_name, parameters)
+    #     await _tcp_conn.loop()

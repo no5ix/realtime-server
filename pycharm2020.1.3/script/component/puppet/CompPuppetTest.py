@@ -26,7 +26,7 @@ class CompPuppetTest(Component):
         # TCP_SERVER.call_later()
 
         loop = asyncio.get_event_loop()
-        loop.call_later(4, self.test_delay_func)
+        # loop.call_later(4, self.test_delay_func)
 
     def test_delay_func(self):
         print('test_delay_func')

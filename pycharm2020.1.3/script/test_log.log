@@ -1,731 +1,275 @@
-2021-03-09 17:18:44,344 - ServiceNode - INFO : [EtcdSupport.py:466]: we have create ServiceRegister, wait 5 seconds
-2021-03-09 17:18:44,345 - ServiceNode - INFO : [EtcdSupport.py:469]: we have create ServiceFinder
-2021-03-09 17:18:49,350 - ServiceFinder - INFO : [EtcdSupport.py:234]: init service info from etcd success, will going to watch, at etcd index -> 3
-2021-03-09 17:34:57,376 - ServiceNode - INFO : [EtcdSupport.py:466]: we have create ServiceRegister, wait 5 seconds
-2021-03-09 17:34:57,378 - ServiceNode - INFO : [EtcdSupport.py:469]: we have create ServiceFinder
-2021-03-09 17:35:02,382 - ServiceFinder - INFO : [EtcdSupport.py:234]: init service info from etcd success, will going to watch, at etcd index -> 3
-2021-03-10 09:37:57,833 - ServiceNode - INFO : [EtcdSupport.py:466]: we have create ServiceRegister, wait 5 seconds
-2021-03-10 09:37:57,834 - ServiceNode - INFO : [EtcdSupport.py:469]: we have create ServiceFinder
-2021-03-10 09:38:02,840 - ServiceFinder - INFO : [EtcdSupport.py:234]: init service info from etcd success, will going to watch, at etcd index -> 3
-2021-03-10 09:38:27,873 - ServiceNode - INFO : [EtcdSupport.py:466]: we have create ServiceRegister, wait 5 seconds
-2021-03-10 09:38:27,875 - ServiceNode - INFO : [EtcdSupport.py:469]: we have create ServiceFinder
-2021-03-10 09:38:39,614 - ServiceNode - INFO : [EtcdSupport.py:466]: we have create ServiceRegister, wait 5 seconds
-2021-03-10 09:38:39,615 - ServiceNode - INFO : [EtcdSupport.py:469]: we have create ServiceFinder
-2021-03-10 09:38:44,616 - ServiceFinder - INFO : [EtcdSupport.py:234]: init service info from etcd success, will going to watch, at etcd index -> 3
-2021-03-10 09:40:21,696 - ServiceNode - INFO : [EtcdSupport.py:466]: we have create ServiceRegister, wait 5 seconds
-2021-03-10 09:40:21,697 - ServiceNode - INFO : [EtcdSupport.py:469]: we have create ServiceFinder
-2021-03-10 09:41:02,359 - ServiceNode - INFO : [EtcdSupport.py:466]: we have create ServiceRegister, wait 5 seconds
-2021-03-10 09:41:02,359 - ServiceNode - INFO : [EtcdSupport.py:469]: we have create ServiceFinder
-2021-03-10 09:41:07,335 - ServiceFinder - INFO : [EtcdSupport.py:234]: init service info from etcd success, will going to watch, at etcd index -> 3
-2021-03-10 09:42:04,763 - ServiceNode - INFO : [EtcdSupport.py:466]: we have create ServiceRegister, wait 5 seconds
-2021-03-10 09:42:04,764 - ServiceNode - INFO : [EtcdSupport.py:469]: we have create ServiceFinder
-2021-03-10 09:42:30,575 - ServiceFinder - INFO : [EtcdSupport.py:234]: init service info from etcd success, will going to watch, at etcd index -> 3
-2021-03-10 09:43:20,126 - ServiceNode - INFO : [EtcdSupport.py:466]: we have create ServiceRegister, wait 5 seconds
-2021-03-10 09:43:20,126 - ServiceNode - INFO : [EtcdSupport.py:469]: we have create ServiceFinder
-2021-03-10 09:44:01,631 - ServiceFinder - INFO : [EtcdSupport.py:234]: init service info from etcd success, will going to watch, at etcd index -> 3
-2021-03-10 10:09:58,936 - ServiceNode - INFO : [EtcdSupport.py:466]: we have create ServiceRegister, wait 5 seconds
-2021-03-10 10:09:58,937 - ServiceNode - INFO : [EtcdSupport.py:469]: we have create ServiceFinder
-2021-03-10 10:10:03,935 - ServiceFinder - INFO : [EtcdSupport.py:234]: init service info from etcd success, will going to watch, at etcd index -> 3
-2021-03-10 10:11:09,926 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 10:12:14,926 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 10:13:18,925 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 10:14:22,926 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 10:15:24,929 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 10:16:27,933 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 10:17:33,936 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 10:18:33,940 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 10:19:35,943 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 10:20:36,947 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 10:21:37,951 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 10:22:37,954 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 10:23:46,942 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 10:24:48,945 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 10:25:52,949 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 10:26:54,952 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 10:28:01,956 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 10:29:05,959 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 10:30:06,962 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 10:31:14,966 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 10:32:14,967 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 10:33:24,969 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 10:34:31,971 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 10:35:31,973 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 10:36:36,974 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 10:37:41,976 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 10:38:42,977 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 10:39:52,978 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 10:40:59,980 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 10:42:05,981 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 10:43:07,983 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 10:44:11,984 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 10:45:15,986 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 10:46:17,987 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 10:47:27,989 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 10:48:32,991 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 10:49:38,993 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 10:50:45,994 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 10:51:53,996 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 10:53:00,997 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 10:54:06,999 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 10:55:10,001 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 10:56:11,003 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 10:57:19,004 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 10:58:19,005 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 10:59:25,007 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 11:00:34,009 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 11:01:34,010 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 11:02:35,012 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 11:03:35,014 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 11:04:40,016 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 11:05:45,017 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 11:06:49,019 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 11:07:54,020 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 11:08:54,021 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 11:09:55,023 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 11:10:56,024 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 11:11:59,025 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 11:13:04,027 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 11:14:12,028 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 11:15:14,030 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 11:16:15,032 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 11:17:18,033 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 11:18:22,034 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 11:19:24,036 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 11:20:27,037 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 11:21:29,039 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 11:22:38,041 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 11:23:47,042 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 11:24:52,043 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 11:25:55,045 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 11:27:03,046 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 11:28:09,048 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 11:29:18,049 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 11:30:19,050 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 11:31:21,051 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 11:32:21,053 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 11:33:27,054 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 11:34:33,056 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 11:35:41,058 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 11:36:48,059 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 11:37:55,060 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 11:38:55,062 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 11:39:57,063 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 11:40:57,065 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 11:42:02,066 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 11:43:12,067 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 11:44:19,069 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 11:45:22,070 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 11:46:24,072 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 11:47:25,073 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 11:48:30,074 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 11:49:30,076 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 11:50:35,077 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 11:51:45,079 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 11:52:51,081 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 11:53:54,082 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 11:55:01,084 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 11:56:10,085 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 11:57:10,086 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 11:58:10,087 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 11:59:10,089 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 12:00:15,091 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 12:01:17,092 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 12:02:18,093 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 12:03:24,095 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 12:04:31,096 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 12:05:40,098 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 12:06:43,100 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 12:07:51,101 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 12:09:01,103 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 12:10:02,105 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 12:11:10,106 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 12:12:14,108 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 12:13:21,110 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 12:14:24,111 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 12:15:24,112 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 12:16:32,114 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 12:17:35,115 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 12:18:44,116 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 12:19:49,118 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 12:20:53,119 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 12:21:59,121 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 12:23:04,122 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 12:24:06,123 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 12:25:13,124 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 12:26:15,126 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 12:27:19,128 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 12:28:20,129 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 12:29:20,131 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 12:30:23,133 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 12:31:29,134 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 12:32:38,135 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 12:33:48,137 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 12:34:49,138 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 12:35:49,139 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 12:36:54,140 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 12:37:58,141 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 12:39:06,143 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 12:40:09,144 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 12:41:18,145 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 12:42:21,146 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 12:43:31,148 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 12:44:37,151 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 12:45:46,151 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 12:46:56,152 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 12:48:03,154 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 12:49:13,155 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 12:50:23,157 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 12:51:24,158 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 12:52:25,159 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 12:53:30,161 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 12:54:34,163 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 12:55:43,164 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 12:56:52,165 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 12:57:59,167 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 12:59:08,168 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 13:00:08,170 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 13:01:14,172 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 13:02:15,173 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 13:03:23,174 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 13:04:31,175 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 13:05:34,176 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 13:06:34,178 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 13:07:42,179 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 13:08:52,181 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 13:10:02,182 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 13:11:05,184 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 13:12:11,185 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 13:13:16,187 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 13:14:16,189 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 13:15:22,192 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 13:16:29,194 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 13:17:32,195 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 13:18:38,197 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 13:19:46,198 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 13:20:47,199 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 13:21:52,201 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 13:22:58,202 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 13:24:06,203 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 13:25:11,205 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 13:26:16,207 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 13:27:24,208 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 13:28:31,209 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 13:29:40,211 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 13:30:50,213 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 13:31:52,214 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 13:32:57,216 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 13:33:58,218 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 13:35:04,219 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 13:36:07,221 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 13:37:11,222 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 13:38:13,223 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 13:39:23,225 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 13:40:23,226 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 13:41:25,228 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 13:42:26,230 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 13:43:30,231 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 13:44:38,232 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 13:45:42,233 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 13:46:43,235 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 13:47:47,237 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 13:48:49,239 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 13:49:52,240 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 13:50:59,241 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 13:52:04,242 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 13:53:05,244 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 13:54:09,245 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 13:55:19,247 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 13:56:22,249 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 13:57:23,250 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 13:58:29,252 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 13:59:36,253 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 14:00:46,254 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 14:01:50,256 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 14:03:00,257 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 14:04:01,259 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 14:05:02,260 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 14:06:10,261 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 14:07:14,263 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 14:08:19,264 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 14:09:19,265 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 14:10:27,267 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 14:11:27,269 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 14:12:36,270 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 14:13:37,271 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 14:14:45,273 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 14:15:53,275 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 14:17:03,277 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 14:18:05,278 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 14:19:13,279 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 14:20:16,281 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 14:21:26,282 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 14:22:29,284 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 14:23:33,285 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 14:24:43,287 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 14:25:45,288 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 14:26:45,289 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 14:27:52,291 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 14:28:56,293 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 14:30:02,294 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 14:31:10,296 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 14:32:15,297 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 14:33:17,299 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 14:34:23,300 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 14:35:23,302 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 14:36:27,303 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 14:36:31,655 - ServiceNode - INFO : [EtcdSupport.py:466]: we have create ServiceRegister, wait 5 seconds
-2021-03-10 14:36:31,656 - ServiceNode - INFO : [EtcdSupport.py:469]: we have create ServiceFinder
-2021-03-10 14:36:36,649 - ServiceFinder - INFO : [EtcdSupport.py:234]: init service info from etcd success, will going to watch, at etcd index -> 3
-2021-03-10 14:37:01,114 - ServiceNode - INFO : [EtcdSupport.py:466]: we have create ServiceRegister, wait 5 seconds
-2021-03-10 14:37:01,115 - ServiceNode - INFO : [EtcdSupport.py:469]: we have create ServiceFinder
-2021-03-10 14:37:06,120 - ServiceFinder - INFO : [EtcdSupport.py:234]: init service info from etcd success, will going to watch, at etcd index -> 3
-2021-03-10 14:37:08,099 - ServiceNode - INFO : [EtcdSupport.py:466]: we have create ServiceRegister, wait 5 seconds
-2021-03-10 14:37:08,100 - ServiceNode - INFO : [EtcdSupport.py:469]: we have create ServiceFinder
-2021-03-10 15:23:37,167 - ServiceNode - INFO : [EtcdSupport.py:466]: we have create ServiceRegister, wait 5 seconds
-2021-03-10 15:23:37,167 - ServiceNode - INFO : [EtcdSupport.py:469]: we have create ServiceFinder
-2021-03-10 15:23:45,987 - ServiceFinder - INFO : [EtcdSupport.py:234]: init service info from etcd success, will going to watch, at etcd index -> 3
-2021-03-10 15:24:55,994 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 15:26:04,001 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 15:27:12,993 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 15:28:21,999 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 15:29:26,992 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 15:30:32,998 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 15:31:35,989 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 15:32:43,996 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 15:33:45,004 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 15:34:47,010 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 15:35:56,016 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 15:36:59,011 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 15:38:06,017 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 15:39:15,010 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 15:40:20,016 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 15:41:21,008 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 15:42:31,015 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 15:43:37,007 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 15:44:43,015 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 15:45:45,007 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 15:46:54,010 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 15:47:56,013 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 15:48:57,015 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 15:49:59,018 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 15:50:59,021 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 15:52:04,022 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 15:53:12,024 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 15:54:20,027 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 15:55:27,030 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 15:56:28,034 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 15:57:32,037 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 15:58:32,041 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 15:59:32,045 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 16:00:39,047 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 16:01:40,050 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 16:02:48,052 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 16:03:54,055 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 16:04:55,056 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 16:06:01,058 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 16:07:05,062 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 16:08:09,063 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 16:09:13,065 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 16:10:16,068 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 16:11:26,070 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 16:12:32,073 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 16:13:34,076 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 16:14:35,078 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 16:15:43,080 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 16:16:53,083 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 16:17:57,086 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 16:19:04,089 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 16:20:10,090 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 16:21:15,092 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 16:22:19,094 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 16:23:25,098 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 16:24:31,100 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 16:25:35,103 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 16:26:45,106 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 16:27:51,108 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 16:28:56,111 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 16:30:03,114 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 16:31:11,115 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 16:32:13,117 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 16:33:16,120 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 16:34:24,123 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 16:35:32,125 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 16:36:35,127 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 16:37:37,130 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 16:38:38,132 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 16:39:43,135 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 16:40:51,138 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 16:42:01,140 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 16:43:07,143 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 16:44:10,148 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 16:45:20,152 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 16:46:27,154 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 16:47:37,156 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 16:48:40,158 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 16:49:40,160 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 16:50:44,164 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 16:51:54,166 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 16:53:02,169 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 16:54:03,171 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 16:55:10,173 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 16:56:18,175 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 16:57:20,178 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 16:58:26,181 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 16:59:28,183 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 17:00:32,187 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 17:01:32,188 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 17:02:40,191 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 17:03:44,194 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 17:04:52,197 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 17:05:55,198 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 17:07:02,200 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 17:08:02,203 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 17:09:06,206 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 17:10:11,209 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 17:11:14,211 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 17:12:21,213 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 17:13:21,216 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 17:14:26,219 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 17:15:32,222 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 17:16:40,224 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 17:17:42,227 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 17:18:44,231 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 17:19:45,234 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 17:20:46,236 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 17:21:46,238 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 17:22:55,241 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 17:24:01,244 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 17:25:04,246 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 17:26:06,249 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 17:27:12,251 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 17:28:14,254 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 17:29:15,258 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 17:30:23,260 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 17:31:30,262 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 17:32:37,265 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 17:33:41,267 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 17:34:48,271 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 17:35:55,272 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 17:37:03,274 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 17:38:03,277 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 17:39:12,279 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 17:40:16,283 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 17:41:23,285 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 17:42:30,288 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 17:43:40,290 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 17:44:48,293 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 17:45:58,295 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 17:47:07,298 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 17:48:14,302 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 17:49:17,305 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 17:50:24,307 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 17:51:32,310 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 17:52:42,312 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 17:53:46,315 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 17:54:55,318 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 17:55:56,321 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 17:57:05,323 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 17:58:13,325 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 17:59:23,328 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 18:00:32,331 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 18:01:40,334 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 18:02:47,336 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 18:03:50,338 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 18:04:53,342 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 18:05:59,344 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 18:07:08,346 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 18:08:12,348 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 18:09:15,351 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 18:10:23,353 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 18:11:27,356 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 18:12:29,358 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 18:13:36,361 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 18:14:46,364 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 18:15:53,366 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 18:16:56,368 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 18:18:04,370 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 18:19:12,373 - ServiceFinder - INFO : [EtcdSupport.py:412]: etcd watch timeout, rest watch index 3 -> 3
-2021-03-10 18:19:29,718 - ServiceFinder - ERROR : on_traceback, type:<class 'requests.exceptions.ConnectionError'>, value:HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001961DEE6DF0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')), traceback:<class 'requests.exceptions.ConnectionError'>
-HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001961DEE6DF0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。'))
-  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 404, in _watch_process
-    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x000001961DD11F70>, }
-  File "C:\Program Files\Python38\lib\asyncio\tasks.py", line 494, in wait_for
-    locals={'fut': <Task finished name='Task-167' coro=<ServiceFinder._watch_process_impl() done, defined at D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py:346> exception=ConnectionError(MaxRetryError("HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001961DEE6DF0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。'))"))>, 'timeout': 70, 'loop': <ProactorEventLoop running=True closed=False debug=False>, 'waiter': <Future finished result=None>, 'timeout_handle': <TimerHandle cancelled when=34413.187>, 'cb': functools.partial(<function _release_waiter at 0x000001961D036F70>, <Future finished result=None>)}
-  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 347, in _watch_process_impl
-    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x000001961DD11F70>, }
-  File "C:\Program Files\Python38\lib\concurrent\futures\thread.py", line 57, in run
-    locals={}
-  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 347, in <lambda>
-    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x000001961DD11F70>, }
-  File "C:\Program Files\Python38\lib\site-packages\requests\api.py", line 61, in request
-    locals={'method': 'GET', 'url': 'http://127.0.0.1:2379/v2/keys', 'kwargs': {}, 'session': <requests.sessions.Session object at 0x000001961D171700>}
-  File "C:\Program Files\Python38\lib\site-packages\requests\sessions.py", line 542, in request
-    locals={'self': <requests.sessions.Session object at 0x000001961D171700>, 'method': 'GET', 'url': 'http://127.0.0.1:2379/v2/keys', 'params': None, 'data': None, 'headers': None, 'cookies': None, 'files': None, 'auth': None, 'timeout': None, 'allow_redirects': True, 'proxies': {}, 'hooks': None, 'stream': None, 'verify': None, 'cert': None, 'json': None, 'req': <Request [GET]>, 'prep': <PreparedRequest [GET]>, 'settings': {'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}, 'send_kwargs': {'timeout': None, 'allow_redirects': True, 'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}}
-  File "C:\Program Files\Python38\lib\site-packages\requests\sessions.py", line 655, in send
-    locals={'self': <requests.sessions.Session object at 0x000001961D171700>, 'request': <PreparedRequest [GET]>, 'kwargs': {'timeout': None, 'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}, 'allow_redirects': True, 'stream': False, 'hooks': {'response': []}, 'adapter': <requests.adapters.HTTPAdapter object at 0x000001961E00B730>, 'start': 10552.241787688}
-  File "C:\Program Files\Python38\lib\site-packages\requests\adapters.py", line 516, in send
-    locals={'self': <requests.adapters.HTTPAdapter object at 0x000001961E00B730>, 'request': <PreparedRequest [GET]>, 'stream': False, 'timeout': Timeout(connect=None, read=None, total=None), 'verify': True, 'cert': None, 'proxies': OrderedDict(), 'conn': <urllib3.connectionpool.HTTPConnectionPool object at 0x000001961DF5F400>, 'url': '/v2/keys', 'chunked': False}
-2021-03-10 18:19:30,723 - ServiceFinder - ERROR : on_traceback, type:<class 'requests.exceptions.ConnectionError'>, value:HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001961DF74160>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')), traceback:<class 'requests.exceptions.ConnectionError'>
-HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001961DF74160>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。'))
-  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 404, in _watch_process
-    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x000001961DD11F70>, }
-  File "C:\Program Files\Python38\lib\asyncio\tasks.py", line 494, in wait_for
-    locals={'fut': <Task finished name='Task-168' coro=<ServiceFinder._watch_process_impl() done, defined at D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py:346> exception=ConnectionError(MaxRetryError("HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001961DF74160>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。'))"))>, 'timeout': 67, 'loop': <ProactorEventLoop running=True closed=False debug=False>, 'waiter': <Future finished result=None>, 'timeout_handle': <TimerHandle cancelled when=34427.531>, 'cb': functools.partial(<function _release_waiter at 0x000001961D036F70>, <Future finished result=None>)}
-  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 347, in _watch_process_impl
-    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x000001961DD11F70>, }
-  File "C:\Program Files\Python38\lib\concurrent\futures\thread.py", line 57, in run
-    locals={}
-  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 347, in <lambda>
-    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x000001961DD11F70>, }
-  File "C:\Program Files\Python38\lib\site-packages\requests\api.py", line 61, in request
-    locals={'method': 'GET', 'url': 'http://127.0.0.1:2379/v2/keys', 'kwargs': {}, 'session': <requests.sessions.Session object at 0x000001961DEFBCA0>}
-  File "C:\Program Files\Python38\lib\site-packages\requests\sessions.py", line 542, in request
-    locals={'self': <requests.sessions.Session object at 0x000001961DEFBCA0>, 'method': 'GET', 'url': 'http://127.0.0.1:2379/v2/keys', 'params': None, 'data': None, 'headers': None, 'cookies': None, 'files': None, 'auth': None, 'timeout': None, 'allow_redirects': True, 'proxies': {}, 'hooks': None, 'stream': None, 'verify': None, 'cert': None, 'json': None, 'req': <Request [GET]>, 'prep': <PreparedRequest [GET]>, 'settings': {'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}, 'send_kwargs': {'timeout': None, 'allow_redirects': True, 'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}}
-  File "C:\Program Files\Python38\lib\site-packages\requests\sessions.py", line 655, in send
-    locals={'self': <requests.sessions.Session object at 0x000001961DEFBCA0>, 'request': <PreparedRequest [GET]>, 'kwargs': {'timeout': None, 'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}, 'allow_redirects': True, 'stream': False, 'hooks': {'response': []}, 'adapter': <requests.adapters.HTTPAdapter object at 0x000001961DE29A30>, 'start': 10553.245407599}
-  File "C:\Program Files\Python38\lib\site-packages\requests\adapters.py", line 516, in send
-    locals={'self': <requests.adapters.HTTPAdapter object at 0x000001961DE29A30>, 'request': <PreparedRequest [GET]>, 'stream': False, 'timeout': Timeout(connect=None, read=None, total=None), 'verify': True, 'cert': None, 'proxies': OrderedDict(), 'conn': <urllib3.connectionpool.HTTPConnectionPool object at 0x000001961DF7B2B0>, 'url': '/v2/keys', 'chunked': False}
-2021-03-10 18:19:31,728 - ServiceFinder - ERROR : on_traceback, type:<class 'requests.exceptions.ConnectionError'>, value:HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001961E00B190>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')), traceback:<class 'requests.exceptions.ConnectionError'>
-HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001961E00B190>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。'))
-  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 404, in _watch_process
-    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x000001961DD11F70>, }
-  File "C:\Program Files\Python38\lib\asyncio\tasks.py", line 494, in wait_for
-    locals={'fut': <Task finished name='Task-169' coro=<ServiceFinder._watch_process_impl() done, defined at D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py:346> exception=ConnectionError(MaxRetryError("HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001961E00B190>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。'))"))>, 'timeout': 62, 'loop': <ProactorEventLoop running=True closed=False debug=False>, 'waiter': <Future finished result=None>, 'timeout_handle': <TimerHandle cancelled when=34423.546>, 'cb': functools.partial(<function _release_waiter at 0x000001961D036F70>, <Future finished result=None>)}
-  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 347, in _watch_process_impl
-    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x000001961DD11F70>, }
-  File "C:\Program Files\Python38\lib\concurrent\futures\thread.py", line 57, in run
-    locals={}
-  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 347, in <lambda>
-    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x000001961DD11F70>, }
-  File "C:\Program Files\Python38\lib\site-packages\requests\api.py", line 61, in request
-    locals={'method': 'GET', 'url': 'http://127.0.0.1:2379/v2/keys', 'kwargs': {}, 'session': <requests.sessions.Session object at 0x000001961DF4B130>}
-  File "C:\Program Files\Python38\lib\site-packages\requests\sessions.py", line 542, in request
-    locals={'self': <requests.sessions.Session object at 0x000001961DF4B130>, 'method': 'GET', 'url': 'http://127.0.0.1:2379/v2/keys', 'params': None, 'data': None, 'headers': None, 'cookies': None, 'files': None, 'auth': None, 'timeout': None, 'allow_redirects': True, 'proxies': {}, 'hooks': None, 'stream': None, 'verify': None, 'cert': None, 'json': None, 'req': <Request [GET]>, 'prep': <PreparedRequest [GET]>, 'settings': {'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}, 'send_kwargs': {'timeout': None, 'allow_redirects': True, 'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}}
-  File "C:\Program Files\Python38\lib\site-packages\requests\sessions.py", line 655, in send
-    locals={'self': <requests.sessions.Session object at 0x000001961DF4B130>, 'request': <PreparedRequest [GET]>, 'kwargs': {'timeout': None, 'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}, 'allow_redirects': True, 'stream': False, 'hooks': {'response': []}, 'adapter': <requests.adapters.HTTPAdapter object at 0x000001961E00B820>, 'start': 10554.250230008}
-  File "C:\Program Files\Python38\lib\site-packages\requests\adapters.py", line 516, in send
-    locals={'self': <requests.adapters.HTTPAdapter object at 0x000001961E00B820>, 'request': <PreparedRequest [GET]>, 'stream': False, 'timeout': Timeout(connect=None, read=None, total=None), 'verify': True, 'cert': None, 'proxies': OrderedDict(), 'conn': <urllib3.connectionpool.HTTPConnectionPool object at 0x000001961E00B700>, 'url': '/v2/keys', 'chunked': False}
-2021-03-10 18:19:32,732 - ServiceFinder - ERROR : on_traceback, type:<class 'requests.exceptions.ConnectionError'>, value:HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001961E0077C0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')), traceback:<class 'requests.exceptions.ConnectionError'>
-HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001961E0077C0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。'))
-  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 404, in _watch_process
-    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x000001961DD11F70>, }
-  File "C:\Program Files\Python38\lib\asyncio\tasks.py", line 494, in wait_for
-    locals={'fut': <Task finished name='Task-170' coro=<ServiceFinder._watch_process_impl() done, defined at D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py:346> exception=ConnectionError(MaxRetryError("HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001961E0077C0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。'))"))>, 'timeout': 67, 'loop': <ProactorEventLoop running=True closed=False debug=False>, 'waiter': <Future finished result=None>, 'timeout_handle': <TimerHandle cancelled when=34429.546>, 'cb': functools.partial(<function _release_waiter at 0x000001961D036F70>, <Future finished result=None>)}
-  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 347, in _watch_process_impl
-    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x000001961DD11F70>, }
-  File "C:\Program Files\Python38\lib\concurrent\futures\thread.py", line 57, in run
-    locals={}
-  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 347, in <lambda>
-    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x000001961DD11F70>, }
-  File "C:\Program Files\Python38\lib\site-packages\requests\api.py", line 61, in request
-    locals={'method': 'GET', 'url': 'http://127.0.0.1:2379/v2/keys', 'kwargs': {}, 'session': <requests.sessions.Session object at 0x000001961DF24E20>}
-  File "C:\Program Files\Python38\lib\site-packages\requests\sessions.py", line 542, in request
-    locals={'self': <requests.sessions.Session object at 0x000001961DF24E20>, 'method': 'GET', 'url': 'http://127.0.0.1:2379/v2/keys', 'params': None, 'data': None, 'headers': None, 'cookies': None, 'files': None, 'auth': None, 'timeout': None, 'allow_redirects': True, 'proxies': {}, 'hooks': None, 'stream': None, 'verify': None, 'cert': None, 'json': None, 'req': <Request [GET]>, 'prep': <PreparedRequest [GET]>, 'settings': {'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}, 'send_kwargs': {'timeout': None, 'allow_redirects': True, 'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}}
-  File "C:\Program Files\Python38\lib\site-packages\requests\sessions.py", line 655, in send
-    locals={'self': <requests.sessions.Session object at 0x000001961DF24E20>, 'request': <PreparedRequest [GET]>, 'kwargs': {'timeout': None, 'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}, 'allow_redirects': True, 'stream': False, 'hooks': {'response': []}, 'adapter': <requests.adapters.HTTPAdapter object at 0x000001961E0071F0>, 'start': 10555.255499065}
-  File "C:\Program Files\Python38\lib\site-packages\requests\adapters.py", line 516, in send
-    locals={'self': <requests.adapters.HTTPAdapter object at 0x000001961E0071F0>, 'request': <PreparedRequest [GET]>, 'stream': False, 'timeout': Timeout(connect=None, read=None, total=None), 'verify': True, 'cert': None, 'proxies': OrderedDict(), 'conn': <urllib3.connectionpool.HTTPConnectionPool object at 0x000001961DF89250>, 'url': '/v2/keys', 'chunked': False}
-2021-03-10 18:19:33,737 - ServiceFinder - ERROR : on_traceback, type:<class 'requests.exceptions.ConnectionError'>, value:HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001961DF19E50>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')), traceback:<class 'requests.exceptions.ConnectionError'>
-HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001961DF19E50>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。'))
-  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 404, in _watch_process
-    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x000001961DD11F70>, }
-  File "C:\Program Files\Python38\lib\asyncio\tasks.py", line 494, in wait_for
-    locals={'fut': <Task finished name='Task-171' coro=<ServiceFinder._watch_process_impl() done, defined at D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py:346> exception=ConnectionError(MaxRetryError("HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001961DF19E50>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。'))"))>, 'timeout': 62, 'loop': <ProactorEventLoop running=True closed=False debug=False>, 'waiter': <Future finished result=None>, 'timeout_handle': <TimerHandle cancelled when=34425.546>, 'cb': functools.partial(<function _release_waiter at 0x000001961D036F70>, <Future finished result=None>)}
-  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 347, in _watch_process_impl
-    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x000001961DD11F70>, }
-  File "C:\Program Files\Python38\lib\concurrent\futures\thread.py", line 57, in run
-    locals={}
-  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 347, in <lambda>
-    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x000001961DD11F70>, }
-  File "C:\Program Files\Python38\lib\site-packages\requests\api.py", line 61, in request
-    locals={'method': 'GET', 'url': 'http://127.0.0.1:2379/v2/keys', 'kwargs': {}, 'session': <requests.sessions.Session object at 0x000001961DF4B130>}
-  File "C:\Program Files\Python38\lib\site-packages\requests\sessions.py", line 542, in request
-    locals={'self': <requests.sessions.Session object at 0x000001961DF4B130>, 'method': 'GET', 'url': 'http://127.0.0.1:2379/v2/keys', 'params': None, 'data': None, 'headers': None, 'cookies': None, 'files': None, 'auth': None, 'timeout': None, 'allow_redirects': True, 'proxies': {}, 'hooks': None, 'stream': None, 'verify': None, 'cert': None, 'json': None, 'req': <Request [GET]>, 'prep': <PreparedRequest [GET]>, 'settings': {'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}, 'send_kwargs': {'timeout': None, 'allow_redirects': True, 'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}}
-  File "C:\Program Files\Python38\lib\site-packages\requests\sessions.py", line 655, in send
-    locals={'self': <requests.sessions.Session object at 0x000001961DF4B130>, 'request': <PreparedRequest [GET]>, 'kwargs': {'timeout': None, 'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}, 'allow_redirects': True, 'stream': False, 'hooks': {'response': []}, 'adapter': <requests.adapters.HTTPAdapter object at 0x000001961DF89370>, 'start': 10556.259455719}
-  File "C:\Program Files\Python38\lib\site-packages\requests\adapters.py", line 516, in send
-    locals={'self': <requests.adapters.HTTPAdapter object at 0x000001961DF89370>, 'request': <PreparedRequest [GET]>, 'stream': False, 'timeout': Timeout(connect=None, read=None, total=None), 'verify': True, 'cert': None, 'proxies': OrderedDict(), 'conn': <urllib3.connectionpool.HTTPConnectionPool object at 0x000001961DF0EE20>, 'url': '/v2/keys', 'chunked': False}
-2021-03-11 14:43:24,821 - ServiceNode - INFO : [EtcdSupport.py:466]: we have create ServiceRegister, wait 5 seconds
-2021-03-11 14:43:24,822 - ServiceNode - INFO : [EtcdSupport.py:469]: we have create ServiceFinder
-2021-03-11 14:43:30,833 - ServiceFinder - ERROR : on_traceback, type:<class 'requests.exceptions.ConnectionError'>, value:HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys?recursive=true (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000018779C38C70>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')), traceback:<class 'requests.exceptions.ConnectionError'>
-HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys?recursive=true (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000018779C38C70>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。'))
-  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 309, in _init_info
-    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x0000018779B35910>, 'now_url': 'http://127.0.0.1:2379/v2/keys?recursive=true'}
-  File "C:\Program Files\Python38\lib\concurrent\futures\thread.py", line 57, in run
-    locals={}
-  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 309, in <lambda>
-    locals={'now_url': 'http://127.0.0.1:2379/v2/keys?recursive=true'}
-  File "C:\Program Files\Python38\lib\site-packages\requests\api.py", line 61, in request
-    locals={'method': 'GET', 'url': 'http://127.0.0.1:2379/v2/keys?recursive=true', 'kwargs': {}, 'session': <requests.sessions.Session object at 0x0000018779C1BB20>}
-  File "C:\Program Files\Python38\lib\site-packages\requests\sessions.py", line 542, in request
-    locals={'self': <requests.sessions.Session object at 0x0000018779C1BB20>, 'method': 'GET', 'url': 'http://127.0.0.1:2379/v2/keys?recursive=true', 'params': None, 'data': None, 'headers': None, 'cookies': None, 'files': None, 'auth': None, 'timeout': None, 'allow_redirects': True, 'proxies': {}, 'hooks': None, 'stream': None, 'verify': None, 'cert': None, 'json': None, 'req': <Request [GET]>, 'prep': <PreparedRequest [GET]>, 'settings': {'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}, 'send_kwargs': {'timeout': None, 'allow_redirects': True, 'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}}
-  File "C:\Program Files\Python38\lib\site-packages\requests\sessions.py", line 655, in send
-    locals={'self': <requests.sessions.Session object at 0x0000018779C1BB20>, 'request': <PreparedRequest [GET]>, 'kwargs': {'timeout': None, 'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}, 'allow_redirects': True, 'stream': False, 'hooks': {'response': []}, 'adapter': <requests.adapters.HTTPAdapter object at 0x0000018779C1BC70>, 'start': 128.389865179}
-  File "C:\Program Files\Python38\lib\site-packages\requests\adapters.py", line 516, in send
-    locals={'self': <requests.adapters.HTTPAdapter object at 0x0000018779C1BC70>, 'request': <PreparedRequest [GET]>, 'stream': False, 'timeout': Timeout(connect=None, read=None, total=None), 'verify': True, 'cert': None, 'proxies': OrderedDict(), 'conn': <urllib3.connectionpool.HTTPConnectionPool object at 0x0000018779C1BF10>, 'url': '/v2/keys?recursive=true', 'chunked': False}
-2021-03-11 17:16:32,437 - ServiceNode - INFO : [EtcdSupport.py:466]: we have create ServiceRegister, wait 5 seconds
-2021-03-11 17:16:32,437 - ServiceNode - INFO : [EtcdSupport.py:469]: we have create ServiceFinder
-2021-03-11 17:31:32,371 - ServiceNode - INFO : [EtcdSupport.py:466]: we have create ServiceRegister, wait 5 seconds
-2021-03-11 17:31:32,371 - ServiceNode - INFO : [EtcdSupport.py:469]: we have create ServiceFinder
-2021-03-11 17:31:38,383 - ServiceFinder - ERROR : on_traceback, type:<class 'requests.exceptions.ConnectionError'>, value:HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys?recursive=true (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000002A8A5EC0310>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')), traceback:<class 'requests.exceptions.ConnectionError'>
-HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys?recursive=true (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000002A8A5EC0310>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。'))
-  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 309, in _init_info
-    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x000002A8A5EC9CA0>, 'now_url': 'http://127.0.0.1:2379/v2/keys?recursive=true'}
-  File "C:\Program Files\Python38\lib\concurrent\futures\thread.py", line 57, in run
-    locals={}
-  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 309, in <lambda>
-    locals={'now_url': 'http://127.0.0.1:2379/v2/keys?recursive=true'}
-  File "C:\Program Files\Python38\lib\site-packages\requests\api.py", line 61, in request
-    locals={'method': 'GET', 'url': 'http://127.0.0.1:2379/v2/keys?recursive=true', 'kwargs': {}, 'session': <requests.sessions.Session object at 0x000002A8A5EBBBE0>}
-  File "C:\Program Files\Python38\lib\site-packages\requests\sessions.py", line 542, in request
-    locals={'self': <requests.sessions.Session object at 0x000002A8A5EBBBE0>, 'method': 'GET', 'url': 'http://127.0.0.1:2379/v2/keys?recursive=true', 'params': None, 'data': None, 'headers': None, 'cookies': None, 'files': None, 'auth': None, 'timeout': None, 'allow_redirects': True, 'proxies': {}, 'hooks': None, 'stream': None, 'verify': None, 'cert': None, 'json': None, 'req': <Request [GET]>, 'prep': <PreparedRequest [GET]>, 'settings': {'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}, 'send_kwargs': {'timeout': None, 'allow_redirects': True, 'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}}
-  File "C:\Program Files\Python38\lib\site-packages\requests\sessions.py", line 655, in send
-    locals={'self': <requests.sessions.Session object at 0x000002A8A5EBBBE0>, 'request': <PreparedRequest [GET]>, 'kwargs': {'timeout': None, 'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}, 'allow_redirects': True, 'stream': False, 'hooks': {'response': []}, 'adapter': <requests.adapters.HTTPAdapter object at 0x000002A8A5EBBBB0>, 'start': 900.031458758}
-  File "C:\Program Files\Python38\lib\site-packages\requests\adapters.py", line 516, in send
-    locals={'self': <requests.adapters.HTTPAdapter object at 0x000002A8A5EBBBB0>, 'request': <PreparedRequest [GET]>, 'stream': False, 'timeout': Timeout(connect=None, read=None, total=None), 'verify': True, 'cert': None, 'proxies': OrderedDict(), 'conn': <urllib3.connectionpool.HTTPConnectionPool object at 0x000002A8A5EBBC40>, 'url': '/v2/keys?recursive=true', 'chunked': False}
-2021-03-11 17:31:39,387 - ServiceFinder - ERROR : on_traceback, type:<class 'requests.exceptions.ConnectionError'>, value:HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys?recursive=true (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000002A8A5EC0F10>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')), traceback:<class 'requests.exceptions.ConnectionError'>
-HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys?recursive=true (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000002A8A5EC0F10>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。'))
-  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 309, in _init_info
-    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x000002A8A5EC9CA0>, 'now_url': 'http://127.0.0.1:2379/v2/keys?recursive=true'}
-  File "C:\Program Files\Python38\lib\concurrent\futures\thread.py", line 57, in run
-    locals={}
-  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 309, in <lambda>
-    locals={'now_url': 'http://127.0.0.1:2379/v2/keys?recursive=true'}
-  File "C:\Program Files\Python38\lib\site-packages\requests\api.py", line 61, in request
-    locals={'method': 'GET', 'url': 'http://127.0.0.1:2379/v2/keys?recursive=true', 'kwargs': {}, 'session': <requests.sessions.Session object at 0x000002A8A5EC0F40>}
-  File "C:\Program Files\Python38\lib\site-packages\requests\sessions.py", line 542, in request
-    locals={'self': <requests.sessions.Session object at 0x000002A8A5EC0F40>, 'method': 'GET', 'url': 'http://127.0.0.1:2379/v2/keys?recursive=true', 'params': None, 'data': None, 'headers': None, 'cookies': None, 'files': None, 'auth': None, 'timeout': None, 'allow_redirects': True, 'proxies': {}, 'hooks': None, 'stream': None, 'verify': None, 'cert': None, 'json': None, 'req': <Request [GET]>, 'prep': <PreparedRequest [GET]>, 'settings': {'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}, 'send_kwargs': {'timeout': None, 'allow_redirects': True, 'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}}
-  File "C:\Program Files\Python38\lib\site-packages\requests\sessions.py", line 655, in send
-    locals={'self': <requests.sessions.Session object at 0x000002A8A5EC0F40>, 'request': <PreparedRequest [GET]>, 'kwargs': {'timeout': None, 'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}, 'allow_redirects': True, 'stream': False, 'hooks': {'response': []}, 'adapter': <requests.adapters.HTTPAdapter object at 0x000002A8A5EC0550>, 'start': 901.035769972}
-  File "C:\Program Files\Python38\lib\site-packages\requests\adapters.py", line 516, in send
-    locals={'self': <requests.adapters.HTTPAdapter object at 0x000002A8A5EC0550>, 'request': <PreparedRequest [GET]>, 'stream': False, 'timeout': Timeout(connect=None, read=None, total=None), 'verify': True, 'cert': None, 'proxies': OrderedDict(), 'conn': <urllib3.connectionpool.HTTPConnectionPool object at 0x000002A8A5EC9820>, 'url': '/v2/keys?recursive=true', 'chunked': False}
-2021-03-11 17:31:40,391 - ServiceFinder - ERROR : on_traceback, type:<class 'requests.exceptions.ConnectionError'>, value:HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys?recursive=true (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000002A8A5ECF640>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')), traceback:<class 'requests.exceptions.ConnectionError'>
-HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys?recursive=true (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000002A8A5ECF640>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。'))
-  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 309, in _init_info
-    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x000002A8A5EC9CA0>, 'now_url': 'http://127.0.0.1:2379/v2/keys?recursive=true'}
-  File "C:\Program Files\Python38\lib\concurrent\futures\thread.py", line 57, in run
-    locals={}
-  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 309, in <lambda>
-    locals={'now_url': 'http://127.0.0.1:2379/v2/keys?recursive=true'}
-  File "C:\Program Files\Python38\lib\site-packages\requests\api.py", line 61, in request
-    locals={'method': 'GET', 'url': 'http://127.0.0.1:2379/v2/keys?recursive=true', 'kwargs': {}, 'session': <requests.sessions.Session object at 0x000002A8A5ECF610>}
-  File "C:\Program Files\Python38\lib\site-packages\requests\sessions.py", line 542, in request
-    locals={'self': <requests.sessions.Session object at 0x000002A8A5ECF610>, 'method': 'GET', 'url': 'http://127.0.0.1:2379/v2/keys?recursive=true', 'params': None, 'data': None, 'headers': None, 'cookies': None, 'files': None, 'auth': None, 'timeout': None, 'allow_redirects': True, 'proxies': {}, 'hooks': None, 'stream': None, 'verify': None, 'cert': None, 'json': None, 'req': <Request [GET]>, 'prep': <PreparedRequest [GET]>, 'settings': {'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}, 'send_kwargs': {'timeout': None, 'allow_redirects': True, 'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}}
-  File "C:\Program Files\Python38\lib\site-packages\requests\sessions.py", line 655, in send
-    locals={'self': <requests.sessions.Session object at 0x000002A8A5ECF610>, 'request': <PreparedRequest [GET]>, 'kwargs': {'timeout': None, 'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}, 'allow_redirects': True, 'stream': False, 'hooks': {'response': []}, 'adapter': <requests.adapters.HTTPAdapter object at 0x000002A8A5ECF100>, 'start': 902.040150045}
-  File "C:\Program Files\Python38\lib\site-packages\requests\adapters.py", line 516, in send
-    locals={'self': <requests.adapters.HTTPAdapter object at 0x000002A8A5ECF100>, 'request': <PreparedRequest [GET]>, 'stream': False, 'timeout': Timeout(connect=None, read=None, total=None), 'verify': True, 'cert': None, 'proxies': OrderedDict(), 'conn': <urllib3.connectionpool.HTTPConnectionPool object at 0x000002A8A5EBBF70>, 'url': '/v2/keys?recursive=true', 'chunked': False}
-2021-03-11 17:31:41,396 - ServiceFinder - ERROR : on_traceback, type:<class 'requests.exceptions.ConnectionError'>, value:HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys?recursive=true (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000002A8A5F0CB50>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')), traceback:<class 'requests.exceptions.ConnectionError'>
-HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys?recursive=true (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000002A8A5F0CB50>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。'))
-  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 309, in _init_info
-    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x000002A8A5EC9CA0>, 'now_url': 'http://127.0.0.1:2379/v2/keys?recursive=true'}
-  File "C:\Program Files\Python38\lib\concurrent\futures\thread.py", line 57, in run
-    locals={}
-  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 309, in <lambda>
-    locals={'now_url': 'http://127.0.0.1:2379/v2/keys?recursive=true'}
-  File "C:\Program Files\Python38\lib\site-packages\requests\api.py", line 61, in request
-    locals={'method': 'GET', 'url': 'http://127.0.0.1:2379/v2/keys?recursive=true', 'kwargs': {}, 'session': <requests.sessions.Session object at 0x000002A8A5EC0700>}
-  File "C:\Program Files\Python38\lib\site-packages\requests\sessions.py", line 542, in request
-    locals={'self': <requests.sessions.Session object at 0x000002A8A5EC0700>, 'method': 'GET', 'url': 'http://127.0.0.1:2379/v2/keys?recursive=true', 'params': None, 'data': None, 'headers': None, 'cookies': None, 'files': None, 'auth': None, 'timeout': None, 'allow_redirects': True, 'proxies': {}, 'hooks': None, 'stream': None, 'verify': None, 'cert': None, 'json': None, 'req': <Request [GET]>, 'prep': <PreparedRequest [GET]>, 'settings': {'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}, 'send_kwargs': {'timeout': None, 'allow_redirects': True, 'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}}
-  File "C:\Program Files\Python38\lib\site-packages\requests\sessions.py", line 655, in send
-    locals={'self': <requests.sessions.Session object at 0x000002A8A5EC0700>, 'request': <PreparedRequest [GET]>, 'kwargs': {'timeout': None, 'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}, 'allow_redirects': True, 'stream': False, 'hooks': {'response': []}, 'adapter': <requests.adapters.HTTPAdapter object at 0x000002A8A5ECFEE0>, 'start': 903.044462879}
-  File "C:\Program Files\Python38\lib\site-packages\requests\adapters.py", line 516, in send
-    locals={'self': <requests.adapters.HTTPAdapter object at 0x000002A8A5ECFEE0>, 'request': <PreparedRequest [GET]>, 'stream': False, 'timeout': Timeout(connect=None, read=None, total=None), 'verify': True, 'cert': None, 'proxies': OrderedDict(), 'conn': <urllib3.connectionpool.HTTPConnectionPool object at 0x000002A8A5ECFC10>, 'url': '/v2/keys?recursive=true', 'chunked': False}
-2021-03-11 17:31:42,401 - ServiceFinder - ERROR : on_traceback, type:<class 'requests.exceptions.ConnectionError'>, value:HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys?recursive=true (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000002A8A5ECF7F0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')), traceback:<class 'requests.exceptions.ConnectionError'>
-HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys?recursive=true (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000002A8A5ECF7F0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。'))
-  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 309, in _init_info
-    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x000002A8A5EC9CA0>, 'now_url': 'http://127.0.0.1:2379/v2/keys?recursive=true'}
-  File "C:\Program Files\Python38\lib\concurrent\futures\thread.py", line 57, in run
-    locals={'self': <concurrent.futures.thread._WorkItem object at 0x000002A8A5ECF3D0>, 'exc': ConnectionError(MaxRetryError("HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys?recursive=true (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000002A8A5ECF7F0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。'))"))}
-  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 309, in <lambda>
-    locals={'now_url': 'http://127.0.0.1:2379/v2/keys?recursive=true'}
-  File "C:\Program Files\Python38\lib\site-packages\requests\api.py", line 61, in request
-    locals={'method': 'GET', 'url': 'http://127.0.0.1:2379/v2/keys?recursive=true', 'kwargs': {}, 'session': <requests.sessions.Session object at 0x000002A8A5F0CE80>}
-  File "C:\Program Files\Python38\lib\site-packages\requests\sessions.py", line 542, in request
-    locals={'self': <requests.sessions.Session object at 0x000002A8A5F0CE80>, 'method': 'GET', 'url': 'http://127.0.0.1:2379/v2/keys?recursive=true', 'params': None, 'data': None, 'headers': None, 'cookies': None, 'files': None, 'auth': None, 'timeout': None, 'allow_redirects': True, 'proxies': {}, 'hooks': None, 'stream': None, 'verify': None, 'cert': None, 'json': None, 'req': <Request [GET]>, 'prep': <PreparedRequest [GET]>, 'settings': {'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}, 'send_kwargs': {'timeout': None, 'allow_redirects': True, 'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}}
-  File "C:\Program Files\Python38\lib\site-packages\requests\sessions.py", line 655, in send
-    locals={'self': <requests.sessions.Session object at 0x000002A8A5F0CE80>, 'request': <PreparedRequest [GET]>, 'kwargs': {'timeout': None, 'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}, 'allow_redirects': True, 'stream': False, 'hooks': {'response': []}, 'adapter': <requests.adapters.HTTPAdapter object at 0x000002A8A5F0C520>, 'start': 904.049693043}
-  File "C:\Program Files\Python38\lib\site-packages\requests\adapters.py", line 516, in send
-    locals={'self': <requests.adapters.HTTPAdapter object at 0x000002A8A5F0C520>, 'request': <PreparedRequest [GET]>, 'stream': False, 'timeout': Timeout(connect=None, read=None, total=None), 'verify': True, 'cert': None, 'proxies': OrderedDict(), 'conn': <urllib3.connectionpool.HTTPConnectionPool object at 0x000002A8A5ECFAF0>, 'url': '/v2/keys?recursive=true', 'chunked': False}
-2021-03-11 17:31:43,405 - ServiceFinder - ERROR : on_traceback, type:<class 'requests.exceptions.ConnectionError'>, value:HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys?recursive=true (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000002A8A5EBBE20>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')), traceback:<class 'requests.exceptions.ConnectionError'>
-HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys?recursive=true (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000002A8A5EBBE20>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。'))
-  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 309, in _init_info
-    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x000002A8A5EC9CA0>, 'now_url': 'http://127.0.0.1:2379/v2/keys?recursive=true'}
-  File "C:\Program Files\Python38\lib\concurrent\futures\thread.py", line 57, in run
-    locals={}
-  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 309, in <lambda>
-    locals={'now_url': 'http://127.0.0.1:2379/v2/keys?recursive=true'}
-  File "C:\Program Files\Python38\lib\site-packages\requests\api.py", line 61, in request
-    locals={'method': 'GET', 'url': 'http://127.0.0.1:2379/v2/keys?recursive=true', 'kwargs': {}, 'session': <requests.sessions.Session object at 0x000002A8A5ECFF70>}
-  File "C:\Program Files\Python38\lib\site-packages\requests\sessions.py", line 542, in request
-    locals={'self': <requests.sessions.Session object at 0x000002A8A5ECFF70>, 'method': 'GET', 'url': 'http://127.0.0.1:2379/v2/keys?recursive=true', 'params': None, 'data': None, 'headers': None, 'cookies': None, 'files': None, 'auth': None, 'timeout': None, 'allow_redirects': True, 'proxies': {}, 'hooks': None, 'stream': None, 'verify': None, 'cert': None, 'json': None, 'req': <Request [GET]>, 'prep': <PreparedRequest [GET]>, 'settings': {'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}, 'send_kwargs': {'timeout': None, 'allow_redirects': True, 'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}}
-  File "C:\Program Files\Python38\lib\site-packages\requests\sessions.py", line 655, in send
-    locals={'self': <requests.sessions.Session object at 0x000002A8A5ECFF70>, 'request': <PreparedRequest [GET]>, 'kwargs': {'timeout': None, 'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}, 'allow_redirects': True, 'stream': False, 'hooks': {'response': []}, 'adapter': <requests.adapters.HTTPAdapter object at 0x000002A8A5ECF0A0>, 'start': 905.054588896}
-  File "C:\Program Files\Python38\lib\site-packages\requests\adapters.py", line 516, in send
-    locals={'self': <requests.adapters.HTTPAdapter object at 0x000002A8A5ECF0A0>, 'request': <PreparedRequest [GET]>, 'stream': False, 'timeout': Timeout(connect=None, read=None, total=None), 'verify': True, 'cert': None, 'proxies': OrderedDict(), 'conn': <urllib3.connectionpool.HTTPConnectionPool object at 0x000002A8A5ECFDC0>, 'url': '/v2/keys?recursive=true', 'chunked': False}
-2021-03-11 17:31:44,412 - ServiceFinder - ERROR : on_traceback, type:<class 'requests.exceptions.ConnectionError'>, value:HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys?recursive=true (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000002A8A5EC0820>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')), traceback:<class 'requests.exceptions.ConnectionError'>
-HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys?recursive=true (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000002A8A5EC0820>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。'))
-  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 309, in _init_info
-    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x000002A8A5EC9CA0>, 'now_url': 'http://127.0.0.1:2379/v2/keys?recursive=true'}
-  File "C:\Program Files\Python38\lib\concurrent\futures\thread.py", line 57, in run
-    locals={'self': <concurrent.futures.thread._WorkItem object at 0x000002A8A5ECFBB0>, 'exc': ConnectionError(MaxRetryError("HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys?recursive=true (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000002A8A5EC0820>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。'))"))}
-  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 309, in <lambda>
-    locals={'now_url': 'http://127.0.0.1:2379/v2/keys?recursive=true'}
-  File "C:\Program Files\Python38\lib\site-packages\requests\api.py", line 61, in request
-    locals={'method': 'GET', 'url': 'http://127.0.0.1:2379/v2/keys?recursive=true', 'kwargs': {}, 'session': <requests.sessions.Session object at 0x000002A8A5EC9FA0>}
-  File "C:\Program Files\Python38\lib\site-packages\requests\sessions.py", line 542, in request
-    locals={'self': <requests.sessions.Session object at 0x000002A8A5EC9FA0>, 'method': 'GET', 'url': 'http://127.0.0.1:2379/v2/keys?recursive=true', 'params': None, 'data': None, 'headers': None, 'cookies': None, 'files': None, 'auth': None, 'timeout': None, 'allow_redirects': True, 'proxies': {}, 'hooks': None, 'stream': None, 'verify': None, 'cert': None, 'json': None, 'req': <Request [GET]>, 'prep': <PreparedRequest [GET]>, 'settings': {'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}, 'send_kwargs': {'timeout': None, 'allow_redirects': True, 'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}}
-  File "C:\Program Files\Python38\lib\site-packages\requests\sessions.py", line 655, in send
-    locals={'self': <requests.sessions.Session object at 0x000002A8A5EC9FA0>, 'request': <PreparedRequest [GET]>, 'kwargs': {'timeout': None, 'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}, 'allow_redirects': True, 'stream': False, 'hooks': {'response': []}, 'adapter': <requests.adapters.HTTPAdapter object at 0x000002A8A5EBBFD0>, 'start': 906.059150708}
-  File "C:\Program Files\Python38\lib\site-packages\requests\adapters.py", line 516, in send
-    locals={'self': <requests.adapters.HTTPAdapter object at 0x000002A8A5EBBFD0>, 'request': <PreparedRequest [GET]>, 'stream': False, 'timeout': Timeout(connect=None, read=None, total=None), 'verify': True, 'cert': None, 'proxies': OrderedDict(), 'conn': <urllib3.connectionpool.HTTPConnectionPool object at 0x000002A8A5EC0490>, 'url': '/v2/keys?recursive=true', 'chunked': False}
-2021-03-11 17:31:45,415 - ServiceFinder - ERROR : on_traceback, type:<class 'requests.exceptions.ConnectionError'>, value:HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys?recursive=true (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000002A8A5F0CF40>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')), traceback:<class 'requests.exceptions.ConnectionError'>
-HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys?recursive=true (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000002A8A5F0CF40>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。'))
-  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 309, in _init_info
-    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x000002A8A5EC9CA0>, 'now_url': 'http://127.0.0.1:2379/v2/keys?recursive=true'}
-  File "C:\Program Files\Python38\lib\concurrent\futures\thread.py", line 57, in run
-    locals={}
-  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 309, in <lambda>
-    locals={'now_url': 'http://127.0.0.1:2379/v2/keys?recursive=true'}
-  File "C:\Program Files\Python38\lib\site-packages\requests\api.py", line 61, in request
-    locals={'method': 'GET', 'url': 'http://127.0.0.1:2379/v2/keys?recursive=true', 'kwargs': {}, 'session': <requests.sessions.Session object at 0x000002A8A5EBB850>}
-  File "C:\Program Files\Python38\lib\site-packages\requests\sessions.py", line 542, in request
-    locals={'self': <requests.sessions.Session object at 0x000002A8A5EBB850>, 'method': 'GET', 'url': 'http://127.0.0.1:2379/v2/keys?recursive=true', 'params': None, 'data': None, 'headers': None, 'cookies': None, 'files': None, 'auth': None, 'timeout': None, 'allow_redirects': True, 'proxies': {}, 'hooks': None, 'stream': None, 'verify': None, 'cert': None, 'json': None, 'req': <Request [GET]>, 'prep': <PreparedRequest [GET]>, 'settings': {'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}, 'send_kwargs': {'timeout': None, 'allow_redirects': True, 'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}}
-  File "C:\Program Files\Python38\lib\site-packages\requests\sessions.py", line 655, in send
-    locals={'self': <requests.sessions.Session object at 0x000002A8A5EBB850>, 'request': <PreparedRequest [GET]>, 'kwargs': {'timeout': None, 'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}, 'allow_redirects': True, 'stream': False, 'hooks': {'response': []}, 'adapter': <requests.adapters.HTTPAdapter object at 0x000002A8A5F0CB20>, 'start': 907.064645783}
-  File "C:\Program Files\Python38\lib\site-packages\requests\adapters.py", line 516, in send
-    locals={'self': <requests.adapters.HTTPAdapter object at 0x000002A8A5F0CB20>, 'request': <PreparedRequest [GET]>, 'stream': False, 'timeout': Timeout(connect=None, read=None, total=None), 'verify': True, 'cert': None, 'proxies': OrderedDict(), 'conn': <urllib3.connectionpool.HTTPConnectionPool object at 0x000002A8A5EC0D60>, 'url': '/v2/keys?recursive=true', 'chunked': False}
-2021-03-11 17:31:46,420 - ServiceFinder - ERROR : on_traceback, type:<class 'requests.exceptions.ConnectionError'>, value:HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys?recursive=true (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000002A8A5EAAB20>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')), traceback:<class 'requests.exceptions.ConnectionError'>
-HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys?recursive=true (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000002A8A5EAAB20>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。'))
-  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 309, in _init_info
-    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x000002A8A5EC9CA0>, 'now_url': 'http://127.0.0.1:2379/v2/keys?recursive=true'}
-  File "C:\Program Files\Python38\lib\concurrent\futures\thread.py", line 57, in run
-    locals={}
-  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 309, in <lambda>
-    locals={'now_url': 'http://127.0.0.1:2379/v2/keys?recursive=true'}
-  File "C:\Program Files\Python38\lib\site-packages\requests\api.py", line 61, in request
-    locals={'method': 'GET', 'url': 'http://127.0.0.1:2379/v2/keys?recursive=true', 'kwargs': {}, 'session': <requests.sessions.Session object at 0x000002A8A5EAADC0>}
-  File "C:\Program Files\Python38\lib\site-packages\requests\sessions.py", line 542, in request
-    locals={'self': <requests.sessions.Session object at 0x000002A8A5EAADC0>, 'method': 'GET', 'url': 'http://127.0.0.1:2379/v2/keys?recursive=true', 'params': None, 'data': None, 'headers': None, 'cookies': None, 'files': None, 'auth': None, 'timeout': None, 'allow_redirects': True, 'proxies': {}, 'hooks': None, 'stream': None, 'verify': None, 'cert': None, 'json': None, 'req': <Request [GET]>, 'prep': <PreparedRequest [GET]>, 'settings': {'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}, 'send_kwargs': {'timeout': None, 'allow_redirects': True, 'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}}
-  File "C:\Program Files\Python38\lib\site-packages\requests\sessions.py", line 655, in send
-    locals={'self': <requests.sessions.Session object at 0x000002A8A5EAADC0>, 'request': <PreparedRequest [GET]>, 'kwargs': {'timeout': None, 'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}, 'allow_redirects': True, 'stream': False, 'hooks': {'response': []}, 'adapter': <requests.adapters.HTTPAdapter object at 0x000002A8A5EAACA0>, 'start': 908.068609183}
-  File "C:\Program Files\Python38\lib\site-packages\requests\adapters.py", line 516, in send
-    locals={'self': <requests.adapters.HTTPAdapter object at 0x000002A8A5EAACA0>, 'request': <PreparedRequest [GET]>, 'stream': False, 'timeout': Timeout(connect=None, read=None, total=None), 'verify': True, 'cert': None, 'proxies': OrderedDict(), 'conn': <urllib3.connectionpool.HTTPConnectionPool object at 0x000002A8A5EC0370>, 'url': '/v2/keys?recursive=true', 'chunked': False}
-2021-03-11 17:31:47,422 - ServiceFinder - ERROR : on_traceback, type:<class 'requests.exceptions.ConnectionError'>, value:HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys?recursive=true (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000002A8A5EC01C0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')), traceback:<class 'requests.exceptions.ConnectionError'>
-HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys?recursive=true (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000002A8A5EC01C0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。'))
-  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 309, in _init_info
-    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x000002A8A5EC9CA0>, 'now_url': 'http://127.0.0.1:2379/v2/keys?recursive=true'}
-  File "C:\Program Files\Python38\lib\concurrent\futures\thread.py", line 57, in run
-    locals={}
-  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 309, in <lambda>
-    locals={'now_url': 'http://127.0.0.1:2379/v2/keys?recursive=true'}
-  File "C:\Program Files\Python38\lib\site-packages\requests\api.py", line 61, in request
-    locals={'method': 'GET', 'url': 'http://127.0.0.1:2379/v2/keys?recursive=true', 'kwargs': {}, 'session': <requests.sessions.Session object at 0x000002A8A528BC40>}
-  File "C:\Program Files\Python38\lib\site-packages\requests\sessions.py", line 542, in request
-    locals={'self': <requests.sessions.Session object at 0x000002A8A528BC40>, 'method': 'GET', 'url': 'http://127.0.0.1:2379/v2/keys?recursive=true', 'params': None, 'data': None, 'headers': None, 'cookies': None, 'files': None, 'auth': None, 'timeout': None, 'allow_redirects': True, 'proxies': {}, 'hooks': None, 'stream': None, 'verify': None, 'cert': None, 'json': None, 'req': <Request [GET]>, 'prep': <PreparedRequest [GET]>, 'settings': {'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}, 'send_kwargs': {'timeout': None, 'allow_redirects': True, 'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}}
-  File "C:\Program Files\Python38\lib\site-packages\requests\sessions.py", line 655, in send
-    locals={'self': <requests.sessions.Session object at 0x000002A8A528BC40>, 'request': <PreparedRequest [GET]>, 'kwargs': {'timeout': None, 'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}, 'allow_redirects': True, 'stream': False, 'hooks': {'response': []}, 'adapter': <requests.adapters.HTTPAdapter object at 0x000002A8A5F0CF40>, 'start': 909.072692211}
-  File "C:\Program Files\Python38\lib\site-packages\requests\adapters.py", line 516, in send
-    locals={'self': <requests.adapters.HTTPAdapter object at 0x000002A8A5F0CF40>, 'request': <PreparedRequest [GET]>, 'stream': False, 'timeout': Timeout(connect=None, read=None, total=None), 'verify': True, 'cert': None, 'proxies': OrderedDict(), 'conn': <urllib3.connectionpool.HTTPConnectionPool object at 0x000002A8A5F0CD90>, 'url': '/v2/keys?recursive=true', 'chunked': False}
-2021-03-12 14:11:02,960 - ServiceNode - INFO : [EtcdSupport.py:466]: we have create ServiceRegister, wait 5 seconds
-2021-03-12 14:11:02,961 - ServiceNode - INFO : [EtcdSupport.py:469]: we have create ServiceFinder
+2021-03-15 11:31:26,391 - ServerEntity.Puppet - INFO : [ServerEntity.py:16]: __init__ create entity Puppet with id 604ed50efe754e023c3c4ad0 mem_id=2160822944000
+2021-03-15 11:31:26,391 - TcpConn - ERROR : on_traceback, type:<class 'AttributeError'>, value:'dict' object has no attribute 'has_key', traceback:<class 'AttributeError'>
+'dict' object has no attribute 'has_key'
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\TcpConn.py", line 74, in handle_message
+    locals={'self': <TcpConn.TcpConn object at 0x000001F71B1580D0>, 'msg_data': b'\x93\xa6Puppet\xb5battle_entity_message\x82\xa1m\xd9%CompPuppetTest.puppet_chat_to_channel\xa1p\x81\xa1i\x81\xa7content\xadtest_chat_msg', 'rpc_message': ('Puppet', 'battle_entity_message', {'m': 'CompPuppetTest.puppet_chat_to_channel', 'p': {'i': {'content': 'test_chat_msg'}}})}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\TcpConn.py", line 81, in handle_rpc
+    locals={'self': <TcpConn.TcpConn object at 0x000001F71B1580D0>, 'rpc_msg': ('Puppet', 'battle_entity_message', {'m': 'CompPuppetTest.puppet_chat_to_channel', 'p': {'i': {'content': 'test_chat_msg'}}}), '_entity_type': 'Puppet', '_method_name': 'battle_entity_message', '_parameters': {'m': 'CompPuppetTest.puppet_chat_to_channel', 'p': {'i': {'content': 'test_chat_msg'}}}}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\common\EntityFactory.py", line 58, in create_entity
+    locals={'self': <core.common.EntityFactory.EntityFactory object at 0x000001F71B143370>, 'entitytype': 'Puppet', 'entityid': None, 'EntityClass': <class 'battle_entity.Puppet.Puppet'>}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\battle_entity\Puppet.py", line 16, in __init__
+    locals={'self': <Puppet:Noname>, }
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\BattleEntity.py", line 12, in __init__
+    locals={'self': <Puppet:Noname>, '__class__': <class 'BattleEntity.BattleEntity'>}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\server_entity\ServerEntity.py", line 20, in __init__
+    locals={'self': <Puppet:Noname>, 'entity_id': None, '__class__': <class 'server_entity.ServerEntity.ServerEntity'>}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\common\EntityManager.py", line 122, in addentity
+    locals={'entityid': ObjectId('604ed50efe754e023c3c4ad0'), 'entity': <battle_entity.Puppet.Puppet object at 0x000001F71B158100>, 'override': False}
+2021-03-15 11:31:26,393 - ServerEntity.Puppet - INFO : [ServerEntity.py:16]: __init__ create entity Puppet with id 604ed50efe754e023c3c4ad1 mem_id=2160822945584
+2021-03-15 11:31:26,393 - ServerEntity.Puppet - INFO : [ServerEntity.py:16]: __init__ create entity Puppet with id 604ed50efe754e023c3c4ad1 mem_id=2160822945584
+2021-03-15 11:31:26,393 - TcpConn - ERROR : on_traceback, type:<class 'AttributeError'>, value:'dict' object has no attribute 'has_key', traceback:<class 'AttributeError'>
+'dict' object has no attribute 'has_key'
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\TcpConn.py", line 74, in handle_message
+    locals={'self': <TcpConn.TcpConn object at 0x000001F71B1580D0>, 'msg_data': b'\x93\xa6Puppet\xb5battle_entity_message\x82\xa1m\xd9!CompPuppetTest.puppet_chat_to_ppt\xa1p\x81\xa1p\x81\xa7content\xb2puppet_chat_to_ppt', 'rpc_message': ('Puppet', 'battle_entity_message', {'m': 'CompPuppetTest.puppet_chat_to_ppt', 'p': {'p': {'content': 'puppet_chat_to_ppt'}}})}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\TcpConn.py", line 81, in handle_rpc
+    locals={'self': <TcpConn.TcpConn object at 0x000001F71B1580D0>, 'rpc_msg': ('Puppet', 'battle_entity_message', {'m': 'CompPuppetTest.puppet_chat_to_ppt', 'p': {'p': {'content': 'puppet_chat_to_ppt'}}}), '_entity_type': 'Puppet', '_method_name': 'battle_entity_message', '_parameters': {'m': 'CompPuppetTest.puppet_chat_to_ppt', 'p': {'p': {'content': 'puppet_chat_to_ppt'}}}}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\common\EntityFactory.py", line 58, in create_entity
+    locals={'self': <core.common.EntityFactory.EntityFactory object at 0x000001F71B143370>, 'entitytype': 'Puppet', 'entityid': None, 'EntityClass': <class 'battle_entity.Puppet.Puppet'>}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\battle_entity\Puppet.py", line 16, in __init__
+    locals={'self': <Puppet:Noname>, }
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\BattleEntity.py", line 12, in __init__
+    locals={'self': <Puppet:Noname>, '__class__': <class 'BattleEntity.BattleEntity'>}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\server_entity\ServerEntity.py", line 20, in __init__
+    locals={'self': <Puppet:Noname>, 'entity_id': None, '__class__': <class 'server_entity.ServerEntity.ServerEntity'>}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\common\EntityManager.py", line 122, in addentity
+    locals={'entityid': ObjectId('604ed50efe754e023c3c4ad1'), 'entity': <battle_entity.Puppet.Puppet object at 0x000001F71B158730>, 'override': False}
+2021-03-15 11:54:49,377 - ServerEntity.Puppet - INFO : [ServerEntity.py:16]: __init__ create entity Puppet with id 604eda89fe754e2a1c2bc4ff mem_id=2092144147712
+2021-03-15 11:54:59,489 - TcpConn - ERROR : on_traceback, type:<class 'AttributeError'>, value:'dict' object has no attribute 'has_key', traceback:<class 'AttributeError'>
+'dict' object has no attribute 'has_key'
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\TcpConn.py", line 74, in handle_message
+    locals={'self': <TcpConn.TcpConn object at 0x000001E71D86DCD0>, 'msg_data': b'\x93\xa6Puppet\xb5battle_entity_message\x82\xa1m\xd9%CompPuppetTest.puppet_chat_to_channel\xa1p\x81\xa1i\x81\xa7content\xadtest_chat_msg', '__pydevd_ret_val_dict': {'decode': ('Puppet', 'battle_entity_message', {'m': 'CompPuppetTest.puppet_chat_to_channel', 'p': {'i': {'content': 'test_chat_msg'}}}), 'TcpConn.handle_rpc': None}, 'rpc_message': ('Puppet', 'battle_entity_message', {'m': 'CompPuppetTest.puppet_chat_to_channel', 'p': {'i': {'content': 'test_chat_msg'}}})}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\TcpConn.py", line 81, in handle_rpc
+    locals={'self': <TcpConn.TcpConn object at 0x000001E71D86DCD0>, 'rpc_msg': ('Puppet', 'battle_entity_message', {'m': 'CompPuppetTest.puppet_chat_to_channel', 'p': {'i': {'content': 'test_chat_msg'}}}), '_entity_type': 'Puppet', '_method_name': 'battle_entity_message', '_parameters': {'m': 'CompPuppetTest.puppet_chat_to_channel', 'p': {'i': {'content': 'test_chat_msg'}}}, '__pydevd_ret_val_dict': {'EntityFactory.instance': <core.common.EntityFactory.EntityFactory object at 0x000001E71D814C70>, 'EntityFactory.create_entity': None}}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\common\EntityFactory.py", line 58, in create_entity
+    locals={'self': <core.common.EntityFactory.EntityFactory object at 0x000001E71D814C70>, 'entitytype': 'Puppet', 'entityid': None, 'EntityClass': <class 'battle_entity.Puppet.Puppet'>}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\battle_entity\Puppet.py", line 16, in __init__
+    locals={'self': <Puppet:Noname>, }
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\BattleEntity.py", line 12, in __init__
+    locals={'self': <Puppet:Noname>, '__class__': <class 'BattleEntity.BattleEntity'>}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\server_entity\ServerEntity.py", line 20, in __init__
+    locals={'self': <Puppet:Noname>, 'entity_id': None, '__class__': <class 'server_entity.ServerEntity.ServerEntity'>}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\common\EntityManager.py", line 122, in addentity
+    locals={'entityid': ObjectId('604eda89fe754e2a1c2bc4ff'), 'entity': <battle_entity.Puppet.Puppet object at 0x000001E71D823D00>, 'override': False}
+2021-03-15 11:55:13,383 - ServerEntity.Puppet - INFO : [ServerEntity.py:16]: __init__ create entity Puppet with id 604edaa1fe754e21c4a3d58a mem_id=1453170983168
+2021-03-15 11:55:13,384 - TcpConn - ERROR : on_traceback, type:<class 'AttributeError'>, value:'dict' object has no attribute 'has_key', traceback:<class 'AttributeError'>
+'dict' object has no attribute 'has_key'
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\TcpConn.py", line 74, in handle_message
+    locals={'self': <TcpConn.TcpConn object at 0x0000015257BD80D0>, 'msg_data': b'\x93\xa6Puppet\xb5battle_entity_message\x82\xa1m\xd9%CompPuppetTest.puppet_chat_to_channel\xa1p\x81\xa1i\x81\xa7content\xadtest_chat_msg', 'rpc_message': ('Puppet', 'battle_entity_message', {'m': 'CompPuppetTest.puppet_chat_to_channel', 'p': {'i': {'content': 'test_chat_msg'}}})}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\TcpConn.py", line 81, in handle_rpc
+    locals={'self': <TcpConn.TcpConn object at 0x0000015257BD80D0>, 'rpc_msg': ('Puppet', 'battle_entity_message', {'m': 'CompPuppetTest.puppet_chat_to_channel', 'p': {'i': {'content': 'test_chat_msg'}}}), '_entity_type': 'Puppet', '_method_name': 'battle_entity_message', '_parameters': {'m': 'CompPuppetTest.puppet_chat_to_channel', 'p': {'i': {'content': 'test_chat_msg'}}}}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\common\EntityFactory.py", line 58, in create_entity
+    locals={'self': <core.common.EntityFactory.EntityFactory object at 0x0000015257BC3370>, 'entitytype': 'Puppet', 'entityid': None, 'EntityClass': <class 'battle_entity.Puppet.Puppet'>}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\battle_entity\Puppet.py", line 16, in __init__
+    locals={'self': <Puppet:Noname>, }
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\BattleEntity.py", line 12, in __init__
+    locals={'self': <Puppet:Noname>, '__class__': <class 'BattleEntity.BattleEntity'>}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\server_entity\ServerEntity.py", line 20, in __init__
+    locals={'self': <Puppet:Noname>, 'entity_id': None, '__class__': <class 'server_entity.ServerEntity.ServerEntity'>}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\common\EntityManager.py", line 122, in addentity
+    locals={'entityid': ObjectId('604edaa1fe754e21c4a3d58a'), 'entity': <battle_entity.Puppet.Puppet object at 0x0000015257BD8100>, 'override': False}
+2021-03-15 11:55:13,385 - ServerEntity.Puppet - INFO : [ServerEntity.py:16]: __init__ create entity Puppet with id 604edaa1fe754e21c4a3d58b mem_id=1453170986624
+2021-03-15 11:55:13,385 - ServerEntity.Puppet - INFO : [ServerEntity.py:16]: __init__ create entity Puppet with id 604edaa1fe754e21c4a3d58b mem_id=1453170986624
+2021-03-15 11:55:13,385 - TcpConn - ERROR : on_traceback, type:<class 'AttributeError'>, value:'dict' object has no attribute 'has_key', traceback:<class 'AttributeError'>
+'dict' object has no attribute 'has_key'
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\TcpConn.py", line 74, in handle_message
+    locals={'self': <TcpConn.TcpConn object at 0x0000015257BD80D0>, 'msg_data': b'\x93\xa6Puppet\xb5battle_entity_message\x82\xa1m\xd9!CompPuppetTest.puppet_chat_to_ppt\xa1p\x81\xa1p\x81\xa7content\xb2puppet_chat_to_ppt', 'rpc_message': ('Puppet', 'battle_entity_message', {'m': 'CompPuppetTest.puppet_chat_to_ppt', 'p': {'p': {'content': 'puppet_chat_to_ppt'}}})}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\TcpConn.py", line 81, in handle_rpc
+    locals={'self': <TcpConn.TcpConn object at 0x0000015257BD80D0>, 'rpc_msg': ('Puppet', 'battle_entity_message', {'m': 'CompPuppetTest.puppet_chat_to_ppt', 'p': {'p': {'content': 'puppet_chat_to_ppt'}}}), '_entity_type': 'Puppet', '_method_name': 'battle_entity_message', '_parameters': {'m': 'CompPuppetTest.puppet_chat_to_ppt', 'p': {'p': {'content': 'puppet_chat_to_ppt'}}}}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\common\EntityFactory.py", line 58, in create_entity
+    locals={'self': <core.common.EntityFactory.EntityFactory object at 0x0000015257BC3370>, 'entitytype': 'Puppet', 'entityid': None, 'EntityClass': <class 'battle_entity.Puppet.Puppet'>}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\battle_entity\Puppet.py", line 16, in __init__
+    locals={'self': <Puppet:Noname>, }
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\BattleEntity.py", line 12, in __init__
+    locals={'self': <Puppet:Noname>, '__class__': <class 'BattleEntity.BattleEntity'>}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\server_entity\ServerEntity.py", line 20, in __init__
+    locals={'self': <Puppet:Noname>, 'entity_id': None, '__class__': <class 'server_entity.ServerEntity.ServerEntity'>}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\common\EntityManager.py", line 122, in addentity
+    locals={'entityid': ObjectId('604edaa1fe754e21c4a3d58b'), 'entity': <battle_entity.Puppet.Puppet object at 0x0000015257BD8E80>, 'override': False}
+2021-03-15 11:56:28,504 - ServerEntity.Puppet - INFO : [ServerEntity.py:16]: __init__ create entity Puppet with id 604edaecfe754e3038f79fd9 mem_id=2525704894640
+2021-03-15 11:56:59,008 - TcpConn - ERROR : on_traceback, type:<class 'AttributeError'>, value:'dict' object has no attribute 'has_key', traceback:<class 'AttributeError'>
+'dict' object has no attribute 'has_key'
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\TcpConn.py", line 74, in handle_message
+    locals={'self': <TcpConn.TcpConn object at 0x0000024C10769A00>, 'msg_data': b'\x93\xa6Puppet\xb5battle_entity_message\x82\xa1m\xd9%CompPuppetTest.puppet_chat_to_channel\xa1p\x81\xa1i\x81\xa7content\xadtest_chat_msg', 'rpc_message': ('Puppet', 'battle_entity_message', {'m': 'CompPuppetTest.puppet_chat_to_channel', 'p': {'i': {'content': 'test_chat_msg'}}}), '__pydevd_ret_val_dict': {'handle_rpc': None}}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\TcpConn.py", line 81, in handle_rpc
+    locals={'self': <TcpConn.TcpConn object at 0x0000024C10769A00>, 'rpc_msg': ('Puppet', 'battle_entity_message', {'m': 'CompPuppetTest.puppet_chat_to_channel', 'p': {'i': {'content': 'test_chat_msg'}}}), '_entity_type': 'Puppet', '_method_name': 'battle_entity_message', '_parameters': {'m': 'CompPuppetTest.puppet_chat_to_channel', 'p': {'i': {'content': 'test_chat_msg'}}}, '__pydevd_ret_val_dict': {'EntityFactory.instance': <core.common.EntityFactory.EntityFactory object at 0x0000024C1075B970>, 'EntityFactory.create_entity': None}}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\common\EntityFactory.py", line 58, in create_entity
+    locals={'self': <core.common.EntityFactory.EntityFactory object at 0x0000024C1075B970>, 'entitytype': 'Puppet', 'entityid': None, '__pydevd_ret_val_dict': {'EntityFactory.get_entity_class': <class 'battle_entity.Puppet.Puppet'>, 'Puppet.__init__': None}, 'EntityClass': <class 'battle_entity.Puppet.Puppet'>}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\battle_entity\Puppet.py", line 16, in __init__
+    locals={'self': <Puppet:Noname>, '__pydevd_ret_val_dict': {'__init__': None}}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\BattleEntity.py", line 12, in __init__
+    locals={'self': <Puppet:Noname>, '__class__': <class 'BattleEntity.BattleEntity'>}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\server_entity\ServerEntity.py", line 20, in __init__
+    locals={'self': <Puppet:Noname>, 'entity_id': None, '__class__': <class 'server_entity.ServerEntity.ServerEntity'>}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\common\EntityManager.py", line 122, in addentity
+    locals={'entityid': ObjectId('604edaecfe754e3038f79fd9'), 'entity': <battle_entity.Puppet.Puppet object at 0x0000024C0FBE38B0>, 'override': False}
+2021-03-15 11:57:01,453 - ServerEntity.Puppet - INFO : [ServerEntity.py:16]: __init__ create entity Puppet with id 604edb0dfe754e3038f79fda mem_id=2525717184672
+2021-03-15 11:57:01,453 - ServerEntity.Puppet - INFO : [ServerEntity.py:16]: __init__ create entity Puppet with id 604edb0dfe754e3038f79fda mem_id=2525717184672
+2021-03-15 11:57:05,051 - TcpConn - ERROR : on_traceback, type:<class 'AttributeError'>, value:'dict' object has no attribute 'has_key', traceback:<class 'AttributeError'>
+'dict' object has no attribute 'has_key'
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\TcpConn.py", line 74, in handle_message
+    locals={'self': <TcpConn.TcpConn object at 0x0000024C10769A00>, 'msg_data': b'\x93\xa6Puppet\xb5battle_entity_message\x82\xa1m\xd9!CompPuppetTest.puppet_chat_to_ppt\xa1p\x81\xa1p\x81\xa7content\xb2puppet_chat_to_ppt', 'rpc_message': ('Puppet', 'battle_entity_message', {'m': 'CompPuppetTest.puppet_chat_to_ppt', 'p': {'p': {'content': 'puppet_chat_to_ppt'}}}), '__pydevd_ret_val_dict': {'handle_rpc': None}}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\TcpConn.py", line 81, in handle_rpc
+    locals={'self': <TcpConn.TcpConn object at 0x0000024C10769A00>, 'rpc_msg': ('Puppet', 'battle_entity_message', {'m': 'CompPuppetTest.puppet_chat_to_ppt', 'p': {'p': {'content': 'puppet_chat_to_ppt'}}}), '_entity_type': 'Puppet', '_method_name': 'battle_entity_message', '_parameters': {'m': 'CompPuppetTest.puppet_chat_to_ppt', 'p': {'p': {'content': 'puppet_chat_to_ppt'}}}, '__pydevd_ret_val_dict': {'EntityFactory.instance': <core.common.EntityFactory.EntityFactory object at 0x0000024C1075B970>, 'EntityFactory.create_entity': None}}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\common\EntityFactory.py", line 58, in create_entity
+    locals={'self': <core.common.EntityFactory.EntityFactory object at 0x0000024C1075B970>, 'entitytype': 'Puppet', 'entityid': None, 'EntityClass': <class 'battle_entity.Puppet.Puppet'>}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\battle_entity\Puppet.py", line 16, in __init__
+    locals={'self': <Puppet:Noname>, }
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\BattleEntity.py", line 12, in __init__
+    locals={'self': <Puppet:Noname>, '__class__': <class 'BattleEntity.BattleEntity'>}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\server_entity\ServerEntity.py", line 20, in __init__
+    locals={'self': <Puppet:Noname>, 'entity_id': None, '__class__': <class 'server_entity.ServerEntity.ServerEntity'>}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\common\EntityManager.py", line 122, in addentity
+    locals={'entityid': ObjectId('604edb0dfe754e3038f79fda'), 'entity': <battle_entity.Puppet.Puppet object at 0x0000024C1079C0A0>, 'override': False}
+2021-03-15 11:58:31,099 - ServerEntity.Puppet - INFO : [ServerEntity.py:16]: __init__ create entity Puppet with id 604edb65fe754e195c501aff mem_id=2414833725392
+2021-03-15 14:39:29,523 - ServerEntity.Puppet - INFO : [ServerEntity.py:16]: __init__ create entity Puppet with id 604f0121fe754e086cc23b8e mem_id=2361479025280
+2021-03-15 14:45:06,769 - ServerEntity.Puppet - INFO : [ServerEntity.py:16]: __init__ create entity Puppet with id 604f0272fe754e4680cb7d1e mem_id=1945879331456
+2021-03-15 14:45:10,623 - server.EntityManager - INFO : [EntityManager.py:127]: addentity  entity id  604f0272fe754e4680cb7d1e 
+2021-03-15 14:46:55,155 - TcpConn - ERROR : on_traceback, type:<class 'AttributeError'>, value:'NoneType' object has no attribute 'request_rpc', traceback:<class 'AttributeError'>
+'NoneType' object has no attribute 'request_rpc'
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\TcpConn.py", line 88, in handle_rpc
+    locals={'self': <TcpConn.TcpConn object at 0x000001C50F70AA60>, 'rpc_msg': ('Puppet', 'battle_entity_message', {'m': 'CompPuppetTest.puppet_chat_to_ppt', 'p': {'p': {'content': 'puppet_chat_to_ppt', 'cnt': 0}}}), '_entity_type': 'Puppet', '_method_name': 'battle_entity_message', '_parameters': {'m': 'CompPuppetTest.puppet_chat_to_ppt', 'p': {'p': {'content': 'puppet_chat_to_ppt', 'cnt': 0}}}, '_method': <bound method rpc_method.<locals>._rpc_method.<locals>.call_rpc_method_Others of <battle_entity.Puppet.Puppet object at 0x000001C50F724280>>}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\common\RpcSupport.py", line 271, in call_rpc_method_Others
+    locals={'self': <Puppet:Noname>, 'args': {'m': 'CompPuppetTest.puppet_chat_to_ppt', 'p': {'p': {'content': 'puppet_chat_to_ppt', 'cnt': 0}}}, 'call_func': <bound method RpcMethod.call of <core.common.RpcSupport.RpcMethod object at 0x000001C50EB3DFA0>>, 'func': <function BattleEntity.battle_entity_message at 0x000001C50EAE8D30>, 'fun_for_reload': <function BattleEntity.battle_entity_message at 0x000001C50EAE8D30>}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\common\RpcSupport.py", line 116, in call
+    locals={'self': <core.common.RpcSupport.RpcMethod object at 0x000001C50EB3DFA0>, 'entity': <battle_entity.Puppet.Puppet object at 0x000001C50F724280>, 'parameters': {'m': 'CompPuppetTest.puppet_chat_to_ppt', 'p': {'p': {'content': 'puppet_chat_to_ppt', 'cnt': 0}}}, 'args': ['CompPuppetTest.puppet_chat_to_ppt', {'p': {'content': 'puppet_chat_to_ppt', 'cnt': 0}}], 'argtypes': (<core.common.RpcMethodArgs.Str object at 0x000001C50EB3D700>, <core.common.RpcMethodArgs.Dict object at 0x000001C50EB3D790>), 'argtype': <core.common.RpcMethodArgs.Dict object at 0x000001C50EB3D790>, 'arg': {'p': {'content': 'puppet_chat_to_ppt', 'cnt': 0}}}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\BattleEntity.py", line 84, in battle_entity_message
+    locals={'self': <Puppet:Noname>, 'method_name': 'CompPuppetTest.puppet_chat_to_ppt', 'parameters': {'p': {'content': 'puppet_chat_to_ppt', 'cnt': 0}}, 'method_list': ['CompPuppetTest', 'puppet_chat_to_ppt'], 'ent': <component.puppet.CompPuppetTest.CompPuppetTest object at 0x000001C50F841F70>, 'name': 'puppet_chat_to_ppt', 'method': <bound method rpc_method.<locals>._rpc_method.<locals>.call_rpc_method_Others of <component.puppet.CompPuppetTest.CompPuppetTest object at 0x000001C50F841F70>>}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\common\RpcSupport.py", line 271, in call_rpc_method_Others
+    locals={'self': <component.puppet.CompPuppetTest.CompPuppetTest object at 0x000001C50F841F70>, 'args': {'p': {'content': 'puppet_chat_to_ppt', 'cnt': 0}}, 'call_func': <bound method RpcMethod.call of <core.common.RpcSupport.RpcMethod object at 0x000001C50F6E0970>>, 'func': <function CompPuppetTest.puppet_chat_to_ppt at 0x000001C50F6E9670>, 'fun_for_reload': <function CompPuppetTest.puppet_chat_to_ppt at 0x000001C50F6E9670>}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\common\RpcSupport.py", line 116, in call
+    locals={'self': <core.common.RpcSupport.RpcMethod object at 0x000001C50F6E0970>, 'entity': <component.puppet.CompPuppetTest.CompPuppetTest object at 0x000001C50F841F70>, 'parameters': {'p': {'content': 'puppet_chat_to_ppt', 'cnt': 0}}, 'args': [{'content': 'puppet_chat_to_ppt', 'cnt': 0}], 'argtypes': (<core.common.RpcMethodArgs.Dict object at 0x000001C50F6E0760>,), 'argtype': <core.common.RpcMethodArgs.Dict object at 0x000001C50F6E0760>, 'arg': {'content': 'puppet_chat_to_ppt', 'cnt': 0}}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\component\puppet\CompPuppetTest.py", line 40, in puppet_chat_to_ppt
+    locals={'self': <component.puppet.CompPuppetTest.CompPuppetTest object at 0x000001C50F841F70>, 'chat_info': {'content': 'puppet_chat_to_ppt', 'cnt': 0}}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\common\component\Component.py", line 307, in call_client_comp_method
+    locals={'self': <component.puppet.CompPuppetTest.CompPuppetTest object at 0x000001C50F841F70>, 'component_name': 'CompPuppetTest', 'method_name': 'puppet_chat_from_srv', 'parameters': {'i': {'content': 'puppet_chat_to_ppt', 'cnt': 0}}}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\server_entity\ServerEntity.py", line 31, in call_client_method
+    locals={'self': <Puppet:Noname>, 'method_name': 'CompPuppetTest.puppet_chat_from_srv', 'parameters': {'i': {'content': 'puppet_chat_to_ppt', 'cnt': 0}}}
+2021-03-15 14:51:20,881 - ServerEntity.Puppet - INFO : [ServerEntity.py:16]: __init__ create entity Puppet with id 604f03e8fe754e3e187952c5 mem_id=2583143350528
+2021-03-15 14:51:20,883 - server.EntityManager - INFO : [EntityManager.py:127]: addentity  entity id  604f03e8fe754e3e187952c5 
+2021-03-15 14:51:20,883 - TcpConn - ERROR : on_traceback, type:<class 'AttributeError'>, value:'NoneType' object has no attribute 'request_rpc', traceback:<class 'AttributeError'>
+'NoneType' object has no attribute 'request_rpc'
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\TcpConn.py", line 88, in handle_rpc
+    locals={'self': <TcpConn.TcpConn object at 0x000002596F5780D0>, 'rpc_msg': ('Puppet', 'battle_entity_message', {'m': 'CompPuppetTest.puppet_chat_to_ppt', 'p': {'p': {'content': 'puppet_chat_to_ppt', 'cnt': 6}}}), '_entity_type': 'Puppet', '_method_name': 'battle_entity_message', '_parameters': {'m': 'CompPuppetTest.puppet_chat_to_ppt', 'p': {'p': {'content': 'puppet_chat_to_ppt', 'cnt': 6}}}, '_method': <bound method rpc_method.<locals>._rpc_method.<locals>.call_rpc_method_Others of <battle_entity.Puppet.Puppet object at 0x000002596F578100>>}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\common\RpcSupport.py", line 271, in call_rpc_method_Others
+    locals={'self': <Puppet:Noname>, 'args': {'m': 'CompPuppetTest.puppet_chat_to_ppt', 'p': {'p': {'content': 'puppet_chat_to_ppt', 'cnt': 6}}}, 'fun_for_reload': <function BattleEntity.battle_entity_message at 0x000002596EDBADC0>, 'call_func': <bound method RpcMethod.call of <core.common.RpcSupport.RpcMethod object at 0x000002596ED52040>>, 'func': <function BattleEntity.battle_entity_message at 0x000002596EDBADC0>}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\common\RpcSupport.py", line 116, in call
+    locals={'self': <core.common.RpcSupport.RpcMethod object at 0x000002596ED52040>, 'entity': <battle_entity.Puppet.Puppet object at 0x000002596F578100>, 'parameters': {'m': 'CompPuppetTest.puppet_chat_to_ppt', 'p': {'p': {'content': 'puppet_chat_to_ppt', 'cnt': 6}}}, 'args': ['CompPuppetTest.puppet_chat_to_ppt', {'p': {'content': 'puppet_chat_to_ppt', 'cnt': 6}}], 'argtypes': (<core.common.RpcMethodArgs.Str object at 0x000002596ED4D370>, <core.common.RpcMethodArgs.Dict object at 0x000002596ED4D400>), 'argtype': <core.common.RpcMethodArgs.Dict object at 0x000002596ED4D400>, 'arg': {'p': {'content': 'puppet_chat_to_ppt', 'cnt': 6}}}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\BattleEntity.py", line 84, in battle_entity_message
+    locals={'self': <Puppet:Noname>, 'method_name': 'CompPuppetTest.puppet_chat_to_ppt', 'parameters': {'p': {'content': 'puppet_chat_to_ppt', 'cnt': 6}}, 'method_list': ['CompPuppetTest', 'puppet_chat_to_ppt'], 'ent': <component.puppet.CompPuppetTest.CompPuppetTest object at 0x000002596F578A60>, 'name': 'puppet_chat_to_ppt', 'method': <bound method rpc_method.<locals>._rpc_method.<locals>.call_rpc_method_Others of <component.puppet.CompPuppetTest.CompPuppetTest object at 0x000002596F578A60>>}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\common\RpcSupport.py", line 271, in call_rpc_method_Others
+    locals={'self': <component.puppet.CompPuppetTest.CompPuppetTest object at 0x000002596F578A60>, 'args': {'p': {'content': 'puppet_chat_to_ppt', 'cnt': 6}}, 'fun_for_reload': <function CompPuppetTest.puppet_chat_to_ppt at 0x000002596F5450D0>, 'call_func': <bound method RpcMethod.call of <core.common.RpcSupport.RpcMethod object at 0x000002596F53A790>>, 'func': <function CompPuppetTest.puppet_chat_to_ppt at 0x000002596F5450D0>}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\common\RpcSupport.py", line 116, in call
+    locals={'self': <core.common.RpcSupport.RpcMethod object at 0x000002596F53A790>, 'entity': <component.puppet.CompPuppetTest.CompPuppetTest object at 0x000002596F578A60>, 'parameters': {'p': {'content': 'puppet_chat_to_ppt', 'cnt': 6}}, 'args': [{'content': 'puppet_chat_to_ppt', 'cnt': 6}], 'argtypes': (<core.common.RpcMethodArgs.Dict object at 0x000002596F53A580>,), 'argtype': <core.common.RpcMethodArgs.Dict object at 0x000002596F53A580>, 'arg': {'content': 'puppet_chat_to_ppt', 'cnt': 6}}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\component\puppet\CompPuppetTest.py", line 40, in puppet_chat_to_ppt
+    locals={'self': <component.puppet.CompPuppetTest.CompPuppetTest object at 0x000002596F578A60>, 'chat_info': {'content': 'puppet_chat_to_ppt', 'cnt': 6}}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\common\component\Component.py", line 307, in call_client_comp_method
+    locals={'self': <component.puppet.CompPuppetTest.CompPuppetTest object at 0x000002596F578A60>, 'component_name': 'CompPuppetTest', 'method_name': 'puppet_chat_from_srv', 'parameters': {'i': {'content': 'puppet_chat_to_ppt', 'cnt': 6}}}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\server_entity\ServerEntity.py", line 31, in call_client_method
+    locals={'self': <Puppet:Noname>, 'method_name': 'CompPuppetTest.puppet_chat_from_srv', 'parameters': {'i': {'content': 'puppet_chat_to_ppt', 'cnt': 6}}}
+2021-03-15 14:53:04,642 - ServerEntity.Puppet - INFO : [ServerEntity.py:16]: __init__ create entity Puppet with id 604f0450fe754e18802420e2 mem_id=2937864532080
+2021-03-15 14:53:04,643 - server.EntityManager - INFO : [EntityManager.py:127]: addentity  entity id  604f0450fe754e18802420e2 
+2021-03-15 14:53:04,644 - TcpConn - ERROR : on_traceback, type:<class 'AttributeError'>, value:'NoneType' object has no attribute 'request_rpc', traceback:<class 'AttributeError'>
+'NoneType' object has no attribute 'request_rpc'
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\TcpConn.py", line 88, in handle_rpc
+    locals={'self': <TcpConn.TcpConn object at 0x000002AC065F3040>, 'rpc_msg': ('Puppet', 'battle_entity_message', {'m': 'CompPuppetTest.puppet_chat_to_ppt', 'p': {'p': {'content': 'puppet_chat_to_ppt', 'cnt': 3}}}), '_entity_type': 'Puppet', '_method_name': 'battle_entity_message', '_parameters': {'m': 'CompPuppetTest.puppet_chat_to_ppt', 'p': {'p': {'content': 'puppet_chat_to_ppt', 'cnt': 3}}}, '_method': <bound method rpc_method.<locals>._rpc_method.<locals>.call_rpc_method_Others of <battle_entity.Puppet.Puppet object at 0x000002AC065F3070>>}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\common\RpcSupport.py", line 271, in call_rpc_method_Others
+    locals={'self': <Puppet:Noname>, 'args': {'m': 'CompPuppetTest.puppet_chat_to_ppt', 'p': {'p': {'content': 'puppet_chat_to_ppt', 'cnt': 3}}}, 'fun_for_reload': <function BattleEntity.battle_entity_message at 0x000002AC05E0ADC0>, 'call_func': <bound method RpcMethod.call of <core.common.RpcSupport.RpcMethod object at 0x000002AC05DA2040>>, 'func': <function BattleEntity.battle_entity_message at 0x000002AC05E0ADC0>}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\common\RpcSupport.py", line 116, in call
+    locals={'self': <core.common.RpcSupport.RpcMethod object at 0x000002AC05DA2040>, 'entity': <battle_entity.Puppet.Puppet object at 0x000002AC065F3070>, 'parameters': {'m': 'CompPuppetTest.puppet_chat_to_ppt', 'p': {'p': {'content': 'puppet_chat_to_ppt', 'cnt': 3}}}, 'args': ['CompPuppetTest.puppet_chat_to_ppt', {'p': {'content': 'puppet_chat_to_ppt', 'cnt': 3}}], 'argtypes': (<core.common.RpcMethodArgs.Str object at 0x000002AC05D9D370>, <core.common.RpcMethodArgs.Dict object at 0x000002AC05D9D400>), 'argtype': <core.common.RpcMethodArgs.Dict object at 0x000002AC05D9D400>, 'arg': {'p': {'content': 'puppet_chat_to_ppt', 'cnt': 3}}}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\BattleEntity.py", line 84, in battle_entity_message
+    locals={'self': <Puppet:Noname>, 'method_name': 'CompPuppetTest.puppet_chat_to_ppt', 'parameters': {'p': {'content': 'puppet_chat_to_ppt', 'cnt': 3}}, 'method_list': ['CompPuppetTest', 'puppet_chat_to_ppt'], 'ent': <component.puppet.CompPuppetTest.CompPuppetTest object at 0x000002AC065F39D0>, 'name': 'puppet_chat_to_ppt', 'method': <bound method rpc_method.<locals>._rpc_method.<locals>.call_rpc_method_Others of <component.puppet.CompPuppetTest.CompPuppetTest object at 0x000002AC065F39D0>>}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\common\RpcSupport.py", line 271, in call_rpc_method_Others
+    locals={'self': <component.puppet.CompPuppetTest.CompPuppetTest object at 0x000002AC065F39D0>, 'args': {'p': {'content': 'puppet_chat_to_ppt', 'cnt': 3}}, 'fun_for_reload': <function CompPuppetTest.puppet_chat_to_ppt at 0x000002AC065AF040>, 'call_func': <bound method RpcMethod.call of <core.common.RpcSupport.RpcMethod object at 0x000002AC065AE310>>, 'func': <function CompPuppetTest.puppet_chat_to_ppt at 0x000002AC065AF040>}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\common\RpcSupport.py", line 116, in call
+    locals={'self': <core.common.RpcSupport.RpcMethod object at 0x000002AC065AE310>, 'entity': <component.puppet.CompPuppetTest.CompPuppetTest object at 0x000002AC065F39D0>, 'parameters': {'p': {'content': 'puppet_chat_to_ppt', 'cnt': 3}}, 'args': [{'content': 'puppet_chat_to_ppt', 'cnt': 3}], 'argtypes': (<core.common.RpcMethodArgs.Dict object at 0x000002AC065AE130>,), 'argtype': <core.common.RpcMethodArgs.Dict object at 0x000002AC065AE130>, 'arg': {'content': 'puppet_chat_to_ppt', 'cnt': 3}}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\component\puppet\CompPuppetTest.py", line 40, in puppet_chat_to_ppt
+    locals={'self': <component.puppet.CompPuppetTest.CompPuppetTest object at 0x000002AC065F39D0>, 'chat_info': {'content': 'puppet_chat_to_ppt', 'cnt': 3}}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\common\component\Component.py", line 307, in call_client_comp_method
+    locals={'self': <component.puppet.CompPuppetTest.CompPuppetTest object at 0x000002AC065F39D0>, 'component_name': 'CompPuppetTest', 'method_name': 'puppet_chat_from_srv', 'parameters': {'i': {'content': 'puppet_chat_to_ppt', 'cnt': 3}}}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\server_entity\ServerEntity.py", line 31, in call_client_method
+    locals={'self': <Puppet:Noname>, 'method_name': 'CompPuppetTest.puppet_chat_from_srv', 'parameters': {'i': {'content': 'puppet_chat_to_ppt', 'cnt': 3}}}
+2021-03-15 14:53:39,699 - ServerEntity.Puppet - INFO : [ServerEntity.py:16]: __init__ create entity Puppet with id 604f0473fe754e155412cf1d mem_id=1687708266800
+2021-03-15 14:53:39,700 - server.EntityManager - INFO : [EntityManager.py:127]: addentity  entity id  604f0473fe754e155412cf1d 
+2021-03-15 14:53:39,701 - TcpConn - ERROR : on_traceback, type:<class 'AttributeError'>, value:'NoneType' object has no attribute 'request_rpc', traceback:<class 'AttributeError'>
+'NoneType' object has no attribute 'request_rpc'
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\TcpConn.py", line 88, in handle_rpc
+    locals={'self': <TcpConn.TcpConn object at 0x00000188F34070D0>, 'rpc_msg': ('Puppet', 'battle_entity_message', {'m': 'CompPuppetTest.puppet_chat_to_ppt', 'p': {'p': {'content': 'puppet_chat_to_ppt', 'cnt': 5}}}), '_entity_type': 'Puppet', '_method_name': 'battle_entity_message', '_parameters': {'m': 'CompPuppetTest.puppet_chat_to_ppt', 'p': {'p': {'content': 'puppet_chat_to_ppt', 'cnt': 5}}}, '_method': <bound method rpc_method.<locals>._rpc_method.<locals>.call_rpc_method_Others of <battle_entity.Puppet.Puppet object at 0x00000188F3407130>>}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\common\RpcSupport.py", line 271, in call_rpc_method_Others
+    locals={'self': <Puppet:Noname>, 'args': {'m': 'CompPuppetTest.puppet_chat_to_ppt', 'p': {'p': {'content': 'puppet_chat_to_ppt', 'cnt': 5}}}, 'fun_for_reload': <function BattleEntity.battle_entity_message at 0x00000188F2C4ADC0>, 'call_func': <bound method RpcMethod.call of <core.common.RpcSupport.RpcMethod object at 0x00000188F2BE2040>>, 'func': <function BattleEntity.battle_entity_message at 0x00000188F2C4ADC0>}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\common\RpcSupport.py", line 116, in call
+    locals={'self': <core.common.RpcSupport.RpcMethod object at 0x00000188F2BE2040>, 'entity': <battle_entity.Puppet.Puppet object at 0x00000188F3407130>, 'parameters': {'m': 'CompPuppetTest.puppet_chat_to_ppt', 'p': {'p': {'content': 'puppet_chat_to_ppt', 'cnt': 5}}}, 'args': ['CompPuppetTest.puppet_chat_to_ppt', {'p': {'content': 'puppet_chat_to_ppt', 'cnt': 5}}], 'argtypes': (<core.common.RpcMethodArgs.Str object at 0x00000188F2BDD370>, <core.common.RpcMethodArgs.Dict object at 0x00000188F2BDD400>), 'argtype': <core.common.RpcMethodArgs.Dict object at 0x00000188F2BDD400>, 'arg': {'p': {'content': 'puppet_chat_to_ppt', 'cnt': 5}}}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\BattleEntity.py", line 84, in battle_entity_message
+    locals={'self': <Puppet:Noname>, 'method_name': 'CompPuppetTest.puppet_chat_to_ppt', 'parameters': {'p': {'content': 'puppet_chat_to_ppt', 'cnt': 5}}, 'method_list': ['CompPuppetTest', 'puppet_chat_to_ppt'], 'ent': <component.puppet.CompPuppetTest.CompPuppetTest object at 0x00000188F3407A60>, 'name': 'puppet_chat_to_ppt', 'method': <bound method rpc_method.<locals>._rpc_method.<locals>.call_rpc_method_Others of <component.puppet.CompPuppetTest.CompPuppetTest object at 0x00000188F3407A60>>}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\common\RpcSupport.py", line 271, in call_rpc_method_Others
+    locals={'self': <component.puppet.CompPuppetTest.CompPuppetTest object at 0x00000188F3407A60>, 'args': {'p': {'content': 'puppet_chat_to_ppt', 'cnt': 5}}, 'fun_for_reload': <function CompPuppetTest.puppet_chat_to_ppt at 0x00000188F33D60D0>, 'call_func': <bound method RpcMethod.call of <core.common.RpcSupport.RpcMethod object at 0x00000188F33CA790>>, 'func': <function CompPuppetTest.puppet_chat_to_ppt at 0x00000188F33D60D0>}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\common\RpcSupport.py", line 116, in call
+    locals={'self': <core.common.RpcSupport.RpcMethod object at 0x00000188F33CA790>, 'entity': <component.puppet.CompPuppetTest.CompPuppetTest object at 0x00000188F3407A60>, 'parameters': {'p': {'content': 'puppet_chat_to_ppt', 'cnt': 5}}, 'args': [{'content': 'puppet_chat_to_ppt', 'cnt': 5}], 'argtypes': (<core.common.RpcMethodArgs.Dict object at 0x00000188F33CA580>,), 'argtype': <core.common.RpcMethodArgs.Dict object at 0x00000188F33CA580>, 'arg': {'content': 'puppet_chat_to_ppt', 'cnt': 5}}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\component\puppet\CompPuppetTest.py", line 40, in puppet_chat_to_ppt
+    locals={'self': <component.puppet.CompPuppetTest.CompPuppetTest object at 0x00000188F3407A60>, 'chat_info': {'content': 'puppet_chat_to_ppt', 'cnt': 5}}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\common\component\Component.py", line 307, in call_client_comp_method
+    locals={'self': <component.puppet.CompPuppetTest.CompPuppetTest object at 0x00000188F3407A60>, 'component_name': 'CompPuppetTest', 'method_name': 'puppet_chat_from_srv', 'parameters': {'i': {'content': 'puppet_chat_to_ppt', 'cnt': 5}}}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\server_entity\ServerEntity.py", line 31, in call_client_method
+    locals={'self': <Puppet:Noname>, 'method_name': 'CompPuppetTest.puppet_chat_from_srv', 'parameters': {'i': {'content': 'puppet_chat_to_ppt', 'cnt': 5}}}
+2021-03-15 14:53:52,926 - ServerEntity.Puppet - INFO : [ServerEntity.py:16]: __init__ create entity Puppet with id 604f0480fe754e4280299368 mem_id=2321857147184
+2021-03-15 14:53:52,928 - server.EntityManager - INFO : [EntityManager.py:127]: addentity  entity id  604f0480fe754e4280299368 
+2021-03-15 14:53:54,983 - TcpConn - ERROR : on_traceback, type:<class 'AttributeError'>, value:'NoneType' object has no attribute 'request_rpc', traceback:<class 'AttributeError'>
+'NoneType' object has no attribute 'request_rpc'
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\TcpConn.py", line 88, in handle_rpc
+    locals={'self': <TcpConn.TcpConn object at 0x0000021C997870D0>, 'rpc_msg': ('Puppet', 'battle_entity_message', {'m': 'CompPuppetTest.puppet_chat_to_ppt', 'p': {'p': {'content': 'puppet_chat_to_ppt', 'cnt': 6}}}), '_entity_type': 'Puppet', '_method_name': 'battle_entity_message', '_parameters': {'m': 'CompPuppetTest.puppet_chat_to_ppt', 'p': {'p': {'content': 'puppet_chat_to_ppt', 'cnt': 6}}}, '_method': <bound method rpc_method.<locals>._rpc_method.<locals>.call_rpc_method_Others of <battle_entity.Puppet.Puppet object at 0x0000021C99787130>>}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\common\RpcSupport.py", line 271, in call_rpc_method_Others
+    locals={'self': <Puppet:Noname>, 'args': {'m': 'CompPuppetTest.puppet_chat_to_ppt', 'p': {'p': {'content': 'puppet_chat_to_ppt', 'cnt': 6}}}, 'fun_for_reload': <function BattleEntity.battle_entity_message at 0x0000021C98FCADC0>, 'call_func': <bound method RpcMethod.call of <core.common.RpcSupport.RpcMethod object at 0x0000021C98F62040>>, 'func': <function BattleEntity.battle_entity_message at 0x0000021C98FCADC0>}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\common\RpcSupport.py", line 116, in call
+    locals={'self': <core.common.RpcSupport.RpcMethod object at 0x0000021C98F62040>, 'entity': <battle_entity.Puppet.Puppet object at 0x0000021C99787130>, 'parameters': {'m': 'CompPuppetTest.puppet_chat_to_ppt', 'p': {'p': {'content': 'puppet_chat_to_ppt', 'cnt': 6}}}, 'args': ['CompPuppetTest.puppet_chat_to_ppt', {'p': {'content': 'puppet_chat_to_ppt', 'cnt': 6}}], 'argtypes': (<core.common.RpcMethodArgs.Str object at 0x0000021C98F5D370>, <core.common.RpcMethodArgs.Dict object at 0x0000021C98F5D400>), 'argtype': <core.common.RpcMethodArgs.Dict object at 0x0000021C98F5D400>, 'arg': {'p': {'content': 'puppet_chat_to_ppt', 'cnt': 6}}}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\BattleEntity.py", line 84, in battle_entity_message
+    locals={'self': <Puppet:Noname>, 'method_name': 'CompPuppetTest.puppet_chat_to_ppt', 'parameters': {'p': {'content': 'puppet_chat_to_ppt', 'cnt': 6}}, 'method_list': ['CompPuppetTest', 'puppet_chat_to_ppt'], 'ent': <component.puppet.CompPuppetTest.CompPuppetTest object at 0x0000021C99787A60>, 'name': 'puppet_chat_to_ppt', 'method': <bound method rpc_method.<locals>._rpc_method.<locals>.call_rpc_method_Others of <component.puppet.CompPuppetTest.CompPuppetTest object at 0x0000021C99787A60>>}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\common\RpcSupport.py", line 271, in call_rpc_method_Others
+    locals={'self': <component.puppet.CompPuppetTest.CompPuppetTest object at 0x0000021C99787A60>, 'args': {'p': {'content': 'puppet_chat_to_ppt', 'cnt': 6}}, 'fun_for_reload': <function CompPuppetTest.puppet_chat_to_ppt at 0x0000021C997550D0>, 'call_func': <bound method RpcMethod.call of <core.common.RpcSupport.RpcMethod object at 0x0000021C9974A790>>, 'func': <function CompPuppetTest.puppet_chat_to_ppt at 0x0000021C997550D0>}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\common\RpcSupport.py", line 116, in call
+    locals={'self': <core.common.RpcSupport.RpcMethod object at 0x0000021C9974A790>, 'entity': <component.puppet.CompPuppetTest.CompPuppetTest object at 0x0000021C99787A60>, 'parameters': {'p': {'content': 'puppet_chat_to_ppt', 'cnt': 6}}, 'args': [{'content': 'puppet_chat_to_ppt', 'cnt': 6}], 'argtypes': (<core.common.RpcMethodArgs.Dict object at 0x0000021C9974A580>,), 'argtype': <core.common.RpcMethodArgs.Dict object at 0x0000021C9974A580>, 'arg': {'content': 'puppet_chat_to_ppt', 'cnt': 6}}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\component\puppet\CompPuppetTest.py", line 40, in puppet_chat_to_ppt
+    locals={'self': <component.puppet.CompPuppetTest.CompPuppetTest object at 0x0000021C99787A60>, 'chat_info': {'content': 'puppet_chat_to_ppt', 'cnt': 6}}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\common\component\Component.py", line 307, in call_client_comp_method
+    locals={'self': <component.puppet.CompPuppetTest.CompPuppetTest object at 0x0000021C99787A60>, 'component_name': 'CompPuppetTest', 'method_name': 'puppet_chat_from_srv', 'parameters': {'i': {'content': 'puppet_chat_to_ppt', 'cnt': 6}}}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\server_entity\ServerEntity.py", line 31, in call_client_method
+    locals={'self': <Puppet:Noname>, 'method_name': 'CompPuppetTest.puppet_chat_from_srv', 'parameters': {'i': {'content': 'puppet_chat_to_ppt', 'cnt': 6}}}
+2021-03-15 14:55:41,117 - ServerEntity.Puppet - INFO : [ServerEntity.py:16]: __init__ create entity Puppet with id 604f04edfe754e446080590a mem_id=2328922113936
+2021-03-15 14:55:42,555 - server.EntityManager - INFO : [EntityManager.py:127]: addentity  entity id  604f04edfe754e446080590a 
+2021-03-15 15:04:57,104 - ServerEntity.Puppet - INFO : [ServerEntity.py:16]: __init__ create entity Puppet with id 604f0719fe754e21e4a672bd mem_id=1881597091904
+2021-03-15 15:04:57,106 - server.EntityManager - INFO : [EntityManager.py:127]: addentity  entity id  604f0719fe754e21e4a672bd 
+2021-03-15 15:05:39,522 - ServerEntity.Puppet - INFO : [ServerEntity.py:16]: __init__ create entity Puppet with id 604f0743fe754e2ba842250f mem_id=1990952521984
+2021-03-15 15:05:39,524 - server.EntityManager - INFO : [EntityManager.py:127]: addentity  entity id  604f0743fe754e2ba842250f 
+2021-03-15 15:22:44,419 - ServerEntity.Puppet - INFO : [ServerEntity.py:16]: __init__ create entity Puppet with id 604f0b44fe754e46f00b1ddd mem_id=2374943277360
+2021-03-15 15:22:44,421 - server.EntityManager - INFO : [EntityManager.py:127]: addentity  entity id  604f0b44fe754e46f00b1ddd 
+2021-03-15 15:23:37,076 - ServerEntity.Puppet - INFO : [ServerEntity.py:16]: __init__ create entity Puppet with id 604f0b79fe754e46f00b1dde mem_id=2374943280048
+2021-03-15 15:23:37,076 - ServerEntity.Puppet - INFO : [ServerEntity.py:16]: __init__ create entity Puppet with id 604f0b79fe754e46f00b1dde mem_id=2374943280048
+2021-03-15 15:23:37,077 - server.EntityManager - INFO : [EntityManager.py:127]: addentity  entity id  604f0b79fe754e46f00b1dde 
+2021-03-15 15:23:39,065 - ServerEntity.Puppet - INFO : [ServerEntity.py:16]: __init__ create entity Puppet with id 604f0b7bfe754e46f00b1ddf mem_id=2374943279856
+2021-03-15 15:23:39,065 - ServerEntity.Puppet - INFO : [ServerEntity.py:16]: __init__ create entity Puppet with id 604f0b7bfe754e46f00b1ddf mem_id=2374943279856
+2021-03-15 15:23:39,065 - ServerEntity.Puppet - INFO : [ServerEntity.py:16]: __init__ create entity Puppet with id 604f0b7bfe754e46f00b1ddf mem_id=2374943279856
+2021-03-15 15:23:39,067 - server.EntityManager - INFO : [EntityManager.py:127]: addentity  entity id  604f0b7bfe754e46f00b1ddf 
+2021-03-15 15:23:41,483 - ServerEntity.Puppet - INFO : [ServerEntity.py:16]: __init__ create entity Puppet with id 604f0b7dfe754e46f00b1de0 mem_id=2374943958400
+2021-03-15 15:23:41,483 - ServerEntity.Puppet - INFO : [ServerEntity.py:16]: __init__ create entity Puppet with id 604f0b7dfe754e46f00b1de0 mem_id=2374943958400
+2021-03-15 15:23:41,483 - ServerEntity.Puppet - INFO : [ServerEntity.py:16]: __init__ create entity Puppet with id 604f0b7dfe754e46f00b1de0 mem_id=2374943958400
+2021-03-15 15:23:41,483 - ServerEntity.Puppet - INFO : [ServerEntity.py:16]: __init__ create entity Puppet with id 604f0b7dfe754e46f00b1de0 mem_id=2374943958400
+2021-03-15 15:23:41,484 - server.EntityManager - INFO : [EntityManager.py:127]: addentity  entity id  604f0b7dfe754e46f00b1de0 
+2021-03-15 15:24:42,666 - ServerEntity.Puppet - INFO : [ServerEntity.py:16]: __init__ create entity Puppet with id 604f0bbafe754e46f00b1de1 mem_id=2374943959936
+2021-03-15 15:24:42,666 - ServerEntity.Puppet - INFO : [ServerEntity.py:16]: __init__ create entity Puppet with id 604f0bbafe754e46f00b1de1 mem_id=2374943959936
+2021-03-15 15:24:42,666 - ServerEntity.Puppet - INFO : [ServerEntity.py:16]: __init__ create entity Puppet with id 604f0bbafe754e46f00b1de1 mem_id=2374943959936
+2021-03-15 15:24:42,666 - ServerEntity.Puppet - INFO : [ServerEntity.py:16]: __init__ create entity Puppet with id 604f0bbafe754e46f00b1de1 mem_id=2374943959936
+2021-03-15 15:24:42,666 - ServerEntity.Puppet - INFO : [ServerEntity.py:16]: __init__ create entity Puppet with id 604f0bbafe754e46f00b1de1 mem_id=2374943959936
+2021-03-15 15:24:42,668 - server.EntityManager - INFO : [EntityManager.py:127]: addentity  entity id  604f0bbafe754e46f00b1de1 
+2021-03-15 15:24:46,142 - ServerEntity.Puppet - INFO : [ServerEntity.py:16]: __init__ create entity Puppet with id 604f0bbefe754e46f00b1de2 mem_id=2374943959216
+2021-03-15 15:24:46,142 - ServerEntity.Puppet - INFO : [ServerEntity.py:16]: __init__ create entity Puppet with id 604f0bbefe754e46f00b1de2 mem_id=2374943959216
+2021-03-15 15:24:46,142 - ServerEntity.Puppet - INFO : [ServerEntity.py:16]: __init__ create entity Puppet with id 604f0bbefe754e46f00b1de2 mem_id=2374943959216
+2021-03-15 15:24:46,142 - ServerEntity.Puppet - INFO : [ServerEntity.py:16]: __init__ create entity Puppet with id 604f0bbefe754e46f00b1de2 mem_id=2374943959216
+2021-03-15 15:24:46,142 - ServerEntity.Puppet - INFO : [ServerEntity.py:16]: __init__ create entity Puppet with id 604f0bbefe754e46f00b1de2 mem_id=2374943959216
+2021-03-15 15:24:46,142 - ServerEntity.Puppet - INFO : [ServerEntity.py:16]: __init__ create entity Puppet with id 604f0bbefe754e46f00b1de2 mem_id=2374943959216
+2021-03-15 15:24:46,144 - server.EntityManager - INFO : [EntityManager.py:127]: addentity  entity id  604f0bbefe754e46f00b1de2 
+2021-03-15 15:24:50,542 - ServerEntity.Puppet - INFO : [ServerEntity.py:16]: __init__ create entity Puppet with id 604f0bc2fe754e46f00b1de3 mem_id=2374944000608
+2021-03-15 15:24:50,542 - ServerEntity.Puppet - INFO : [ServerEntity.py:16]: __init__ create entity Puppet with id 604f0bc2fe754e46f00b1de3 mem_id=2374944000608
+2021-03-15 15:24:50,542 - ServerEntity.Puppet - INFO : [ServerEntity.py:16]: __init__ create entity Puppet with id 604f0bc2fe754e46f00b1de3 mem_id=2374944000608
+2021-03-15 15:24:50,542 - ServerEntity.Puppet - INFO : [ServerEntity.py:16]: __init__ create entity Puppet with id 604f0bc2fe754e46f00b1de3 mem_id=2374944000608
+2021-03-15 15:24:50,542 - ServerEntity.Puppet - INFO : [ServerEntity.py:16]: __init__ create entity Puppet with id 604f0bc2fe754e46f00b1de3 mem_id=2374944000608
+2021-03-15 15:24:50,542 - ServerEntity.Puppet - INFO : [ServerEntity.py:16]: __init__ create entity Puppet with id 604f0bc2fe754e46f00b1de3 mem_id=2374944000608
+2021-03-15 15:24:50,542 - ServerEntity.Puppet - INFO : [ServerEntity.py:16]: __init__ create entity Puppet with id 604f0bc2fe754e46f00b1de3 mem_id=2374944000608
+2021-03-15 15:24:50,544 - server.EntityManager - INFO : [EntityManager.py:127]: addentity  entity id  604f0bc2fe754e46f00b1de3 

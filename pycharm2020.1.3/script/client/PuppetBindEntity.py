@@ -23,7 +23,7 @@ class PuppetBindEntity(object):
         # method_name = RpcInde.send_rpc_index(method_name)
         if self._bind_ok:
             # self._connection.request_rpc("", "", args=[method_name, parameters])
-            self._connection.request_rpc(method_name, parameters)
+            self._connection.request_rpc(self._puppet.__class__.__name__, method_name, parameters)
         else:
             pass # raise Exception("call rpc in a connection do not bind any server entity")
 

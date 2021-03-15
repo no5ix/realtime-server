@@ -56,6 +56,10 @@ class BattleEntity(ServerEntity):
     # #         {'m': method_name, 'p': parameters}
     # #     )
 
+    def call_client_method(self, method_name, parameters):
+        self._conn.request_rpc(
+            self.__class__.__name__, 'battle_entity_message', {'m': method_name, 'p': parameters})
+
     @rpc_method(CLIENT_ONLY, (Str('m'), Dict('p')))
     def battle_entity_message(self, method_name, parameters):
         # try:

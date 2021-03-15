@@ -13,15 +13,17 @@ async def tcp_echo_client(message):
 
     _ppt = Puppet()
     _tcp_conn = TcpConn(writer.get_extra_info('peername'), writer, reader)
-    _pbe = PuppetBindEntity()
-    _tcp_conn.set_entity(_pbe)
-    _pbe.set_puppet(_ppt)
-    _pbe.set_connection(_tcp_conn)
+    # _pbe = PuppetBindEntity()
+    # _tcp_conn.set_entity(_pbe)
+    _tcp_conn.set_entity(_ppt)
+    _ppt.set_connection(_tcp_conn)
+    # _pbe.set_puppet(_ppt)
+    # _pbe.set_connection(_tcp_conn)
 
     _ppt.init_from_dict({})
 
-    _ppt.set_bind_entity(_pbe)
-    gr.bind_entity = _pbe
+    # _ppt.set_bind_entity(_pbe)
+    # gr.bind_entity = _pbe
 
     _ppt.CompPuppetTest.puppet_chat_to_channel({'content': 'test_chat_msg'})
 

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
+from .IdManager import IdManager
 from ..mobilelog.LogManager import LogManager
-from IdManager import IdManager
+# from IdManager import IdManager
 
 
 class EntityIdOrLocalId(object):
@@ -118,7 +119,8 @@ class EntityManager(object):
 	@staticmethod
 	def addentity(entityid, entity, override=False):
 		"""增加entity， override为True的时候，会覆盖原有相同id的Entity"""
-		if EntityManager._entities.has_key(entityid):
+		# if EntityManager._entities.has_key(entityid):
+		if entityid in EntityManager._entities:
 			EntityManager._logger.warn(" entity  %s already exist", entityid)
 			if not override:
 				return

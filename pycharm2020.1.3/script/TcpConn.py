@@ -3,6 +3,7 @@ import typing
 
 from struct import unpack as s_unpack, pack as s_pack
 from core.common import MsgpackSupport
+from core.common.EntityFactory import EntityFactory
 from core.mobilelog.LogManager import LogManager
 from server_entity.ServerEntity import ServerEntity
 
@@ -12,9 +13,10 @@ MAX_BODY_LEN = 4294967296
 
 class TcpConn(object):
 
-    def __init__(self, addr_str, asyncio_writer, asyncio_reader, entity=None):
+    def __init__(self, addr_str, asyncio_writer, asyncio_reader):
         self.addr_str = addr_str
-        self.entity = entity  # type: typing.Type[ServerEntity]
+        # self.entity = entity  # type: typing.Type[ServerEntity]
+        self._entity = None  # type: typing.Union[ServerEntity, None]
         self.asyncio_writer = asyncio_writer
         self.asyncio_reader = asyncio_reader
 
@@ -25,7 +27,7 @@ class TcpConn(object):
         self._logger = LogManager.get_logger(self.__class__.__name__)
 
     def set_entity(self, entity):
-        self.entity = entity
+        self._entity = entity
 
     def set_asyncio_writer(self, asyncio_writer):
         self.asyncio_writer = asyncio_writer
@@ -75,69 +77,35 @@ class TcpConn(object):
             self._logger.log_last_except()
 
     def handle_rpc(self, rpc_msg):
-        if not self.entity:
-            # self.logger.error("call direct client entity method, but do not bind")
-            return
-        _entity = self.entity
-        _method_name, _parameters = rpc_msg
-        _method = getattr(_entity, _method_name, None)
+        _entity_type, _method_name, _parameters = rpc_msg
+        if self._entity is None:
+            self._entity = EntityFactory.instance().create_entity(_entity_type)
+            self._entity.set_connection(self)
+        _method = getattr(self._entity, _method_name, None)
 
         if not _method:
-            # self.logger.error("entity:%s  method:%s not exist", entity, method_name)
+            self._logger.error("entity:%s  method:%s not exist", self._entity, _method_name)
             return
         try:
             _method(_parameters)
         except:
-            pass
+            self._logger.log_last_except()
 
     def request_rpc(
             # self, address, service_id, method_name, args=[], service_id_type=0, method_name_type=0,
-            self, method_name, args=None,
+            self, entity_type,
+            method_name, args=None,
             # method_name_type=0,
             # need_reply=False, timeout=2
     ):
-            # need_reply=False, timeout=2, target_con=None):
-        """
-        向远端的进程发起一个rpc请求，如果当前已经有连接了，那么直接用这个连接发送数据就行，如果没有可用的连接，
-        那么建立一个连接，将发送的数据缓存起来，等到连接建立成功之后再发送
-        @param address:            (ip，port)
-        @param service_id:         远端服务的id  一般情况下是一个字符串表示，可以通过service_id_type来指定
-        @param method_name:        调用的服务对象的方法名字
-        @param args:               调用的参数，这个必须要是一个list
-        @param service_id_type:    服务id类型，默认为0，字符串
-        @param method_name_type:   方法名字类型，默认为0，字符串
-        @param need_reply:         当前rpc是否需要返回值
-        @param timeout:            返回超时，配合need_reply
-        @param target_con:         指定使用的连接对象
-        """
-        # assert isinstance(args, list)
 
         # message = [RPC_REQUEST, service_id_type, service_id, method_name_type, method_name, args]
-        message = [method_name, args]
-        future = None
-        _task = None
-        # if need_reply:
-        #     now_rid = self._get_rid()
-        #     future = Future(now_rid, time_out=timeout)
-        #     message.append(now_rid)
-        # use_con = target_con if target_con else self.get_connection(address)
-        # if use_con:
-        #     if future:
-                # use_con.add_future(future)
-            # self._send_rpc_message(message, use_con)
-        # else:
-        #     self.logger.warn("request rpc but no connection exist, will connect: %s", address)
-        #     if future:
-        #         future.stop_time_out()     # 关闭超时计时，等到真正发送数据的时候再开启
-        #         message.append(future)
-        #     self.buffer_send_message(address, message)
-        #     self._create_connection(address)
-
+        message = [entity_type, method_name, args]
         try:
             data = self.do_encode(message)
         except:
             # self.logger.error("encode request message error")
-            # self.logger.log_last_except()
+            self._logger.log_last_except()
             # self.handle_traceback()
             print("encode request message error")
         else:
@@ -147,9 +115,10 @@ class TcpConn(object):
             # await self.send_data_and_count(data)
             self.send_data_and_count(data)
             # _task = asyncio.create_task(self.send_data_and_count(data))
-        return _task
+        # return _task
 
-    def do_encode(self, message):
+    @staticmethod
+    def do_encode(message):
         return MsgpackSupport.encode(message)
 
     def send_data_and_count(self, data):
@@ -157,7 +126,7 @@ class TcpConn(object):
         self.send_cnt += 1
         # _len = len(data)
         data_len = len(data) if data else 0
-        header_data = s_pack("i", data_len)             # 构建数据的头部
+        header_data = s_pack("i", data_len)
         data = header_data + data
 
         self.asyncio_writer.write(data)
