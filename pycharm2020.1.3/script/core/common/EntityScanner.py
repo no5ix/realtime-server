@@ -14,12 +14,17 @@ def walk_pkg(path, pkg_name):
             walk_pkg(_path, ''.join((pkg_name, '.', name)))
 
 
+def all_subclasses(cls):
+    return set(cls.__subclasses__()).union(
+        [s for c in cls.__subclasses__() for s in all_subclasses(c)])
+
+
 def scan_entity_package(package_name, entity_base_class):
     _spec = importlib.util.find_spec(package_name)
     if _spec is None:
         raise ImportError('Not a package: %r', package_name)
     walk_pkg(_spec.submodule_search_locations, package_name)
-    cls_dict = {_cls.__name__: _cls for _cls in entity_base_class.__subclasses__()}
+    cls_dict = {_cls.__name__: _cls for _cls in all_subclasses(entity_base_class)}
     return cls_dict
 
 

@@ -29,10 +29,11 @@ class Stub(ServerEntity):
         self._center_name = ''
         self._peers = []
 
-    def start_connect(self, center_name, cb):
+    # def start_connect(self, center_name, cb):
+    def start_connect(self, center_name):
         """center_name 要连接的center_name"""
         self._center_name = center_name
-        self.connect_cb = cb
+        # self.connect_cb = cb
         # gr.callback(1.0, lambda: self.connect_to_center())
         asyncio.get_running_loop().call_later(1, self.connect_to_center)
 

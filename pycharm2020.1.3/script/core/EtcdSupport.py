@@ -230,6 +230,7 @@ class ServiceFinder(EtcdProcessor):
         self._watch_index = 0  # 当前watch所在的index
 
     async def start(self):
+        await asyncio.sleep(5)
         if await self._init_info():
             self._logger.info(
                 "init service info from etcd success, will going to watch, at etcd index -> %s", self._etcd_index)
@@ -469,9 +470,15 @@ class ServiceNode(object):
         self._logger.info("we have create ServiceFinder")
 
     async def start(self):
-        await self._register.start()
-        await asyncio.sleep(5)
-        await self._finder.start()
+        # await self._register.start()
+        # await asyncio.sleep(5)
+        # await self._finder.start()
+
+        register_task = asyncio.create_task(self._register.start())
+        finder_task = asyncio.create_task(self._finder.start())
+        await register_task
+        # await asyncio.sleep(5)
+        await finder_task
 
     def stop(self):
         self._register.stop()

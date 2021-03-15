@@ -9,6 +9,7 @@ from core.mobilelog.LogManager import LogManager
 # from util import DBOperation
 from core.common.EntityFactory import EntityFactory
 # from core.common.EntityManager import EntityManager
+from server_entity.center_stub.BattleAllocatorStub import BattleAllocatorStub
 
 
 class SingletonEntityManager(object):
@@ -126,7 +127,7 @@ class SingletonEntityManager(object):
             # EntityFactory.instance().create_entity('BattleAllocatorCenter')
         # else:
             name = 'BattleAllocatorStub'
-            stub = EntityFactory.instance().create_entity(name)
+            stub = EntityFactory.instance().create_entity(name)  # type: BattleAllocatorStub
             gr.add_server_singleton(stub)
             name_prefix = name[:-4]
             center_name = name_prefix + 'Center'

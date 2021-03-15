@@ -9,9 +9,13 @@
     "component_root": "component",
     "battle_0": {
         "is_center": true,
-        "game_server_name": "battle_0"
+        "game_server_name": "battle_0",
+        "ip": "127.0.0.1",
+        "port": 8888
     },
     "battle_1": {
-        "game_server_name": "battle_1"
+        "game_server_name": "battle_1",
+        "ip": "127.0.0.1",
+        "port": 8889
     }
 }

@@ -36,7 +36,8 @@ class TcpServer(object):
 
     @staticmethod
     def parse_json_conf():
-        file_name = r'D:\Documents\github\realtime-server\pycharm2020.1.3\bin\win\conf\battle_server.json'
+        # file_name = r'D:\Documents\github\realtime-server\pycharm2020.1.3\bin\win\conf\battle_server.json'
+        file_name = r'C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\bin\win\conf\battle_server.json'
         conf_file = open(file_name)
         json_conf = json.load(conf_file)
         conf_file.close()
@@ -146,7 +147,9 @@ class TcpServer(object):
     async def start_server_task(self):
         # server = await asyncio.start_server(
         #     handle_echo, '127.0.0.1', 8888)
-        server = await asyncio.start_server(self.handle_client_connected, '127.0.0.1', 8888)
+        _ip = gr.game_json_conf[gr.game_server_name]["ip"]
+        _port = gr.game_json_conf[gr.game_server_name]["port"]
+        server = await asyncio.start_server(self.handle_client_connected, _ip, _port)
         # _start_srv_task = asyncio.create_task(asyncio.start_server(self.handle_client_connected, '127.0.0.1', 8888))
         # await _etcd_support_task
         # server = await _start_srv_task
@@ -158,12 +161,16 @@ class TcpServer(object):
             await server.serve_forever()
 
     async def main(self):
-
         self.handle_sig()
 
         etcd_addr_list = [('127.0.0.1', '2379'),]
-        my_addr = ('127.0.0.1', '12001')
+
+        _ip = gr.game_json_conf[gr.game_server_name]["ip"]
+        _port = gr.game_json_conf[gr.game_server_name]["port"]
+        my_addr = (_ip, str(_port))
+
         self._etcd_service_node = ServiceNode(etcd_addr_list, my_addr, {"BattleAllocatorCenter": ""})
+        # self._etcd_service_node = ServiceNode(etcd_addr_list, my_addr, {"BattleAllocatorStub": ""})
         gr.etcd_service_node = self._etcd_service_node
         asyncio.get_running_loop().call_later(4, self._check_game_start)
 
