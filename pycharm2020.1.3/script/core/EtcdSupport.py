@@ -455,13 +455,13 @@ class ServiceFinder(EtcdProcessor):
     def get_all_entity_info(self):
         return dict(self._es)
 
-    def get_service_map(self):
-        service_dict = {}
-        for service_name, service_infos in self._services.iteritems():
-            for service_info in service_infos:
-                service_dict[service_info] = service_name
-
-        return service_dict
+    # def get_service_map(self):
+    #     service_dict = {}
+    #     for service_name, service_infos in self._services.iteritems():
+    #         for service_info in service_infos:
+    #             service_dict[service_info] = service_name
+    #
+    #     return service_dict
 
 
 class ServiceNode(object):

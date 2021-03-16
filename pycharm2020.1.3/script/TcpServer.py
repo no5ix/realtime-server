@@ -37,7 +37,8 @@ class TcpServer(object):
 
     @staticmethod
     def parse_json_conf():
-        file_name = r'D:\Documents\github\realtime-server\pycharm2020.1.3\bin\win\conf\battle_server.json'
+        file_name = r'.\bin\win\conf\battle_server.json'
+        # file_name = r'D:\Documents\github\realtime-server\pycharm2020.1.3\bin\win\conf\battle_server.json'
         # file_name = r'C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\bin\win\conf\battle_server.json'
         conf_file = open(file_name)
         json_conf = json.load(conf_file)

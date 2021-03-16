@@ -17,5 +17,10 @@
         "game_server_name": "battle_1",
         "ip": "127.0.0.1",
         "port": 8889
+    },
+    "battle_2": {
+        "game_server_name": "battle_2",
+        "ip": "127.0.0.1",
+        "port": 9000
     }
 }

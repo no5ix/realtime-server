@@ -1,4 +1,5 @@
 import asyncio
+import sys
 
 from TcpConn import TcpConn
 from client.Puppet import Puppet
@@ -7,9 +8,9 @@ from common import gr
 from core.common import MsgpackSupport
 
 
-async def tcp_echo_client(message):
+async def tcp_echo_client(message, port):
     reader, writer = await asyncio.open_connection(
-        '127.0.0.1', 8888)
+        '127.0.0.1', port)
 
     _ppt = Puppet()
     _tcp_conn = TcpConn(writer.get_extra_info('peername'), writer, reader)
@@ -51,4 +52,11 @@ async def tcp_echo_client(message):
     # print('Close the connection')
     # writer.close()
 
-asyncio.run(tcp_echo_client('Hello World!'))
+
+if __name__ == '__main__':
+    # gr.game_server_name = sys.argv[1]
+    # tcp_server = TcpServer()
+    # TCP_SERVER = tcp_server
+    # tcp_server.run()
+
+    asyncio.run(tcp_echo_client('Hello World!', sys.argv[1]))
