@@ -87,10 +87,10 @@ class RpcMethod(object):
 
     # def call(self, entity, placeholder, parameters):
     def call(self, entity, parameters):
-        if not isinstance(parameters, dict):
-            print("call: bson parameter decode failed in RPC call %s (%s), ",
-                         self.func.__name__,  "" .join(str(x) for x in self.argtypes))
-            return
+        # if not isinstance(parameters, dict):
+        #     print("call: bson parameter decode failed in RPC call %s (%s), ",
+        #                  self.func.__name__,  "" .join(str(x) for x in self.argtypes))
+        #     return
 
         args = []
         argtypes = self.argtypes

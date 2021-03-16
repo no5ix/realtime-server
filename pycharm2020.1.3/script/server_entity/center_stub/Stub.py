@@ -39,9 +39,12 @@ class Stub(ServerEntity):
 
     def connect_to_center(self):
         self._connect_counter += 1
-        center = UtilApi.get_global_entity_mailbox(self._center_name)
-        if center:
-            self.call_server_method(center, 'register_stub')
+        # center = UtilApi.get_global_entity_mailbox(self._center_name)
+        center_ip_port_tuple = UtilApi.get_service_info(self._center_name)
+        if center_ip_port_tuple:
+            center_ip_port = center_ip_port_tuple[0]
+            asyncio.create_task(self.call_server_method_with_ip_port(
+                center_ip_port, 'register_stub', remote_entity_type=self._center_name))
             self._connected = True
             if self.connect_cb is not None:
                 self.connect_cb()

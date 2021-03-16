@@ -5,7 +5,6 @@ from struct import unpack as s_unpack, pack as s_pack
 from core.common import MsgpackSupport
 from core.common.EntityFactory import EntityFactory
 from core.mobilelog.LogManager import LogManager
-from server_entity.ServerEntity import ServerEntity
 
 HEAD_LEN = 4
 MAX_BODY_LEN = 4294967296
@@ -16,6 +15,7 @@ class TcpConn(object):
     def __init__(self, addr_str, asyncio_writer, asyncio_reader):
         self.addr_str = addr_str
         # self.entity = entity  # type: typing.Type[ServerEntity]
+        from server_entity.ServerEntity import ServerEntity
         self._entity = None  # type: typing.Union[ServerEntity, None]
         self.asyncio_writer = asyncio_writer
         self.asyncio_reader = asyncio_reader
@@ -35,7 +35,10 @@ class TcpConn(object):
     def send_msg(self, msg):
         self.asyncio_writer.write(MsgpackSupport.encode(msg))
 
-    async def loop(self):
+    def loop(self):
+        return asyncio.create_task(self._loop())
+
+    async def _loop(self):
         while True:
             # self.asyncio_writer
             _data = await self.asyncio_reader.read(8192)

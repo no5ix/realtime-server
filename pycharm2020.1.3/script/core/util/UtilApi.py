@@ -25,6 +25,10 @@ def get_global_entity_mailbox(entity_unique_name):
     return gr.etcd_service_node.get_entity_info(entity_unique_name)
 
 
+def get_service_info(service_name):
+    return gr.etcd_service_node.get_service_info(service_name)
+
+
 def register_entity_globally():
     pass
 

@@ -345,12 +345,17 @@ class ServiceFinder(EtcdProcessor):
         return service_name, (ip, port)
 
     async def _watch_process_impl(self):
+        print("testttt _watch_process_impl1")
+
         r = await UtilApi.async_wrap(lambda: requests.request("GET", self._get_server_info() + _ETCD_KEY_PREFIX))
         self._etcd_index = int(r.headers["x-etcd-index"])
         now_url = self._get_server_info() + _ETCD_KEY_PREFIX + "?wait=true&recursive=true"
         if self._watch_index:
             now_url += "&waitIndex=" + str(self._watch_index + 1)
+            print(f"waiting testttt _watch_process_impl2 {now_url}")
+
         r = await UtilApi.async_wrap(lambda: requests.request("GET", now_url))
+        print("testttt _watch_process_impl3")
         res = json.loads(r.text)
         action = res.get("action", "")
         key_path = res.get("node", {}).get("key", "")
@@ -361,7 +366,9 @@ class ServiceFinder(EtcdProcessor):
             """key的创建"""
             if key_path.startswith(_MOBILE_SERVICE_PREFIX):
                 service_name, address = self._get_service_node_info(key_path)
-                self._logger.info("recv watch %s service node info--> %s: %s - [%s]", action, service_name, address, self._watch_index)
+                self._logger.info(
+                    "recv watch %s service node info--> %s: %s - [%s]",
+                    action, service_name, address, self._watch_index)
                 self._add_service_info(service_name, address)
             elif key_path.startswith(_NAME_ENTITY_PREFIX):
                 self._logger.info("recv watch %s entity info -> %s", action, res)

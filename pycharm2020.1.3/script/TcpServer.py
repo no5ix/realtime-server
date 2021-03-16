@@ -3,6 +3,7 @@ import functools
 import json
 import signal
 import platform
+import sys
 from random import random
 import socket
 
@@ -36,8 +37,8 @@ class TcpServer(object):
 
     @staticmethod
     def parse_json_conf():
-        # file_name = r'D:\Documents\github\realtime-server\pycharm2020.1.3\bin\win\conf\battle_server.json'
-        file_name = r'C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\bin\win\conf\battle_server.json'
+        file_name = r'D:\Documents\github\realtime-server\pycharm2020.1.3\bin\win\conf\battle_server.json'
+        # file_name = r'C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\bin\win\conf\battle_server.json'
         conf_file = open(file_name)
         json_conf = json.load(conf_file)
         conf_file.close()
@@ -128,7 +129,7 @@ class TcpServer(object):
         self.tcp_conn_map[addr] = _tcp_conn
         message = f"{addr!r} is connected !!!!"
         print(message)
-        await _tcp_conn.loop()
+        _tcp_conn.loop()
         # self.forward(writer, addr, message)
         # while True:
         #     data = await reader.read(100)
@@ -149,16 +150,19 @@ class TcpServer(object):
         #     handle_echo, '127.0.0.1', 8888)
         _ip = gr.game_json_conf[gr.game_server_name]["ip"]
         _port = gr.game_json_conf[gr.game_server_name]["port"]
-        server = await asyncio.start_server(self.handle_client_connected, _ip, _port)
-        # _start_srv_task = asyncio.create_task(asyncio.start_server(self.handle_client_connected, '127.0.0.1', 8888))
-        # await _etcd_support_task
-        # server = await _start_srv_task
+        try:
+            server = await asyncio.start_server(self.handle_client_connected, _ip, _port)
+            # _start_srv_task = asyncio.create_task(asyncio.start_server(self.handle_client_connected, '127.0.0.1', 8888))
+            # await _etcd_support_task
+            # server = await _start_srv_task
 
-        addr = server.sockets[0].getsockname()
-        print(f'Server on {addr}')
+            addr = server.sockets[0].getsockname()
+            print(f'Server on {addr}')
 
-        async with server:
-            await server.serve_forever()
+            async with server:
+                await server.serve_forever()
+        except:
+            self._logger.log_last_except()
 
     async def main(self):
         self.handle_sig()
@@ -169,7 +173,10 @@ class TcpServer(object):
         _port = gr.game_json_conf[gr.game_server_name]["port"]
         my_addr = (_ip, str(_port))
 
-        self._etcd_service_node = ServiceNode(etcd_addr_list, my_addr, {"BattleAllocatorCenter": ""})
+        service_module_dict = {"BattleAllocatorCenter": ""} if gr.game_server_name == "battle_0" else {
+            "BattleAllocatorStub": ""}
+
+        self._etcd_service_node = ServiceNode(etcd_addr_list, my_addr, service_module_dict)
         # self._etcd_service_node = ServiceNode(etcd_addr_list, my_addr, {"BattleAllocatorStub": ""})
         gr.etcd_service_node = self._etcd_service_node
         asyncio.get_running_loop().call_later(4, self._check_game_start)
@@ -219,6 +226,7 @@ class TcpServer(object):
 
 
 if __name__ == '__main__':
+    gr.game_server_name = sys.argv[1]
     tcp_server = TcpServer()
     TCP_SERVER = tcp_server
     tcp_server.run()
