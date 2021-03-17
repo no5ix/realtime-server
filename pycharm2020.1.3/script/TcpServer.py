@@ -37,7 +37,7 @@ class TcpServer(object):
 
     @staticmethod
     def parse_json_conf():
-        file_name = r'.\bin\win\conf\battle_server.json'
+        file_name = r'../bin/win/conf/battle_server.json'
         # file_name = r'D:\Documents\github\realtime-server\pycharm2020.1.3\bin\win\conf\battle_server.json'
         # file_name = r'C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\bin\win\conf\battle_server.json'
         conf_file = open(file_name)
@@ -169,6 +169,7 @@ class TcpServer(object):
         self.handle_sig()
 
         etcd_addr_list = [('127.0.0.1', '2379'),]
+        # etcd_addr_list = [('192.168.82.177', '2379'),]
 
         _ip = gr.game_json_conf[gr.game_server_name]["ip"]
         _port = gr.game_json_conf[gr.game_server_name]["port"]
@@ -193,7 +194,10 @@ class TcpServer(object):
 
         def ask_exit(sig_name, loop):
             print('got signal %s: exit' % sig_name)
-            loop.stop()
+            try:
+                loop.stop()
+            except RuntimeError:
+                pass
 
         if platform.system() != 'Linux':
             return

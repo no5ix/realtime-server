@@ -1,4 +1,5 @@
 import asyncio
+import random
 import sys
 
 from TcpConn import TcpConn
@@ -8,7 +9,9 @@ from common import gr
 from core.common import MsgpackSupport
 
 
-async def tcp_echo_client(message, port):
+async def tcp_echo_client():
+    local_server_port_tuple = (8888, 8889, 9000)
+    port = random.choice(local_server_port_tuple)
     reader, writer = await asyncio.open_connection(
         '127.0.0.1', port)
 
@@ -59,4 +62,4 @@ if __name__ == '__main__':
     # TCP_SERVER = tcp_server
     # tcp_server.run()
 
-    asyncio.run(tcp_echo_client('Hello World!', sys.argv[1]))
+    asyncio.run(tcp_echo_client())

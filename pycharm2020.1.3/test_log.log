@@ -1,193 +1,753 @@
-2021-03-16 17:33:22,490 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 128 -> 130
-2021-03-16 17:37:11,164 - ServiceNode - INFO : [EtcdSupport.py:474]: we have create ServiceRegister, wait 5 seconds
-2021-03-16 17:37:11,166 - ServiceNode - INFO : [EtcdSupport.py:477]: we have create ServiceFinder
-2021-03-16 17:37:11,179 - ServiceRegister - INFO : [EtcdSupport.py:147]: regist service : BattleAllocatorCenter success, {"action":"set","node":{"key":"/services/BattleAllocatorCenter/127.0.0.1|8888","value":"","expiration":"2021-03-16T09:40:11.1788511Z","ttl":180,"modifiedIndex":137,"createdIndex":137}}
+2021-03-17 09:41:28,928 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 48 -> 50
+2021-03-17 09:41:30,936 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 48 -> 50
+2021-03-17 09:41:38,946 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 48 -> 50
+2021-03-17 09:42:29,930 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 50 -> 50
+2021-03-17 09:42:37,938 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 50 -> 50
+2021-03-17 09:42:45,953 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 50 -> 50
+2021-03-17 09:43:38,931 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 50 -> 52
+2021-03-17 09:43:42,927 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 50 -> 52
+2021-03-17 09:43:51,942 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 50 -> 52
+2021-03-17 09:44:38,935 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 52 -> 53
+2021-03-17 09:44:49,931 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 52 -> 54
+2021-03-17 09:44:54,945 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 52 -> 54
+2021-03-17 09:45:44,946 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 53 -> 54
+2021-03-17 09:45:55,934 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 54 -> 54
+2021-03-17 09:45:58,948 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 54 -> 54
+2021-03-17 09:46:47,950 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 54 -> 56
+2021-03-17 09:46:56,937 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 54 -> 56
+2021-03-17 09:47:06,955 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 54 -> 56
+2021-03-17 09:47:56,953 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 56 -> 56
+2021-03-17 09:48:04,941 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 56 -> 57
+2021-03-17 09:48:09,942 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 56 -> 58
+2021-03-17 09:49:04,953 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 56 -> 58
+2021-03-17 09:49:09,944 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 57 -> 58
+2021-03-17 09:49:18,945 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 58 -> 58
+2021-03-17 09:50:05,957 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 58 -> 60
+2021-03-17 09:50:09,949 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 58 -> 60
+2021-03-17 09:50:26,944 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 58 -> 60
+2021-03-17 09:51:15,952 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 60 -> 60
+2021-03-17 09:51:15,961 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 60 -> 60
+2021-03-17 09:51:34,949 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 60 -> 62
+2021-03-17 09:52:23,962 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 60 -> 62
+2021-03-17 09:52:24,954 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 60 -> 62
+2021-03-17 09:52:36,950 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 62 -> 62
+2021-03-17 09:53:24,942 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 62 -> 64
+2021-03-17 09:53:28,966 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 62 -> 64
+2021-03-17 09:53:43,953 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 62 -> 64
+2021-03-17 09:54:24,945 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 64 -> 64
+2021-03-17 09:54:29,970 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 64 -> 64
+2021-03-17 09:54:43,942 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 64 -> 64
+2021-03-17 09:55:07,431 - ServiceFinder - INFO : [EtcdSupport.py:380]: recv wath expire, info--> BattleAllocatorStub: ('127.0.0.1', 9000) - [65]
+2021-03-17 09:55:07,432 - ServiceRegister - ERROR : [EtcdSupport.py:185]: refresh service: BattleAllocatorStub error, {"errorCode":100,"message":"Key not found","cause":"/services/BattleAllocatorStub/127.0.0.1|9000","index":65}
 
-2021-03-16 17:37:30,789 - ServiceNode - INFO : [EtcdSupport.py:474]: we have create ServiceRegister, wait 5 seconds
-2021-03-16 17:37:30,790 - ServiceNode - INFO : [EtcdSupport.py:477]: we have create ServiceFinder
-2021-03-16 17:37:30,795 - ServiceRegister - INFO : [EtcdSupport.py:147]: regist service : BattleAllocatorCenter success, {"action":"set","node":{"key":"/services/BattleAllocatorCenter/127.0.0.1|8888","value":"","expiration":"2021-03-16T09:40:30.7936723Z","ttl":180,"modifiedIndex":138,"createdIndex":138},"prevNode":{"key":"/services/BattleAllocatorCenter/127.0.0.1|8888","value":"","expiration":"2021-03-16T09:40:11.1788511Z","ttl":161,"modifiedIndex":137,"createdIndex":137}}
+2021-03-17 09:55:07,433 - ServiceFinder - INFO : [EtcdSupport.py:380]: recv wath expire, info--> BattleAllocatorStub: ('127.0.0.1', 9000) - [65]
+2021-03-17 09:55:07,434 - ServiceFinder - INFO : [EtcdSupport.py:380]: recv wath expire, info--> BattleAllocatorStub: ('127.0.0.1', 9000) - [65]
+2021-03-17 09:55:07,435 - ServiceRegister - ERROR : [EtcdSupport.py:185]: refresh service: BattleAllocatorStub error, {"errorCode":100,"message":"Key not found","cause":"/services/BattleAllocatorStub/127.0.0.1|9000","index":66}
 
-2021-03-16 17:37:34,799 - ServerEntity.BattleAllocatorCenter - INFO : [ServerEntity.py:21]: __init__ create entity BattleAllocatorCenter with id 60507c5efe754e2fe4e502cd mem_id=1381650976480
-2021-03-16 17:37:34,800 - server.EntityManager - INFO : [EntityManager.py:127]: addentity  entity id  60507c5efe754e2fe4e502cd 
-2021-03-16 17:37:34,801 - SingletonEntityManager - DEBUG : [SingletonEntityManager.py:118]: _register_relevant_centers_cb, status:good
-2021-03-16 17:37:34,802 - SingletonEntityManager - DEBUG : [SingletonEntityManager.py:137]: _register_stubs_cb, status:good
-2021-03-16 17:37:35,790 - ServiceFinder - INFO : [EtcdSupport.py:281]: add service node info--> BattleAllocatorCenter: ('127.0.0.1', 8888)
-2021-03-16 17:37:35,791 - ServiceFinder - INFO : [EtcdSupport.py:235]: init service info from etcd success, will going to watch, at etcd index -> 138
-2021-03-16 17:38:36,794 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 138 -> 138
-2021-03-16 17:38:46,303 - ServiceNode - INFO : [EtcdSupport.py:474]: we have create ServiceRegister, wait 5 seconds
-2021-03-16 17:38:46,303 - ServiceNode - INFO : [EtcdSupport.py:477]: we have create ServiceFinder
-2021-03-16 17:38:46,318 - ServiceFinder - INFO : [EtcdSupport.py:369]: recv watch set service node info--> BattleAllocatorStub: ('127.0.0.1', 8889) - [139]
-2021-03-16 17:38:46,318 - ServiceRegister - INFO : [EtcdSupport.py:147]: regist service : BattleAllocatorStub success, {"action":"set","node":{"key":"/services/BattleAllocatorStub/127.0.0.1|8889","value":"","expiration":"2021-03-16T09:41:46.3179832Z","ttl":180,"modifiedIndex":139,"createdIndex":139}}
+2021-03-17 09:55:07,439 - ServiceRegister - ERROR : [EtcdSupport.py:185]: refresh service: BattleAllocatorStub error, {"errorCode":100,"message":"Key not found","cause":"/services/BattleAllocatorStub/127.0.0.1|9000","index":66}
 
-2021-03-16 17:38:50,308 - SingletonEntityManager - DEBUG : [SingletonEntityManager.py:118]: _register_relevant_centers_cb, status:good
-2021-03-16 17:38:50,310 - ServerEntity.BattleAllocatorStub - INFO : [ServerEntity.py:21]: __init__ create entity BattleAllocatorStub with id 60507caafe754e38f8ecf633 mem_id=2391094583792
-2021-03-16 17:38:50,312 - server.EntityManager - INFO : [EntityManager.py:127]: addentity  entity id  60507caafe754e38f8ecf633 
-2021-03-16 17:38:50,313 - SingletonEntityManager - INFO : [SingletonEntityManager.py:135]: BattleAllocatorStub connected to center
-2021-03-16 17:38:50,314 - SingletonEntityManager - DEBUG : [SingletonEntityManager.py:137]: _register_stubs_cb, status:good
-2021-03-16 17:38:51,315 - ServerEntity.BattleAllocatorStub - INFO : [Stub.py:53]: Stub cannot connect to BattleAllocatorCenter, try again after 1 sec... (1)
-2021-03-16 17:38:51,318 - ServiceFinder - INFO : [EtcdSupport.py:281]: add service node info--> BattleAllocatorStub: ('127.0.0.1', 8889)
-2021-03-16 17:38:51,319 - ServiceFinder - INFO : [EtcdSupport.py:281]: add service node info--> BattleAllocatorCenter: ('127.0.0.1', 8888)
-2021-03-16 17:38:51,320 - ServiceFinder - INFO : [EtcdSupport.py:235]: init service info from etcd success, will going to watch, at etcd index -> 139
-2021-03-16 17:38:52,038 - ServiceNode - INFO : [EtcdSupport.py:474]: we have create ServiceRegister, wait 5 seconds
-2021-03-16 17:38:52,040 - ServiceNode - INFO : [EtcdSupport.py:477]: we have create ServiceFinder
-2021-03-16 17:38:52,055 - ServiceFinder - INFO : [EtcdSupport.py:369]: recv watch set service node info--> BattleAllocatorStub: ('127.0.0.1', 9000) - [140]
-2021-03-16 17:38:52,055 - ServiceFinder - INFO : [EtcdSupport.py:369]: recv watch set service node info--> BattleAllocatorStub: ('127.0.0.1', 9000) - [140]
-2021-03-16 17:38:52,055 - ServiceRegister - INFO : [EtcdSupport.py:147]: regist service : BattleAllocatorStub success, {"action":"set","node":{"key":"/services/BattleAllocatorStub/127.0.0.1|9000","value":"","expiration":"2021-03-16T09:41:52.0533871Z","ttl":180,"modifiedIndex":140,"createdIndex":140}}
+2021-03-17 09:55:07,442 - ServiceRegister - ERROR : [EtcdSupport.py:185]: refresh service: BattleAllocatorStub error, {"errorCode":100,"message":"Key not found","cause":"/services/BattleAllocatorStub/127.0.0.1|9000","index":66}
 
-2021-03-16 17:38:52,323 - ServerEntity.BattleAllocatorCenter - INFO : [ServerEntity.py:21]: __init__ create entity BattleAllocatorCenter with id 60507cacfe754e2fe4e502ce mem_id=1381651413168
-2021-03-16 17:38:52,323 - ServerEntity.BattleAllocatorCenter - INFO : [ServerEntity.py:21]: __init__ create entity BattleAllocatorCenter with id 60507cacfe754e2fe4e502ce mem_id=1381651413168
-2021-03-16 17:38:52,325 - server.EntityManager - INFO : [EntityManager.py:127]: addentity  entity id  60507cacfe754e2fe4e502ce 
-2021-03-16 17:38:56,043 - SingletonEntityManager - DEBUG : [SingletonEntityManager.py:118]: _register_relevant_centers_cb, status:good
-2021-03-16 17:38:56,045 - ServerEntity.BattleAllocatorStub - INFO : [ServerEntity.py:21]: __init__ create entity BattleAllocatorStub with id 60507cb0fe754e22c0eada88 mem_id=2232968995312
-2021-03-16 17:38:56,046 - server.EntityManager - INFO : [EntityManager.py:127]: addentity  entity id  60507cb0fe754e22c0eada88 
-2021-03-16 17:38:56,047 - SingletonEntityManager - INFO : [SingletonEntityManager.py:135]: BattleAllocatorStub connected to center
-2021-03-16 17:38:56,049 - SingletonEntityManager - DEBUG : [SingletonEntityManager.py:137]: _register_stubs_cb, status:good
-2021-03-16 17:38:57,036 - ServerEntity.BattleAllocatorStub - INFO : [Stub.py:53]: Stub cannot connect to BattleAllocatorCenter, try again after 1 sec... (1)
-2021-03-16 17:38:57,039 - ServiceFinder - INFO : [EtcdSupport.py:281]: add service node info--> BattleAllocatorCenter: ('127.0.0.1', 8888)
-2021-03-16 17:38:57,040 - ServiceFinder - INFO : [EtcdSupport.py:281]: add service node info--> BattleAllocatorStub: ('127.0.0.1', 8889)
-2021-03-16 17:38:57,041 - ServiceFinder - INFO : [EtcdSupport.py:281]: add service node info--> BattleAllocatorStub: ('127.0.0.1', 9000)
-2021-03-16 17:38:57,042 - ServiceFinder - INFO : [EtcdSupport.py:235]: init service info from etcd success, will going to watch, at etcd index -> 140
-2021-03-16 17:38:58,045 - ServerEntity.BattleAllocatorCenter - INFO : [ServerEntity.py:21]: __init__ create entity BattleAllocatorCenter with id 60507cb2fe754e2fe4e502cf mem_id=1381651414272
-2021-03-16 17:38:58,045 - ServerEntity.BattleAllocatorCenter - INFO : [ServerEntity.py:21]: __init__ create entity BattleAllocatorCenter with id 60507cb2fe754e2fe4e502cf mem_id=1381651414272
-2021-03-16 17:38:58,045 - ServerEntity.BattleAllocatorCenter - INFO : [ServerEntity.py:21]: __init__ create entity BattleAllocatorCenter with id 60507cb2fe754e2fe4e502cf mem_id=1381651414272
-2021-03-16 17:38:58,046 - server.EntityManager - INFO : [EntityManager.py:127]: addentity  entity id  60507cb2fe754e2fe4e502cf 
-2021-03-16 17:40:00,048 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 140 -> 140
-2021-03-16 17:40:00,061 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 140 -> 140
-2021-03-16 17:40:02,063 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 140 -> 140
-2021-03-16 17:41:03,065 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 140 -> 141
-2021-03-16 17:41:04,065 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 140 -> 141
-2021-03-16 17:41:10,051 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 140 -> 141
-2021-03-16 17:42:04,069 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 141 -> 143
-2021-03-16 17:42:06,068 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 141 -> 143
-2021-03-16 17:42:13,053 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 141 -> 144
-2021-03-16 17:43:05,076 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 143 -> 144
-2021-03-16 17:43:07,068 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 143 -> 144
-2021-03-16 17:43:21,055 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 144 -> 145
-2021-03-16 17:44:08,077 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 144 -> 147
-2021-03-16 17:44:13,072 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 144 -> 147
-2021-03-16 17:44:27,056 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 145 -> 147
-2021-03-16 17:45:12,080 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 147 -> 149
-2021-03-16 17:45:16,074 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 147 -> 149
-2021-03-16 17:45:29,059 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 147 -> 149
-2021-03-16 17:46:20,082 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 149 -> 150
-2021-03-16 17:46:21,077 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 149 -> 150
-2021-03-16 17:46:29,059 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 149 -> 151
-2021-03-16 17:47:21,079 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 150 -> 152
-2021-03-16 17:47:30,063 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 151 -> 153
-2021-03-16 17:47:30,084 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 150 -> 152
-2021-03-16 17:48:25,069 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 152 -> 154
-2021-03-16 17:48:30,055 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 153 -> 154
-2021-03-16 17:48:38,087 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 152 -> 154
-2021-03-16 17:49:32,055 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 154 -> 156
-2021-03-16 17:49:33,071 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 154 -> 156
-2021-03-16 17:49:38,088 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 154 -> 156
-2021-03-16 17:50:36,074 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 156 -> 158
-2021-03-16 17:50:38,091 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 156 -> 158
-2021-03-16 17:50:39,058 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 156 -> 158
-2021-03-16 17:51:36,077 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 158 -> 159
-2021-03-16 17:51:42,060 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 158 -> 159
-2021-03-16 17:51:47,082 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 158 -> 159
-2021-03-16 17:52:42,079 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 159 -> 162
-2021-03-16 17:52:43,064 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 159 -> 162
-2021-03-16 17:52:51,084 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 159 -> 162
-2021-03-16 17:53:43,057 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 162 -> 163
-2021-03-16 17:53:52,081 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 162 -> 163
-2021-03-16 17:53:52,087 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 162 -> 163
-2021-03-16 17:54:45,065 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 163 -> 165
-2021-03-16 17:54:53,089 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 163 -> 165
-2021-03-16 17:54:57,085 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 163 -> 165
-2021-03-16 17:55:47,053 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 165 -> 167
-2021-03-16 17:55:53,092 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 165 -> 167
-2021-03-16 17:56:05,092 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 165 -> 167
-2021-03-16 17:56:53,094 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 167 -> 168
-2021-03-16 17:56:54,061 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 167 -> 168
-2021-03-16 17:57:10,092 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 167 -> 169
-2021-03-16 17:57:56,086 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 168 -> 171
-2021-03-16 17:57:57,064 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 168 -> 171
-2021-03-16 17:58:18,096 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 169 -> 171
-2021-03-16 17:59:00,089 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 171 -> 172
-2021-03-16 17:59:07,052 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 171 -> 172
-2021-03-16 17:59:18,098 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 171 -> 172
-2021-03-16 18:00:05,093 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 172 -> 174
-2021-03-16 18:00:16,057 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 172 -> 174
-2021-03-16 18:00:28,103 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 172 -> 174
-2021-03-16 18:00:44,783 - ServiceFinder - INFO : [EtcdSupport.py:380]: recv wath expire, info--> BattleAllocatorStub: ('127.0.0.1', 8889) - [175]
-2021-03-16 18:00:44,783 - ServiceRegister - ERROR : [EtcdSupport.py:185]: refresh service: BattleAllocatorStub error, {"errorCode":100,"message":"Key not found","cause":"/services/BattleAllocatorStub/127.0.0.1|8889","index":176}
+2021-03-17 09:55:07,444 - ServiceRegister - ERROR : [EtcdSupport.py:185]: refresh service: BattleAllocatorStub error, {"errorCode":100,"message":"Key not found","cause":"/services/BattleAllocatorStub/127.0.0.1|9000","index":66}
 
-2021-03-16 18:00:44,783 - ServiceFinder - INFO : [EtcdSupport.py:380]: recv wath expire, info--> BattleAllocatorStub: ('127.0.0.1', 8889) - [175]
-2021-03-16 18:00:44,785 - ServiceFinder - INFO : [EtcdSupport.py:380]: recv wath expire, info--> BattleAllocatorStub: ('127.0.0.1', 8889) - [175]
-2021-03-16 18:00:44,786 - ServiceRegister - ERROR : [EtcdSupport.py:185]: refresh service: BattleAllocatorStub error, {"errorCode":100,"message":"Key not found","cause":"/services/BattleAllocatorStub/127.0.0.1|8889","index":176}
+2021-03-17 09:55:07,446 - ServiceRegister - ERROR : [EtcdSupport.py:185]: refresh service: BattleAllocatorStub error, {"errorCode":100,"message":"Key not found","cause":"/services/BattleAllocatorStub/127.0.0.1|9000","index":66}
 
-2021-03-16 18:00:44,790 - ServiceRegister - ERROR : [EtcdSupport.py:185]: refresh service: BattleAllocatorStub error, {"errorCode":100,"message":"Key not found","cause":"/services/BattleAllocatorStub/127.0.0.1|8889","index":176}
+2021-03-17 09:55:07,448 - ServiceRegister - ERROR : [EtcdSupport.py:185]: refresh service: BattleAllocatorStub error, {"errorCode":100,"message":"Key not found","cause":"/services/BattleAllocatorStub/127.0.0.1|9000","index":66}
 
-2021-03-16 18:00:44,793 - ServiceRegister - ERROR : [EtcdSupport.py:185]: refresh service: BattleAllocatorStub error, {"errorCode":100,"message":"Key not found","cause":"/services/BattleAllocatorStub/127.0.0.1|8889","index":177}
+2021-03-17 09:55:07,450 - ServiceRegister - ERROR : [EtcdSupport.py:185]: refresh service: BattleAllocatorStub error, {"errorCode":100,"message":"Key not found","cause":"/services/BattleAllocatorStub/127.0.0.1|9000","index":66}
 
-2021-03-16 18:00:44,795 - ServiceRegister - ERROR : [EtcdSupport.py:185]: refresh service: BattleAllocatorStub error, {"errorCode":100,"message":"Key not found","cause":"/services/BattleAllocatorStub/127.0.0.1|8889","index":177}
+2021-03-17 09:55:07,452 - ServiceRegister - ERROR : [EtcdSupport.py:185]: refresh service: BattleAllocatorStub error, {"errorCode":100,"message":"Key not found","cause":"/services/BattleAllocatorStub/127.0.0.1|9000","index":66}
 
-2021-03-16 18:00:44,797 - ServiceRegister - ERROR : [EtcdSupport.py:185]: refresh service: BattleAllocatorStub error, {"errorCode":100,"message":"Key not found","cause":"/services/BattleAllocatorStub/127.0.0.1|8889","index":177}
+2021-03-17 09:55:07,455 - ServiceRegister - ERROR : [EtcdSupport.py:185]: refresh service: BattleAllocatorStub error, {"errorCode":100,"message":"Key not found","cause":"/services/BattleAllocatorStub/127.0.0.1|9000","index":66}
 
-2021-03-16 18:00:44,799 - ServiceRegister - ERROR : [EtcdSupport.py:185]: refresh service: BattleAllocatorStub error, {"errorCode":100,"message":"Key not found","cause":"/services/BattleAllocatorStub/127.0.0.1|8889","index":177}
+2021-03-17 09:56:10,436 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 65 -> 66
+2021-03-17 09:56:12,439 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 65 -> 66
+2021-03-17 09:56:16,435 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 65 -> 66
+2021-03-17 09:57:16,438 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 66 -> 66
+2021-03-17 09:57:19,437 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 66 -> 66
+2021-03-17 09:57:20,428 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 66 -> 66
+2021-03-17 09:58:17,441 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 66 -> 67
+2021-03-17 09:58:23,432 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 66 -> 67
+2021-03-17 09:58:29,440 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 66 -> 67
+2021-03-17 09:59:21,444 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 67 -> 67
+2021-03-17 09:59:28,436 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 67 -> 67
+2021-03-17 09:59:30,447 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 67 -> 67
+2021-03-17 10:00:24,448 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 67 -> 68
+2021-03-17 10:00:29,440 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 67 -> 68
+2021-03-17 10:00:39,447 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 67 -> 68
+2021-03-17 10:01:30,429 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 68 -> 69
+2021-03-17 10:01:34,453 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 68 -> 69
+2021-03-17 10:01:48,452 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 68 -> 69
+2021-03-17 10:02:39,432 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 69 -> 69
+2021-03-17 10:02:40,456 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 69 -> 69
+2021-03-17 10:02:55,455 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 69 -> 69
+2021-03-17 10:03:40,460 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 69 -> 70
+2021-03-17 10:03:45,435 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 69 -> 70
+2021-03-17 10:04:00,446 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 69 -> 70
+2021-03-17 10:04:42,463 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 70 -> 70
+2021-03-17 10:04:51,439 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 70 -> 70
+2021-03-17 10:05:08,448 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 70 -> 71
+2021-03-17 10:05:52,426 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 70 -> 71
+2021-03-17 10:05:52,466 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 70 -> 71
+2021-03-17 10:06:10,449 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 71 -> 71
+2021-03-17 10:06:58,469 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 71 -> 72
+2021-03-17 10:07:02,430 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 71 -> 72
+2021-03-17 10:07:11,454 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 71 -> 72
+2021-03-17 10:08:05,473 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 72 -> 72
+2021-03-17 10:08:10,433 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 72 -> 72
+2021-03-17 10:08:17,452 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 72 -> 72
+2021-03-17 10:09:12,437 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 72 -> 73
+2021-03-17 10:09:12,476 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 72 -> 73
+2021-03-17 10:09:23,444 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 72 -> 73
+2021-03-17 10:10:16,441 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 73 -> 74
+2021-03-17 10:10:20,480 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 73 -> 74
+2021-03-17 10:10:27,448 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 73 -> 74
+2021-03-17 10:11:22,444 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 74 -> 74
+2021-03-17 10:11:24,484 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 74 -> 74
+2021-03-17 10:11:34,448 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 74 -> 74
+2021-03-17 10:12:22,447 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 74 -> 75
+2021-03-17 10:12:27,488 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 74 -> 75
+2021-03-17 10:12:38,450 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 74 -> 75
+2021-03-17 10:13:24,450 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 75 -> 75
+2021-03-17 10:13:33,490 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 75 -> 75
+2021-03-17 10:13:42,455 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 75 -> 76
+2021-03-17 10:14:31,452 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 75 -> 76
+2021-03-17 10:14:42,494 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 75 -> 76
+2021-03-17 10:14:51,458 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 76 -> 76
+2021-03-17 10:15:40,457 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 76 -> 77
+2021-03-17 10:15:50,497 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 76 -> 77
+2021-03-17 10:15:54,266 - ServiceFinder - ERROR : on_traceback, type:<class 'requests.exceptions.ChunkedEncodingError'>, value:("Connection broken: ConnectionResetError(10054, '远程主机强迫关闭了一个现有的连接。', None, 10054, None)", ConnectionResetError(10054, '远程主机强迫关闭了一个现有的连接。', None, 10054, None)), traceback:<class 'requests.exceptions.ChunkedEncodingError'>
+("Connection broken: ConnectionResetError(10054, '远程主机强迫关闭了一个现有的连接。', None, 10054, None)", ConnectionResetError(10054, '远程主机强迫关闭了一个现有的连接。', None, 10054, None))
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 412, in _watch_process
+    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x000001F67FF8D1F0>, }
+  File "C:\Program Files\Python38\lib\asyncio\tasks.py", line 494, in wait_for
+    locals={'fut': <Task finished name='Task-75' coro=<ServiceFinder._watch_process_impl() done, defined at D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py:347> exception=ChunkedEncodingError(ProtocolError("Connection broken: ConnectionResetError(10054, '远程主机强迫关闭了一个现有的连接。', None, 10054, None)", ConnectionResetError(10054, '远程主机强迫关闭了一个现有的连接。', None, 10054, None)))>, 'timeout': 68, 'loop': <ProactorEventLoop running=True closed=False debug=False>, 'waiter': <Future finished result=None>, 'timeout_handle': <TimerHandle cancelled when=4874.281>, 'cb': functools.partial(<function _release_waiter at 0x000001F67F89D820>, <Future finished result=None>)}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 357, in _watch_process_impl
+    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x000001F67FF8D1F0>, 'r': <Response [200]>, 'now_url': 'http://127.0.0.1:2379/v2/keys?wait=true&recursive=true&waitIndex=78'}
+  File "C:\Program Files\Python38\lib\concurrent\futures\thread.py", line 57, in run
+    locals={}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 357, in <lambda>
+    locals={'now_url': 'http://127.0.0.1:2379/v2/keys?wait=true&recursive=true&waitIndex=78'}
+  File "C:\Program Files\Python38\lib\site-packages\requests\api.py", line 61, in request
+    locals={'method': 'GET', 'url': 'http://127.0.0.1:2379/v2/keys?wait=true&recursive=true&waitIndex=78', 'kwargs': {}, 'session': <requests.sessions.Session object at 0x000001F60189B7F0>}
+  File "C:\Program Files\Python38\lib\site-packages\requests\sessions.py", line 542, in request
+    locals={'self': <requests.sessions.Session object at 0x000001F60189B7F0>, 'method': 'GET', 'url': 'http://127.0.0.1:2379/v2/keys?wait=true&recursive=true&waitIndex=78', 'params': None, 'data': None, 'headers': None, 'cookies': None, 'files': None, 'auth': None, 'timeout': None, 'allow_redirects': True, 'proxies': {}, 'hooks': None, 'stream': None, 'verify': None, 'cert': None, 'json': None, 'req': <Request [GET]>, 'prep': <PreparedRequest [GET]>, 'settings': {'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}, 'send_kwargs': {'timeout': None, 'allow_redirects': True, 'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}}
+  File "C:\Program Files\Python38\lib\site-packages\requests\sessions.py", line 697, in send
+    locals={'self': <requests.sessions.Session object at 0x000001F60189B7F0>, 'request': <PreparedRequest [GET]>, 'kwargs': {'timeout': None, 'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}, 'allow_redirects': True, 'stream': False, 'hooks': {'response': []}, 'adapter': <requests.adapters.HTTPAdapter object at 0x000001F60197D4F0>, 'start': 3873.903984955, 'r': <Response [200]>, 'elapsed': 0.0007156110000323679, 'gen': <generator object SessionRedirectMixin.resolve_redirects at 0x000001F6018B5970>, 'history': []}
+  File "C:\Program Files\Python38\lib\site-packages\requests\models.py", line 831, in content
+    locals={'self': <Response [200]>, }
+  File "C:\Program Files\Python38\lib\site-packages\requests\models.py", line 756, in generate
+    locals={'self': <Response [200]>, 'chunk_size': 10240}
+2021-03-17 10:15:54,266 - ServiceFinder - ERROR : on_traceback, type:<class 'requests.exceptions.ChunkedEncodingError'>, value:("Connection broken: ConnectionResetError(10054, '远程主机强迫关闭了一个现有的连接。', None, 10054, None)", ConnectionResetError(10054, '远程主机强迫关闭了一个现有的连接。', None, 10054, None)), traceback:<class 'requests.exceptions.ChunkedEncodingError'>
+("Connection broken: ConnectionResetError(10054, '远程主机强迫关闭了一个现有的连接。', None, 10054, None)", ConnectionResetError(10054, '远程主机强迫关闭了一个现有的连接。', None, 10054, None))
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 412, in _watch_process
+    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x000001E1173DD1F0>, }
+  File "C:\Program Files\Python38\lib\asyncio\tasks.py", line 494, in wait_for
+    locals={'fut': <Task finished name='Task-77' coro=<ServiceFinder._watch_process_impl() done, defined at D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py:347> exception=ChunkedEncodingError(ProtocolError("Connection broken: ConnectionResetError(10054, '远程主机强迫关闭了一个现有的连接。', None, 10054, None)", ConnectionResetError(10054, '远程主机强迫关闭了一个现有的连接。', None, 10054, None)))>, 'timeout': 60, 'loop': <ProactorEventLoop running=True closed=False debug=False>, 'waiter': <Future finished result=None>, 'timeout_handle': <TimerHandle cancelled when=4876.312>, 'cb': functools.partial(<function _release_waiter at 0x000001E1168ED820>, <Future finished result=None>)}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 357, in _watch_process_impl
+    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x000001E1173DD1F0>, 'r': <Response [200]>, 'now_url': 'http://127.0.0.1:2379/v2/keys?wait=true&recursive=true&waitIndex=78'}
+  File "C:\Program Files\Python38\lib\concurrent\futures\thread.py", line 57, in run
+    locals={}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 357, in <lambda>
+    locals={'now_url': 'http://127.0.0.1:2379/v2/keys?wait=true&recursive=true&waitIndex=78'}
+  File "C:\Program Files\Python38\lib\site-packages\requests\api.py", line 61, in request
+    locals={'method': 'GET', 'url': 'http://127.0.0.1:2379/v2/keys?wait=true&recursive=true&waitIndex=78', 'kwargs': {}, 'session': <requests.sessions.Session object at 0x000001E1174740A0>}
+  File "C:\Program Files\Python38\lib\site-packages\requests\sessions.py", line 542, in request
+    locals={'self': <requests.sessions.Session object at 0x000001E1174740A0>, 'method': 'GET', 'url': 'http://127.0.0.1:2379/v2/keys?wait=true&recursive=true&waitIndex=78', 'params': None, 'data': None, 'headers': None, 'cookies': None, 'files': None, 'auth': None, 'timeout': None, 'allow_redirects': True, 'proxies': {}, 'hooks': None, 'stream': None, 'verify': None, 'cert': None, 'json': None, 'req': <Request [GET]>, 'prep': <PreparedRequest [GET]>, 'settings': {'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}, 'send_kwargs': {'timeout': None, 'allow_redirects': True, 'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}}
+  File "C:\Program Files\Python38\lib\site-packages\requests\sessions.py", line 697, in send
+    locals={'self': <requests.sessions.Session object at 0x000001E1174740A0>, 'request': <PreparedRequest [GET]>, 'kwargs': {'timeout': None, 'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}, 'allow_redirects': True, 'stream': False, 'hooks': {'response': []}, 'adapter': <requests.adapters.HTTPAdapter object at 0x000001E1175ADA60>, 'start': 3900.342627097, 'r': <Response [200]>, 'elapsed': 0.000651612000183377, 'gen': <generator object SessionRedirectMixin.resolve_redirects at 0x000001E1174B2970>, 'history': []}
+  File "C:\Program Files\Python38\lib\site-packages\requests\models.py", line 831, in content
+    locals={'self': <Response [200]>, }
+  File "C:\Program Files\Python38\lib\site-packages\requests\models.py", line 756, in generate
+    locals={'self': <Response [200]>, 'chunk_size': 10240}
+2021-03-17 10:15:55,268 - ServiceFinder - ERROR : on_traceback, type:<class 'requests.exceptions.ConnectionError'>, value:HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001F67FEFCC10>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')), traceback:<class 'requests.exceptions.ConnectionError'>
+HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001F67FEFCC10>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。'))
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 412, in _watch_process
+    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x000001F67FF8D1F0>, }
+  File "C:\Program Files\Python38\lib\asyncio\tasks.py", line 494, in wait_for
+    locals={'fut': <Task finished name='Task-76' coro=<ServiceFinder._watch_process_impl() done, defined at D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py:347> exception=ConnectionError(MaxRetryError("HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001F67FEFCC10>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。'))"))>, 'timeout': 70, 'loop': <ProactorEventLoop running=True closed=False debug=False>, 'waiter': <Future finished result=None>, 'timeout_handle': <TimerHandle cancelled when=4890.078>, 'cb': functools.partial(<function _release_waiter at 0x000001F67F89D820>, <Future finished result=None>)}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 350, in _watch_process_impl
+    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x000001F67FF8D1F0>, }
+  File "C:\Program Files\Python38\lib\concurrent\futures\thread.py", line 57, in run
+    locals={}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 350, in <lambda>
+    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x000001F67FF8D1F0>, }
+  File "C:\Program Files\Python38\lib\site-packages\requests\api.py", line 61, in request
+    locals={'method': 'GET', 'url': 'http://127.0.0.1:2379/v2/keys', 'kwargs': {}, 'session': <requests.sessions.Session object at 0x000001F60196BA90>}
+  File "C:\Program Files\Python38\lib\site-packages\requests\sessions.py", line 542, in request
+    locals={'self': <requests.sessions.Session object at 0x000001F60196BA90>, 'method': 'GET', 'url': 'http://127.0.0.1:2379/v2/keys', 'params': None, 'data': None, 'headers': None, 'cookies': None, 'files': None, 'auth': None, 'timeout': None, 'allow_redirects': True, 'proxies': {}, 'hooks': None, 'stream': None, 'verify': None, 'cert': None, 'json': None, 'req': <Request [GET]>, 'prep': <PreparedRequest [GET]>, 'settings': {'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}, 'send_kwargs': {'timeout': None, 'allow_redirects': True, 'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}}
+  File "C:\Program Files\Python38\lib\site-packages\requests\sessions.py", line 655, in send
+    locals={'self': <requests.sessions.Session object at 0x000001F60196BA90>, 'request': <PreparedRequest [GET]>, 'kwargs': {'timeout': None, 'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}, 'allow_redirects': True, 'stream': False, 'hooks': {'response': []}, 'adapter': <requests.adapters.HTTPAdapter object at 0x000001F60196B850>, 'start': 3887.712503591}
+  File "C:\Program Files\Python38\lib\site-packages\requests\adapters.py", line 516, in send
+    locals={'self': <requests.adapters.HTTPAdapter object at 0x000001F60196B850>, 'request': <PreparedRequest [GET]>, 'stream': False, 'timeout': Timeout(connect=None, read=None, total=None), 'verify': True, 'cert': None, 'proxies': OrderedDict(), 'conn': <urllib3.connectionpool.HTTPConnectionPool object at 0x000001F60196B6A0>, 'url': '/v2/keys', 'chunked': False}
+2021-03-17 10:15:55,268 - ServiceFinder - ERROR : on_traceback, type:<class 'requests.exceptions.ConnectionError'>, value:HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001E1174E4070>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')), traceback:<class 'requests.exceptions.ConnectionError'>
+HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001E1174E4070>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。'))
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 412, in _watch_process
+    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x000001E1173DD1F0>, }
+  File "C:\Program Files\Python38\lib\asyncio\tasks.py", line 494, in wait_for
+    locals={'fut': <Task finished name='Task-78' coro=<ServiceFinder._watch_process_impl() done, defined at D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py:347> exception=ConnectionError(MaxRetryError("HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001E1174E4070>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。'))"))>, 'timeout': 67, 'loop': <ProactorEventLoop running=True closed=False debug=False>, 'waiter': <Future finished result=None>, 'timeout_handle': <TimerHandle cancelled when=4887.078>, 'cb': functools.partial(<function _release_waiter at 0x000001E1168ED820>, <Future finished result=None>)}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 350, in _watch_process_impl
+    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x000001E1173DD1F0>, }
+  File "C:\Program Files\Python38\lib\concurrent\futures\thread.py", line 57, in run
+    locals={}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 350, in <lambda>
+    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x000001E1173DD1F0>, }
+  File "C:\Program Files\Python38\lib\site-packages\requests\api.py", line 61, in request
+    locals={'method': 'GET', 'url': 'http://127.0.0.1:2379/v2/keys', 'kwargs': {}, 'session': <requests.sessions.Session object at 0x000001E11749F250>}
+  File "C:\Program Files\Python38\lib\site-packages\requests\sessions.py", line 542, in request
+    locals={'self': <requests.sessions.Session object at 0x000001E11749F250>, 'method': 'GET', 'url': 'http://127.0.0.1:2379/v2/keys', 'params': None, 'data': None, 'headers': None, 'cookies': None, 'files': None, 'auth': None, 'timeout': None, 'allow_redirects': True, 'proxies': {}, 'hooks': None, 'stream': None, 'verify': None, 'cert': None, 'json': None, 'req': <Request [GET]>, 'prep': <PreparedRequest [GET]>, 'settings': {'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}, 'send_kwargs': {'timeout': None, 'allow_redirects': True, 'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}}
+  File "C:\Program Files\Python38\lib\site-packages\requests\sessions.py", line 655, in send
+    locals={'self': <requests.sessions.Session object at 0x000001E11749F250>, 'request': <PreparedRequest [GET]>, 'kwargs': {'timeout': None, 'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}, 'allow_redirects': True, 'stream': False, 'hooks': {'response': []}, 'adapter': <requests.adapters.HTTPAdapter object at 0x000001E1174E4790>, 'start': 3904.109640552}
+  File "C:\Program Files\Python38\lib\site-packages\requests\adapters.py", line 516, in send
+    locals={'self': <requests.adapters.HTTPAdapter object at 0x000001E1174E4790>, 'request': <PreparedRequest [GET]>, 'stream': False, 'timeout': Timeout(connect=None, read=None, total=None), 'verify': True, 'cert': None, 'proxies': OrderedDict(), 'conn': <urllib3.connectionpool.HTTPConnectionPool object at 0x000001E1174E47F0>, 'url': '/v2/keys', 'chunked': False}
+2021-03-17 10:15:55,268 - ServiceFinder - ERROR : on_traceback, type:<class 'requests.exceptions.ConnectionError'>, value:HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000021051916460>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')), traceback:<class 'requests.exceptions.ConnectionError'>
+HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000021051916460>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。'))
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 412, in _watch_process
+    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x00000210517BD1F0>, }
+  File "C:\Program Files\Python38\lib\asyncio\tasks.py", line 494, in wait_for
+    locals={'fut': <Task finished name='Task-89' coro=<ServiceFinder._watch_process_impl() done, defined at D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py:347> exception=ConnectionError(MaxRetryError("HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000021051916460>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。'))"))>, 'timeout': 67, 'loop': <ProactorEventLoop running=True closed=False debug=False>, 'waiter': <Future finished result=None>, 'timeout_handle': <TimerHandle cancelled when=4887.078>, 'cb': functools.partial(<function _release_waiter at 0x0000021050CDD820>, <Future finished result=None>)}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 350, in _watch_process_impl
+    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x00000210517BD1F0>, }
+  File "C:\Program Files\Python38\lib\concurrent\futures\thread.py", line 57, in run
+    locals={}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 350, in <lambda>
+    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x00000210517BD1F0>, }
+  File "C:\Program Files\Python38\lib\site-packages\requests\api.py", line 61, in request
+    locals={'method': 'GET', 'url': 'http://127.0.0.1:2379/v2/keys', 'kwargs': {}, 'session': <requests.sessions.Session object at 0x00000210517CC1C0>}
+  File "C:\Program Files\Python38\lib\site-packages\requests\sessions.py", line 542, in request
+    locals={'self': <requests.sessions.Session object at 0x00000210517CC1C0>, 'method': 'GET', 'url': 'http://127.0.0.1:2379/v2/keys', 'params': None, 'data': None, 'headers': None, 'cookies': None, 'files': None, 'auth': None, 'timeout': None, 'allow_redirects': True, 'proxies': {}, 'hooks': None, 'stream': None, 'verify': None, 'cert': None, 'json': None, 'req': <Request [GET]>, 'prep': <PreparedRequest [GET]>, 'settings': {'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}, 'send_kwargs': {'timeout': None, 'allow_redirects': True, 'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}}
+  File "C:\Program Files\Python38\lib\site-packages\requests\sessions.py", line 655, in send
+    locals={'self': <requests.sessions.Session object at 0x00000210517CC1C0>, 'request': <PreparedRequest [GET]>, 'kwargs': {'timeout': None, 'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}, 'allow_redirects': True, 'stream': False, 'hooks': {'response': []}, 'adapter': <requests.adapters.HTTPAdapter object at 0x000002105185D490>, 'start': 3894.57726927}
+  File "C:\Program Files\Python38\lib\site-packages\requests\adapters.py", line 516, in send
+    locals={'self': <requests.adapters.HTTPAdapter object at 0x000002105185D490>, 'request': <PreparedRequest [GET]>, 'stream': False, 'timeout': Timeout(connect=None, read=None, total=None), 'verify': True, 'cert': None, 'proxies': OrderedDict(), 'conn': <urllib3.connectionpool.HTTPConnectionPool object at 0x000002105185D190>, 'url': '/v2/keys', 'chunked': False}
+2021-03-17 10:15:56,271 - ServiceFinder - ERROR : on_traceback, type:<class 'requests.exceptions.ConnectionError'>, value:HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000021051865490>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')), traceback:<class 'requests.exceptions.ConnectionError'>
+HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000021051865490>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。'))
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 412, in _watch_process
+    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x00000210517BD1F0>, }
+  File "C:\Program Files\Python38\lib\asyncio\tasks.py", line 494, in wait_for
+    locals={'fut': <Task finished name='Task-90' coro=<ServiceFinder._watch_process_impl() done, defined at D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py:347> exception=ConnectionError(MaxRetryError("HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000021051865490>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。'))"))>, 'timeout': 66, 'loop': <ProactorEventLoop running=True closed=False debug=False>, 'waiter': <Future finished result=None>, 'timeout_handle': <TimerHandle cancelled when=4887.093>, 'cb': functools.partial(<function _release_waiter at 0x0000021050CDD820>, <Future finished result=None>)}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 350, in _watch_process_impl
+    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x00000210517BD1F0>, }
+  File "C:\Program Files\Python38\lib\concurrent\futures\thread.py", line 57, in run
+    locals={}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 350, in <lambda>
+    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x00000210517BD1F0>, }
+  File "C:\Program Files\Python38\lib\site-packages\requests\api.py", line 61, in request
+    locals={'method': 'GET', 'url': 'http://127.0.0.1:2379/v2/keys', 'kwargs': {}, 'session': <requests.sessions.Session object at 0x000002105185DC40>}
+  File "C:\Program Files\Python38\lib\site-packages\requests\sessions.py", line 542, in request
+    locals={'self': <requests.sessions.Session object at 0x000002105185DC40>, 'method': 'GET', 'url': 'http://127.0.0.1:2379/v2/keys', 'params': None, 'data': None, 'headers': None, 'cookies': None, 'files': None, 'auth': None, 'timeout': None, 'allow_redirects': True, 'proxies': {}, 'hooks': None, 'stream': None, 'verify': None, 'cert': None, 'json': None, 'req': <Request [GET]>, 'prep': <PreparedRequest [GET]>, 'settings': {'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}, 'send_kwargs': {'timeout': None, 'allow_redirects': True, 'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}}
+  File "C:\Program Files\Python38\lib\site-packages\requests\sessions.py", line 655, in send
+    locals={'self': <requests.sessions.Session object at 0x000002105185DC40>, 'request': <PreparedRequest [GET]>, 'kwargs': {'timeout': None, 'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}, 'allow_redirects': True, 'stream': False, 'hooks': {'response': []}, 'adapter': <requests.adapters.HTTPAdapter object at 0x0000021051916E50>, 'start': 3895.580010466}
+  File "C:\Program Files\Python38\lib\site-packages\requests\adapters.py", line 516, in send
+    locals={'self': <requests.adapters.HTTPAdapter object at 0x0000021051916E50>, 'request': <PreparedRequest [GET]>, 'stream': False, 'timeout': Timeout(connect=None, read=None, total=None), 'verify': True, 'cert': None, 'proxies': OrderedDict(), 'conn': <urllib3.connectionpool.HTTPConnectionPool object at 0x000002105185DB80>, 'url': '/v2/keys', 'chunked': False}
+2021-03-17 10:15:56,272 - ServiceFinder - ERROR : on_traceback, type:<class 'requests.exceptions.ConnectionError'>, value:HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001F6018917F0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')), traceback:<class 'requests.exceptions.ConnectionError'>
+HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001F6018917F0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。'))
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 412, in _watch_process
+    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x000001F67FF8D1F0>, }
+  File "C:\Program Files\Python38\lib\asyncio\tasks.py", line 494, in wait_for
+    locals={'fut': <Task finished name='Task-77' coro=<ServiceFinder._watch_process_impl() done, defined at D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py:347> exception=ConnectionError(MaxRetryError("HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001F6018917F0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。'))"))>, 'timeout': 61, 'loop': <ProactorEventLoop running=True closed=False debug=False>, 'waiter': <Future finished result=None>, 'timeout_handle': <TimerHandle cancelled when=4882.093>, 'cb': functools.partial(<function _release_waiter at 0x000001F67F89D820>, <Future finished result=None>)}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 350, in _watch_process_impl
+    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x000001F67FF8D1F0>, }
+  File "C:\Program Files\Python38\lib\concurrent\futures\thread.py", line 57, in run
+    locals={}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 350, in <lambda>
+    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x000001F67FF8D1F0>, }
+  File "C:\Program Files\Python38\lib\site-packages\requests\api.py", line 61, in request
+    locals={'method': 'GET', 'url': 'http://127.0.0.1:2379/v2/keys', 'kwargs': {}, 'session': <requests.sessions.Session object at 0x000001F60196B040>}
+  File "C:\Program Files\Python38\lib\site-packages\requests\sessions.py", line 542, in request
+    locals={'self': <requests.sessions.Session object at 0x000001F60196B040>, 'method': 'GET', 'url': 'http://127.0.0.1:2379/v2/keys', 'params': None, 'data': None, 'headers': None, 'cookies': None, 'files': None, 'auth': None, 'timeout': None, 'allow_redirects': True, 'proxies': {}, 'hooks': None, 'stream': None, 'verify': None, 'cert': None, 'json': None, 'req': <Request [GET]>, 'prep': <PreparedRequest [GET]>, 'settings': {'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}, 'send_kwargs': {'timeout': None, 'allow_redirects': True, 'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}}
+  File "C:\Program Files\Python38\lib\site-packages\requests\sessions.py", line 655, in send
+    locals={'self': <requests.sessions.Session object at 0x000001F60196B040>, 'request': <PreparedRequest [GET]>, 'kwargs': {'timeout': None, 'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}, 'allow_redirects': True, 'stream': False, 'hooks': {'response': []}, 'adapter': <requests.adapters.HTTPAdapter object at 0x000001F601891F10>, 'start': 3888.715240737}
+  File "C:\Program Files\Python38\lib\site-packages\requests\adapters.py", line 516, in send
+    locals={'self': <requests.adapters.HTTPAdapter object at 0x000001F601891F10>, 'request': <PreparedRequest [GET]>, 'stream': False, 'timeout': Timeout(connect=None, read=None, total=None), 'verify': True, 'cert': None, 'proxies': OrderedDict(), 'conn': <urllib3.connectionpool.HTTPConnectionPool object at 0x000001F601891100>, 'url': '/v2/keys', 'chunked': False}
+2021-03-17 10:15:56,272 - ServiceFinder - ERROR : on_traceback, type:<class 'requests.exceptions.ConnectionError'>, value:HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001E117474A90>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')), traceback:<class 'requests.exceptions.ConnectionError'>
+HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001E117474A90>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。'))
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 412, in _watch_process
+    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x000001E1173DD1F0>, }
+  File "C:\Program Files\Python38\lib\asyncio\tasks.py", line 494, in wait_for
+    locals={'fut': <Task finished name='Task-79' coro=<ServiceFinder._watch_process_impl() done, defined at D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py:347> exception=ConnectionError(MaxRetryError("HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001E117474A90>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。'))"))>, 'timeout': 68, 'loop': <ProactorEventLoop running=True closed=False debug=False>, 'waiter': <Future finished result=None>, 'timeout_handle': <TimerHandle cancelled when=4889.093>, 'cb': functools.partial(<function _release_waiter at 0x000001E1168ED820>, <Future finished result=None>)}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 350, in _watch_process_impl
+    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x000001E1173DD1F0>, }
+  File "C:\Program Files\Python38\lib\concurrent\futures\thread.py", line 57, in run
+    locals={}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 350, in <lambda>
+    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x000001E1173DD1F0>, }
+  File "C:\Program Files\Python38\lib\site-packages\requests\api.py", line 61, in request
+    locals={'method': 'GET', 'url': 'http://127.0.0.1:2379/v2/keys', 'kwargs': {}, 'session': <requests.sessions.Session object at 0x000001E1174E4820>}
+  File "C:\Program Files\Python38\lib\site-packages\requests\sessions.py", line 542, in request
+    locals={'self': <requests.sessions.Session object at 0x000001E1174E4820>, 'method': 'GET', 'url': 'http://127.0.0.1:2379/v2/keys', 'params': None, 'data': None, 'headers': None, 'cookies': None, 'files': None, 'auth': None, 'timeout': None, 'allow_redirects': True, 'proxies': {}, 'hooks': None, 'stream': None, 'verify': None, 'cert': None, 'json': None, 'req': <Request [GET]>, 'prep': <PreparedRequest [GET]>, 'settings': {'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}, 'send_kwargs': {'timeout': None, 'allow_redirects': True, 'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}}
+  File "C:\Program Files\Python38\lib\site-packages\requests\sessions.py", line 655, in send
+    locals={'self': <requests.sessions.Session object at 0x000001E1174E4820>, 'request': <PreparedRequest [GET]>, 'kwargs': {'timeout': None, 'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}, 'allow_redirects': True, 'stream': False, 'hooks': {'response': []}, 'adapter': <requests.adapters.HTTPAdapter object at 0x000001E117448610>, 'start': 3905.112417934}
+  File "C:\Program Files\Python38\lib\site-packages\requests\adapters.py", line 516, in send
+    locals={'self': <requests.adapters.HTTPAdapter object at 0x000001E117448610>, 'request': <PreparedRequest [GET]>, 'stream': False, 'timeout': Timeout(connect=None, read=None, total=None), 'verify': True, 'cert': None, 'proxies': OrderedDict(), 'conn': <urllib3.connectionpool.HTTPConnectionPool object at 0x000001E117448250>, 'url': '/v2/keys', 'chunked': False}
+2021-03-17 10:15:56,554 - ServiceRegister - ERROR : on_traceback, type:<class 'requests.exceptions.ConnectionError'>, value:HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys/services/BattleAllocatorCenter/127.0.0.1%7C8888 (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000021051923250>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')), traceback:<class 'requests.exceptions.ConnectionError'>
+HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys/services/BattleAllocatorCenter/127.0.0.1%7C8888 (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000021051923250>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。'))
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 177, in _process_regist_and_ttl
+    locals={'self': <core.EtcdSupport.ServiceRegister object at 0x000002105172CBE0>, 'r': <Response [200]>, 'res': {'action': 'set', 'node': {'key': '/services/BattleAllocatorCenter/127.0.0.1|8888', 'value': '', 'expiration': '2021-03-17T02:17:10.5639308Z', 'ttl': 180, 'modifiedIndex': 77, 'createdIndex': 77}, 'prevNode': {'key': '/services/BattleAllocatorCenter/127.0.0.1|8888', 'value': '', 'expiration': '2021-03-17T02:15:27.5585213Z', 'ttl': 77, 'modifiedIndex': 76, 'createdIndex': 76}}, 'now_url': 'http://127.0.0.1:2379/v2/keys/services/BattleAllocatorCenter/127.0.0.1|8888', 'service_name': 'BattleAllocatorCenter', 'ttl_refresh_data': 'ttl=180&refresh=True'}
+  File "C:\Program Files\Python38\lib\concurrent\futures\thread.py", line 57, in run
+    locals={}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 178, in <lambda>
+    locals={'now_url': 'http://127.0.0.1:2379/v2/keys/services/BattleAllocatorCenter/127.0.0.1|8888', 'ttl_refresh_data': 'ttl=180&refresh=True'}
+  File "C:\Program Files\Python38\lib\site-packages\requests\api.py", line 61, in request
+    locals={'method': 'PUT', 'url': 'http://127.0.0.1:2379/v2/keys/services/BattleAllocatorCenter/127.0.0.1|8888', 'kwargs': {'data': 'ttl=180&refresh=True', 'headers': {'Content-Type': 'application/x-www-form-urlencoded'}, 'timeout': 2}, 'session': <requests.sessions.Session object at 0x00000210519163A0>}
+  File "C:\Program Files\Python38\lib\site-packages\requests\sessions.py", line 542, in request
+    locals={'self': <requests.sessions.Session object at 0x00000210519163A0>, 'method': 'PUT', 'url': 'http://127.0.0.1:2379/v2/keys/services/BattleAllocatorCenter/127.0.0.1|8888', 'params': None, 'data': 'ttl=180&refresh=True', 'headers': {'Content-Type': 'application/x-www-form-urlencoded'}, 'cookies': None, 'files': None, 'auth': None, 'timeout': 2, 'allow_redirects': True, 'proxies': {}, 'hooks': None, 'stream': None, 'verify': None, 'cert': None, 'json': None, 'req': <Request [PUT]>, 'prep': <PreparedRequest [PUT]>, 'settings': {'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}, 'send_kwargs': {'timeout': 2, 'allow_redirects': True, 'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}}
+  File "C:\Program Files\Python38\lib\site-packages\requests\sessions.py", line 655, in send
+    locals={'self': <requests.sessions.Session object at 0x00000210519163A0>, 'request': <PreparedRequest [PUT]>, 'kwargs': {'timeout': 2, 'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}, 'allow_redirects': True, 'stream': False, 'hooks': {'response': []}, 'adapter': <requests.adapters.HTTPAdapter object at 0x0000021051865970>, 'start': 3895.862741174}
+  File "C:\Program Files\Python38\lib\site-packages\requests\adapters.py", line 516, in send
+    locals={'self': <requests.adapters.HTTPAdapter object at 0x0000021051865970>, 'request': <PreparedRequest [PUT]>, 'stream': False, 'timeout': Timeout(connect=2, read=2, total=None), 'verify': True, 'cert': None, 'proxies': OrderedDict(), 'conn': <urllib3.connectionpool.HTTPConnectionPool object at 0x0000021051865D00>, 'url': '/v2/keys/services/BattleAllocatorCenter/127.0.0.1%7C8888', 'chunked': False}
+2021-03-17 10:15:57,273 - ServiceFinder - ERROR : on_traceback, type:<class 'requests.exceptions.ConnectionError'>, value:HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001E117474970>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')), traceback:<class 'requests.exceptions.ConnectionError'>
+HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001E117474970>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。'))
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 412, in _watch_process
+    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x000001E1173DD1F0>, }
+  File "C:\Program Files\Python38\lib\asyncio\tasks.py", line 494, in wait_for
+    locals={'fut': <Task finished name='Task-80' coro=<ServiceFinder._watch_process_impl() done, defined at D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py:347> exception=ConnectionError(MaxRetryError("HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001E117474970>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。'))"))>, 'timeout': 67, 'loop': <ProactorEventLoop running=True closed=False debug=False>, 'waiter': <Future finished result=None>, 'timeout_handle': <TimerHandle cancelled when=4889.093>, 'cb': functools.partial(<function _release_waiter at 0x000001E1168ED820>, <Future finished result=None>)}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 350, in _watch_process_impl
+    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x000001E1173DD1F0>, }
+  File "C:\Program Files\Python38\lib\concurrent\futures\thread.py", line 57, in run
+    locals={}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 350, in <lambda>
+    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x000001E1173DD1F0>, }
+  File "C:\Program Files\Python38\lib\site-packages\requests\api.py", line 61, in request
+    locals={'method': 'GET', 'url': 'http://127.0.0.1:2379/v2/keys', 'kwargs': {}, 'session': <requests.sessions.Session object at 0x000001E11749F100>}
+  File "C:\Program Files\Python38\lib\site-packages\requests\sessions.py", line 542, in request
+    locals={'self': <requests.sessions.Session object at 0x000001E11749F100>, 'method': 'GET', 'url': 'http://127.0.0.1:2379/v2/keys', 'params': None, 'data': None, 'headers': None, 'cookies': None, 'files': None, 'auth': None, 'timeout': None, 'allow_redirects': True, 'proxies': {}, 'hooks': None, 'stream': None, 'verify': None, 'cert': None, 'json': None, 'req': <Request [GET]>, 'prep': <PreparedRequest [GET]>, 'settings': {'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}, 'send_kwargs': {'timeout': None, 'allow_redirects': True, 'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}}
+  File "C:\Program Files\Python38\lib\site-packages\requests\sessions.py", line 655, in send
+    locals={'self': <requests.sessions.Session object at 0x000001E11749F100>, 'request': <PreparedRequest [GET]>, 'kwargs': {'timeout': None, 'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}, 'allow_redirects': True, 'stream': False, 'hooks': {'response': []}, 'adapter': <requests.adapters.HTTPAdapter object at 0x000001E117474340>, 'start': 3906.115661948}
+  File "C:\Program Files\Python38\lib\site-packages\requests\adapters.py", line 516, in send
+    locals={'self': <requests.adapters.HTTPAdapter object at 0x000001E117474340>, 'request': <PreparedRequest [GET]>, 'stream': False, 'timeout': Timeout(connect=None, read=None, total=None), 'verify': True, 'cert': None, 'proxies': OrderedDict(), 'conn': <urllib3.connectionpool.HTTPConnectionPool object at 0x000001E1174E4A90>, 'url': '/v2/keys', 'chunked': False}
+2021-03-17 10:15:57,273 - ServiceFinder - ERROR : on_traceback, type:<class 'requests.exceptions.ConnectionError'>, value:HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000002105187BAC0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')), traceback:<class 'requests.exceptions.ConnectionError'>
+HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000002105187BAC0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。'))
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 412, in _watch_process
+    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x00000210517BD1F0>, }
+  File "C:\Program Files\Python38\lib\asyncio\tasks.py", line 494, in wait_for
+    locals={'fut': <Task finished name='Task-91' coro=<ServiceFinder._watch_process_impl() done, defined at D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py:347> exception=ConnectionError(MaxRetryError("HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000002105187BAC0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。'))"))>, 'timeout': 69, 'loop': <ProactorEventLoop running=True closed=False debug=False>, 'waiter': <Future finished result=None>, 'timeout_handle': <TimerHandle cancelled when=4891.093>, 'cb': functools.partial(<function _release_waiter at 0x0000021050CDD820>, <Future finished result=None>)}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 350, in _watch_process_impl
+    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x00000210517BD1F0>, }
+  File "C:\Program Files\Python38\lib\concurrent\futures\thread.py", line 57, in run
+    locals={}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 350, in <lambda>
+    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x00000210517BD1F0>, }
+  File "C:\Program Files\Python38\lib\site-packages\requests\api.py", line 61, in request
+    locals={'method': 'GET', 'url': 'http://127.0.0.1:2379/v2/keys', 'kwargs': {}, 'session': <requests.sessions.Session object at 0x000002105185D6D0>}
+  File "C:\Program Files\Python38\lib\site-packages\requests\sessions.py", line 542, in request
+    locals={'self': <requests.sessions.Session object at 0x000002105185D6D0>, 'method': 'GET', 'url': 'http://127.0.0.1:2379/v2/keys', 'params': None, 'data': None, 'headers': None, 'cookies': None, 'files': None, 'auth': None, 'timeout': None, 'allow_redirects': True, 'proxies': {}, 'hooks': None, 'stream': None, 'verify': None, 'cert': None, 'json': None, 'req': <Request [GET]>, 'prep': <PreparedRequest [GET]>, 'settings': {'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}, 'send_kwargs': {'timeout': None, 'allow_redirects': True, 'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}}
+  File "C:\Program Files\Python38\lib\site-packages\requests\sessions.py", line 655, in send
+    locals={'self': <requests.sessions.Session object at 0x000002105185D6D0>, 'request': <PreparedRequest [GET]>, 'kwargs': {'timeout': None, 'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}, 'allow_redirects': True, 'stream': False, 'hooks': {'response': []}, 'adapter': <requests.adapters.HTTPAdapter object at 0x0000021051923DF0>, 'start': 3896.582427342}
+  File "C:\Program Files\Python38\lib\site-packages\requests\adapters.py", line 516, in send
+    locals={'self': <requests.adapters.HTTPAdapter object at 0x0000021051923DF0>, 'request': <PreparedRequest [GET]>, 'stream': False, 'timeout': Timeout(connect=None, read=None, total=None), 'verify': True, 'cert': None, 'proxies': OrderedDict(), 'conn': <urllib3.connectionpool.HTTPConnectionPool object at 0x00000210519231F0>, 'url': '/v2/keys', 'chunked': False}
+2021-03-17 10:15:57,274 - ServiceFinder - ERROR : on_traceback, type:<class 'requests.exceptions.ConnectionError'>, value:HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001F6019712B0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')), traceback:<class 'requests.exceptions.ConnectionError'>
+HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001F6019712B0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。'))
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 412, in _watch_process
+    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x000001F67FF8D1F0>, }
+  File "C:\Program Files\Python38\lib\asyncio\tasks.py", line 494, in wait_for
+    locals={'fut': <Task finished name='Task-78' coro=<ServiceFinder._watch_process_impl() done, defined at D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py:347> exception=ConnectionError(MaxRetryError("HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001F6019712B0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。'))"))>, 'timeout': 66, 'loop': <ProactorEventLoop running=True closed=False debug=False>, 'waiter': <Future finished result=None>, 'timeout_handle': <TimerHandle cancelled when=4888.093>, 'cb': functools.partial(<function _release_waiter at 0x000001F67F89D820>, <Future finished result=None>)}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 350, in _watch_process_impl
+    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x000001F67FF8D1F0>, }
+  File "C:\Program Files\Python38\lib\concurrent\futures\thread.py", line 57, in run
+    locals={'self': <concurrent.futures.thread._WorkItem object at 0x000001F601891D30>, 'exc': ConnectionError(MaxRetryError("HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001F6019712B0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。'))"))}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 350, in <lambda>
+    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x000001F67FF8D1F0>, }
+  File "C:\Program Files\Python38\lib\site-packages\requests\api.py", line 61, in request
+    locals={'method': 'GET', 'url': 'http://127.0.0.1:2379/v2/keys', 'kwargs': {}, 'session': <requests.sessions.Session object at 0x000001F60196BAC0>}
+  File "C:\Program Files\Python38\lib\site-packages\requests\sessions.py", line 542, in request
+    locals={'self': <requests.sessions.Session object at 0x000001F60196BAC0>, 'method': 'GET', 'url': 'http://127.0.0.1:2379/v2/keys', 'params': None, 'data': None, 'headers': None, 'cookies': None, 'files': None, 'auth': None, 'timeout': None, 'allow_redirects': True, 'proxies': {}, 'hooks': None, 'stream': None, 'verify': None, 'cert': None, 'json': None, 'req': <Request [GET]>, 'prep': <PreparedRequest [GET]>, 'settings': {'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}, 'send_kwargs': {'timeout': None, 'allow_redirects': True, 'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}}
+  File "C:\Program Files\Python38\lib\site-packages\requests\sessions.py", line 655, in send
+    locals={'self': <requests.sessions.Session object at 0x000001F60196BAC0>, 'request': <PreparedRequest [GET]>, 'kwargs': {'timeout': None, 'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}, 'allow_redirects': True, 'stream': False, 'hooks': {'response': []}, 'adapter': <requests.adapters.HTTPAdapter object at 0x000001F601971C10>, 'start': 3889.718512835}
+  File "C:\Program Files\Python38\lib\site-packages\requests\adapters.py", line 516, in send
+    locals={'self': <requests.adapters.HTTPAdapter object at 0x000001F601971C10>, 'request': <PreparedRequest [GET]>, 'stream': False, 'timeout': Timeout(connect=None, read=None, total=None), 'verify': True, 'cert': None, 'proxies': OrderedDict(), 'conn': <urllib3.connectionpool.HTTPConnectionPool object at 0x000001F601971BB0>, 'url': '/v2/keys', 'chunked': False}
+2021-03-17 10:15:57,558 - ServiceRegister - ERROR : on_traceback, type:<class 'requests.exceptions.ConnectionError'>, value:HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys/services/BattleAllocatorCenter/127.0.0.1%7C8888 (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000002105187B490>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')), traceback:<class 'requests.exceptions.ConnectionError'>
+HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys/services/BattleAllocatorCenter/127.0.0.1%7C8888 (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000002105187B490>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。'))
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 177, in _process_regist_and_ttl
+    locals={'self': <core.EtcdSupport.ServiceRegister object at 0x000002105172CBE0>, 'r': <Response [200]>, 'res': {'action': 'set', 'node': {'key': '/services/BattleAllocatorCenter/127.0.0.1|8888', 'value': '', 'expiration': '2021-03-17T02:17:10.5639308Z', 'ttl': 180, 'modifiedIndex': 77, 'createdIndex': 77}, 'prevNode': {'key': '/services/BattleAllocatorCenter/127.0.0.1|8888', 'value': '', 'expiration': '2021-03-17T02:15:27.5585213Z', 'ttl': 77, 'modifiedIndex': 76, 'createdIndex': 76}}, 'now_url': 'http://127.0.0.1:2379/v2/keys/services/BattleAllocatorCenter/127.0.0.1|8888', 'ttl_refresh_data': 'ttl=180&refresh=True', 'service_name': 'BattleAllocatorCenter'}
+  File "C:\Program Files\Python38\lib\concurrent\futures\thread.py", line 57, in run
+    locals={}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 178, in <lambda>
+    locals={'now_url': 'http://127.0.0.1:2379/v2/keys/services/BattleAllocatorCenter/127.0.0.1|8888', 'ttl_refresh_data': 'ttl=180&refresh=True'}
+  File "C:\Program Files\Python38\lib\site-packages\requests\api.py", line 61, in request
+    locals={'method': 'PUT', 'url': 'http://127.0.0.1:2379/v2/keys/services/BattleAllocatorCenter/127.0.0.1|8888', 'kwargs': {'data': 'ttl=180&refresh=True', 'headers': {'Content-Type': 'application/x-www-form-urlencoded'}, 'timeout': 2}, 'session': <requests.sessions.Session object at 0x0000021051865C40>}
+  File "C:\Program Files\Python38\lib\site-packages\requests\sessions.py", line 542, in request
+    locals={'self': <requests.sessions.Session object at 0x0000021051865C40>, 'method': 'PUT', 'url': 'http://127.0.0.1:2379/v2/keys/services/BattleAllocatorCenter/127.0.0.1|8888', 'params': None, 'data': 'ttl=180&refresh=True', 'headers': {'Content-Type': 'application/x-www-form-urlencoded'}, 'cookies': None, 'files': None, 'auth': None, 'timeout': 2, 'allow_redirects': True, 'proxies': {}, 'hooks': None, 'stream': None, 'verify': None, 'cert': None, 'json': None, 'req': <Request [PUT]>, 'prep': <PreparedRequest [PUT]>, 'settings': {'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}, 'send_kwargs': {'timeout': 2, 'allow_redirects': True, 'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}}
+  File "C:\Program Files\Python38\lib\site-packages\requests\sessions.py", line 655, in send
+    locals={'self': <requests.sessions.Session object at 0x0000021051865C40>, 'request': <PreparedRequest [PUT]>, 'kwargs': {'timeout': 2, 'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}, 'allow_redirects': True, 'stream': False, 'hooks': {'response': []}, 'adapter': <requests.adapters.HTTPAdapter object at 0x000002105187BF70>, 'start': 3896.865643315}
+  File "C:\Program Files\Python38\lib\site-packages\requests\adapters.py", line 516, in send
+    locals={'self': <requests.adapters.HTTPAdapter object at 0x000002105187BF70>, 'request': <PreparedRequest [PUT]>, 'stream': False, 'timeout': Timeout(connect=2, read=2, total=None), 'verify': True, 'cert': None, 'proxies': OrderedDict(), 'conn': <urllib3.connectionpool.HTTPConnectionPool object at 0x0000021051923EE0>, 'url': '/v2/keys/services/BattleAllocatorCenter/127.0.0.1%7C8888', 'chunked': False}
+2021-03-17 10:15:58,282 - ServiceFinder - ERROR : on_traceback, type:<class 'requests.exceptions.ConnectionError'>, value:HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000021051923C10>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')), traceback:<class 'requests.exceptions.ConnectionError'>
+HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000021051923C10>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。'))
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 412, in _watch_process
+    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x00000210517BD1F0>, }
+  File "C:\Program Files\Python38\lib\asyncio\tasks.py", line 494, in wait_for
+    locals={'fut': <Task finished name='Task-92' coro=<ServiceFinder._watch_process_impl() done, defined at D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py:347> exception=ConnectionError(MaxRetryError("HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000021051923C10>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。'))"))>, 'timeout': 60, 'loop': <ProactorEventLoop running=True closed=False debug=False>, 'waiter': <Future finished result=None>, 'timeout_handle': <TimerHandle cancelled when=4883.093>, 'cb': functools.partial(<function _release_waiter at 0x0000021050CDD820>, <Future finished result=None>)}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 350, in _watch_process_impl
+    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x00000210517BD1F0>, }
+  File "C:\Program Files\Python38\lib\concurrent\futures\thread.py", line 57, in run
+    locals={}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 350, in <lambda>
+    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x00000210517BD1F0>, }
+  File "C:\Program Files\Python38\lib\site-packages\requests\api.py", line 61, in request
+    locals={'method': 'GET', 'url': 'http://127.0.0.1:2379/v2/keys', 'kwargs': {}, 'session': <requests.sessions.Session object at 0x0000021051865520>}
+  File "C:\Program Files\Python38\lib\site-packages\requests\sessions.py", line 542, in request
+    locals={'self': <requests.sessions.Session object at 0x0000021051865520>, 'method': 'GET', 'url': 'http://127.0.0.1:2379/v2/keys', 'params': None, 'data': None, 'headers': None, 'cookies': None, 'files': None, 'auth': None, 'timeout': None, 'allow_redirects': True, 'proxies': {}, 'hooks': None, 'stream': None, 'verify': None, 'cert': None, 'json': None, 'req': <Request [GET]>, 'prep': <PreparedRequest [GET]>, 'settings': {'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}, 'send_kwargs': {'timeout': None, 'allow_redirects': True, 'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}}
+  File "C:\Program Files\Python38\lib\site-packages\requests\sessions.py", line 655, in send
+    locals={'self': <requests.sessions.Session object at 0x0000021051865520>, 'request': <PreparedRequest [GET]>, 'kwargs': {'timeout': None, 'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}, 'allow_redirects': True, 'stream': False, 'hooks': {'response': []}, 'adapter': <requests.adapters.HTTPAdapter object at 0x0000021051923DF0>, 'start': 3897.584946834}
+  File "C:\Program Files\Python38\lib\site-packages\requests\adapters.py", line 516, in send
+    locals={'self': <requests.adapters.HTTPAdapter object at 0x0000021051923DF0>, 'request': <PreparedRequest [GET]>, 'stream': False, 'timeout': Timeout(connect=None, read=None, total=None), 'verify': True, 'cert': None, 'proxies': OrderedDict(), 'conn': <urllib3.connectionpool.HTTPConnectionPool object at 0x00000210519233A0>, 'url': '/v2/keys', 'chunked': False}
+2021-03-17 10:15:58,282 - ServiceFinder - ERROR : on_traceback, type:<class 'requests.exceptions.ConnectionError'>, value:HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001F6018517C0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')), traceback:<class 'requests.exceptions.ConnectionError'>
+HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001F6018517C0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。'))
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 412, in _watch_process
+    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x000001F67FF8D1F0>, }
+  File "C:\Program Files\Python38\lib\asyncio\tasks.py", line 494, in wait_for
+    locals={'fut': <Task finished name='Task-79' coro=<ServiceFinder._watch_process_impl() done, defined at D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py:347> exception=ConnectionError(MaxRetryError("HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001F6018517C0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。'))"))>, 'timeout': 66, 'loop': <ProactorEventLoop running=True closed=False debug=False>, 'waiter': <Future finished result=None>, 'timeout_handle': <TimerHandle cancelled when=4889.093>, 'cb': functools.partial(<function _release_waiter at 0x000001F67F89D820>, <Future finished result=None>)}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 350, in _watch_process_impl
+    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x000001F67FF8D1F0>, }
+  File "C:\Program Files\Python38\lib\concurrent\futures\thread.py", line 57, in run
+    locals={}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 350, in <lambda>
+    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x000001F67FF8D1F0>, }
+  File "C:\Program Files\Python38\lib\site-packages\requests\api.py", line 61, in request
+    locals={'method': 'GET', 'url': 'http://127.0.0.1:2379/v2/keys', 'kwargs': {}, 'session': <requests.sessions.Session object at 0x000001F6019719D0>}
+  File "C:\Program Files\Python38\lib\site-packages\requests\sessions.py", line 542, in request
+    locals={'self': <requests.sessions.Session object at 0x000001F6019719D0>, 'method': 'GET', 'url': 'http://127.0.0.1:2379/v2/keys', 'params': None, 'data': None, 'headers': None, 'cookies': None, 'files': None, 'auth': None, 'timeout': None, 'allow_redirects': True, 'proxies': {}, 'hooks': None, 'stream': None, 'verify': None, 'cert': None, 'json': None, 'req': <Request [GET]>, 'prep': <PreparedRequest [GET]>, 'settings': {'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}, 'send_kwargs': {'timeout': None, 'allow_redirects': True, 'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}}
+  File "C:\Program Files\Python38\lib\site-packages\requests\sessions.py", line 655, in send
+    locals={'self': <requests.sessions.Session object at 0x000001F6019719D0>, 'request': <PreparedRequest [GET]>, 'kwargs': {'timeout': None, 'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}, 'allow_redirects': True, 'stream': False, 'hooks': {'response': []}, 'adapter': <requests.adapters.HTTPAdapter object at 0x000001F67FF9E250>, 'start': 3890.72092485}
+  File "C:\Program Files\Python38\lib\site-packages\requests\adapters.py", line 516, in send
+    locals={'self': <requests.adapters.HTTPAdapter object at 0x000001F67FF9E250>, 'request': <PreparedRequest [GET]>, 'stream': False, 'timeout': Timeout(connect=None, read=None, total=None), 'verify': True, 'cert': None, 'proxies': OrderedDict(), 'conn': <urllib3.connectionpool.HTTPConnectionPool object at 0x000001F601971B80>, 'url': '/v2/keys', 'chunked': False}
+2021-03-17 10:15:58,282 - ServiceFinder - ERROR : on_traceback, type:<class 'requests.exceptions.ConnectionError'>, value:HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001E1175928E0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')), traceback:<class 'requests.exceptions.ConnectionError'>
+HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001E1175928E0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。'))
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 412, in _watch_process
+    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x000001E1173DD1F0>, }
+  File "C:\Program Files\Python38\lib\asyncio\tasks.py", line 494, in wait_for
+    locals={'fut': <Task finished name='Task-81' coro=<ServiceFinder._watch_process_impl() done, defined at D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py:347> exception=ConnectionError(MaxRetryError("HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001E1175928E0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。'))"))>, 'timeout': 60, 'loop': <ProactorEventLoop running=True closed=False debug=False>, 'waiter': <Future finished result=None>, 'timeout_handle': <TimerHandle cancelled when=4883.093>, 'cb': functools.partial(<function _release_waiter at 0x000001E1168ED820>, <Future finished result=None>)}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 350, in _watch_process_impl
+    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x000001E1173DD1F0>, }
+  File "C:\Program Files\Python38\lib\concurrent\futures\thread.py", line 57, in run
+    locals={}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 350, in <lambda>
+    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x000001E1173DD1F0>, }
+  File "C:\Program Files\Python38\lib\site-packages\requests\api.py", line 61, in request
+    locals={'method': 'GET', 'url': 'http://127.0.0.1:2379/v2/keys', 'kwargs': {}, 'session': <requests.sessions.Session object at 0x000001E117474E20>}
+  File "C:\Program Files\Python38\lib\site-packages\requests\sessions.py", line 542, in request
+    locals={'self': <requests.sessions.Session object at 0x000001E117474E20>, 'method': 'GET', 'url': 'http://127.0.0.1:2379/v2/keys', 'params': None, 'data': None, 'headers': None, 'cookies': None, 'files': None, 'auth': None, 'timeout': None, 'allow_redirects': True, 'proxies': {}, 'hooks': None, 'stream': None, 'verify': None, 'cert': None, 'json': None, 'req': <Request [GET]>, 'prep': <PreparedRequest [GET]>, 'settings': {'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}, 'send_kwargs': {'timeout': None, 'allow_redirects': True, 'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}}
+  File "C:\Program Files\Python38\lib\site-packages\requests\sessions.py", line 655, in send
+    locals={'self': <requests.sessions.Session object at 0x000001E117474E20>, 'request': <PreparedRequest [GET]>, 'kwargs': {'timeout': None, 'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}, 'allow_redirects': True, 'stream': False, 'hooks': {'response': []}, 'adapter': <requests.adapters.HTTPAdapter object at 0x000001E117592EE0>, 'start': 3907.117135297}
+  File "C:\Program Files\Python38\lib\site-packages\requests\adapters.py", line 516, in send
+    locals={'self': <requests.adapters.HTTPAdapter object at 0x000001E117592EE0>, 'request': <PreparedRequest [GET]>, 'stream': False, 'timeout': Timeout(connect=None, read=None, total=None), 'verify': True, 'cert': None, 'proxies': OrderedDict(), 'conn': <urllib3.connectionpool.HTTPConnectionPool object at 0x000001E117592910>, 'url': '/v2/keys', 'chunked': False}
+2021-03-17 10:15:58,561 - ServiceRegister - ERROR : on_traceback, type:<class 'requests.exceptions.ConnectionError'>, value:HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys/services/BattleAllocatorCenter/127.0.0.1%7C8888 (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000021051865910>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')), traceback:<class 'requests.exceptions.ConnectionError'>
+HTTPConnectionPool(host='127.0.0.1', port=2379): Max retries exceeded with url: /v2/keys/services/BattleAllocatorCenter/127.0.0.1%7C8888 (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000021051865910>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。'))
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 177, in _process_regist_and_ttl
+    locals={'self': <core.EtcdSupport.ServiceRegister object at 0x000002105172CBE0>, 'r': <Response [200]>, 'res': {'action': 'set', 'node': {'key': '/services/BattleAllocatorCenter/127.0.0.1|8888', 'value': '', 'expiration': '2021-03-17T02:17:10.5639308Z', 'ttl': 180, 'modifiedIndex': 77, 'createdIndex': 77}, 'prevNode': {'key': '/services/BattleAllocatorCenter/127.0.0.1|8888', 'value': '', 'expiration': '2021-03-17T02:15:27.5585213Z', 'ttl': 77, 'modifiedIndex': 76, 'createdIndex': 76}}, 'now_url': 'http://127.0.0.1:2379/v2/keys/services/BattleAllocatorCenter/127.0.0.1|8888', 'ttl_refresh_data': 'ttl=180&refresh=True', 'service_name': 'BattleAllocatorCenter'}
+  File "C:\Program Files\Python38\lib\concurrent\futures\thread.py", line 57, in run
+    locals={}
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 178, in <lambda>
+    locals={'now_url': 'http://127.0.0.1:2379/v2/keys/services/BattleAllocatorCenter/127.0.0.1|8888', 'ttl_refresh_data': 'ttl=180&refresh=True'}
+  File "C:\Program Files\Python38\lib\site-packages\requests\api.py", line 61, in request
+    locals={'method': 'PUT', 'url': 'http://127.0.0.1:2379/v2/keys/services/BattleAllocatorCenter/127.0.0.1|8888', 'kwargs': {'data': 'ttl=180&refresh=True', 'headers': {'Content-Type': 'application/x-www-form-urlencoded'}, 'timeout': 2}, 'session': <requests.sessions.Session object at 0x0000021051923D00>}
+  File "C:\Program Files\Python38\lib\site-packages\requests\sessions.py", line 542, in request
+    locals={'self': <requests.sessions.Session object at 0x0000021051923D00>, 'method': 'PUT', 'url': 'http://127.0.0.1:2379/v2/keys/services/BattleAllocatorCenter/127.0.0.1|8888', 'params': None, 'data': 'ttl=180&refresh=True', 'headers': {'Content-Type': 'application/x-www-form-urlencoded'}, 'cookies': None, 'files': None, 'auth': None, 'timeout': 2, 'allow_redirects': True, 'proxies': {}, 'hooks': None, 'stream': None, 'verify': None, 'cert': None, 'json': None, 'req': <Request [PUT]>, 'prep': <PreparedRequest [PUT]>, 'settings': {'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}, 'send_kwargs': {'timeout': 2, 'allow_redirects': True, 'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}}
+  File "C:\Program Files\Python38\lib\site-packages\requests\sessions.py", line 655, in send
+    locals={'self': <requests.sessions.Session object at 0x0000021051923D00>, 'request': <PreparedRequest [PUT]>, 'kwargs': {'timeout': 2, 'verify': True, 'proxies': OrderedDict(), 'stream': False, 'cert': None}, 'allow_redirects': True, 'stream': False, 'hooks': {'response': []}, 'adapter': <requests.adapters.HTTPAdapter object at 0x0000021051865790>, 'start': 3897.86979224}
+  File "C:\Program Files\Python38\lib\site-packages\requests\adapters.py", line 516, in send
+    locals={'self': <requests.adapters.HTTPAdapter object at 0x0000021051865790>, 'request': <PreparedRequest [PUT]>, 'stream': False, 'timeout': Timeout(connect=2, read=2, total=None), 'verify': True, 'cert': None, 'proxies': OrderedDict(), 'conn': <urllib3.connectionpool.HTTPConnectionPool object at 0x00000210518656A0>, 'url': '/v2/keys/services/BattleAllocatorCenter/127.0.0.1%7C8888', 'chunked': False}
+2021-03-17 10:16:51,430 - ServiceNode - INFO : [EtcdSupport.py:474]: we have create ServiceRegister, wait 5 seconds
+2021-03-17 10:16:51,431 - ServiceNode - INFO : [EtcdSupport.py:477]: we have create ServiceFinder
+2021-03-17 10:16:51,446 - ServiceRegister - ERROR : [EtcdSupport.py:155]: regist service : BattleAllocatorStub error
+2021-03-17 10:16:51,446 - ServiceRegister - ERROR : on_traceback, type:<class 'json.decoder.JSONDecodeError'>, value:Extra data: line 1 column 5 (char 4), traceback:<class 'json.decoder.JSONDecodeError'>
+Extra data: line 1 column 5 (char 4)
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 145, in _do_regist
+    locals={'self': <core.EtcdSupport.ServiceRegister object at 0x0000016A2269CBE0>, 'service_name': 'BattleAllocatorStub', 'r': <Response [404]>, 'data': 'ttl=180', 'now_url': 'http://127.0.0.1:2379/v2/keys/services/BattleAllocatorStub/127.0.0.1|8889'}
+  File "C:\Program Files\Python38\lib\json\__init__.py", line 357, in loads
+    locals={'s': '404 page not found\n', 'cls': None, 'object_hook': None, 'parse_float': None, 'parse_int': None, 'parse_constant': None, 'object_pairs_hook': None, 'kw': {}}
+  File "C:\Program Files\Python38\lib\json\decoder.py", line 340, in decode
+    locals={'self': <json.decoder.JSONDecoder object at 0x0000016A216CA9D0>, 's': '404 page not found\n', '_w': <built-in method match of re.Pattern object at 0x0000016A21CBF630>, 'obj': 404, 'end': 4}
+2021-03-17 10:16:51,459 - ServiceRegister - ERROR : [EtcdSupport.py:155]: regist service : BattleAllocatorStub error
+2021-03-17 10:16:51,459 - ServiceRegister - ERROR : on_traceback, type:<class 'json.decoder.JSONDecodeError'>, value:Extra data: line 1 column 5 (char 4), traceback:<class 'json.decoder.JSONDecodeError'>
+Extra data: line 1 column 5 (char 4)
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 145, in _do_regist
+    locals={'self': <core.EtcdSupport.ServiceRegister object at 0x0000016A2269CBE0>, 'service_name': 'BattleAllocatorStub', 'r': <Response [404]>, 'data': 'ttl=180', 'now_url': 'http://127.0.0.1:2379/v2/keys/services/BattleAllocatorStub/127.0.0.1|8889'}
+  File "C:\Program Files\Python38\lib\json\__init__.py", line 357, in loads
+    locals={'s': '404 page not found\n', 'cls': None, 'object_hook': None, 'parse_float': None, 'parse_int': None, 'parse_constant': None, 'object_pairs_hook': None, 'kw': {}}
+  File "C:\Program Files\Python38\lib\json\decoder.py", line 340, in decode
+    locals={'self': <json.decoder.JSONDecoder object at 0x0000016A216CA9D0>, 's': '404 page not found\n', '_w': <built-in method match of re.Pattern object at 0x0000016A21CBF630>, 'obj': 404, 'end': 4}
+2021-03-17 10:16:51,462 - ServiceRegister - ERROR : [EtcdSupport.py:155]: regist service : BattleAllocatorStub error
+2021-03-17 10:16:51,462 - ServiceRegister - ERROR : on_traceback, type:<class 'json.decoder.JSONDecodeError'>, value:Extra data: line 1 column 5 (char 4), traceback:<class 'json.decoder.JSONDecodeError'>
+Extra data: line 1 column 5 (char 4)
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 145, in _do_regist
+    locals={'self': <core.EtcdSupport.ServiceRegister object at 0x0000016A2269CBE0>, 'service_name': 'BattleAllocatorStub', 'r': <Response [404]>, 'data': 'ttl=180', 'now_url': 'http://127.0.0.1:2379/v2/keys/services/BattleAllocatorStub/127.0.0.1|8889'}
+  File "C:\Program Files\Python38\lib\json\__init__.py", line 357, in loads
+    locals={'s': '404 page not found\n', 'cls': None, 'object_hook': None, 'parse_float': None, 'parse_int': None, 'parse_constant': None, 'object_pairs_hook': None, 'kw': {}}
+  File "C:\Program Files\Python38\lib\json\decoder.py", line 340, in decode
+    locals={'self': <json.decoder.JSONDecoder object at 0x0000016A216CA9D0>, 's': '404 page not found\n', '_w': <built-in method match of re.Pattern object at 0x0000016A21CBF630>, 'obj': 404, 'end': 4}
+2021-03-17 10:16:51,464 - ServiceRegister - ERROR : [EtcdSupport.py:155]: regist service : BattleAllocatorStub error
+2021-03-17 10:16:51,464 - ServiceRegister - ERROR : on_traceback, type:<class 'json.decoder.JSONDecodeError'>, value:Extra data: line 1 column 5 (char 4), traceback:<class 'json.decoder.JSONDecodeError'>
+Extra data: line 1 column 5 (char 4)
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 145, in _do_regist
+    locals={'self': <core.EtcdSupport.ServiceRegister object at 0x0000016A2269CBE0>, 'service_name': 'BattleAllocatorStub', 'r': <Response [404]>, 'data': 'ttl=180', 'now_url': 'http://127.0.0.1:2379/v2/keys/services/BattleAllocatorStub/127.0.0.1|8889'}
+  File "C:\Program Files\Python38\lib\json\__init__.py", line 357, in loads
+    locals={'s': '404 page not found\n', 'cls': None, 'object_hook': None, 'parse_float': None, 'parse_int': None, 'parse_constant': None, 'object_pairs_hook': None, 'kw': {}}
+  File "C:\Program Files\Python38\lib\json\decoder.py", line 340, in decode
+    locals={'self': <json.decoder.JSONDecoder object at 0x0000016A216CA9D0>, 's': '404 page not found\n', '_w': <built-in method match of re.Pattern object at 0x0000016A21CBF630>, 'obj': 404, 'end': 4}
+2021-03-17 10:16:51,466 - ServiceRegister - ERROR : [EtcdSupport.py:155]: regist service : BattleAllocatorStub error
+2021-03-17 10:16:51,466 - ServiceRegister - ERROR : on_traceback, type:<class 'json.decoder.JSONDecodeError'>, value:Extra data: line 1 column 5 (char 4), traceback:<class 'json.decoder.JSONDecodeError'>
+Extra data: line 1 column 5 (char 4)
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 145, in _do_regist
+    locals={'self': <core.EtcdSupport.ServiceRegister object at 0x0000016A2269CBE0>, 'service_name': 'BattleAllocatorStub', 'r': <Response [404]>, 'data': 'ttl=180', 'now_url': 'http://127.0.0.1:2379/v2/keys/services/BattleAllocatorStub/127.0.0.1|8889'}
+  File "C:\Program Files\Python38\lib\json\__init__.py", line 357, in loads
+    locals={'s': '404 page not found\n', 'cls': None, 'object_hook': None, 'parse_float': None, 'parse_int': None, 'parse_constant': None, 'object_pairs_hook': None, 'kw': {}}
+  File "C:\Program Files\Python38\lib\json\decoder.py", line 340, in decode
+    locals={'self': <json.decoder.JSONDecoder object at 0x0000016A216CA9D0>, 's': '404 page not found\n', '_w': <built-in method match of re.Pattern object at 0x0000016A21CBF630>, 'obj': 404, 'end': 4}
+2021-03-17 10:16:51,469 - ServiceRegister - ERROR : [EtcdSupport.py:155]: regist service : BattleAllocatorStub error
+2021-03-17 10:16:51,469 - ServiceRegister - ERROR : on_traceback, type:<class 'json.decoder.JSONDecodeError'>, value:Extra data: line 1 column 5 (char 4), traceback:<class 'json.decoder.JSONDecodeError'>
+Extra data: line 1 column 5 (char 4)
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 145, in _do_regist
+    locals={'self': <core.EtcdSupport.ServiceRegister object at 0x0000016A2269CBE0>, 'service_name': 'BattleAllocatorStub', 'r': <Response [404]>, 'data': 'ttl=180', 'now_url': 'http://127.0.0.1:2379/v2/keys/services/BattleAllocatorStub/127.0.0.1|8889'}
+  File "C:\Program Files\Python38\lib\json\__init__.py", line 357, in loads
+    locals={'s': '404 page not found\n', 'cls': None, 'object_hook': None, 'parse_float': None, 'parse_int': None, 'parse_constant': None, 'object_pairs_hook': None, 'kw': {}}
+  File "C:\Program Files\Python38\lib\json\decoder.py", line 340, in decode
+    locals={'self': <json.decoder.JSONDecoder object at 0x0000016A216CA9D0>, 's': '404 page not found\n', '_w': <built-in method match of re.Pattern object at 0x0000016A21CBF630>, 'obj': 404, 'end': 4}
+2021-03-17 10:16:51,471 - ServiceRegister - ERROR : [EtcdSupport.py:155]: regist service : BattleAllocatorStub error
+2021-03-17 10:16:51,471 - ServiceRegister - ERROR : on_traceback, type:<class 'json.decoder.JSONDecodeError'>, value:Extra data: line 1 column 5 (char 4), traceback:<class 'json.decoder.JSONDecodeError'>
+Extra data: line 1 column 5 (char 4)
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 145, in _do_regist
+    locals={'self': <core.EtcdSupport.ServiceRegister object at 0x0000016A2269CBE0>, 'service_name': 'BattleAllocatorStub', 'r': <Response [404]>, 'data': 'ttl=180', 'now_url': 'http://127.0.0.1:2379/v2/keys/services/BattleAllocatorStub/127.0.0.1|8889'}
+  File "C:\Program Files\Python38\lib\json\__init__.py", line 357, in loads
+    locals={'s': '404 page not found\n', 'cls': None, 'object_hook': None, 'parse_float': None, 'parse_int': None, 'parse_constant': None, 'object_pairs_hook': None, 'kw': {}}
+  File "C:\Program Files\Python38\lib\json\decoder.py", line 340, in decode
+    locals={'self': <json.decoder.JSONDecoder object at 0x0000016A216CA9D0>, 's': '404 page not found\n', '_w': <built-in method match of re.Pattern object at 0x0000016A21CBF630>, 'obj': 404, 'end': 4}
+2021-03-17 10:16:51,473 - ServiceRegister - ERROR : [EtcdSupport.py:155]: regist service : BattleAllocatorStub error
+2021-03-17 10:16:51,473 - ServiceRegister - ERROR : on_traceback, type:<class 'json.decoder.JSONDecodeError'>, value:Extra data: line 1 column 5 (char 4), traceback:<class 'json.decoder.JSONDecodeError'>
+Extra data: line 1 column 5 (char 4)
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 145, in _do_regist
+    locals={'self': <core.EtcdSupport.ServiceRegister object at 0x0000016A2269CBE0>, 'service_name': 'BattleAllocatorStub', 'r': <Response [404]>, 'data': 'ttl=180', 'now_url': 'http://127.0.0.1:2379/v2/keys/services/BattleAllocatorStub/127.0.0.1|8889'}
+  File "C:\Program Files\Python38\lib\json\__init__.py", line 357, in loads
+    locals={'s': '404 page not found\n', 'cls': None, 'object_hook': None, 'parse_float': None, 'parse_int': None, 'parse_constant': None, 'object_pairs_hook': None, 'kw': {}}
+  File "C:\Program Files\Python38\lib\json\decoder.py", line 340, in decode
+    locals={'self': <json.decoder.JSONDecoder object at 0x0000016A216CA9D0>, 's': '404 page not found\n', '_w': <built-in method match of re.Pattern object at 0x0000016A21CBF630>, 'obj': 404, 'end': 4}
+2021-03-17 10:16:51,475 - ServiceRegister - ERROR : [EtcdSupport.py:155]: regist service : BattleAllocatorStub error
+2021-03-17 10:16:51,476 - ServiceRegister - ERROR : on_traceback, type:<class 'json.decoder.JSONDecodeError'>, value:Extra data: line 1 column 5 (char 4), traceback:<class 'json.decoder.JSONDecodeError'>
+Extra data: line 1 column 5 (char 4)
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 145, in _do_regist
+    locals={'self': <core.EtcdSupport.ServiceRegister object at 0x0000016A2269CBE0>, 'service_name': 'BattleAllocatorStub', 'r': <Response [404]>, 'data': 'ttl=180', 'now_url': 'http://127.0.0.1:2379/v2/keys/services/BattleAllocatorStub/127.0.0.1|8889'}
+  File "C:\Program Files\Python38\lib\json\__init__.py", line 357, in loads
+    locals={'s': '404 page not found\n', 'cls': None, 'object_hook': None, 'parse_float': None, 'parse_int': None, 'parse_constant': None, 'object_pairs_hook': None, 'kw': {}}
+  File "C:\Program Files\Python38\lib\json\decoder.py", line 340, in decode
+    locals={'self': <json.decoder.JSONDecoder object at 0x0000016A216CA9D0>, 's': '404 page not found\n', '_w': <built-in method match of re.Pattern object at 0x0000016A21CBF630>, 'obj': 404, 'end': 4}
+2021-03-17 10:16:51,478 - ServiceRegister - ERROR : [EtcdSupport.py:155]: regist service : BattleAllocatorStub error
+2021-03-17 10:16:51,478 - ServiceRegister - ERROR : on_traceback, type:<class 'json.decoder.JSONDecodeError'>, value:Extra data: line 1 column 5 (char 4), traceback:<class 'json.decoder.JSONDecodeError'>
+Extra data: line 1 column 5 (char 4)
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 145, in _do_regist
+    locals={'self': <core.EtcdSupport.ServiceRegister object at 0x0000016A2269CBE0>, 'service_name': 'BattleAllocatorStub', 'r': <Response [404]>, 'data': 'ttl=180', 'now_url': 'http://127.0.0.1:2379/v2/keys/services/BattleAllocatorStub/127.0.0.1|8889'}
+  File "C:\Program Files\Python38\lib\json\__init__.py", line 357, in loads
+    locals={'s': '404 page not found\n', 'cls': None, 'object_hook': None, 'parse_float': None, 'parse_int': None, 'parse_constant': None, 'object_pairs_hook': None, 'kw': {}}
+  File "C:\Program Files\Python38\lib\json\decoder.py", line 340, in decode
+    locals={'self': <json.decoder.JSONDecoder object at 0x0000016A216CA9D0>, 's': '404 page not found\n', '_w': <built-in method match of re.Pattern object at 0x0000016A21CBF630>, 'obj': 404, 'end': 4}
+2021-03-17 10:16:51,479 - ServiceRegister - ERROR : [EtcdSupport.py:167]: regist service BattleAllocatorStub fail
+2021-03-17 10:16:55,437 - SingletonEntityManager - DEBUG : [SingletonEntityManager.py:118]: _register_relevant_centers_cb, status:good
+2021-03-17 10:16:55,439 - ServerEntity.BattleAllocatorStub - INFO : [ServerEntity.py:21]: __init__ create entity BattleAllocatorStub with id 60516697fe754e0648718a50 mem_id=1555356114176
+2021-03-17 10:16:55,440 - server.EntityManager - INFO : [EntityManager.py:127]: addentity  entity id  60516697fe754e0648718a50 
+2021-03-17 10:16:55,441 - SingletonEntityManager - INFO : [SingletonEntityManager.py:135]: BattleAllocatorStub connected to center
+2021-03-17 10:16:55,442 - SingletonEntityManager - DEBUG : [SingletonEntityManager.py:137]: _register_stubs_cb, status:good
+2021-03-17 10:16:56,428 - ServerEntity.BattleAllocatorStub - INFO : [Stub.py:56]: Stub cannot connect to BattleAllocatorCenter, try again after 1 sec... (1)
+2021-03-17 10:16:56,430 - ServiceFinder - ERROR : on_traceback, type:<class 'json.decoder.JSONDecodeError'>, value:Extra data: line 1 column 5 (char 4), traceback:<class 'json.decoder.JSONDecodeError'>
+Extra data: line 1 column 5 (char 4)
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 311, in _init_info
+    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x0000016A2272D1F0>, 'r': <Response [404]>, 'now_url': 'http://127.0.0.1:2379/v2/keys?recursive=true'}
+  File "C:\Program Files\Python38\lib\json\__init__.py", line 357, in loads
+    locals={'s': '404 page not found\n', 'cls': None, 'object_hook': None, 'parse_float': None, 'parse_int': None, 'parse_constant': None, 'object_pairs_hook': None, 'kw': {}}
+  File "C:\Program Files\Python38\lib\json\decoder.py", line 340, in decode
+    locals={'self': <json.decoder.JSONDecoder object at 0x0000016A216CA9D0>, 's': '404 page not found\n', '_w': <built-in method match of re.Pattern object at 0x0000016A21CBF630>, 'obj': 404, 'end': 4}
+2021-03-17 10:16:56,431 - ServiceFinder - ERROR : on_traceback, type:<class 'json.decoder.JSONDecodeError'>, value:Extra data: line 1 column 5 (char 4), traceback:<class 'json.decoder.JSONDecodeError'>
+Extra data: line 1 column 5 (char 4)
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 311, in _init_info
+    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x0000016A2272D1F0>, 'r': <Response [404]>, 'now_url': 'http://127.0.0.1:2379/v2/keys?recursive=true'}
+  File "C:\Program Files\Python38\lib\json\__init__.py", line 357, in loads
+    locals={'s': '404 page not found\n', 'cls': None, 'object_hook': None, 'parse_float': None, 'parse_int': None, 'parse_constant': None, 'object_pairs_hook': None, 'kw': {}}
+  File "C:\Program Files\Python38\lib\json\decoder.py", line 340, in decode
+    locals={'self': <json.decoder.JSONDecoder object at 0x0000016A216CA9D0>, 's': '404 page not found\n', '_w': <built-in method match of re.Pattern object at 0x0000016A21CBF630>, 'obj': 404, 'end': 4}
+2021-03-17 10:16:56,432 - ServiceFinder - ERROR : on_traceback, type:<class 'json.decoder.JSONDecodeError'>, value:Extra data: line 1 column 5 (char 4), traceback:<class 'json.decoder.JSONDecodeError'>
+Extra data: line 1 column 5 (char 4)
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 311, in _init_info
+    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x0000016A2272D1F0>, 'r': <Response [404]>, 'now_url': 'http://127.0.0.1:2379/v2/keys?recursive=true'}
+  File "C:\Program Files\Python38\lib\json\__init__.py", line 357, in loads
+    locals={'s': '404 page not found\n', 'cls': None, 'object_hook': None, 'parse_float': None, 'parse_int': None, 'parse_constant': None, 'object_pairs_hook': None, 'kw': {}}
+  File "C:\Program Files\Python38\lib\json\decoder.py", line 340, in decode
+    locals={'self': <json.decoder.JSONDecoder object at 0x0000016A216CA9D0>, 's': '404 page not found\n', '_w': <built-in method match of re.Pattern object at 0x0000016A21CBF630>, 'obj': 404, 'end': 4}
+2021-03-17 10:16:56,434 - ServiceFinder - ERROR : on_traceback, type:<class 'json.decoder.JSONDecodeError'>, value:Extra data: line 1 column 5 (char 4), traceback:<class 'json.decoder.JSONDecodeError'>
+Extra data: line 1 column 5 (char 4)
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 311, in _init_info
+    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x0000016A2272D1F0>, 'r': <Response [404]>, 'now_url': 'http://127.0.0.1:2379/v2/keys?recursive=true'}
+  File "C:\Program Files\Python38\lib\json\__init__.py", line 357, in loads
+    locals={'s': '404 page not found\n', 'cls': None, 'object_hook': None, 'parse_float': None, 'parse_int': None, 'parse_constant': None, 'object_pairs_hook': None, 'kw': {}}
+  File "C:\Program Files\Python38\lib\json\decoder.py", line 340, in decode
+    locals={'self': <json.decoder.JSONDecoder object at 0x0000016A216CA9D0>, 's': '404 page not found\n', '_w': <built-in method match of re.Pattern object at 0x0000016A21CBF630>, 'obj': 404, 'end': 4}
+2021-03-17 10:16:56,435 - ServiceFinder - ERROR : on_traceback, type:<class 'json.decoder.JSONDecodeError'>, value:Extra data: line 1 column 5 (char 4), traceback:<class 'json.decoder.JSONDecodeError'>
+Extra data: line 1 column 5 (char 4)
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 311, in _init_info
+    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x0000016A2272D1F0>, 'r': <Response [404]>, 'now_url': 'http://127.0.0.1:2379/v2/keys?recursive=true'}
+  File "C:\Program Files\Python38\lib\json\__init__.py", line 357, in loads
+    locals={'s': '404 page not found\n', 'cls': None, 'object_hook': None, 'parse_float': None, 'parse_int': None, 'parse_constant': None, 'object_pairs_hook': None, 'kw': {}}
+  File "C:\Program Files\Python38\lib\json\decoder.py", line 340, in decode
+    locals={'self': <json.decoder.JSONDecoder object at 0x0000016A216CA9D0>, 's': '404 page not found\n', '_w': <built-in method match of re.Pattern object at 0x0000016A21CBF630>, 'obj': 404, 'end': 4}
+2021-03-17 10:16:56,437 - ServiceFinder - ERROR : on_traceback, type:<class 'json.decoder.JSONDecodeError'>, value:Extra data: line 1 column 5 (char 4), traceback:<class 'json.decoder.JSONDecodeError'>
+Extra data: line 1 column 5 (char 4)
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 311, in _init_info
+    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x0000016A2272D1F0>, 'r': <Response [404]>, 'now_url': 'http://127.0.0.1:2379/v2/keys?recursive=true'}
+  File "C:\Program Files\Python38\lib\json\__init__.py", line 357, in loads
+    locals={'s': '404 page not found\n', 'cls': None, 'object_hook': None, 'parse_float': None, 'parse_int': None, 'parse_constant': None, 'object_pairs_hook': None, 'kw': {}}
+  File "C:\Program Files\Python38\lib\json\decoder.py", line 340, in decode
+    locals={'self': <json.decoder.JSONDecoder object at 0x0000016A216CA9D0>, 's': '404 page not found\n', '_w': <built-in method match of re.Pattern object at 0x0000016A21CBF630>, 'obj': 404, 'end': 4}
+2021-03-17 10:16:56,438 - ServiceFinder - ERROR : on_traceback, type:<class 'json.decoder.JSONDecodeError'>, value:Extra data: line 1 column 5 (char 4), traceback:<class 'json.decoder.JSONDecodeError'>
+Extra data: line 1 column 5 (char 4)
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 311, in _init_info
+    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x0000016A2272D1F0>, 'r': <Response [404]>, 'now_url': 'http://127.0.0.1:2379/v2/keys?recursive=true'}
+  File "C:\Program Files\Python38\lib\json\__init__.py", line 357, in loads
+    locals={'s': '404 page not found\n', 'cls': None, 'object_hook': None, 'parse_float': None, 'parse_int': None, 'parse_constant': None, 'object_pairs_hook': None, 'kw': {}}
+  File "C:\Program Files\Python38\lib\json\decoder.py", line 340, in decode
+    locals={'self': <json.decoder.JSONDecoder object at 0x0000016A216CA9D0>, 's': '404 page not found\n', '_w': <built-in method match of re.Pattern object at 0x0000016A21CBF630>, 'obj': 404, 'end': 4}
+2021-03-17 10:16:56,439 - ServiceFinder - ERROR : on_traceback, type:<class 'json.decoder.JSONDecodeError'>, value:Extra data: line 1 column 5 (char 4), traceback:<class 'json.decoder.JSONDecodeError'>
+Extra data: line 1 column 5 (char 4)
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 311, in _init_info
+    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x0000016A2272D1F0>, 'r': <Response [404]>, 'now_url': 'http://127.0.0.1:2379/v2/keys?recursive=true'}
+  File "C:\Program Files\Python38\lib\json\__init__.py", line 357, in loads
+    locals={'s': '404 page not found\n', 'cls': None, 'object_hook': None, 'parse_float': None, 'parse_int': None, 'parse_constant': None, 'object_pairs_hook': None, 'kw': {}}
+  File "C:\Program Files\Python38\lib\json\decoder.py", line 340, in decode
+    locals={'self': <json.decoder.JSONDecoder object at 0x0000016A216CA9D0>, 's': '404 page not found\n', '_w': <built-in method match of re.Pattern object at 0x0000016A21CBF630>, 'obj': 404, 'end': 4}
+2021-03-17 10:16:56,440 - ServiceFinder - ERROR : on_traceback, type:<class 'json.decoder.JSONDecodeError'>, value:Extra data: line 1 column 5 (char 4), traceback:<class 'json.decoder.JSONDecodeError'>
+Extra data: line 1 column 5 (char 4)
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 311, in _init_info
+    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x0000016A2272D1F0>, 'r': <Response [404]>, 'now_url': 'http://127.0.0.1:2379/v2/keys?recursive=true'}
+  File "C:\Program Files\Python38\lib\json\__init__.py", line 357, in loads
+    locals={'s': '404 page not found\n', 'cls': None, 'object_hook': None, 'parse_float': None, 'parse_int': None, 'parse_constant': None, 'object_pairs_hook': None, 'kw': {}}
+  File "C:\Program Files\Python38\lib\json\decoder.py", line 340, in decode
+    locals={'self': <json.decoder.JSONDecoder object at 0x0000016A216CA9D0>, 's': '404 page not found\n', '_w': <built-in method match of re.Pattern object at 0x0000016A21CBF630>, 'obj': 404, 'end': 4}
+2021-03-17 10:16:56,442 - ServiceFinder - ERROR : on_traceback, type:<class 'json.decoder.JSONDecodeError'>, value:Extra data: line 1 column 5 (char 4), traceback:<class 'json.decoder.JSONDecodeError'>
+Extra data: line 1 column 5 (char 4)
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 311, in _init_info
+    locals={'self': <core.EtcdSupport.ServiceFinder object at 0x0000016A2272D1F0>, 'r': <Response [404]>, 'now_url': 'http://127.0.0.1:2379/v2/keys?recursive=true'}
+  File "C:\Program Files\Python38\lib\json\__init__.py", line 357, in loads
+    locals={'s': '404 page not found\n', 'cls': None, 'object_hook': None, 'parse_float': None, 'parse_int': None, 'parse_constant': None, 'object_pairs_hook': None, 'kw': {}}
+  File "C:\Program Files\Python38\lib\json\decoder.py", line 340, in decode
+    locals={'self': <json.decoder.JSONDecoder object at 0x0000016A216CA9D0>, 's': '404 page not found\n', '_w': <built-in method match of re.Pattern object at 0x0000016A21CBF630>, 'obj': 404, 'end': 4}
+2021-03-17 10:16:56,442 - TcpServer - ERROR : on_traceback, type:<class 'asyncio.exceptions.CancelledError'>, value:, traceback:<class 'asyncio.exceptions.CancelledError'>
 
-2021-03-16 18:00:44,802 - ServiceRegister - ERROR : [EtcdSupport.py:185]: refresh service: BattleAllocatorStub error, {"errorCode":100,"message":"Key not found","cause":"/services/BattleAllocatorStub/127.0.0.1|8889","index":177}
+  File "D:/Documents/github/realtime-server/pycharm2020.1.3/script/TcpServer.py", line 164, in start_server_task
+    locals={'self': <__main__.TcpServer object at 0x0000016A215A8DC0>, '_ip': '127.0.0.1', '_port': 8889, 'server': <Server sockets=()>, 'addr': ('127.0.0.1', 8889)}
+  File "C:\Program Files\Python38\lib\asyncio\base_events.py", line 366, in serve_forever
+    locals={'self': <Server sockets=()>, }
+2021-03-17 10:18:39,301 - ServiceNode - INFO : [EtcdSupport.py:474]: we have create ServiceRegister, wait 5 seconds
+2021-03-17 10:18:39,302 - ServiceNode - INFO : [EtcdSupport.py:477]: we have create ServiceFinder
+2021-03-17 10:18:39,313 - ServiceRegister - ERROR : [EtcdSupport.py:155]: regist service : BattleAllocatorStub error
+2021-03-17 10:18:39,313 - ServiceRegister - ERROR : on_traceback, type:<class 'json.decoder.JSONDecodeError'>, value:Extra data: line 1 column 5 (char 4), traceback:<class 'json.decoder.JSONDecodeError'>
+Extra data: line 1 column 5 (char 4)
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 145, in _do_regist
+    locals={'self': <core.EtcdSupport.ServiceRegister object at 0x0000018887B4E4F0>, 'service_name': 'BattleAllocatorStub', 'data': 'ttl=180', 'now_url': 'http://127.0.0.1:2379/v2/keys/services/BattleAllocatorStub/127.0.0.1|8889', 'r': <Response [404]>}
+  File "C:\Program Files\Python38\lib\json\__init__.py", line 357, in loads
+    locals={'s': '404 page not found\n', 'cls': None, 'object_hook': None, 'parse_float': None, 'parse_int': None, 'parse_constant': None, 'object_pairs_hook': None, 'kw': {}}
+  File "C:\Program Files\Python38\lib\json\decoder.py", line 340, in decode
+    locals={'self': <json.decoder.JSONDecoder object at 0x0000018886718E80>, 's': '404 page not found\n', '_w': <built-in method match of re.Pattern object at 0x00000188865D2F30>, 'obj': 404, 'end': 4}
+2021-03-17 10:18:39,318 - ServiceRegister - ERROR : [EtcdSupport.py:155]: regist service : BattleAllocatorStub error
+2021-03-17 10:18:39,321 - ServiceRegister - ERROR : on_traceback, type:<class 'json.decoder.JSONDecodeError'>, value:Extra data: line 1 column 5 (char 4), traceback:<class 'json.decoder.JSONDecodeError'>
+Extra data: line 1 column 5 (char 4)
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 145, in _do_regist
+    locals={'self': <core.EtcdSupport.ServiceRegister object at 0x0000018887B4E4F0>, 'service_name': 'BattleAllocatorStub', 'data': 'ttl=180', 'now_url': 'http://127.0.0.1:2379/v2/keys/services/BattleAllocatorStub/127.0.0.1|8889', 'r': <Response [404]>}
+  File "C:\Program Files\Python38\lib\json\__init__.py", line 357, in loads
+    locals={'s': '404 page not found\n', 'cls': None, 'object_hook': None, 'parse_float': None, 'parse_int': None, 'parse_constant': None, 'object_pairs_hook': None, 'kw': {}}
+  File "C:\Program Files\Python38\lib\json\decoder.py", line 340, in decode
+    locals={'self': <json.decoder.JSONDecoder object at 0x0000018886718E80>, 's': '404 page not found\n', '_w': <built-in method match of re.Pattern object at 0x00000188865D2F30>, 'obj': 404, 'end': 4}
+2021-03-17 10:18:39,324 - ServiceRegister - ERROR : [EtcdSupport.py:155]: regist service : BattleAllocatorStub error
+2021-03-17 10:18:39,326 - ServiceRegister - ERROR : on_traceback, type:<class 'json.decoder.JSONDecodeError'>, value:Extra data: line 1 column 5 (char 4), traceback:<class 'json.decoder.JSONDecodeError'>
+Extra data: line 1 column 5 (char 4)
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 145, in _do_regist
+    locals={'self': <core.EtcdSupport.ServiceRegister object at 0x0000018887B4E4F0>, 'service_name': 'BattleAllocatorStub', 'data': 'ttl=180', 'now_url': 'http://127.0.0.1:2379/v2/keys/services/BattleAllocatorStub/127.0.0.1|8889', 'r': <Response [404]>}
+  File "C:\Program Files\Python38\lib\json\__init__.py", line 357, in loads
+    locals={'s': '404 page not found\n', 'cls': None, 'object_hook': None, 'parse_float': None, 'parse_int': None, 'parse_constant': None, 'object_pairs_hook': None, 'kw': {}}
+  File "C:\Program Files\Python38\lib\json\decoder.py", line 340, in decode
+    locals={'self': <json.decoder.JSONDecoder object at 0x0000018886718E80>, 's': '404 page not found\n', '_w': <built-in method match of re.Pattern object at 0x00000188865D2F30>, 'obj': 404, 'end': 4}
+2021-03-17 10:18:39,330 - ServiceRegister - ERROR : [EtcdSupport.py:155]: regist service : BattleAllocatorStub error
+2021-03-17 10:18:39,330 - ServiceRegister - ERROR : on_traceback, type:<class 'json.decoder.JSONDecodeError'>, value:Extra data: line 1 column 5 (char 4), traceback:<class 'json.decoder.JSONDecodeError'>
+Extra data: line 1 column 5 (char 4)
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 145, in _do_regist
+    locals={'self': <core.EtcdSupport.ServiceRegister object at 0x0000018887B4E4F0>, 'service_name': 'BattleAllocatorStub', 'data': 'ttl=180', 'now_url': 'http://127.0.0.1:2379/v2/keys/services/BattleAllocatorStub/127.0.0.1|8889', 'r': <Response [404]>}
+  File "C:\Program Files\Python38\lib\json\__init__.py", line 357, in loads
+    locals={'s': '404 page not found\n', 'cls': None, 'object_hook': None, 'parse_float': None, 'parse_int': None, 'parse_constant': None, 'object_pairs_hook': None, 'kw': {}}
+  File "C:\Program Files\Python38\lib\json\decoder.py", line 340, in decode
+    locals={'self': <json.decoder.JSONDecoder object at 0x0000018886718E80>, 's': '404 page not found\n', '_w': <built-in method match of re.Pattern object at 0x00000188865D2F30>, 'obj': 404, 'end': 4}
+2021-03-17 10:18:39,335 - ServiceRegister - ERROR : [EtcdSupport.py:155]: regist service : BattleAllocatorStub error
+2021-03-17 10:18:39,335 - ServiceRegister - ERROR : on_traceback, type:<class 'json.decoder.JSONDecodeError'>, value:Extra data: line 1 column 5 (char 4), traceback:<class 'json.decoder.JSONDecodeError'>
+Extra data: line 1 column 5 (char 4)
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 145, in _do_regist
+    locals={'self': <core.EtcdSupport.ServiceRegister object at 0x0000018887B4E4F0>, 'service_name': 'BattleAllocatorStub', 'data': 'ttl=180', 'now_url': 'http://127.0.0.1:2379/v2/keys/services/BattleAllocatorStub/127.0.0.1|8889', 'r': <Response [404]>}
+  File "C:\Program Files\Python38\lib\json\__init__.py", line 357, in loads
+    locals={'s': '404 page not found\n', 'cls': None, 'object_hook': None, 'parse_float': None, 'parse_int': None, 'parse_constant': None, 'object_pairs_hook': None, 'kw': {}}
+  File "C:\Program Files\Python38\lib\json\decoder.py", line 340, in decode
+    locals={'self': <json.decoder.JSONDecoder object at 0x0000018886718E80>, 's': '404 page not found\n', '_w': <built-in method match of re.Pattern object at 0x00000188865D2F30>, 'obj': 404, 'end': 4}
+2021-03-17 10:18:39,341 - ServiceRegister - ERROR : [EtcdSupport.py:155]: regist service : BattleAllocatorStub error
+2021-03-17 10:18:39,341 - ServiceRegister - ERROR : on_traceback, type:<class 'json.decoder.JSONDecodeError'>, value:Extra data: line 1 column 5 (char 4), traceback:<class 'json.decoder.JSONDecodeError'>
+Extra data: line 1 column 5 (char 4)
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 145, in _do_regist
+    locals={'self': <core.EtcdSupport.ServiceRegister object at 0x0000018887B4E4F0>, 'service_name': 'BattleAllocatorStub', 'data': 'ttl=180', 'now_url': 'http://127.0.0.1:2379/v2/keys/services/BattleAllocatorStub/127.0.0.1|8889', 'r': <Response [404]>}
+  File "C:\Program Files\Python38\lib\json\__init__.py", line 357, in loads
+    locals={'s': '404 page not found\n', 'cls': None, 'object_hook': None, 'parse_float': None, 'parse_int': None, 'parse_constant': None, 'object_pairs_hook': None, 'kw': {}}
+  File "C:\Program Files\Python38\lib\json\decoder.py", line 340, in decode
+    locals={'self': <json.decoder.JSONDecoder object at 0x0000018886718E80>, 's': '404 page not found\n', '_w': <built-in method match of re.Pattern object at 0x00000188865D2F30>, 'obj': 404, 'end': 4}
+2021-03-17 10:18:39,346 - ServiceRegister - ERROR : [EtcdSupport.py:155]: regist service : BattleAllocatorStub error
+2021-03-17 10:18:39,347 - ServiceRegister - ERROR : on_traceback, type:<class 'json.decoder.JSONDecodeError'>, value:Extra data: line 1 column 5 (char 4), traceback:<class 'json.decoder.JSONDecodeError'>
+Extra data: line 1 column 5 (char 4)
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 145, in _do_regist
+    locals={'self': <core.EtcdSupport.ServiceRegister object at 0x0000018887B4E4F0>, 'service_name': 'BattleAllocatorStub', 'data': 'ttl=180', 'now_url': 'http://127.0.0.1:2379/v2/keys/services/BattleAllocatorStub/127.0.0.1|8889', 'r': <Response [404]>}
+  File "C:\Program Files\Python38\lib\json\__init__.py", line 357, in loads
+    locals={'s': '404 page not found\n', 'cls': None, 'object_hook': None, 'parse_float': None, 'parse_int': None, 'parse_constant': None, 'object_pairs_hook': None, 'kw': {}}
+  File "C:\Program Files\Python38\lib\json\decoder.py", line 340, in decode
+    locals={'self': <json.decoder.JSONDecoder object at 0x0000018886718E80>, 's': '404 page not found\n', '_w': <built-in method match of re.Pattern object at 0x00000188865D2F30>, 'obj': 404, 'end': 4}
+2021-03-17 10:18:39,352 - ServiceRegister - ERROR : [EtcdSupport.py:155]: regist service : BattleAllocatorStub error
+2021-03-17 10:18:39,352 - ServiceRegister - ERROR : on_traceback, type:<class 'json.decoder.JSONDecodeError'>, value:Extra data: line 1 column 5 (char 4), traceback:<class 'json.decoder.JSONDecodeError'>
+Extra data: line 1 column 5 (char 4)
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 145, in _do_regist
+    locals={'self': <core.EtcdSupport.ServiceRegister object at 0x0000018887B4E4F0>, 'service_name': 'BattleAllocatorStub', 'data': 'ttl=180', 'now_url': 'http://127.0.0.1:2379/v2/keys/services/BattleAllocatorStub/127.0.0.1|8889', 'r': <Response [404]>}
+  File "C:\Program Files\Python38\lib\json\__init__.py", line 357, in loads
+    locals={'s': '404 page not found\n', 'cls': None, 'object_hook': None, 'parse_float': None, 'parse_int': None, 'parse_constant': None, 'object_pairs_hook': None, 'kw': {}}
+  File "C:\Program Files\Python38\lib\json\decoder.py", line 340, in decode
+    locals={'self': <json.decoder.JSONDecoder object at 0x0000018886718E80>, 's': '404 page not found\n', '_w': <built-in method match of re.Pattern object at 0x00000188865D2F30>, 'obj': 404, 'end': 4}
+2021-03-17 10:18:39,357 - ServiceRegister - ERROR : [EtcdSupport.py:155]: regist service : BattleAllocatorStub error
+2021-03-17 10:18:39,358 - ServiceRegister - ERROR : on_traceback, type:<class 'json.decoder.JSONDecodeError'>, value:Extra data: line 1 column 5 (char 4), traceback:<class 'json.decoder.JSONDecodeError'>
+Extra data: line 1 column 5 (char 4)
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 145, in _do_regist
+    locals={'self': <core.EtcdSupport.ServiceRegister object at 0x0000018887B4E4F0>, 'service_name': 'BattleAllocatorStub', 'data': 'ttl=180', 'now_url': 'http://127.0.0.1:2379/v2/keys/services/BattleAllocatorStub/127.0.0.1|8889', 'r': <Response [404]>}
+  File "C:\Program Files\Python38\lib\json\__init__.py", line 357, in loads
+    locals={'s': '404 page not found\n', 'cls': None, 'object_hook': None, 'parse_float': None, 'parse_int': None, 'parse_constant': None, 'object_pairs_hook': None, 'kw': {}}
+  File "C:\Program Files\Python38\lib\json\decoder.py", line 340, in decode
+    locals={'self': <json.decoder.JSONDecoder object at 0x0000018886718E80>, 's': '404 page not found\n', '_w': <built-in method match of re.Pattern object at 0x00000188865D2F30>, 'obj': 404, 'end': 4}
+2021-03-17 10:18:39,363 - ServiceRegister - ERROR : [EtcdSupport.py:155]: regist service : BattleAllocatorStub error
+2021-03-17 10:18:39,363 - ServiceRegister - ERROR : on_traceback, type:<class 'json.decoder.JSONDecodeError'>, value:Extra data: line 1 column 5 (char 4), traceback:<class 'json.decoder.JSONDecodeError'>
+Extra data: line 1 column 5 (char 4)
+  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py", line 145, in _do_regist
+    locals={'self': <core.EtcdSupport.ServiceRegister object at 0x0000018887B4E4F0>, 'service_name': 'BattleAllocatorStub', 'data': 'ttl=180', 'now_url': 'http://127.0.0.1:2379/v2/keys/services/BattleAllocatorStub/127.0.0.1|8889', 'r': <Response [404]>}
+  File "C:\Program Files\Python38\lib\json\__init__.py", line 357, in loads
+    locals={'s': '404 page not found\n', 'cls': None, 'object_hook': None, 'parse_float': None, 'parse_int': None, 'parse_constant': None, 'object_pairs_hook': None, 'kw': {}}
+  File "C:\Program Files\Python38\lib\json\decoder.py", line 340, in decode
+    locals={'self': <json.decoder.JSONDecoder object at 0x0000018886718E80>, 's': '404 page not found\n', '_w': <built-in method match of re.Pattern object at 0x00000188865D2F30>, 'obj': 404, 'end': 4}
+2021-03-17 10:18:39,365 - ServiceRegister - ERROR : [EtcdSupport.py:167]: regist service BattleAllocatorStub fail
+2021-03-17 10:18:43,313 - SingletonEntityManager - DEBUG : [SingletonEntityManager.py:118]: _register_relevant_centers_cb, status:good
+2021-03-17 10:18:43,316 - ServerEntity.BattleAllocatorStub - INFO : [ServerEntity.py:21]: __init__ create entity BattleAllocatorStub with id 60516703fe754e3654dc4b0c mem_id=1685904845120
+2021-03-17 10:18:43,319 - server.EntityManager - INFO : [EntityManager.py:127]: addentity  entity id  60516703fe754e3654dc4b0c 
+2021-03-17 10:18:43,321 - SingletonEntityManager - INFO : [SingletonEntityManager.py:135]: BattleAllocatorStub connected to center
+2021-03-17 10:18:43,323 - SingletonEntityManager - DEBUG : [SingletonEntityManager.py:137]: _register_stubs_cb, status:good
+2021-03-17 10:18:50,610 - ServerEntity.BattleAllocatorStub - INFO : [Stub.py:56]: Stub cannot connect to BattleAllocatorCenter, try again after 1 sec... (1)
+2021-03-17 10:19:07,043 - ServerEntity.BattleAllocatorStub - INFO : [Stub.py:56]: Stub cannot connect to BattleAllocatorCenter, try again after 1 sec... (2)
+2021-03-17 10:30:58,088 - ServiceNode - INFO : [EtcdSupport.py:474]: we have create ServiceRegister, wait 5 seconds
+2021-03-17 10:30:58,090 - ServiceNode - INFO : [EtcdSupport.py:477]: we have create ServiceFinder
+2021-03-17 10:30:58,094 - ServiceRegister - INFO : [EtcdSupport.py:147]: regist service : BattleAllocatorStub success, {"action":"set","node":{"key":"/services/BattleAllocatorStub/127.0.0.1|8889","value":"","expiration":"2021-03-17T02:33:58.0933572Z","ttl":180,"modifiedIndex":4,"createdIndex":4}}
 
-2021-03-16 18:00:44,804 - ServiceRegister - ERROR : [EtcdSupport.py:185]: refresh service: BattleAllocatorStub error, {"errorCode":100,"message":"Key not found","cause":"/services/BattleAllocatorStub/127.0.0.1|8889","index":177}
-
-2021-03-16 18:00:44,806 - ServiceRegister - ERROR : [EtcdSupport.py:185]: refresh service: BattleAllocatorStub error, {"errorCode":100,"message":"Key not found","cause":"/services/BattleAllocatorStub/127.0.0.1|8889","index":177}
-
-2021-03-16 18:01:46,789 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 175 -> 176
-2021-03-16 18:01:52,777 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 175 -> 176
-2021-03-16 18:01:54,771 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 175 -> 176
-2021-03-16 18:07:31,720 - ServiceNode - INFO : [EtcdSupport.py:474]: we have create ServiceRegister, wait 5 seconds
-2021-03-16 18:07:31,722 - ServiceNode - INFO : [EtcdSupport.py:477]: we have create ServiceFinder
-2021-03-16 18:07:31,727 - ServiceRegister - INFO : [EtcdSupport.py:147]: regist service : BattleAllocatorCenter success, {"action":"set","node":{"key":"/services/BattleAllocatorCenter/127.0.0.1|8888","value":"","expiration":"2021-03-16T10:10:31.7258169Z","ttl":180,"modifiedIndex":180,"createdIndex":180}}
-
-2021-03-16 18:07:35,277 - ServiceNode - INFO : [EtcdSupport.py:474]: we have create ServiceRegister, wait 5 seconds
-2021-03-16 18:07:35,278 - ServiceNode - INFO : [EtcdSupport.py:477]: we have create ServiceFinder
-2021-03-16 18:07:35,293 - ServiceRegister - INFO : [EtcdSupport.py:147]: regist service : BattleAllocatorStub success, {"action":"set","node":{"key":"/services/BattleAllocatorStub/127.0.0.1|8889","value":"","expiration":"2021-03-16T10:10:35.2924086Z","ttl":180,"modifiedIndex":181,"createdIndex":181}}
-
-2021-03-16 18:07:35,731 - ServerEntity.BattleAllocatorCenter - INFO : [ServerEntity.py:21]: __init__ create entity BattleAllocatorCenter with id 60508367fe754e4130da5d0b mem_id=1719637151504
-2021-03-16 18:07:35,732 - server.EntityManager - INFO : [EntityManager.py:127]: addentity  entity id  60508367fe754e4130da5d0b 
-2021-03-16 18:07:35,733 - SingletonEntityManager - DEBUG : [SingletonEntityManager.py:118]: _register_relevant_centers_cb, status:good
-2021-03-16 18:07:35,734 - SingletonEntityManager - DEBUG : [SingletonEntityManager.py:137]: _register_stubs_cb, status:good
-2021-03-16 18:07:36,736 - ServiceFinder - INFO : [EtcdSupport.py:281]: add service node info--> BattleAllocatorCenter: ('127.0.0.1', 8888)
-2021-03-16 18:07:36,738 - ServiceFinder - INFO : [EtcdSupport.py:281]: add service node info--> BattleAllocatorStub: ('127.0.0.1', 8889)
-2021-03-16 18:07:36,739 - ServiceFinder - INFO : [EtcdSupport.py:235]: init service info from etcd success, will going to watch, at etcd index -> 181
-2021-03-16 18:07:38,189 - ServiceNode - INFO : [EtcdSupport.py:474]: we have create ServiceRegister, wait 5 seconds
-2021-03-16 18:07:38,190 - ServiceNode - INFO : [EtcdSupport.py:477]: we have create ServiceFinder
-2021-03-16 18:07:38,204 - ServiceFinder - INFO : [EtcdSupport.py:369]: recv watch set service node info--> BattleAllocatorStub: ('127.0.0.1', 9000) - [182]
-2021-03-16 18:07:38,205 - ServiceRegister - INFO : [EtcdSupport.py:147]: regist service : BattleAllocatorStub success, {"action":"set","node":{"key":"/services/BattleAllocatorStub/127.0.0.1|9000","value":"","expiration":"2021-03-16T10:10:38.2036231Z","ttl":180,"modifiedIndex":182,"createdIndex":182}}
-
-2021-03-16 18:07:39,281 - SingletonEntityManager - DEBUG : [SingletonEntityManager.py:118]: _register_relevant_centers_cb, status:good
-2021-03-16 18:07:39,283 - ServerEntity.BattleAllocatorStub - INFO : [ServerEntity.py:21]: __init__ create entity BattleAllocatorStub with id 6050836bfe754e42b821963f mem_id=2024048812672
-2021-03-16 18:07:39,284 - server.EntityManager - INFO : [EntityManager.py:127]: addentity  entity id  6050836bfe754e42b821963f 
-2021-03-16 18:07:39,286 - SingletonEntityManager - INFO : [SingletonEntityManager.py:135]: BattleAllocatorStub connected to center
-2021-03-16 18:07:39,287 - SingletonEntityManager - DEBUG : [SingletonEntityManager.py:137]: _register_stubs_cb, status:good
-2021-03-16 18:07:40,275 - ServiceFinder - INFO : [EtcdSupport.py:281]: add service node info--> BattleAllocatorCenter: ('127.0.0.1', 8888)
-2021-03-16 18:07:40,276 - ServiceFinder - INFO : [EtcdSupport.py:281]: add service node info--> BattleAllocatorStub: ('127.0.0.1', 8889)
-2021-03-16 18:07:40,277 - ServiceFinder - INFO : [EtcdSupport.py:281]: add service node info--> BattleAllocatorStub: ('127.0.0.1', 9000)
-2021-03-16 18:07:40,278 - ServiceFinder - INFO : [EtcdSupport.py:235]: init service info from etcd success, will going to watch, at etcd index -> 182
-2021-03-16 18:07:40,298 - ServerEntity.BattleAllocatorCenter - INFO : [ServerEntity.py:21]: __init__ create entity BattleAllocatorCenter with id 6050836cfe754e4130da5d0c mem_id=1719637514896
-2021-03-16 18:07:40,298 - ServerEntity.BattleAllocatorCenter - INFO : [ServerEntity.py:21]: __init__ create entity BattleAllocatorCenter with id 6050836cfe754e4130da5d0c mem_id=1719637514896
-2021-03-16 18:07:40,300 - server.EntityManager - INFO : [EntityManager.py:127]: addentity  entity id  6050836cfe754e4130da5d0c 
-2021-03-16 18:07:42,207 - SingletonEntityManager - DEBUG : [SingletonEntityManager.py:118]: _register_relevant_centers_cb, status:good
-2021-03-16 18:07:42,209 - ServerEntity.BattleAllocatorStub - INFO : [ServerEntity.py:21]: __init__ create entity BattleAllocatorStub with id 6050836efe754e2a94bc5057 mem_id=2372361773696
-2021-03-16 18:07:42,210 - server.EntityManager - INFO : [EntityManager.py:127]: addentity  entity id  6050836efe754e2a94bc5057 
-2021-03-16 18:07:42,211 - SingletonEntityManager - INFO : [SingletonEntityManager.py:135]: BattleAllocatorStub connected to center
-2021-03-16 18:07:42,212 - SingletonEntityManager - DEBUG : [SingletonEntityManager.py:137]: _register_stubs_cb, status:good
-2021-03-16 18:07:43,200 - ServiceFinder - INFO : [EtcdSupport.py:281]: add service node info--> BattleAllocatorCenter: ('127.0.0.1', 8888)
-2021-03-16 18:07:43,201 - ServiceFinder - INFO : [EtcdSupport.py:281]: add service node info--> BattleAllocatorStub: ('127.0.0.1', 8889)
-2021-03-16 18:07:43,202 - ServiceFinder - INFO : [EtcdSupport.py:281]: add service node info--> BattleAllocatorStub: ('127.0.0.1', 9000)
-2021-03-16 18:07:43,203 - ServiceFinder - INFO : [EtcdSupport.py:235]: init service info from etcd success, will going to watch, at etcd index -> 182
-2021-03-16 18:07:43,224 - ServerEntity.BattleAllocatorCenter - INFO : [ServerEntity.py:21]: __init__ create entity BattleAllocatorCenter with id 6050836ffe754e4130da5d0d mem_id=1719637515856
-2021-03-16 18:07:43,224 - ServerEntity.BattleAllocatorCenter - INFO : [ServerEntity.py:21]: __init__ create entity BattleAllocatorCenter with id 6050836ffe754e4130da5d0d mem_id=1719637515856
-2021-03-16 18:07:43,224 - ServerEntity.BattleAllocatorCenter - INFO : [ServerEntity.py:21]: __init__ create entity BattleAllocatorCenter with id 6050836ffe754e4130da5d0d mem_id=1719637515856
-2021-03-16 18:07:43,225 - server.EntityManager - INFO : [EntityManager.py:127]: addentity  entity id  6050836ffe754e4130da5d0d 
-2021-03-16 18:08:42,196 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 182 -> 182
-2021-03-16 18:08:47,270 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 182 -> 182
-2021-03-16 18:08:53,195 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 182 -> 182
-2021-03-16 18:09:42,198 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 182 -> 182
-2021-03-16 18:09:53,272 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 182 -> 182
-2021-03-16 18:09:58,202 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 182 -> 182
-2021-03-16 18:10:46,201 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 182 -> 185
-2021-03-16 18:11:03,275 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 182 -> 185
-2021-03-16 18:11:08,204 - ServiceFinder - INFO : [EtcdSupport.py:420]: etcd watch timeout, rest watch index 182 -> 185
+2021-03-17 10:31:02,097 - SingletonEntityManager - DEBUG : [SingletonEntityManager.py:118]: _register_relevant_centers_cb, status:good
+2021-03-17 10:31:02,099 - ServerEntity.BattleAllocatorStub - INFO : [ServerEntity.py:21]: __init__ create entity BattleAllocatorStub with id 605169e6fe754e170851482b mem_id=2637196280640
+2021-03-17 10:31:02,100 - server.EntityManager - INFO : [EntityManager.py:127]: addentity  entity id  605169e6fe754e170851482b 
+2021-03-17 10:31:02,101 - SingletonEntityManager - INFO : [SingletonEntityManager.py:135]: BattleAllocatorStub connected to center
+2021-03-17 10:31:02,102 - SingletonEntityManager - DEBUG : [SingletonEntityManager.py:137]: _register_stubs_cb, status:good
+2021-03-17 10:31:03,088 - ServerEntity.BattleAllocatorStub - INFO : [Stub.py:56]: Stub cannot connect to BattleAllocatorCenter, try again after 1 sec... (1)
+2021-03-17 10:31:03,090 - ServiceFinder - INFO : [EtcdSupport.py:281]: add service node info--> BattleAllocatorStub: ('127.0.0.1', 8889)
+2021-03-17 10:31:03,091 - ServiceFinder - INFO : [EtcdSupport.py:235]: init service info from etcd success, will going to watch, at etcd index -> 4
+2021-03-17 10:31:04,094 - ServerEntity.BattleAllocatorStub - INFO : [Stub.py:56]: Stub cannot connect to BattleAllocatorCenter, try again after 1 sec... (2)
+2021-03-17 10:31:05,096 - ServerEntity.BattleAllocatorStub - INFO : [Stub.py:56]: Stub cannot connect to BattleAllocatorCenter, try again after 1 sec... (3)
+2021-03-17 10:31:06,097 - ServerEntity.BattleAllocatorStub - INFO : [Stub.py:56]: Stub cannot connect to BattleAllocatorCenter, try again after 1 sec... (4)
+2021-03-17 10:31:07,098 - ServerEntity.BattleAllocatorStub - INFO : [Stub.py:56]: Stub cannot connect to BattleAllocatorCenter, try again after 1 sec... (5)
+2021-03-17 10:31:08,104 - ServerEntity.BattleAllocatorStub - INFO : [Stub.py:56]: Stub cannot connect to BattleAllocatorCenter, try again after 1 sec... (6)
+2021-03-17 10:31:09,105 - ServerEntity.BattleAllocatorStub - INFO : [Stub.py:56]: Stub cannot connect to BattleAllocatorCenter, try again after 1 sec... (7)

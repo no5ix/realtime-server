@@ -140,6 +140,7 @@ class ServiceRegister(EtcdProcessor):
                 # if singleton:
                 #     now_url = self._get_url(service_name) + "?prevExist=false"
                 # r = requests.request("PUT", now_url, data=data, headers=_HEADER, timeout=2)
+                print(f"_do_regist: now_url: {now_url}")
                 r = await UtilApi.async_wrap(
                     lambda: requests.request("PUT", now_url, data=data, headers=_HEADER, timeout=2))
                 res = json.loads(r.text)
@@ -307,6 +308,7 @@ class ServiceFinder(EtcdProcessor):
         while self.check_ok():
             try:
                 now_url = self._get_server_info() + _ETCD_KEY_PREFIX + "?recursive=true"
+                print(f"_init_info, now_url: {now_url}")
                 r = await UtilApi.async_wrap(lambda: requests.request("GET", now_url))
                 res = json.loads(r.text)
                 self._fail_time = 0
@@ -345,7 +347,7 @@ class ServiceFinder(EtcdProcessor):
         return service_name, (ip, port)
 
     async def _watch_process_impl(self):
-        print("testttt _watch_process_impl1")
+        print(f"testttt _watch_process_impl1, now_url: {self._get_server_info() + _ETCD_KEY_PREFIX}")
 
         r = await UtilApi.async_wrap(lambda: requests.request("GET", self._get_server_info() + _ETCD_KEY_PREFIX))
         self._etcd_index = int(r.headers["x-etcd-index"])
