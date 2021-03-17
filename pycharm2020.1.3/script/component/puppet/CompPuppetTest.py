@@ -2,6 +2,7 @@
 import asyncio
 
 from common.component.Component import Component
+from component.puppet import test_reload_const
 from core.common.RpcMethodArgs import Dict
 from core.common.RpcSupport import rpc_method, CLIENT_ONLY
 
@@ -37,5 +38,15 @@ class CompPuppetTest(Component):
         # self._cnt -= 1
         print("self._cnt:" + str(self._cnt))
         chat_info.update({'cnt': self._cnt})
+
         self.call_client_comp_method(self.VAR_NAME, 'puppet_chat_from_srv', {'i': chat_info})
+
+    @rpc_method(CLIENT_ONLY)
+    def test_reload(self):
+        self.test_reload_impl()
+
+    def test_reload_impl(self):
+        print("before reload")
+        print(test_reload_const.TEST_CONST_STR)
+        # print("after reload")
 

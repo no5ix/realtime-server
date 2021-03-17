@@ -7,6 +7,7 @@ from client.Puppet import Puppet
 from client.PuppetBindEntity import PuppetBindEntity
 from common import gr
 from core.common import MsgpackSupport
+from core.util import UtilApi
 
 
 async def tcp_echo_client():
@@ -45,7 +46,7 @@ async def tcp_echo_client():
         # _cnt -= 1
         # print(_cnt)
         # await asyncio.sleep(1)
-
+    UtilApi.call_later()
     await _tcp_conn.loop()
     # while True:
     #     data = await reader.read(100)
