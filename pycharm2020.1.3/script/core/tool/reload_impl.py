@@ -31,7 +31,7 @@ def update_module(mod_name, old_content, new):
     ''' 替换new到old '''
     new_content = new.__dict__
     ok = True
-    for attr_name, attr_new_info in new_content.iteritems():
+    for attr_name, attr_new_info in new_content.items():
         if is_in_attr_blacklist(attr_name):
             continue
         attr_old_info = old_content.get(attr_name, None)
@@ -70,7 +70,7 @@ def update_class(old_class, new_class, reload_all):
         type.__delattr__(old_class, name)
 
     ok = True
-    for name, attr in new_class.__dict__.iteritems():
+    for name, attr in new_class.__dict__.items():
         if name not in old_class.__dict__:  # new attribute
             setattr(old_class, name, attr)
             continue
@@ -131,7 +131,7 @@ def update_attr(old_attr, new_attr):
         return True
     elif type(old_attr) == dict and type(new_attr) == dict:
         old_attr.clear()
-        for k, v in new_attr.iteritems():
+        for k, v in new_attr.items():
             old_attr[k] = v
         return True
     elif type(old_attr) == set and type(new_attr) == dict:

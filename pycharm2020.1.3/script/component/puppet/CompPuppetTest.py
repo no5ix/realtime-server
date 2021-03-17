@@ -9,6 +9,8 @@ from core.common.RpcSupport import rpc_method, CLIENT_ONLY
 import random
 import typing
 
+from core.tool import incremental_reload
+
 
 class CompPuppetTest(Component):
 
@@ -39,14 +41,21 @@ class CompPuppetTest(Component):
         print("self._cnt:" + str(self._cnt))
         chat_info.update({'cnt': self._cnt})
 
-        self.call_client_comp_method(self.VAR_NAME, 'puppet_chat_from_srv', {'i': chat_info})
+        # self.call_client_comp_method(self.VAR_NAME, 'puppet_chat_from_srv', {'i': chat_info})
+
+    @rpc_method(CLIENT_ONLY)
+    def make_server_reload(self):
+        print("before make reload")
+        incremental_reload.reload_script()
+        print("fin reload")
+        print("before reload")
+        print(test_reload_const.TEST_CONST_STR)
+        # self.test_reload_impl()
 
     @rpc_method(CLIENT_ONLY)
     def test_reload(self):
         self.test_reload_impl()
 
     def test_reload_impl(self):
-        print("before reload")
+        print("after reload")
         print(test_reload_const.TEST_CONST_STR)
-        # print("after reload")
-

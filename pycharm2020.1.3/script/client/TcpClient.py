@@ -11,7 +11,8 @@ from core.util import UtilApi
 
 
 async def tcp_echo_client():
-    local_server_port_tuple = (8888, 8889, 9000)
+    # local_server_port_tuple = (8888, 8889, 9000)
+    local_server_port_tuple = (8888, )
     port = random.choice(local_server_port_tuple)
     reader, writer = await asyncio.open_connection(
         '127.0.0.1', port)
@@ -46,7 +47,11 @@ async def tcp_echo_client():
         # _cnt -= 1
         # print(_cnt)
         # await asyncio.sleep(1)
-    UtilApi.call_later()
+    UtilApi.call_later(
+        2, lambda: _ppt.CompPuppetTest.make_server_reload())
+
+    UtilApi.call_later(
+        10, lambda: _ppt.CompPuppetTest.test_reload())
     await _tcp_conn.loop()
     # while True:
     #     data = await reader.read(100)

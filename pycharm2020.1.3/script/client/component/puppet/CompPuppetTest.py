@@ -13,12 +13,24 @@ class CompPuppetTest(Component):
         self._cnt = 1000000
 
     def puppet_chat_to_channel(self, chat_info):
+        print("call puppet_chat_to_channel")
         self.call_server_comp_method(
             self.VAR_NAME, 'puppet_chat_to_channel', {'i': chat_info})
 
     def puppet_chat_to_ppt(self, chat_info):
+        print("call puppet_chat_to_ppt")
         self.call_server_comp_method(
             self.VAR_NAME, 'puppet_chat_to_ppt', {'p': chat_info})
+
+    def test_reload(self):
+        print("call test_reload")
+        self.call_server_comp_method(
+            self.VAR_NAME, 'test_reload', {})
+
+    def make_server_reload(self):
+        print("call make server reload")
+        self.call_server_comp_method(
+            self.VAR_NAME, 'make_server_reload', {})
 
     # @rpc_method(CLIENT_STUB, (Dict('i'),))
     # @rpc_method(CLIENT_STUB, Dict('i'))

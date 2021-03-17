@@ -4,7 +4,7 @@
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/script" isTestSource="false" />
     </content>
-    <orderEntry type="jdk" jdkName="Remote Python 3.8.8 (sftp://b@192.168.83.23:22/home/b/test/realtime_server/venv/bin/python3.8)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 3.8" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>

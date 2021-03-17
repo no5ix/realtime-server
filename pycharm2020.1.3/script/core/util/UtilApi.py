@@ -10,8 +10,8 @@ from common import gr
 EV_LOOP = None  # type: typing.Union[None, AbstractEventLoop]
 
 
-
 def async_wrap(func: Callable):
+    global EV_LOOP
     try:
         return EV_LOOP.run_in_executor(None, func)
     except AttributeError:
@@ -22,13 +22,13 @@ def async_wrap(func: Callable):
     #     pass  # 正常情况不可能会发生调用此async_wrap比server启动还要早, 所以直接pass
 
 
-def call_later(delay_second, callback, *args):
+def call_later(delay_second, callback: Callable):
+    global EV_LOOP
     try:
-        global EV_LOOP
-        EV_LOOP.call_later(delay_second, callback, *args)
+        EV_LOOP.call_later(delay_second, callback)
     except AttributeError:
         EV_LOOP = asyncio.get_running_loop()
-        EV_LOOP.call_later(delay_second, callback, *args)
+        EV_LOOP.call_later(delay_second, callback)
 
 
 def get_global_entity_mailbox(entity_unique_name):
