@@ -54,8 +54,8 @@ def update_module(mod_name, old_content, new):
         if not ok:
             return False
 
-    if not getattr(new, '_reload_all', False):
-        new.__dict__.update(old_content)
+    # if not getattr(new, '_reload_all', False):
+    #     new.__dict__.update(old_content)
     return True
 
 
@@ -95,27 +95,28 @@ def update_class(old_class, new_class, reload_all):
 
 def update_func(old_fun, new_fun, update_cell_depth=2):
     old_cell_num = 0
-    if old_fun.func_closure:
-        old_cell_num = len(old_fun.func_closure)
+    if old_fun.__closure__:
+        # old_cell_num = len(old_fun.func_closure)
+        old_cell_num = len(old_fun.__closure__)
     new_cell_num = 0
-    if new_fun.func_closure:
-        new_cell_num = len(new_fun.func_closure)
+    if new_fun.__closure__:
+        new_cell_num = len(new_fun.__closure__)
 
     if old_cell_num != new_cell_num:
         return False
 
-    setattr(old_fun, 'func_code', new_fun.func_code)
-    setattr(old_fun, 'func_defaults', new_fun.func_defaults)
-    setattr(old_fun, 'func_doc', new_fun.func_doc)
-    setattr(old_fun, 'func_dict', new_fun.func_dict)
+    setattr(old_fun, '__code__', new_fun.__code__)
+    setattr(old_fun, '__defaults__', new_fun.__defaults__)
+    setattr(old_fun, '__doc__', new_fun.__doc__)
+    setattr(old_fun, '__dict__', new_fun.__dict__)
 
     if not (update_cell_depth and old_cell_num):
         return True
 
-    for index, cell in enumerate(old_fun.func_closure):
+    for index, cell in enumerate(old_fun.__closure__):
         ok = True
         if inspect.isfunction(cell.cell_contents):
-            ok = update_func(cell.cell_contents, new_fun.func_closure[index].cell_contents, update_cell_depth - 1)
+            ok = update_func(cell.cell_contents, new_fun.__closure__[index].cell_contents, update_cell_depth - 1)
 
         if not ok:
             return False

@@ -45,11 +45,11 @@ class CompPuppetTest(Component):
 
     @rpc_method(CLIENT_ONLY)
     def make_server_reload(self):
-        print("before make reload")
+        # print("before reload")
+        # print(test_reload_const.TEST_CONST_STR)
+        print("start make reload")
         incremental_reload.reload_script()
-        print("fin reload")
-        print("before reload")
-        print(test_reload_const.TEST_CONST_STR)
+        print("fin make reload")
         # self.test_reload_impl()
 
     @rpc_method(CLIENT_ONLY)
@@ -57,5 +57,5 @@ class CompPuppetTest(Component):
         self.test_reload_impl()
 
     def test_reload_impl(self):
-        print("after reload")
+        print("test_reload_impl")
         print(test_reload_const.TEST_CONST_STR)

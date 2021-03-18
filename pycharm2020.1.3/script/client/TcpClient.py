@@ -47,8 +47,11 @@ async def tcp_echo_client():
         # _cnt -= 1
         # print(_cnt)
         # await asyncio.sleep(1)
+
     UtilApi.call_later(
-        2, lambda: _ppt.CompPuppetTest.make_server_reload())
+        2, lambda: _ppt.CompPuppetTest.test_reload())
+    UtilApi.call_later(
+        8, lambda: _ppt.CompPuppetTest.make_server_reload())
 
     UtilApi.call_later(
         10, lambda: _ppt.CompPuppetTest.test_reload())

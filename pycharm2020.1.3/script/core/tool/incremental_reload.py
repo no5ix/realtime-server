@@ -1,5 +1,6 @@
-# coding=utf-8
 import collections
+import sys
+import os
 
 
 class ReloadRecord(object):
@@ -12,11 +13,14 @@ class ReloadRecord(object):
         super(ReloadRecord, self).__init__()
         self._count = 0
         self._record = collections.defaultdict(float)
+        self.init_record()
 
-    def _generate_diff(self):
-        import os
-        import sys
-        diff_list = []
+    def init_record(self):
+        for name, mtime in self.iter_modules():
+            self._record[name] = mtime
+
+    @staticmethod
+    def iter_modules():
         for name, module in sys.modules.items():
             module_file = getattr(module, '__file__', None)
             if not module_file or not isinstance(module_file, (str, )) or not os.path.isfile(module_file):
@@ -28,6 +32,11 @@ class ReloadRecord(object):
             if module_file.lower().endswith('.pyc') and os.path.isfile(module_file[:-1]):
                 module_file = module_file[:-1]
             mtime = os.path.getmtime(module_file)
+            yield name, mtime
+
+    def _generate_diff(self):
+        diff_list = []
+        for name, mtime in self.iter_modules():
             if self._record[name] < mtime:
                 # have modify
                 self._record[name] = mtime
@@ -40,6 +49,10 @@ class ReloadRecord(object):
 
 
 _reload_record = ReloadRecord()
+
+
+def init_reload_record():
+    _reload_record.init_record()
 
 
 def set_base_to_now():

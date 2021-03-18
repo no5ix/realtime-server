@@ -17,6 +17,7 @@ from core.common import EntityScanner
 from core.common.EntityFactory import EntityFactory
 from core.mobilelog.LogManager import LogManager
 from util.SingletonEntityManager import SingletonEntityManager
+from core.tool import incremental_reload
 
 TCP_SERVER = None
 
@@ -34,6 +35,8 @@ class TcpServer(object):
         self.register_server_entities()
         self.register_battle_entities()
         self.register_component()
+
+        incremental_reload.init_reload_record()
 
     @staticmethod
     def parse_json_conf():

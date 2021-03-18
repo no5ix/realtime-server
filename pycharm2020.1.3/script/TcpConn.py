@@ -40,27 +40,32 @@ class TcpConn(object):
 
     async def _loop(self):
         while True:
-            # self.asyncio_writer
-            _data = await self.asyncio_reader.read(8192)
-            self._recv_data += _data
-            while True:
-                _len_recv_data = len(self._recv_data)
-                if _len_recv_data < HEAD_LEN:
-                    break
-                _body_len, = s_unpack('i', self._recv_data[:HEAD_LEN])
-                _input_data_len = HEAD_LEN + _body_len
-                if _body_len > MAX_BODY_LEN or _body_len < 0:
-                    print("body too big, Close the connection")
-                    self.asyncio_writer.close()
-                    return
-                elif _len_recv_data >= _input_data_len:
-                    _body_data = self._recv_data[HEAD_LEN:_input_data_len]
-                    self._recv_cnt += 1
-                    print("self._recv_cnt:" + str(self._recv_cnt))
-                    self.handle_message(_body_data)
-                    self._recv_data = self._recv_data[_input_data_len:]
-                else:
-                    break
+            try:
+                # self.asyncio_writer
+                _data = await self.asyncio_reader.read(8192)
+                self._recv_data += _data
+                while True:
+                    _len_recv_data = len(self._recv_data)
+                    if _len_recv_data < HEAD_LEN:
+                        break
+                    _body_len, = s_unpack('i', self._recv_data[:HEAD_LEN])
+                    _input_data_len = HEAD_LEN + _body_len
+                    if _body_len > MAX_BODY_LEN or _body_len < 0:
+                        print("body too big, Close the connection")
+                        self.asyncio_writer.close()
+                        return
+                    elif _len_recv_data >= _input_data_len:
+                        _body_data = self._recv_data[HEAD_LEN:_input_data_len]
+                        self._recv_cnt += 1
+                        print("self._recv_cnt:" + str(self._recv_cnt))
+                        self.handle_message(_body_data)
+                        self._recv_data = self._recv_data[_input_data_len:]
+                    else:
+                        break
+            except ConnectionResetError:
+                self.asyncio_writer.close()
+                print("connection is closed by remote client..")
+                break
 
             # message = MsgpackSupport.decode(_data)
             # self.forward(self.asyncio_writer, addr, message)
