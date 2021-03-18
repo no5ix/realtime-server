@@ -1,236 +1,86 @@
-2021-03-18 09:59:52,332 - TcpConn - ERROR : [TcpConn.py:95]: on_traceback, type:<class 'ModuleNotFoundError'>, value:spec not found for the module '__main__', traceback:<class 'ModuleNotFoundError'>
-spec not found for the module '__main__'
-  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\TcpConn.py", line 93, in handle_rpc
-    locals={'self': <TcpConn.TcpConn object at 0x0000013546934FD0>, 'rpc_msg': ('Puppet', 'battle_entity_message', {'m': 'CompPuppetTest.make_server_reload', 'p': {}}), '_entity_type': 'Puppet', '_method_name': 'battle_entity_message', '_parameters': {'m': 'CompPuppetTest.make_server_reload', 'p': {}}, '_method': <bound method rpc_method.<locals>._rpc_method.<locals>.call_rpc_method_Others of <battle_entity.Puppet.Puppet object at 0x0000013546934760>>}
-  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\common\RpcSupport.py", line 271, in call_rpc_method_Others
-    locals={'self': <Puppet:Noname>, 'args': {'m': 'CompPuppetTest.make_server_reload', 'p': {}}, 'call_func': <bound method RpcMethod.call of <core.common.RpcSupport.RpcMethod object at 0x0000013545C05760>>, 'func': <function BattleEntity.battle_entity_message at 0x0000013545D203A0>, 'fun_for_reload': <function BattleEntity.battle_entity_message at 0x0000013545D203A0>}
-  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\common\RpcSupport.py", line 116, in call
-    locals={'self': <core.common.RpcSupport.RpcMethod object at 0x0000013545C05760>, 'entity': <battle_entity.Puppet.Puppet object at 0x0000013546934760>, 'parameters': {'m': 'CompPuppetTest.make_server_reload', 'p': {}}, 'args': ['CompPuppetTest.make_server_reload', {}], 'argtypes': (<core.common.RpcMethodArgs.Str object at 0x0000013545C446D0>, <core.common.RpcMethodArgs.Dict object at 0x0000013545C44760>), 'argtype': <core.common.RpcMethodArgs.Dict object at 0x0000013545C44760>, 'arg': {}}
-  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\BattleEntity.py", line 88, in battle_entity_message
-    locals={'self': <Puppet:Noname>, 'method_name': 'CompPuppetTest.make_server_reload', 'parameters': {}, 'method_list': ['CompPuppetTest', 'make_server_reload'], 'ent': <component.puppet.CompPuppetTest.CompPuppetTest object at 0x00000135469479A0>, 'name': 'make_server_reload', 'method': <bound method rpc_method.<locals>._rpc_method.<locals>.call_rpc_method_Others of <component.puppet.CompPuppetTest.CompPuppetTest object at 0x00000135469479A0>>}
-  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\common\RpcSupport.py", line 271, in call_rpc_method_Others
-    locals={'self': <component.puppet.CompPuppetTest.CompPuppetTest object at 0x00000135469479A0>, 'args': {}, 'call_func': <bound method RpcMethod.call of <core.common.RpcSupport.RpcMethod object at 0x000001354683AFD0>>, 'func': <function CompPuppetTest.make_server_reload at 0x00000135468493A0>, 'fun_for_reload': <function CompPuppetTest.make_server_reload at 0x00000135468493A0>}
-  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\common\RpcSupport.py", line 116, in call
-    locals={'self': <core.common.RpcSupport.RpcMethod object at 0x000001354683AFD0>, 'entity': <component.puppet.CompPuppetTest.CompPuppetTest object at 0x00000135469479A0>, 'parameters': {}, 'args': [], 'argtypes': ()}
-  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\component\puppet\CompPuppetTest.py", line 49, in make_server_reload
-    locals={'self': <component.puppet.CompPuppetTest.CompPuppetTest object at 0x00000135469479A0>, }
-  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\tool\incremental_reload.py", line 60, in reload_script
-    locals={'diff_list': ['_frozen_importlib', '_frozen_importlib_external', 'codecs', 'encodings.aliases', 'encodings', 'encodings.utf_8', '__main__', 'encodings.latin_1', 'abc', 'io', 'stat', '_collections_abc', 'genericpath', 'ntpath', 'os.path', 'os', '_sitebuiltins', '_bootlocale', 'encodings.gbk', 'pywin32_bootstrap', 'types', 'importlib._bootstrap', 'importlib._bootstrap_external', 'warnings', 'importlib', 'importlib.machinery', 'importlib.abc', 'operator', 'keyword', 'heapq', 'reprlib', 'collections', 'functools', 'contextlib', 'importlib.util', 'enum', 'sre_constants', 'sre_parse', 'sre_compile', 'copyreg', 're', 'token', 'tokenize', 'linecache', 'traceback', 'sitecustomize', 'site', '_weakrefset', 'weakref', '_pydevd_bundle', 'opcode', 'dis', '_pydevd_bundle.pydevd_collect_try_except_info', '__future__', 'platform', '_pydevd_bundle.pydevd_vm_type', '_pydev_imps', 'threading', 'collections.abc', 'selectors', 'socket', 'queue', 'xmlrpc', 'struct', 'base64', 'datetime', 'numbers', 'decimal', 'http', 'email', 'ema...
-  File "D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\tool\reload_impl.py", line 160, in reload_module
-    locals={'mod_name': '__main__', 'old_mod_info': <module '__main__' from 'D:/Documents/github/realtime-server/pycharm2020.1.3/script/TcpServer.py'>, 'old_mod_content': {'__name__': '__main__', '__doc__': None, '__package__': None, '__loader__': <_frozen_importlib_external.SourceFileLoader object at 0x00000135449513A0>, '__spec__': None, '__file__': 'D:/Documents/github/realtime-server/pycharm2020.1.3/script/TcpServer.py', '__builtins__': <module 'builtins' (built-in)>, 'asyncio': <module 'asyncio' from 'C:\\Program Files\\Python38\\lib\\asyncio\\__init__.py'>, 'functools': <module 'functools' from 'C:\\Program Files\\Python38\\lib\\functools.py'>, 'json': <module 'json' from 'C:\\Program Files\\Python38\\lib\\json\\__init__.py'>, 'signal': <module 'signal' from 'C:\\Program Files\\Python38\\lib\\signal.py'>, 'platform': <module 'platform' from 'C:\\Program Files\\Python38\\lib\\platform.py'>, 'sys': <module 'sys' (built-in)>, 'random': <built-in method random of Random object at 0x0000013542B2EF20>, 'socket': <module...
-  File "C:\Program Files\Python38\lib\importlib\__init__.py", line 168, in reload
-    locals={'module': <module '__main__' from 'D:/Documents/github/realtime-server/pycharm2020.1.3/script/TcpServer.py'>, 'name': '__main__', 'parent_name': '', 'pkgpath': None, 'target': <module '__main__' from 'D:/Documents/github/realtime-server/pycharm2020.1.3/script/TcpServer.py'>, 'spec': None}
-2021-03-18 09:59:52,337 - ServerEntity.BattleAllocatorCenter - INFO : [ServerEntity.py:21]: __init__ create entity BattleAllocatorCenter with id 6052b418fe754e36d48f5176 mem_id=1328295540768
-2021-03-18 09:59:52,340 - server.EntityManager - INFO : [EntityManager.py:127]: addentity  entity id  6052b418fe754e36d48f5176 
-2021-03-18 09:59:52,342 - SingletonEntityManager - DEBUG : [SingletonEntityManager.py:118]: _register_relevant_centers_cb, status:good
-2021-03-18 09:59:52,345 - SingletonEntityManager - DEBUG : [SingletonEntityManager.py:137]: _register_stubs_cb, status:good
-2021-03-18 09:59:52,355 - ServiceFinder - INFO : [EtcdSupport.py:282]: add service node info--> BattleAllocatorCenter: ('127.0.0.1', 8888)
-2021-03-18 09:59:52,357 - ServiceFinder - INFO : [EtcdSupport.py:236]: init service info from etcd success, will going to watch, at etcd index -> 15
-2021-03-18 10:00:54,349 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 15 -> 16
-2021-03-18 10:01:59,354 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 16 -> 16
-2021-03-18 10:03:03,365 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 16 -> 17
-2021-03-18 10:04:13,370 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 17 -> 17
-2021-03-18 10:05:22,379 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 17 -> 18
-2021-03-18 10:06:27,386 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 18 -> 19
-2021-03-18 10:07:34,381 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 19 -> 19
-2021-03-18 10:08:42,387 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 19 -> 20
-2021-03-18 10:09:52,396 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 20 -> 21
-2021-03-18 10:10:59,403 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 21 -> 21
-2021-03-18 10:11:29,187 - ServiceNode - INFO : [EtcdSupport.py:476]: we have create ServiceRegister, wait 5 seconds
-2021-03-18 10:11:29,187 - ServiceNode - INFO : [EtcdSupport.py:479]: we have create ServiceFinder
-2021-03-18 10:11:29,206 - ServiceRegister - INFO : [EtcdSupport.py:148]: regist service : BattleAllocatorCenter success, {"action":"set","node":{"key":"/services/BattleAllocatorCenter/127.0.0.1|8888","value":"","expiration":"2021-03-18T02:14:29.2022398Z","ttl":180,"modifiedIndex":23,"createdIndex":23},"prevNode":{"key":"/services/BattleAllocatorCenter/127.0.0.1|8888","value":"","expiration":"2021-03-18T02:13:28.4461322Z","ttl":120,"modifiedIndex":22,"createdIndex":22}}
+2021-03-18 14:27:45,257 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 51 -> 51
+2021-03-18 14:28:48,259 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 51 -> 51
+2021-03-18 14:29:54,260 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 51 -> 51
+2021-03-18 14:31:04,262 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 51 -> 51
+2021-03-18 14:32:13,263 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 51 -> 51
+2021-03-18 14:33:18,265 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 51 -> 51
+2021-03-18 14:34:18,266 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 51 -> 51
+2021-03-18 14:35:23,268 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 51 -> 51
+2021-03-18 14:36:25,269 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 51 -> 51
+2021-03-18 14:37:31,270 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 51 -> 51
+2021-03-18 14:38:32,272 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 51 -> 51
+2021-03-18 14:39:41,273 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 51 -> 51
+2021-03-18 14:40:45,275 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 51 -> 51
+2021-03-18 14:41:48,276 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 51 -> 51
+2021-03-18 14:42:58,278 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 51 -> 51
+2021-03-18 14:44:00,280 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 51 -> 51
+2021-03-18 14:45:10,281 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 51 -> 51
+2021-03-18 14:46:16,282 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 51 -> 51
+2021-03-18 14:47:24,285 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 51 -> 51
+2021-03-18 14:48:31,286 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 51 -> 51
+2021-03-18 14:49:41,287 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 51 -> 51
+2021-03-18 14:50:50,289 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 51 -> 51
+2021-03-18 14:51:57,291 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 51 -> 51
+2021-03-18 14:52:43,496 - ServiceNode - INFO : [EtcdSupport.py:476]: we have create ServiceRegister, wait 5 seconds
+2021-03-18 14:52:43,498 - ServiceNode - INFO : [EtcdSupport.py:479]: we have create ServiceFinder
+2021-03-18 14:52:43,511 - ServiceRegister - INFO : [EtcdSupport.py:148]: regist service : BattleAllocatorCenter success, {"action":"set","node":{"key":"/services/BattleAllocatorCenter/127.0.0.1|8888","value":"","expiration":"2021-03-18T06:55:43.5107714Z","ttl":180,"modifiedIndex":52,"createdIndex":52}}
 
-2021-03-18 10:11:33,181 - ServerEntity.BattleAllocatorCenter - INFO : [ServerEntity.py:21]: __init__ create entity BattleAllocatorCenter with id 6052b6d5fe754e0fc835f650 mem_id=1712422644368
-2021-03-18 10:11:33,184 - server.EntityManager - INFO : [EntityManager.py:127]: addentity  entity id  6052b6d5fe754e0fc835f650 
-2021-03-18 10:11:33,187 - SingletonEntityManager - DEBUG : [SingletonEntityManager.py:118]: _register_relevant_centers_cb, status:good
-2021-03-18 10:11:33,189 - SingletonEntityManager - DEBUG : [SingletonEntityManager.py:137]: _register_stubs_cb, status:good
-2021-03-18 10:11:34,195 - ServiceFinder - INFO : [EtcdSupport.py:282]: add service node info--> BattleAllocatorCenter: ('127.0.0.1', 8888)
-2021-03-18 10:11:34,198 - ServiceFinder - INFO : [EtcdSupport.py:236]: init service info from etcd success, will going to watch, at etcd index -> 23
-2021-03-18 10:11:40,219 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 6052b6dcfe754e0fc835f651 mem_id=1712423111936
-2021-03-18 10:11:40,222 - server.EntityManager - INFO : [EntityManager.py:127]: addentity  entity id  6052b6dcfe754e0fc835f651 
-2021-03-18 10:12:33,287 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 6052b711fe754e0fc835f652 mem_id=1712422644464
-2021-03-18 10:12:33,287 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 6052b711fe754e0fc835f652 mem_id=1712422644464
-2021-03-18 10:12:33,290 - server.EntityManager - INFO : [EntityManager.py:127]: addentity  entity id  6052b711fe754e0fc835f652 
-2021-03-18 10:12:37,193 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 23 -> 23
-2021-03-18 10:13:29,392 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 6052b749fe754e0fc835f653 mem_id=1712423986272
-2021-03-18 10:13:29,392 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 6052b749fe754e0fc835f653 mem_id=1712423986272
-2021-03-18 10:13:29,392 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 6052b749fe754e0fc835f653 mem_id=1712423986272
-2021-03-18 10:13:29,395 - server.EntityManager - INFO : [EntityManager.py:127]: addentity  entity id  6052b749fe754e0fc835f653 
-2021-03-18 10:13:42,204 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 23 -> 23
-2021-03-18 10:13:50,716 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 6052b75efe754e0fc835f654 mem_id=1712424021152
-2021-03-18 10:13:50,716 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 6052b75efe754e0fc835f654 mem_id=1712424021152
-2021-03-18 10:13:50,716 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 6052b75efe754e0fc835f654 mem_id=1712424021152
-2021-03-18 10:13:50,716 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 6052b75efe754e0fc835f654 mem_id=1712424021152
-2021-03-18 10:13:50,719 - server.EntityManager - INFO : [EntityManager.py:127]: addentity  entity id  6052b75efe754e0fc835f654 
-2021-03-18 10:14:52,202 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 23 -> 24
-2021-03-18 10:16:00,208 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 24 -> 24
-2021-03-18 10:17:08,921 - ServiceNode - INFO : [EtcdSupport.py:476]: we have create ServiceRegister, wait 5 seconds
-2021-03-18 10:17:08,922 - ServiceNode - INFO : [EtcdSupport.py:479]: we have create ServiceFinder
-2021-03-18 10:17:08,940 - ServiceRegister - INFO : [EtcdSupport.py:148]: regist service : BattleAllocatorCenter success, {"action":"set","node":{"key":"/services/BattleAllocatorCenter/127.0.0.1|8888","value":"","expiration":"2021-03-18T02:20:08.9370157Z","ttl":180,"modifiedIndex":27,"createdIndex":27},"prevNode":{"key":"/services/BattleAllocatorCenter/127.0.0.1|8888","value":"","expiration":"2021-03-18T02:19:45.2428153Z","ttl":157,"modifiedIndex":26,"createdIndex":26}}
+2021-03-18 14:52:47,501 - ServerEntity.BattleAllocatorCenter - INFO : [ServerEntity.py:21]: __init__ create entity BattleAllocatorCenter with id 6052f8bffe754e5278ecb88f mem_id=2478503296544
+2021-03-18 14:52:47,502 - server.EntityManager - INFO : [EntityManager.py:127]: addentity  entity id  6052f8bffe754e5278ecb88f 
+2021-03-18 14:52:47,503 - SingletonEntityManager - DEBUG : [SingletonEntityManager.py:118]: _register_relevant_centers_cb, status:good
+2021-03-18 14:52:47,504 - SingletonEntityManager - DEBUG : [SingletonEntityManager.py:137]: _register_stubs_cb, status:good
+2021-03-18 14:52:47,905 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 6052f8bffe754e5278ecb890 mem_id=2478503295824
+2021-03-18 14:52:47,906 - server.EntityManager - INFO : [EntityManager.py:127]: addentity  entity id  6052f8bffe754e5278ecb890 
+2021-03-18 14:52:48,505 - ServiceFinder - INFO : [EtcdSupport.py:282]: add service node info--> BattleAllocatorCenter: ('127.0.0.1', 8888)
+2021-03-18 14:52:48,506 - ServiceFinder - INFO : [EtcdSupport.py:236]: init service info from etcd success, will going to watch, at etcd index -> 52
+2021-03-18 14:53:31,520 - ServiceNode - INFO : [EtcdSupport.py:476]: we have create ServiceRegister, wait 5 seconds
+2021-03-18 14:53:31,522 - ServiceNode - INFO : [EtcdSupport.py:479]: we have create ServiceFinder
+2021-03-18 14:53:31,527 - ServiceRegister - INFO : [EtcdSupport.py:148]: regist service : BattleAllocatorCenter success, {"action":"set","node":{"key":"/services/BattleAllocatorCenter/127.0.0.1|8888","value":"","expiration":"2021-03-18T06:56:31.5250893Z","ttl":180,"modifiedIndex":53,"createdIndex":53},"prevNode":{"key":"/services/BattleAllocatorCenter/127.0.0.1|8888","value":"","expiration":"2021-03-18T06:55:43.5107714Z","ttl":132,"modifiedIndex":52,"createdIndex":52}}
 
-2021-03-18 10:17:12,555 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 6052b828fe754e042ccb97ee mem_id=3121776708672
-2021-03-18 10:17:12,558 - server.EntityManager - INFO : [EntityManager.py:127]: addentity  entity id  6052b828fe754e042ccb97ee 
-2021-03-18 10:17:12,923 - ServerEntity.BattleAllocatorCenter - INFO : [ServerEntity.py:21]: __init__ create entity BattleAllocatorCenter with id 6052b828fe754e042ccb97ef mem_id=3121777510912
-2021-03-18 10:17:12,926 - server.EntityManager - INFO : [EntityManager.py:127]: addentity  entity id  6052b828fe754e042ccb97ef 
-2021-03-18 10:17:12,929 - SingletonEntityManager - DEBUG : [SingletonEntityManager.py:118]: _register_relevant_centers_cb, status:good
-2021-03-18 10:17:12,931 - SingletonEntityManager - DEBUG : [SingletonEntityManager.py:137]: _register_stubs_cb, status:good
-2021-03-18 10:17:13,922 - ServiceFinder - INFO : [EtcdSupport.py:282]: add service node info--> BattleAllocatorCenter: ('127.0.0.1', 8888)
-2021-03-18 10:17:13,925 - ServiceFinder - INFO : [EtcdSupport.py:236]: init service info from etcd success, will going to watch, at etcd index -> 27
-2021-03-18 10:17:46,147 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 6052b84afe754e042ccb97f0 mem_id=3121777397616
-2021-03-18 10:17:46,147 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 6052b84afe754e042ccb97f0 mem_id=3121777397616
-2021-03-18 10:17:46,150 - server.EntityManager - INFO : [EntityManager.py:127]: addentity  entity id  6052b84afe754e042ccb97f0 
-2021-03-18 10:18:13,930 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 27 -> 27
-2021-03-18 10:19:00,131 - ServiceNode - INFO : [EtcdSupport.py:476]: we have create ServiceRegister, wait 5 seconds
-2021-03-18 10:19:00,131 - ServiceNode - INFO : [EtcdSupport.py:479]: we have create ServiceFinder
-2021-03-18 10:19:00,151 - ServiceRegister - INFO : [EtcdSupport.py:148]: regist service : BattleAllocatorCenter success, {"action":"set","node":{"key":"/services/BattleAllocatorCenter/127.0.0.1|8888","value":"","expiration":"2021-03-18T02:22:00.1473238Z","ttl":180,"modifiedIndex":29,"createdIndex":29},"prevNode":{"key":"/services/BattleAllocatorCenter/127.0.0.1|8888","value":"","expiration":"2021-03-18T02:21:55.9651925Z","ttl":176,"modifiedIndex":28,"createdIndex":28}}
-
-2021-03-18 10:19:04,142 - ServerEntity.BattleAllocatorCenter - INFO : [ServerEntity.py:21]: __init__ create entity BattleAllocatorCenter with id 6052b898fe754e2d548013a3 mem_id=2207962884704
-2021-03-18 10:19:04,145 - server.EntityManager - INFO : [EntityManager.py:127]: addentity  entity id  6052b898fe754e2d548013a3 
-2021-03-18 10:19:04,148 - SingletonEntityManager - DEBUG : [SingletonEntityManager.py:118]: _register_relevant_centers_cb, status:good
-2021-03-18 10:19:04,150 - SingletonEntityManager - DEBUG : [SingletonEntityManager.py:137]: _register_stubs_cb, status:good
-2021-03-18 10:19:05,142 - ServiceFinder - INFO : [EtcdSupport.py:282]: add service node info--> BattleAllocatorCenter: ('127.0.0.1', 8888)
-2021-03-18 10:19:05,145 - ServiceFinder - INFO : [EtcdSupport.py:236]: init service info from etcd success, will going to watch, at etcd index -> 29
-2021-03-18 10:19:05,473 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 6052b899fe754e2d548013a4 mem_id=2207963348224
-2021-03-18 10:19:05,476 - server.EntityManager - INFO : [EntityManager.py:127]: addentity  entity id  6052b899fe754e2d548013a4 
-2021-03-18 10:19:41,182 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 6052b8bdfe754e2d548013a5 mem_id=2207962972464
-2021-03-18 10:19:41,182 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 6052b8bdfe754e2d548013a5 mem_id=2207962972464
-2021-03-18 10:19:41,185 - server.EntityManager - INFO : [EntityManager.py:127]: addentity  entity id  6052b8bdfe754e2d548013a5 
-2021-03-18 10:20:12,873 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 6052b8dcfe754e2d548013a6 mem_id=2207961853712
-2021-03-18 10:20:12,873 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 6052b8dcfe754e2d548013a6 mem_id=2207961853712
-2021-03-18 10:20:12,873 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 6052b8dcfe754e2d548013a6 mem_id=2207961853712
-2021-03-18 10:20:12,876 - server.EntityManager - INFO : [EntityManager.py:127]: addentity  entity id  6052b8dcfe754e2d548013a6 
-2021-03-18 10:20:14,160 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 29 -> 29
-2021-03-18 11:38:22,041 - ServiceNode - INFO : [EtcdSupport.py:476]: we have create ServiceRegister, wait 5 seconds
-2021-03-18 11:38:22,041 - ServiceNode - INFO : [EtcdSupport.py:479]: we have create ServiceFinder
-2021-03-18 11:38:22,061 - ServiceRegister - INFO : [EtcdSupport.py:148]: regist service : BattleAllocatorCenter success, {"action":"set","node":{"key":"/services/BattleAllocatorCenter/127.0.0.1|8888","value":"","expiration":"2021-03-18T03:41:22.0578469Z","ttl":180,"modifiedIndex":31,"createdIndex":31}}
-
-2021-03-18 11:38:26,052 - ServerEntity.BattleAllocatorCenter - INFO : [ServerEntity.py:21]: __init__ create entity BattleAllocatorCenter with id 6052cb32fe754e25605e0220 mem_id=2483901159648
-2021-03-18 11:38:26,055 - server.EntityManager - INFO : [EntityManager.py:127]: addentity  entity id  6052cb32fe754e25605e0220 
-2021-03-18 11:38:26,058 - SingletonEntityManager - DEBUG : [SingletonEntityManager.py:118]: _register_relevant_centers_cb, status:good
-2021-03-18 11:38:26,059 - SingletonEntityManager - DEBUG : [SingletonEntityManager.py:137]: _register_stubs_cb, status:good
-2021-03-18 11:38:27,051 - ServiceFinder - INFO : [EtcdSupport.py:282]: add service node info--> BattleAllocatorCenter: ('127.0.0.1', 8888)
-2021-03-18 11:38:27,054 - ServiceFinder - INFO : [EtcdSupport.py:236]: init service info from etcd success, will going to watch, at etcd index -> 31
-2021-03-18 11:38:46,978 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 6052cb46fe754e25605e0221 mem_id=2483901623648
-2021-03-18 11:38:46,981 - server.EntityManager - INFO : [EntityManager.py:127]: addentity  entity id  6052cb46fe754e25605e0221 
-2021-03-18 11:50:10,195 - ServiceNode - INFO : [EtcdSupport.py:476]: we have create ServiceRegister, wait 5 seconds
-2021-03-18 11:50:10,197 - ServiceNode - INFO : [EtcdSupport.py:479]: we have create ServiceFinder
-2021-03-18 11:50:10,200 - ServiceRegister - INFO : [EtcdSupport.py:148]: regist service : BattleAllocatorCenter success, {"action":"set","node":{"key":"/services/BattleAllocatorCenter/127.0.0.1|8888","value":"","expiration":"2021-03-18T03:53:10.1999474Z","ttl":180,"modifiedIndex":33,"createdIndex":33}}
-
-2021-03-18 11:50:12,626 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 6052cdf4fe754e3d006e4356 mem_id=2155116886912
-2021-03-18 11:50:12,628 - server.EntityManager - INFO : [EntityManager.py:127]: addentity  entity id  6052cdf4fe754e3d006e4356 
-2021-03-18 11:50:14,194 - ServerEntity.BattleAllocatorCenter - INFO : [ServerEntity.py:21]: __init__ create entity BattleAllocatorCenter with id 6052cdf6fe754e3d006e4357 mem_id=2155116940736
-2021-03-18 11:50:14,195 - server.EntityManager - INFO : [EntityManager.py:127]: addentity  entity id  6052cdf6fe754e3d006e4357 
-2021-03-18 11:50:14,196 - SingletonEntityManager - DEBUG : [SingletonEntityManager.py:118]: _register_relevant_centers_cb, status:good
-2021-03-18 11:50:14,197 - SingletonEntityManager - DEBUG : [SingletonEntityManager.py:137]: _register_stubs_cb, status:good
-2021-03-18 11:50:15,206 - ServiceFinder - INFO : [EtcdSupport.py:282]: add service node info--> BattleAllocatorCenter: ('127.0.0.1', 8888)
-2021-03-18 11:50:15,207 - ServiceFinder - INFO : [EtcdSupport.py:236]: init service info from etcd success, will going to watch, at etcd index -> 33
-2021-03-18 11:50:32,392 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 6052ce08fe754e3d006e4358 mem_id=2155116939392
-2021-03-18 11:50:32,392 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 6052ce08fe754e3d006e4358 mem_id=2155116939392
-2021-03-18 11:50:32,393 - server.EntityManager - INFO : [EntityManager.py:127]: addentity  entity id  6052ce08fe754e3d006e4358 
-2021-03-18 11:51:17,575 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 6052ce35fe754e3d006e4359 mem_id=2155117349904
-2021-03-18 11:51:17,575 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 6052ce35fe754e3d006e4359 mem_id=2155117349904
-2021-03-18 11:51:17,575 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 6052ce35fe754e3d006e4359 mem_id=2155117349904
-2021-03-18 11:51:17,577 - server.EntityManager - INFO : [EntityManager.py:127]: addentity  entity id  6052ce35fe754e3d006e4359 
-2021-03-18 11:51:19,220 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 33 -> 33
-2021-03-18 11:52:25,215 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 33 -> 33
-2021-03-18 11:53:35,217 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 33 -> 34
-2021-03-18 11:54:35,986 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 6052cefbfe754e3d006e435a mem_id=2155117613840
-2021-03-18 11:54:35,986 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 6052cefbfe754e3d006e435a mem_id=2155117613840
-2021-03-18 11:54:35,986 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 6052cefbfe754e3d006e435a mem_id=2155117613840
-2021-03-18 11:54:35,986 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 6052cefbfe754e3d006e435a mem_id=2155117613840
-2021-03-18 11:54:35,988 - server.EntityManager - INFO : [EntityManager.py:127]: addentity  entity id  6052cefbfe754e3d006e435a 
-2021-03-18 11:54:40,223 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 34 -> 34
-2021-03-18 11:54:54,355 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 6052cf0efe754e3d006e435b mem_id=2155107532512
-2021-03-18 11:54:54,355 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 6052cf0efe754e3d006e435b mem_id=2155107532512
-2021-03-18 11:54:54,355 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 6052cf0efe754e3d006e435b mem_id=2155107532512
-2021-03-18 11:54:54,355 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 6052cf0efe754e3d006e435b mem_id=2155107532512
-2021-03-18 11:54:54,355 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 6052cf0efe754e3d006e435b mem_id=2155107532512
-2021-03-18 11:54:54,357 - server.EntityManager - INFO : [EntityManager.py:127]: addentity  entity id  6052cf0efe754e3d006e435b 
-2021-03-18 11:59:40,183 - ServiceNode - INFO : [EtcdSupport.py:476]: we have create ServiceRegister, wait 5 seconds
-2021-03-18 11:59:40,184 - ServiceNode - INFO : [EtcdSupport.py:479]: we have create ServiceFinder
-2021-03-18 11:59:40,200 - ServiceRegister - INFO : [EtcdSupport.py:148]: regist service : BattleAllocatorCenter success, {"action":"set","node":{"key":"/services/BattleAllocatorCenter/127.0.0.1|8888","value":"","expiration":"2021-03-18T04:02:40.1985778Z","ttl":180,"modifiedIndex":37,"createdIndex":37}}
-
-2021-03-18 11:59:42,240 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 6052d02efe754e11444db532 mem_id=1699336813488
-2021-03-18 11:59:42,241 - server.EntityManager - INFO : [EntityManager.py:127]: addentity  entity id  6052d02efe754e11444db532 
-2021-03-18 11:59:44,184 - ServerEntity.BattleAllocatorCenter - INFO : [ServerEntity.py:21]: __init__ create entity BattleAllocatorCenter with id 6052d030fe754e11444db533 mem_id=1699336863168
-2021-03-18 11:59:44,186 - server.EntityManager - INFO : [EntityManager.py:127]: addentity  entity id  6052d030fe754e11444db533 
-2021-03-18 11:59:44,187 - SingletonEntityManager - DEBUG : [SingletonEntityManager.py:118]: _register_relevant_centers_cb, status:good
-2021-03-18 11:59:44,188 - SingletonEntityManager - DEBUG : [SingletonEntityManager.py:137]: _register_stubs_cb, status:good
-2021-03-18 11:59:45,182 - ServiceFinder - INFO : [EtcdSupport.py:282]: add service node info--> BattleAllocatorCenter: ('127.0.0.1', 8888)
-2021-03-18 11:59:45,183 - ServiceFinder - INFO : [EtcdSupport.py:236]: init service info from etcd success, will going to watch, at etcd index -> 37
-2021-03-18 12:00:35,696 - ServiceNode - INFO : [EtcdSupport.py:476]: we have create ServiceRegister, wait 5 seconds
-2021-03-18 12:00:35,697 - ServiceNode - INFO : [EtcdSupport.py:479]: we have create ServiceFinder
-2021-03-18 12:00:35,701 - ServiceRegister - INFO : [EtcdSupport.py:148]: regist service : BattleAllocatorCenter success, {"action":"set","node":{"key":"/services/BattleAllocatorCenter/127.0.0.1|8888","value":"","expiration":"2021-03-18T04:03:35.7006626Z","ttl":180,"modifiedIndex":38,"createdIndex":38},"prevNode":{"key":"/services/BattleAllocatorCenter/127.0.0.1|8888","value":"","expiration":"2021-03-18T04:02:40.1985778Z","ttl":125,"modifiedIndex":37,"createdIndex":37}}
-
-2021-03-18 12:00:38,122 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 6052d066fe754e3cecf41849 mem_id=2161522244480
-2021-03-18 12:00:38,124 - server.EntityManager - INFO : [EntityManager.py:127]: addentity  entity id  6052d066fe754e3cecf41849 
-2021-03-18 12:00:39,706 - ServerEntity.BattleAllocatorCenter - INFO : [ServerEntity.py:21]: __init__ create entity BattleAllocatorCenter with id 6052d067fe754e3cecf4184a mem_id=2161522294208
-2021-03-18 12:00:39,708 - server.EntityManager - INFO : [EntityManager.py:127]: addentity  entity id  6052d067fe754e3cecf4184a 
-2021-03-18 12:00:39,709 - SingletonEntityManager - DEBUG : [SingletonEntityManager.py:118]: _register_relevant_centers_cb, status:good
-2021-03-18 12:00:39,710 - SingletonEntityManager - DEBUG : [SingletonEntityManager.py:137]: _register_stubs_cb, status:good
-2021-03-18 12:00:40,702 - ServiceFinder - INFO : [EtcdSupport.py:282]: add service node info--> BattleAllocatorCenter: ('127.0.0.1', 8888)
-2021-03-18 12:00:40,703 - ServiceFinder - INFO : [EtcdSupport.py:236]: init service info from etcd success, will going to watch, at etcd index -> 38
-2021-03-18 12:00:43,371 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 6052d06bfe754e3cecf4184b mem_id=2161522701744
-2021-03-18 12:00:43,371 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 6052d06bfe754e3cecf4184b mem_id=2161522701744
-2021-03-18 12:00:43,372 - server.EntityManager - INFO : [EntityManager.py:127]: addentity  entity id  6052d06bfe754e3cecf4184b 
-2021-03-18 12:01:41,701 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 38 -> 38
-2021-03-18 12:02:46,701 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 38 -> 38
-2021-03-18 12:03:56,705 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 38 -> 39
-2021-03-18 12:05:04,708 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 39 -> 39
-2021-03-18 12:06:14,710 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 39 -> 40
-2021-03-18 12:07:19,712 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 40 -> 41
-2021-03-18 12:08:26,720 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 41 -> 41
-2021-03-18 12:09:30,722 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 41 -> 42
-2021-03-18 12:10:39,725 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 42 -> 43
-2021-03-18 12:11:48,732 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 43 -> 43
-2021-03-18 12:12:50,734 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 43 -> 44
-2021-03-18 12:13:56,736 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 44 -> 45
-2021-03-18 12:15:03,737 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 45 -> 45
-2021-03-18 12:16:03,724 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 45 -> 46
-2021-03-18 12:17:11,725 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 46 -> 46
-2021-03-18 12:18:12,726 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 46 -> 47
-2021-03-18 12:19:16,729 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 47 -> 48
-2021-03-18 12:20:22,730 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 48 -> 48
-2021-03-18 12:21:32,733 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 48 -> 49
-2021-03-18 12:22:32,736 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 49 -> 50
-2021-03-18 12:23:39,727 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 50 -> 50
-2021-03-18 12:24:26,063 - ServiceRegister - ERROR : [EtcdSupport.py:186]: refresh service: BattleAllocatorCenter error, {"errorCode":100,"message":"Key not found","cause":"/services/BattleAllocatorCenter/127.0.0.1|8888","index":51}
-
-2021-03-18 12:24:26,065 - ServiceFinder - INFO : [EtcdSupport.py:382]: recv wath expire, info--> BattleAllocatorCenter: ('127.0.0.1', 8888) - [51]
-2021-03-18 12:24:26,066 - ServiceRegister - ERROR : [EtcdSupport.py:186]: refresh service: BattleAllocatorCenter error, {"errorCode":100,"message":"Key not found","cause":"/services/BattleAllocatorCenter/127.0.0.1|8888","index":51}
-
-2021-03-18 12:24:26,069 - ServiceRegister - ERROR : [EtcdSupport.py:186]: refresh service: BattleAllocatorCenter error, {"errorCode":100,"message":"Key not found","cause":"/services/BattleAllocatorCenter/127.0.0.1|8888","index":51}
-
-2021-03-18 12:24:26,072 - ServiceRegister - ERROR : [EtcdSupport.py:186]: refresh service: BattleAllocatorCenter error, {"errorCode":100,"message":"Key not found","cause":"/services/BattleAllocatorCenter/127.0.0.1|8888","index":51}
-
-2021-03-18 12:24:26,075 - ServiceRegister - ERROR : [EtcdSupport.py:186]: refresh service: BattleAllocatorCenter error, {"errorCode":100,"message":"Key not found","cause":"/services/BattleAllocatorCenter/127.0.0.1|8888","index":51}
-
-2021-03-18 12:24:26,077 - ServiceRegister - ERROR : [EtcdSupport.py:186]: refresh service: BattleAllocatorCenter error, {"errorCode":100,"message":"Key not found","cause":"/services/BattleAllocatorCenter/127.0.0.1|8888","index":51}
-
-2021-03-18 12:24:26,079 - ServiceRegister - ERROR : [EtcdSupport.py:186]: refresh service: BattleAllocatorCenter error, {"errorCode":100,"message":"Key not found","cause":"/services/BattleAllocatorCenter/127.0.0.1|8888","index":51}
-
-2021-03-18 12:24:26,081 - ServiceRegister - ERROR : [EtcdSupport.py:186]: refresh service: BattleAllocatorCenter error, {"errorCode":100,"message":"Key not found","cause":"/services/BattleAllocatorCenter/127.0.0.1|8888","index":51}
-
-2021-03-18 12:24:26,083 - ServiceRegister - ERROR : [EtcdSupport.py:186]: refresh service: BattleAllocatorCenter error, {"errorCode":100,"message":"Key not found","cause":"/services/BattleAllocatorCenter/127.0.0.1|8888","index":51}
-
-2021-03-18 12:24:26,085 - ServiceRegister - ERROR : [EtcdSupport.py:186]: refresh service: BattleAllocatorCenter error, {"errorCode":100,"message":"Key not found","cause":"/services/BattleAllocatorCenter/127.0.0.1|8888","index":51}
-
-2021-03-18 12:25:31,070 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 51 -> 51
-2021-03-18 12:26:37,072 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 51 -> 51
-2021-03-18 12:27:44,077 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 51 -> 51
-2021-03-18 12:28:48,080 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 51 -> 51
-2021-03-18 12:29:50,068 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 51 -> 51
-2021-03-18 12:30:55,070 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 51 -> 51
-2021-03-18 12:31:55,075 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 51 -> 51
-2021-03-18 12:32:57,078 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 51 -> 51
-2021-03-18 12:34:01,081 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 51 -> 51
-2021-03-18 12:35:06,084 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 51 -> 51
-2021-03-18 12:36:06,088 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 51 -> 51
-2021-03-18 12:37:16,089 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 51 -> 51
-2021-03-18 12:38:16,093 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 51 -> 51
-2021-03-18 12:39:24,097 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 51 -> 51
-2021-03-18 12:40:25,099 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 51 -> 51
-2021-03-18 12:41:28,102 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 51 -> 51
-2021-03-18 12:42:30,106 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 51 -> 51
-2021-03-18 12:43:32,109 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 51 -> 51
-2021-03-18 12:44:42,112 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 51 -> 51
+2021-03-18 14:53:34,306 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 6052f8eefe754e52541af6d1 mem_id=2912562051824
+2021-03-18 14:53:34,308 - server.EntityManager - INFO : [EntityManager.py:127]: addentity  entity id  6052f8eefe754e52541af6d1 
+2021-03-18 14:53:35,530 - ServerEntity.BattleAllocatorCenter - INFO : [ServerEntity.py:21]: __init__ create entity BattleAllocatorCenter with id 6052f8effe754e52541af6d2 mem_id=2912562106080
+2021-03-18 14:53:35,532 - server.EntityManager - INFO : [EntityManager.py:127]: addentity  entity id  6052f8effe754e52541af6d2 
+2021-03-18 14:53:35,533 - SingletonEntityManager - DEBUG : [SingletonEntityManager.py:118]: _register_relevant_centers_cb, status:good
+2021-03-18 14:53:35,534 - SingletonEntityManager - DEBUG : [SingletonEntityManager.py:137]: _register_stubs_cb, status:good
+2021-03-18 14:53:36,527 - ServiceFinder - INFO : [EtcdSupport.py:282]: add service node info--> BattleAllocatorCenter: ('127.0.0.1', 8888)
+2021-03-18 14:53:36,528 - ServiceFinder - INFO : [EtcdSupport.py:236]: init service info from etcd success, will going to watch, at etcd index -> 53
+2021-03-18 14:54:11,697 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 6052f913fe754e52541af6d3 mem_id=2912562102768
+2021-03-18 14:54:11,697 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 6052f913fe754e52541af6d3 mem_id=2912562102768
+2021-03-18 14:54:11,699 - server.EntityManager - INFO : [EntityManager.py:127]: addentity  entity id  6052f913fe754e52541af6d3 
+2021-03-18 14:54:40,527 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 53 -> 53
+2021-03-18 14:54:49,728 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 6052f939fe754e52541af6d4 mem_id=2912562611392
+2021-03-18 14:54:49,728 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 6052f939fe754e52541af6d4 mem_id=2912562611392
+2021-03-18 14:54:49,728 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 6052f939fe754e52541af6d4 mem_id=2912562611392
+2021-03-18 14:54:49,730 - server.EntityManager - INFO : [EntityManager.py:127]: addentity  entity id  6052f939fe754e52541af6d4 
+2021-03-18 14:54:55,986 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 6052f93ffe754e52541af6d5 mem_id=2912562612640
+2021-03-18 14:54:55,986 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 6052f93ffe754e52541af6d5 mem_id=2912562612640
+2021-03-18 14:54:55,986 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 6052f93ffe754e52541af6d5 mem_id=2912562612640
+2021-03-18 14:54:55,986 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 6052f93ffe754e52541af6d5 mem_id=2912562612640
+2021-03-18 14:54:55,988 - server.EntityManager - INFO : [EntityManager.py:127]: addentity  entity id  6052f93ffe754e52541af6d5 
+2021-03-18 14:55:40,531 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 53 -> 53
+2021-03-18 14:55:41,625 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 6052f96dfe754e52541af6d6 mem_id=2912562694176
+2021-03-18 14:55:41,625 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 6052f96dfe754e52541af6d6 mem_id=2912562694176
+2021-03-18 14:55:41,625 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 6052f96dfe754e52541af6d6 mem_id=2912562694176
+2021-03-18 14:55:41,625 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 6052f96dfe754e52541af6d6 mem_id=2912562694176
+2021-03-18 14:55:41,625 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 6052f96dfe754e52541af6d6 mem_id=2912562694176
+2021-03-18 14:55:41,627 - server.EntityManager - INFO : [EntityManager.py:127]: addentity  entity id  6052f96dfe754e52541af6d6 
+2021-03-18 14:56:01,785 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 6052f981fe754e52541af6d7 mem_id=2912562694128
+2021-03-18 14:56:01,785 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 6052f981fe754e52541af6d7 mem_id=2912562694128
+2021-03-18 14:56:01,785 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 6052f981fe754e52541af6d7 mem_id=2912562694128
+2021-03-18 14:56:01,785 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 6052f981fe754e52541af6d7 mem_id=2912562694128
+2021-03-18 14:56:01,785 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 6052f981fe754e52541af6d7 mem_id=2912562694128
+2021-03-18 14:56:01,785 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 6052f981fe754e52541af6d7 mem_id=2912562694128
+2021-03-18 14:56:01,786 - server.EntityManager - INFO : [EntityManager.py:127]: addentity  entity id  6052f981fe754e52541af6d7 
+2021-03-18 14:56:42,522 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 53 -> 54
+2021-03-18 14:57:47,522 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 54 -> 54
+2021-03-18 14:57:56,295 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 6052f9f4fe754e52541af6d8 mem_id=2912562823712
+2021-03-18 14:57:56,295 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 6052f9f4fe754e52541af6d8 mem_id=2912562823712
+2021-03-18 14:57:56,295 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 6052f9f4fe754e52541af6d8 mem_id=2912562823712
+2021-03-18 14:57:56,295 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 6052f9f4fe754e52541af6d8 mem_id=2912562823712
+2021-03-18 14:57:56,295 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 6052f9f4fe754e52541af6d8 mem_id=2912562823712
+2021-03-18 14:57:56,295 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 6052f9f4fe754e52541af6d8 mem_id=2912562823712
+2021-03-18 14:57:56,295 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 6052f9f4fe754e52541af6d8 mem_id=2912562823712
+2021-03-18 14:57:56,297 - server.EntityManager - INFO : [EntityManager.py:127]: addentity  entity id  6052f9f4fe754e52541af6d8 
+2021-03-18 14:58:56,535 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 54 -> 55
+2021-03-18 14:59:56,539 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 55 -> 56

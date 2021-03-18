@@ -57,7 +57,7 @@ class TcpConn(object):
                     elif _len_recv_data >= _input_data_len:
                         _body_data = self._recv_data[HEAD_LEN:_input_data_len]
                         self._recv_cnt += 1
-                        print("self._recv_cnt:" + str(self._recv_cnt))
+                        # print("self._recv_cnt:" + str(self._recv_cnt))
                         self.handle_message(_body_data)
                         self._recv_data = self._recv_data[_input_data_len:]
                     else:

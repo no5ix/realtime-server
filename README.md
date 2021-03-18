@@ -2,7 +2,7 @@ python 3.8.8
 
 # todo list
 
-- [ ] reload
+<!-- - [ ] reload -->
 <!-- - [ ] puppet -->
 <!-- - [ ] avatar -->
 - [ ] dungeon

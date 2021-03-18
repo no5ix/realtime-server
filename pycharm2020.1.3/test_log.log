@@ -23,3 +23,11 @@
 2021-03-18 11:59:54,915 - ClientEntity.Puppet - INFO : [ClientEntity.py:16]: __init__ create entity Puppet with id 6052d03afe754e3cf4cee898 mem_id=2001848404720
 2021-03-18 12:00:38,120 - ClientEntity.Puppet - INFO : [ClientEntity.py:16]: __init__ create entity Puppet with id 6052d066fe754e2714325504 mem_id=2197566294768
 2021-03-18 12:00:43,368 - ClientEntity.Puppet - INFO : [ClientEntity.py:16]: __init__ create entity Puppet with id 6052d06bfe754e20f8e6541b mem_id=2331933444848
+2021-03-18 14:52:47,903 - ClientEntity.Puppet - INFO : [ClientEntity.py:16]: __init__ create entity Puppet with id 6052f8bffe754e4f4012650a mem_id=2776761862896
+2021-03-18 14:53:34,303 - ClientEntity.Puppet - INFO : [ClientEntity.py:16]: __init__ create entity Puppet with id 6052f8eefe754e40e4e3bb43 mem_id=1745578269424
+2021-03-18 14:54:11,695 - ClientEntity.Puppet - INFO : [ClientEntity.py:16]: __init__ create entity Puppet with id 6052f913fe754e4bbc9a6574 mem_id=2962081155824
+2021-03-18 14:54:49,726 - ClientEntity.Puppet - INFO : [ClientEntity.py:16]: __init__ create entity Puppet with id 6052f939fe754e4e485bf960 mem_id=1799954598640
+2021-03-18 14:54:55,984 - ClientEntity.Puppet - INFO : [ClientEntity.py:16]: __init__ create entity Puppet with id 6052f93ffe754e4c0475c8c1 mem_id=1696447695600
+2021-03-18 14:55:41,623 - ClientEntity.Puppet - INFO : [ClientEntity.py:16]: __init__ create entity Puppet with id 6052f96dfe754e1bd4d502dd mem_id=2831945206512
+2021-03-18 14:56:01,783 - ClientEntity.Puppet - INFO : [ClientEntity.py:16]: __init__ create entity Puppet with id 6052f981fe754e1cc47b86b8 mem_id=1904330640112
+2021-03-18 14:57:56,293 - ClientEntity.Puppet - INFO : [ClientEntity.py:16]: __init__ create entity Puppet with id 6052f9f4fe754e49f47543be mem_id=2516222905072
