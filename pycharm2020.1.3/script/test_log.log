@@ -84,3 +84,62 @@
 2021-03-18 14:57:56,297 - server.EntityManager - INFO : [EntityManager.py:127]: addentity  entity id  6052f9f4fe754e52541af6d8 
 2021-03-18 14:58:56,535 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 54 -> 55
 2021-03-18 14:59:56,539 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 55 -> 56
+2021-03-18 15:00:56,545 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 56 -> 56
+2021-03-18 15:02:05,548 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 56 -> 57
+2021-03-18 15:03:07,538 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 57 -> 57
+2021-03-18 15:04:11,544 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 57 -> 58
+2021-03-18 15:05:18,547 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 58 -> 59
+2021-03-18 15:06:27,538 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 59 -> 59
+2021-03-18 15:07:34,544 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 59 -> 60
+2021-03-18 15:08:39,547 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 60 -> 61
+2021-03-18 15:09:48,538 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 61 -> 61
+2021-03-18 15:10:54,542 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 61 -> 62
+2021-03-18 15:11:54,548 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 62 -> 62
+2021-03-18 15:13:03,539 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 62 -> 63
+2021-03-18 15:14:12,541 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 63 -> 64
+2021-03-18 15:15:21,546 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 64 -> 64
+2021-03-18 15:15:46,562 - ServiceRegister - ERROR : [EtcdSupport.py:186]: refresh service: BattleAllocatorCenter error, {"errorCode":100,"message":"Key not found","cause":"/services/BattleAllocatorCenter/127.0.0.1|8888","index":65}
+
+2021-03-18 15:15:46,564 - ServiceFinder - INFO : [EtcdSupport.py:382]: recv wath expire, info--> BattleAllocatorCenter: ('127.0.0.1', 8888) - [65]
+2021-03-18 15:15:46,566 - ServiceRegister - ERROR : [EtcdSupport.py:186]: refresh service: BattleAllocatorCenter error, {"errorCode":100,"message":"Key not found","cause":"/services/BattleAllocatorCenter/127.0.0.1|8888","index":65}
+
+2021-03-18 15:15:46,569 - ServiceRegister - ERROR : [EtcdSupport.py:186]: refresh service: BattleAllocatorCenter error, {"errorCode":100,"message":"Key not found","cause":"/services/BattleAllocatorCenter/127.0.0.1|8888","index":65}
+
+2021-03-18 15:15:46,572 - ServiceRegister - ERROR : [EtcdSupport.py:186]: refresh service: BattleAllocatorCenter error, {"errorCode":100,"message":"Key not found","cause":"/services/BattleAllocatorCenter/127.0.0.1|8888","index":65}
+
+2021-03-18 15:15:46,574 - ServiceRegister - ERROR : [EtcdSupport.py:186]: refresh service: BattleAllocatorCenter error, {"errorCode":100,"message":"Key not found","cause":"/services/BattleAllocatorCenter/127.0.0.1|8888","index":65}
+
+2021-03-18 15:15:46,577 - ServiceRegister - ERROR : [EtcdSupport.py:186]: refresh service: BattleAllocatorCenter error, {"errorCode":100,"message":"Key not found","cause":"/services/BattleAllocatorCenter/127.0.0.1|8888","index":65}
+
+2021-03-18 15:15:46,579 - ServiceRegister - ERROR : [EtcdSupport.py:186]: refresh service: BattleAllocatorCenter error, {"errorCode":100,"message":"Key not found","cause":"/services/BattleAllocatorCenter/127.0.0.1|8888","index":65}
+
+2021-03-18 15:15:46,580 - ServiceRegister - ERROR : [EtcdSupport.py:186]: refresh service: BattleAllocatorCenter error, {"errorCode":100,"message":"Key not found","cause":"/services/BattleAllocatorCenter/127.0.0.1|8888","index":65}
+
+2021-03-18 15:15:46,582 - ServiceRegister - ERROR : [EtcdSupport.py:186]: refresh service: BattleAllocatorCenter error, {"errorCode":100,"message":"Key not found","cause":"/services/BattleAllocatorCenter/127.0.0.1|8888","index":65}
+
+2021-03-18 15:15:46,585 - ServiceRegister - ERROR : [EtcdSupport.py:186]: refresh service: BattleAllocatorCenter error, {"errorCode":100,"message":"Key not found","cause":"/services/BattleAllocatorCenter/127.0.0.1|8888","index":65}
+
+2021-03-18 15:16:50,570 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 65 -> 65
+2021-03-18 15:17:58,573 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 65 -> 65
+2021-03-18 15:19:03,577 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 65 -> 65
+2021-03-18 15:20:03,580 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 65 -> 65
+2021-03-18 15:21:13,568 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 65 -> 65
+2021-03-18 15:22:18,571 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 65 -> 65
+2021-03-18 15:23:18,575 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 65 -> 65
+2021-03-18 15:24:25,578 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 65 -> 65
+2021-03-18 15:25:25,581 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 65 -> 65
+2021-03-18 15:26:33,585 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 65 -> 65
+2021-03-18 15:27:38,588 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 65 -> 65
+2021-03-18 15:28:44,593 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 65 -> 65
+2021-03-18 15:29:54,596 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 65 -> 65
+2021-03-18 15:30:59,585 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 65 -> 65
+2021-03-18 15:31:59,589 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 65 -> 65
+2021-03-18 15:33:08,592 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 65 -> 65
+2021-03-18 15:34:09,595 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 65 -> 65
+2021-03-18 15:35:19,584 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 65 -> 65
+2021-03-18 15:36:24,588 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 65 -> 65
+2021-03-18 15:37:27,591 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 65 -> 65
+2021-03-18 15:38:30,593 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 65 -> 65
+2021-03-18 15:39:36,595 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 65 -> 65
+2021-03-18 15:40:41,597 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 65 -> 65
+2021-03-18 15:41:41,598 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 65 -> 65

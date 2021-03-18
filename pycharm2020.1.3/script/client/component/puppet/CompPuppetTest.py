@@ -15,7 +15,7 @@ class CompPuppetTest(Component):
     def puppet_chat_to_channel(self, chat_info):
         print("call puppet_chat_to_channel")
         self.call_server_comp_method(
-            self.VAR_NAME, 'puppet_chat_to_channel', {'i': chat_info})
+            self.VAR_NAME, 'puppet_chat_to_channel', {'i': "mmp"})
 
     def puppet_chat_to_ppt(self, chat_info):
         print("call puppet_chat_to_ppt")
