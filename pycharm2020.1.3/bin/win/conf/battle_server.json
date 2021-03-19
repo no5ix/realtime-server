@@ -1,6 +1,6 @@
 {
     "etcd_servers": [
-        {"ip": "192.168.83.23", "port": 2379}
+        {"ip": "192.168.82.177", "port": 2379}
     ],
     "entity_root": "server_entities",
     "battle_entity_root": "battle_entity",

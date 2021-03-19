@@ -5703,3 +5703,35 @@ Unpack failed: incomplete input
 2021-03-19 18:07:25,368 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 47 -> 48
 2021-03-19 18:07:31,372 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 47 -> 48
 2021-03-19 18:08:30,369 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 48 -> 49
+2021-03-19 18:08:35,406 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 60547823fe754e21b4214fb3 mem_id=1466987259648
+2021-03-19 18:08:35,406 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 60547823fe754e21b4214fb3 mem_id=1466987259648
+2021-03-19 18:08:35,406 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 60547823fe754e21b4214fb3 mem_id=1466987259648
+2021-03-19 18:08:35,406 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 60547823fe754e21b4214fb3 mem_id=1466987259648
+2021-03-19 18:08:35,406 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 60547823fe754e21b4214fb3 mem_id=1466987259648
+2021-03-19 18:08:35,406 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 60547823fe754e21b4214fb3 mem_id=1466987259648
+2021-03-19 18:08:35,406 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 60547823fe754e21b4214fb3 mem_id=1466987259648
+2021-03-19 18:08:35,406 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 60547823fe754e21b4214fb3 mem_id=1466987259648
+2021-03-19 18:08:35,406 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 60547823fe754e21b4214fb3 mem_id=1466987259648
+2021-03-19 18:08:35,406 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 60547823fe754e21b4214fb3 mem_id=1466987259648
+2021-03-19 18:08:35,406 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 60547823fe754e21b4214fb3 mem_id=1466987259648
+2021-03-19 18:08:35,406 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 60547823fe754e21b4214fb3 mem_id=1466987259648
+2021-03-19 18:08:35,406 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 60547823fe754e21b4214fb3 mem_id=1466987259648
+2021-03-19 18:08:35,406 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 60547823fe754e21b4214fb3 mem_id=1466987259648
+2021-03-19 18:08:35,408 - server.EntityManager - INFO : [EntityManager.py:127]: addentity  entity id  60547823fe754e21b4214fb3 
+2021-03-19 18:08:37,377 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 48 -> 49
+2021-03-19 18:09:35,363 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 49 -> 51
+2021-03-19 18:09:37,384 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 49 -> 51
+2021-03-19 18:10:35,365 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 51 -> 52
+2021-03-19 18:10:42,375 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 51 -> 52
+2021-03-19 18:11:37,368 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 52 -> 53
+2021-03-19 18:11:52,381 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 52 -> 53
+2021-03-19 18:12:44,370 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 53 -> 54
+2021-03-19 18:13:02,386 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 53 -> 55
+2021-03-19 18:13:54,359 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 54 -> 55
+2021-03-19 18:14:11,393 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 55 -> 56
+2021-03-19 18:14:58,362 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 55 -> 57
+2021-03-19 18:15:21,391 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 56 -> 57
+2021-03-19 18:16:08,363 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 57 -> 58
+2021-03-19 18:16:24,399 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 57 -> 59
+2021-03-19 18:17:08,367 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 58 -> 59
+2021-03-19 18:17:30,397 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 59 -> 59
