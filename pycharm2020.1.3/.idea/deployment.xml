@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" autoUpload="Always" serverName="b@192.168.83.23:22 key">
+  <component name="PublishConfigData" serverName="b@192.168.83.23:22 key">
     <serverData>
       <paths name="Copy of project-level server 'sdc-bi-ap-aop'">
         <serverdata>
@@ -73,6 +73,5 @@
         </serverdata>
       </paths>
     </serverData>
-    <option name="myAutoUpload" value="ALWAYS" />
   </component>
 </project>

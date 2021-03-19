@@ -1,14 +1,15 @@
 import asyncio
 import functools
 import json
+import random
 import signal
 import platform
 import sys
-from random import random
+# from random import random
 import socket
 
-from PuppetBindEntity import PuppetBindEntity
-from battle_entity.Puppet import Puppet
+# from PuppetBindEntity import PuppetBindEntity
+# from battle_entity.Puppet import Puppet
 # from core.common import MsgpackSupport
 from TcpConn import TcpConn
 from common import gr
@@ -151,15 +152,14 @@ class TcpServer(object):
 
     async def start_server_task(self):
         # server = await asyncio.start_server(
-        #     handle_echo, '127.0.0.1', 8888)
+        #     handle_echo, '192.168.82.177', 8888)
         _ip = gr.game_json_conf[gr.game_server_name]["ip"]
         _port = gr.game_json_conf[gr.game_server_name]["port"]
         try:
             server = await asyncio.start_server(self.handle_client_connected, _ip, _port)
-            # _start_srv_task = asyncio.create_task(asyncio.start_server(self.handle_client_connected, '127.0.0.1', 8888))
+            # _start_srv_task = asyncio.create_task(asyncio.start_server(self.handle_client_connected, '192.168.82.177', 8888))
             # await _etcd_support_task
             # server = await _start_srv_task
-
             addr = server.sockets[0].getsockname()
             print(f'Server on {addr}')
 
@@ -171,8 +171,10 @@ class TcpServer(object):
     async def main(self):
         self.handle_sig()
 
-        etcd_addr_list = [('127.0.0.1', '2379'),]
-        # etcd_addr_list = [('192.168.82.177', '2379'),]
+        # etcd_addr_list = [('127.0.0.1', '2379'),]
+        # etcd_addr_list = [('192.168.83.23', '2379'),]
+        etcd_addr_list = [
+            (ip_port_map["ip"], str(ip_port_map["port"])) for ip_port_map in gr.game_json_conf["etcd_servers"]]
 
         _ip = gr.game_json_conf[gr.game_server_name]["ip"]
         _port = gr.game_json_conf[gr.game_server_name]["port"]

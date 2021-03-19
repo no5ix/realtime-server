@@ -1,9 +1,9 @@
 # from TcpServer import TCP_SERVER
-import asyncio
+# import asyncio
 
 from common.component.Component import Component
 from component.puppet import test_reload_const
-from core.common.RpcMethodArgs import Dict
+from core.common.RpcMethodArgs import Dict, Str
 from core.common.RpcSupport import rpc_method, CLIENT_ONLY
 
 import random
@@ -20,7 +20,7 @@ class CompPuppetTest(Component):
         super().__init__()
         self._cnt = random.randint(0, 10)
 
-    @rpc_method(CLIENT_ONLY, (Dict('i'), ))
+    @rpc_method(CLIENT_ONLY, (Str('i'), ))
     def puppet_chat_to_channel(self, chat_info):
         print(chat_info)
         # self._cnt -= 1
@@ -29,6 +29,10 @@ class CompPuppetTest(Component):
 
         # loop = asyncio.get_event_loop()
         # loop.call_later(4, self.test_delay_func)
+        # chat_info.update({'cnt': self._cnt})
+
+        self.call_client_comp_method(self.VAR_NAME, 'puppet_chat_from_srv', {'i': {"lk": 8}})
+        print("call client puppet_chat_from_srv")
 
     def test_delay_func(self):
         print('test_delay_func')
@@ -40,7 +44,7 @@ class CompPuppetTest(Component):
         # print("self._cnt:" + str(self._cnt))
         chat_info.update({'cnt': self._cnt})
 
-        # self.call_client_comp_method(self.VAR_NAME, 'puppet_chat_from_srv', {'i': chat_info})
+        self.call_client_comp_method(self.VAR_NAME, 'puppet_chat_from_srv', {'i': chat_info})
 
     @rpc_method(CLIENT_ONLY)
     def make_server_reload(self):

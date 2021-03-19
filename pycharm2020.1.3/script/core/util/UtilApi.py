@@ -7,6 +7,7 @@ import typing
 # lambda关键字不可少
 from common import gr
 
+
 EV_LOOP = None  # type: typing.Union[None, AbstractEventLoop]
 
 

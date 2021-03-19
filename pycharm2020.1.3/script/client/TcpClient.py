@@ -1,12 +1,12 @@
 import asyncio
 import random
-import sys
+# import sys
 
 from TcpConn import TcpConn
 from client.Puppet import Puppet
-from client.PuppetBindEntity import PuppetBindEntity
-from common import gr
-from core.common import MsgpackSupport
+# from client.PuppetBindEntity import PuppetBindEntity
+# from common import gr
+# from core.common import MsgpackSupport
 from core.util import UtilApi
 
 
@@ -15,7 +15,7 @@ async def tcp_echo_client():
     local_server_port_tuple = (8888, )
     port = random.choice(local_server_port_tuple)
     reader, writer = await asyncio.open_connection(
-        '127.0.0.1', port)
+        '192.168.82.177', port)
 
     _ppt = Puppet()
     _tcp_conn = TcpConn(writer.get_extra_info('peername'), writer, reader)
@@ -43,18 +43,18 @@ async def tcp_echo_client():
 
     # _cnt = 1000000
     # while _cnt > 0:
-    _ppt.CompPuppetTest.puppet_chat_to_ppt({'content': 'puppet_chat_to_ppt'})
+    # _ppt.CompPuppetTest.puppet_chat_to_ppt({'content': 'puppet_chat_to_ppt'})
         # _cnt -= 1
         # print(_cnt)
         # await asyncio.sleep(1)
 
-    UtilApi.call_later(
-        2, lambda: _ppt.CompPuppetTest.test_reload())
-    UtilApi.call_later(
-        8, lambda: _ppt.CompPuppetTest.make_server_reload())
-
-    UtilApi.call_later(
-        10, lambda: _ppt.CompPuppetTest.test_reload())
+    # UtilApi.call_later(
+    #     2, lambda: _ppt.CompPuppetTest.test_reload())
+    # UtilApi.call_later(
+    #     8, lambda: _ppt.CompPuppetTest.make_server_reload())
+    #
+    # UtilApi.call_later(
+    #     10, lambda: _ppt.CompPuppetTest.test_reload())
     await _tcp_conn.loop()
     # while True:
     #     data = await reader.read(100)

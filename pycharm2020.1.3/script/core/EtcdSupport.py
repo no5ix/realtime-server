@@ -339,7 +339,7 @@ class ServiceFinder(EtcdProcessor):
 
     def _get_service_node_info(self, key_path):
         """
-        /services/fjs/127.0.0.1|8080
+        /services/fjs/192.168.82.177|8080
         """
         key_path = key_path[len(_MOBILE_SERVICE_PREFIX):]
         service_name, address_str = key_path.split("/")[0], key_path.split("/")[1]

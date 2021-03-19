@@ -171,7 +171,7 @@ class Component(object):
     __use_descriptor__ = True
 
     def __init__(self):
-        self.entity = None  # type: typing.Type[typing.Union[ServerEntity, None]
+        self.entity = None  # type: typing.Union[ServerEntity, None]
         # self.logger = None
         self._client_tick_cache = []
 

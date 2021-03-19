@@ -43,6 +43,7 @@ class TcpConn(object):
             try:
                 # self.asyncio_writer
                 _data = await self.asyncio_reader.read(8192)
+                # print("_data")
                 self._recv_data += _data
                 while True:
                     _len_recv_data = len(self._recv_data)
@@ -64,6 +65,7 @@ class TcpConn(object):
                         break
             except ConnectionResetError:
                 self.asyncio_writer.close()
+                # TODO: not safe, handle conn closed
                 print("connection is closed by remote client..")
                 break
 
