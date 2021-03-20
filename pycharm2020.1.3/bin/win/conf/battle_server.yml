@@ -1,0 +1,31 @@
+#{
+#  "etcd_servers": [
+#    //        {"ip": "192.168.82.177", "port": 2379}
+#    {"ip": "127.0.0.1", "port": 2379},
+#    {"ip": "127.0.0.1", "port": 2381},
+#    {"ip": "127.0.0.1", "port": 2383},
+#  ],
+#  "entity_root": "server_entities",
+#  "battle_entity_root": "battle_entity",
+#  "server_entity_root": "server_entity",
+#  "component_root": "component",
+#  "battle_0": {
+#    "is_center": true,
+#    "game_server_name": "battle_0",
+#    //        "ip": "192.168.82.177",
+#    "ip": "0.0.0.0",
+#    "port": 8888
+#  },
+#  "battle_1": {
+#    "game_server_name": "battle_1",
+#    //        "ip": "192.168.82.177",
+#    "ip": "0.0.0.0",
+#    "port": 8889,
+#  },
+#  "battle_2": {
+#    "game_server_name": "battle_2",
+#    //        "ip": "192.168.82.177",
+#    "ip": "0.0.0.0",
+#    "port": 9000
+#  },
+#}

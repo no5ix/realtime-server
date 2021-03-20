@@ -17,6 +17,7 @@ from core.EtcdSupport import ServiceNode
 from core.common import EntityScanner
 from core.common.EntityFactory import EntityFactory
 from core.mobilelog.LogManager import LogManager
+from core.util import EnhancedJson
 from util.SingletonEntityManager import SingletonEntityManager
 from core.tool import incremental_reload
 
@@ -41,13 +42,23 @@ class TcpServer(object):
 
     @staticmethod
     def parse_json_conf():
-        file_name = r'../bin/win/conf/battle_server.json'
-        # file_name = r'D:\Documents\github\realtime-server\pycharm2020.1.3\bin\win\conf\battle_server.json'
-        # file_name = r'C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\bin\win\conf\battle_server.json'
-        conf_file = open(file_name)
-        json_conf = json.load(conf_file)
-        conf_file.close()
-        gr.game_json_conf = json_conf
+        with open(r"../bin/win/conf/battle_server.json") as conf_file:
+            # data = file.read()
+            # _name = r'../bin/win/conf/battle_server.json'
+            # file_name = r'D:\Documents\github\realtime-server\pycharm2020.1.3\bin\win\conf\battle_server.json'
+            # file_name = r'C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\bin\win\conf\battle_server.json'
+            # conf_file = open(file_name)
+            json_conf = EnhancedJson.load(conf_file)
+            # conf_file.close()
+            gr.game_json_conf = json_conf
+
+        # file_name = r'../bin/win/conf/battle_server.json'
+        # # file_name = r'D:\Documents\github\realtime-server\pycharm2020.1.3\bin\win\conf\battle_server.json'
+        # # file_name = r'C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\bin\win\conf\battle_server.json'
+        # conf_file = open(file_name)
+        # json_conf = json.load(conf_file)
+        # conf_file.close()
+        # gr.game_json_conf = json_conf
         return json_conf
 
     def register_component(self):
