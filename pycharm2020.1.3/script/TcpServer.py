@@ -29,10 +29,14 @@ class TcpServer(object):
     def __init__(self):
         self.tcp_conn_map = {}
         self._etcd_service_node = None
+        # self.register_entities()
+
+        self._config = self.parse_json_conf()
+
+        LogManager.set_log_tag(gr.game_server_name)
+        LogManager.set_log_path(gr.game_json_conf["log_path"])
 
         self._logger = LogManager.get_logger('TcpServer')
-        # self.register_entities()
-        self._config = self.parse_json_conf()
 
         self.register_server_entities()
         self.register_battle_entities()

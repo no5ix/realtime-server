@@ -1,7 +1,9 @@
 {
     "$MACRO$": {
-        "BATTLE_SRV_IP": "192.168.1.4",
-        "ETCD_IP": "192.168.1.14",
+//        "BATTLE_SRV_IP": "192.168.1.4",
+//        "ETCD_IP": "192.168.1.14",
+        "BATTLE_SRV_IP": "192.168.82.177",
+        "ETCD_IP": "192.168.82.177"
     },
 
     "etcd_servers": [
@@ -10,6 +12,7 @@
         {"ip": "$ETCD_IP$", "port": 2381},
         {"ip": "$ETCD_IP$", "port": 2383}
     ],
+    "log_path": "../bin/win/log/",
     "entity_root": "server_entities",
     "battle_entity_root": "battle_entity",
     "server_entity_root": "server_entity",

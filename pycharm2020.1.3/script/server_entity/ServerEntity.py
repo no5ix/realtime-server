@@ -22,7 +22,7 @@ class ServerEntity(object):
         # entity所对应的gate proxy, 使用请调_get_gate_proxy方法，不要直接使用此变量
         self._gate_proxy = None
         self._src_mailbox_info = None                              # 缓存自己的src_mailbox_info信息
-        EntityManager.addentity(self.id, self, False)
+        EntityManager.instance().addentity(self.id, self, False)
         self._save_timer = None
         self.is_destroy = False
         # save_time = self.get_persistent_time()

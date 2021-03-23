@@ -83,54 +83,67 @@ class EntityIdOrLocalId(object):
 
 
 class EntityManager(object):
-	""" 管理所有的Entity的管理器"""
-	_logger = LogManager.get_logger("server.EntityManager")
-	_entities = {}
+	# __metaclass__ = extendabletype
+
+	_instance = None
+
+	def __init__(self):
+		# logger for EntityFactory
+		self._logger = LogManager.get_logger("server.EntityManager")
+		# registered classed for EntityFactory
+		# self.entity_classes = {}
+		self._entities = {}
 
 	@classmethod
-	def size(cls):
-		return len(cls._entities)
+	def instance(cls):
+		if cls._instance is None:
+			cls._instance = EntityManager()
+		return cls._instance
 
-	@staticmethod
-	def entitynumber():
+# class EntityManager(object):
+	""" 管理所有的Entity的管理器"""
+	# _logger = LogManager.get_logger("server.EntityManager") if _logger
+	# _entities = {}
+
+	# @classmethod
+	# def size(cls):
+	# 	return len(cls._entities)
+
+	def entitynumber(self, ):
 		"""是否存在entity"""
-		return len(EntityManager._entities)
+		return len(self._entities)
 
-	@staticmethod
-	def hasentity(entityid):
+	def hasentity(self, entityid):
 		"""是否存在entity"""
-		return entityid in EntityManager._entities
+		return entityid in self._entities
 
-	@staticmethod
-	def getentity(entityid):
+	def getentity(self, entityid):
 		"""得到entity"""
-		return EntityManager._entities.get(entityid, None)
+		return self._entities.get(entityid, None)
 
-	@staticmethod
-	def delentity(entityid):
+	def delentity(self, entityid):
 		"""删除entity"""
 		try:
 			EntityIdOrLocalId.destroy(entityid)
-			del EntityManager._entities[entityid]
+			del self._entities[entityid]
 		except KeyError:
-			EntityManager._logger.warn(" entity id  %s didn't exist", entityid)
-		EntityManager._logger.info("delentity  entity id  %s ", entityid)
+			self._logger.warn(" entity id  %s didn't exist", entityid)
+		self._logger.info("delentity  entity id  %s ", entityid)
 
-	@staticmethod
-	def addentity(entityid, entity, override=False):
+	def addentity(self, entityid, entity, override=False):
 		"""增加entity， override为True的时候，会覆盖原有相同id的Entity"""
-		# if EntityManager._entities.has_key(entityid):
-		if entityid in EntityManager._entities:
-			EntityManager._logger.warn(" entity  %s already exist", entityid)
+		# if self._entities.has_key(entityid):
+		if entityid in self._entities:
+			self._logger.warn(" entity  %s already exist", entityid)
 			if not override:
 				return
-		EntityManager._logger.info("addentity  entity id  %s ", entityid)
-		EntityManager._entities[entityid] = entity
+		self._logger.info("addentity  entity id  %s ", entityid)
+		self._entities[entityid] = entity
 
-	@classmethod
-	def itervalues(cls):
-		return cls._entities.itervalues()
-
-	@classmethod
-	def values(cls):
-		return cls._entities.values()
+	# @classmethod
+	# def itervalues(cls):
+	# 	return cls._entities.itervalues()
+	#
+	# @classmethod
+	# def values(cls):
+	# 	return cls._entities.values()

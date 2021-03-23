@@ -6,10 +6,10 @@ import random
 # from common.cdata import DungeonConfig
 # from common.utils import collision_util, import_helper
 # from core.common.IdManager import IdManager
-from core.common.RpcSupport import rpc_method, SERVER_ONLY
-from core.common.RpcMethodArgs import Dict, MailBox, Uuid, Str, Int, List, Response
-from core.common.EntityFactory import EntityFactory
-from core.common.EntityManager import EntityManager
+# from core.common.RpcSupport import rpc_method, SERVER_ONLY
+# from core.common.RpcMethodArgs import Dict, MailBox, Uuid, Str, Int, List, Response
+# from core.common.EntityFactory import EntityFactory
+# from core.common.EntityManager import EntityManager
 # from core.common.mobilecommon import asiocore
 # from core.distserver.game import GameServerRepo
 # from const import service_const

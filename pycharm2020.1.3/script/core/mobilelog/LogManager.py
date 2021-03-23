@@ -28,6 +28,7 @@ from logging.handlers import TimedRotatingFileHandler
 # from aiologger.formatters.base import Formatter
 import inspect
 
+# from common import gr
 
 _log_tp_executor = ThreadPoolExecutor(max_workers=1)
 # _th_executor.submit()
@@ -38,7 +39,8 @@ class AsyncLogger:
     def __init__(self, logger_name):
         logger = logging.getLogger(logger_name)
         # logger.setLevel(logging.DEBUG)
-        fh = TimedRotatingFileHandler('test_log.log', when='D')
+
+        fh = TimedRotatingFileHandler(LogManager.log_path + LogManager.log_tag + ".log", when='M')
         # fh = TimedRotatingFileHandler(_temp_file_name, when='S')
         # fh.setLevel(logging.DEBUG)
         # formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - [%(filename)s:%(lineno)d] : %(message)s')
@@ -82,6 +84,16 @@ class AsyncLogger:
 
 
 class LogManager:
+    log_tag = ""
+    log_path = ""
+
+    @staticmethod
+    def set_log_tag(tag):
+        LogManager.log_tag = tag
+
+    @staticmethod
+    def set_log_path(path):
+        LogManager.log_path = path
 
     @staticmethod
     def get_logger(logger_name):

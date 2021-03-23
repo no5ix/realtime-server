@@ -1,5 +1,5 @@
 from typing import Union
-from core.EtcdSupport import ServiceNode
+# from core.EtcdSupport import ServiceNode
 
 
 bind_entity = None
