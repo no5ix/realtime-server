@@ -13,7 +13,7 @@
         {"ip": "$ETCD_IP$", "port": 2383}
     ],
     "log_path": "../bin/win/log/",
-    "entity_root": "server_entities",
+    "lobby_entity_root": "lobby_entity",
     "battle_entity_root": "battle_entity",
     "server_entity_root": "server_entity",
     "component_root": "component",

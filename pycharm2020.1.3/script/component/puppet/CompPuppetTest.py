@@ -22,6 +22,10 @@ class CompPuppetTest(Component):
 
     @rpc_method(CLIENT_ONLY, (Str('i'), ))
     def puppet_chat_to_channel(self, chat_info):
+        # import sys
+        # isin = "component.puppet.CompPuppetTest" in sys.modules  # TODO del
+        # self.entity.logger.debug(str(sys.modules))
+
         print(chat_info)
         # self._cnt -= 1
         # print("self._cnt:" + str(self._cnt))

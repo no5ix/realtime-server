@@ -14,7 +14,8 @@ from core.util import UtilApi
 async def tcp_echo_client():
     LogManager.set_log_tag("TcpClient")
     LogManager.set_log_path("./bin/win/log/")
-    local_server_port_tuple = (8888, 8889, 9000)
+    # local_server_port_tuple = (8888, 8889, 9000)
+    local_server_port_tuple = (8888,)
     # local_server_port_tuple = (8888, )
     port = random.choice(local_server_port_tuple)
     reader, writer = await asyncio.open_connection(

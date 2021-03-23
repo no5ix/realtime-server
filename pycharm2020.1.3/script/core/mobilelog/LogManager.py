@@ -48,7 +48,13 @@ class LogManager:
         LogManager.log_path = path
 
     @staticmethod
-    def get_logger(logger_name):
+    def get_logger(logger_name=None):
+        if logger_name is None:
+            try:
+                caller_class = inspect.stack()[1][0].f_locals["self"].__class__.__name__
+                logger_name = caller_class
+            except:
+                raise Exception("logger_name is None and caller class error")
         if LogManager.file_handler is None:
             if LogManager.log_tag == "":
                 raise Exception("LogManager Error: log tag is empty!")

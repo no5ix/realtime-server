@@ -45,8 +45,9 @@ def register_entity_globally():
 
 
 def register_entity_to_etcd(entity, name, tag=None):
-    ip = gr.local_ip
-    port = gr.local_port
+    # ip = gr.local_ip
+    # port = gr.local_port
+    pass
 
 
 def unregister_entity_from_etcd(name):

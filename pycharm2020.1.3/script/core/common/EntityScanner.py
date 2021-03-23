@@ -7,9 +7,11 @@ from importlib import util
 def walk_pkg(path, pkg_name):
     for module_loader, name, is_pkg in pkgutil.iter_modules(path):
         # importlib.import_module('.' + name, __package__)
+        # import sys
+        # isin = "component.puppet.CompPuppetTest" in sys.modules  # TODO del
+
         _cur_module = importlib.import_module('.' + name, pkg_name)
         if is_pkg:
-            pass
             _path = _cur_module.__path__
             walk_pkg(_path, ''.join((pkg_name, '.', name)))
 

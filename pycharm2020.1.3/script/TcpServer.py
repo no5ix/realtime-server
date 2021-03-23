@@ -21,32 +21,33 @@ from core.util import EnhancedJson
 from util.SingletonEntityManager import SingletonEntityManager
 from core.tool import incremental_reload
 
-TCP_SERVER = None
+# TCP_SERVER = None
 
 
 class TcpServer(object):
 
-    def __init__(self):
+    def __init__(self, server_name, json_conf_path):
         self.tcp_conn_map = {}
         self._etcd_service_node = None
         # self.register_entities()
 
-        self._config = self.parse_json_conf()
-
+        self.parse_json_conf(json_conf_path)
+        gr.game_server_name = server_name
         LogManager.set_log_tag(gr.game_server_name)
         LogManager.set_log_path(gr.game_json_conf["log_path"])
 
         self._logger = LogManager.get_logger('TcpServer')
 
         self.register_server_entities()
-        self.register_battle_entities()
+        # self.register_battle_entities()
         self.register_component()
 
-        incremental_reload.init_reload_record()
+        incremental_reload.init_reload_record()  # 一定要放到EntityScanner注册了的代码之后, 不然sys.modules里没相关的模块
 
     @staticmethod
-    def parse_json_conf():
-        with open(r"../bin/win/conf/battle_server.json") as conf_file:
+    def parse_json_conf(json_conf_path):
+        # with open(r"../bin/win/conf/battle_server.json") as conf_file:
+        with open(json_conf_path) as conf_file:
             # data = file.read()
             # _name = r'../bin/win/conf/battle_server.json'
             # file_name = r'D:\Documents\github\realtime-server\pycharm2020.1.3\bin\win\conf\battle_server.json'
@@ -69,7 +70,7 @@ class TcpServer(object):
         from common.component.Component import Component
         from common.component import ComponentRegister
         # gameconfig = self.config[self.config_sections.game]
-        component_root = self._config.get('component_root')
+        component_root = gr.game_json_conf.get('component_root')
         if component_root is None:
             self._logger.error('conf file has no component_root!')
             return
@@ -79,48 +80,52 @@ class TcpServer(object):
         for comp_type, comp_cls in component_classes:
             ComponentRegister.register(comp_cls)
 
-    def register_battle_entities(self):
+    # def register_battle_entities(self):
+    #     from BattleEntity import BattleEntity
+    #     _ber = gr.game_json_conf.get('battle_entity_root', None)
+    #     if _ber is None:
+    #         self._logger.error('conf file has no battle_entity_root!')
+    #         return
+    #     entity_classes = EntityScanner.scan_entity_package(_ber, BattleEntity)
+    #     entity_classes = entity_classes.items()
+    #
+    #     # def cmp(x, y):
+    #     #     if x < y:
+    #     #         return -1
+    #     #     elif x == y:
+    #     #         return 0
+    #     #     else:
+    #     #         return 1
+    #     #
+    #     # entity_classes.sort(lambda a, b: cmp(a[0], b[0]))
+    #     for cls_name, cls in entity_classes:
+    #         EntityFactory.instance().register_entity(cls_name, cls)
+
+    @staticmethod
+    def register_server_entities():
         from BattleEntity import BattleEntity
-        _ber = self._config.get('battle_entity_root', None)
-        if _ber is None:
-            self._logger.error('conf file has no battle_entity_root!')
-            return
-        entity_classes = EntityScanner.scan_entity_package(_ber, BattleEntity)
-        entity_classes = entity_classes.items()
-
-        # def cmp(x, y):
-        #     if x < y:
-        #         return -1
-        #     elif x == y:
-        #         return 0
-        #     else:
-        #         return 1
-        #
-        # entity_classes.sort(lambda a, b: cmp(a[0], b[0]))
-        for cls_name, cls in entity_classes:
-            EntityFactory.instance().register_entity(cls_name, cls)
-
-    def register_server_entities(self):
-        # from BattleEntity import BattleEntity
+        from LobbyEntity import LobbyEntity
         from server_entity.ServerEntity import ServerEntity
-        _ber = self._config.get('server_entity_root', None)
+        _ser = gr.game_json_conf.get('server_entity_root', None)
+        _ler = gr.game_json_conf.get('lobby_entity_root', None)
+        _ber = gr.game_json_conf.get('battle_entity_root', None)
+        if _ser is None:
+            # self._logger.error('conf file has no server_entity_root!')
+            raise Exception('conf file has no server_entity_root!')
+        if _ler is None:
+            # self._logger.error('conf file has no server_entity_root!')
+            raise Exception('conf file has no lobby_entity_root!')
         if _ber is None:
-            self._logger.error('conf file has no server_entity_root!')
-            return
-        entity_classes = EntityScanner.scan_entity_package(_ber, ServerEntity)
-        entity_classes = entity_classes.items()
-
-        # def cmp(x, y):
-        #     if x < y:
-        #         return -1
-        #     elif x == y:
-        #         return 0
-        #     else:
-        #         return 1
-        #
-        # entity_classes.sort(lambda a, b: cmp(a[0], b[0]))
-        for cls_name, cls in entity_classes:
-            EntityFactory.instance().register_entity(cls_name, cls)
+            # self._logger.error('conf file has no server_entity_root!')
+            raise Exception('conf file has no battle_entity_root!')
+            # return
+        _temp = {_ser: ServerEntity, _ler: LobbyEntity, _ber: BattleEntity}
+        for _ent_root, _ent_cls in _temp.items():
+            entity_classes = EntityScanner.scan_entity_package(
+                _ent_root, _ent_cls)
+            entity_classes = entity_classes.items()
+            for cls_name, cls in entity_classes:
+                EntityFactory.instance().register_entity(cls_name, cls)
 
     def forward(self, addr, message):
         for _addr, _tcp_conn in self.tcp_conn_map.items():
@@ -180,6 +185,9 @@ class TcpServer(object):
 
             async with server:
                 await server.serve_forever()
+        except KeyboardInterrupt:
+            print(f"\nShutting Down Server: {gr.game_server_name}...\n")
+            return
         except:
             self._logger.log_last_except()
 
@@ -206,7 +214,7 @@ class TcpServer(object):
         _etcd_support_task = asyncio.create_task(self._etcd_service_node.start())
         _start_srv_task = asyncio.create_task(self.start_server_task())
 
-        await _etcd_support_task
+        # await _etcd_support_task
         await _start_srv_task
 
     @staticmethod
@@ -251,9 +259,10 @@ class TcpServer(object):
 
 
 if __name__ == '__main__':
-    gr.game_server_name = sys.argv[1]
-    tcp_server = TcpServer()
-    TCP_SERVER = tcp_server
+    game_server_name = sys.argv[1]
+    server_json_conf_path = r"../bin/win/conf/battle_server.json"
+    tcp_server = TcpServer(game_server_name, server_json_conf_path)
+    # TCP_SERVER = tcp_server
     tcp_server.run()
 
     # loop = asyncio.get_event_loop()

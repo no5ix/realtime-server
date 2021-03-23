@@ -63,11 +63,28 @@ class TcpConn(object):
                         self._recv_data = self._recv_data[_input_data_len:]
                     else:
                         break
-            except ConnectionResetError:
+            except (ConnectionResetError, ):
                 self.asyncio_writer.close()
                 # TODO: not safe, handle conn closed
-                print("connection is closed by remote client..")
+                print("connection is closed by remote client..with ConnectionResetError")
                 break
+            except ConnectionAbortedError:
+                self.asyncio_writer.close()
+                # TODO: not safe, handle conn closed
+                print("connection is closed by remote client..with ConnectionAbortedError")
+                break
+            # except ConnectionError:
+            #     self.asyncio_writer.close()
+            #     # TODO: not safe, handle conn closed
+            #     print("connection is closed by remote client..")
+            #     break
+            except ConnectionRefusedError:
+                self.asyncio_writer.close()
+                # TODO: not safe, handle conn closed
+                print("connection is closed by remote client..with ConnectionRefusedError")
+                break
+            except:
+                self._logger.log_last_except()
 
             # message = MsgpackSupport.decode(_data)
             # self.forward(self.asyncio_writer, addr, message)
