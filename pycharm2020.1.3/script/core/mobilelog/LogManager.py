@@ -2,6 +2,7 @@ import os
 import sys
 # import platform
 import logging
+import time
 from concurrent.futures.thread import ThreadPoolExecutor
 # from functools import wraps
 from logging.handlers import TimedRotatingFileHandler
@@ -57,6 +58,7 @@ class LogManager:
                 logger_name = caller_class
             except:
                 raise Exception("logger_name is None and can't get caller class")
+        # if LogManager.file_handler is None or True:  # TODO del
         if LogManager.file_handler is None:
             if LogManager.log_tag == "":
                 raise Exception("LogManager Error: log tag is empty!")
@@ -149,7 +151,9 @@ class AsyncLogger:
         def wrapper(self, msg, *args, **kw):
             final_msg = self.join_caller_filename_lineno(msg)
             if gr.is_dev_version and func.__name__ in ("debug", "error", "warning", "critical"):
-                print(final_msg)
+                print(" - ".join(
+                    (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
+                     self._logger.name, func.__name__.upper(), final_msg)))
             # print('%s %s():' % (text, func.__name__))
             _log_tp_executor.submit(
                 getattr(self._logger, func.__name__), final_msg, *args, **kw)

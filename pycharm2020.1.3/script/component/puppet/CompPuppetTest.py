@@ -59,6 +59,9 @@ class CompPuppetTest(Component):
         print("fin make reload")
         # self.test_reload_impl()
 
+        self.call_client_comp_method(
+            self.VAR_NAME, 'puppet_chat_from_srv', {'i': {"reload_state": "success"}})
+
     @rpc_method(CLIENT_ONLY)
     def test_reload(self):
         print("test_reload  before")

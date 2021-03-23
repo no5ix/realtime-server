@@ -189,6 +189,11 @@ class TcpServer(object):
                 await server.serve_forever()
         except KeyboardInterrupt:
             print(f"\nShutting Down Server: {gr.game_server_name}...\n")
+            # _loop = asyncio.get_running_loop()
+            # _loop.stop()
+            # _loop.close()
+            # server.close()
+
             return
         except:
             # print("Unexpected error:", sys.exc_info()[0])

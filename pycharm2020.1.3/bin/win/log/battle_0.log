@@ -1,1 +1,2 @@
-2021-03-23 23:48:17,975 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 105 -> 106
+2021-03-24 00:21:42,700 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 605a1596d164124c8c42117c mem_id=2696077780064
+2021-03-24 00:21:42,705 - server.EntityManager - INFO : [EntityManager.py:140]: addentity  entity id  605a1596d164124c8c42117c 
