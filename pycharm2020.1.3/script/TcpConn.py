@@ -44,6 +44,10 @@ class TcpConn(object):
                 # self.asyncio_writer
                 _data = await self.asyncio_reader.read(8192)
                 # print("_data")
+                if _data == b"":
+                    self.asyncio_writer.close()
+                    print("connection is closed by remote client..(the peer has performed an orderly shutdown).")
+                    break
                 self._recv_data += _data
                 while True:
                     _len_recv_data = len(self._recv_data)

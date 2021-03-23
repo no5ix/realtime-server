@@ -36,7 +36,7 @@ class TcpServer(object):
         LogManager.set_log_tag(gr.game_server_name)
         LogManager.set_log_path(gr.game_json_conf["log_path"])
 
-        self._logger = LogManager.get_logger('TcpServer')
+        self._logger = LogManager.get_logger()
 
         self.register_server_entities()
         # self.register_battle_entities()
@@ -119,7 +119,9 @@ class TcpServer(object):
             # self._logger.error('conf file has no server_entity_root!')
             raise Exception('conf file has no battle_entity_root!')
             # return
-        _temp = {_ser: ServerEntity, _ler: LobbyEntity, _ber: BattleEntity}
+        _temp = {_ser: ServerEntity,
+                 _ler: LobbyEntity,
+                 _ber: BattleEntity}
         for _ent_root, _ent_cls in _temp.items():
             entity_classes = EntityScanner.scan_entity_package(
                 _ent_root, _ent_cls)
@@ -189,7 +191,9 @@ class TcpServer(object):
             print(f"\nShutting Down Server: {gr.game_server_name}...\n")
             return
         except:
+            # print("Unexpected error:", sys.exc_info()[0])
             self._logger.log_last_except()
+            raise
 
     async def main(self):
         self.handle_sig()

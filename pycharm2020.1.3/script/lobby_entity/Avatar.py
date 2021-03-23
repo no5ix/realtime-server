@@ -1,5 +1,5 @@
-import LobbyEntity
-from common.component import ComponentSupport
+from LobbyEntity import LobbyEntity
+from common.component.ComponentSupport import ComponentSupport
 from common.component.Component import components
 from component.avatar.CompAvatarTest import CompAvatarTest
 
@@ -25,5 +25,8 @@ from component.avatar.CompAvatarTest import CompAvatarTest
 class Avatar(LobbyEntity, ComponentSupport):
 
     def __init__(self):
-        super().__init__()
-        pass
+        # super(BattleEntity).__init__()
+        # super(ComponentSupport).__init__()
+
+        LobbyEntity.__init__(self)
+        ComponentSupport.__init__(self)

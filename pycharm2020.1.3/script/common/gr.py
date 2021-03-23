@@ -1,6 +1,7 @@
 from typing import Union
 # from core.EtcdSupport import ServiceNode
 
+is_dev_version = True
 
 bind_entity = None
 is_client = False
@@ -17,7 +18,6 @@ etcd_service_node = None  # type: Union[ServiceNode, None]
 
 
 server_singletons = {}
-reload_listeners = set()
 
 
 def add_server_singleton(entity, postfix=''):

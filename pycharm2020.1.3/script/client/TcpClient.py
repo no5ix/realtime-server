@@ -19,8 +19,8 @@ async def tcp_echo_client():
     # local_server_port_tuple = (8888, )
     port = random.choice(local_server_port_tuple)
     reader, writer = await asyncio.open_connection(
-        '192.168.82.177', port)
-        # '192.168.1.4', port)
+        # '192.168.82.177', port)
+        '192.168.1.4', port)
         # '127.0.0.1', port)
 
     _ppt = Puppet()
@@ -37,7 +37,8 @@ async def tcp_echo_client():
     # _ppt.set_bind_entity(_pbe)
     # gr.bind_entity = _pbe
 
-    _ppt.CompPuppetTest.puppet_chat_to_channel({'content': 'test_chat_msg'})
+    # _ppt.CompPuppetTest.puppet_chat_to_channel({'content': 'test_chat_msg'})
+    _ppt.CompPuppetTest.make_server_reload()
 
     # return
     #

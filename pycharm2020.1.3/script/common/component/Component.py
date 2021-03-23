@@ -104,8 +104,11 @@ def components(*component_list):
             if inspect.isclass(component):
                 # 取类名的VAR_NAME, 这是component在entity中被引用的名字，通常比原始的Component名字更短
                 # 在entity里面用VAR_NAME来引用该component
+                if component.VAR_NAME == "Component":
+                    component.VAR_NAME = component.__name__
+
                 name = component.VAR_NAME
-                assert name != "Component"
+                # assert name != "Component"
                 __add_component(entity_klass, name, component)
             else:
                 raise RuntimeError("Can't find component: %s (type %s)." % (name, type(component)))
