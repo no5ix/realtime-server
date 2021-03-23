@@ -34,58 +34,10 @@ _log_tp_executor = ThreadPoolExecutor(max_workers=1)
 # _th_executor.submit()
 
 
-class AsyncLogger:
-
-    def __init__(self, logger_name):
-        logger = logging.getLogger(logger_name)
-        # logger.setLevel(logging.DEBUG)
-
-        fh = TimedRotatingFileHandler(LogManager.log_path + LogManager.log_tag + ".log", when='M')
-        # fh = TimedRotatingFileHandler(_temp_file_name, when='S')
-        # fh.setLevel(logging.DEBUG)
-        # formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - [%(filename)s:%(lineno)d] : %(message)s')
-        formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s : %(message)s')
-        fh.setFormatter(formatter)
-        logger.addHandler(fh)
-        # fh.setLevel(logging.DEBUG)
-        logger.setLevel(logging.DEBUG)
-        # logger.shu
-        # return logger
-        self._logger = logger
-
-    @staticmethod
-    def join_caller_filename_lineno(msg):
-        # caller = inspect.getframeinfo(inspect.stack()[2][0])
-        caller = inspect.stack()[2]
-        # return ''.join(('[', inspect.stack()[2].filename, ':', str(inspect.stack()[2].lineno), ']', msg))
-        return ''.join(('[', os.path.basename(caller.filename), ':', str(caller.lineno), ']: ', msg))
-
-    def debug(self, msg, *args, **kwargs):
-        _log_tp_executor.submit(self._logger.debug, self.join_caller_filename_lineno(msg), *args, **kwargs)
-
-    def info(self, msg, *args, **kwargs):
-        _log_tp_executor.submit(self._logger.info, self.join_caller_filename_lineno(msg), *args, **kwargs)
-
-    def warning(self, msg, *args, **kwargs):
-        _log_tp_executor.submit(self._logger.warning, self.join_caller_filename_lineno(msg), *args, **kwargs)
-
-    def error(self, msg, *args, **kwargs):
-        _log_tp_executor.submit(self._logger.error, self.join_caller_filename_lineno(msg), *args, **kwargs)
-
-    def critical(self, msg, *args, **kwargs):
-        _log_tp_executor.submit(self._logger.critical, self.join_caller_filename_lineno(msg), *args, **kwargs)
-
-    def log_last_except(self):
-        tp, value, traceback = sys.exc_info()
-        tb_cont = convert_python_tb_to_str(tp, value, traceback)
-        _log_tp_executor.submit(
-            self._logger.error,
-            self.join_caller_filename_lineno(f'on_traceback, type:{tp}, value:{value}, traceback:{tb_cont}'))
-
-
 class LogManager:
     log_tag = ""
     log_path = ""
+    file_handler = None
 
     @staticmethod
     def set_log_tag(tag):
@@ -97,7 +49,12 @@ class LogManager:
 
     @staticmethod
     def get_logger(logger_name):
-        return AsyncLogger(logger_name)
+        if LogManager.file_handler is None:
+            if LogManager.log_tag == "":
+                raise Exception("LogManager Error: log tag is empty!")
+            LogManager.file_handler = TimedRotatingFileHandler(
+                LogManager.log_path + LogManager.log_tag + ".log", when="D")
+        return AsyncLogger(logger_name, LogManager.file_handler)
         # _temp_file_name = 'test_log.log'
         #
         # use_st_logger = True
@@ -154,6 +111,59 @@ class LogManager:
         # #     #     # loop.close()
         # #
         # #     return logger
+
+
+class AsyncLogger:
+
+    def __init__(self, logger_name, fh):
+        # logging.basicConfig(
+        #     format='%(asctime)s - %(name)s - %(levelname)s : %(message)s',
+        #     handlers=[TimedRotatingFileHandler(
+        #         LogManager.log_path + LogManager.log_tag + ".log", when='S')],
+        # )
+        _logger = logging.getLogger(logger_name)
+
+        # fh = TimedRotatingFileHandler(
+        #     LogManager.log_path + LogManager.log_tag + ".log", when='D')
+        # fh = TimedRotatingFileHandler(_temp_file_name, when='S')
+        # fh.setLevel(logging.DEBUG)
+        # formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - [%(filename)s:%(lineno)d] : %(message)s')
+        formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s : %(message)s')
+        fh.setFormatter(formatter)
+        _logger.addHandler(fh)
+        # fh.setLevel(logging.DEBUG)
+        _logger.setLevel(logging.DEBUG)
+
+        self._logger = _logger
+
+    @staticmethod
+    def join_caller_filename_lineno(msg):
+        # caller = inspect.getframeinfo(inspect.stack()[2][0])
+        caller = inspect.stack()[2]
+        # return ''.join(('[', inspect.stack()[2].filename, ':', str(inspect.stack()[2].lineno), ']', msg))
+        return ''.join(('[', os.path.basename(caller.filename), ':', str(caller.lineno), ']: ', msg))
+
+    def debug(self, msg, *args, **kwargs):
+        _log_tp_executor.submit(self._logger.debug, self.join_caller_filename_lineno(msg), *args, **kwargs)
+
+    def info(self, msg, *args, **kwargs):
+        _log_tp_executor.submit(self._logger.info, self.join_caller_filename_lineno(msg), *args, **kwargs)
+
+    def warning(self, msg, *args, **kwargs):
+        _log_tp_executor.submit(self._logger.warning, self.join_caller_filename_lineno(msg), *args, **kwargs)
+
+    def error(self, msg, *args, **kwargs):
+        _log_tp_executor.submit(self._logger.error, self.join_caller_filename_lineno(msg), *args, **kwargs)
+
+    def critical(self, msg, *args, **kwargs):
+        _log_tp_executor.submit(self._logger.critical, self.join_caller_filename_lineno(msg), *args, **kwargs)
+
+    def log_last_except(self):
+        tp, value, traceback = sys.exc_info()
+        tb_cont = convert_python_tb_to_str(tp, value, traceback)
+        _log_tp_executor.submit(
+            self._logger.error,
+            self.join_caller_filename_lineno(f'on_traceback, type:{tp}, value:{value}, traceback:{tb_cont}'))
 
 
 def convert_python_tb_to_str(t, v, tb, limit=None):
@@ -243,6 +253,7 @@ if __name__ == '__main__':
     # # logger.addHandler(ch)
 
     # 'application' code
+    LogManager.set_log_tag('test_log')
     logger = LogManager.get_logger('test_log')
     logger.debug('debug message')
     logger.info('info message')
