@@ -263,11 +263,11 @@ def rpc_method(rpctype, argtypes=(),  pub=True, cd=-1):
         call_func = rpcmethod.call
 
         def call_rpc_method_CLIENT_STUB(self, args):
-            fun_for_reload = func       # do not remove this, it is usefull for reload
+            # fun_for_reload = func       # do not remove this, it is usefull for reload
             return call_func(self, args)
 
         def call_rpc_method_Others(self, args):
-            fun_for_reload = func       # do not remove this, it is usefull for reload
+            # fun_for_reload = func       # do not remove this, it is usefull for reload
             # return call_func(self, *args)
             # with _delay_guard:
             ret = call_func(self, args)

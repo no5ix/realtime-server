@@ -73,8 +73,7 @@ class Center(ServerEntity):
     #     pass
 
     def on_stub_connected(self, stub_box):
-        print("center: on_stub_connected")
-        pass
+        self._logger.debug("center: on_stub_connected")
 
     # def get_stub_num(self):
     #     return len(self._stubs)

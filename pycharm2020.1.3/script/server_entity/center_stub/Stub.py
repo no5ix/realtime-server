@@ -99,12 +99,12 @@ class Stub(ServerEntity):
     #         if not GameAPI.is_same_mailbox(self_mb, p):
     #             self._peers.append(p)
 
-    @rpc_method(SERVER_ONLY, ())
+    @rpc_method(SERVER_ONLY)
     def connected_to_center(self):
         self.on_connected_to_center()
 
     def on_connected_to_center(self):
-        print("on_connected_to_center")
+        self._logger.debug("on_connected_to_center")
 
     # def get_mailbox(self):
     #     mb = EntityMailbox()

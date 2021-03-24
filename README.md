@@ -23,7 +23,7 @@ python 3.8.8
 - [ ] rename
 - [ ] 信号处理
 <!-- - [ ] exception 以及 各种抛出 -->
-- [ ] timer
+- [ ] timer with key and cancel
 - [ ] tick loop
 <!-- - [ ] etcd -->
 <!-- - [ ] server call cli -->
