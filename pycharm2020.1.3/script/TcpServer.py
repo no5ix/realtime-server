@@ -155,7 +155,7 @@ class TcpServer(object):
 
         self.tcp_conn_map[addr] = _tcp_conn
         message = f"{addr!r} is connected !!!!"
-        print(message)
+        self._logger.debug(message)
         _tcp_conn.loop()
         # self.forward(writer, addr, message)
         # while True:
@@ -166,7 +166,7 @@ class TcpServer(object):
         #     await writer.drain()
         #     if message == "exit":
         #         message = f"{addr!r} wants to close the connection."
-        #         print(message)
+        #         self._logger.debug(message)
         #         self.forward(writer, "Server", message)
         #         break
         # self.writers.remove(writer)
@@ -183,12 +183,12 @@ class TcpServer(object):
             # await _etcd_support_task
             # server = await _start_srv_task
             addr = server.sockets[0].getsockname()
-            print(f'Server on {addr}')
+            self._logger.debug(f'Server on {addr}')
 
             async with server:
                 await server.serve_forever()
         except KeyboardInterrupt:
-            print(f"\nShutting Down Server: {gr.game_server_name}...\n")
+            self._logger.debug(f"\nShutting Down Server: {gr.game_server_name}...\n")
             # _loop = asyncio.get_running_loop()
             # _loop.stop()
             # _loop.close()
@@ -196,7 +196,7 @@ class TcpServer(object):
 
             return
         except:
-            # print("Unexpected error:", sys.exc_info()[0])
+            # self._logger.debug("Unexpected error:", sys.exc_info()[0])
             self._logger.log_last_except()
             raise
 
@@ -226,11 +226,10 @@ class TcpServer(object):
         # await _etcd_support_task
         await _start_srv_task
 
-    @staticmethod
-    def handle_sig():
+    def handle_sig(self):
 
         def ask_exit(sig_name, loop):
-            print('got signal %s: exit' % sig_name)
+            self._logger.debug('got signal %s: exit' % sig_name)
             try:
                 loop.stop()
             except RuntimeError:

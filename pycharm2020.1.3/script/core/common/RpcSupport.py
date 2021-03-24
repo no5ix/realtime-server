@@ -99,18 +99,20 @@ class RpcMethod(object):
             try:
                 arg = parameters[argtype.getname()]
             except KeyError:
-                print("call: parameter %s not found in RPC call %s, using default value",
-                             argtype.getname(), self.func.__name__)
+                print(
+                    "call: parameter %s not found in RPC call %s, using default value" %
+                    argtype.getname(), self.func.__name__)
                 arg = argtype.default_val()
             try:
-                if arg == None and argtype.get_type() == 'Uuid':
-                    #让uuid类型的参数可以是None
+                if arg is None and argtype.get_type() == 'Uuid':
+                    # 让uuid类型的参数可以是None
                     arg = None
                 else:
                     arg = argtype.convert(arg)
             except ConvertError as e:  # we will call the method if the conversion failed
-                print("call: parameter %s can't convert input %s for RPC call %s exception %s",
-                              argtype.getname(),  str(arg),  self.func.__name__, str(e))
+                print(
+                    "call: parameter %s can't convert input %s for RPC call %s exception %s" %
+                    argtype.getname(),  str(arg),  self.func.__name__, str(e))
                 return
             args.append(arg)
         return self.func(entity, *args)

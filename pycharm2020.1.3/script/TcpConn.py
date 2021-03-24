@@ -43,10 +43,10 @@ class TcpConn(object):
             try:
                 # self.asyncio_writer
                 _data = await self.asyncio_reader.read(8192)
-                # print("_data")
+                # self._logger.debug("_data")
                 if _data == b"":
                     self.asyncio_writer.close()
-                    print("connection is closed by remote client..(the peer has performed an orderly shutdown).")
+                    self._logger.debug("the peer has performed an orderly shutdown (recv 0 byte).")
                     break
                 self._recv_data += _data
                 while True:
@@ -56,13 +56,13 @@ class TcpConn(object):
                     _body_len, = s_unpack('i', self._recv_data[:HEAD_LEN])
                     _input_data_len = HEAD_LEN + _body_len
                     if _body_len > MAX_BODY_LEN or _body_len < 0:
-                        print("body too big, Close the connection")
+                        self._logger.debug("body too big, Close the connection")
                         self.asyncio_writer.close()
                         return
                     elif _len_recv_data >= _input_data_len:
                         _body_data = self._recv_data[HEAD_LEN:_input_data_len]
                         self._recv_cnt += 1
-                        # print("self._recv_cnt:" + str(self._recv_cnt))
+                        # self._logger.debug("self._recv_cnt:" + str(self._recv_cnt))
                         self.handle_message(_body_data)
                         self._recv_data = self._recv_data[_input_data_len:]
                     else:
@@ -70,22 +70,22 @@ class TcpConn(object):
             except (ConnectionResetError, ):
                 self.asyncio_writer.close()
                 # TODO: not safe, handle conn closed
-                print("connection is closed by remote client..with ConnectionResetError")
+                self._logger.debug("connection is closed by remote client..with ConnectionResetError")
                 break
             except ConnectionAbortedError:
                 self.asyncio_writer.close()
                 # TODO: not safe, handle conn closed
-                print("connection is closed by remote client..with ConnectionAbortedError")
+                self._logger.debug("connection is closed by remote client..with ConnectionAbortedError")
                 break
             # except ConnectionError:
             #     self.asyncio_writer.close()
             #     # TODO: not safe, handle conn closed
-            #     print("connection is closed by remote client..")
+            #     self._logger.debug("connection is closed by remote client..")
             #     break
             except ConnectionRefusedError:
                 self.asyncio_writer.close()
                 # TODO: not safe, handle conn closed
-                print("connection is closed by remote client..with ConnectionRefusedError")
+                self._logger.debug("connection is closed by remote client..with ConnectionRefusedError")
                 break
             except:
                 self._logger.log_last_except()
@@ -95,7 +95,7 @@ class TcpConn(object):
             # await self.asyncio_writer.drain()
             # if message == "exit":
             #     message = f"{addr!r} wants to close the connection."
-            #     print(message)
+            #     self._logger.debug(message)
             #     self.forward(self.asyncio_writer, "Server", message)
             #     break
         # self.asyncio_writer.close()
@@ -138,7 +138,7 @@ class TcpConn(object):
             # self.logger.error("encode request message error")
             self._logger.log_last_except()
             # self.handle_traceback()
-            print("encode request message error")
+            self._logger.debug("encode request message error")
         else:
             # con.send_data_and_count(data)
             # if gr.flow_backups:

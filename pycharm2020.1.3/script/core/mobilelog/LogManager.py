@@ -153,7 +153,7 @@ class AsyncLogger:
             if gr.is_dev_version and func.__name__ in ("debug", "error", "warning", "critical"):
                 print(" - ".join(
                     (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
-                     self._logger.name, func.__name__.upper(), final_msg)))
+                     self._logger.name, func.__name__.upper(), final_msg)) % args)
             # print('%s %s():' % (text, func.__name__))
             _log_tp_executor.submit(
                 getattr(self._logger, func.__name__), final_msg, *args, **kw)
@@ -260,54 +260,28 @@ def convert_python_tb_to_str(t, v, tb, limit=None):
 
 if __name__ == '__main__':
 
-    # async def main():
-    #     _logger = LogManager.get_logger('test_logger')
-    #
-    # # 'application' code
-    #     await _logger.debug('debug message')
-    #     await _logger.info('info message')
-    #     await _logger.warning('warn message')
-    #     await _logger.error('error message')
-    #     await _logger.critical('critical message')
-    #     # await _logger.shutdown()
-    #
-    # import asyncio
-    #
-    # loop = asyncio.get_event_loop()
-    # loop.run_until_complete(main())
-    # loop.close()
-
-    # _logger.info('siguoyinie')
-    # _logger.debug('siguoyinie')
-
+    # sync logger
     # create logger
-    # logger = logging.getLogger('simple_example')
-    
-    #     # logger.setLevel(logging.DEBUG)
-    # fh = TimedRotatingFileHandler('logmm.log', when='D')
-    # # fh = TimedRotatingFileHandler(_temp_file_name, when='S')
+    logger = logging.getLogger('simple_example')
+
+        # logger.setLevel(logging.DEBUG)
+    fh = TimedRotatingFileHandler('logmm.log', when='D')
+    # fh = TimedRotatingFileHandler(_temp_file_name, when='S')
     # fh.setLevel(logging.DEBUG)
 
-    # formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - [%(filename)s:%(lineno)d] : %(message)s')
-    # fh.setFormatter(formatter)
-    # logger.addHandler(fh)
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - [%(filename)s:%(lineno)d] : %(message)s')
+    fh.setFormatter(formatter)
+    logger.addHandler(fh)
+    logger.setLevel(logging.DEBUG)
 
-    # # logger.setLevel(logging.DEBUG)
+    logger.debug('debug message ::%s', "dmmm?")
+    logger.info('info message')
+    logger.warning('warn message')
+    logger.error('error message')
+    logger.critical('critical message')
 
-    # # # create console handler and set level to debug
-    # # ch = logging.StreamHandler()
-    # # ch.setLevel(logging.DEBUG)
-
-    # # # create formatter
-    # # formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-
-    # # # add formatter to ch
-    # # ch.setFormatter(formatter)
-
-    # # # add ch to logger
-    # # logger.addHandler(ch)
-
-    # 'application' code
+    ##################################################
+    # async logger 'application' code
     LogManager.set_log_tag('test_log')
     logger = LogManager.get_logger('test_log')
     logger.debug('debug message')

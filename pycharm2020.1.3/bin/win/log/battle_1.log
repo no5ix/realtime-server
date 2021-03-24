@@ -1,1 +1,75 @@
 2021-03-24 09:04:13,486 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 13 -> 13
+2021-03-24 09:05:44,304 - ServiceNode - INFO : [EtcdSupport.py:476]: we have create ServiceRegister, wait 5 seconds
+2021-03-24 09:05:44,305 - ServiceNode - INFO : [EtcdSupport.py:479]: we have create ServiceFinder
+2021-03-24 09:05:44,310 - ServiceRegister - INFO : [EtcdSupport.py:148]: regist service : BattleAllocatorStub success, {"action":"set","node":{"key":"/services/BattleAllocatorStub/192.168.82.177|8889","value":"","expiration":"2021-03-24T01:08:44.3081762Z","ttl":180,"modifiedIndex":15,"createdIndex":15},"prevNode":{"key":"/services/BattleAllocatorStub/192.168.82.177|8889","value":"","expiration":"2021-03-24T01:06:06.4712764Z","ttl":23,"modifiedIndex":12,"createdIndex":12}}
+
+2021-03-24 09:05:48,313 - SingletonEntityManager - DEBUG : [SingletonEntityManager.py:118]: _register_relevant_centers_cb, status:good
+2021-03-24 09:05:48,315 - ServerEntity.BattleAllocatorStub - INFO : [ServerEntity.py:21]: __init__ create entity BattleAllocatorStub with id 605a906cfe754e32d8e5138c mem_id=2823941939264
+2021-03-24 09:05:48,316 - server.EntityManager - INFO : [EntityManager.py:140]: addentity  entity id  605a906cfe754e32d8e5138c 
+2021-03-24 09:05:48,317 - SingletonEntityManager - INFO : [SingletonEntityManager.py:135]: BattleAllocatorStub connected to center
+2021-03-24 09:05:48,319 - SingletonEntityManager - DEBUG : [SingletonEntityManager.py:137]: _register_stubs_cb, status:good
+2021-03-24 09:05:49,306 - ServerEntity.BattleAllocatorStub - INFO : [Stub.py:56]: Stub cannot connect to BattleAllocatorCenter, try again after 1 sec... (1)
+2021-03-24 09:05:49,309 - ServiceFinder - INFO : [EtcdSupport.py:282]: add service node info--> BattleAllocatorCenter: ('192.168.82.177', 8888)
+2021-03-24 09:05:49,310 - ServiceFinder - INFO : [EtcdSupport.py:282]: add service node info--> BattleAllocatorStub: ('192.168.82.177', 9000)
+2021-03-24 09:05:49,311 - ServiceFinder - INFO : [EtcdSupport.py:282]: add service node info--> BattleAllocatorStub: ('192.168.82.177', 8889)
+2021-03-24 09:05:49,312 - ServiceFinder - INFO : [EtcdSupport.py:236]: init service info from etcd success, will going to watch, at etcd index -> 16
+2021-03-24 09:06:58,307 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 16 -> 16
+2021-03-24 09:08:07,319 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 16 -> 16
+2021-03-24 09:09:09,321 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 16 -> 19
+2021-03-24 09:10:12,325 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 19 -> 19
+2021-03-24 09:11:18,325 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 19 -> 22
+2021-03-24 09:12:25,327 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 22 -> 25
+2021-03-24 09:13:34,334 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 25 -> 25
+2021-03-24 09:14:37,337 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 25 -> 28
+2021-03-24 09:15:38,340 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 28 -> 31
+2021-03-24 09:16:43,341 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 31 -> 31
+2021-03-24 09:17:51,345 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 31 -> 34
+2021-03-24 09:18:56,347 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 34 -> 35
+2021-03-24 09:20:04,350 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 35 -> 37
+2021-03-24 09:21:06,354 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 37 -> 40
+2021-03-24 09:22:07,362 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 40 -> 40
+2021-03-24 09:23:16,348 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 40 -> 43
+2021-03-24 09:24:19,352 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 43 -> 45
+2021-03-24 09:25:19,360 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 45 -> 46
+2021-03-24 09:26:29,363 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 46 -> 49
+2021-03-24 09:27:38,368 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 49 -> 50
+2021-03-24 09:27:58,802 - ServiceRegister - ERROR : [EtcdSupport.py:186]: refresh service: BattleAllocatorStub error, {"errorCode":100,"message":"Key not found","cause":"/services/BattleAllocatorStub/192.168.82.177|8889","index":52}
+
+2021-03-24 09:27:58,804 - ServiceFinder - INFO : [EtcdSupport.py:382]: recv wath expire, info--> BattleAllocatorStub: ('192.168.82.177', 8889) - [51]
+2021-03-24 09:27:58,807 - ServiceRegister - ERROR : [EtcdSupport.py:186]: refresh service: BattleAllocatorStub error, {"errorCode":100,"message":"Key not found","cause":"/services/BattleAllocatorStub/192.168.82.177|8889","index":52}
+
+2021-03-24 09:27:58,810 - ServiceRegister - ERROR : [EtcdSupport.py:186]: refresh service: BattleAllocatorStub error, {"errorCode":100,"message":"Key not found","cause":"/services/BattleAllocatorStub/192.168.82.177|8889","index":52}
+
+2021-03-24 09:27:58,814 - ServiceRegister - ERROR : [EtcdSupport.py:186]: refresh service: BattleAllocatorStub error, {"errorCode":100,"message":"Key not found","cause":"/services/BattleAllocatorStub/192.168.82.177|8889","index":52}
+
+2021-03-24 09:27:58,817 - ServiceRegister - ERROR : [EtcdSupport.py:186]: refresh service: BattleAllocatorStub error, {"errorCode":100,"message":"Key not found","cause":"/services/BattleAllocatorStub/192.168.82.177|8889","index":52}
+
+2021-03-24 09:27:58,820 - ServiceRegister - ERROR : [EtcdSupport.py:186]: refresh service: BattleAllocatorStub error, {"errorCode":100,"message":"Key not found","cause":"/services/BattleAllocatorStub/192.168.82.177|8889","index":52}
+
+2021-03-24 09:27:58,822 - ServiceRegister - ERROR : [EtcdSupport.py:186]: refresh service: BattleAllocatorStub error, {"errorCode":100,"message":"Key not found","cause":"/services/BattleAllocatorStub/192.168.82.177|8889","index":52}
+
+2021-03-24 09:27:58,825 - ServiceRegister - ERROR : [EtcdSupport.py:186]: refresh service: BattleAllocatorStub error, {"errorCode":100,"message":"Key not found","cause":"/services/BattleAllocatorStub/192.168.82.177|8889","index":52}
+
+2021-03-24 09:27:58,828 - ServiceRegister - ERROR : [EtcdSupport.py:186]: refresh service: BattleAllocatorStub error, {"errorCode":100,"message":"Key not found","cause":"/services/BattleAllocatorStub/192.168.82.177|8889","index":52}
+
+2021-03-24 09:27:58,831 - ServiceRegister - ERROR : [EtcdSupport.py:186]: refresh service: BattleAllocatorStub error, {"errorCode":100,"message":"Key not found","cause":"/services/BattleAllocatorStub/192.168.82.177|8889","index":52}
+
+2021-03-24 09:29:08,807 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 51 -> 52
+2021-03-24 09:30:10,811 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 52 -> 53
+2021-03-24 09:31:16,814 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 53 -> 55
+2021-03-24 09:32:22,804 - ServiceFinder - INFO : [EtcdSupport.py:422]: etcd watch timeout, rest watch index 55 -> 55
+2021-03-24 09:32:50,952 - ServiceNode - INFO : [EtcdSupport.py:476]: we have create ServiceRegister, wait 5 seconds
+2021-03-24 09:32:50,954 - ServiceNode - INFO : [EtcdSupport.py:479]: we have create ServiceFinder
+2021-03-24 09:32:50,955 - ServiceRegister - DEBUG : [EtcdSupport.py:143]: _do_regist: now_url: http://192.168.82.177:2381/v2/keys/services/BattleAllocatorStub/192.168.82.177|8889
+2021-03-24 09:32:50,960 - ServiceRegister - DEBUG : [EtcdSupport.py:148]: regist service : BattleAllocatorStub success, {"action":"set","node":{"key":"/services/BattleAllocatorStub/192.168.82.177|8889","value":"","expiration":"2021-03-24T01:35:50.9579517Z","ttl":180,"modifiedIndex":59,"createdIndex":59}}
+
+2021-03-24 09:32:54,948 - SingletonEntityManager - DEBUG : [SingletonEntityManager.py:118]: _register_relevant_centers_cb, status:good
+2021-03-24 09:32:54,950 - ServerEntity.BattleAllocatorStub - INFO : [ServerEntity.py:21]: __init__ create entity BattleAllocatorStub with id 605a96c6fe754e36809ebd84 mem_id=1795883421760
+2021-03-24 09:32:54,951 - server.EntityManager - INFO : [EntityManager.py:140]: addentity  entity id  605a96c6fe754e36809ebd84 
+2021-03-24 09:32:54,953 - SingletonEntityManager - INFO : [SingletonEntityManager.py:135]: BattleAllocatorStub connected to center
+2021-03-24 09:32:54,954 - SingletonEntityManager - DEBUG : [SingletonEntityManager.py:137]: _register_stubs_cb, status:good
+2021-03-24 09:32:55,955 - ServerEntity.BattleAllocatorStub - INFO : [Stub.py:56]: Stub cannot connect to BattleAllocatorCenter, try again after 1 sec... (1)
+2021-03-24 09:32:55,958 - ServiceFinder - INFO : [EtcdSupport.py:282]: add service node info--> BattleAllocatorCenter: ('192.168.82.177', 8888)
+2021-03-24 09:32:55,959 - ServiceFinder - INFO : [EtcdSupport.py:282]: add service node info--> BattleAllocatorStub: ('192.168.82.177', 8889)
+2021-03-24 09:32:55,960 - ServiceFinder - INFO : [EtcdSupport.py:282]: add service node info--> BattleAllocatorStub: ('192.168.82.177', 9000)
+2021-03-24 09:32:55,961 - ServiceFinder - INFO : [EtcdSupport.py:236]: init service info from etcd success, will going to watch, at etcd index -> 60

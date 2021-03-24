@@ -46,15 +46,17 @@ class Stub(ServerEntity):
             asyncio.create_task(self.call_server_method_with_ip_port(
                 center_ip_port, 'register_stub', remote_entity_type=self._center_name))
 
-            print("register_stub")
+            # print("register_stub")
             self._connected = True
             if self.connect_cb is not None:
                 self.connect_cb()
                 self.connect_cb = None
         else:
-            print(f'Stub cannot connect to {self._center_name}, try again after 1 sec... {self._connect_counter}')
-            self.logger.info('Stub cannot connect to %s, try again after 1 sec... (%d)', self._center_name,
-                             self._connect_counter)
+            self._logger.debug(
+                f'Stub cannot connect to {self._center_name}, try again after 1 sec... {self._connect_counter}')
+            self._logger.debug(
+                'Stub cannot connect to %s, try again after 1 sec... (%d)', self._center_name,
+                self._connect_counter)
             # gr.callback(1.0, lambda: self.connect_to_center())
             asyncio.get_running_loop().call_later(1, self.connect_to_center)
 

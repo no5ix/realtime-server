@@ -140,12 +140,12 @@ class ServiceRegister(EtcdProcessor):
                 # if singleton:
                 #     now_url = self._get_url(service_name) + "?prevExist=false"
                 # r = requests.request("PUT", now_url, data=data, headers=_HEADER, timeout=2)
-                print(f"_do_regist: now_url: {now_url}")
+                self._logger.debug(f"_do_regist: now_url: {now_url}")
                 r = await UtilApi.async_wrap(
                     lambda: requests.request("PUT", now_url, data=data, headers=_HEADER, timeout=2))
                 res = json.loads(r.text)
                 if res.get("action") in ("create", "set"):
-                    self._logger.info("regist service : %s success, %s", service_name, r.text)
+                    self._logger.debug("regist service : %s success, %s", service_name, r.text)
                     self._fail_time = 0
                     return True
                 else:
@@ -308,7 +308,7 @@ class ServiceFinder(EtcdProcessor):
         while self.check_ok():
             try:
                 now_url = self._get_server_info() + _ETCD_KEY_PREFIX + "?recursive=true"
-                print(f"_init_info, now_url: {now_url}")
+                self._logger.debug(f"_init_info, now_url: {now_url}")
                 r = await UtilApi.async_wrap(lambda: requests.request("GET", now_url))
                 res = json.loads(r.text)
                 self._fail_time = 0
@@ -347,17 +347,16 @@ class ServiceFinder(EtcdProcessor):
         return service_name, (ip, port)
 
     async def _watch_process_impl(self):
-        print(f"testttt _watch_process_impl1, now_url: {self._get_server_info() + _ETCD_KEY_PREFIX}")
+        self._logger.debug(f"_watch_process_impl1, now_url: {self._get_server_info() + _ETCD_KEY_PREFIX}")
 
         r = await UtilApi.async_wrap(lambda: requests.request("GET", self._get_server_info() + _ETCD_KEY_PREFIX))
         self._etcd_index = int(r.headers["x-etcd-index"])
         now_url = self._get_server_info() + _ETCD_KEY_PREFIX + "?wait=true&recursive=true"
         if self._watch_index:
             now_url += "&waitIndex=" + str(self._watch_index + 1)
-            print(f"waiting testttt _watch_process_impl2 {now_url}")
+            self._logger.debug(f"waiting _watch_process_impl2 {now_url}")
 
         r = await UtilApi.async_wrap(lambda: requests.request("GET", now_url))
-        print("testttt _watch_process_impl3")
         res = json.loads(r.text)
         action = res.get("action", "")
         key_path = res.get("node", {}).get("key", "")

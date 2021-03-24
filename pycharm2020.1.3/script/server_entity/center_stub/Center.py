@@ -24,9 +24,9 @@ class Center(ServerEntity):
 
     def register_callback(self, succeeded):
         if succeeded:
-            self.logger.info('Register global %s succeed', self.__class__.__name__)
+            self._logger.debug('Register global %s succeed', self.__class__.__name__)
         else:
-            self.logger.error('Failed to register global %s!!', self.__class__.__name__)
+            self._logger.error('Failed to register global %s!!', self.__class__.__name__)
 
     @rpc_method(SERVER_ONLY)
     # @rpc_method(SERVER_ONLY, (MailBox(),))
