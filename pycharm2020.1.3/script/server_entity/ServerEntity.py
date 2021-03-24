@@ -9,9 +9,6 @@ from TcpConn import TcpConn
 from core.common.EntityManager import EntityManager
 from core.common.IdManager import IdManager
 from core.mobilelog.LogManager import LogManager
-
-
-# pylint: disable = E1101
 from core.util.TimerHub import TimerHub
 
 

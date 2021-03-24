@@ -82,19 +82,19 @@ if __name__ == "__main__":
     test_timer_key2_str = "test_timer_key2"
 
     th = TimerHub()
-    # th.call_later(
-    #     3, lambda h=test_timer_key1_str: print(h), test_timer_key1_str, repeat_count=3, repeat_interval_sec=1)
-    # print(f"th.has_timer(test_timer_key1_str): {th.has_timer(test_timer_key1_str)}")
-    #
-    # th.call_later(
-    #     2, lambda h=test_timer_key2_str: print(h), test_timer_key2_str, repeat_count=3, repeat_interval_sec=1)
-    # print(f"before cancel, th.has_timer(test_timer_key2_str): {th.has_timer(test_timer_key2_str)}")
-    # # th.cancel_timer(test_timer_key2_str)
-    # print(f"after cancel, th.has_timer(test_timer_key2_str): {th.has_timer(test_timer_key2_str)}")
-    #
-    # # th.call_later(2, lambda: th.cancel_timer(test_timer_key2_str), "cancel_test_timer_key2_str_during_repeating")
-    # _cur_timer_key, _ = th.call_at(time() + 4, lambda: th.cancel_timer(test_timer_key2_str))
-    # th.cancel_timer(_cur_timer_key)
+    th.call_later(
+        3, lambda h=test_timer_key1_str: print(h), test_timer_key1_str, repeat_count=3, repeat_interval_sec=1)
+    print(f"th.has_timer(test_timer_key1_str): {th.has_timer(test_timer_key1_str)}")
+    
+    th.call_later(
+        2, lambda h=test_timer_key2_str: print(h), test_timer_key2_str, repeat_count=3, repeat_interval_sec=1)
+    print(f"before cancel, th.has_timer(test_timer_key2_str): {th.has_timer(test_timer_key2_str)}")
+    # th.cancel_timer(test_timer_key2_str)
+    print(f"after cancel, th.has_timer(test_timer_key2_str): {th.has_timer(test_timer_key2_str)}")
+    
+    # th.call_later(2, lambda: th.cancel_timer(test_timer_key2_str), "cancel_test_timer_key2_str_during_repeating")
+    _cur_timer_key, _ = th.call_at(time() + 4, lambda: th.cancel_timer(test_timer_key2_str))
+    th.cancel_timer(_cur_timer_key)
 
     th.call_later(
         0, lambda h="test_0_sec_timer": print(h), "test_0_sec_timer", repeat_count=2, repeat_interval_sec=0)
