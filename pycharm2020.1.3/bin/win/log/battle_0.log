@@ -1113,3 +1113,90 @@
 2021-03-24 17:53:25,452 - ServiceFinder - DEBUG : [EtcdSupport.py:350]: _watch_process_impl1, now_url: http://192.168.82.177:2379/v2/keys
 2021-03-24 17:54:26,454 - ServiceFinder - INFO : [EtcdSupport.py:421]: etcd watch timeout, rest watch index 146 -> 146
 2021-03-24 17:54:26,455 - ServiceFinder - DEBUG : [EtcdSupport.py:350]: _watch_process_impl1, now_url: http://192.168.82.177:2383/v2/keys
+2021-03-24 17:55:26,457 - ServiceFinder - INFO : [EtcdSupport.py:421]: etcd watch timeout, rest watch index 146 -> 146
+2021-03-24 17:55:26,458 - ServiceFinder - DEBUG : [EtcdSupport.py:350]: _watch_process_impl1, now_url: http://192.168.82.177:2381/v2/keys
+2021-03-24 17:56:28,459 - ServiceFinder - INFO : [EtcdSupport.py:421]: etcd watch timeout, rest watch index 146 -> 146
+2021-03-24 17:56:28,460 - ServiceFinder - DEBUG : [EtcdSupport.py:350]: _watch_process_impl1, now_url: http://192.168.82.177:2379/v2/keys
+2021-03-24 17:57:33,462 - ServiceFinder - INFO : [EtcdSupport.py:421]: etcd watch timeout, rest watch index 146 -> 146
+2021-03-24 17:57:33,463 - ServiceFinder - DEBUG : [EtcdSupport.py:350]: _watch_process_impl1, now_url: http://192.168.82.177:2381/v2/keys
+2021-03-24 17:58:39,464 - ServiceFinder - INFO : [EtcdSupport.py:421]: etcd watch timeout, rest watch index 146 -> 146
+2021-03-24 17:58:39,465 - ServiceFinder - DEBUG : [EtcdSupport.py:350]: _watch_process_impl1, now_url: http://192.168.82.177:2381/v2/keys
+2021-03-24 17:59:45,468 - ServiceFinder - INFO : [EtcdSupport.py:421]: etcd watch timeout, rest watch index 146 -> 146
+2021-03-24 17:59:45,469 - ServiceFinder - DEBUG : [EtcdSupport.py:350]: _watch_process_impl1, now_url: http://192.168.82.177:2381/v2/keys
+2021-03-24 18:00:53,471 - ServiceFinder - INFO : [EtcdSupport.py:421]: etcd watch timeout, rest watch index 146 -> 146
+2021-03-24 18:00:53,472 - ServiceFinder - DEBUG : [EtcdSupport.py:350]: _watch_process_impl1, now_url: http://192.168.82.177:2381/v2/keys
+2021-03-24 18:02:01,474 - ServiceFinder - INFO : [EtcdSupport.py:421]: etcd watch timeout, rest watch index 146 -> 146
+2021-03-24 18:02:01,475 - ServiceFinder - DEBUG : [EtcdSupport.py:350]: _watch_process_impl1, now_url: http://192.168.82.177:2383/v2/keys
+2021-03-24 18:03:08,476 - ServiceFinder - INFO : [EtcdSupport.py:421]: etcd watch timeout, rest watch index 146 -> 146
+2021-03-24 18:03:08,477 - ServiceFinder - DEBUG : [EtcdSupport.py:350]: _watch_process_impl1, now_url: http://192.168.82.177:2379/v2/keys
+2021-03-24 18:04:18,479 - ServiceFinder - INFO : [EtcdSupport.py:421]: etcd watch timeout, rest watch index 146 -> 146
+2021-03-24 18:04:18,480 - ServiceFinder - DEBUG : [EtcdSupport.py:350]: _watch_process_impl1, now_url: http://192.168.82.177:2381/v2/keys
+2021-03-24 18:05:28,481 - ServiceFinder - INFO : [EtcdSupport.py:421]: etcd watch timeout, rest watch index 146 -> 146
+2021-03-24 18:05:28,482 - ServiceFinder - DEBUG : [EtcdSupport.py:350]: _watch_process_impl1, now_url: http://192.168.82.177:2381/v2/keys
+2021-03-24 18:06:28,483 - ServiceFinder - INFO : [EtcdSupport.py:421]: etcd watch timeout, rest watch index 146 -> 146
+2021-03-24 18:06:28,484 - ServiceFinder - DEBUG : [EtcdSupport.py:350]: _watch_process_impl1, now_url: http://192.168.82.177:2379/v2/keys
+2021-03-24 18:07:37,486 - ServiceFinder - INFO : [EtcdSupport.py:421]: etcd watch timeout, rest watch index 146 -> 146
+2021-03-24 18:07:37,487 - ServiceFinder - DEBUG : [EtcdSupport.py:350]: _watch_process_impl1, now_url: http://192.168.82.177:2381/v2/keys
+2021-03-24 18:08:40,474 - ServiceFinder - INFO : [EtcdSupport.py:421]: etcd watch timeout, rest watch index 146 -> 146
+2021-03-24 18:08:40,475 - ServiceFinder - DEBUG : [EtcdSupport.py:350]: _watch_process_impl1, now_url: http://192.168.82.177:2381/v2/keys
+2021-03-24 18:09:42,476 - ServiceFinder - INFO : [EtcdSupport.py:421]: etcd watch timeout, rest watch index 146 -> 146
+2021-03-24 18:09:42,477 - ServiceFinder - DEBUG : [EtcdSupport.py:350]: _watch_process_impl1, now_url: http://192.168.82.177:2381/v2/keys
+2021-03-24 18:10:45,478 - ServiceFinder - INFO : [EtcdSupport.py:421]: etcd watch timeout, rest watch index 146 -> 146
+2021-03-24 18:10:45,479 - ServiceFinder - DEBUG : [EtcdSupport.py:350]: _watch_process_impl1, now_url: http://192.168.82.177:2381/v2/keys
+2021-03-24 18:11:47,481 - ServiceFinder - INFO : [EtcdSupport.py:421]: etcd watch timeout, rest watch index 146 -> 146
+2021-03-24 18:11:47,482 - ServiceFinder - DEBUG : [EtcdSupport.py:350]: _watch_process_impl1, now_url: http://192.168.82.177:2381/v2/keys
+2021-03-24 18:12:56,484 - ServiceFinder - INFO : [EtcdSupport.py:421]: etcd watch timeout, rest watch index 146 -> 146
+2021-03-24 18:12:56,485 - ServiceFinder - DEBUG : [EtcdSupport.py:350]: _watch_process_impl1, now_url: http://192.168.82.177:2383/v2/keys
+2021-03-24 18:14:00,486 - ServiceFinder - INFO : [EtcdSupport.py:421]: etcd watch timeout, rest watch index 146 -> 146
+2021-03-24 18:14:00,487 - ServiceFinder - DEBUG : [EtcdSupport.py:350]: _watch_process_impl1, now_url: http://192.168.82.177:2379/v2/keys
+2021-03-24 18:15:00,474 - ServiceFinder - INFO : [EtcdSupport.py:421]: etcd watch timeout, rest watch index 146 -> 146
+2021-03-24 18:15:00,475 - ServiceFinder - DEBUG : [EtcdSupport.py:350]: _watch_process_impl1, now_url: http://192.168.82.177:2383/v2/keys
+2021-03-24 18:16:09,476 - ServiceFinder - INFO : [EtcdSupport.py:421]: etcd watch timeout, rest watch index 146 -> 146
+2021-03-24 18:16:09,477 - ServiceFinder - DEBUG : [EtcdSupport.py:350]: _watch_process_impl1, now_url: http://192.168.82.177:2383/v2/keys
+2021-03-24 18:17:14,478 - ServiceFinder - INFO : [EtcdSupport.py:421]: etcd watch timeout, rest watch index 146 -> 146
+2021-03-24 18:17:14,479 - ServiceFinder - DEBUG : [EtcdSupport.py:350]: _watch_process_impl1, now_url: http://192.168.82.177:2383/v2/keys
+2021-03-24 18:18:24,480 - ServiceFinder - INFO : [EtcdSupport.py:421]: etcd watch timeout, rest watch index 146 -> 146
+2021-03-24 18:18:24,481 - ServiceFinder - DEBUG : [EtcdSupport.py:350]: _watch_process_impl1, now_url: http://192.168.82.177:2379/v2/keys
+2021-03-24 18:19:24,127 - TcpServer - DEBUG : [TcpServer.py:158]: ('192.168.82.177', 11880) is connected !!!!
+2021-03-24 18:19:24,149 - ServerEntity.Puppet - INFO : [ServerEntity.py:21]: __init__ create entity Puppet with id 605b122cfe754e212c0a9030 mem_id=1856002678944
+2021-03-24 18:19:24,151 - server.EntityManager - INFO : [EntityManager.py:140]: addentity  entity id  605b122cfe754e212c0a9030 
+2021-03-24 18:19:25,456 - ServiceFinder - INFO : [EtcdSupport.py:421]: etcd watch timeout, rest watch index 146 -> 146
+2021-03-24 18:19:25,457 - ServiceFinder - DEBUG : [EtcdSupport.py:350]: _watch_process_impl1, now_url: http://192.168.82.177:2381/v2/keys
+2021-03-24 18:20:26,401 - TcpConn - DEBUG : [TcpConn.py:73]: connection is closed by remote client..with ConnectionResetError
+2021-03-24 18:20:26,467 - ServiceFinder - INFO : [EtcdSupport.py:421]: etcd watch timeout, rest watch index 146 -> 146
+2021-03-24 18:20:26,468 - ServiceFinder - DEBUG : [EtcdSupport.py:350]: _watch_process_impl1, now_url: http://192.168.82.177:2379/v2/keys
+2021-03-24 18:20:40,079 - TcpServer - DEBUG : [TcpServer.py:158]: ('192.168.82.177', 11969) is connected !!!!
+2021-03-24 18:20:40,102 - ServerEntity.Puppet - INFO : [ServerEntity.py:24]: __init__ create entity Puppet with id 605b1278fe754e212c0a9031 mem_id=1856001449744
+2021-03-24 18:20:40,103 - server.EntityManager - INFO : [EntityManager.py:140]: addentity  entity id  605b1278fe754e212c0a9031 
+2021-03-24 18:21:10,727 - TcpConn - DEBUG : [TcpConn.py:73]: connection is closed by remote client..with ConnectionResetError
+2021-03-24 18:21:10,875 - TcpServer - DEBUG : [TcpServer.py:158]: ('192.168.82.177', 12016) is connected !!!!
+2021-03-24 18:21:10,897 - ServerEntity.Puppet - INFO : [ServerEntity.py:24]: __init__ create entity Puppet with id 605b1296fe754e212c0a9032 mem_id=1856573408832
+2021-03-24 18:21:10,899 - server.EntityManager - INFO : [EntityManager.py:140]: addentity  entity id  605b1296fe754e212c0a9032 
+2021-03-24 18:21:14,752 - TcpConn - DEBUG : [TcpConn.py:73]: connection is closed by remote client..with ConnectionResetError
+2021-03-24 18:21:14,895 - TcpServer - DEBUG : [TcpServer.py:158]: ('192.168.82.177', 12024) is connected !!!!
+2021-03-24 18:21:14,918 - ServerEntity.Puppet - INFO : [ServerEntity.py:24]: __init__ create entity Puppet with id 605b129afe754e212c0a9033 mem_id=1856663443296
+2021-03-24 18:21:14,919 - server.EntityManager - INFO : [EntityManager.py:140]: addentity  entity id  605b129afe754e212c0a9033 
+2021-03-24 18:21:25,088 - TcpConn - DEBUG : [TcpConn.py:73]: connection is closed by remote client..with ConnectionResetError
+2021-03-24 18:21:25,229 - TcpServer - DEBUG : [TcpServer.py:158]: ('192.168.82.177', 12043) is connected !!!!
+2021-03-24 18:21:25,251 - ServerEntity.Puppet - INFO : [ServerEntity.py:24]: __init__ create entity Puppet with id 605b12a5fe754e212c0a9034 mem_id=1856933486400
+2021-03-24 18:21:25,253 - server.EntityManager - INFO : [EntityManager.py:140]: addentity  entity id  605b12a5fe754e212c0a9034 
+2021-03-24 18:21:33,457 - ServiceFinder - INFO : [EtcdSupport.py:421]: etcd watch timeout, rest watch index 146 -> 146
+2021-03-24 18:21:33,459 - ServiceFinder - DEBUG : [EtcdSupport.py:350]: _watch_process_impl1, now_url: http://192.168.82.177:2383/v2/keys
+2021-03-24 18:21:44,877 - ServiceNode - INFO : [EtcdSupport.py:475]: we have create ServiceRegister, wait 5 seconds
+2021-03-24 18:21:44,879 - ServiceNode - INFO : [EtcdSupport.py:478]: we have create ServiceFinder
+2021-03-24 18:21:44,880 - ServiceRegister - DEBUG : [EtcdSupport.py:143]: _do_regist: now_url: http://192.168.82.177:2381/v2/keys/services/BattleAllocatorCenter/192.168.82.177|8888
+2021-03-24 18:21:44,883 - TcpServer - DEBUG : [TcpServer.py:186]: Server on ('192.168.82.177', 8888)
+2021-03-24 18:21:44,886 - ServiceRegister - DEBUG : [EtcdSupport.py:148]: regist service : BattleAllocatorCenter success, {"action":"set","node":{"key":"/services/BattleAllocatorCenter/192.168.82.177|8888","value":"","expiration":"2021-03-24T10:24:44.8837618Z","ttl":180,"modifiedIndex":147,"createdIndex":147}}
+
+2021-03-24 18:21:46,914 - TcpServer - DEBUG : [TcpServer.py:158]: ('192.168.82.177', 12075) is connected !!!!
+2021-03-24 18:21:46,939 - ServerEntity.Puppet - INFO : [ServerEntity.py:24]: __init__ create entity Puppet with id 605b12bafe754e3690dc8781 mem_id=2613749202800
+2021-03-24 18:21:46,940 - server.EntityManager - INFO : [EntityManager.py:140]: addentity  entity id  605b12bafe754e3690dc8781 
+2021-03-24 18:21:48,880 - ServerEntity.BattleAllocatorCenter - INFO : [ServerEntity.py:24]: __init__ create entity BattleAllocatorCenter with id 605b12bcfe754e3690dc8782 mem_id=2613749643680
+2021-03-24 18:21:48,881 - server.EntityManager - INFO : [EntityManager.py:140]: addentity  entity id  605b12bcfe754e3690dc8782 
+2021-03-24 18:21:48,883 - SingletonEntityManager - DEBUG : [SingletonEntityManager.py:118]: _register_relevant_centers_cb, status:good
+2021-03-24 18:21:48,884 - SingletonEntityManager - DEBUG : [SingletonEntityManager.py:137]: _register_stubs_cb, status:good
+2021-03-24 18:21:49,879 - ServiceFinder - DEBUG : [EtcdSupport.py:311]: _init_info, now_url: http://192.168.82.177:2379/v2/keys?recursive=true
+2021-03-24 18:21:49,881 - ServiceFinder - INFO : [EtcdSupport.py:282]: add service node info--> BattleAllocatorCenter: ('192.168.82.177', 8888)
+2021-03-24 18:21:49,882 - ServiceFinder - INFO : [EtcdSupport.py:236]: init service info from etcd success, will going to watch, at etcd index -> 147
+2021-03-24 18:21:49,883 - ServiceFinder - DEBUG : [EtcdSupport.py:350]: _watch_process_impl1, now_url: http://192.168.82.177:2381/v2/keys
+2021-03-24 18:21:49,886 - ServiceFinder - DEBUG : [EtcdSupport.py:357]: waiting _watch_process_impl2 http://192.168.82.177:2379/v2/keys?wait=true&recursive=true&waitIndex=148

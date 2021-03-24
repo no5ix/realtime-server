@@ -12,6 +12,9 @@ from core.mobilelog.LogManager import LogManager
 
 
 # pylint: disable = E1101
+from core.util.TimerHub import TimerHub
+
+
 class ServerEntity(object):
     def __init__(self, entity_id=None):
         super(ServerEntity, self).__init__()
@@ -28,6 +31,7 @@ class ServerEntity(object):
         # save_time = self.get_persistent_time()
 
         self._conn = None
+        self.timer_hub = TimerHub()
 
     def set_connection(self, conn):
         self._conn = conn

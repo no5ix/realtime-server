@@ -43,6 +43,7 @@ class CompPuppetTest(Component):
 
     @rpc_method(CLIENT_ONLY, (Dict('p'), ))
     def puppet_chat_to_ppt(self, chat_info: typing.Dict):
+
         print(chat_info)
         # self._cnt -= 1
         # print("self._cnt:" + str(self._cnt))
@@ -62,6 +63,8 @@ class CompPuppetTest(Component):
         self.call_client_comp_method(
             self.VAR_NAME, 'puppet_chat_from_srv', {'i': {"reload_state": "success"}})
 
+        # self.test_timer_circle()
+
     @rpc_method(CLIENT_ONLY)
     def test_reload(self):
         print("test_reload  before")
@@ -76,3 +79,10 @@ class CompPuppetTest(Component):
 
     def test_reload_add_func(self):
         print("call test_reload_add_func")
+
+    def test_timer_circle(self):
+        print("test_timer_circle")
+        self.entity.timer_hub.call_later(
+            0, lambda: self.test_timer_circle(), "test_timer_circle"
+            # , repeat_count=2, repeat_interval_sec=0
+        )
