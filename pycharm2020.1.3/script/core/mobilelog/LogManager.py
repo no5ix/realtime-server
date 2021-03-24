@@ -63,7 +63,7 @@ class LogManager:
             if LogManager.log_tag == "":
                 raise Exception("LogManager Error: log tag is empty!")
             LogManager.file_handler = TimedRotatingFileHandler(
-                LogManager.log_path + LogManager.log_tag + ".log", when="S")
+                LogManager.log_path + LogManager.log_tag + ".log", when="D")
         return AsyncLogger(logger_name, LogManager.file_handler)
         # _temp_file_name = 'test_log.log'
         #
