@@ -1,5 +1,8 @@
 import asyncio
+import collections
 import typing
+from asyncio import TimerHandle
+from time import monotonic, time
 
 
 class TimerHub:
@@ -9,37 +12,60 @@ class TimerHub:
             self._ev_loop = asyncio.get_running_loop() if ev_loop is None else ev_loop
         except RuntimeError:
             self._ev_loop = asyncio.get_event_loop()
-        self._key_2_timer_map = {}
 
-    def add_timer(
-            self, key: str, delay_second: typing.Union[int, float],
-            delay_callback: typing.Callable, repeat_count: int = 0):
-        """
-        pass
-        """
+        self._key_2_timer_list_map = collections.defaultdict(list)
 
-        def repeat_cb_wrapper(cb=delay_callback, rc=repeat_count):
-            cb()
-            self.add_timer(key, delay_second, cb, rc - 1)
+    def call_later(
+            self, delay_second: typing.Union[int, float],
+            delay_callback: typing.Callable, key: str = None, repeat_count: int = 0,
+            repeat_interval_sec: typing.Union[int, float] = None) -> (str, TimerHandle):
+        """
+        可以重复使用一个key, 并不会冲掉之前key的timer, 但是 `cancel_timer` 的时候, 会一次性全部cancel掉
+        """
+        if key is None:
+            key = str(monotonic())
 
         callback = delay_callback
         if repeat_count > 0:
-            callback = repeat_cb_wrapper
-            # self._key_2_timer_map[key] = self._ev_loop.call_later(delay_second, callback)
-        elif repeat_count < 0:
-            raise Exception("err: TimerHub.add_timer repeat_count < 0 !!")
+            def repeat_cb_wrapper(ds=delay_second, k=key, rc=repeat_count, ris=repeat_interval_sec):
+                if ris is not None:
+                    assert (type(ris) in (int, float))
+                    ds = ris
+                delay_callback()
+                self.call_later(ds, delay_callback, k, rc - 1)
 
-        self._key_2_timer_map[key] = self._ev_loop.call_later(delay_second, callback)
+            callback = repeat_cb_wrapper
+        elif repeat_count < 0:
+            raise Exception("err: TimerHub.call_later repeat_count < 0 !!")
+
+        _ret_timer = self._ev_loop.call_later(delay_second, callback)
+        self._key_2_timer_list_map[key].append(_ret_timer)
+        return key, _ret_timer
+
+    def call_at(
+            self, when_second: typing.Union[int, float],
+            delay_callback: typing.Callable, key: str = None) -> (str, TimerHandle):
+        return self.call_later(when_second-time(), delay_callback, key)
 
     def cancel_timer(self, key: str):
         try:
-            _cur_timer = self._key_2_timer_map.pop(key)
-            _cur_timer.cancel()
+            for _cur_timer in self._key_2_timer_list_map[key]:
+                _cur_timer.cancel()
+            self._key_2_timer_list_map[key].clear()
+            self._key_2_timer_list_map.pop(key)
         except KeyError:
             pass
 
     def has_timer(self, key: str):
-        return key in self._key_2_timer_map
+        return key in self._key_2_timer_list_map
+
+    def destroy(self):
+        for _, _timer_list in self._key_2_timer_list_map.items():
+            for _t in _timer_list:
+                _t.cancel()
+        self._key_2_timer_list_map.clear()
+        self._key_2_timer_list_map = None
+        self._ev_loop = None
 
 
 if __name__ == "__main__":
@@ -56,15 +82,19 @@ if __name__ == "__main__":
     test_timer_key2_str = "test_timer_key2"
 
     th = TimerHub()
-    th.add_timer("test_timer_key1", 2, lambda h=test_timer_key1_str: print(h), repeat_count=2)
+    th.call_later(
+        3, lambda h=test_timer_key1_str: print(h), test_timer_key1_str, repeat_count=3, repeat_interval_sec=1)
     print(f"th.has_timer(test_timer_key1_str): {th.has_timer(test_timer_key1_str)}")
 
-    th.add_timer(test_timer_key2_str, 2, lambda h=test_timer_key2_str: print(h), repeat_count=3)
+    th.call_later(
+        2, lambda h=test_timer_key2_str: print(h), test_timer_key2_str, repeat_count=3, repeat_interval_sec=1)
     print(f"before cancel, th.has_timer(test_timer_key2_str): {th.has_timer(test_timer_key2_str)}")
     # th.cancel_timer(test_timer_key2_str)
     print(f"after cancel, th.has_timer(test_timer_key2_str): {th.has_timer(test_timer_key2_str)}")
 
-    th.add_timer("cancel_test_timer_key2_str_during_repeating", 2, lambda: th.cancel_timer(test_timer_key2_str))
+    # th.call_later(2, lambda: th.cancel_timer(test_timer_key2_str), "cancel_test_timer_key2_str_during_repeating")
+    _cur_timer_key, _ = th.call_at(time() + 4, lambda: th.cancel_timer(test_timer_key2_str))
+    th.cancel_timer(_cur_timer_key)
+    # th.destroy()
 
-    # EV_LOOP.run_until_complete()
     EV_LOOP.run_forever()

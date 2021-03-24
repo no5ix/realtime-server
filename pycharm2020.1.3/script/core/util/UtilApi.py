@@ -21,8 +21,6 @@ def async_wrap(func: Callable):
     #     pass  # 正常情况不可能会发生调用此async_wrap比server启动还要早, 所以直接pass
 
 
-
-
 def get_global_entity_mailbox(entity_unique_name):
     return gr.etcd_service_node.get_entity_info(entity_unique_name)
 

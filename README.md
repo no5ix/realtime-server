@@ -16,6 +16,7 @@ python 3.8.8
 - [ ] battle_service
 - [ ] db manager
 - [ ] lobby_gate
+- [ ] base on etcd distributed lock
 
 
 - [ ] login service
