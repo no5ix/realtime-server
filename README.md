@@ -2,7 +2,7 @@ python 3.8.8
 
 # todo list
 
-<!-- - [ ] reload -->
+- [ ] reload all/rpc func而不需要rpc_impl, 给reload_impl加上log
 <!-- - [ ] puppet -->
 <!-- - [ ] avatar -->
 - [ ] dungeon

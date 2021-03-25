@@ -347,14 +347,14 @@ class ServiceFinder(EtcdProcessor):
         return service_name, (ip, port)
 
     async def _watch_process_impl(self):
-        self._logger.debug(f"_watch_process_impl1, now_url: {self._get_server_info() + _ETCD_KEY_PREFIX}")
+        # self._logger.debug(f"_watch_process_impl1, now_url: {self._get_server_info() + _ETCD_KEY_PREFIX}")
 
         r = await UtilApi.async_wrap(lambda: requests.request("GET", self._get_server_info() + _ETCD_KEY_PREFIX))
         self._etcd_index = int(r.headers["x-etcd-index"])
         now_url = self._get_server_info() + _ETCD_KEY_PREFIX + "?wait=true&recursive=true"
         if self._watch_index:
             now_url += "&waitIndex=" + str(self._watch_index + 1)
-            self._logger.debug(f"waiting _watch_process_impl2 {now_url}")
+            # self._logger.debug(f"waiting _watch_process_impl2 {now_url}")
 
         r = await UtilApi.async_wrap(lambda: requests.request("GET", now_url))
         res = json.loads(r.text)

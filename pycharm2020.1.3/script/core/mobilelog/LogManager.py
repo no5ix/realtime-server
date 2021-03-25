@@ -215,10 +215,12 @@ class AsyncLogger:
     def log_last_except(self):
         tp, value, traceback = sys.exc_info()
         tb_cont = convert_python_tb_to_str(tp, value, traceback)
-        self.error(f'on_traceback, type:{tp}, value:{value}, traceback:{tb_cont}')
-        # _log_tp_executor.submit(
-        #     self._logger.error,
-        #     self.join_caller_filename_lineno(f'on_traceback, type:{tp}, value:{value}, traceback:{tb_cont}'))
+        final_msg = self.join_caller_filename_lineno(f'on_traceback, type:{tp}, value:{value}, traceback:{tb_cont}')
+        if gr.is_dev_version:
+            print(" - ".join(
+                (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
+                 self._logger.name, "CRITICAL", final_msg)))
+        _log_tp_executor.submit(self._logger.critical, final_msg)
 
 
 def convert_python_tb_to_str(t, v, tb, limit=None):

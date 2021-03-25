@@ -9,6 +9,7 @@ from client.Puppet import Puppet
 # from core.common import MsgpackSupport
 from core.mobilelog.LogManager import LogManager
 from core.util import UtilApi
+from core.util.TimerHub import TimerHub
 
 
 async def tcp_echo_client():
@@ -38,7 +39,7 @@ async def tcp_echo_client():
     # gr.bind_entity = _pbe
 
     # _ppt.CompPuppetTest.puppet_chat_to_channel({'content': 'test_chat_msg'})
-    _ppt.CompPuppetTest.make_server_reload()
+    # _ppt.CompPuppetTest.make_server_reload()
 
     # return
     #
@@ -54,14 +55,14 @@ async def tcp_echo_client():
         # _cnt -= 1
         # print(_cnt)
         # await asyncio.sleep(1)
+    th = TimerHub()
+    th.call_later(
+        2, lambda: _ppt.CompPuppetTest.test_reload())
+    th.call_later(
+        8, lambda: _ppt.CompPuppetTest.make_server_reload())
 
-    # UtilApi.call_later(
-    #     2, lambda: _ppt.CompPuppetTest.test_reload())
-    # UtilApi.call_later(
-    #     8, lambda: _ppt.CompPuppetTest.make_server_reload())
-    #
-    # UtilApi.call_later(
-    #     10, lambda: _ppt.CompPuppetTest.test_reload())
+    th.call_later(
+        10, lambda: _ppt.CompPuppetTest.test_reload())
     await _tcp_conn.loop()
     # while True:
     #     data = await reader.read(100)

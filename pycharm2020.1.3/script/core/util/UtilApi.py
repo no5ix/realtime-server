@@ -41,3 +41,15 @@ def register_entity_to_etcd(entity, name, tag=None):
 
 def unregister_entity_from_etcd(name):
     pass
+
+
+def log(text):
+    def decorator(func):
+        # @functools.wraps(func)
+        def wrapper(*args, **kw):
+            print('%s %s():' % (text, func.__name__))
+            return func(*args, **kw)
+
+        return wrapper
+
+    return decorator

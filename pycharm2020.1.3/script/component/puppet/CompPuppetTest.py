@@ -10,6 +10,7 @@ import random
 import typing
 
 from core.tool import incremental_reload
+from core.util.UtilApi import log
 
 
 class CompPuppetTest(Component):
@@ -67,18 +68,16 @@ class CompPuppetTest(Component):
 
     @rpc_method(CLIENT_ONLY)
     def test_reload(self):
-        print("test_reload  before")
+        print("call test_reload")
         # print("test_reload  after")
-        self.test_reload_impl()
-        self.test_reload_add_func()
-
-    def test_reload_impl(self):
-        print("test_reload_impl before")
-        # print("test_reload_impl after")
         print(test_reload_const.TEST_CONST_STR)
+        self.test_reload_impl()
 
-    def test_reload_add_func(self):
-        print("call test_reload_add_func")
+    @log("execute")
+    def test_reload_impl(self):
+        print("call test_reload_impllll222112")
+        pass
+        # print("test_reload_impl after")
 
     def test_timer_circle(self):
         print("test_timer_circle")
@@ -86,3 +85,4 @@ class CompPuppetTest(Component):
             0, lambda: self.test_timer_circle(), "test_timer_circle"
             # , repeat_count=2, repeat_interval_sec=0
         )
+

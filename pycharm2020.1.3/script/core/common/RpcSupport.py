@@ -26,6 +26,8 @@ def select_hero(self, heroname):
 # from ..servercommon.PostmanDelayGuard import PostmanDelayGuard
 # from const import server_const
 # from common.utils import utility
+import functools
+
 from core.common.RpcMethodArgs import ConvertError, RpcMethodArg
 
 CLIENT_ONLY = 0  # client call server
@@ -242,7 +244,9 @@ class RpcMethod(object):
 
 def rpc_method(rpctype, argtypes=(),  pub=True, cd=-1):
     """ decorator """
-    assert (rpctype in (CLIENT_ONLY, SERVER_ONLY, CLIENT_SERVER, CLIENT_STUB)), str(type) + ": type must be one of (CLIENT_ONLY, SERVER_ONLY, CLIENT_SERVER) "
+    assert (
+            rpctype in (CLIENT_ONLY, SERVER_ONLY, CLIENT_SERVER, CLIENT_STUB)),\
+        str(type) + ": type must be one of (CLIENT_ONLY, SERVER_ONLY, CLIENT_SERVER) "
     assert (pub in (True, False)), str(pub) + "should be True of False"
 
     if type(argtypes) is tuple or type(argtypes) is set or type(argtypes) is list:
@@ -262,10 +266,12 @@ def rpc_method(rpctype, argtypes=(),  pub=True, cd=-1):
         rpcmethod = RpcMethod(func, rpctype, argtypes, pub, cd=cd)
         call_func = rpcmethod.call
 
+        @functools.wraps(func)
         def call_rpc_method_CLIENT_STUB(self, args):
             # fun_for_reload = func       # do not remove this, it is usefull for reload
             return call_func(self, args)
 
+        @functools.wraps(func)
         def call_rpc_method_Others(self, args):
             # fun_for_reload = func       # do not remove this, it is usefull for reload
             # return call_func(self, *args)
@@ -287,7 +293,7 @@ def rpc_method(rpctype, argtypes=(),  pub=True, cd=-1):
     return _rpc_method
 
 
-def expose_to_client( method ):
+def expose_to_client(method):
     try:
         rpctype = method.rpcmethod.rpctype
         if (rpctype == CLIENT_ONLY or rpctype == CLIENT_SERVER):
@@ -297,7 +303,7 @@ def expose_to_client( method ):
         return False
 
 
-def expose_to_server( method ):
+def expose_to_server(method):
     try:
         rpctype = method.rpcmethod.rpctype
         if (rpctype == SERVER_ONLY or rpctype == CLIENT_SERVER):

@@ -5,6 +5,7 @@ from importlib import reload
 
 MODULE_RELOAD_BLACKLIST = ["os", "sys"]
 ATTR_RELOAD_BLACKLIST = ['__module__', '_reload_all', '__dict__', '__weakref__', '__doc__', ]
+_IGNORE_ATTRS = []
 
 
 def is_in_module_blacklist(mod_name):
@@ -28,7 +29,6 @@ def is_data_provider(mod_name):
 
 
 def update_module(mod_name, old_content, new):
-    ''' 替换new到old '''
     new_content = new.__dict__
     ok = True
     for attr_name, attr_new_info in new_content.items():
@@ -60,7 +60,7 @@ def update_module(mod_name, old_content, new):
 
 
 def update_class(old_class, new_class, reload_all):
-    for name, attr in old_class.__dict__.items():  # delete function
+    for name, attr in tuple(old_class.__dict__.items()):  # delete function
         if name in new_class.__dict__:
             continue
 
@@ -84,7 +84,7 @@ def update_class(old_class, new_class, reload_all):
             if not update_func(old_attr.__func__, new_attr.__func__):
                 old_attr.__func__ = new_attr.__func__
                 ok = False
-        elif reload_all and name not in _ignore_attrs:
+        elif reload_all and name not in _IGNORE_ATTRS:
             setattr(old_class, name, attr)
 
         if not ok:
