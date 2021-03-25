@@ -123,13 +123,13 @@ class ServiceRegister(EtcdProcessor):
         #             res = json.loads(r.text)
         #             self._fail_time = 0
         #             if res.get("action") == "get" and res.get("node", {}).get("nodes", []):
-        #                 self._logger.info("servcie : %s not stateless, but exist, %s", service_name, r.text)
+        #                 self.logger.info("servcie : %s not stateless, but exist, %s", service_name, r.text)
         #                 return False
         #             break
         #         except:
         #             self._fail_time += 1
-        #             self._logger.error("check singleton service : %s error", service_name)
-        #             self._logger.log_last_except()
+        #             self.logger.error("check singleton service : %s error", service_name)
+        #             self.logger.log_last_except()
         #             # if GameServerRepo.game_event_callback is not None:
         #             #     t, v, tb = sys.exc_info()
         #             #     GameServerRepo.game_event_callback.on_traceback(t, v, tb)
@@ -347,14 +347,14 @@ class ServiceFinder(EtcdProcessor):
         return service_name, (ip, port)
 
     async def _watch_process_impl(self):
-        # self._logger.debug(f"_watch_process_impl1, now_url: {self._get_server_info() + _ETCD_KEY_PREFIX}")
+        # self.logger.debug(f"_watch_process_impl1, now_url: {self._get_server_info() + _ETCD_KEY_PREFIX}")
 
         r = await UtilApi.async_wrap(lambda: requests.request("GET", self._get_server_info() + _ETCD_KEY_PREFIX))
         self._etcd_index = int(r.headers["x-etcd-index"])
         now_url = self._get_server_info() + _ETCD_KEY_PREFIX + "?wait=true&recursive=true"
         if self._watch_index:
             now_url += "&waitIndex=" + str(self._watch_index + 1)
-            # self._logger.debug(f"waiting _watch_process_impl2 {now_url}")
+            # self.logger.debug(f"waiting _watch_process_impl2 {now_url}")
 
         r = await UtilApi.async_wrap(lambda: requests.request("GET", now_url))
         res = json.loads(r.text)

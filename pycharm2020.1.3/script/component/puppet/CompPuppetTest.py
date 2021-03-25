@@ -3,12 +3,14 @@
 
 from common.component.Component import Component
 from component.puppet import test_reload_const
+from component.puppet.test_reload_const import TEST_CONST_STR
 from core.common.RpcMethodArgs import Dict, Str
 from core.common.RpcSupport import rpc_method, CLIENT_ONLY
 
 import random
 import typing
 
+from core.mobilelog.LogManager import LogManager
 from core.tool import incremental_reload
 from core.util.UtilApi import log
 
@@ -68,15 +70,20 @@ class CompPuppetTest(Component):
 
     @rpc_method(CLIENT_ONLY)
     def test_reload(self):
-        print("call test_reload")
+        print("22call test_reload")
         # print("test_reload  after")
-        print(test_reload_const.TEST_CONST_STR)
+        print(TEST_CONST_STR)
         self.test_reload_impl()
 
     @log("execute")
     def test_reload_impl(self):
         print("call test_reload_impllll222112")
         pass
+
+        self.test_cls_log()
+        self.test_static_log()
+        CompPuppetTest.test_cls_log()
+        CompPuppetTest.test_static_log()
         # print("test_reload_impl after")
 
     def test_timer_circle(self):
@@ -85,4 +92,12 @@ class CompPuppetTest(Component):
             0, lambda: self.test_timer_circle(), "test_timer_circle"
             # , repeat_count=2, repeat_interval_sec=0
         )
+
+    @classmethod
+    def test_cls_log(cls):
+        xxd = LogManager.get_logger()
+
+    @staticmethod
+    def test_static_log():
+        mm = LogManager.get_logger()
 

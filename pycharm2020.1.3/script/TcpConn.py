@@ -43,7 +43,7 @@ class TcpConn(object):
             try:
                 # self.asyncio_writer
                 _data = await self.asyncio_reader.read(8192)
-                # self._logger.debug("_data")
+                # self.logger.debug("_data")
                 if _data == b"":
                     self.asyncio_writer.close()
                     self._logger.debug("the peer has performed an orderly shutdown (recv 0 byte).")
@@ -62,7 +62,7 @@ class TcpConn(object):
                     elif _len_recv_data >= _input_data_len:
                         _body_data = self._recv_data[HEAD_LEN:_input_data_len]
                         self._recv_cnt += 1
-                        # self._logger.debug("self._recv_cnt:" + str(self._recv_cnt))
+                        # self.logger.debug("self._recv_cnt:" + str(self._recv_cnt))
                         self.handle_message(_body_data)
                         self._recv_data = self._recv_data[_input_data_len:]
                     else:
@@ -80,7 +80,7 @@ class TcpConn(object):
             # except ConnectionError:
             #     self.asyncio_writer.close()
             #     # TODO: not safe, handle conn closed
-            #     self._logger.debug("connection is closed by remote client..")
+            #     self.logger.debug("connection is closed by remote client..")
             #     break
             except ConnectionRefusedError:
                 self.asyncio_writer.close()
@@ -95,7 +95,7 @@ class TcpConn(object):
             # await self.asyncio_writer.drain()
             # if message == "exit":
             #     message = f"{addr!r} wants to close the connection."
-            #     self._logger.debug(message)
+            #     self.logger.debug(message)
             #     self.forward(self.asyncio_writer, "Server", message)
             #     break
         # self.asyncio_writer.close()

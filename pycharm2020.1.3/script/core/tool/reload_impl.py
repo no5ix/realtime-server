@@ -3,6 +3,8 @@ import sys
 import inspect
 from importlib import reload
 
+from core.mobilelog.LogManager import LogManager
+
 MODULE_RELOAD_BLACKLIST = ["os", "sys"]
 ATTR_RELOAD_BLACKLIST = ['__module__', '_reload_all', '__dict__', '__weakref__', '__doc__', ]
 _IGNORE_ATTRS = []
@@ -159,7 +161,7 @@ def reload_module(mod_name):
     # 更新模块
     new_mod_info = reload(old_mod_info)
 
-    print("reload module %s" % mod_name)
+    LogManager.get_logger().info("reload module %s" % mod_name)
     return update_module(mod_name, old_mod_content, new_mod_info)
 
 

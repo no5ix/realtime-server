@@ -84,7 +84,7 @@ class TcpServer(object):
     #     from BattleEntity import BattleEntity
     #     _ber = gr.game_json_conf.get('battle_entity_root', None)
     #     if _ber is None:
-    #         self._logger.error('conf file has no battle_entity_root!')
+    #         self.logger.error('conf file has no battle_entity_root!')
     #         return
     #     entity_classes = EntityScanner.scan_entity_package(_ber, BattleEntity)
     #     entity_classes = entity_classes.items()
@@ -110,13 +110,13 @@ class TcpServer(object):
         _ler = gr.game_json_conf.get('lobby_entity_root', None)
         _ber = gr.game_json_conf.get('battle_entity_root', None)
         if _ser is None:
-            # self._logger.error('conf file has no server_entity_root!')
+            # self.logger.error('conf file has no server_entity_root!')
             raise Exception('conf file has no server_entity_root!')
         if _ler is None:
-            # self._logger.error('conf file has no server_entity_root!')
+            # self.logger.error('conf file has no server_entity_root!')
             raise Exception('conf file has no lobby_entity_root!')
         if _ber is None:
-            # self._logger.error('conf file has no server_entity_root!')
+            # self.logger.error('conf file has no server_entity_root!')
             raise Exception('conf file has no battle_entity_root!')
             # return
         _temp = {_ser: ServerEntity,
@@ -166,7 +166,7 @@ class TcpServer(object):
         #     await writer.drain()
         #     if message == "exit":
         #         message = f"{addr!r} wants to close the connection."
-        #         self._logger.debug(message)
+        #         self.logger.debug(message)
         #         self.forward(writer, "Server", message)
         #         break
         # self.writers.remove(writer)
@@ -183,6 +183,18 @@ class TcpServer(object):
             # await _etcd_support_task
             # server = await _start_srv_task
             addr = server.sockets[0].getsockname()
+
+            try:
+                1 / 0
+            except:
+                # import sys
+                # tp, value, traceback = sys.exc_info()
+                #
+                # tb_cont = convert_python_tb_to_str(tp, value, traceback)
+                # logger.error(f'on_traceback, type:{tp}, value:{value}, traceback:{tb_cont}')
+                # logging.exception("Deliberate divide by zero traceback")
+                self._logger.log_last_except()
+
             self._logger.debug(f'Server on {addr}')
 
             async with server:
@@ -196,7 +208,7 @@ class TcpServer(object):
 
             return
         except:
-            # self._logger.debug("Unexpected error:", sys.exc_info()[0])
+            # self.logger.debug("Unexpected error:", sys.exc_info()[0])
             self._logger.log_last_except()
             raise
 

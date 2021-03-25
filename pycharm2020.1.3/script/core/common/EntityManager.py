@@ -102,7 +102,7 @@ class EntityManager(object):
 
 # class EntityManager(object):
 	""" 管理所有的Entity的管理器"""
-	# _logger = LogManager.get_logger("server.EntityManager") if _logger
+	# logger = LogManager.get_logger("server.EntityManager") if logger
 	# _entities = {}
 
 	# @classmethod

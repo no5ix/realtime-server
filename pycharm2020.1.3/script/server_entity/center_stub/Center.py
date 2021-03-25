@@ -24,9 +24,9 @@ class Center(ServerEntity):
 
     def register_callback(self, succeeded):
         if succeeded:
-            self._logger.debug('Register global %s succeed', self.__class__.__name__)
+            self.logger.debug('Register global %s succeed', self.__class__.__name__)
         else:
-            self._logger.error('Failed to register global %s!!', self.__class__.__name__)
+            self.logger.error('Failed to register global %s!!', self.__class__.__name__)
 
     @rpc_method(SERVER_ONLY)
     # @rpc_method(SERVER_ONLY, (MailBox(),))
@@ -73,7 +73,7 @@ class Center(ServerEntity):
     #     pass
 
     def on_stub_connected(self, stub_box):
-        self._logger.debug("center: on_stub_connected")
+        self.logger.debug("center: on_stub_connected")
 
     # def get_stub_num(self):
     #     return len(self._stubs)

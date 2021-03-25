@@ -35,21 +35,24 @@ SERVER_ONLY = 1  # server call server
 CLIENT_SERVER = 2  # client or server call server
 CLIENT_STUB = 3    # server call client
 
-# _logger = LogManager.get_logger("server.RpcMethod")
+# logger = LogManager.get_logger("server.RpcMethod")
 # _delay_guard = PostmanDelayGuard('rpc', server_const.POSTMAN_WARN_LIMIT_RPC)
 
-#pylint: disable=W0142, W0622, E1101
+
 class RpcMethod(object):
     """ 被decorate的函数会变成一个RpcMethod对象"""
-    def __init__(self, func,  rpctype, argtypes, pub, cd=-1):
+    def __init__(
+            self, func,  rpctype, argtypes,
+            pub, cd=-1
+    ):
         super(RpcMethod, self).__init__()
         self._has_response = False                        # 标记当前Rpc方法的定义是否包含了Response
         self.func = func
         self.rpctype = rpctype
         self.argtypes = tuple(argtypes)
-        self.pub = pub
+        # self.pub = pub
         self.need_mailbox = False
-        self.cd = cd
+        # self.cd = cd
         # self._check_index()
 
     # def _check_index(self):
@@ -62,8 +65,8 @@ class RpcMethod(object):
     #     @return:
     #     """
     #     placeholder_index, response_index = -1, -1
-    #     for index in range(len(self.argtypes)):
-    #         argtype = self.argtypes[index]
+    #     for index in range(len(self.arg_types)):
+    #         argtype = self.arg_types[index]
     #         if isinstance(argtype, Avatar) or type(argtype) in (MailBox, ClientInfo, GateMailBox):
     #             placeholder_index = index
     #         if isinstance(argtype, Response) or type(argtype) is Response:
@@ -91,7 +94,7 @@ class RpcMethod(object):
     def call(self, entity, parameters):
         # if not isinstance(parameters, dict):
         #     print("call: bson parameter decode failed in RPC call %s (%s), ",
-        #                  self.func.__name__,  "" .join(str(x) for x in self.argtypes))
+        #                  self.func.__name__,  "" .join(str(x) for x in self.arg_types))
         #     return
 
         args = []
@@ -129,8 +132,8 @@ class RpcMethod(object):
     #     """
     #     #parameters = BSON(bson_string).decode()
     #     if not isinstance(parameters, dict):
-    #         # _logger.warn("call: bson parameter decode failed in RPC call %s (%s), ",
-    #         #              self.func.__name__,  "" .join(str(x) for x in self.argtypes))
+    #         # logger.warn("call: bson parameter decode failed in RPC call %s (%s), ",
+    #         #              self.func.__name__,  "" .join(str(x) for x in self.arg_types))
     #         return
     #
     #     if self.cd > 0:
@@ -141,7 +144,7 @@ class RpcMethod(object):
     #             return
     #         setattr(entity, last_call_ts_name, now)
     #
-    #     if not self.argtypes:
+    #     if not self.arg_types:
     #         return self.func(entity)
     #
     #     # 检测当前调用的rpc方法的Response参数的定义情况是否与调用的情况一致
@@ -170,23 +173,23 @@ class RpcMethod(object):
     #         placeholder = placeholder[1]
     #
     #     args = []
-    #     argtypes = self.argtypes
-    #     holder = self.get_placeholder(argtypes[0], placeholder)
+    #     arg_types = self.arg_types
+    #     holder = self.get_placeholder(arg_types[0], placeholder)
     #     if holder:
     #         args.append(holder)
-    #         argtypes = argtypes[1:]
+    #         arg_types = arg_types[1:]
     #
     #     if response:
-    #         assert isinstance(argtypes[0], Response)
-    #         argtypes = argtypes[1:]
+    #         assert isinstance(arg_types[0], Response)
+    #         arg_types = arg_types[1:]
     #         args.append(response)
     #
-    #     for index in xrange(len(argtypes)):
-    #         argtype = argtypes[index]
+    #     for index in xrange(len(arg_types)):
+    #         argtype = arg_types[index]
     #         try:
     #             arg = parameters[index]
     #         except KeyError:
-    #             _logger.warn("call: parameter %s not found in RPC call %s, using default value",
+    #             logger.warn("call: parameter %s not found in RPC call %s, using default value",
     #                          argtype.getname(), self.func.__name__)
     #             arg = argtype.default_val()
     #         try:
@@ -196,7 +199,7 @@ class RpcMethod(object):
     #             else:
     #                 arg = argtype.convert(arg)
     #         except ConvertError, e:    # we will call the method if the conversion failed
-    #             _logger.error("call: parameter %s can't convert input %s for RPC call %s exception %s",
+    #             logger.error("call: parameter %s can't convert input %s for RPC call %s exception %s",
     #                           argtype.getname(),  str(arg),  self.func.__name__, str(e))
     #             return
     #         args.append(arg)
@@ -209,23 +212,23 @@ class RpcMethod(object):
     #         placeholder = placeholder[1]
     #
     #     args = []
-    #     argtypes = self.argtypes
+    #     arg_types = self.arg_types
     #     # 如果第一个参数是Avatar，则我们把对端调用Entity的Avatar传给方法
-    #     holder = self.get_placeholder(argtypes[0], placeholder)
+    #     holder = self.get_placeholder(arg_types[0], placeholder)
     #     if holder:
     #         args.append(holder)
-    #         argtypes = argtypes[1:]
+    #         arg_types = arg_types[1:]
     #
     #     if response:
-    #         assert isinstance(argtypes[0], Response)
-    #         argtypes = argtypes[1:]
+    #         assert isinstance(arg_types[0], Response)
+    #         arg_types = arg_types[1:]
     #         args.append(response)
     #
-    #     for argtype in argtypes:
+    #     for argtype in arg_types:
     #         try:
     #             arg = parameters[argtype.getname()]
     #         except KeyError:
-    #             _logger.warn("call: parameter %s not found in RPC call %s, using default value",
+    #             logger.warn("call: parameter %s not found in RPC call %s, using default value",
     #                          argtype.getname(), self.func.__name__)
     #             arg = argtype.default_val()
     #         try:
@@ -235,62 +238,114 @@ class RpcMethod(object):
     #             else:
     #                 arg = argtype.convert(arg)
     #         except ConvertError, e: # we will call the method if the conversion failed
-    #             _logger.error("call: parameter %s can't convert input %s for RPC call %s exception %s",
+    #             logger.error("call: parameter %s can't convert input %s for RPC call %s exception %s",
     #                           argtype.getname(),  str(arg),  self.func.__name__, str(e))
     #             return
     #         args.append(arg)
     #     return self.func(entity, *args)
 
 
-def rpc_method(rpctype, argtypes=(),  pub=True, cd=-1):
+def rpc_method(rpc_type, arg_types=(), pub=True, cd=-1):
     """ decorator """
     assert (
-            rpctype in (CLIENT_ONLY, SERVER_ONLY, CLIENT_SERVER, CLIENT_STUB)),\
+            rpc_type in (CLIENT_ONLY, SERVER_ONLY, CLIENT_SERVER, CLIENT_STUB)),\
         str(type) + ": type must be one of (CLIENT_ONLY, SERVER_ONLY, CLIENT_SERVER) "
     assert (pub in (True, False)), str(pub) + "should be True of False"
 
-    if type(argtypes) is tuple or type(argtypes) is set or type(argtypes) is list:
-        for argtype in argtypes:
+    if type(arg_types) is tuple or type(arg_types) is set or type(arg_types) is list:
+        for argtype in arg_types:
             assert (isinstance(argtype, RpcMethodArg)), str(argtype) + ": args Type error"
-    elif isinstance(argtypes, RpcMethodArg):
-        argtypes = (argtypes, )
+    elif isinstance(arg_types, RpcMethodArg):
+        arg_types = (arg_types,)
     else:
         assert (
-                type(argtypes) is tuple or
-                type(argtypes) is list or
-                type(argtypes) is set or
-                isinstance(argtypes, RpcMethodArg)), \
-            str(argtypes) + ": argtypes error"
+                type(arg_types) is tuple or
+                type(arg_types) is list or
+                type(arg_types) is set or
+                isinstance(arg_types, RpcMethodArg)), \
+            str(arg_types) + ": arg_types error"
 
     def _rpc_method(func):
-        rpcmethod = RpcMethod(func, rpctype, argtypes, pub, cd=cd)
-        call_func = rpcmethod.call
+        rpc_func = RpcMethod(func, rpc_type, arg_types, pub, cd=cd)
+        call_func = rpc_func.call
 
-        @functools.wraps(func)
+        # @functools.wraps(func)
         def call_rpc_method_CLIENT_STUB(self, args):
-            # fun_for_reload = func       # do not remove this, it is usefull for reload
+            func_for_reload = func       # do not remove this, it is useful for reload
             return call_func(self, args)
 
-        @functools.wraps(func)
+        # @functools.wraps(func)
         def call_rpc_method_Others(self, args):
-            # fun_for_reload = func       # do not remove this, it is usefull for reload
+            func_for_reload = func       # do not remove this, it is useful for reload
             # return call_func(self, *args)
             # with _delay_guard:
             ret = call_func(self, args)
             return ret
 
-        if rpctype == CLIENT_STUB:
+        if rpc_type == CLIENT_STUB:
             call_rpc_method = call_rpc_method_CLIENT_STUB
         else:
             call_rpc_method = call_rpc_method_Others
 
-        call_rpc_method.rpcmethod = rpcmethod
-        if rpcmethod.need_mailbox:
+        call_rpc_method.rpc_func = rpc_func
+        if rpc_func.need_mailbox:
             call_rpc_method.need_mailbox = True
         else:
             call_rpc_method.need_mailbox = False
         return call_rpc_method
     return _rpc_method
+
+
+# def rpc_func(rpc_type, arg_types=()):
+#     assert (
+#             rpc_type in (CLIENT_ONLY, SERVER_ONLY, CLIENT_SERVER, CLIENT_STUB)),\
+#         str(type) + ": type must be one of (CLIENT_ONLY, SERVER_ONLY, CLIENT_SERVER) "
+#     # assert (pub in (True, False)), str(pub) + "should be True of False"
+#
+#     if type(arg_types) is tuple or type(arg_types) is set or type(arg_types) is list:
+#         for argtype in arg_types:
+#             assert (isinstance(argtype, RpcMethodArg)), str(argtype) + ": args Type error"
+#     elif isinstance(arg_types, RpcMethodArg):
+#         arg_types = (arg_types, )
+#     else:
+#         assert (
+#                 type(arg_types) is tuple or
+#                 type(arg_types) is list or
+#                 type(arg_types) is set or
+#                 isinstance(arg_types, RpcMethodArg)), \
+#             str(arg_types) + ": arg_types error"
+#
+#     def _rpc_method(func):
+#         rpc_method = RpcMethod(func, rpc_type, arg_types
+#                               # , pub, cd=cd
+#                               )
+#         call_func = rpc_method.call
+#
+#         @functools.wraps(func)
+#         def call_rpc_method_CLIENT_STUB(self, args):
+#             # fun_for_reload = func       # do not remove this, it is usefull for reload
+#             return call_func(self, args)
+#
+#         @functools.wraps(func)
+#         def call_rpc_method_Others(self, args):
+#             # fun_for_reload = func       # do not remove this, it is usefull for reload
+#             # return call_func(self, *args)
+#             # with _delay_guard:
+#             ret = call_func(self, args)
+#             return ret
+#
+#         if rpc_type == CLIENT_STUB:
+#             call_rpc_method = call_rpc_method_CLIENT_STUB
+#         else:
+#             call_rpc_method = call_rpc_method_Others
+#
+#         call_rpc_method.rpc_method = rpc_method
+#         if rpc_method.need_mailbox:
+#             call_rpc_method.need_mailbox = True
+#         else:
+#             call_rpc_method.need_mailbox = False
+#         return call_rpc_method
+#     return _rpc_method
 
 
 def expose_to_client(method):

@@ -2,6 +2,8 @@ import collections
 import sys
 import os
 
+from core.mobilelog.LogManager import LogManager
+
 
 class ReloadRecord(object):
     """
@@ -66,7 +68,7 @@ def reload_script():
     """
     diff_list = _reload_record.generate_diff()
     if not diff_list:
-        print('nothing to reload')
+        LogManager.get_logger().info('nothing to reload')
         return False
     from core.tool import reload_impl
     for mod_name in diff_list:

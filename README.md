@@ -2,7 +2,7 @@ python 3.8.8
 
 # todo list
 
-- [ ] reload all/rpc func而不需要rpc_impl, 给reload_impl加上log
+- [ ] reload all/rpc func而不需要rpc_impl, 给reload_impl加上log, test"from test_const import SD_STR"
 <!-- - [ ] puppet -->
 <!-- - [ ] avatar -->
 - [ ] dungeon
@@ -43,3 +43,11 @@ python 3.8.8
 <!-- - [ ] 配置json解析与初始化 -->
 - [ ] 断线重连
 - [ ] 安全关闭服务器的时候关闭各种conn和server以及清理各种数据和落地
+
+
+# 代码规范
+
+除了内置标准库或者第三方库的变量或者函数, 不建议使用from ... import ... , 因为
+> Don't use a from import unless the variable is intended to be a constant. from shared_stuff import a would create a new a variable initialized to whatever shared_stuff.a referred to at the time of the import, and this new a variable would not be affected by assignments to shared_stuff.a.
+
+这样会影响incremental_reload, 用reload_all的话会卡顿一阵

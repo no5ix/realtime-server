@@ -34,7 +34,6 @@ import inspect
 from common import gr
 
 _log_tp_executor = ThreadPoolExecutor(max_workers=1)
-# _th_executor.submit()
 
 
 class LogManager:
@@ -54,10 +53,17 @@ class LogManager:
     def get_logger(logger_name=None):
         if logger_name is None:
             try:
-                caller_class = inspect.stack()[1][0].f_locals["self"].__class__.__name__
-                logger_name = caller_class
+                # st = inspect.stack()
+                # sta1 = inspect.stack()[1]
+                caller_module = inspect.stack()[1][0]
+                if "self" in caller_module.f_locals:
+                    logger_name = caller_module.f_locals["self"].__class__.__name__
+                elif "cls" in caller_module.f_locals:
+                    logger_name = caller_module.f_locals["cls"].__name__
+                else:
+                    logger_name = inspect.getmodule(caller_module).__name__
             except:
-                raise Exception("logger_name is None and can't get caller class")
+                raise Exception("logger_name is None and can't get caller name")
         # if LogManager.file_handler is None or True:  # TODO del
         if LogManager.file_handler is None:
             if LogManager.log_tag == "":
@@ -104,15 +110,15 @@ class LogManager:
         # #     # if __name__ == '__main__':
         # #     #
         # #     #     # async def main():
-        # #     #     #     _logger = LogManager.get_logger('test_logger')
+        # #     #     #     logger = LogManager.get_logger('test_logger')
         # #     #     #
         # #     #     # # 'application' code
-        # #     #     #     await _logger.debug('debug message')
-        # #     #     #     await _logger.info('info message')
-        # #     #     #     await _logger.warning('warn message')
-        # #     #     #     await _logger.error('error message')
-        # #     #     #     await _logger.critical('critical message')
-        # #     #     #     # await _logger.shutdown()
+        # #     #     #     await logger.debug('debug message')
+        # #     #     #     await logger.info('info message')
+        # #     #     #     await logger.warning('warn message')
+        # #     #     #     await logger.error('error message')
+        # #     #     #     await logger.critical('critical message')
+        # #     #     #     # await logger.shutdown()
         # #     #     #
         # #     #     # import asyncio
         # #     #     #
@@ -138,8 +144,9 @@ class AsyncLogger:
         # fh = TimedRotatingFileHandler(_temp_file_name, when='S')
         # fh.setLevel(logging.DEBUG)
         # formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - [%(filename)s:%(lineno)d] : %(message)s')
-        formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s : %(message)s')
-        fh.setFormatter(formatter)
+
+        _formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s : %(message)s')
+        fh.setFormatter(_formatter)
         _logger.addHandler(fh)
         # fh.setLevel(logging.DEBUG)
         _logger.setLevel(logging.DEBUG)
@@ -149,23 +156,21 @@ class AsyncLogger:
     def _log_decorator(func):
         # @wraps(func)
         def wrapper(self, msg, *args, **kw):
-            final_msg = self.join_caller_filename_lineno(msg)
-            if gr.is_dev_version and func.__name__ in ("debug", "error", "warning", "critical"):
+            final_msg = self.join_caller_filename_lineno(msg, kw.get("stack_incr_cnt", 0))
+            if gr.is_dev_version:
+                # and func.__name__ in ("debug", "error", "warning", "critical"):
                 print(" - ".join(
                     (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
                      self._logger.name, func.__name__.upper(), final_msg)) % args)
-            # print('%s %s():' % (text, func.__name__))
-            _log_tp_executor.submit(
-                getattr(self._logger, func.__name__), final_msg, *args, **kw)
+            _log_tp_executor.submit(getattr(self._logger, func.__name__), final_msg, *args, **kw)
             return
             # return func(self, msg, *args, **kw)
-
         return wrapper
 
     @staticmethod
-    def join_caller_filename_lineno(msg):
+    def join_caller_filename_lineno(msg, stack_incr_cnt=0):
         # caller = inspect.getframeinfo(inspect.stack()[2][0])
-        caller = inspect.stack()[2]
+        caller = inspect.stack()[2+stack_incr_cnt]
         # return ''.join(('[', inspect.stack()[2].filename, ':', str(inspect.stack()[2].lineno), ']', msg))
         final_msg = ''.join(('[', os.path.basename(caller.filename), ':', str(caller.lineno), ']: ', msg))
         # if gr.is_dev_version:
@@ -175,89 +180,84 @@ class AsyncLogger:
     @_log_decorator
     def debug(self, msg, *args, **kwargs):
         pass
-        # _log_tp_executor.submit(self._logger.debug, self.join_caller_filename_lineno(msg), *args, **kwargs)
+        # _log_tp_executor.submit(self.logger.debug, self.join_caller_filename_lineno(msg), *args, **kwargs)
 
     @_log_decorator
     def info(self, msg, *args, **kwargs):
-        # _log_tp_executor.submit(self._logger.info, self.join_caller_filename_lineno(msg), *args, **kwargs)
+        # _log_tp_executor.submit(self.logger.info, self.join_caller_filename_lineno(msg), *args, **kwargs)
         pass
 
     @_log_decorator
     def warning(self, msg, *args, **kwargs):
-        # _log_tp_executor.submit(self._logger.warning, self.join_caller_filename_lineno(msg), *args, **kwargs)
+        # _log_tp_executor.submit(self.logger.warning, self.join_caller_filename_lineno(msg), *args, **kwargs)
         pass
 
     @_log_decorator
     def error(self, msg, *args, **kwargs):
-        # _log_tp_executor.submit(self._logger.error, self.join_caller_filename_lineno(msg), *args, **kwargs)
+        # _log_tp_executor.submit(self.logger.error, self.join_caller_filename_lineno(msg), *args, **kwargs)
         pass
 
     @_log_decorator
     def critical(self, msg, *args, **kwargs):
-        # _log_tp_executor.submit(self._logger.critical, self.join_caller_filename_lineno(msg), *args, **kwargs)
+        # _log_tp_executor.submit(self.logger.critical, self.join_caller_filename_lineno(msg), *args, **kwargs)
         pass
 
     # def debug(self, msg, *args, **kwargs):
-    #     _log_tp_executor.submit(self._logger.debug, self.join_caller_filename_lineno(msg), *args, **kwargs)
+    #     _log_tp_executor.submit(self.logger.debug, self.join_caller_filename_lineno(msg), *args, **kwargs)
     #
     # def info(self, msg, *args, **kwargs):
-    #     _log_tp_executor.submit(self._logger.info, self.join_caller_filename_lineno(msg), *args, **kwargs)
+    #     _log_tp_executor.submit(self.logger.info, self.join_caller_filename_lineno(msg), *args, **kwargs)
     #
     # def warning(self, msg, *args, **kwargs):
-    #     _log_tp_executor.submit(self._logger.warning, self.join_caller_filename_lineno(msg), *args, **kwargs)
+    #     _log_tp_executor.submit(self.logger.warning, self.join_caller_filename_lineno(msg), *args, **kwargs)
     #
     # def error(self, msg, *args, **kwargs):
-    #     _log_tp_executor.submit(self._logger.error, self.join_caller_filename_lineno(msg), *args, **kwargs)
+    #     _log_tp_executor.submit(self.logger.error, self.join_caller_filename_lineno(msg), *args, **kwargs)
     #
     # def critical(self, msg, *args, **kwargs):
-    #     _log_tp_executor.submit(self._logger.critical, self.join_caller_filename_lineno(msg), *args, **kwargs)
+    #     _log_tp_executor.submit(self.logger.critical, self.join_caller_filename_lineno(msg), *args, **kwargs)
 
     def log_last_except(self):
         tp, value, traceback = sys.exc_info()
-        tb_cont = convert_python_tb_to_str(tp, value, traceback)
-        final_msg = self.join_caller_filename_lineno(f'on_traceback, type:{tp}, value:{value}, traceback:{tb_cont}')
-        if gr.is_dev_version:
-            print(" - ".join(
-                (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
-                 self._logger.name, "CRITICAL", final_msg)))
-        _log_tp_executor.submit(self._logger.critical, final_msg)
+        tb_cont = self.convert_python_tb_to_str(tp, value, traceback)
+        self.critical(f'on_traceback, type:{tp}, value:{value}, traceback:{tb_cont}', stack_incr_cnt=1)
 
+    @staticmethod
+    def convert_python_tb_to_str(t, v, tb, limit=None):
+        tb_info = [str(t), str(v)]
+        if tb is None:
+            return
+        n = 0
+        while tb and (limit is None or n < limit):
+            frame = tb.tb_frame
+            # 上传服务器的文件名筛选
+            # script_idx = frame.f_code.co_filename.find('script', 0)
+            # if script_idx != -1:
+            #	filename = frame.f_code.co_filename[script_idx:]
 
-def convert_python_tb_to_str(t, v, tb, limit=None):
-    tbinfo = [str(t), str(v)]
-    if tb is None:
-        return
-    n = 0
-    while tb and (limit is None or n < limit):
-        frame = tb.tb_frame
-        # 上传服务器的文件名筛选
-        # script_idx = frame.f_code.co_filename.find('script', 0)
-        # if script_idx != -1:
-        #	filename = frame.f_code.co_filename[script_idx:]
+            max_trace_len = 1024
+            try:
+                _locals = dict(frame.f_locals)
+                local_self = _locals.pop('self', None)
+                if local_self:
+                    local_str = "{'self': " + str(local_self) + ", " + str(_locals)[1:]
+                else:
+                    local_str = str(_locals)
+            except:
+                local_str = 'Cannot print locals'
+            if len(local_str) > max_trace_len:
+                local_str = local_str[:max_trace_len] + '...'
 
-        MAX_TRACE_LEN = 1024
-        try:
-            locals = dict(frame.f_locals)
-            local_self = locals.pop('self', None)
-            if local_self:
-                local_str = "{'self': " + str(local_self) + ", " + str(locals)[1:]
-            else:
-                local_str = str(locals)
-        except:
-            local_str = 'Cannot print locals'
-        if len(local_str) > MAX_TRACE_LEN:
-            local_str = local_str[:MAX_TRACE_LEN] + '...'
-
-        line = [
-            '  File "%s"' % frame.f_code.co_filename,
-            'line %d' % tb.tb_lineno,
-            'in %s' % frame.f_code.co_name,
-            ]
-        tbinfo.append(', '.join(line))
-        tbinfo.append('    locals=' + local_str)
-        tb = tb.tb_next
-        n = n + 1
-    return '\n'.join(tbinfo)
+            line = [
+                '  File "%s"' % frame.f_code.co_filename,
+                'line %d' % tb.tb_lineno,
+                'in %s' % frame.f_code.co_name,
+                ]
+            tb_info.append(', '.join(line))
+            tb_info.append('    locals=' + local_str)
+            tb = tb.tb_next
+            n = n + 1
+        return '\n'.join(tb_info)
 
 
 if __name__ == '__main__':

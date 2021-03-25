@@ -1,4 +1,5 @@
 # from core.EtcdSupport import ServiceNode
+import asyncio
 from asyncio import AbstractEventLoop
 # from TcpServer import ev_loop
 import typing
@@ -33,3 +34,14 @@ def add_server_singleton(entity, postfix=''):
 
 def get_server_singleton(entity_name):
     return server_singletons.get(entity_name)
+
+
+def get_ev_loop():
+    global EV_LOOP
+    if EV_LOOP is None:
+        try:
+            EV_LOOP = asyncio.get_running_loop()
+        except RuntimeError:
+            pass  # 正常情况不可能会发生调用此get_ev_loop比server启动还要早, 所以直接pass
+    return EV_LOOP
+
