@@ -1,30 +1,34 @@
+# version
+
 python 3.8.8
+
 
 # todo list
 
-- [ ] reload all/rpc func而不需要rpc_impl, 给reload_impl加上log, test"from test_const import SD_STR"
+<!-- - [ ] reload all/rpc func而不需要rpc_impl, 给reload_impl加上log, test"from test_const import SD_STR" -->
 <!-- - [ ] puppet -->
 <!-- - [ ] avatar -->
 - [ ] dungeon
 - [ ] 启动脚本
 - [ ] 手动心跳
+- [ ] kcp connection 共用心跳模块
 - [ ] battle_server
 - [ ] lobby_server
-- [ ] keyboardinterrupt
 - [ ] game_mgr process for forwarding/reloading
 - [ ] game_mgr_client to exec game_script
 - [ ] battle_service
 - [ ] db manager
 - [ ] lobby_gate
+- [ ] 
 - [ ] base on etcd distributed lock
-
 
 - [ ] login service
 - [ ] 等回调的逻辑的wrapper
 - [ ] rename
 - [ ] 信号处理
+- [ ] keyboardinterrupt
 <!-- - [ ] exception 以及 各种抛出 -->
-- [ ] timer with key and cancel
+<!-- - [ ] timer with key and cancel -->
 - [ ] tick loop
 <!-- - [ ] etcd -->
 <!-- - [ ] server call cli -->
@@ -47,7 +51,7 @@ python 3.8.8
 
 # 代码规范
 
-除了内置标准库或者第三方库的变量或者函数, 不建议使用from ... import ... , 因为
+除了内置标准库或者第三方库的变量或者函数, 要使用const变量之时不建议使用from ... import ... , 因为
 > Don't use a from import unless the variable is intended to be a constant. from shared_stuff import a would create a new a variable initialized to whatever shared_stuff.a referred to at the time of the import, and this new a variable would not be affected by assignments to shared_stuff.a.
 
-这样会影响incremental_reload, 用reload_all的话会卡顿一阵
+这样会影响incremental_reload, 而用reload_all的话则会卡顿一阵

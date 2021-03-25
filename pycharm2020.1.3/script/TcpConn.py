@@ -2,6 +2,8 @@ import asyncio
 import typing
 
 from struct import unpack as s_unpack, pack as s_pack
+
+from common import gr
 from core.common import MsgpackSupport
 from core.common.EntityFactory import EntityFactory
 from core.mobilelog.LogManager import LogManager
@@ -45,8 +47,8 @@ class TcpConn(object):
                 _data = await self.asyncio_reader.read(8192)
                 # self.logger.debug("_data")
                 if _data == b"":
-                    self.asyncio_writer.close()
                     self._logger.debug("the peer has performed an orderly shutdown (recv 0 byte).")
+                    self.handle_close()
                     break
                 self._recv_data += _data
                 while True:
@@ -57,7 +59,7 @@ class TcpConn(object):
                     _input_data_len = HEAD_LEN + _body_len
                     if _body_len > MAX_BODY_LEN or _body_len < 0:
                         self._logger.debug("body too big, Close the connection")
-                        self.asyncio_writer.close()
+                        self.handle_close()
                         return
                     elif _len_recv_data >= _input_data_len:
                         _body_data = self._recv_data[HEAD_LEN:_input_data_len]
@@ -67,25 +69,9 @@ class TcpConn(object):
                         self._recv_data = self._recv_data[_input_data_len:]
                     else:
                         break
-            except (ConnectionResetError, ):
-                self.asyncio_writer.close()
-                # TODO: not safe, handle conn closed
+            except (ConnectionResetError, ConnectionAbortedError, ConnectionRefusedError):
                 self._logger.debug("connection is closed by remote client..with ConnectionResetError")
-                break
-            except ConnectionAbortedError:
-                self.asyncio_writer.close()
-                # TODO: not safe, handle conn closed
-                self._logger.debug("connection is closed by remote client..with ConnectionAbortedError")
-                break
-            # except ConnectionError:
-            #     self.asyncio_writer.close()
-            #     # TODO: not safe, handle conn closed
-            #     self.logger.debug("connection is closed by remote client..")
-            #     break
-            except ConnectionRefusedError:
-                self.asyncio_writer.close()
-                # TODO: not safe, handle conn closed
-                self._logger.debug("connection is closed by remote client..with ConnectionRefusedError")
+                self.handle_close()
                 break
             except:
                 self._logger.log_last_except()
@@ -100,6 +86,9 @@ class TcpConn(object):
             #     break
         # self.asyncio_writer.close()
 
+    def handle_close(self, ):
+        self.asyncio_writer.close()
+
     def handle_message(self, msg_data):
         try:
             rpc_message = MsgpackSupport.decode(msg_data)
@@ -108,9 +97,11 @@ class TcpConn(object):
             self._logger.log_last_except()
 
     def handle_rpc(self, rpc_msg):
-        _entity_type, _method_name, _parameters = rpc_msg
+        _entity_type_str, _method_name, _parameters = rpc_msg
         if self._entity is None:
-            self._entity = EntityFactory.instance().create_entity(_entity_type)
+            self._entity = gr.get_server_singleton(_entity_type_str)
+            if self._entity is None:
+                self._entity = EntityFactory.instance().create_entity(_entity_type_str)
             self._entity.set_connection(self)
         _method = getattr(self._entity, _method_name, None)
 
@@ -129,7 +120,6 @@ class TcpConn(object):
             # method_name_type=0,
             # need_reply=False, timeout=2
     ):
-
         # message = [RPC_REQUEST, service_id_type, service_id, method_name_type, method_name, args]
         message = [entity_type, method_name, args]
         try:

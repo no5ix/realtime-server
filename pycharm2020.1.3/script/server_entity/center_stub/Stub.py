@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 import asyncio
 
-from core.common.RpcMethodArgs import List
+# from core.common.RpcMethodArgs import List
 from core.common.RpcSupport import rpc_method, SERVER_ONLY
-from core.common.IdManager import IdManager
+# from core.common.IdManager import IdManager
 # from core.common.proto_python.common_pb2 import EntityMailbox
 # from core.distserver.game import GameAPI
 # from core.distserver.game import GameServerRepo
@@ -11,15 +11,11 @@ from core.common.IdManager import IdManager
 # import gr
 
 from core.util import UtilApi
+# from core.util.TimerHub import TimerHub
 from ..ServerEntity import ServerEntity
 
 
 class Stub(ServerEntity):
-    """
-    Stub基类
-    负责和Center类连接
-    如RollCenter, RollStub
-    """
 
     def __init__(self, entity_id=None):
         super(Stub, self).__init__(entity_id)
@@ -28,6 +24,7 @@ class Stub(ServerEntity):
         self.connect_cb = None
         self._center_name = ''
         self._peers = []
+        # self._timer_hub = TimerHub()
 
     # def start_connect(self, center_name, cb):
     def start_connect(self, center_name):
@@ -35,7 +32,7 @@ class Stub(ServerEntity):
         self._center_name = center_name
         # self.connect_cb = cb
         # gr.callback(1.0, lambda: self.connect_to_center())
-        asyncio.get_running_loop().call_later(1, self.connect_to_center)
+        self.timer_hub.call_later(1, self.connect_to_center)
 
     def connect_to_center(self):
         self._connect_counter += 1
@@ -58,7 +55,7 @@ class Stub(ServerEntity):
                 'Stub cannot connect to %s, try again after 1 sec... (%d)', self._center_name,
                 self._connect_counter)
             # gr.callback(1.0, lambda: self.connect_to_center())
-            asyncio.get_running_loop().call_later(1, self.connect_to_center)
+            self.timer_hub.call_later(1, self.connect_to_center)
 
     # def call_center_method(self, method_name, args):
     #     if not self._connected:

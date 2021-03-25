@@ -33,7 +33,7 @@ def add_server_singleton(entity, postfix=''):
 
 
 def get_server_singleton(entity_name):
-    return server_singletons.get(entity_name)
+    return server_singletons.get(entity_name, None)
 
 
 def get_ev_loop():

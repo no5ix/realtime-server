@@ -5,7 +5,7 @@ from TcpServer import TcpServer
 from core.mobilelog.LogManager import LogManager
 
 
-class GameManager(object):
+class BattleDispatcher(object):
 
     def __init__(self, server_name):
         # game_server_name = sys.argv[1]
@@ -18,8 +18,13 @@ class GameManager(object):
         self._server.run()
 
 
+class BattleDispatcherImpl(object):
+
+    def
+
+
 if __name__ == '__main__':
     game_server_name = sys.argv[1]
-    bs = GameManager(game_server_name)
+    bs = BattleDispatcher(game_server_name)
     bs.start()
 

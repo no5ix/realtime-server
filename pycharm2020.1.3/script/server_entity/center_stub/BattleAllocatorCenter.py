@@ -20,8 +20,8 @@ from server_entity.center_stub.Center import Center
 
 
 class BattleAllocatorCenter(Center):
-    def __init__(self, entityid=None):
-        super(BattleAllocatorCenter, self).__init__(entityid)
+    def __init__(self, entity_id=None):
+        super(BattleAllocatorCenter, self).__init__(entity_id)
         # self.sa_logger = SALoggerManager()
 
         self.battle_id_2_info = {}  # battle id -> dun info

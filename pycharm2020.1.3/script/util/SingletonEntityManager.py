@@ -112,7 +112,8 @@ class SingletonEntityManager(object):
             self.logger.error(f"has no {game_server_name} game_conf_info")
             return
         if game_conf_info.get("is_center", False):
-            EntityFactory.instance().create_entity('BattleAllocatorCenter')
+            center = EntityFactory.instance().create_entity('BattleAllocatorCenter')
+            gr.add_server_singleton(center)
         # else:
         #     EntityFactory.instance().create_entity('BattleAllocatorStub')
         self.logger.debug('_register_relevant_centers_cb, status:%s' % 'good')

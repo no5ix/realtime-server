@@ -11,6 +11,8 @@ import socket
 # from PuppetBindEntity import PuppetBindEntity
 # from battle_entity.Puppet import Puppet
 # from core.common import MsgpackSupport
+from asyncio import events
+
 from TcpConn import TcpConn
 from common import gr
 from core.EtcdSupport import ServiceNode
@@ -18,6 +20,7 @@ from core.common import EntityScanner
 from core.common.EntityFactory import EntityFactory
 from core.mobilelog.LogManager import LogManager
 from core.util import EnhancedJson
+from core.util.TimerHub import TimerHub
 from util.SingletonEntityManager import SingletonEntityManager
 from core.tool import incremental_reload
 
@@ -27,6 +30,11 @@ from core.tool import incremental_reload
 class TcpServer(object):
 
     def __init__(self, server_name, json_conf_path):
+        self._ev_loop = events.new_event_loop()
+        events.set_event_loop(self._ev_loop)
+
+        self._timer_hub = TimerHub(self._ev_loop)
+
         self.tcp_conn_map = {}
         self._etcd_service_node = None
         # self.register_entities()
@@ -218,7 +226,7 @@ class TcpServer(object):
         self._etcd_service_node = ServiceNode(etcd_addr_list, my_addr, service_module_dict)
         # self._etcd_service_node = ServiceNode(etcd_addr_list, my_addr, {"BattleAllocatorStub": ""})
         gr.etcd_service_node = self._etcd_service_node
-        asyncio.get_running_loop().call_later(4, self._check_game_start)
+        self._timer_hub.call_later(4, self._check_game_start)
 
         _etcd_support_task = asyncio.create_task(self._etcd_service_node.start())
         _start_srv_task = asyncio.create_task(self.start_server_task())
@@ -237,14 +245,14 @@ class TcpServer(object):
 
         if platform.system() != 'Linux':
             return
-        _loop = asyncio.get_running_loop()
+        # _loop = asyncio.get_running_loop()
         for _sig_name in {'SIGINT', 'SIGTERM'}:
-            _loop.add_signal_handler(
-                getattr(signal, _sig_name), functools.partial(ask_exit, _sig_name, _loop))
+            self._ev_loop.add_signal_handler(
+                getattr(signal, _sig_name), functools.partial(ask_exit, _sig_name, self._ev_loop))
 
     def run(self):
+        self._ev_loop.run_until_complete(self.main())
         asyncio.run(self.main())
-        # ev_loop.run_until_complete(self.main())
 
     def _check_game_start(self):
         # 随机种子

@@ -30,10 +30,10 @@ from logging.handlers import TimedRotatingFileHandler
 # from aiologger.formatters.base import Formatter
 import inspect
 
-# from common import gr
 from common import gr
 
-_log_tp_executor = ThreadPoolExecutor(max_workers=1)
+
+_log_tp_executor = ThreadPoolExecutor(max_workers=1)  # 1 for sequentiality
 
 
 class LogManager:
@@ -268,7 +268,7 @@ if __name__ == '__main__':
     logger = logging.getLogger('simple_example')
 
         # logger.setLevel(logging.DEBUG)
-    fh = TimedRotatingFileHandler('logmm.log', when='D')
+    fh = TimedRotatingFileHandler('test_log_mgr.log', when='D')
     # fh = TimedRotatingFileHandler(_temp_file_name, when='S')
     # fh.setLevel(logging.DEBUG)
 
