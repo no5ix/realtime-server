@@ -183,18 +183,6 @@ class TcpServer(object):
             # await _etcd_support_task
             # server = await _start_srv_task
             addr = server.sockets[0].getsockname()
-
-            try:
-                1 / 0
-            except:
-                # import sys
-                # tp, value, traceback = sys.exc_info()
-                #
-                # tb_cont = convert_python_tb_to_str(tp, value, traceback)
-                # logger.error(f'on_traceback, type:{tp}, value:{value}, traceback:{tb_cont}')
-                # logging.exception("Deliberate divide by zero traceback")
-                self._logger.log_last_except()
-
             self._logger.debug(f'Server on {addr}')
 
             async with server:
