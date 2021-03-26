@@ -1,7 +1,7 @@
 import asyncio
 import functools
-import json
-import random
+# import json
+# import random
 import signal
 import platform
 import sys
@@ -33,7 +33,7 @@ class TcpServer(object):
         self._ev_loop = events.new_event_loop()
         events.set_event_loop(self._ev_loop)
 
-        self._timer_hub = TimerHub(self._ev_loop)
+        self._timer_hub = TimerHub()
 
         self.tcp_conn_map = {}
         self._etcd_service_node = None
@@ -252,7 +252,7 @@ class TcpServer(object):
 
     def run(self):
         self._ev_loop.run_until_complete(self.main())
-        asyncio.run(self.main())
+        # asyncio.run(self.main())
 
     def _check_game_start(self):
         # 随机种子

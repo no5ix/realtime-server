@@ -31,10 +31,10 @@ class TimerHub:
             repeat_interval_sec: typing.Union[int, float] = None) -> str:
         """
         可以重复使用一个key, 并不会冲掉之前key的timer, 但是当调用`cancel_timer`的时候, 会一次性全部cancel掉所有
-        :param delay_second:
+        :param delay_second:  如果小于0, 则相当于等于0, 而等于0并不等同于立即执行(为了避免死循环), 而是在下一轮的loop中尽快执行
         :param delay_callback:
         :param key:
-        :param repeat_count: 当等于 -1 的时候则为无限重复  # TODO
+        :param repeat_count: 当等于 -1 的时候则为无限重复
         :param repeat_interval_sec:
         :return: 最终的唯一key
         """
@@ -56,8 +56,10 @@ class TimerHub:
         self._final_key_2_timer_info_map[final_key] = TimerInfo(_ret_timer, key, final_key)
         return final_key
 
-    def call_at(self, when_second: typing.Union[int, float], delay_callback: typing.Callable, key: str = "") -> str:
-        return self.call_later(when_second-time(), delay_callback, key)
+    def call_at(
+            self, when_second: typing.Union[int, float], delay_callback: typing.Callable, key: str = "",
+            repeat_count: int = 0, repeat_interval_sec: typing.Union[int, float] = None) -> str:
+        return self.call_later(when_second-time(), delay_callback, key, repeat_count, repeat_interval_sec)
 
     def cancel_timer(self, key: str):
         # try:
@@ -170,6 +172,7 @@ if __name__ == "__main__":
 
     th.call_later(2, lambda: th.cancel_timer(test_timer_key2_str), "cancel_test_timer_key2_str_during_repeating")
     _cur_timer_key = th.call_at(time() + 4, lambda: th.cancel_timer(test_timer_key1_str))
+
     # _cur_timer_key = th.call_later(4, lambda: th.cancel_timer("zamehui ?"))
     # th.call_later(4, lambda: th.cancel_timer("zamehui ?"), "dfadfa")
     # th.call_later(4, lambda: th.cancel_timer("zddd ?"))
@@ -191,6 +194,8 @@ if __name__ == "__main__":
     # test_timer_circle()
 
     # print(f"abef daffinal: {th._final_key_2_timer_info_map}")
+    th.call_at(
+        time() + 4.5, lambda: print("test call at repeat"), repeat_count=2, repeat_interval_sec=1)
 
     print("test reach here")
     # des_key = th.call_later(0, lambda: th.destroy())
