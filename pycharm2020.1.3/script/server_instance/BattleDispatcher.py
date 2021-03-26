@@ -2,7 +2,9 @@ import sys
 
 from TcpServer import TcpServer
 # from common import gr
+from core.common.RpcSupport import rpc_method, SERVER_ONLY
 from core.mobilelog.LogManager import LogManager
+from server_entity.ServerEntity import ServerEntity
 
 
 class BattleDispatcher(object):
@@ -18,9 +20,11 @@ class BattleDispatcher(object):
         self._server.run()
 
 
-class BattleDispatcherImpl(object):
+class BattleDispatcherImpl(ServerEntity):
 
-    def
+    @rpc_method(SERVER_ONLY)
+    def report_battle_server_info(self):
+        pass
 
 
 if __name__ == '__main__':
