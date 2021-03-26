@@ -66,7 +66,7 @@ class CompPuppetTest(Component):
         self.call_client_comp_method(
             self.VAR_NAME, 'puppet_chat_from_srv', {'i': {"reload_state": "success"}})
 
-        # self.test_timer_circle()
+        self.test_timer_circle()
 
     @rpc_method(CLIENT_ONLY)
     def test_reload(self):
