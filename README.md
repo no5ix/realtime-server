@@ -1,5 +1,7 @@
 一个轻量级的游戏服务器引擎
 
+![](/img/UE4DemoScreenshot.gif)
+
 
 # 要点
 
@@ -37,22 +39,9 @@
 ![](/img/img_1.png)
 
 
-# python version
-
-python 3.8.8
-
-
 # Q&A
 
 常见问题解答, 就不要去群里刷屏问了哈:  
-* 老版本去哪儿了?
-    * 是说下面这个演示图的那个CPP版本么? 在[master分支](https://github.com/no5ix/realtime-server/tree/master)
-    * ![](/img/UE4DemoScreenshot.gif)
-* 为何新版选用python? 不选cpp? 或者做成cpp的底层py的上层?
-    * 用cpp做底层, py做上层来调用的话也是可以的, 但是目前愿景是希望更多的开发者能够参与贡献, 对于其他贡献者cpp门槛明显比python高
-    * 之后用户够多了的话, 会考虑把底层cpp化, 然后打包成`.pyd`或`.so`供上层调用
-    * 对于大多数游戏, python的性能已经够用
-    * 本服务器引擎的愿景是面向大众开发者, 能够快速开发, python受众广, 易上手
 * lobby_gate的意义? 为何客户端不直连lobby?
     * 一般的，在延迟不敏感的情况下，客户端通过连接 gate 来访问 lobby, gate负责代理转发客户端与 game 之间的网络通信数据。由 gate 负责完成对通信数据加密解析、压缩解压操作, 减轻lobby性能压力。
     * lobby 处理消息的逻辑可以更加简洁，不用处理 I/O 复用，因为所有的消息来自单个 TCP 连接（单网关）或者固定数量的几个 TCP 连接（多网关的情况）
@@ -88,8 +77,4 @@ python 3.8.8
 - 配表导表工具
 - ...
 
-
-# QQ群
-
-觉得好的话, star一哈项目并加群 496687140 查看更多文档交流吧
 
