@@ -66,3 +66,19 @@ class BattleAllocatorCenter(Center):
     # @rpc_method(SERVER_ONLY, (MailBox(), Dict('m'),))
     # def report_metric(self, stub_mb, metric_dict):
     #     self._load_metric.update_from_stub(stub_mb, metric_dict)
+
+    @rpc_method(SERVER_ONLY)
+    def report_battle_server_info(self):
+        """
+        开多个center, 然后stub上报负载, center应该改名为bs_dispatcher_service,
+        各个stub的数据应该存于共享的数据库如redis中.
+        :return:
+        """
+        pass
+
+    @rpc_method(SERVER_ONLY)
+    def pick_battle_server(self):
+        """
+        :return:
+        """
+        return

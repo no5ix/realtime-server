@@ -19,8 +19,8 @@ class TcpConn(object):
         # self.entity = entity  # type: typing.Type[ServerEntity]
         from server_entity.ServerEntity import ServerEntity
         self._entity = None  # type: typing.Union[ServerEntity, None]
-        self.asyncio_writer = asyncio_writer
-        self.asyncio_reader = asyncio_reader
+        self.asyncio_writer = asyncio_writer  # type: asyncio.StreamWriter
+        self.asyncio_reader = asyncio_reader  # type: asyncio.StreamReader
 
         self.send_cnt = 0
         self._recv_cnt = 0

@@ -26,9 +26,12 @@ class BattleDispatcherImpl(ServerEntity):
     def report_battle_server_info(self):
         pass
 
+    @rpc_method(SERVER_ONLY)
+    def pick_battle_server(self):
+        return
+
 
 if __name__ == '__main__':
     game_server_name = sys.argv[1]
     bs = BattleDispatcher(game_server_name)
     bs.start()
-
