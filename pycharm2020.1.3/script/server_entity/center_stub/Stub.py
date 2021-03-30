@@ -57,16 +57,21 @@ class Stub(ServerEntity):
             # gr.callback(1.0, lambda: self.connect_to_center())
             self.timer_hub.call_later(1, self.connect_to_center)
 
-    # def call_center_method(self, method_name, args):
-    #     if not self._connected:
-    #         self.logger.error('call_center_method error: not connected to center method:%s', method_name)
-    #     else:
-    #         center = GameAPI.get_global_entity_mailbox(self._center_name)
-    #         if center:
-    #             self.call_server_method(center, method_name, args)
-    #         else:
-    #             self.logger.error('call_center_method error: cannot find center mailbox method:%s', method_name)
-    #
+    def call_center_method(self, method_name, args):
+        if not self._connected:
+            self.logger.error('call_center_method error: not connected to center method:%s', method_name)
+        else:
+
+            center_ip_port_tuple = UtilApi.get_service_info(self._center_name)
+            if center_ip_port_tuple:
+                center_ip_port = center_ip_port_tuple[0]
+                self.call_server_method(method_name, args)
+            # center = GameAPI.get_global_entity_mailbox(self._center_name)
+            # if center:
+            #     self.call_server_method(center, method_name, args)
+            # else:
+            #     self.logger.error('call_center_method error: cannot find center mailbox method:%s', method_name)
+
     # def call_peer_method(self, method_name, args):
     #     """调用除自己之外的其他stubs方法"""
     #     for p in self._peers:

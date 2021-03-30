@@ -6,6 +6,7 @@ import asyncio
 import typing
 
 from TcpConn import TcpConn
+from common import gr
 from core.common.EntityManager import EntityManager
 from core.common.IdManager import IdManager
 from core.mobilelog.LogManager import LogManager
@@ -68,6 +69,9 @@ class ServerEntity(object):
             reader, writer = await asyncio.open_connection(remote_ip, remote_port)
             _tcp_conn = TcpConn(writer.get_extra_info('peername'), writer, reader)
             self.set_connection(_tcp_conn)
+            tcp_srv = gr.get_server_singleton("TcpServer")
+            tcp_srv.add_conn(server_ip_port_tuple, _tcp_conn)
+
             self._conn.set_entity(self)
             self._conn.request_rpc(remote_entity_type or self.__class__.__name__, method_name, parameters)
             # self._conn.request_rpc(self.__class__.__name__, method_name, parameters)

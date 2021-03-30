@@ -14,6 +14,7 @@ import collections
 # from const import service_const, server_const
 from core.common.RpcSupport import rpc_method, SERVER_ONLY
 from core.common.RpcMethodArgs import Response, Dict, Str, Int, Uuid, MailBox, List
+# from core.util.performance.battleserver_load import BattleCenterMetric
 from server_entity.center_stub.Center import Center
 
 # _encoder = ProtoEncoder('compact')
@@ -58,7 +59,7 @@ class BattleAllocatorCenter(Center):
     #         GameServerRepo.hostid, report['load'], report['n_stubs'],
     #         report['n_battle'], report['n_avt'], report['n_rbt'], GameServerRepo.battle_type,
     #     )
-    #
+
     # def pending_shutdown(self):
     #     # 进入预备下线状态
     #     self._load_metric.pending_shutdown = True

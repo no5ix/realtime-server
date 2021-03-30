@@ -35,7 +35,7 @@ class TcpServer(object):
 
         self._timer_hub = TimerHub()
 
-        self.tcp_conn_map = {}
+        self._addr_2_conn_map = {}
         self._etcd_service_node = None
         # self.register_entities()
 
@@ -51,6 +51,7 @@ class TcpServer(object):
         self.register_component()
 
         incremental_reload.init_reload_record()  # 一定要放到EntityScanner注册了的代码之后, 不然sys.modules里没相关的模块
+        gr.add_server_singleton(self)
 
     @staticmethod
     def parse_json_conf(json_conf_path):
@@ -138,11 +139,14 @@ class TcpServer(object):
                 EntityFactory.instance().register_entity(cls_name, cls)
 
     def forward(self, addr, message):
-        for _addr, _tcp_conn in self.tcp_conn_map.items():
+        for _addr, _tcp_conn in self._addr_2_conn_map.items():
             # if w != writer:
                 # w.write(f"{addr!r}: {message!r}\n".encode())
                 # w.write(MsgpackSupport.encode(f"{addr!r}: {message!r}\n"))
             _tcp_conn.send_msg(f"{addr!r}: {message!r}\n")
+
+    def add_conn(self, addr, conn):
+        self._addr_2_conn_map[addr] = conn
 
     async def handle_client_connected(self, reader, writer):
         # self.writers.append(writer)
@@ -161,7 +165,8 @@ class TcpServer(object):
         # _ppt.set_puppet_bind_entity(_pbe)
         # _ppt.init_from_dict({})
 
-        self.tcp_conn_map[addr] = _tcp_conn
+        self.add_conn(addr, _tcp_conn)
+        # self._addr_2_conn_map[addr] = _tcp_conn
         message = f"{addr!r} is connected !!!!"
         self._logger.debug(message)
         _tcp_conn.loop()

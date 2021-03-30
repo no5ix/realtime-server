@@ -16,7 +16,7 @@ import random
 # from core.servercommon.PostmanDelayGuard import PostmanDelayGuard
 # from util.performance.battleserver_load import BattleProcessMetric
 # from util.sunshine import node_executor
-
+# from core.util.performance.battleserver_load import BattleProcessMetric
 from server_entity.center_stub.Stub import Stub
 
 
@@ -25,7 +25,7 @@ class BattleAllocatorStub(Stub):
     def __init__(self, entity_id=None):
         super(BattleAllocatorStub, self).__init__(entity_id)
         # self._metric = BattleProcessMetric()
-        # self._delay_calls.callback('metric', 1.0, self.report_metric, repeat_num=-1, first_delay=5.0)
+        # self.timer_hub.call_later(1.0, self.report_metric, repeat_count=-1, repeat_interval_sec=5.0)
         # try:
         #     self.init_collision()
         # except:
