@@ -17,6 +17,7 @@ import random
 # from util.performance.battleserver_load import BattleProcessMetric
 # from util.sunshine import node_executor
 # from core.util.performance.battleserver_load import BattleProcessMetric
+from core.util.performance.battleserver_load import BattleProcessMetric
 from server_entity.center_stub.Stub import Stub
 
 
@@ -26,23 +27,7 @@ class BattleAllocatorStub(Stub):
         super(BattleAllocatorStub, self).__init__(entity_id)
         # self._metric = BattleProcessMetric()
         # self.timer_hub.call_later(1.0, self.report_metric, repeat_count=-1, repeat_interval_sec=5.0)
-        # try:
-        #     self.init_collision()
-        # except:
-        #     self.logger.error('init_collision failed!!!')
-        #     self.logger.log_last_except()
-        # asiocore.set_use_condition(False)
 
-    # def reload_script(self):
-    #     super(BattleAllocatorStub, self).reload_script()
-    #     # 清理ETS文件缓存
-    #     node_executor.cache.clear()
-    #
-    # def call_remote_method(self, remote_mailbox, methodname, parameters=None, callback=None):
-    #     if parameters is None:
-    #         parameters = {}
-    #     return self.call_server_method_direct(remote_mailbox, methodname, parameters=parameters)
-    #
     # def report_metric(self):
-    #     self._metric.refresh()
-    #     self.call_center_method('report_metric', {'m': self._metric.to_dict()})
+        # self._metric.refresh()
+        # self.call_center_method('report_metric', {'m': self._metric.to_dict()})

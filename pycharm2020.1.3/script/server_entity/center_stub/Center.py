@@ -1,13 +1,9 @@
 # -*- coding: utf-8 -*-
 from core.common.RpcMethodArgs import MailBox
 from core.common.RpcSupport import rpc_method, SERVER_ONLY
-# from core.distserver.game import GameAPI
-
-from ..ServerEntity import ServerEntity
-# from ..ServerEntityBase import ServerEntityBase
+from server_entity.ServerEntity import ServerEntity
 
 
-# class Center(ServerEntityBase):
 class Center(ServerEntity):
     """
     Center基类

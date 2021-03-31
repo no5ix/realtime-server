@@ -2,6 +2,7 @@ from __future__ import annotations
 import asyncio
 import struct
 import typing
+from asyncio.exceptions import CancelledError
 
 from RpcHandler import RpcHandler
 
@@ -20,7 +21,10 @@ MAX_BODY_LEN = 4294967296
 
 class TcpConn(object):
 
-    def __init__(self, addr_str, asyncio_writer, asyncio_reader, rpc_handler: RpcHandler = None):
+    def __init__(
+            self, addr_str,
+            asyncio_writer: asyncio.StreamWriter, asyncio_reader: asyncio.StreamReader,
+            rpc_handler: RpcHandler = None):
         self.addr_str = addr_str
         # self.entity = entity  # type: typing.Type[ServerEntity]
         # self._entity = None  # type: typing.Union[ServerEntity, None]
@@ -38,6 +42,7 @@ class TcpConn(object):
         else:
             self._rpc_handler = RpcHandler(self)
 
+        # await self._loop()
         self.loop()
 
     # def set_entity(self, entity: ServerEntity):
@@ -91,6 +96,8 @@ class TcpConn(object):
                 self._logger.debug("connection is closed by remote client..with ConnectionResetError")
                 self.handle_close()
                 break
+            except CancelledError:
+                pass
             except:
                 self._logger.log_last_except()
 

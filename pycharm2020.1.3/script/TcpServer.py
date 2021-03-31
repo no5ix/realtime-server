@@ -166,7 +166,7 @@ class TcpServer(object):
         # self.writers.append(writer)
         addr = writer.get_extra_info('peername')
         _tcp_conn = TcpConn(addr, writer, reader)
-
+        # await _tcp_conn.loop()
         # _ppt = Puppet()
 
         # _tcp_conn.set_entity(_ppt)

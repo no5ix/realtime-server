@@ -2,7 +2,7 @@
 import time
 import operator
 from .load_estimate import PerformanceMetric, Load, CPULoad
-from core.distserver.game import GameServerRepo
+# from core.distserver.game import GameServerRepo
 from core.common.EntityManager import EntityManager
 
 
@@ -19,7 +19,7 @@ class BattleProcessMetric(PerformanceMetric):
         n_battle = 0
         n_avatar = 0
         n_robot = 0
-        for battle in EntityManager.itervalues():
+        for battle in EntityManager.instance().iter_entity():
             if battle.__class__.__name__ != 'Battle':
                 continue
             n_battle += 1

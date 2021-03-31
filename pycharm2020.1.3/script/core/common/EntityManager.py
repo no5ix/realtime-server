@@ -1,4 +1,8 @@
-# -*- coding: utf-8 -*-
+from __future__ import annotations
+
+import typing
+if typing.TYPE_CHECKING:
+	from server_entity.ServerEntity import ServerEntity
 from .IdManager import IdManager
 from ..mobilelog.LogManager import LogManager
 # from IdManager import IdManager
@@ -92,7 +96,7 @@ class EntityManager(object):
 		self._logger = LogManager.get_logger("server.EntityManager")
 		# registered classed for EntityFactory
 		# self.entity_classes = {}
-		self._entities = {}
+		self._entities = {}  # type: typing.Dict[int, typing.Type[ServerEntity]]
 
 	@classmethod
 	def instance(cls):
@@ -140,10 +144,11 @@ class EntityManager(object):
 		self._logger.info("addentity  entity id  %s ", entityid)
 		self._entities[entityid] = entity
 
-	# @classmethod
-	# def itervalues(cls):
-	# 	return cls._entities.itervalues()
-	#
+	def iter_entity(self):
+		for entity_id, ent in self._entities.items():
+			yield entity_id, ent
+		# return cls._entities.itervalues()
+
 	# @classmethod
 	# def values(cls):
 	# 	return cls._entities.values()

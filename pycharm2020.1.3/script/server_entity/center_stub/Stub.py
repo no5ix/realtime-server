@@ -12,7 +12,7 @@ from core.common.RpcSupport import rpc_method, SERVER_ONLY
 
 from core.util import UtilApi
 # from core.util.TimerHub import TimerHub
-from ..ServerEntity import ServerEntity
+from server_entity.ServerEntity import ServerEntity
 
 
 class Stub(ServerEntity):

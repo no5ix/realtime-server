@@ -26,6 +26,7 @@ async def tcp_echo_client():
     _ppt = Puppet()
     _tcp_conn = TcpConn(
         writer.get_extra_info('peername'), writer, reader, _ppt.get_rpc_handle())
+    # _tcp_conn.loop()
     # _pbe = PuppetBindEntity()
     # _tcp_conn.set_entity(_pbe)
     # _tcp_conn.set_entity(_ppt)
@@ -64,6 +65,7 @@ async def tcp_echo_client():
     th.call_later(
         10, lambda: _ppt.CompPuppetTest.test_reload())
     # await _tcp_conn.loop()
+    # _tcp_conn.loop()
     # while True:
     #     data = await reader.read(100)
     #     # print(f'Received: {data.decode()!r}')
