@@ -12,7 +12,7 @@
 #     def set_puppet(self, ppt):
 #         self._puppet = ppt
 #
-#     def call_server_method(self, method_name, parameters=None):
+#     def call_remote_method(self, method_name, parameters=None):
 #         """
 #         @param method_name:    服务端entity方法的名字
 #         @param parameters:     参数，与call_server_method方法参数类似

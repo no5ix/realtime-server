@@ -31,7 +31,7 @@ class BattleAllocatorCenter(Center):
         # self._load_metric = BattleCenterMetric()
         # self._delay_calls.callback('report_tick', 5, self.send_report_tick, repeat_num=-1, first_delay=10.0)
 
-    # def call_server_method(self, remote_mailbox, methodname, parameters=None, callback=None):
+    # def call_remote_method(self, remote_mailbox, methodname, parameters=None, callback=None):
     #     if parameters is None:
     #         parameters = {}
     #     return self.call_server_method_direct(remote_mailbox, methodname, parameters=parameters)

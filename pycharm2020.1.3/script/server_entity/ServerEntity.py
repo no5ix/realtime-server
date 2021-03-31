@@ -5,8 +5,8 @@ from __future__ import annotations
 # import asyncio
 
 import typing
-if typing.TYPE_CHECKING:
-    from RpcHandler import RpcHandler
+# if typing.TYPE_CHECKING:
+from RpcHandler import RpcHandler
 
 # from TcpConn import TcpConn
 # from common import gr
@@ -32,16 +32,19 @@ class ServerEntity(object):
         # save_time = self.get_persistent_time()
 
         # self._conn = None
-        self._rpc_handler = None  # type: typing.Optional[RpcHandler]
+        self._rpc_handler = RpcHandler(entity=self)
         self.timer_hub = TimerHub()
 
     def set_rpc_handler(self, rpc_handler):
         self._rpc_handler = rpc_handler
 
-    def call_client_method(
-            self, method_name, parameters=None, remote_entity_type: typing.Union[None, str] = None):
-        self._rpc_handler.request_rpc(
-            remote_entity_type or self.__class__.__name__, method_name, parameters)
+    def get_rpc_handle(self):
+        return self._rpc_handler
+
+    # def call_client_method(
+    #         self, method_name, parameters=None, remote_entity_type: typing.Union[None, str] = None):
+    #     self._rpc_handler.request_rpc(
+    #         remote_entity_type or self.__class__.__name__, method_name, parameters)
 
     def call_other_client_method(self):
         pass
@@ -61,18 +64,17 @@ class ServerEntity(object):
     #     self._conn.request_rpc(method_name, parameters)
     #     await _tcp_conn.loop()
 
-    def call_server_method(
+    def call_remote_method(
             self, method_name, parameters=None, remote_entity_type: typing.Union[None, str] = None,
             ip_port_tuple: typing.Tuple[str, int] = None
     ):
-        if self._rpc_handler is None:
-            if ip_port_tuple is None:
-                self.logger.error("self._conn is None and ip_port_tuple is None")
-                return
-            self._rpc_handler = RpcHandler()
+        # if self._rpc_handler is None:
+        #     if ip_port_tuple is None:
+        #         self.logger.error("self._conn is None and ip_port_tuple is None")
+        #         return
+        #     self._rpc_handler = RpcHandler()
 
         self._rpc_handler.request_rpc(
-            self,
             method_name, parameters, remote_entity_type or self.__class__.__name__, ip_port_tuple)
 
     # async def call_server_method_with_ip_port(

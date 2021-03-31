@@ -42,7 +42,7 @@ class Stub(ServerEntity):
             center_ip_port = center_ip_port_tuple[0]
             # asyncio.create_task(self.call_server_method_with_ip_port(
             #     center_ip_port, 'register_stub', remote_entity_type=self._center_name))
-            self.call_server_method(
+            self.call_remote_method(
                 "register_stub", remote_entity_type=self._center_name, ip_port_tuple=center_ip_port)
 
             # print("register_stub")
@@ -67,17 +67,17 @@ class Stub(ServerEntity):
             center_ip_port_tuple = UtilApi.get_service_info(self._center_name)
             if center_ip_port_tuple:
                 center_ip_port = center_ip_port_tuple[0]
-                self.call_server_method(method_name, args)
+                self.call_remote_method(method_name, args)
             # center = GameAPI.get_global_entity_mailbox(self._center_name)
             # if center:
-            #     self.call_server_method(center, method_name, args)
+            #     self.call_remote_method(center, method_name, args)
             # else:
             #     self.logger.error('call_center_method error: cannot find center mailbox method:%s', method_name)
 
     # def call_peer_method(self, method_name, args):
     #     """调用除自己之外的其他stubs方法"""
     #     for p in self._peers:
-    #         self.call_server_method(p, method_name, args)
+    #         self.call_remote_method(p, method_name, args)
     #
     # def call_all_stub_method(self, method_name, args):
     #     """调用所有stub的方法，含自己"""

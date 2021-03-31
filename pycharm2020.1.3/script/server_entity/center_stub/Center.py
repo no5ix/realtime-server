@@ -39,8 +39,8 @@ class Center(ServerEntity):
         #                  stub_box.serverinfo.port)
         # self.notify_stubs_update_peers()
         # 通知stub已成功连接到center
-        # self.call_server_method(stub_box, 'connected_to_center')
-        self.call_server_method('connected_to_center')
+        # self.call_remote_method(stub_box, 'connected_to_center')
+        self.call_remote_method('connected_to_center')
 
     # def refresh_stubs(self, server_list):
     #     """
@@ -80,4 +80,4 @@ class Center(ServerEntity):
     #
     # def call_all_stub_method(self, method_name, args):
     #     for stub in self._stubs:
-    #         self.call_server_method(stub, method_name, args)
+    #         self.call_remote_method(stub, method_name, args)

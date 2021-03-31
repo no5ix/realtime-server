@@ -20,10 +20,10 @@ MAX_BODY_LEN = 4294967296
 
 class TcpConn(object):
 
-    def __init__(self, addr_str, asyncio_writer, asyncio_reader):
+    def __init__(self, addr_str, asyncio_writer, asyncio_reader, rpc_handler: RpcHandler = None):
         self.addr_str = addr_str
         # self.entity = entity  # type: typing.Type[ServerEntity]
-        self._entity = None  # type: typing.Union[ServerEntity, None]
+        # self._entity = None  # type: typing.Union[ServerEntity, None]
         self.asyncio_writer = asyncio_writer  # type: asyncio.StreamWriter
         self.asyncio_reader = asyncio_reader  # type: asyncio.StreamReader
 
@@ -32,21 +32,28 @@ class TcpConn(object):
 
         self._recv_data = b''
         self._logger = LogManager.get_logger(self.__class__.__name__)
-        self._rpc_handler = RpcHandler(self)
+        if rpc_handler:
+            rpc_handler.set_conn(self)
+            self._rpc_handler = rpc_handler
+        else:
+            self._rpc_handler = RpcHandler(self)
 
         self.loop()
 
-    def set_entity(self, entity: ServerEntity):
-        self._entity = entity
-
-    def get_entity(self) -> ServerEntity:
-        return self._entity
+    # def set_entity(self, entity: ServerEntity):
+    #     self._entity = entity
+    #
+    # def get_entity(self) -> ServerEntity:
+    #     return self._entity
 
     # def set_asyncio_writer(self, asyncio_writer):
     #     self.asyncio_writer = asyncio_writer
 
     # def send_msg(self, msg):
     #     self.asyncio_writer.write(MsgpackSupport.encode(msg))
+
+    def get_rpc_handler(self):
+        return self._rpc_handler
 
     def loop(self):
         return asyncio.create_task(self._loop())
@@ -103,7 +110,7 @@ class TcpConn(object):
     def handle_message(self, msg_data):
         try:
             # rpc_message = self.do_decode(msg_data)
-            self._rpc_handler.handle_rpc(msg_data, self)
+            self._rpc_handler.handle_rpc(msg_data)
         except:
             self._logger.log_last_except()
 

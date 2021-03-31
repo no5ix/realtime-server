@@ -1,3 +1,4 @@
+from __future__ import annotations
 import asyncio
 import functools
 # import json
@@ -14,6 +15,9 @@ import socket
 from asyncio import events
 
 import typing
+
+if typing.TYPE_CHECKING:
+    from RpcHandler import RpcHandler
 
 from TcpConn import TcpConn
 from common import gr
@@ -150,11 +154,11 @@ class TcpServer(object):
     def add_conn(self, addr: typing.Tuple[str, int], conn):
         self._addr_2_conn_map[addr] = conn
 
-    async def get_conn_by_addr(self, addr: typing.Tuple[str, int]):
+    async def get_conn_by_addr(self, addr: typing.Tuple[str, int], rpc_handler: RpcHandler):
         _conn = self._addr_2_conn_map.get(addr, None)
         if _conn is None:
             reader, writer = await asyncio.open_connection(addr[0], addr[1])
-            _conn = TcpConn(writer.get_extra_info('peername'), writer, reader)
+            _conn = TcpConn(writer.get_extra_info('peername'), writer, reader, rpc_handler)
             self.add_conn(addr, _conn)
         return _conn
 

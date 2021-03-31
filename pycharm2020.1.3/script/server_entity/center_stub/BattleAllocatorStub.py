@@ -38,7 +38,7 @@ class BattleAllocatorStub(Stub):
     #     # 清理ETS文件缓存
     #     node_executor.cache.clear()
     #
-    # def call_server_method(self, remote_mailbox, methodname, parameters=None, callback=None):
+    # def call_remote_method(self, remote_mailbox, methodname, parameters=None, callback=None):
     #     if parameters is None:
     #         parameters = {}
     #     return self.call_server_method_direct(remote_mailbox, methodname, parameters=parameters)

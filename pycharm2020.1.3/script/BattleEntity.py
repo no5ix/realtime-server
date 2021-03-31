@@ -10,55 +10,14 @@ class BattleEntity(ServerEntity):
 
     def __init__(self):
         super().__init__()
-        # self.be_id = 0
-        # self.bind_entity = None  # type: Union[PuppetBindEntity, None]
 
-    # def set_puppet_bind_entity(self, pbe):
-    #     self.bind_entity = pbe
-    #     pbe.set_bind_ok()
-
-
-    # def call_server_method(self, method_name, parameters):
-    #     # if not gr.bind_entity:
-    #     #     return
-    #     # if gr.IS_RECORD_PLAY:
-    #     #     return
-    #     # if not self.dungeon:
-    #     #     raise StandardError()
-    #     # if const.PRINT_PROTO:
-    #     #     if method_name not in ('move_to', 'CompMovement.get_rtt_info', 'CompLocalEntityRouter.route', 'ride_move_to'):
-    #     #         if gr.is_client:
-    #     #             gr.logger.warn("[aoi c=>s]: %s", method_name)
-    #
-    #     # gr.bind_entity.call_server_method(
-    #     self.bind_entity.call_server_method(
-    #         'battle_entity_message',
-    #         # {'m': RpcIndexer.send_rpc_index(method_name), 'p': parameters}
-    #         {'m': method_name, 'p': parameters}
-    #     )
-    #
-    # # def call_client_method(self, method_name, parameters):
-    # #     # if not gr.bind_entity:
-    # #     #     return
-    # #     # if gr.IS_RECORD_PLAY:
-    # #     #     return
-    # #     # if not self.dungeon:
-    # #     #     raise StandardError()
-    # #     # if const.PRINT_PROTO:
-    # #     #     if method_name not in ('move_to', 'CompMovement.get_rtt_info', 'CompLocalEntityRouter.route', 'ride_move_to'):
-    # #     #         if gr.is_client:
-    # #     #             gr.logger.warn("[aoi c=>s]: %s", method_name)
-    # #
-    # #     # gr.bind_entity.call_server_method(
-    # #     self.bind_entity.call_client_method(
-    # #         'battle_entity_message',
-    # #         # {'m': RpcIndexer.send_rpc_index(method_name), 'p': parameters}
-    # #         {'m': method_name, 'p': parameters}
-    # #     )
+    def call_server_method(self, method_name, parameters):
+        self.call_remote_method(
+            'battle_entity_message', {'m': method_name, 'p': parameters})
 
     def call_client_method(self, method_name, parameters):
-        self._conn.request_rpc(
-            self.__class__.__name__, 'battle_entity_message', {'m': method_name, 'p': parameters})
+        self.call_remote_method(
+            'battle_entity_message', {'m': method_name, 'p': parameters})
 
     @rpc_method(CLIENT_ONLY, (Str('m'), Dict('p')))
     def battle_entity_message(self, method_name, parameters):

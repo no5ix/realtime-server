@@ -2,10 +2,11 @@
 from typing import Union
 
 # from client.PuppetBindEntity import PuppetBindEntity
+from BattleEntity import BattleEntity
 from common.component.Component import components
 from common.component.ComponentSupport import ComponentSupport
 from client.component.puppet.CompPuppetTest import CompPuppetTest
-from client.BattleEntity import BattleEntity
+# from client.BattleEntity import BattleEntity
 
 
 @components(
