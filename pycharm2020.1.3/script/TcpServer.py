@@ -13,6 +13,8 @@ import socket
 # from core.common import MsgpackSupport
 from asyncio import events
 
+import typing
+
 from TcpConn import TcpConn
 from common import gr
 from core.EtcdSupport import ServiceNode
@@ -138,15 +140,23 @@ class TcpServer(object):
             for cls_name, cls in entity_classes:
                 EntityFactory.instance().register_entity(cls_name, cls)
 
-    def forward(self, addr, message):
-        for _addr, _tcp_conn in self._addr_2_conn_map.items():
-            # if w != writer:
-                # w.write(f"{addr!r}: {message!r}\n".encode())
-                # w.write(MsgpackSupport.encode(f"{addr!r}: {message!r}\n"))
-            _tcp_conn.send_msg(f"{addr!r}: {message!r}\n")
+    # def forward(self, addr, message):
+    #     for _addr, _tcp_conn in self._addr_2_conn_map.items():
+    #         # if w != writer:
+    #             # w.write(f"{addr!r}: {message!r}\n".encode())
+    #             # w.write(MsgpackSupport.encode(f"{addr!r}: {message!r}\n"))
+    #         _tcp_conn.send_msg(f"{addr!r}: {message!r}\n")
 
-    def add_conn(self, addr, conn):
+    def add_conn(self, addr: typing.Tuple[str, int], conn):
         self._addr_2_conn_map[addr] = conn
+
+    async def get_conn_by_addr(self, addr: typing.Tuple[str, int]):
+        _conn = self._addr_2_conn_map.get(addr, None)
+        if _conn is None:
+            reader, writer = await asyncio.open_connection(addr[0], addr[1])
+            _conn = TcpConn(writer.get_extra_info('peername'), writer, reader)
+            self.add_conn(addr, _conn)
+        return _conn
 
     async def handle_client_connected(self, reader, writer):
         # self.writers.append(writer)
@@ -169,7 +179,7 @@ class TcpServer(object):
         # self._addr_2_conn_map[addr] = _tcp_conn
         message = f"{addr!r} is connected !!!!"
         self._logger.debug(message)
-        _tcp_conn.loop()
+        # _tcp_conn.loop()
         # self.forward(writer, addr, message)
         # while True:
         #     data = await reader.read(100)

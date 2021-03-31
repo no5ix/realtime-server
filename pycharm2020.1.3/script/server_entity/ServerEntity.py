@@ -1,12 +1,15 @@
 # import asyncio
+from __future__ import annotations
 
 # from TcpConn import TcpConn
-import asyncio
+# import asyncio
 
 import typing
+if typing.TYPE_CHECKING:
+    from RpcHandler import RpcHandler
 
-from TcpConn import TcpConn
-from common import gr
+# from TcpConn import TcpConn
+# from common import gr
 from core.common.EntityManager import EntityManager
 from core.common.IdManager import IdManager
 from core.mobilelog.LogManager import LogManager
@@ -21,22 +24,24 @@ class ServerEntity(object):
         self.logger = LogManager.get_logger("ServerEntity." + self.__class__.__name__)
         self.logger.info("__init__ create entity %s with id %s mem_id=%s", self.__class__.__name__, self.id, id(self))
         # entity所对应的gate proxy, 使用请调_get_gate_proxy方法，不要直接使用此变量
-        self._gate_proxy = None
-        self._src_mailbox_info = None                              # 缓存自己的src_mailbox_info信息
+        # self._gate_proxy = None
+        # self._src_mailbox_info = None                              # 缓存自己的src_mailbox_info信息
         EntityManager.instance().addentity(self.id, self, False)
-        self._save_timer = None
+        # self._save_timer = None
         self.is_destroy = False
         # save_time = self.get_persistent_time()
 
-        self._conn = None
+        # self._conn = None
+        self._rpc_handler = None  # type: typing.Optional[RpcHandler]
         self.timer_hub = TimerHub()
 
-    def set_connection(self, conn):
-        self._conn = conn
+    def set_rpc_handler(self, rpc_handler):
+        self._rpc_handler = rpc_handler
 
     def call_client_method(
             self, method_name, parameters=None, remote_entity_type: typing.Union[None, str] = None):
-        self._conn.request_rpc(remote_entity_type or self.__class__.__name__, method_name, parameters)
+        self._rpc_handler.request_rpc(
+            remote_entity_type or self.__class__.__name__, method_name, parameters)
 
     def call_other_client_method(self):
         pass
@@ -57,23 +62,33 @@ class ServerEntity(object):
     #     await _tcp_conn.loop()
 
     def call_server_method(
-            self, method_name, parameters=None, remote_entity_type: typing.Union[None, str] = None):
-        self._conn.request_rpc(remote_entity_type or self.__class__.__name__, method_name, parameters)
+            self, method_name, parameters=None, remote_entity_type: typing.Union[None, str] = None,
+            ip_port_tuple: typing.Tuple[str, int] = None
+    ):
+        if self._rpc_handler is None:
+            if ip_port_tuple is None:
+                self.logger.error("self._conn is None and ip_port_tuple is None")
+                return
+            self._rpc_handler = RpcHandler()
 
-    async def call_server_method_with_ip_port(
-            self, server_ip_port_tuple, method_name, parameters=None,
-            remote_entity_type: typing.Union[None, str] = None):
-        if server_ip_port_tuple:
-            remote_ip = server_ip_port_tuple[0]
-            remote_port = server_ip_port_tuple[1]
-            reader, writer = await asyncio.open_connection(remote_ip, remote_port)
-            _tcp_conn = TcpConn(writer.get_extra_info('peername'), writer, reader)
-            self.set_connection(_tcp_conn)
-            tcp_srv = gr.get_server_singleton("TcpServer")
-            tcp_srv.add_conn(server_ip_port_tuple, _tcp_conn)
+        self._rpc_handler.request_rpc(
+            self,
+            method_name, parameters, remote_entity_type or self.__class__.__name__, ip_port_tuple)
 
-            self._conn.set_entity(self)
-            self._conn.request_rpc(remote_entity_type or self.__class__.__name__, method_name, parameters)
-            # self._conn.request_rpc(self.__class__.__name__, method_name, parameters)
-            self._conn.loop()
-            # asyncio.create_task(_tcp_conn.loop())
+    # async def call_server_method_with_ip_port(
+    #         self, server_ip_port_tuple, method_name, parameters=None,
+    #         remote_entity_type: typing.Union[None, str] = None):
+    #     if server_ip_port_tuple:
+    #         remote_ip = server_ip_port_tuple[0]
+    #         remote_port = server_ip_port_tuple[1]
+    #         reader, writer = await asyncio.open_connection(remote_ip, remote_port)
+    #         _tcp_conn = TcpConn(writer.get_extra_info('peername'), writer, reader)
+    #         self.set_connection(_tcp_conn)
+    #         tcp_srv = gr.get_cur_server()
+    #         tcp_srv.add_conn(server_ip_port_tuple, _tcp_conn)
+    #
+    #         self._conn.set_entity(self)
+    #         self._conn.request_rpc(remote_entity_type or self.__class__.__name__, method_name, parameters)
+    #         # self._conn.request_rpc(self.__class__.__name__, method_name, parameters)
+    #         # self._conn.loop()
+    #         # asyncio.create_task(_tcp_conn.loop())

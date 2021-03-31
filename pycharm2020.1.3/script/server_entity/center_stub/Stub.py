@@ -40,8 +40,10 @@ class Stub(ServerEntity):
         center_ip_port_tuple = UtilApi.get_service_info(self._center_name)
         if center_ip_port_tuple:
             center_ip_port = center_ip_port_tuple[0]
-            asyncio.create_task(self.call_server_method_with_ip_port(
-                center_ip_port, 'register_stub', remote_entity_type=self._center_name))
+            # asyncio.create_task(self.call_server_method_with_ip_port(
+            #     center_ip_port, 'register_stub', remote_entity_type=self._center_name))
+            self.call_server_method(
+                "register_stub", remote_entity_type=self._center_name, ip_port_tuple=center_ip_port)
 
             # print("register_stub")
             self._connected = True

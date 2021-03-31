@@ -1,7 +1,18 @@
 # import asyncio
 
+from __future__ import annotations
+
 # from TcpConn import TcpConn
-from core.common.EntityManager import EntityManager
+# import asyncio
+
+import typing
+
+from core.util.TimerHub import TimerHub
+
+if typing.TYPE_CHECKING:
+    from RpcHandler import RpcHandler
+# from TcpConn import TcpConn
+# from core.common.EntityManager import EntityManager
 from core.common.IdManager import IdManager
 from core.mobilelog.LogManager import LogManager
 
@@ -22,13 +33,17 @@ class ClientEntity(object):
         # self.is_destroy = False
         # save_time = self.get_persistent_time()
 
-        self._conn = None
+        # self._conn = None
+        self._rpc_handler = None  # type: typing.Optional[RpcHandler]
+        self.timer_hub = TimerHub()
 
-    def set_connection(self, conn):
-        self._conn = conn
+    def set_rpc_handler(self, rpc_handler):
+        self._rpc_handler = rpc_handler
 
-    def call_client_method(self, method_name, parameters):
-        self._conn.request_rpc(self.__class__.__name__, method_name, parameters)
+    def call_client_method(
+            self, method_name, parameters=None, remote_entity_type: typing.Union[None, str] = None):
+        self._rpc_handler.request_rpc(
+            remote_entity_type or self.__class__.__name__, method_name, parameters)
 
     def call_other_client_method(self):
         pass
@@ -39,14 +54,25 @@ class ClientEntity(object):
     def call_server_method_direct(self):
         pass
 
-    # def call_server_method(self, remote_mailbox, method_name, parameters=None):
-    def call_server_method(self, method_name, parameters=None):
-        # remote_ip = remote_mailbox.ip
-        # remote_port = remote_mailbox.port
-        # reader, writer = await asyncio.open_connection(remote_ip, remote_port)
-        # _tcp_conn = TcpConn(writer.get_extra_info('peername'), writer, reader)
-        # self.set_connection(_tcp_conn)
-        # self._conn.request_rpc(method_name, parameters)
-        # await _tcp_conn.loop()
+    # def call_server_method_(self, remote_mailbox, method_name, parameters=None):
+    #     remote_ip = remote_mailbox.ip
+    #     remote_port = remote_mailbox.port
+    #     reader, writer = await asyncio.open_connection(remote_ip, remote_port)
+    #     _tcp_conn = TcpConn(writer.get_extra_info('peername'), writer, reader)
+    #     self.set_connection(_tcp_conn)
+    #     self._conn.request_rpc(method_name, parameters)
+    #     await _tcp_conn.loop()
 
-        self._conn.request_rpc(self.__class__.__name__, method_name, parameters)
+    def call_server_method(
+            self, method_name, parameters=None, remote_entity_type: typing.Union[None, str] = None,
+            ip_port_tuple: typing.Tuple[str, int] = None
+    ):
+        if self._rpc_handler is None:
+            if ip_port_tuple is None:
+                self.logger.error("self._conn is None and ip_port_tuple is None")
+                return
+            self._rpc_handler = RpcHandler()
+
+        self._rpc_handler.request_rpc(
+            self,
+            method_name, parameters, remote_entity_type or self.__class__.__name__, ip_port_tuple)

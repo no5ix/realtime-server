@@ -2,9 +2,10 @@ from client.client_entity.ClientEntity import ClientEntity
 from common import gr
 from core.common.RpcMethodArgs import Str, Dict
 from core.common.RpcSupport import rpc_method, CLIENT_STUB
+from server_entity.ServerEntity import ServerEntity
 
 
-class BattleEntity(ClientEntity):
+class BattleEntity(ServerEntity):
 
     def __init__(self):
         super().__init__()

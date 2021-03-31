@@ -145,7 +145,7 @@ class AsyncLogger:
         # fh.setLevel(logging.DEBUG)
         # formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - [%(filename)s:%(lineno)d] : %(message)s')
 
-        _formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s : %(message)s')
+        _formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(name)s : %(message)s')
         fh.setFormatter(_formatter)
         _logger.addHandler(fh)
         # fh.setLevel(logging.DEBUG)
@@ -162,7 +162,7 @@ class AsyncLogger:
                 # and func.__name__ in ("debug", "error", "warning", "critical"):
                 print(" - ".join(
                     (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
-                     self._logger.name, _func_name.upper(), final_msg)) % args)
+                     _func_name.upper(), self._logger.name, final_msg)) % args)
             _log_tp_executor.submit(getattr(self._logger, _func_name), final_msg, *args, **kw)
             return
             # return func(self, msg, *args, **kw)

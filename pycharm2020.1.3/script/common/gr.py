@@ -1,11 +1,19 @@
 # from core.EtcdSupport import ServiceNode
+from __future__ import annotations
+
 import asyncio
 from asyncio import AbstractEventLoop
 # from TcpServer import ev_loop
 import typing
+
+if typing.TYPE_CHECKING:
+# if True:
+    from TcpServer import TcpServer
+    from core.EtcdSupport import ServiceNode
+
 # usage: r = await AioApi.async_wrap(lambda: requests.request("GET", 'http://baidu.com', timeout=2))
 # lambda关键字不可少
-
+# from TcpServer import TcpServer
 
 is_dev_version = True
 
@@ -34,6 +42,10 @@ def add_server_singleton(entity, postfix=''):
 
 def get_server_singleton(entity_name):
     return server_singletons.get(entity_name, None)
+
+
+def get_cur_server() -> TcpServer:
+    return get_server_singleton("TcpServer")
 
 
 def get_ev_loop():
