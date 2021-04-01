@@ -21,7 +21,7 @@ class BattleServer(object):
         # self.register_battle_entities()
         self._register_component()
 
-        incremental_reload.init_reload_record()  # 一定要放到EntityScanner注册了的代码之后, 不然sys.modules里没相关的模块
+        incremental_reload.init_reload_record()  # 注意!! 一定要放到EntityScanner注册了的代码之后, 不然sys.modules里没相关的模块
 
     def _register_component(self):
         from common.component.Component import Component
