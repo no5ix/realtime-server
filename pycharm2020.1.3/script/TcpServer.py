@@ -16,19 +16,21 @@ from asyncio import events
 
 import typing
 
+# from core.util.performance.cpu_load_handler import CpuLoad
+
 if typing.TYPE_CHECKING:
     from RpcHandler import RpcHandler
 
 from TcpConn import TcpConn
 from common import gr
 from core.EtcdSupport import ServiceNode
-from core.common import EntityScanner
-from core.common.EntityFactory import EntityFactory
+# from core.common import EntityScanner
+# from core.common.EntityFactory import EntityFactory
 from core.mobilelog.LogManager import LogManager
 from core.util import EnhancedJson
 from core.util.TimerHub import TimerHub
 from util.SingletonEntityManager import SingletonEntityManager
-from core.tool import incremental_reload
+# from core.tool import incremental_reload
 
 # TCP_SERVER = None
 
@@ -47,16 +49,11 @@ class TcpServer(object):
 
         self.parse_json_conf(json_conf_path)
         gr.game_server_name = server_name
+
         LogManager.set_log_tag(gr.game_server_name)
         LogManager.set_log_path(gr.game_json_conf["log_path"])
-
         self._logger = LogManager.get_logger()
 
-        self.register_server_entities()
-        # self.register_battle_entities()
-        self.register_component()
-
-        incremental_reload.init_reload_record()  # 一定要放到EntityScanner注册了的代码之后, 不然sys.modules里没相关的模块
         gr.add_server_singleton(self)
 
     @staticmethod
@@ -80,69 +77,6 @@ class TcpServer(object):
         # conf_file.close()
         # gr.game_json_conf = json_conf
         return json_conf
-
-    def register_component(self):
-        from common.component.Component import Component
-        from common.component import ComponentRegister
-        # gameconfig = self.config[self.config_sections.game]
-        component_root = gr.game_json_conf.get('component_root')
-        if component_root is None:
-            self._logger.error('conf file has no component_root!')
-            return
-        component_classes = EntityScanner.scan_entity_package(component_root, Component)
-        component_classes = component_classes.items()
-        # component_classes.sort(lambda a, b: cmp(a[0], b[0]))
-        for comp_type, comp_cls in component_classes:
-            ComponentRegister.register(comp_cls)
-
-    # def register_battle_entities(self):
-    #     from BattleEntity import BattleEntity
-    #     _ber = gr.game_json_conf.get('battle_entity_root', None)
-    #     if _ber is None:
-    #         self.logger.error('conf file has no battle_entity_root!')
-    #         return
-    #     entity_classes = EntityScanner.scan_entity_package(_ber, BattleEntity)
-    #     entity_classes = entity_classes.items()
-    #
-    #     # def cmp(x, y):
-    #     #     if x < y:
-    #     #         return -1
-    #     #     elif x == y:
-    #     #         return 0
-    #     #     else:
-    #     #         return 1
-    #     #
-    #     # entity_classes.sort(lambda a, b: cmp(a[0], b[0]))
-    #     for cls_name, cls in entity_classes:
-    #         EntityFactory.instance().register_entity(cls_name, cls)
-
-    @staticmethod
-    def register_server_entities():
-        from BattleEntity import BattleEntity
-        from LobbyEntity import LobbyEntity
-        from server_entity.ServerEntity import ServerEntity
-        _ser = gr.game_json_conf.get('server_entity_root', None)
-        _ler = gr.game_json_conf.get('lobby_entity_root', None)
-        _ber = gr.game_json_conf.get('battle_entity_root', None)
-        if _ser is None:
-            # self.logger.error('conf file has no server_entity_root!')
-            raise Exception('conf file has no server_entity_root!')
-        if _ler is None:
-            # self.logger.error('conf file has no server_entity_root!')
-            raise Exception('conf file has no lobby_entity_root!')
-        if _ber is None:
-            # self.logger.error('conf file has no server_entity_root!')
-            raise Exception('conf file has no battle_entity_root!')
-            # return
-        _temp = {_ser: ServerEntity,
-                 _ler: LobbyEntity,
-                 _ber: BattleEntity}
-        for _ent_root, _ent_cls in _temp.items():
-            entity_classes = EntityScanner.scan_entity_package(
-                _ent_root, _ent_cls)
-            entity_classes = entity_classes.items()
-            for cls_name, cls in entity_classes:
-                EntityFactory.instance().register_entity(cls_name, cls)
 
     # def forward(self, addr, message):
     #     for _addr, _tcp_conn in self._addr_2_conn_map.items():
@@ -199,11 +133,11 @@ class TcpServer(object):
         # self.writers.remove(writer)
         # writer.close()
 
-    async def start_server_task(self):
+    async def start_server_task(self, _ip, _port):
         # server = await asyncio.start_server(
         #     handle_echo, '192.168.82.177', 8888)
-        _ip = gr.game_json_conf[gr.game_server_name]["ip"]
-        _port = gr.game_json_conf[gr.game_server_name]["port"]
+        # _ip = gr.game_json_conf[gr.game_server_name]["ip"]
+        # _port = gr.game_json_conf[gr.game_server_name]["port"]
         try:
             server = await asyncio.start_server(self.handle_client_connected, _ip, _port)
             # _start_srv_task = asyncio.create_task(asyncio.start_server(self.handle_client_connected, '192.168.82.177', 8888))
@@ -232,26 +166,43 @@ class TcpServer(object):
 
         # etcd_addr_list = [('127.0.0.1', '2379'),]
         # etcd_addr_list = [('192.168.83.23', '2379'),]
-        etcd_addr_list = [
-            (ip_port_map["ip"], str(ip_port_map["port"])) for ip_port_map in gr.game_json_conf["etcd_servers"]]
+        # etcd_addr_list = [
+        #     (ip_port_map["ip"], str(ip_port_map["port"])) for ip_port_map in gr.game_json_conf["etcd_servers"]]
 
         _ip = gr.game_json_conf[gr.game_server_name]["ip"]
         _port = gr.game_json_conf[gr.game_server_name]["port"]
+        # my_addr = (_ip, str(_port))
+        #
+        # service_module_dict = {"BattleAllocatorCenter": ""} if gr.game_server_name == "battle_0" else {
+        #     "BattleAllocatorStub": ""}
+        #
+        # self._etcd_service_node = ServiceNode(etcd_addr_list, my_addr, service_module_dict)
+        # # self._etcd_service_node = ServiceNode(etcd_addr_list, my_addr, {"BattleAllocatorStub": ""})
+        # gr.etcd_service_node = self._etcd_service_node
+        # self._timer_hub.call_later(4, self._check_game_start)
+
+        _etcd_support_task = asyncio.create_task(self.start_etcd_task(_ip, _port))
+        _start_srv_task = asyncio.create_task(self.start_server_task(_ip, _port))
+
+        await _etcd_support_task
+        await _start_srv_task
+
+    async def start_etcd_task(self, _ip, _port):
+        etcd_addr_list = [
+            (ip_port_map["ip"], str(ip_port_map["port"])) for ip_port_map in gr.game_json_conf["etcd_servers"]]
+
+        # _ip = gr.game_json_conf[gr.game_server_name]["ip"]
+        # _port = gr.game_json_conf[gr.game_server_name]["port"]
         my_addr = (_ip, str(_port))
 
-        service_module_dict = {"BattleAllocatorCenter": ""} if gr.game_server_name == "battle_0" else {
-            "BattleAllocatorStub": ""}
+        # service_module_dict = {"BattleAllocatorCenter": ""} if gr.game_server_name == "battle_0" else {
+        #     "BattleAllocatorStub": ""}
 
-        self._etcd_service_node = ServiceNode(etcd_addr_list, my_addr, service_module_dict)
+        self._etcd_service_node = ServiceNode(
+            etcd_addr_list, my_addr, gr.game_json_conf[gr.game_server_name]["etcd_tag"])
         # self._etcd_service_node = ServiceNode(etcd_addr_list, my_addr, {"BattleAllocatorStub": ""})
         gr.etcd_service_node = self._etcd_service_node
-        self._timer_hub.call_later(4, self._check_game_start)
-
-        _etcd_support_task = asyncio.create_task(self._etcd_service_node.start())
-        _start_srv_task = asyncio.create_task(self.start_server_task())
-
-        # await _etcd_support_task
-        await _start_srv_task
+        await self._etcd_service_node.start()
 
     def handle_sig(self):
 
@@ -273,24 +224,24 @@ class TcpServer(object):
         self._ev_loop.run_until_complete(self.main())
         # asyncio.run(self.main())
 
-    def _check_game_start(self):
-        # 随机种子
-        # random.seed()
-        # 得到本机ip
-        try:
-            gr.local_ip = socket.gethostbyname(socket.gethostname())
-        except socket.gaierror:
-            gr.local_ip = '127.0.0.1'
-        # self._register_singleton()
-
-    # def _register_singleton(self):
-        # 创建各种server/cluster singleton
-        SingletonEntityManager.instance().register_centers_and_stubs(
-            gr.game_server_name,
-            lambda flag: self._register_centers_and_stubs_cb(flag))
-
-    def _register_centers_and_stubs_cb(self, flag):
-        pass
+    # def _check_game_start(self):
+    #     # 随机种子
+    #     # random.seed()
+    #     # 得到本机ip
+    #     try:
+    #         gr.local_ip = socket.gethostbyname(socket.gethostname())
+    #     except socket.gaierror:
+    #         gr.local_ip = '127.0.0.1'
+    #     # self._register_singleton()
+    #
+    # # def _register_singleton(self):
+    #     # 创建各种server/cluster singleton
+    #     SingletonEntityManager.instance().register_centers_and_stubs(
+    #         gr.game_server_name,
+    #         lambda flag: self._register_centers_and_stubs_cb(flag))
+    #
+    # def _register_centers_and_stubs_cb(self, flag):
+    #     pass
 
 
 if __name__ == '__main__':

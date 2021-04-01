@@ -66,20 +66,20 @@ class EtcdProcessor(object):
 
 
 class ServiceRegister(EtcdProcessor):
-    def __init__(self, etcd_address_list, my_address, service_module_dict):
+    def __init__(self, etcd_address_list, my_address, service_tag):
         EtcdProcessor.__init__(self, etcd_address_list)
-        self._logger = LogManager.get_logger("ServiceRegister")
+        self._logger = LogManager.get_logger()
         self._my_address = my_address                                            # 当前节点的监听地址(ip, port)
         self._address_str = my_address[0] + "|" + str(my_address[1])             # 当前节点的监听地址的字符串描述
-        self._service_module_dict = service_module_dict                          # 服务模块的name->module字典
+        self._service_tag = service_tag                          # 服务模块的name->module字典
         # self._stop_event = gevent.event.Event()
         self._service_regist_status = dict()
         self._threads = []
         # self._die_event = gevent.event.Event()
 
-        for name in self._service_module_dict.keys():
+        # for name in self._service_module_dict.keys():
             # self._threads.append(gevent.spawn(self._process_regist_and_ttl, name))
-            self._threads.append(self._process_regist_and_ttl(name))
+        self._threads.append(self._process_regist_and_ttl(self._service_tag))
             # self._threads.append(asyncio.create_task(self._process_regist_and_ttl(name)))
 
         # gevent.spawn(self._dead_check_process)

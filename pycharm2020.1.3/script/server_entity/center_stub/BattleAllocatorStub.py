@@ -17,7 +17,8 @@ import random
 # from util.performance.battleserver_load import BattleProcessMetric
 # from util.sunshine import node_executor
 # from core.util.performance.battleserver_load import BattleProcessMetric
-from core.util.performance.battleserver_load import BattleProcessMetric
+# from core.util.performance.battleserver_load import BattleProcessMetric
+from core.util.performance.cpu_load_handler import AvgCpuLoad
 from server_entity.center_stub.Stub import Stub
 
 
@@ -26,8 +27,12 @@ class BattleAllocatorStub(Stub):
     def __init__(self, entity_id=None):
         super(BattleAllocatorStub, self).__init__(entity_id)
         # self._metric = BattleProcessMetric()
-        # self.timer_hub.call_later(1.0, self.report_metric, repeat_count=-1, repeat_interval_sec=5.0)
+        self._avg_load = AvgCpuLoad()
+        self.timer_hub.call_later(1.0, self.report_metric, repeat_count=-1, repeat_interval_sec=1.0)
 
-    # def report_metric(self):
+    def report_metric(self):
         # self._metric.refresh()
         # self.call_center_method('report_metric', {'m': self._metric.to_dict()})
+        self.call_center_method('report_load', )
+        print(f"avg load: {self._avg_load.get_avg_cpu_by_period(10)}")
+

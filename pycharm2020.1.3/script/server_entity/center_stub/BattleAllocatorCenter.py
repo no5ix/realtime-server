@@ -64,9 +64,10 @@ class BattleAllocatorCenter(Center):
     #     # 进入预备下线状态
     #     self._load_metric.pending_shutdown = True
     #
-    # @rpc_method(SERVER_ONLY, (MailBox(), Dict('m'),))
-    # def report_metric(self, stub_mb, metric_dict):
-    #     self._load_metric.update_from_stub(stub_mb, metric_dict)
+    @rpc_method(SERVER_ONLY, (MailBox(), Dict('m'),))
+    def report_metric(self, stub_mb, metric_dict):
+        # self._load_metric.update_from_stub(stub_mb, metric_dict)
+        pass
 
     @rpc_method(SERVER_ONLY)
     def report_battle_server_info(self):

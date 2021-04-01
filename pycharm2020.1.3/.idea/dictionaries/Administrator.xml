@@ -1,6 +1,7 @@
 <component name="ProjectDictionaryState">
   <dictionary name="Administrator">
     <words>
+      <w>Msgpack</w>
       <w>asyncio</w>
       <w>etcd</w>
       <w>gevent</w>

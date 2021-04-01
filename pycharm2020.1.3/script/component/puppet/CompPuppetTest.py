@@ -46,8 +46,7 @@ class CompPuppetTest(Component):
 
     @rpc_method(CLIENT_ONLY, (Dict('p'), ))
     def puppet_chat_to_ppt(self, chat_info: typing.Dict):
-
-        print(chat_info)
+        # print(chat_info)
         # self._cnt -= 1
         # print("self._cnt:" + str(self._cnt))
         chat_info.update({'cnt': self._cnt})
