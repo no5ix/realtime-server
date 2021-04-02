@@ -21,9 +21,13 @@ class BattleServer(object):
         self._timer_hub = TimerHub()
 
         self._load_report = LoadReporter()
+        # self.external_task()
 
     def external_task(self):
-        pass
+        try:
+            1/0
+        except:
+            self._logger.log_last_except()
 
     def start(self):
         self._server.run()

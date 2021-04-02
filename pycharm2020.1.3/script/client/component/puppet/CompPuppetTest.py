@@ -10,7 +10,7 @@ class CompPuppetTest(Component):
 
     def __init__(self):
         super().__init__()
-        self._cnt = 100000
+        self._cnt = 1000000
 
     def puppet_chat_to_channel(self, chat_info):
         print("call puppet_chat_to_channel")
@@ -25,12 +25,12 @@ class CompPuppetTest(Component):
     def test_reload(self):
         print("call test_reload")
         self.call_server_comp_method(
-            self.VAR_NAME, 'test_reload', {})
+            self.VAR_NAME, 'test_reload')
 
     def make_server_reload(self):
         print("call make server reload")
         self.call_server_comp_method(
-            self.VAR_NAME, 'make_server_reload', {})
+            self.VAR_NAME, 'make_server_reload')
 
     # @rpc_method(CLIENT_STUB, (Dict('i'),))
     # @rpc_method(CLIENT_STUB, Dict('i'))

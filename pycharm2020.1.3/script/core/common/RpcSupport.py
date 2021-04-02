@@ -96,30 +96,32 @@ class RpcMethod(object):
         #     print("call: bson parameter decode failed in RPC call %s (%s), ",
         #                  self.func.__name__,  "" .join(str(x) for x in self.arg_types))
         #     return
+        if type(parameters) is dict:
+            args = []
+            argtypes = self.argtypes
 
-        args = []
-        argtypes = self.argtypes
-
-        for argtype in argtypes:
-            try:
-                arg = parameters[argtype.getname()]
-            except KeyError:
-                print(
-                    "call: parameter %s not found in RPC call %s, using default value" %
-                    argtype.getname(), self.func.__name__)
-                arg = argtype.default_val()
-            try:
-                if arg is None and argtype.get_type() == 'Uuid':
-                    # 让uuid类型的参数可以是None
-                    arg = None
-                else:
-                    arg = argtype.convert(arg)
-            except ConvertError as e:  # we will call the method if the conversion failed
-                print(
-                    "call: parameter %s can't convert input %s for RPC call %s exception %s" %
-                    argtype.getname(),  str(arg),  self.func.__name__, str(e))
-                return
-            args.append(arg)
+            for argtype in argtypes:
+                try:
+                    arg = parameters[argtype.getname()]
+                except KeyError:
+                    print(
+                        "call: parameter %s not found in RPC call %s, using default value" %
+                        argtype.getname(), self.func.__name__)
+                    arg = argtype.default_val()
+                try:
+                    if arg is None and argtype.get_type() == 'Uuid':
+                        # 让uuid类型的参数可以是None
+                        arg = None
+                    else:
+                        arg = argtype.convert(arg)
+                except ConvertError as e:  # we will call the method if the conversion failed
+                    print(
+                        "call: parameter %s can't convert input %s for RPC call %s exception %s" %
+                        argtype.getname(),  str(arg),  self.func.__name__, str(e))
+                    return
+                args.append(arg)
+        else:  # type(parameters) is list:
+            args = parameters
         return self.func(entity, *args)
         # return self.func(entity, *args)
 

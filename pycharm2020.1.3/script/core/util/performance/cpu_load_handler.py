@@ -18,10 +18,11 @@ class CpuLoad:
         return sum(os.times()[:2])
 
     def get_usage_ratio(self):
-        # jj = (self._cpu_time() - self._last_cpu_time)
+        jj = (self._cpu_time() - self._last_cpu_time)
         # print(f"jj: {jj}")
+        # print(f"_last_cpu_time: {self._last_cpu_time}")
 
-        # ss = (time.time() - self._last_ts)
+        ss = (time.time() - self._last_ts)
         # print(f"ss: {ss}")
 
         _ret = 100.0 * (self._cpu_time() - self._last_cpu_time) / (time.time() - self._last_ts)

@@ -155,15 +155,17 @@ class AsyncLogger:
 
     def _log_decorator(func):
         # @wraps(func)
-        def wrapper(self, msg, *args, **kw):
-            final_msg = self.join_caller_filename_lineno(msg, kw.get("stack_incr_cnt", 0))
+        # def wrapper(self, msg, *args, **kw):
+        def wrapper(self, msg, *args, stack_incr_cnt=0):
+            # final_msg = self.join_caller_filename_lineno(msg, kw.get("stack_incr_cnt", 0))
+            final_msg = self.join_caller_filename_lineno(msg, stack_incr_cnt)
             _func_name = func.__name__
             if gv.is_dev_version:
                 # and func.__name__ in ("debug", "error", "warning", "critical"):
                 print(" - ".join(
                     (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
                      _func_name.upper(), self._logger.name, final_msg)) % args)
-            _log_tp_executor.submit(getattr(self._logger, _func_name), final_msg, *args, **kw)
+            _log_tp_executor.submit(getattr(self._logger, _func_name), final_msg, *args)
             return
             # return func(self, msg, *args, **kw)
         return wrapper

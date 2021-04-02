@@ -306,7 +306,7 @@ class Component(object):
     # def _do_convert_dict_data(self, bdict):
     # 	return bdict
 
-    def call_client_comp_method(self, component_name, method_name, parameters):
+    def call_client_comp_method(self, component_name, method_name, parameters=None):
         self.entity.call_client_method(component_name + '.' + method_name, parameters)
 
     def call_other_client_comp_method(self, component_name, method_name, parameters):
@@ -324,10 +324,10 @@ class Component(object):
     def call_all_client_method(self, method_name, parameters):
         self.entity.call_all_client_method(method_name, parameters)
 
-    def call_server_comp_method(self, component_name, method_name, parameters):
+    def call_server_comp_method(self, component_name, method_name, parameters=None):
         self.entity.call_server_method(component_name + '.' + method_name, parameters)
 
-    def call_server_method(self, method_name, parameters):
+    def call_server_method(self, method_name, parameters=None):
         self.entity.call_server_method(method_name, parameters)
 
     def call_server_method_direct(self, remote_mb, method_name, parameters, *args, **kwargs):
