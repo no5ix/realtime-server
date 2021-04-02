@@ -8,7 +8,7 @@ if typing.TYPE_CHECKING:
     from TcpConn import TcpConn
     from server_entity.ServerEntity import ServerEntity
 
-from common import gr
+from common import gv
 from core.common import MsgpackSupport
 from core.common.EntityFactory import EntityFactory
 from core.mobilelog.LogManager import LogManager
@@ -50,7 +50,7 @@ class RpcHandler:
             # header_data = struct.pack("i", msg_len)
             # final_data = header_data + encoded_msg
             if self._conn is None:
-                self._conn = await gr.get_cur_server().get_conn_by_addr(
+                self._conn = await gv.get_cur_server().get_conn_by_addr(
                     ip_port_tuple, self)
                 # self._conn.set_entity(from_entity)
             self._conn.send_data_and_count(encoded_msg)
@@ -62,7 +62,7 @@ class RpcHandler:
             _entity_type_str, _method_name, _parameters = self.do_decode(rpc_msg)
             # _entity = self._conn.get_entity()
             if self._entity is None:
-                self._entity = gr.get_server_singleton(_entity_type_str)
+                self._entity = gv.get_server_singleton(_entity_type_str)
                 if self._entity is None:
                     self._entity = EntityFactory.instance().create_entity(_entity_type_str)
                 self._entity.set_rpc_handler(self)

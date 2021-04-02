@@ -13,7 +13,7 @@ import typing
 from server_entity.ServerEntity import ServerEntity
 import copy
 import inspect
-from common import gr
+from common import gv
 from common.component import ComponentRegister
 # from common.aoi.Property import get_class_properties, is_sync_client, is_sync_other_client, is_persist
 
@@ -191,7 +191,7 @@ class Component(object):
         self._do_init()
 
     def init_properties(self, info_dict):
-        if gr.is_client:
+        if gv.is_client:
             return
         # # TODO 等服务器编译好C++版的AOI_DATA就可以统一了
         # cls = self.__class__
@@ -292,14 +292,14 @@ class Component(object):
         pass
 
     def add_tick(self, tick):
-        if gr.is_client:
+        if gv.is_client:
             if self.entity:
                 self.entity.add_tick(tick)
             else:
                 self._client_tick_cache.append(tick)
 
     def remove_tick(self, tick):
-        if gr.is_client and self.entity:
+        if gv.is_client and self.entity:
             self.entity.remove_tick(tick)
 
     # # 需要的时候显示实现

@@ -1,10 +1,14 @@
 # -*- coding: utf-8 -*-
+import collections
+
 import requests
 import asyncio
 
+import typing
+
 from core.util import UtilApi
 # from ..distserver.game import GameServerRepo
-from common import gr
+from common import gv
 from core.mobilelog.LogManager import LogManager
 import urllib.parse
 import json
@@ -225,7 +229,8 @@ class ServiceFinder(EtcdProcessor):
         EtcdProcessor.__init__(self, etcd_address_list)
         self._logger = LogManager.get_logger("ServiceFinder")
         self._server_len = len(self._etcd_address_list) - 1
-        self._services = dict()
+        self._services = \
+            collections.defaultdict(set)  # type: typing.DefaultDict[str, typing.Set[typing.Tuple[str, int]]]
         self._es = dict()
         self._etcd_index = 0  # 最近一次get获取的etcd服务器所处的index
         self._watch_index = 0  # 当前watch所在的index
@@ -252,16 +257,16 @@ class ServiceFinder(EtcdProcessor):
         """
         可能会存在某个服务进程异常退出了，之后重启，之前的注册信息还没有失效，那么存在重复的情况
         """
-        if service_name not in self._services:
-            self._services[service_name] = []
+        # if service_name not in self._services:
+        #     self._services[service_name] = []
         if address in self._services[service_name]:
             self._logger.info("duplicate service info  -> %s:%s", service_name, address)
             return
-        self._services[service_name].append(address)
+        self._services[service_name].add(address)
 
     def _delete_service_info(self, service_name, address):
         try:
-            self._services[service_name].remove(address)
+            self._services[service_name].discard(address)
         except:
             self._logger.log_last_except()
             # if GameServerRepo.game_event_callback is not None:
@@ -314,7 +319,7 @@ class ServiceFinder(EtcdProcessor):
                 self._fail_time = 0
                 self._etcd_index = int(r.headers["x-etcd-index"])
                 self._watch_index = self._etcd_index
-                self._services = dict()      # service的信息重置
+                self._services = collections.defaultdict(set)  # service的信息重置
                 self._es = dict()            # MobileServer注册的Entity信息重置
                 root_nodes = res.get("node", {}).get("nodes", [])
                 for node in root_nodes:
@@ -431,21 +436,22 @@ class ServiceFinder(EtcdProcessor):
             # finally:
             #     now_timeout.cancel()
 
-    def get_service_info(self, service_name):
-        """
-        获取service_name的服务地址列表，如果没有信息的话，返回的是一个空的列表，这里是返回的一个随机的list副本,
-        用于实现一个简单的负载均衡
-
-        :todo 本身这里是应该有很多策略和控制的，类似于更具延迟，吞吐来返回一个优先权的排序列表
-        """
-        if service_name != 'all_service':
-            out_list = list(self._services.get(service_name, []))
-        else:
-            out_list = []
-            for info_list in self._services.values():
-                out_list.extend(info_list)
-        random.shuffle(out_list)
-        return out_list
+    def get_service_info(self, service_name) -> typing.Tuple[str, int]:
+        # """
+        # 获取service_name的服务地址列表，如果没有信息的话，返回的是一个空的列表，这里是返回的一个随机的list副本,
+        # 用于实现一个简单的负载均衡
+        #
+        # :todo 本身这里是应该有很多策略和控制的，类似于更具延迟，吞吐来返回一个优先权的排序列表
+        # """
+        # if service_name != 'all_service':
+        #     out_list = list(self._services.get(service_name, []))
+        # else:
+        #     out_list = []
+        #     for info_list in self._services.values():
+        #         out_list.extend(info_list)
+        # random.shuffle(out_list)
+        # return out_list
+        return random.choice(tuple(self._services.get(service_name, {None})))
 
     def get_entity_info(self, entity_name):
         """

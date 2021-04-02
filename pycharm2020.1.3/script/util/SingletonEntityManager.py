@@ -1,10 +1,10 @@
-from common import gr
+from common import gv
 import sys
 from collections import namedtuple
 # from const import db_const
 # from const import service_const
 from core.util import UtilApi
-from common import gr
+from common import gv
 from core.mobilelog.LogManager import LogManager
 # from util import DBOperation
 from core.common.EntityFactory import EntityFactory
@@ -106,14 +106,14 @@ class SingletonEntityManager(object):
         # self.register_and_subscript_service()
 
     def register_relevant_centers(self, game_server_name):
-        conf = gr.game_json_conf
+        conf = gv.game_json_conf
         game_conf_info = conf.get(game_server_name, None)
         if game_conf_info is None:
             self.logger.error(f"has no {game_server_name} game_conf_info")
             return
         if game_conf_info.get("is_center", False):
             center = EntityFactory.instance().create_entity('BattleAllocatorCenter')
-            gr.add_server_singleton(center)
+            gv.add_server_singleton(center)
         # else:
         #     EntityFactory.instance().create_entity('BattleAllocatorStub')
         self.logger.debug('_register_relevant_centers_cb, status:%s' % 'good')
@@ -123,13 +123,13 @@ class SingletonEntityManager(object):
 
     def register_stubs(self, game_server_name):
         # conf = gr.game_json_conf
-        game_conf_info = gr.game_json_conf.get(game_server_name, None)
+        game_conf_info = gv.game_json_conf.get(game_server_name, None)
         if not game_conf_info.get("is_center", False):
             # EntityFactory.instance().create_entity('BattleAllocatorCenter')
         # else:
             name = 'BattleAllocatorStub'
             stub = EntityFactory.instance().create_entity(name)  # type: BattleAllocatorStub
-            gr.add_server_singleton(stub)
+            gv.add_server_singleton(stub)
             name_prefix = name[:-4]
             center_name = name_prefix + 'Center'
             stub.start_connect(center_name)

@@ -2,12 +2,13 @@ import sys
 
 from TcpServer import TcpServer
 # from common import gr
+from core.common.RpcMethodArgs import RpcMethodArg, Float
 from core.common.RpcSupport import rpc_method, SERVER_ONLY
 from core.mobilelog.LogManager import LogManager
 from server_entity.ServerEntity import ServerEntity
 
 
-class BattleDispatcher(object):
+class DispatcherService(object):
 
     def __init__(self, server_name):
         # game_server_name = sys.argv[1]
@@ -20,18 +21,7 @@ class BattleDispatcher(object):
         self._server.run()
 
 
-class BattleDispatcherImpl(ServerEntity):
-
-    @rpc_method(SERVER_ONLY)
-    def report_battle_server_info(self):
-        pass
-
-    @rpc_method(SERVER_ONLY)
-    def pick_battle_server(self):
-        return
-
-
 if __name__ == '__main__':
     game_server_name = sys.argv[1]
-    bs = BattleDispatcher(game_server_name)
+    bs = DispatcherService(game_server_name)
     bs.start()

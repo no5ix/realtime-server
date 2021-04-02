@@ -65,7 +65,8 @@ class ServerEntity(object):
     #     await _tcp_conn.loop()
 
     def call_remote_method(
-            self, method_name, parameters=None, remote_entity_type: typing.Union[None, str] = None,
+            self, method_name: str, parameters=None,
+            remote_entity_type: typing.Union[None, str] = None,
             ip_port_tuple: typing.Tuple[str, int] = None
     ):
         # if self._rpc_handler is None:

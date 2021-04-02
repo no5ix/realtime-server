@@ -10,7 +10,7 @@ class CompPuppetTest(Component):
 
     def __init__(self):
         super().__init__()
-        self._cnt = 1
+        self._cnt = 100000
 
     def puppet_chat_to_channel(self, chat_info):
         print("call puppet_chat_to_channel")

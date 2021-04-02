@@ -30,7 +30,7 @@ from logging.handlers import TimedRotatingFileHandler
 # from aiologger.formatters.base import Formatter
 import inspect
 
-from common import gr
+from common import gv
 
 
 _log_tp_executor = ThreadPoolExecutor(max_workers=1)  # 1 for sequentiality
@@ -158,7 +158,7 @@ class AsyncLogger:
         def wrapper(self, msg, *args, **kw):
             final_msg = self.join_caller_filename_lineno(msg, kw.get("stack_incr_cnt", 0))
             _func_name = func.__name__
-            if gr.is_dev_version:
+            if gv.is_dev_version:
                 # and func.__name__ in ("debug", "error", "warning", "critical"):
                 print(" - ".join(
                     (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),

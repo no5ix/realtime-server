@@ -2,12 +2,12 @@
     "$MACRO$": {
 //        "BATTLE_SRV_IP": "192.168.1.4",
 //        "ETCD_IP": "192.168.1.4",
-//        "BATTLE_DISPATCHER_IP": "192.168.1.4",
+//        "DISPATCHER_IP": "192.168.1.4",
         "BATTLE_SRV_IP": "192.168.82.177",
         "ETCD_IP": "192.168.82.177",
-        "BATTLE_DISPATCHER_IP": "192.168.82.177",
+        "DISPATCHER_IP": "192.168.82.177",
         "BATTLE_SRV_ETCD_TAG": "battle_server",
-        "BATTLE_DISPATCHER_ETCD_TAG": "battle_dispatcher",
+        "DISPATCHER_ETCD_TAG": "dispatcher_service"
     },
 
     "etcd_servers": [
@@ -39,19 +39,19 @@
         "ip": "$BATTLE_SRV_IP$",
         "port": 9000
     },
-    "battle_dispatcher_0": {
-        "ip": "$BATTLE_DISPATCHER_IP$",
-        "etcd_tag": "BATTLE_DISPATCHER_ETCD_TAG",
+    "dispatcher_0": {
+        "ip": "$DISPATCHER_IP$",
+        "etcd_tag": "$DISPATCHER_ETCD_TAG$",
         "port": 9100
     },
-    "battle_dispatcher_1": {
-        "ip": "$BATTLE_DISPATCHER_IP$",
-        "etcd_tag": "BATTLE_DISPATCHER_ETCD_TAG",
+    "dispatcher_1": {
+        "ip": "$DISPATCHER_IP$",
+        "etcd_tag": "$DISPATCHER_ETCD_TAG$",
         "port": 9101
     },
-    "battle_dispatcher_2": {
-        "ip": "$BATTLE_DISPATCHER_IP$",
-        "etcd_tag": "BATTLE_DISPATCHER_ETCD_TAG",
+    "dispatcher_2": {
+        "ip": "$DISPATCHER_IP$",
+        "etcd_tag": "$DISPATCHER_ETCD_TAG$",
         "port": 9102
     }
 }

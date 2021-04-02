@@ -33,6 +33,6 @@ class BattleAllocatorStub(Stub):
     def report_metric(self):
         # self._metric.refresh()
         # self.call_center_method('report_metric', {'m': self._metric.to_dict()})
-        self.call_center_method('report_load', )
+        # self.call_center_method('report_load', )
         print(f"avg load: {self._avg_load.get_avg_cpu_by_period(10)}")
 
