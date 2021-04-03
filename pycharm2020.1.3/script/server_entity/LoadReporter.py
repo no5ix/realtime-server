@@ -20,7 +20,9 @@ class LoadReporter(ServerEntity):
             #     "report_load", {"sn": gv.game_server_name, "l": self._avg_load.get_avg_cpu_by_period(10)},
             #     "LoadCollector", dispatcher_service_addr)
             self.call_remote_method(
-                "report_load", [gv.game_server_name, self._avg_load.get_avg_cpu_by_period(10)],
+                "report_load",
+                [gv.etcd_tag, gv.game_server_name, gv.local_ip, gv.local_port,
+                    self._avg_load.get_avg_cpu_by_period(10)],
                 "LoadCollector", dispatcher_service_addr)
         else:
             self.logger.error("can not find dispatcher_service_addr")

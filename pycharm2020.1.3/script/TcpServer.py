@@ -206,13 +206,14 @@ class TcpServer(object):
         # self.writers.remove(writer)
         # writer.close()
 
-    async def start_server_task(self, _ip, _port):
+    async def start_server_task(self):
         # server = await asyncio.start_server(
         #     handle_echo, '192.168.82.177', 8888)
         # _ip = gr.game_json_conf[gr.game_server_name]["ip"]
         # _port = gr.game_json_conf[gr.game_server_name]["port"]
         try:
-            server = await asyncio.start_server(self.handle_client_connected, _ip, _port)
+            server = await asyncio.start_server(
+                self.handle_client_connected, gv.local_ip, gv.local_port)
             # _start_srv_task = asyncio.create_task(asyncio.start_server(self.handle_client_connected, '192.168.82.177', 8888))
             # await _etcd_support_task
             # server = await _start_srv_task
@@ -242,8 +243,9 @@ class TcpServer(object):
         # etcd_addr_list = [
         #     (ip_port_map["ip"], str(ip_port_map["port"])) for ip_port_map in gr.game_json_conf["etcd_servers"]]
 
-        _ip = gv.game_json_conf[gv.game_server_name]["ip"]
-        _port = gv.game_json_conf[gv.game_server_name]["port"]
+        gv.local_ip = gv.game_json_conf[gv.game_server_name]["ip"]
+        gv.local_port = gv.game_json_conf[gv.game_server_name]["port"]
+
         # my_addr = (_ip, str(_port))
         #
         # service_module_dict = {"BattleAllocatorCenter": ""} if gr.game_server_name == "battle_0" else {
@@ -254,25 +256,26 @@ class TcpServer(object):
         # gr.etcd_service_node = self._etcd_service_node
         # self._timer_hub.call_later(4, self._check_game_start)
 
-        _etcd_support_task = asyncio.create_task(self.start_etcd_task(_ip, _port))
-        _start_srv_task = asyncio.create_task(self.start_server_task(_ip, _port))
+        _etcd_support_task = asyncio.create_task(self.start_etcd_task())
+        _start_srv_task = asyncio.create_task(self.start_server_task())
 
         await _etcd_support_task
         await _start_srv_task
 
-    async def start_etcd_task(self, _ip, _port):
+    async def start_etcd_task(self):
         etcd_addr_list = [
             (ip_port_map["ip"], str(ip_port_map["port"])) for ip_port_map in gv.game_json_conf["etcd_servers"]]
 
         # _ip = gr.game_json_conf[gr.game_server_name]["ip"]
         # _port = gr.game_json_conf[gr.game_server_name]["port"]
-        my_addr = (_ip, str(_port))
+        my_addr = (gv.local_ip, str(gv.local_port))
 
         # service_module_dict = {"BattleAllocatorCenter": ""} if gr.game_server_name == "battle_0" else {
         #     "BattleAllocatorStub": ""}
 
+        gv.etcd_tag = gv.game_json_conf[gv.game_server_name]["etcd_tag"]
         self._etcd_service_node = ServiceNode(
-            etcd_addr_list, my_addr, gv.game_json_conf[gv.game_server_name]["etcd_tag"])
+            etcd_addr_list, my_addr, gv.etcd_tag)
         # self._etcd_service_node = ServiceNode(etcd_addr_list, my_addr, {"BattleAllocatorStub": ""})
         gv.etcd_service_node = self._etcd_service_node
         await self._etcd_service_node.start()

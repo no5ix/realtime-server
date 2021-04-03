@@ -24,7 +24,8 @@ local_ip = None
 local_port = None
 
 # 游戏服务器名
-game_server_name = 'battle_0'
+game_server_name = None
+etcd_tag = None
 # game_server_name = 'battle_1'
 
 game_json_conf = None
