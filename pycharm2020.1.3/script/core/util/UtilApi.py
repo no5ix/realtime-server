@@ -6,6 +6,15 @@ from typing import Callable
 from common import gv
 
 
+def wait_or_not(f):
+    def wrapped(*args, **kwargs):
+        if asyncio.iscoroutinefunction(f):
+            return gv.get_ev_loop().create_task(f(*args, **kwargs))
+        else:
+            return gv.get_ev_loop().run_in_executor(None, f, *args, *kwargs)
+    return wrapped
+
+
 def async_wrap(func: Callable):
     """
     usage: r = await AioApi.async_wrap(lambda: requests.request("GET", 'http://baidu.com', timeout=2))

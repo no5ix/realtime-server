@@ -41,3 +41,7 @@ class CompPuppetTest(Component):
         self._cnt -= 1
         if self._cnt > 0:
             self.puppet_chat_to_ppt({'content': 'puppet_chat_to_ppt'})
+
+    def test_response_rpc(self):
+        self.remote_entity.CompPuppetTest.test_response_rpc(997)
+        self.remote_comp.test_response_rpc(886)

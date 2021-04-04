@@ -100,3 +100,9 @@ class CompPuppetTest(Component):
     def test_static_log():
         mm = LogManager.get_logger()
 
+    @rpc_method(CLIENT_ONLY)
+    def test_response_rpc(self, a=0):
+        b = 1
+        print(f"test_response_rpc: a={a}")
+        return b
+

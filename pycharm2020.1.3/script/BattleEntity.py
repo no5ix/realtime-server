@@ -1,15 +1,16 @@
 # from typing import Union
 
 # from PuppetBindEntity import PuppetBindEntity
+from common.PuppetEntity import PuppetEntity
 from core.common.RpcMethodArgs import Str, Dict
 from core.common.RpcSupport import rpc_method, CLIENT_ONLY
 from server_entity.ServerEntity import ServerEntity
 
 
-class BattleEntity(ServerEntity):
+class BattleEntity(PuppetEntity):
 
     def __init__(self):
-        super().__init__()
+        PuppetEntity.__init__(self)
 
     # def call_server_method(self, method_name, parameters):
     def call_server_method(self, method_name, *args):

@@ -1,16 +1,10 @@
-# -*- coding: utf-8 -*-
-
-####
-# 作为组件的类(非entity)只需要继承Component，然后再ComponentRegister注册一下自己，就可以作为entity(ComponentSupport)的组件
-
-# Component可以使用修饰符 dependency require 添加与其他Component的关系 （dependency不得出现循环依赖）
-
-# ComponentSupport 使用修饰符components添加组件（目前双端的entity都继承自ComponentSupport，因此双端的entity可以直接添加组件）
-
-###
-
+from __future__ import annotations
 import typing
-from server_entity.ServerEntity import ServerEntity
+if typing.TYPE_CHECKING:
+    from common.PuppetEntity import PuppetEntity
+    from common.PuppetEntity import RemoteComp
+    from common.PuppetEntity import RemoteEntity
+# from server_entity.ServerEntity import ServerEntity
 import copy
 import inspect
 from common import gv
@@ -174,14 +168,18 @@ class Component(object):
     __use_descriptor__ = True
 
     def __init__(self):
-        self.entity = None  # type: typing.Type[ServerEntity, None]
+        self.entity = None  # type: typing.Type[PuppetEntity, None]
         # self.logger = None
         self._client_tick_cache = []
+        self.remote_entity = None  # type: typing.Optional[RemoteEntity]
+        self.remote_comp = None  # type: typing.Optional[RemoteComp]
 
     # 绑定entity到自己. 每个component有个归属的entity
     # 如果有args, 则初始化property, 否则等到后面entity读取数据库后，再主动调用init_properties
     def init(self, entity):
         self.entity = entity
+        self.remote_entity = entity.remote_entity
+        self.remote_comp = entity.remote_comp
         # self.logger = entity.logger
         if self._client_tick_cache and hasattr(self.entity, 'add_tick'):
             for tick_func in self._client_tick_cache:

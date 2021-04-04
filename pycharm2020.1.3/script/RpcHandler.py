@@ -41,9 +41,9 @@ class RpcHandler:
         asyncio.create_task(self.request_rpc_impl(*args, **kwargs))
 
     async def request_rpc_impl(
-            self, method_name, param=None, remote_entity_type: typing.Union[None, str] = None,
+            self, method_name, params=(), remote_entity_type: typing.Union[None, str] = None,
             ip_port_tuple: typing.Tuple[str, int] = None):
-        msg = [remote_entity_type, method_name, param]
+        msg = [remote_entity_type, method_name, params]
         try:
             encoded_msg = self.do_encode(msg)
             # msg_len = len(encoded_msg) if encoded_msg else 0
@@ -67,8 +67,12 @@ class RpcHandler:
                     self._entity = EntityFactory.instance().create_entity(_entity_type_str)
                 self._entity.set_rpc_handler(self)
                 # self._conn.set_entity(_entity)
-
-            _method = getattr(self._entity, _method_name, None)
+            _comp_method_list = _method_name.split(".")
+            if len(_comp_method_list) == 1:
+                _method = getattr(self._entity, _method_name)
+            else:
+                _method = getattr(
+                    self._entity.get_component(_comp_method_list[0]), _comp_method_list[1])
             _method(_parameters)
         except:
             self._logger.log_last_except()

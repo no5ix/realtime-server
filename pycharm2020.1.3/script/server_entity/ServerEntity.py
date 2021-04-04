@@ -16,9 +16,9 @@ from core.mobilelog.LogManager import LogManager
 from core.util.TimerHub import TimerHub
 
 
-class ServerEntity(object):
+class ServerEntity:
     def __init__(self, entity_id=None):
-        super(ServerEntity, self).__init__()
+        # super(ServerEntity, self).__init__()
         self.id = (entity_id is None) and IdManager.genid() or entity_id
         self.local_id = -1
         self.logger = LogManager.get_logger("ServerEntity." + self.__class__.__name__)
@@ -65,7 +65,7 @@ class ServerEntity(object):
     #     await _tcp_conn.loop()
 
     def call_remote_method(
-            self, method_name: str, parameters=None,
+            self, method_name: str, parameters=(),
             remote_entity_type: typing.Union[None, str] = None,
             ip_port_tuple: typing.Tuple[str, int] = None
     ):

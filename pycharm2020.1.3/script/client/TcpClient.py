@@ -15,8 +15,8 @@ from core.util.TimerHub import TimerHub
 async def tcp_echo_client():
     LogManager.set_log_tag("TcpClient")
     LogManager.set_log_path("../bin/win/log/")
-    local_server_port_tuple = (8888, 8889, 9000)
-    # local_server_port_tuple = (8889,)
+    # local_server_port_tuple = (8888, 8889, 9000)
+    local_server_port_tuple = (8888,)
     port = random.choice(local_server_port_tuple)
     reader, writer = await asyncio.open_connection(
         # '192.168.82.177', port)
@@ -56,14 +56,15 @@ async def tcp_echo_client():
         # _cnt -= 1
         # print(_cnt)
         # await asyncio.sleep(1)
-    th = TimerHub()
-    th.call_later(
-        2, lambda: _ppt.CompPuppetTest.test_reload())
-    th.call_later(
-        8, lambda: _ppt.CompPuppetTest.make_server_reload())
-
-    th.call_later(
-        10, lambda: _ppt.CompPuppetTest.test_reload())
+    # th = TimerHub()
+    # th.call_later(
+    #     2, lambda: _ppt.CompPuppetTest.test_reload())
+    # th.call_later(
+    #     8, lambda: _ppt.CompPuppetTest.make_server_reload())
+    #
+    # th.call_later(
+    #     10, lambda: _ppt.CompPuppetTest.test_reload())
+    _ppt.CompPuppetTest.test_response_rpc()
     # await _tcp_conn.loop()
     # _tcp_conn.loop()
     # while True:
