@@ -74,7 +74,7 @@ async def tcp_echo_client():
     #     data = await reader.read(100)
     #     # print(f'Received: {data.decode()!r}')
     #     print(f'Received: {MsgpackSupport.decode(data)!r}')
-
+    await asyncio.sleep(888888888)
     # print('Close the connection')
     # writer.close()
 

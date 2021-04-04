@@ -9,8 +9,8 @@ from common import gv
 def wait_or_not(f):
     def wrapped(*args, **kwargs):
         if asyncio.iscoroutinefunction(f):
-            is_running = gv.get_ev_loop().is_running()
-            is_closed = gv.get_ev_loop().is_closed()
+            # is_running = gv.get_ev_loop().is_running()
+            # is_closed = gv.get_ev_loop().is_closed()
             return gv.get_ev_loop().create_task(f(*args, **kwargs))
         else:
             return gv.get_ev_loop().run_in_executor(None, f, *args, *kwargs)

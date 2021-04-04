@@ -1,5 +1,6 @@
 # from TcpServer import TCP_SERVER
 # import asyncio
+import time
 
 from common.component.Component import Component
 from component.puppet import test_reload_const
@@ -62,8 +63,8 @@ class CompPuppetTest(Component):
         print("fin make reload")
         # self.test_reload_impl()
 
-        self.call_client_comp_method(
-            self.VAR_NAME, 'puppet_chat_from_srv', {'i': {"reload_state": "success"}})
+        # self.call_client_comp_method(
+        #     self.VAR_NAME, 'puppet_chat_from_srv', {'i': {"reload_state": "success"}})
 
         # self.test_timer_circle()
 
@@ -105,5 +106,7 @@ class CompPuppetTest(Component):
         b = 1 + a
         print(f"test_response_rpc: a={a}, b={b}")
         # print(f"test_response_rpc: a={a}")
+        time.sleep(2)
+        1/0
         return b
 

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import asyncio
 import typing
-from asyncio import futures
+from asyncio import futures, shield
 
 from core.util.UtilApi import wait_or_not
 
@@ -36,6 +36,12 @@ class RpcHandler:
     # def bind_entity(self, entity: ServerEntity):
     #     self._entity = entity
 
+    def fire_all_future_with_error(self, error: str):
+        for _reply_id, _reply_fut in self._pending_requests.items():
+            # _reply_fut.set_exception(RpcReplyError(error))
+            _reply_fut.set_result((error, None))
+        self._pending_requests.clear()
+
     def set_conn(self, conn):
         self._conn = conn
 
@@ -65,30 +71,32 @@ class RpcHandler:
             remote_entity_type: typing.Union[None, str] = None,
             ip_port_tuple: typing.Tuple[str, int] = None):
         try:
-            print("sssssss")
-            _future_reply = None
             if need_reply:
                 _reply_id = self.get_reply_id()
                 msg = (RPC_TYPE_REQUEST, _reply_id, remote_entity_type, method_name, params)
-                _future_reply = gv.get_ev_loop().create_future()
-                _future_reply.add_done_callback(
+                _reply_fut = gv.get_ev_loop().create_future()
+                _reply_fut.add_done_callback(
                     lambda fut, rid=_reply_id: self._pending_requests.pop(rid, None))
-                self._pending_requests[_reply_id] = _future_reply
-                await self._send_rpc_msg(msg, ip_port_tuple)
+                self._pending_requests[_reply_id] = _reply_fut
+                self._send_rpc_msg(msg, ip_port_tuple)
                 try:
-                    return await asyncio.wait_for(_future_reply, timeout=reply_timeout)
-                except TimeoutError:
-                    self._pending_requests.pop(_reply_id, None)
-                    return None
+                    return await asyncio.wait_for(asyncio.shield(_reply_fut), timeout=reply_timeout)
+                except asyncio.exceptions.TimeoutError:
+                    self._logger.error(f"method_name={method_name}, asyncio.exceptions.TimeoutError")
+                    # _reply_fut.set_exception(e)
+                    _reply_fut.set_result((f"request rpc timeout: {method_name}", None))
+                    # self._pending_requests.pop(_reply_id, None)
+                    # return None
+                    return await _reply_fut
             else:
                 msg = (RPC_TYPE_NOTIFY, remote_entity_type, method_name, params)
-                await self._send_rpc_msg(msg, ip_port_tuple)
+                self._send_rpc_msg(msg, ip_port_tuple)
                 return None
         except:
             self._logger.log_last_except()
 
-    # @wait_or_not
-    async def _send_rpc_msg(self, msg, ip_port_tuple):
+    @wait_or_not
+    async def _send_rpc_msg(self, msg, ip_port_tuple=None):
         encoded_msg = self.do_encode(msg)
         # msg_len = len(encoded_msg) if encoded_msg else 0
         # header_data = struct.pack("i", msg_len)
@@ -134,11 +142,14 @@ class RpcHandler:
             #     pass
             elif _rpc_type == RPC_TYPE_REPLY:
                 _reply_id, _error, _reply_result = _rpc_msg_tuple[-3:]
-                _reply_fut = self._pending_requests[_reply_id]
-                if _error:
-                    _reply_fut.set_exception(RpcReplyError(_error))
-                else:
-                    _reply_fut.set_result(_reply_result)
+                _reply_fut = self._pending_requests.get(_reply_id, None)
+                if _reply_fut is None:
+                    self._logger.warning("_reply_future already fired or timeout")
+                    return
+                # if _error:
+                #     _reply_fut.set_exception(RpcReplyError(_error))
+                # else:
+                _reply_fut.set_result((_error, _reply_result))
             elif _rpc_type == RPC_TYPE_HEARTBEAT:
                 pass  # TODO
             else:
@@ -162,9 +173,9 @@ class RpcHandler:
             self._logger.log_last_except()
 
 
-class RpcException(Exception):
-    pass
-
-
-class RpcReplyError(RpcException):
-    pass
+# class RpcException(Exception):
+#     pass
+#
+#
+# class RpcReplyError(RpcException):
+#     pass
