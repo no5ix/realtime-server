@@ -65,7 +65,14 @@ class ServerEntity:
     #     await _tcp_conn.loop()
 
     def call_remote_method(
-            self, method_name: str, parameters=(),
+            self,
+            # *args, **kwargs
+            # method_name: str, parameters=(),
+            # remote_entity_type: typing.Union[None, str] = None,
+            # ip_port_tuple: typing.Tuple[str, int] = None,
+            method_name: str,
+            params: typing.Union[typing.Set, typing.List, typing.Tuple] = (),
+            need_reply: bool = False, reply_timeout: typing.Union[int, float] = 2,
             remote_entity_type: typing.Union[None, str] = None,
             ip_port_tuple: typing.Tuple[str, int] = None
     ):
@@ -75,8 +82,11 @@ class ServerEntity:
         #         return
         #     self._rpc_handler = RpcHandler()
 
-        self._rpc_handler.request_rpc(
-            method_name, parameters, remote_entity_type or self.__class__.__name__, ip_port_tuple)
+        return self._rpc_handler.request_rpc(
+            method_name, params, need_reply, reply_timeout,
+            remote_entity_type or self.__class__.__name__, ip_port_tuple
+            # *args, **kwargs
+        )
 
     # async def call_server_method_with_ip_port(
     #         self, server_ip_port_tuple, method_name, parameters=None,

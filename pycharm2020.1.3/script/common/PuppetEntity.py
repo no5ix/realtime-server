@@ -9,28 +9,29 @@ class PuppetEntity(ServerEntity):
         # super(PuppetEntity, self).__init__()
         ServerEntity.__init__(self)
         self.remote_entity = RemoteEntity(self)
-        self.remote_comp = RemoteComp(self)
+        # self.remote_comp = RemoteComp(self)
 
 
 class RemoteComp:
 
-    def __init__(self, server_entity):
+    def __init__(self, comp_name: str, server_entity: PuppetEntity):
         super(RemoteComp, self).__init__()
-        self._server_ent = server_entity
+        self._server_ent = server_entity  # type: PuppetEntity
+        self._comp_name = comp_name
 
     def __getattr__(self, rpc_name: str):
 
-        def temp_rpc_func(*args, rpc_func_name=rpc_name):
+        def temp_rpc_func(*args, need_reply=False, reply_timeout=2, rpc_func_name=rpc_name):
             # print(f"rpc_func_name1: {r}")
             # print(*args, **kwargs)
             # print(*args)
 
-            caller_module = inspect.stack()[1][0]
-            # if "self" in caller_module.f_locals:
-            _caller_comp_name = caller_module.f_locals["self"].__class__.__name__
-            # _caller_comp_name = ""
-            final_rpc_name = ".".join((_caller_comp_name, rpc_func_name))
-            self._server_ent.call_remote_method(final_rpc_name, [*args])
+            # caller_module = inspect.stack()[1][0]
+            # _caller_comp_name = caller_module.f_locals["self"].__class__.__name__
+            # final_rpc_name = ".".join((_caller_comp_name, rpc_func_name))
+            final_rpc_name = ".".join((self._comp_name, rpc_func_name))
+            return self._server_ent.call_remote_method(
+                final_rpc_name, [*args], need_reply, reply_timeout)
 
         return temp_rpc_func
 
@@ -49,7 +50,7 @@ class RemoteEntity:
             self._cur_comp_name = item_name
             return self
         else:
-            def temp_rpc_func(*args, rpc_func_name=item_name):
+            def temp_rpc_func(*args, need_reply=False, reply_timeout=2, rpc_func_name=item_name):
                 # print(f"rpc_func_name1: {r}")
                 # print(*args, **kwargs)
                 # print(*args)
@@ -58,8 +59,8 @@ class RemoteEntity:
                 else:
                     final_rpc_name = ".".join((self._cur_comp_name, rpc_func_name))
                     self._cur_comp_name = ''
-                self._server_ent.call_remote_method(final_rpc_name, [*args])
+                return self._server_ent.call_remote_method(
+                    final_rpc_name, [*args], need_reply, reply_timeout)
             return temp_rpc_func
             # return lambda *args, rpc=item_name: self._server_ent.call_remote_method(rpc, *args)
 
-    # def __await__(self):

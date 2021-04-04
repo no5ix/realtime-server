@@ -102,7 +102,8 @@ class CompPuppetTest(Component):
 
     @rpc_method(CLIENT_ONLY)
     def test_response_rpc(self, a=0):
-        b = 1
-        print(f"test_response_rpc: a={a}")
+        b = 1 + a
+        print(f"test_response_rpc: a={a}, b={b}")
+        # print(f"test_response_rpc: a={a}")
         return b
 

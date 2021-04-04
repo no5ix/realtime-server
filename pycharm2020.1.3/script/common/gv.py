@@ -49,7 +49,7 @@ def get_cur_server() -> TcpServer:
     return get_server_singleton("TcpServer")
 
 
-def get_ev_loop():
+def get_ev_loop() -> asyncio.AbstractEventLoop:
     global EV_LOOP
     if EV_LOOP is None:
         try:

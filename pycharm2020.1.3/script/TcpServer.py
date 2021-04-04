@@ -29,7 +29,7 @@ from core.EtcdSupport import ServiceNode
 from core.mobilelog.LogManager import LogManager
 from core.util import EnhancedJson
 from core.util.TimerHub import TimerHub
-from util.SingletonEntityManager import SingletonEntityManager
+# from util.SingletonEntityManager import SingletonEntityManager
 from common import gv
 from core.common import EntityScanner
 from core.common.EntityFactory import EntityFactory

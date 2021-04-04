@@ -13,14 +13,14 @@ class BattleEntity(PuppetEntity):
         PuppetEntity.__init__(self)
 
     # def call_server_method(self, method_name, parameters):
-    def call_server_method(self, method_name, *args):
-        self.call_remote_method(
-            # 'battle_entity_message', {'m': method_name, 'p': parameters})
-            'battle_entity_message', [method_name, *args])
-
-    def call_client_method(self, method_name, *args):
-        self.call_remote_method(
-            'battle_entity_message', [method_name, *args])
+    # def call_server_method(self, method_name, *args):
+    #     self.call_remote_method(
+    #         # 'battle_entity_message', {'m': method_name, 'p': parameters})
+    #         'battle_entity_message', [method_name, *args])
+    #
+    # def call_client_method(self, method_name, *args):
+    #     self.call_remote_method(
+    #         'battle_entity_message', [method_name, *args])
 
     @rpc_method(CLIENT_ONLY, (Str('m'), Dict('p')))
     def battle_entity_message(self, method_name, parameters):

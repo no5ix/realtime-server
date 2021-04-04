@@ -2,8 +2,9 @@ from __future__ import annotations
 import typing
 if typing.TYPE_CHECKING:
     from common.PuppetEntity import PuppetEntity
-    from common.PuppetEntity import RemoteComp
     from common.PuppetEntity import RemoteEntity
+
+from common.PuppetEntity import RemoteComp
 # from server_entity.ServerEntity import ServerEntity
 import copy
 import inspect
@@ -179,7 +180,7 @@ class Component(object):
     def init(self, entity):
         self.entity = entity
         self.remote_entity = entity.remote_entity
-        self.remote_comp = entity.remote_comp
+        self.remote_comp = RemoteComp(self.__class__.__name__, entity)
         # self.logger = entity.logger
         if self._client_tick_cache and hasattr(self.entity, 'add_tick'):
             for tick_func in self._client_tick_cache:

@@ -2,6 +2,7 @@
 from common.component.Component import Component
 from core.common.RpcMethodArgs import Dict
 from core.common.RpcSupport import rpc_method, CLIENT_ONLY, CLIENT_STUB
+from core.util.UtilApi import wait_or_not
 
 
 class CompPuppetTest(Component):
@@ -42,6 +43,20 @@ class CompPuppetTest(Component):
         if self._cnt > 0:
             self.puppet_chat_to_ppt({'content': 'puppet_chat_to_ppt'})
 
+    # @wait_or_not
     def test_response_rpc(self):
-        self.remote_entity.CompPuppetTest.test_response_rpc(997)
-        self.remote_comp.test_response_rpc(886)
+        # gg = await self.remote_entity.CompPuppetTest.test_response_rpc(997)
+        # gg = self.remote_entity.CompPuppetTest.test_response_rpc(997)
+        # self.remote_entity.CompPuppetTest.test_response_rpc(997)
+        # print(f"gg={gg}")
+        hh = self.remote_comp.test_response_rpc(886)
+        # print(f"hh={hh}")
+
+        # self.remote_comp.test_response_rpc(886)
+        print("testttt")
+        final_rpc_name = "CompPuppetTest.test_response_rpc"
+        args = [110]
+        need_reply = False
+        reply_timeout = 2
+        self.entity.call_remote_method(
+            final_rpc_name, [*args], need_reply, reply_timeout)

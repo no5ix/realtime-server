@@ -5,6 +5,7 @@ import typing
 from asyncio.exceptions import CancelledError
 
 from RpcHandler import RpcHandler
+from core.util.UtilApi import wait_or_not
 
 if typing.TYPE_CHECKING:
     from server_entity.ServerEntity import ServerEntity
@@ -60,10 +61,11 @@ class TcpConn(object):
     def get_rpc_handler(self):
         return self._rpc_handler
 
-    def loop(self):
-        return asyncio.create_task(self._loop())
+    # def loop(self):
+    #     return asyncio.create_task(self._loop())
 
-    async def _loop(self):
+    @wait_or_not
+    async def loop(self):
         while True:
             try:
                 # self.asyncio_writer

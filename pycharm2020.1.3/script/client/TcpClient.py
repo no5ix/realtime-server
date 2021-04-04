@@ -1,14 +1,17 @@
 import asyncio
 import random
 # import sys
+from asyncio import events
 
 from TcpConn import TcpConn
 from client.Puppet import Puppet
 # from client.PuppetBindEntity import PuppetBindEntity
 # from common import gr
 # from core.common import MsgpackSupport
+from common import gv
 from core.mobilelog.LogManager import LogManager
 # from core.util import UtilApi
+from core.util import UtilApi
 from core.util.TimerHub import TimerHub
 
 
@@ -66,7 +69,7 @@ async def tcp_echo_client():
     #     10, lambda: _ppt.CompPuppetTest.test_reload())
     _ppt.CompPuppetTest.test_response_rpc()
     # await _tcp_conn.loop()
-    # _tcp_conn.loop()
+    # await _tcp_conn.loop()
     # while True:
     #     data = await reader.read(100)
     #     # print(f'Received: {data.decode()!r}')
@@ -81,5 +84,10 @@ if __name__ == '__main__':
     # tcp_server = TcpServer()
     # TCP_SERVER = tcp_server
     # tcp_server.run()
+    # _loop = asyncio.get_event_loop()
 
+    # _ev_loop = events.new_event_loop()
+    # events.set_event_loop(_ev_loop)
+    # _ev_loop.run_until_complete(tcp_echo_client())
+    # _ev_loop.run_forever()
     asyncio.run(tcp_echo_client())
