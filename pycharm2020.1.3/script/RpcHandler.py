@@ -31,15 +31,15 @@ class RpcHandler:
         self._conn = conn  # type: typing.Optional[TcpConn]
         self._entity = entity  # type: typing.Optional[ServerEntity]
         self._next_reply_id = 0
-        self._pending_requests = {}  # type: typing.Dict[int, futures.Future]
+        self._pending_requests = {}  # type: typing.Dict[int, typing.Tuple[str, futures.Future]]
 
     # def bind_entity(self, entity: ServerEntity):
     #     self._entity = entity
 
     def fire_all_future_with_error(self, error: str):
-        for _reply_id, _reply_fut in self._pending_requests.items():
+        for _reply_id, _reply_fut_tuple in self._pending_requests.items():
             # _reply_fut.set_exception(RpcReplyError(error))
-            _reply_fut.set_result((error, None))
+            _reply_fut_tuple[1].set_result((error, None))
         self._pending_requests.clear()
 
     def set_conn(self, conn):
@@ -66,18 +66,21 @@ class RpcHandler:
     async def request_rpc(
             self,
             method_name: str,
-            params: typing.Union[typing.Set, typing.List, typing.Tuple] = (),
+            method_args: typing.Union[typing.Set, typing.List, typing.Tuple] = (),
+            method_kwargs: typing.Union[None, typing.Dict] = None,
             need_reply: bool = True, reply_timeout: typing.Union[int, float] = 2,
             remote_entity_type: typing.Union[None, str] = None,
-            ip_port_tuple: typing.Tuple[str, int] = None):
+            ip_port_tuple: typing.Tuple[str, int] = None
+    ):
         try:
+            method_kwargs = {} if method_kwargs is None else method_kwargs
             if need_reply:
                 _reply_id = self.get_reply_id()
-                msg = (RPC_TYPE_REQUEST, _reply_id, remote_entity_type, method_name, params)
+                msg = (RPC_TYPE_REQUEST, _reply_id, remote_entity_type, method_name, method_args, method_kwargs)
                 _reply_fut = gv.get_ev_loop().create_future()
                 _reply_fut.add_done_callback(
                     lambda fut, rid=_reply_id: self._pending_requests.pop(rid, None))
-                self._pending_requests[_reply_id] = _reply_fut
+                self._pending_requests[_reply_id] = (method_name, _reply_fut)
                 self._send_rpc_msg(msg, ip_port_tuple)
                 try:
                     return await asyncio.wait_for(asyncio.shield(_reply_fut), timeout=reply_timeout)
@@ -89,7 +92,7 @@ class RpcHandler:
                     # return None
                     return await _reply_fut
             else:
-                msg = (RPC_TYPE_NOTIFY, remote_entity_type, method_name, params)
+                msg = (RPC_TYPE_NOTIFY, remote_entity_type, method_name, method_args, method_kwargs)
                 self._send_rpc_msg(msg, ip_port_tuple)
                 return None
         except:
@@ -113,21 +116,27 @@ class RpcHandler:
             _rpc_msg_tuple = self.do_decode(rpc_msg)
             _rpc_type = _rpc_msg_tuple[0]
             if _rpc_type == RPC_TYPE_REQUEST or _rpc_type == RPC_TYPE_NOTIFY:
-                _entity_type_str, _method_name, _parameters = _rpc_msg_tuple[-3:]
-                if self._entity is None:
-                    self._entity = gv.get_server_singleton(_entity_type_str)
-                    if self._entity is None:
-                        self._entity = EntityFactory.instance().create_entity(_entity_type_str)
-                    self._entity.set_rpc_handler(self)
-                    # self._conn.set_entity(_entity)
-                _comp_method_list = _method_name.split(".")
-                if len(_comp_method_list) == 1:
-                    _method = getattr(self._entity, _method_name)
-                else:
-                    _method = getattr(
-                        self._entity.get_component(_comp_method_list[0]), _comp_method_list[1])
                 try:
-                    _method_res = _method(_parameters)
+                    _entity_type_str, _method_name, _method_args, _method_kwargs = _rpc_msg_tuple[-4:]
+                    if self._entity is None:
+                        self._entity = gv.get_server_singleton(_entity_type_str)
+                        if self._entity is None:
+                            self._entity = EntityFactory.instance().create_entity(_entity_type_str)
+                        self._entity.set_rpc_handler(self)
+                        # self._conn.set_entity(_entity)
+                    _comp_method_list = _method_name.split(".")
+                    if len(_comp_method_list) == 1:
+                        _method = getattr(self._entity, _method_name, None)
+                    else:
+                        _method = getattr(
+                            self._entity.get_component(_comp_method_list[0]),
+                            _comp_method_list[1], None)
+                    if _method is None:
+                        raise Exception(f"{_method_name} is not found")
+                    _is_rpc_func = getattr(_method, "is_rpc_func", False)
+                    if not _is_rpc_func:
+                        raise Exception(f"{_method_name} is not rpc func")
+                    _method_res = _method(*_method_args, **_method_kwargs)
                     if asyncio.iscoroutine(_method_res):
                         _method_res = await _method_res
                     if _method_res is None:
@@ -144,11 +153,12 @@ class RpcHandler:
             #     pass
             elif _rpc_type == RPC_TYPE_REPLY:
                 _reply_id, _error, _reply_result = _rpc_msg_tuple[-3:]
-                _reply_fut = self._pending_requests.get(_reply_id, None)
+                _rpc_func_name, _reply_fut = self._pending_requests.get(_reply_id, (None, None))
                 if _reply_fut is None:
-                    self._logger.warning("_reply_future already fired or timeout")
+                    # self._logger.warning(f"{_rpc_func_name} _reply_future already fired or timeout")
                     return
-                # if _error:
+                if _error:
+                    self._logger.error(f"{_rpc_func_name}: {_error}")
                 #     _reply_fut.set_exception(RpcReplyError(_error))
                 # else:
                 _reply_fut.set_result((_error, _reply_result))

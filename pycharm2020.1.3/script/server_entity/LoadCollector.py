@@ -1,7 +1,7 @@
 # from common import gr
 from common import gv
 from core.common.RpcMethodArgs import RpcMethodArg, Float, Str
-from core.common.RpcSupport import rpc_method, SERVER_ONLY
+from core.common.RpcSupport import rpc_method, SRV_TO_SRV, rpc_func
 from core.mobilelog.LogManager import LogManager
 from server_entity.ServerEntity import ServerEntity
 import typing
@@ -20,7 +20,8 @@ class LoadCollector(ServerEntity):
         self._pipe = self._redis_cli.pipeline(transaction=False)
 
     # @rpc_method(SERVER_ONLY, [Str("sn"), Float("l")])
-    @rpc_method(SERVER_ONLY)
+    # @rpc_method(SRV_TO_SRV)
+    @rpc_func
     def report_load(self, etcd_tag, server_name, ip, port, load):
         print(f"etcd_tag: {etcd_tag} server_name: {server_name} load: {load}")
         # self._pipe.zadd(etcd_tag, {server_name: load})

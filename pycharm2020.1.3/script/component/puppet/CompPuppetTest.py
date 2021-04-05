@@ -7,7 +7,7 @@ from common.component.Component import Component
 from component.puppet import test_reload_const
 from component.puppet.test_reload_const import TEST_CONST_STR
 from core.common.RpcMethodArgs import Dict, Str
-from core.common.RpcSupport import rpc_method, CLIENT_ONLY
+from core.common.RpcSupport import rpc_method, CLI_TO_SRV, rpc_func
 
 import random
 import typing
@@ -25,7 +25,7 @@ class CompPuppetTest(Component):
         super().__init__()
         self._cnt = random.randint(0, 10)
 
-    @rpc_method(CLIENT_ONLY, (Str('i'), ))
+    @rpc_method(CLI_TO_SRV, (Str('i'),))
     def puppet_chat_to_channel(self, chat_info):
         # import sys
         # isin = "component.puppet.CompPuppetTest" in sys.modules  # TODO del
@@ -46,7 +46,7 @@ class CompPuppetTest(Component):
     def test_delay_func(self):
         print('test_delay_func')
 
-    @rpc_method(CLIENT_ONLY, (Dict('p'), ))
+    @rpc_method(CLI_TO_SRV, (Dict('p'),))
     def puppet_chat_to_ppt(self, chat_info: typing.Dict):
         # print(chat_info)
         # self._cnt -= 1
@@ -55,7 +55,9 @@ class CompPuppetTest(Component):
 
         self.call_client_comp_method(self.VAR_NAME, 'puppet_chat_from_srv', {'i': chat_info})
 
-    @rpc_method(CLIENT_ONLY)
+    # @rpc_method(CLI_TO_SRV)
+
+    @rpc_func
     def make_server_reload(self):
         # print("before reload")
         # print(test_reload_const.TEST_CONST_STR)
@@ -69,7 +71,7 @@ class CompPuppetTest(Component):
 
         # self.test_timer_circle()
 
-    @rpc_method(CLIENT_ONLY)
+    @rpc_method(CLI_TO_SRV)
     def test_reload(self):
         print("22call test_reload")
         # print("test_reload  after")
@@ -102,18 +104,18 @@ class CompPuppetTest(Component):
     def test_static_log():
         mm = LogManager.get_logger()
 
-    @rpc_method(CLIENT_ONLY)
-    async def test_response_rpc1(self, a=0):
-        b = 1 + a
-        print(f"test_response_rpc: a={a}, b={b}")
+    @rpc_func
+    async def test_response_rpc1(self, a: int = 0, c: int = 3):
+        b = 1 + a + c
+        print(f"test_response_rpc: a={a}, b={b}, c={c}")
         # print(f"test_response_rpc: a={a}")
         # time.sleep(2)
-        await asyncio.sleep(2)
-        1/0
+        await asyncio.sleep(1)
+        # 1/0
         return b
 
-    @rpc_method(CLIENT_ONLY)
-    async def test_response_rpc2(self, a=0):
+    @rpc_func
+    async def test_response_rpc2(self, a: int = 0):
         b = 2 + a
         print(f"test_response_rpc: a={a}, b={b}")
         # print(f"test_response_rpc: a={a}")

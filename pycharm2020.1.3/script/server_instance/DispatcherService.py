@@ -3,7 +3,7 @@ import sys
 from TcpServer import TcpServer
 # from common import gr
 from core.common.RpcMethodArgs import RpcMethodArg, Float
-from core.common.RpcSupport import rpc_method, SERVER_ONLY
+from core.common.RpcSupport import rpc_method, SRV_TO_SRV
 from core.mobilelog.LogManager import LogManager
 from server_entity.ServerEntity import ServerEntity
 

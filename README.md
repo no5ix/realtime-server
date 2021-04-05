@@ -9,6 +9,7 @@ python 3.8.8
 <!-- - [ ] puppet -->
 <!-- - [ ] avatar -->
 - [ ] dungeon
+- [ ] reload 支持 `rpc_func`装饰器的增删
 - [ ] 启动脚本
 - [ ] 手动心跳
 - [ ] kcp connection 共用心跳模块

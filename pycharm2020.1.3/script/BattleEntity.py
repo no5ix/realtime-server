@@ -3,7 +3,7 @@
 # from PuppetBindEntity import PuppetBindEntity
 from common.PuppetEntity import PuppetEntity
 from core.common.RpcMethodArgs import Str, Dict
-from core.common.RpcSupport import rpc_method, CLIENT_ONLY
+from core.common.RpcSupport import rpc_method, CLI_TO_SRV
 from server_entity.ServerEntity import ServerEntity
 
 
@@ -22,7 +22,7 @@ class BattleEntity(PuppetEntity):
     #     self.call_remote_method(
     #         'battle_entity_message', [method_name, *args])
 
-    @rpc_method(CLIENT_ONLY, (Str('m'), Dict('p')))
+    @rpc_method(CLI_TO_SRV, (Str('m'), Dict('p')))
     def battle_entity_message(self, method_name, parameters):
         # try:
         #     method_name = RpcIndexer.INDEX2RPC[method_name]

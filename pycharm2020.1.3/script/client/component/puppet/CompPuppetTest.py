@@ -1,7 +1,7 @@
 # from RpcHandler import RpcReplyError
 from common.component.Component import Component
 from core.common.RpcMethodArgs import Dict
-from core.common.RpcSupport import rpc_method, CLIENT_ONLY, CLIENT_STUB
+from core.common.RpcSupport import rpc_method, CLI_TO_SRV, SRV_TO_CLI
 from core.util.UtilApi import wait_or_not
 
 
@@ -35,7 +35,7 @@ class CompPuppetTest(Component):
 
     # @rpc_method(CLIENT_STUB, (Dict('i'),))
     # @rpc_method(CLIENT_STUB, Dict('i'))
-    @rpc_method(CLIENT_STUB, [Dict('i')])
+    @rpc_method(SRV_TO_CLI, [Dict('i')])
     # @rpc_method(CLIENT_STUB, {Dict('i')})
     def puppet_chat_from_srv(self, chat_info):
         print(chat_info)
@@ -64,7 +64,10 @@ class CompPuppetTest(Component):
         # print(f"gg={gg}, err={err}")
 
         err, hh = await self.remote_comp.test_response_rpc1(
-            886, need_reply=True, reply_timeout=10)
+            886, c=11,
+            # need_reply=True,
+            reply_timeout=10
+        )
         print(f"hh={hh}, err={err}")
 
         # self.remote_comp.test_response_rpc(886)

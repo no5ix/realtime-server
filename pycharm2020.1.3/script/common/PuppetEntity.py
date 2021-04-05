@@ -21,7 +21,7 @@ class RemoteComp:
 
     def __getattr__(self, rpc_name: str):
 
-        def temp_rpc_func(*args, need_reply=True, reply_timeout=2, rpc_func_name=rpc_name):
+        def temp_rpc_func(*args, need_reply=True, reply_timeout=2, rpc_func_name=rpc_name, **kwargs):
             # print(f"rpc_func_name1: {r}")
             # print(*args, **kwargs)
             # print(*args)
@@ -31,7 +31,7 @@ class RemoteComp:
             # final_rpc_name = ".".join((_caller_comp_name, rpc_func_name))
             final_rpc_name = ".".join((self._comp_name, rpc_func_name))
             return self._server_ent.call_remote_method(
-                final_rpc_name, [*args], need_reply, reply_timeout)
+                final_rpc_name, args, kwargs, need_reply, reply_timeout)
 
         return temp_rpc_func
 
@@ -50,7 +50,8 @@ class RemoteEntity:
             self._cur_comp_name = item_name
             return self
         else:
-            def temp_rpc_func(*args, need_reply=True, reply_timeout=2, rpc_func_name=item_name):
+            def temp_rpc_func(
+                    *args, need_reply=True, reply_timeout=2, rpc_func_name=item_name, **kwargs):
                 # print(f"rpc_func_name1: {r}")
                 # print(*args, **kwargs)
                 # print(*args)
@@ -60,7 +61,7 @@ class RemoteEntity:
                     final_rpc_name = ".".join((self._cur_comp_name, rpc_func_name))
                     self._cur_comp_name = ''
                 return self._server_ent.call_remote_method(
-                    final_rpc_name, [*args], need_reply, reply_timeout)
+                    final_rpc_name, args, kwargs, need_reply, reply_timeout)
             return temp_rpc_func
             # return lambda *args, rpc=item_name: self._server_ent.call_remote_method(rpc, *args)
 

@@ -71,7 +71,8 @@ class ServerEntity:
             # remote_entity_type: typing.Union[None, str] = None,
             # ip_port_tuple: typing.Tuple[str, int] = None,
             method_name: str,
-            params: typing.Union[typing.Set, typing.List, typing.Tuple] = (),
+            method_args: typing.Union[typing.Set, typing.List, typing.Tuple] = (),
+            method_kwargs: typing.Union[None, typing.Dict] = None,
             need_reply: bool = True, reply_timeout: typing.Union[int, float] = 2,
             remote_entity_type: typing.Union[None, str] = None,
             ip_port_tuple: typing.Tuple[str, int] = None
@@ -83,7 +84,7 @@ class ServerEntity:
         #     self._rpc_handler = RpcHandler()
 
         return self._rpc_handler.request_rpc(
-            method_name, params, need_reply, reply_timeout,
+            method_name, method_args, method_kwargs, need_reply, reply_timeout,
             remote_entity_type or self.__class__.__name__, ip_port_tuple
             # *args, **kwargs
         )

@@ -30,10 +30,10 @@ import functools
 
 from core.common.RpcMethodArgs import ConvertError, RpcMethodArg
 
-CLIENT_ONLY = 0  # client call server
-SERVER_ONLY = 1  # server call server
-CLIENT_SERVER = 2  # client or server call server
-CLIENT_STUB = 3    # server call client
+CLI_TO_SRV = 0  # client call server
+SRV_TO_SRV = 1  # server call server
+CLI_SRV_TO_SRV = 2  # client or server call server
+SRV_TO_CLI = 3    # server call client
 
 # logger = LogManager.get_logger("server.RpcMethod")
 # _delay_guard = PostmanDelayGuard('rpc', server_const.POSTMAN_WARN_LIMIT_RPC)
@@ -126,131 +126,10 @@ class RpcMethod(object):
         # return self.func(entity, *args)
 
 
-    # def call(self, entity, placeholder, parameters):
-    #     """
-    #     调用服务端的rpc 方法
-    #     :@note game进程的直连通信扩展了带Response的通信模式，为了保持与原API的一致，如果有Response对象，那么placeholder参数
-    #         将会传一个tuple进来 (Response, MailBox)
-    #     """
-    #     #parameters = BSON(bson_string).decode()
-    #     if not isinstance(parameters, dict):
-    #         # logger.warn("call: bson parameter decode failed in RPC call %s (%s), ",
-    #         #              self.func.__name__,  "" .join(str(x) for x in self.arg_types))
-    #         return
-    #
-    #     if self.cd > 0:
-    #         now = utility.get_time()
-    #         last_call_ts_name = 'last_call_%s_ts' % self.func.__name__
-    #         last_call_ts = getattr(entity, last_call_ts_name, 0)
-    #         if now - last_call_ts < self.cd:
-    #             return
-    #         setattr(entity, last_call_ts_name, now)
-    #
-    #     if not self.arg_types:
-    #         return self.func(entity)
-    #
-    #     # 检测当前调用的rpc方法的Response参数的定义情况是否与调用的情况一致
-    #     # 例如被调用的方法定义了Response，但是调用者却没有设置need_reply参数
-    #     # 调用者设置了need_reply参数，但是被调用的方法没有定义Response
-    #     if not (self._has_response is isinstance(placeholder, tuple)):
-    #         if self._has_response:
-    #             raise Exception("%s need a response, check you call define" % self.func)
-    #         else:
-    #             placeholder[0].send_response(error="%s do not have response define" % self.func)
-    #             raise Exception("%s do not have response define, check your caller or %s define" % (self.func, self.func))
-    #
-    #     auto_parameters = parameters.get('_')
-    #     if auto_parameters:
-    #         parameters = auto_parameters
-    #
-    #     if isinstance(parameters, dict):
-    #         return self.call_with_key(entity, placeholder, parameters)
-    #     else:
-    #         return self.call_without_key(entity, placeholder, parameters)
-    #
-    # def call_without_key(self, entity, placeholder, parameters):
-    #     response = None
-    #     if isinstance(placeholder, tuple):
-    #         response = placeholder[0]
-    #         placeholder = placeholder[1]
-    #
-    #     args = []
-    #     arg_types = self.arg_types
-    #     holder = self.get_placeholder(arg_types[0], placeholder)
-    #     if holder:
-    #         args.append(holder)
-    #         arg_types = arg_types[1:]
-    #
-    #     if response:
-    #         assert isinstance(arg_types[0], Response)
-    #         arg_types = arg_types[1:]
-    #         args.append(response)
-    #
-    #     for index in xrange(len(arg_types)):
-    #         argtype = arg_types[index]
-    #         try:
-    #             arg = parameters[index]
-    #         except KeyError:
-    #             logger.warn("call: parameter %s not found in RPC call %s, using default value",
-    #                          argtype.getname(), self.func.__name__)
-    #             arg = argtype.default_val()
-    #         try:
-    #             if arg == None and argtype.get_type() == 'Uuid':
-    #                 #让uuid类型的参数可以是None
-    #                 arg = None
-    #             else:
-    #                 arg = argtype.convert(arg)
-    #         except ConvertError, e:    # we will call the method if the conversion failed
-    #             logger.error("call: parameter %s can't convert input %s for RPC call %s exception %s",
-    #                           argtype.getname(),  str(arg),  self.func.__name__, str(e))
-    #             return
-    #         args.append(arg)
-    #     return self.func(entity, *args)
-    #
-    # def call_with_key(self, entity, placeholder, parameters):
-    #     response = None
-    #     if isinstance(placeholder, tuple):
-    #         response = placeholder[0]
-    #         placeholder = placeholder[1]
-    #
-    #     args = []
-    #     arg_types = self.arg_types
-    #     # 如果第一个参数是Avatar，则我们把对端调用Entity的Avatar传给方法
-    #     holder = self.get_placeholder(arg_types[0], placeholder)
-    #     if holder:
-    #         args.append(holder)
-    #         arg_types = arg_types[1:]
-    #
-    #     if response:
-    #         assert isinstance(arg_types[0], Response)
-    #         arg_types = arg_types[1:]
-    #         args.append(response)
-    #
-    #     for argtype in arg_types:
-    #         try:
-    #             arg = parameters[argtype.getname()]
-    #         except KeyError:
-    #             logger.warn("call: parameter %s not found in RPC call %s, using default value",
-    #                          argtype.getname(), self.func.__name__)
-    #             arg = argtype.default_val()
-    #         try:
-    #             if arg == None and argtype.get_type() == 'Uuid':
-    #                 #让uuid类型的参数可以是None
-    #                 arg = None
-    #             else:
-    #                 arg = argtype.convert(arg)
-    #         except ConvertError, e: # we will call the method if the conversion failed
-    #             logger.error("call: parameter %s can't convert input %s for RPC call %s exception %s",
-    #                           argtype.getname(),  str(arg),  self.func.__name__, str(e))
-    #             return
-    #         args.append(arg)
-    #     return self.func(entity, *args)
-
-
 def rpc_method(rpc_type, arg_types=(), pub=True, cd=-1):
     """ decorator """
     assert (
-            rpc_type in (CLIENT_ONLY, SERVER_ONLY, CLIENT_SERVER, CLIENT_STUB)),\
+            rpc_type in (CLI_TO_SRV, SRV_TO_SRV, CLI_SRV_TO_SRV, SRV_TO_CLI)),\
         str(type) + ": type must be one of (CLIENT_ONLY, SERVER_ONLY, CLIENT_SERVER) "
     assert (pub in (True, False)), str(pub) + "should be True of False"
 
@@ -284,7 +163,7 @@ def rpc_method(rpc_type, arg_types=(), pub=True, cd=-1):
             ret = call_func(self, args)
             return ret
 
-        if rpc_type == CLIENT_STUB:
+        if rpc_type == SRV_TO_CLI:
             call_rpc_method = call_rpc_method_CLIENT_STUB
         else:
             call_rpc_method = call_rpc_method_Others
@@ -298,62 +177,18 @@ def rpc_method(rpc_type, arg_types=(), pub=True, cd=-1):
     return _rpc_method
 
 
-# def rpc_func(rpc_type, arg_types=()):
-#     assert (
-#             rpc_type in (CLIENT_ONLY, SERVER_ONLY, CLIENT_SERVER, CLIENT_STUB)),\
-#         str(type) + ": type must be one of (CLIENT_ONLY, SERVER_ONLY, CLIENT_SERVER) "
-#     # assert (pub in (True, False)), str(pub) + "should be True of False"
-#
-#     if type(arg_types) is tuple or type(arg_types) is set or type(arg_types) is list:
-#         for argtype in arg_types:
-#             assert (isinstance(argtype, RpcMethodArg)), str(argtype) + ": args Type error"
-#     elif isinstance(arg_types, RpcMethodArg):
-#         arg_types = (arg_types, )
-#     else:
-#         assert (
-#                 type(arg_types) is tuple or
-#                 type(arg_types) is list or
-#                 type(arg_types) is set or
-#                 isinstance(arg_types, RpcMethodArg)), \
-#             str(arg_types) + ": arg_types error"
-#
-#     def _rpc_method(func):
-#         rpc_method = RpcMethod(func, rpc_type, arg_types
-#                               # , pub, cd=cd
-#                               )
-#         call_func = rpc_method.call
-#
-#         @functools.wraps(func)
-#         def call_rpc_method_CLIENT_STUB(self, args):
-#             # fun_for_reload = func       # do not remove this, it is usefull for reload
-#             return call_func(self, args)
-#
-#         @functools.wraps(func)
-#         def call_rpc_method_Others(self, args):
-#             # fun_for_reload = func       # do not remove this, it is usefull for reload
-#             # return call_func(self, *args)
-#             # with _delay_guard:
-#             ret = call_func(self, args)
-#             return ret
-#
-#         if rpc_type == CLIENT_STUB:
-#             call_rpc_method = call_rpc_method_CLIENT_STUB
-#         else:
-#             call_rpc_method = call_rpc_method_Others
-#
-#         call_rpc_method.rpc_method = rpc_method
-#         if rpc_method.need_mailbox:
-#             call_rpc_method.need_mailbox = True
-#         else:
-#             call_rpc_method.need_mailbox = False
-#         return call_rpc_method
-#     return _rpc_method
+def rpc_func(func):
+    def wrapper(*args, **kwargs):
+        func_for_reload = func
+        return func(*args, **kwargs)
+    wrapper.is_rpc_func = True
+    return wrapper
 
 
 def expose_to_client(method):
     try:
         rpctype = method.rpcmethod.rpctype
-        if (rpctype == CLIENT_ONLY or rpctype == CLIENT_SERVER):
+        if (rpctype == CLI_TO_SRV or rpctype == CLI_SRV_TO_SRV):
             return True
         return False
     except AttributeError:
@@ -363,7 +198,7 @@ def expose_to_client(method):
 def expose_to_server(method):
     try:
         rpctype = method.rpcmethod.rpctype
-        if (rpctype == SERVER_ONLY or rpctype == CLIENT_SERVER):
+        if (rpctype == SRV_TO_SRV or rpctype == CLI_SRV_TO_SRV):
             return True
         return False
     except AttributeError:
