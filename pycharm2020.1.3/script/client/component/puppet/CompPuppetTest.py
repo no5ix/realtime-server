@@ -53,7 +53,7 @@ class CompPuppetTest(Component):
         # # gg = await self.remote_entity.CompPuppetTest.test_response_rpc(997)
         self.remote_entity.CompPuppetTest.test_response_rpc(
             997,
-            # need_reply=True, reply_timeout=1
+            need_reply=False, reply_timeout=3
         )
         # # except RpcReplyError as e:
         # #     print("rpc reply errr")

@@ -106,7 +106,7 @@ class CompPuppetTest(Component):
         b = 1 + a
         print(f"test_response_rpc: a={a}, b={b}")
         # print(f"test_response_rpc: a={a}")
-        time.sleep(2)
+        # time.sleep(2)
         1/0
         return b
 

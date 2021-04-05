@@ -67,7 +67,7 @@ class RpcHandler:
             self,
             method_name: str,
             params: typing.Union[typing.Set, typing.List, typing.Tuple] = (),
-            need_reply: bool = False, reply_timeout: typing.Union[int, float] = 2,
+            need_reply: bool = True, reply_timeout: typing.Union[int, float] = 2,
             remote_entity_type: typing.Union[None, str] = None,
             ip_port_tuple: typing.Tuple[str, int] = None):
         try:
@@ -82,7 +82,7 @@ class RpcHandler:
                 try:
                     return await asyncio.wait_for(asyncio.shield(_reply_fut), timeout=reply_timeout)
                 except asyncio.exceptions.TimeoutError:
-                    self._logger.error(f"method_name={method_name}, asyncio.exceptions.TimeoutError")
+                    # self._logger.error(f"method_name={method_name}, asyncio.exceptions.TimeoutError")
                     # _reply_fut.set_exception(e)
                     _reply_fut.set_result((f"request rpc timeout: {method_name}", None))
                     # self._pending_requests.pop(_reply_id, None)
@@ -128,6 +128,8 @@ class RpcHandler:
                         self._entity.get_component(_comp_method_list[0]), _comp_method_list[1])
                 try:
                     _method_res = _method(_parameters)
+                    if _method_res is None:
+                        return
                     if asyncio.iscoroutine(_method_res):
                         _method_res = await _method_res
                     if _rpc_type == RPC_TYPE_REQUEST:

@@ -72,7 +72,7 @@ class ServerEntity:
             # ip_port_tuple: typing.Tuple[str, int] = None,
             method_name: str,
             params: typing.Union[typing.Set, typing.List, typing.Tuple] = (),
-            need_reply: bool = False, reply_timeout: typing.Union[int, float] = 2,
+            need_reply: bool = True, reply_timeout: typing.Union[int, float] = 2,
             remote_entity_type: typing.Union[None, str] = None,
             ip_port_tuple: typing.Tuple[str, int] = None
     ):

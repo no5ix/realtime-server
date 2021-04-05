@@ -21,7 +21,7 @@ class RemoteComp:
 
     def __getattr__(self, rpc_name: str):
 
-        def temp_rpc_func(*args, need_reply=False, reply_timeout=2, rpc_func_name=rpc_name):
+        def temp_rpc_func(*args, need_reply=True, reply_timeout=2, rpc_func_name=rpc_name):
             # print(f"rpc_func_name1: {r}")
             # print(*args, **kwargs)
             # print(*args)
@@ -50,7 +50,7 @@ class RemoteEntity:
             self._cur_comp_name = item_name
             return self
         else:
-            def temp_rpc_func(*args, need_reply=False, reply_timeout=2, rpc_func_name=item_name):
+            def temp_rpc_func(*args, need_reply=True, reply_timeout=2, rpc_func_name=item_name):
                 # print(f"rpc_func_name1: {r}")
                 # print(*args, **kwargs)
                 # print(*args)
