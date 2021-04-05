@@ -51,16 +51,19 @@ class CompPuppetTest(Component):
         # try:
         # err = None
         # # gg = await self.remote_entity.CompPuppetTest.test_response_rpc(997)
-        self.remote_entity.CompPuppetTest.test_response_rpc(
+        # err, gg = await\
+        self.remote_entity.CompPuppetTest.test_response_rpc2(
             997,
-            need_reply=False, reply_timeout=3
+            # need_reply=False, reply_timeout=3
+            # reply_timeout=6
         )
         # # except RpcReplyError as e:
         # #     print("rpc reply errr")
         # #     print(e)
         # # self.remote_entity.CompPuppetTest.test_response_rpc(997)
         # print(f"gg={gg}, err={err}")
-        err, hh = await self.remote_comp.test_response_rpc(
+
+        err, hh = await self.remote_comp.test_response_rpc1(
             886, need_reply=True, reply_timeout=10)
         print(f"hh={hh}, err={err}")
 

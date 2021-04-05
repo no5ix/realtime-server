@@ -128,10 +128,10 @@ class RpcHandler:
                         self._entity.get_component(_comp_method_list[0]), _comp_method_list[1])
                 try:
                     _method_res = _method(_parameters)
-                    if _method_res is None:
-                        return
                     if asyncio.iscoroutine(_method_res):
                         _method_res = await _method_res
+                    if _method_res is None:
+                        return
                     if _rpc_type == RPC_TYPE_REQUEST:
                         _rpc_reply = (RPC_TYPE_REPLY, _rpc_msg_tuple[1], None, _method_res)
                 except Exception as e:

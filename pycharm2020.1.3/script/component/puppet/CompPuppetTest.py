@@ -1,5 +1,6 @@
 # from TcpServer import TCP_SERVER
 # import asyncio
+import asyncio
 import time
 
 from common.component.Component import Component
@@ -102,11 +103,22 @@ class CompPuppetTest(Component):
         mm = LogManager.get_logger()
 
     @rpc_method(CLIENT_ONLY)
-    def test_response_rpc(self, a=0):
+    async def test_response_rpc1(self, a=0):
         b = 1 + a
         print(f"test_response_rpc: a={a}, b={b}")
         # print(f"test_response_rpc: a={a}")
         # time.sleep(2)
+        await asyncio.sleep(2)
         1/0
         return b
+
+    @rpc_method(CLIENT_ONLY)
+    async def test_response_rpc2(self, a=0):
+        b = 2 + a
+        print(f"test_response_rpc: a={a}, b={b}")
+        # print(f"test_response_rpc: a={a}")
+        # time.sleep(4)
+        await asyncio.sleep(4)
+        # 1/0
+        # return b
 
