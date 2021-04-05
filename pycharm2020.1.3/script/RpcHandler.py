@@ -36,10 +36,10 @@ class RpcHandler:
     # def bind_entity(self, entity: ServerEntity):
     #     self._entity = entity
 
-    def fire_all_future_with_error(self, error: str):
+    def fire_all_future_with_result(self, error: str, result=None):
         for _reply_id, _reply_fut_tuple in self._pending_requests.items():
             # _reply_fut.set_exception(RpcReplyError(error))
-            _reply_fut_tuple[1].set_result((error, None))
+            _reply_fut_tuple[1].set_result((error, result))
         self._pending_requests.clear()
 
     def set_conn(self, conn):
@@ -185,9 +185,9 @@ class RpcHandler:
             self._logger.log_last_except()
 
 
-# class RpcException(Exception):
-#     pass
-#
-#
-# class RpcReplyError(RpcException):
-#     pass
+def rpc_func(func):
+    def wrapper(*args, **kwargs):
+        # func_for_reload = func
+        return func(*args, **kwargs)
+    wrapper.is_rpc_func = True
+    return wrapper

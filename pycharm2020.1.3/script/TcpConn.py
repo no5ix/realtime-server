@@ -115,7 +115,7 @@ class TcpConn(object):
 
     def handle_close(self, ):
         self.asyncio_writer.close()
-        self._rpc_handler.fire_all_future_with_error("connection_closed")
+        self._rpc_handler.fire_all_future_with_result("connection_closed")
 
     def handle_message(self, msg_data):
         try:

@@ -177,14 +177,6 @@ def rpc_method(rpc_type, arg_types=(), pub=True, cd=-1):
     return _rpc_method
 
 
-def rpc_func(func):
-    def wrapper(*args, **kwargs):
-        func_for_reload = func
-        return func(*args, **kwargs)
-    wrapper.is_rpc_func = True
-    return wrapper
-
-
 def expose_to_client(method):
     try:
         rpctype = method.rpcmethod.rpctype

@@ -8,8 +8,9 @@ python 3.8.8
 <!-- - [ ] reload all/rpc func而不需要rpc_impl, 给reload_impl加上log, test"from test_const import SD_STR" -->
 <!-- - [ ] puppet -->
 <!-- - [ ] avatar -->
+- [ ] 等回调的逻辑的wrapper
 - [ ] dungeon
-- [ ] reload 支持 `rpc_func`装饰器的增删
+<!-- - [ ] reload 支持 `rpc_func`装饰器的增删 -->
 - [ ] 启动脚本
 - [ ] 手动心跳
 - [ ] kcp connection 共用心跳模块
@@ -24,7 +25,6 @@ python 3.8.8
 - [ ] base on etcd distributed lock
 
 - [ ] login service
-- [ ] 等回调的逻辑的wrapper
 - [ ] rename
 - [ ] 信号处理
 - [ ] keyboardinterrupt

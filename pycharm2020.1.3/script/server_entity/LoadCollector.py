@@ -1,7 +1,8 @@
 # from common import gr
+from RpcHandler import rpc_func
 from common import gv
 from core.common.RpcMethodArgs import RpcMethodArg, Float, Str
-from core.common.RpcSupport import rpc_method, SRV_TO_SRV, rpc_func
+from core.common.RpcSupport import rpc_method, SRV_TO_SRV
 from core.mobilelog.LogManager import LogManager
 from server_entity.ServerEntity import ServerEntity
 import typing

@@ -3,11 +3,12 @@
 import asyncio
 import time
 
+from RpcHandler import rpc_func
 from common.component.Component import Component
 from component.puppet import test_reload_const
 from component.puppet.test_reload_const import TEST_CONST_STR
 from core.common.RpcMethodArgs import Dict, Str
-from core.common.RpcSupport import rpc_method, CLI_TO_SRV, rpc_func
+from core.common.RpcSupport import rpc_method, CLI_TO_SRV
 
 import random
 import typing
