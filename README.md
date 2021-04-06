@@ -8,7 +8,7 @@ python 3.8.8
 <!-- - [ ] reload all/rpc func而不需要rpc_impl, 给reload_impl加上log, test"from test_const import SD_STR" -->
 <!-- - [ ] puppet -->
 <!-- - [ ] avatar -->
-- [ ] 等回调的逻辑的wrapper
+<!-- - [ ] 等回调的逻辑的wrapper -->
 - [ ] dungeon
 <!-- - [ ] reload 支持 `rpc_func`装饰器的增删 -->
 - [ ] 启动脚本
@@ -21,7 +21,6 @@ python 3.8.8
 - [ ] battle_service
 - [ ] db manager
 - [ ] lobby_gate
-- [ ] 
 - [ ] base on etcd distributed lock
 
 - [ ] login service
@@ -52,7 +51,7 @@ python 3.8.8
 
 # 代码规范
 
-除了内置标准库或者第三方库的变量或者函数, 要使用const变量之时不建议使用from ... import ... , 因为
+使用const变量之时不建议使用from ... import ... , 因为
 > Don't use a from import unless the variable is intended to be a constant. from shared_stuff import a would create a new a variable initialized to whatever shared_stuff.a referred to at the time of the import, and this new a variable would not be affected by assignments to shared_stuff.a.
 
 这样会影响incremental_reload, 而用reload_all的话则会卡顿一阵

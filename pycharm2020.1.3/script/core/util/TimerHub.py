@@ -3,6 +3,8 @@ from collections import defaultdict
 import typing
 from time import monotonic_ns, time
 
+from core.util.UtilApi import wait_or_not
+
 
 class TimerInfo:
     __slots__ = ('timer', 'original_key', 'final_key')
@@ -110,11 +112,14 @@ class TimerHub:
             delay_callback: typing.Callable, original_key: str = "", final_key: str = "",
             repeat_count: int = 0, repeat_interval_sec: typing.Union[int, float] = None):
 
-        def repeat_cb_wrapper(ds=delay_second, rc=repeat_count, ris=repeat_interval_sec):
+        @wait_or_not
+        async def repeat_cb_wrapper(ds=delay_second, rc=repeat_count, ris=repeat_interval_sec):
             if ris is not None:
                 assert (type(ris) in (int, float))
                 ds = ris
-            delay_callback()
+            _cb_res = delay_callback()
+            if asyncio.iscoroutine(_cb_res):
+                await _cb_res
             if rc == 1:
                 self._handle_disposable_timer(
                     ds, delay_callback, original_key, final_key)
@@ -130,15 +135,18 @@ class TimerHub:
             self, delay_second: typing.Union[int, float],
             delay_callback: typing.Callable, original_key: str = "", final_key: str = ""):
 
-        def funeral_wrapper(_ok=original_key, _fk=final_key):
-            delay_callback()
-            # print(f"funeral_wrapper: _ok: {_ok}")
-            # print(f"funeral_wrapper: _fk: {_fk}")
+        @wait_or_not
+        async def funeral_cb_wrapper(_ok=original_key, _fk=final_key):
+            _cb_res = delay_callback()
+            if asyncio.iscoroutine(_cb_res):
+                await _cb_res
+            # print(f"funeral_cb_wrapper: _ok: {_ok}")
+            # print(f"funeral_cb_wrapper: _fk: {_fk}")
             if self._final_key_2_timer_info_map is not None and self._original_key_2_final_key_set_map is not None:
                 self._final_key_2_timer_info_map.pop(_fk, None)
                 self._original_key_2_final_key_set_map[_ok].discard(_fk)
 
-        _ret_timer = self._ev_loop.call_later(delay_second, funeral_wrapper)
+        _ret_timer = self._ev_loop.call_later(delay_second, funeral_cb_wrapper)
         return _ret_timer
 
 

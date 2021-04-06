@@ -1,4 +1,5 @@
 # from RpcHandler import RpcReplyError
+import asyncio
 from asyncio import Future
 
 from common.component.Component import Component
@@ -45,10 +46,16 @@ class CompPuppetTest(Component):
         if self._cnt > 0:
             self.puppet_chat_to_ppt({'content': 'puppet_chat_to_ppt'})
 
+    async def test_timer_async(self):
+        await asyncio.sleep(1)
+        print("calll test_timer_async")
+        # asyncio.coroutine
+
     @wait_or_not
     async def test_response_rpc(self):
-
         print("callll test_response_rpc")
+
+        self.entity.timer_hub.call_later(1, self.test_timer_async, repeat_count=2)
         self.remote_comp.make_server_reload()
         # try:
         # err = None

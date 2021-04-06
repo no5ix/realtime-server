@@ -169,7 +169,7 @@ class Component(object):
     __use_descriptor__ = True
 
     def __init__(self):
-        self.entity = None  # type: typing.Type[PuppetEntity, None]
+        self.entity = None  # type: typing.Optional[PuppetEntity]
         # self.logger = None
         self._client_tick_cache = []
         self.remote_entity = None  # type: typing.Optional[RemoteEntity]
@@ -177,7 +177,7 @@ class Component(object):
 
     # 绑定entity到自己. 每个component有个归属的entity
     # 如果有args, 则初始化property, 否则等到后面entity读取数据库后，再主动调用init_properties
-    def init(self, entity):
+    def init(self, entity: PuppetEntity):
         self.entity = entity
         self.remote_entity = entity.remote_entity
         self.remote_comp = RemoteComp(self.__class__.__name__, entity)

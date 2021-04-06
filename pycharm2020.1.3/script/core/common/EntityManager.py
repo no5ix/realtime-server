@@ -96,7 +96,7 @@ class EntityManager(object):
 		self._logger = LogManager.get_logger("server.EntityManager")
 		# registered classed for EntityFactory
 		# self.entity_classes = {}
-		self._entities = {}  # type: typing.Dict[int, typing.Type[ServerEntity]]
+		self._entities = {}  # type: typing.Dict[int, ServerEntity]
 
 	@classmethod
 	def instance(cls):

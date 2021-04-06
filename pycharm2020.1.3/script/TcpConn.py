@@ -27,7 +27,7 @@ class TcpConn(object):
             asyncio_writer: asyncio.StreamWriter, asyncio_reader: asyncio.StreamReader,
             rpc_handler: RpcHandler = None):
         self.addr_str = addr_str
-        # self.entity = entity  # type: typing.Type[ServerEntity]
+        # self.entity = entity  # type: ServerEntity()
         # self._entity = None  # type: typing.Union[ServerEntity, None]
         self.asyncio_writer = asyncio_writer  # type: asyncio.StreamWriter
         self.asyncio_reader = asyncio_reader  # type: asyncio.StreamReader
