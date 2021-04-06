@@ -35,8 +35,10 @@ class RpcHandler:
         self._pending_requests = {}  # type: typing.Dict[int, typing.Tuple[str, futures.Future]]
 
         self.heartbeat_checker = TimerHub().call_later(8, )
+        self._last_heartbeat_ts = 0
 
-    def check_heartbeat_
+    def check_heartbeat_timeout(self):
+        if time.time()
 
     def fire_all_future_with_result(self, error: str, result=None):
         for _reply_id, _reply_fut_tuple in self._pending_requests.items():
