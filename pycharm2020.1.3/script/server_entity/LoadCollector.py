@@ -1,13 +1,11 @@
-# from common import gr
+import functools
+
 from RpcHandler import rpc_func
 from common import gv
-from core.common.RpcMethodArgs import RpcMethodArg, Float, Str
-from core.common.RpcSupport import rpc_method, SRV_TO_SRV
-from core.mobilelog.LogManager import LogManager
+from core.util.UtilApi import async_wrap
 from server_entity.ServerEntity import ServerEntity
 import typing
 import redis
-import time
 
 
 class LoadCollector(ServerEntity):
@@ -20,20 +18,19 @@ class LoadCollector(ServerEntity):
         self._redis_cli = redis.Redis(connection_pool=_pool)
         self._pipe = self._redis_cli.pipeline(transaction=False)
 
-    # @rpc_method(SERVER_ONLY, [Str("sn"), Float("l")])
-    # @rpc_method(SRV_TO_SRV)
     @rpc_func
     def report_load(self, etcd_tag, server_name, ip, port, load):
         print(f"etcd_tag: {etcd_tag} server_name: {server_name} load: {load}")
         # self._pipe.zadd(etcd_tag, {server_name: load})
-        self._redis_cli.zadd(etcd_tag, {"|".join([server_name, ip, str(port)]): load})
+        async_wrap(lambda: self._redis_cli.zadd(etcd_tag, {"|".join([server_name, ip, str(port)]): load}))
         self.timer_hub.call_later(2, lambda: self.pick_lowest_load_service(etcd_tag))
+        # async_wrap(lambda: self.pick_lowest_load_service(etcd_tag))
 
-    # @rpc_method(SERVER_ONLY)
-    def pick_lowest_load_service(self, etcd_tag) -> typing.Tuple[str, int]:
+    @rpc_func
+    async def pick_lowest_load_service(self, etcd_tag: str) -> typing.Tuple[str, int]:
         # self._pipe.zpopmin()
         # self._pipe.zrange()
-        _res_list = self._redis_cli.zrange(etcd_tag, 0, 0)  # type: typing.List[str]
+        _res_list = await async_wrap(lambda: self._redis_cli.zrange(etcd_tag, 0, 0))  # type: typing.List[str]
         _ret = None
         if _res_list:
             split_res = _res_list[0].split("|")

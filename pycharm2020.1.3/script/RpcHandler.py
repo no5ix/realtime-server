@@ -4,6 +4,7 @@ import asyncio
 import typing
 from asyncio import futures, shield
 
+from core.util.TimerHub import TimerHub
 from core.util.UtilApi import wait_or_not
 
 if typing.TYPE_CHECKING:
@@ -33,8 +34,9 @@ class RpcHandler:
         self._next_reply_id = 0
         self._pending_requests = {}  # type: typing.Dict[int, typing.Tuple[str, futures.Future]]
 
-    # def bind_entity(self, entity: ServerEntity):
-    #     self._entity = entity
+        self.heartbeat_checker = TimerHub().call_later(8, )
+
+    def check_heartbeat_
 
     def fire_all_future_with_result(self, error: str, result=None):
         for _reply_id, _reply_fut_tuple in self._pending_requests.items():
@@ -61,6 +63,13 @@ class RpcHandler:
         if self._next_reply_id > 60000000:
             self._next_reply_id = 0
         return self._next_reply_id
+
+    def send_heartbeat(self):
+        try:
+            msg = (RPC_TYPE_HEARTBEAT, )
+            self._send_rpc_msg(msg)
+        except:
+            self._logger.log_last_except()
 
     @wait_or_not
     async def request_rpc(
@@ -192,6 +201,7 @@ class RpcHandler:
                 _reply_fut.set_result((_error, _reply_result))
             elif _rpc_type == RPC_TYPE_HEARTBEAT:
                 pass  # TODO
+
             else:
                 self._logger.error(f"unknown RPC type: {_rpc_type}")
                 return

@@ -12,7 +12,7 @@ import socket
 # from PuppetBindEntity import PuppetBindEntity
 # from battle_entity.Puppet import Puppet
 # from core.common import MsgpackSupport
-from asyncio import events
+from asyncio import events, tasks
 
 import typing
 
@@ -297,7 +297,41 @@ class TcpServer(object):
                 getattr(signal, _sig_name), functools.partial(ask_exit, _sig_name, self._ev_loop))
 
     def run(self):
-        self._ev_loop.run_until_complete(self.main())
+
+        try:
+            # events.set_event_loop(loop)
+            # if debug is not None:
+            #     loop.set_debug(debug)
+            # return loop.run_until_complete(main)
+            self._ev_loop.run_until_complete(self.main())
+        finally:
+            try:
+                # _cancel_all_tasks(self._ev_loop)
+                loop = self._ev_loop
+                to_cancel = tasks.all_tasks(loop)
+                if not to_cancel:
+                    return
+
+                for task in to_cancel:
+                    task.cancel()
+
+                loop.run_until_complete(
+                    tasks.gather(*to_cancel, loop=loop, return_exceptions=True))
+
+                for task in to_cancel:
+                    if task.cancelled():
+                        continue
+                    if task.exception() is not None:
+                        loop.call_exception_handler({
+                            'message': 'unhandled exception during asyncio.run() shutdown',
+                            'exception': task.exception(),
+                            'task': task,
+                        })
+                self._ev_loop.run_until_complete(self._ev_loop.shutdown_asyncgens())
+            finally:
+                events.set_event_loop(None)
+                self._ev_loop.close()
+        # self._ev_loop.run_until_complete(self.main())
         # asyncio.run(self.main())
 
     # def _check_game_start(self):

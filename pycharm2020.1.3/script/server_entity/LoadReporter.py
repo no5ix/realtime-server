@@ -10,7 +10,7 @@ class LoadReporter(ServerEntity):
     def __init__(self):
         super().__init__()
         self._avg_load = AvgCpuLoad()
-        self.timer_hub.call_later(1, self.report_load, repeat_count=-1, repeat_interval_sec=5)
+        self.timer_hub.call_later(5, self.report_load, repeat_count=-1)
 
     def report_load(self):
         dispatcher_service_addr = UtilApi.get_service_info(service_const.DISPATCHER_SERVICE)

@@ -67,7 +67,11 @@ async def tcp_echo_client():
     #
     # th.call_later(
     #     10, lambda: _ppt.CompPuppetTest.test_reload())
-    _ppt.CompPuppetTest.test_response_rpc()
+
+    msg = "calll test_timer_async"
+    _ppt.CompPuppetTest.test_response_rpc(msg)
+    # msg = "calll test_timer_async nonono"
+    # _ppt.CompPuppetTest.test_response_rpc(msg)
     # await _tcp_conn.loop()
     # await _tcp_conn.loop()
     # while True:

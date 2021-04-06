@@ -13,15 +13,24 @@ python 3.8.8
 <!-- - [ ] reload 支持 `rpc_func`装饰器的增删 -->
 - [ ] 启动脚本
 - [ ] 手动心跳
-- [ ] kcp connection 共用心跳模块
+- [ ] 断线重连
 - [ ] battle_server
+- [ ] tick loop
+- [ ] battle_service
+- [ ] 大厅服务器通知战斗服务器相关puppet的信息已经加密令牌, 约定通信协议
+- [ ] 客户端拿着令牌来和战斗服务器连接并交互
+- [ ] 各个战斗服务器之间的协同center stub, center掉了, stub尝试重连center的逻辑
+
+
+- [ ] base on etcd distributed lock
+
+
+- [ ] kcp connection 共用心跳模块
 - [ ] lobby_server
 - [ ] game_mgr process for forwarding/reloading
 - [ ] game_mgr_client to exec game_script
-- [ ] battle_service
 - [ ] db manager
 - [ ] lobby_gate
-- [ ] base on etcd distributed lock
 
 - [ ] login service
 - [ ] rename
@@ -29,7 +38,6 @@ python 3.8.8
 - [ ] keyboardinterrupt
 <!-- - [ ] exception 以及 各种抛出 -->
 <!-- - [ ] timer with key and cancel -->
-- [ ] tick loop
 <!-- - [ ] etcd -->
 <!-- - [ ] server call cli -->
 <!-- - [ ] rpc_method装饰器的参数不一定要是tuple -->
@@ -40,12 +48,8 @@ python 3.8.8
 - [ ] 压缩
 - [ ] db
 - [ ] test
-- [ ] 大厅服务器通知战斗服务器相关puppet的信息已经加密令牌, 约定通信协议
-- [ ] 客户端拿着令牌来和战斗服务器连接并交互
-- [ ] 各个战斗服务器之间的协同center stub, center掉了, stub尝试重连center的逻辑
 - [ ] 录像回放, 直播
 <!-- - [ ] 配置json解析与初始化 -->
-- [ ] 断线重连
 - [ ] 安全关闭服务器的时候关闭各种conn和server以及清理各种数据和落地
 
 
