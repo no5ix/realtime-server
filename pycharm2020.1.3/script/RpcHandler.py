@@ -65,34 +65,43 @@ class RpcHandler:
     @wait_or_not
     async def request_rpc(
             self,
-            method_name: str,
-            method_args: typing.Union[typing.Set, typing.List, typing.Tuple] = (),
-            method_kwargs: typing.Union[None, typing.Dict] = None,
-            need_reply: bool = True, reply_timeout: typing.Union[int, float] = 2,
-            remote_entity_type: typing.Union[None, str] = None,
+            rpc_fuc_name: str,
+            rpc_fuc_args: typing.Union[typing.Set, typing.List, typing.Tuple] = (),
+            rpc_fuc_kwargs: typing.Union[None, typing.Dict] = None,
+            rpc_callback: typing.Callable = None,
+            rpc_need_reply: bool = True,
+            rpc_reply_timeout: typing.Union[int, float] = 2,
+            rpc_remote_entity_type: typing.Union[None, str] = None,
             ip_port_tuple: typing.Tuple[str, int] = None
     ):
         try:
-            method_kwargs = {} if method_kwargs is None else method_kwargs
-            if need_reply:
+            rpc_fuc_kwargs = {} if rpc_fuc_kwargs is None else rpc_fuc_kwargs
+            if rpc_need_reply:
                 _reply_id = self.get_reply_id()
-                msg = (RPC_TYPE_REQUEST, _reply_id, remote_entity_type, method_name, method_args, method_kwargs)
+                msg = (RPC_TYPE_REQUEST, _reply_id, rpc_remote_entity_type, rpc_fuc_name, rpc_fuc_args, rpc_fuc_kwargs)
                 _reply_fut = gv.get_ev_loop().create_future()
+
+                def final_fut_cb(fut, rid=_reply_id, cb=rpc_callback):
+                    self._pending_requests.pop(rid, None)
+                    if callable(cb):
+                        cb(*fut.result())
+
                 _reply_fut.add_done_callback(
-                    lambda fut, rid=_reply_id: self._pending_requests.pop(rid, None))
-                self._pending_requests[_reply_id] = (method_name, _reply_fut)
+                    # lambda fut, rid=_reply_id: self._pending_requests.pop(rid, None))
+                    final_fut_cb)
+                self._pending_requests[_reply_id] = (rpc_fuc_name, _reply_fut)
                 self._send_rpc_msg(msg, ip_port_tuple)
                 try:
-                    return await asyncio.wait_for(asyncio.shield(_reply_fut), timeout=reply_timeout)
+                    return await asyncio.wait_for(asyncio.shield(_reply_fut), timeout=rpc_reply_timeout)
                 except asyncio.exceptions.TimeoutError:
-                    # self._logger.error(f"method_name={method_name}, asyncio.exceptions.TimeoutError")
+                    # self._logger.error(f"rpc_fuc_name={rpc_fuc_name}, asyncio.exceptions.TimeoutError")
                     # _reply_fut.set_exception(e)
-                    _reply_fut.set_result((f"request rpc timeout: {method_name}", None))
+                    _reply_fut.set_result((f"request rpc timeout: {rpc_fuc_name}", None))
                     # self._pending_requests.pop(_reply_id, None)
                     # return None
                     return await _reply_fut
             else:
-                msg = (RPC_TYPE_NOTIFY, remote_entity_type, method_name, method_args, method_kwargs)
+                msg = (RPC_TYPE_NOTIFY, rpc_remote_entity_type, rpc_fuc_name, rpc_fuc_args, rpc_fuc_kwargs)
                 self._send_rpc_msg(msg, ip_port_tuple)
                 return None
         except:

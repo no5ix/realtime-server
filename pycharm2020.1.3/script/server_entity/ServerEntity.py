@@ -66,15 +66,13 @@ class ServerEntity:
 
     def call_remote_method(
             self,
-            # *args, **kwargs
-            # method_name: str, parameters=(),
-            # remote_entity_type: typing.Union[None, str] = None,
-            # ip_port_tuple: typing.Tuple[str, int] = None,
-            method_name: str,
-            method_args: typing.Union[typing.Set, typing.List, typing.Tuple] = (),
-            method_kwargs: typing.Union[None, typing.Dict] = None,
-            need_reply: bool = True, reply_timeout: typing.Union[int, float] = 2,
-            remote_entity_type: typing.Union[None, str] = None,
+            rpc_fuc_name: str,
+            rpc_fuc_args: typing.Union[typing.Set, typing.List, typing.Tuple] = (),
+            rpc_fuc_kwargs: typing.Union[None, typing.Dict] = None,
+            rpc_callback: typing.Callable = None,
+            rpc_need_reply: bool = True,
+            rpc_reply_timeout: typing.Union[int, float] = 2,
+            rpc_remote_entity_type: typing.Union[None, str] = None,
             ip_port_tuple: typing.Tuple[str, int] = None
     ):
         # if self._rpc_handler is None:
@@ -84,12 +82,12 @@ class ServerEntity:
         #     self._rpc_handler = RpcHandler()
 
         return self._rpc_handler.request_rpc(
-            method_name, method_args, method_kwargs, need_reply, reply_timeout,
-            remote_entity_type or self.__class__.__name__, ip_port_tuple
+            rpc_fuc_name, rpc_fuc_args, rpc_fuc_kwargs, rpc_callback, rpc_need_reply, rpc_reply_timeout,
+            rpc_remote_entity_type or self.__class__.__name__, ip_port_tuple
             # *args, **kwargs
         )
 
-    # async def call_server_method_with_ip_port(
+    # async def call_server_fuc_with_ip_port(
     #         self, server_ip_port_tuple, method_name, parameters=None,
     #         remote_entity_type: typing.Union[None, str] = None):
     #     if server_ip_port_tuple:

@@ -1,4 +1,6 @@
 # from RpcHandler import RpcReplyError
+from asyncio import Future
+
 from common.component.Component import Component
 from core.common.RpcMethodArgs import Dict
 from core.common.RpcSupport import rpc_method, CLI_TO_SRV, SRV_TO_CLI
@@ -52,11 +54,23 @@ class CompPuppetTest(Component):
         # err = None
         # # gg = await self.remote_entity.CompPuppetTest.test_response_rpc(997)
         # err, gg = await\
-        self.remote_entity.CompPuppetTest.test_response_rpc2(
+
+        # def mmp(_fut: Future):
+        def mmp(error, result):
+            print("mmmmmmmmmmmp")
+            print(f"err={error}")
+            print(f"res={result}")
+            # print(_fut.result())
+
+        _fut = self.remote_entity.CompPuppetTest.test_response_rpc2(
+        # _fut = self.remote_comp.test_response_rpc2(
             997,
             # need_reply=False, reply_timeout=3
             # reply_timeout=6
+            rpc_callback=mmp
         )
+        # _fut.add_done_callback(mmp)
+        # print(await _fut)
         # # except RpcReplyError as e:
         # #     print("rpc reply errr")
         # #     print(e)
@@ -66,7 +80,8 @@ class CompPuppetTest(Component):
         err, hh = await self.remote_comp.test_response_rpc1(
             886, c=11,
             # need_reply=True,
-            reply_timeout=10
+            rpc_reply_timeout=10,
+            rpc_callback=mmp
         )
         print(f"hh={hh}, err={err}")
 

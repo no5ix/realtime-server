@@ -1,6 +1,7 @@
 import inspect
 
 import typing
+from asyncio.futures import Future
 
 from RpcHandler import rpc_func
 from common.component.ComponentSupport import ComponentSupport
@@ -65,7 +66,9 @@ class RemoteComp:
 
     def __getattr__(self, rpc_name: str):
 
-        def temp_rpc_func(*args, need_reply=True, reply_timeout=2, rpc_func_name=rpc_name, **kwargs):
+        def temp_rpc_func(
+                *args, rpc_callback=None, rpc_need_reply=True, rpc_reply_timeout=2,
+                rpc_func_name=rpc_name, **kwargs) -> Future:
             # print(f"rpc_func_name1: {r}")
             # print(*args, **kwargs)
             # print(*args)
@@ -79,7 +82,7 @@ class RemoteComp:
             args.insert(0, final_rpc_name)
             return self._server_ent.call_remote_method(
                 # final_rpc_name, args, kwargs, need_reply, reply_timeout)
-                puppet_rpc_name, args, kwargs, need_reply, reply_timeout)
+                puppet_rpc_name, args, kwargs, rpc_callback, rpc_need_reply, rpc_reply_timeout)
 
         return temp_rpc_func
 
@@ -87,19 +90,19 @@ class RemoteComp:
 class RemoteEntity:
 
     def __init__(self, server_entity):
-        super().__init__()
         self._server_ent = server_entity
         self._cur_comp_name = ""
 
-    def __getattr__(self, item_name: str):
+    def __getattr__(self, rpc_name: str):
         # print(f"gett{rpc_func_name}")
 
-        if item_name.startswith("Comp"):
-            self._cur_comp_name = item_name
+        if rpc_name.startswith("Comp"):
+            self._cur_comp_name = rpc_name
             return self
         else:
             def temp_rpc_func(
-                    *args, need_reply=True, reply_timeout=2, rpc_func_name=item_name, **kwargs):
+                    *args, rpc_callback=None, rpc_need_reply=True, rpc_reply_timeout=2,
+                    rpc_func_name=rpc_name, **kwargs) -> Future:
                 # print(f"rpc_func_name1: {r}")
                 # print(*args, **kwargs)
                 # print(*args)
@@ -117,7 +120,7 @@ class RemoteEntity:
                 args.insert(0, final_rpc_name)
                 return self._server_ent.call_remote_method(
                     # final_rpc_name, args, kwargs, need_reply, reply_timeout)
-                    puppet_rpc_name, args, kwargs, need_reply, reply_timeout)
+                    puppet_rpc_name, args, kwargs, rpc_callback, rpc_need_reply, rpc_reply_timeout)
             return temp_rpc_func
             # return lambda *args, rpc=item_name: self._server_ent.call_remote_method(rpc, *args)
 

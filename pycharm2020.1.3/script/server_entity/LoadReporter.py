@@ -23,7 +23,7 @@ class LoadReporter(ServerEntity):
                 "report_load",
                 [gv.etcd_tag, gv.game_server_name, gv.local_ip, gv.local_port,
                     self._avg_load.get_avg_cpu_by_period(10)],
-                remote_entity_type="LoadCollector", ip_port_tuple=dispatcher_service_addr)
+                rpc_remote_entity_type="LoadCollector", ip_port_tuple=dispatcher_service_addr)
         else:
             self.logger.error("can not find dispatcher_service_addr")
 
