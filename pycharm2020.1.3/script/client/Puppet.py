@@ -12,11 +12,11 @@ from client.component.puppet.CompPuppetTest import CompPuppetTest
 @components(
     CompPuppetTest
 )
-class Puppet(BattleEntity, ComponentSupport):
+class Puppet(BattleEntity, ):
 
     def __init__(self):
         BattleEntity.__init__(self)
-        ComponentSupport.__init__(self)
+        # ComponentSupport.__init__(self)
         # self.bind_entity = None  # type: # Optional[PuppetBindEntity]
         # 以下代码与上一行等价
         # self.bind_entity = None  # type: Union[PuppetBindEntity, None]

@@ -22,11 +22,11 @@ from component.avatar.CompAvatarTest import CompAvatarTest
     # CompTitle, CompCCLive, CompBattlePass, CompSpecialItem, CompMasterValue, CompMonthCard,
     # CompFlashSale, CompExchangeCode, CompBft
 )
-class Avatar(LobbyEntity, ComponentSupport):
+class Avatar(LobbyEntity):
 
     def __init__(self):
         # super(BattleEntity).__init__()
         # super(ComponentSupport).__init__()
 
         LobbyEntity.__init__(self)
-        ComponentSupport.__init__(self)
+        # ComponentSupport.__init__(self)

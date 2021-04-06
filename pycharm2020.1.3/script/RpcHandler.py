@@ -110,6 +110,20 @@ class RpcHandler:
             # self._conn.set_entity(from_entity)
         self._conn.send_data_and_count(encoded_msg)
 
+    @staticmethod
+    async def handle_request_notify_rpc(_method, _method_name, _method_args, _method_kwargs):
+        if _method is None:
+            raise Exception(f"{_method_name} is not found")
+        _is_rpc_func = getattr(_method, "is_rpc_func", False)
+        if not _is_rpc_func:
+            raise Exception(f"{_method_name} is not rpc func")
+        _method_res = _method(*_method_args, **_method_kwargs)
+        if asyncio.iscoroutine(_method_res):
+            _method_res = await _method_res
+        if _method_res is None:
+            return
+        return _method_res
+
     @wait_or_not
     async def handle_rpc(self, rpc_msg):
         try:
@@ -124,23 +138,28 @@ class RpcHandler:
                             self._entity = EntityFactory.instance().create_entity(_entity_type_str)
                         self._entity.set_rpc_handler(self)
                         # self._conn.set_entity(_entity)
-                    _comp_method_list = _method_name.split(".")
-                    if len(_comp_method_list) == 1:
-                        _method = getattr(self._entity, _method_name, None)
-                    else:
-                        _method = getattr(
-                            self._entity.get_component(_comp_method_list[0]),
-                            _comp_method_list[1], None)
-                    if _method is None:
-                        raise Exception(f"{_method_name} is not found")
-                    _is_rpc_func = getattr(_method, "is_rpc_func", False)
-                    if not _is_rpc_func:
-                        raise Exception(f"{_method_name} is not rpc func")
-                    _method_res = _method(*_method_args, **_method_kwargs)
-                    if asyncio.iscoroutine(_method_res):
-                        _method_res = await _method_res
-                    if _method_res is None:
-                        return
+                    _method = getattr(self._entity, _method_name, None)
+
+                    # _comp_method_list = _method_name.split(".")
+                    # if len(_comp_method_list) == 1:
+                    #     _method = getattr(self._entity, _method_name, None)
+                    # else:
+                    #     _method = getattr(
+                    #         self._entity.get_component(_comp_method_list[0]),
+                    #         _comp_method_list[1], None)
+                    # if _method is None:
+                    #     raise Exception(f"{_method_name} is not found")
+                    # _is_rpc_func = getattr(_method, "is_rpc_func", False)
+                    # if not _is_rpc_func:
+                    #     raise Exception(f"{_method_name} is not rpc func")
+                    # _method_res = _method(*_method_args, **_method_kwargs)
+                    # if asyncio.iscoroutine(_method_res):
+                    #     _method_res = await _method_res
+                    # if _method_res is None:
+                    #     return
+                    _method_res = await self.handle_request_notify_rpc(
+                        _method, _method_name, _method_args, _method_kwargs)
+
                     if _rpc_type == RPC_TYPE_REQUEST:
                         _rpc_reply = (RPC_TYPE_REPLY, _rpc_msg_tuple[1], None, _method_res)
                 except Exception as e:
