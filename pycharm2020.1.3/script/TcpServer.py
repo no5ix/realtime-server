@@ -39,7 +39,7 @@ from core.tool import incremental_reload
 # TCP_SERVER = None
 
 
-class TcpServer(object):
+class TcpServer:
 
     def __init__(self, server_name, json_conf_path):
         self._ev_loop = events.new_event_loop()
@@ -161,6 +161,9 @@ class TcpServer(object):
     def add_conn(self, addr: typing.Tuple[str, int], conn):
         self._addr_2_conn_map[addr] = conn
 
+    def remove_conn(self, addr: typing.Tuple[str, int]):
+        self._addr_2_conn_map.pop(addr, None)
+
     async def get_conn_by_addr(self, addr: typing.Tuple[str, int], rpc_handler: RpcHandler):
         _conn = self._addr_2_conn_map.get(addr, None)
         if _conn is None:
@@ -171,8 +174,8 @@ class TcpServer(object):
 
     async def handle_client_connected(self, reader, writer):
         # self.writers.append(writer)
-        addr = writer.get_extra_info('peername')
-        _tcp_conn = TcpConn(addr, writer, reader)
+        addr = writer.get_extra_info('peername')   # type: typing.Tuple[str, int]
+        _tcp_conn = TcpConn(addr, writer, reader, close_cb=lambda: self.remove_conn(addr))
         # await _tcp_conn.loop()
         # _ppt = Puppet()
 

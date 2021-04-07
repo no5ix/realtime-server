@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import asyncio
+import time
 import typing
 from asyncio import futures, shield
 
@@ -34,12 +35,6 @@ class RpcHandler:
         self._next_reply_id = 0
         self._pending_requests = {}  # type: typing.Dict[int, typing.Tuple[str, futures.Future]]
 
-        self.heartbeat_checker = TimerHub().call_later(8, )
-        self._last_heartbeat_ts = 0
-
-    def check_heartbeat_timeout(self):
-        if time.time()
-
     def fire_all_future_with_result(self, error: str, result=None):
         for _reply_id, _reply_fut_tuple in self._pending_requests.items():
             # _reply_fut.set_exception(RpcReplyError(error))
@@ -66,10 +61,11 @@ class RpcHandler:
             self._next_reply_id = 0
         return self._next_reply_id
 
-    def send_heartbeat(self):
+    async def send_heartbeat(self):
         try:
+            print("sennnnnnnnnd heartbeatttt")
             msg = (RPC_TYPE_HEARTBEAT, )
-            self._send_rpc_msg(msg)
+            await self._send_rpc_msg(msg)
         except:
             self._logger.log_last_except()
 
@@ -101,7 +97,7 @@ class RpcHandler:
                     # lambda fut, rid=_reply_id: self._pending_requests.pop(rid, None))
                     final_fut_cb)
                 self._pending_requests[_reply_id] = (rpc_fuc_name, _reply_fut)
-                self._send_rpc_msg(msg, ip_port_tuple)
+                await self._send_rpc_msg(msg, ip_port_tuple)
                 try:
                     return await asyncio.wait_for(asyncio.shield(_reply_fut), timeout=rpc_reply_timeout)
                 except asyncio.exceptions.TimeoutError:
@@ -113,12 +109,12 @@ class RpcHandler:
                     return await _reply_fut
             else:
                 msg = (RPC_TYPE_NOTIFY, rpc_remote_entity_type, rpc_fuc_name, rpc_fuc_args, rpc_fuc_kwargs)
-                self._send_rpc_msg(msg, ip_port_tuple)
+                await self._send_rpc_msg(msg, ip_port_tuple)
                 return None
         except:
             self._logger.log_last_except()
 
-    @wait_or_not
+    # @wait_or_not
     async def _send_rpc_msg(self, msg, ip_port_tuple=None):
         encoded_msg = self.do_encode(msg)
         # msg_len = len(encoded_msg) if encoded_msg else 0
@@ -187,7 +183,7 @@ class RpcHandler:
                     if _rpc_type == RPC_TYPE_REQUEST:
                         _rpc_reply = (RPC_TYPE_REPLY, _rpc_msg_tuple[1], str(e), None)
                 if _rpc_type == RPC_TYPE_REQUEST:
-                    self._send_rpc_msg(_rpc_reply)
+                    await self._send_rpc_msg(_rpc_reply)
             # elif _rpc_type == RPC_TYPE_NOTIFY:
             #     pass
             elif _rpc_type == RPC_TYPE_REPLY:
@@ -202,8 +198,8 @@ class RpcHandler:
                 # else:
                 _reply_fut.set_result((_error, _reply_result))
             elif _rpc_type == RPC_TYPE_HEARTBEAT:
-                pass  # TODO
-
+                print("remote_heart_beatttttttt")
+                self._conn.remote_heart_beat()
             else:
                 self._logger.error(f"unknown RPC type: {_rpc_type}")
                 return
@@ -223,6 +219,11 @@ class RpcHandler:
             # _method(_parameters)
         except:
             self._logger.log_last_except()
+
+    async def send_heartbeat_rpc(self):
+        msg = (RPC_TYPE_HEARTBEAT, )
+        await self._send_rpc_msg(msg)
+        print("calllll send_heartbeat_rpc")
 
 
 def rpc_func(func):

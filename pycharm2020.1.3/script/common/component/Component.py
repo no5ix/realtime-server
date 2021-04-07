@@ -1,5 +1,8 @@
 from __future__ import annotations
 import typing
+
+from core.util.TimerHub import TimerHub
+
 if typing.TYPE_CHECKING:
     from common.PuppetEntity import PuppetEntity
     from common.PuppetEntity import RemoteEntity
@@ -174,6 +177,7 @@ class Component(object):
         self._client_tick_cache = []
         self.remote_entity = None  # type: typing.Optional[RemoteEntity]
         self.remote_comp = None  # type: typing.Optional[RemoteComp]
+        self.timer_hub = None  # type: typing.Optional[TimerHub]
 
     # 绑定entity到自己. 每个component有个归属的entity
     # 如果有args, 则初始化property, 否则等到后面entity读取数据库后，再主动调用init_properties
@@ -181,6 +185,7 @@ class Component(object):
         self.entity = entity
         self.remote_entity = entity.remote_entity
         self.remote_comp = RemoteComp(self.__class__.__name__, entity)
+        self.timer_hub = entity.timer_hub
         # self.logger = entity.logger
         if self._client_tick_cache and hasattr(self.entity, 'add_tick'):
             for tick_func in self._client_tick_cache:

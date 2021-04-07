@@ -58,7 +58,7 @@ class CompPuppetTest(Component):
 
         # msg = "calll test_timer_async"
         # timer_key = self.entity.timer_hub.call_later(3, lambda m=msg: self.test_timer_async(m), repeat_count=2)
-        timer_key = self.entity.timer_hub.call_later(3, lambda: self.test_timer_async(msg), repeat_count=2)
+        timer_key = self.timer_hub.call_later(3, lambda: self.test_timer_async(msg), repeat_count=2)
         # self.entity.timer_hub.cancel_timer(timer_key)
         # msg = "calll test_timer_async nonono"
 

@@ -1,10 +1,14 @@
 from __future__ import annotations
+
+import time
 import asyncio
 import struct
 import typing
 from asyncio.exceptions import CancelledError
 
 from RpcHandler import RpcHandler
+from common import gv
+from core.util.TimerHub import TimerHub
 from core.util.UtilApi import wait_or_not
 
 if typing.TYPE_CHECKING:
@@ -19,23 +23,31 @@ from core.mobilelog.LogManager import LogManager
 HEAD_LEN = 4
 MAX_BODY_LEN = 4294967296
 
+HEARTBEAT_TIMEOUT = 8
+HEARTBEAT_INTERVAL = 6
+
 
 class TcpConn(object):
 
     def __init__(
-            self, addr_str,
-            asyncio_writer: asyncio.StreamWriter, asyncio_reader: asyncio.StreamReader,
-            rpc_handler: RpcHandler = None):
-        self.addr_str = addr_str
+            self, addr: typing.Tuple[str, int],
+            asyncio_writer: asyncio.StreamWriter,
+            asyncio_reader: asyncio.StreamReader,
+            rpc_handler: RpcHandler = None,
+            close_cb: typing.Callable = lambda: None,
+    ):
+        self._addr = addr  # type: typing.Tuple[str, int]
         # self.entity = entity  # type: ServerEntity()
         # self._entity = None  # type: typing.Union[ServerEntity, None]
-        self.asyncio_writer = asyncio_writer  # type: asyncio.StreamWriter
-        self.asyncio_reader = asyncio_reader  # type: asyncio.StreamReader
+        self._asyncio_writer = asyncio_writer  # type: asyncio.StreamWriter
+        self._asyncio_reader = asyncio_reader  # type: asyncio.StreamReader
+        self._close_cb = close_cb
 
-        self.send_cnt = 0
+        self._send_cnt = 0
         self._recv_cnt = 0
-
         self._recv_data = b''
+
+        self._timer_hub = TimerHub()
         self._logger = LogManager.get_logger(self.__class__.__name__)
         if rpc_handler:
             rpc_handler.set_conn(self)
@@ -46,17 +58,32 @@ class TcpConn(object):
         # await self._loop()
         self.loop()
 
+        self._last_heartbeat_ts = 0
+        self._timer_hub.call_later(HEARTBEAT_TIMEOUT, self.handle_remote_heartbeat_timeout, repeat_count=-1)
+        self._timer_hub.call_later(HEARTBEAT_INTERVAL, self.heartbeat, repeat_count=-1)
+
+    async def handle_remote_heartbeat_timeout(self):
+        print("ckkkkcheck handle_remote_heartbeat_timeout")
+        if time.time() - self._last_heartbeat_ts > HEARTBEAT_TIMEOUT:
+            await self.handle_close(close_reason="heartbeat timeout")
+
+    def remote_heart_beat(self):
+        self._last_heartbeat_ts = time.time()
+
+    async def heartbeat(self):
+        await self._rpc_handler.send_heartbeat()
+
     # def set_entity(self, entity: ServerEntity):
     #     self._entity = entity
     #
     # def get_entity(self) -> ServerEntity:
     #     return self._entity
 
-    # def set_asyncio_writer(self, asyncio_writer):
-    #     self.asyncio_writer = asyncio_writer
+    # def set_asyncio_writer(self, _asyncio_writer):
+    #     self._asyncio_writer = _asyncio_writer
 
     # def send_msg(self, msg):
-    #     self.asyncio_writer.write(MsgpackSupport.encode(msg))
+    #     self._asyncio_writer.write(MsgpackSupport.encode(msg))
 
     def get_rpc_handler(self):
         return self._rpc_handler
@@ -68,13 +95,12 @@ class TcpConn(object):
     async def loop(self):
         while True:
             try:
-                # self.asyncio_writer
-                _data = await self.asyncio_reader.read(8192)
+                # self._asyncio_writer
+                _data = await self._asyncio_reader.read(8192)
                 # self.logger.debug("_data")
                 if _data == b"":
-                    self._logger.debug("the peer has performed an orderly shutdown (recv 0 byte).")
-                    self.handle_close()
-                    break
+                    await self.handle_close("the peer has performed an orderly shutdown (recv 0 byte).")
+                    return
                 self._recv_data += _data
                 while True:
                     _len_recv_data = len(self._recv_data)
@@ -83,8 +109,7 @@ class TcpConn(object):
                     _body_len, = struct.unpack('i', self._recv_data[:HEAD_LEN])
                     _input_data_len = HEAD_LEN + _body_len
                     if _body_len > MAX_BODY_LEN or _body_len < 0:
-                        self._logger.debug("body too big, Close the connection")
-                        self.handle_close()
+                        await self.handle_close("body too big, Close the connection")
                         return
                     elif _len_recv_data >= _input_data_len:
                         _body_data = self._recv_data[HEAD_LEN:_input_data_len]
@@ -95,27 +120,32 @@ class TcpConn(object):
                     else:
                         break
             except (ConnectionResetError, ConnectionAbortedError, ConnectionRefusedError):
-                self._logger.debug("connection is closed by remote client..with ConnectionResetError")
-                self.handle_close()
-                break
-            except CancelledError:
-                pass
+                await self.handle_close("connection is closed by remote client..with ConnectionResetError")
+                return
+            except CancelledError as e:
+                self._logger.error(str(e))  # TODO
             except:
                 self._logger.log_last_except()
 
             # message = MsgpackSupport.decode(_data)
-            # self.forward(self.asyncio_writer, addr, message)
-            # await self.asyncio_writer.drain()
+            # self.forward(self._asyncio_writer, addr, message)
+            # await self._asyncio_writer.drain()
             # if message == "exit":
             #     message = f"{addr!r} wants to close the connection."
             #     self.logger.debug(message)
-            #     self.forward(self.asyncio_writer, "Server", message)
+            #     self.forward(self._asyncio_writer, "Server", message)
             #     break
-        # self.asyncio_writer.close()
+        # self._asyncio_writer.close()
 
-    def handle_close(self, ):
-        self.asyncio_writer.close()
+    # @wait_or_not
+    async def handle_close(self, close_reason: str):
+        self._logger.debug(close_reason)
+        await self._asyncio_writer.drain()
+        self._asyncio_writer.close()
         self._rpc_handler.fire_all_future_with_result("connection_closed")
+        self._timer_hub.destroy()
+        # gv.get_cur_server().remove_conn(self._addr)
+        self._close_cb()
 
     def handle_message(self, msg_data):
         try:
@@ -180,11 +210,11 @@ class TcpConn(object):
 
     def send_data_and_count(self, data):
     # async def send_data_and_count(self, data):
-        self.send_cnt += 1
+        self._send_cnt += 1
         data_len = len(data) if data else 0
         header_data = struct.pack("i", data_len)
         data = header_data + data
 
-        self.asyncio_writer.write(data)
-        # await self.asyncio_writer.drain()
-        # self.asyncio_writer.drain()
+        self._asyncio_writer.write(data)
+        # await self._asyncio_writer.drain()
+        # self._asyncio_writer.drain()
