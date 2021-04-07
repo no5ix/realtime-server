@@ -451,7 +451,7 @@ class ServiceFinder(EtcdProcessor):
         #         out_list.extend(info_list)
         # random.shuffle(out_list)
         # return out_list
-        return random.choice(tuple(self._services.get(service_name, {None})))
+        return random.choice(tuple(self._services.get(service_name, {None})) or (None, ))
 
     def get_entity_info(self, entity_name):
         """

@@ -26,22 +26,26 @@ MAX_BODY_LEN = 4294967296
 HEARTBEAT_TIMEOUT = 8
 HEARTBEAT_INTERVAL = 6
 
+ROLE_TYPE_ACTIVE = 0
+ROLE_TYPE_PASSIVE = 1
+
 
 class TcpConn(object):
 
     def __init__(
-            self, addr: typing.Tuple[str, int],
+            self,
+            role_type: int,
+            addr: typing.Tuple[str, int],
             asyncio_writer: asyncio.StreamWriter,
             asyncio_reader: asyncio.StreamReader,
             rpc_handler: RpcHandler = None,
             close_cb: typing.Callable = lambda: None,
     ):
+        self._role_type = role_type
         self._addr = addr  # type: typing.Tuple[str, int]
-        # self.entity = entity  # type: ServerEntity()
-        # self._entity = None  # type: typing.Union[ServerEntity, None]
         self._asyncio_writer = asyncio_writer  # type: asyncio.StreamWriter
         self._asyncio_reader = asyncio_reader  # type: asyncio.StreamReader
-        self._close_cb = close_cb
+        self._close_cb = close_cb  # TODO for 主动连 load report
 
         self._send_cnt = 0
         self._recv_cnt = 0
@@ -55,7 +59,6 @@ class TcpConn(object):
         else:
             self._rpc_handler = RpcHandler(self)
 
-        # await self._loop()
         self.loop()
 
         self._last_heartbeat_ts = 0
@@ -65,7 +68,7 @@ class TcpConn(object):
     async def handle_remote_heartbeat_timeout(self):
         print("ckkkkcheck handle_remote_heartbeat_timeout")
         if time.time() - self._last_heartbeat_ts > HEARTBEAT_TIMEOUT:
-            await self.handle_close(close_reason="heartbeat timeout")
+            self.handle_close(close_reason="heartbeat timeout")
 
     def remote_heart_beat(self):
         self._last_heartbeat_ts = time.time()
@@ -99,7 +102,7 @@ class TcpConn(object):
                 _data = await self._asyncio_reader.read(8192)
                 # self.logger.debug("_data")
                 if _data == b"":
-                    await self.handle_close("the peer has performed an orderly shutdown (recv 0 byte).")
+                    self.handle_close("the peer has performed an orderly shutdown (recv 0 byte).")
                     return
                 self._recv_data += _data
                 while True:
@@ -109,7 +112,7 @@ class TcpConn(object):
                     _body_len, = struct.unpack('i', self._recv_data[:HEAD_LEN])
                     _input_data_len = HEAD_LEN + _body_len
                     if _body_len > MAX_BODY_LEN or _body_len < 0:
-                        await self.handle_close("body too big, Close the connection")
+                        self.handle_close("body too big, Close the connection")
                         return
                     elif _len_recv_data >= _input_data_len:
                         _body_data = self._recv_data[HEAD_LEN:_input_data_len]
@@ -119,8 +122,10 @@ class TcpConn(object):
                         self._recv_data = self._recv_data[_input_data_len:]
                     else:
                         break
-            except (ConnectionResetError, ConnectionAbortedError, ConnectionRefusedError):
-                await self.handle_close("connection is closed by remote client..with ConnectionResetError")
+            except (ConnectionResetError,
+                    # ConnectionAbortedError, ConnectionRefusedError
+            ):
+                self.handle_close("connection is closed by remote client..with ConnectionResetError")
                 return
             except CancelledError as e:
                 self._logger.error(str(e))  # TODO
@@ -138,14 +143,14 @@ class TcpConn(object):
         # self._asyncio_writer.close()
 
     # @wait_or_not
-    async def handle_close(self, close_reason: str):
+    def handle_close(self, close_reason: str):
         self._logger.debug(close_reason)
-        await self._asyncio_writer.drain()
+        self._close_cb()
+        # await self._asyncio_writer.drain()
         self._asyncio_writer.close()
-        self._rpc_handler.fire_all_future_with_result("connection_closed")
+        self._rpc_handler.on_conn_close("connection_closed")
         self._timer_hub.destroy()
         # gv.get_cur_server().remove_conn(self._addr)
-        self._close_cb()
 
     def handle_message(self, msg_data):
         try:
@@ -208,8 +213,7 @@ class TcpConn(object):
     # def do_encode(message):
     #     return MsgpackSupport.encode(message)
 
-    def send_data_and_count(self, data):
-    # async def send_data_and_count(self, data):
+    def send_data_and_count(self, data: str):
         self._send_cnt += 1
         data_len = len(data) if data else 0
         header_data = struct.pack("i", data_len)
@@ -217,4 +221,3 @@ class TcpConn(object):
 
         self._asyncio_writer.write(data)
         # await self._asyncio_writer.drain()
-        # self._asyncio_writer.drain()

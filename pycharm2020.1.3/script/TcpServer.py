@@ -21,8 +21,8 @@ import typing
 if typing.TYPE_CHECKING:
     from RpcHandler import RpcHandler
 
-from TcpConn import TcpConn
-from common import gv
+import TcpConn
+# from common import gv
 from core.EtcdSupport import ServiceNode
 # from core.common import EntityScanner
 # from core.common.EntityFactory import EntityFactory
@@ -51,7 +51,7 @@ class TcpServer:
         self._etcd_service_node = None
         # self.register_entities()
 
-        self.parse_json_conf(json_conf_path)
+        self._parse_json_conf(json_conf_path)
         gv.game_server_name = server_name
 
         LogManager.set_log_tag(gv.game_server_name)
@@ -130,7 +130,7 @@ class TcpServer:
                 EntityFactory.instance().register_entity(cls_name, cls)
 
     @staticmethod
-    def parse_json_conf(json_conf_path):
+    def _parse_json_conf(json_conf_path):
         # with open(r"../bin/win/conf/battle_server.json") as conf_file:
         with open(json_conf_path) as conf_file:
             # data = file.read()
@@ -158,65 +158,42 @@ class TcpServer:
     #             # w.write(MsgpackSupport.encode(f"{addr!r}: {message!r}\n"))
     #         _tcp_conn.send_msg(f"{addr!r}: {message!r}\n")
 
-    def add_conn(self, addr: typing.Tuple[str, int], conn):
+    def _add_conn(
+            self,
+            role_type: int,
+            writer: asyncio.StreamWriter,
+            reader: asyncio.StreamReader,
+            rpc_handler: RpcHandler = None
+    ):
+        addr = writer.get_extra_info("peername")
+        conn = TcpConn.TcpConn(
+            role_type, addr, writer, reader, rpc_handler, close_cb=lambda: self._remove_conn(addr))
         self._addr_2_conn_map[addr] = conn
+        return conn
 
-    def remove_conn(self, addr: typing.Tuple[str, int]):
+    def _remove_conn(self, addr: typing.Tuple[str, int]):
         self._addr_2_conn_map.pop(addr, None)
 
     async def get_conn_by_addr(self, addr: typing.Tuple[str, int], rpc_handler: RpcHandler):
         _conn = self._addr_2_conn_map.get(addr, None)
         if _conn is None:
             reader, writer = await asyncio.open_connection(addr[0], addr[1])
-            _conn = TcpConn(writer.get_extra_info('peername'), writer, reader, rpc_handler)
-            self.add_conn(addr, _conn)
+            _conn = self._add_conn(TcpConn.ROLE_TYPE_ACTIVE, writer, reader, rpc_handler)
         return _conn
 
-    async def handle_client_connected(self, reader, writer):
-        # self.writers.append(writer)
-        addr = writer.get_extra_info('peername')   # type: typing.Tuple[str, int]
-        _tcp_conn = TcpConn(addr, writer, reader, close_cb=lambda: self.remove_conn(addr))
-        # await _tcp_conn.loop()
-        # _ppt = Puppet()
+    async def _handle_client_connected(self, reader, writer):
+        self._add_conn(TcpConn.ROLE_TYPE_PASSIVE, writer, reader)
+        addr = writer.get_extra_info('peername')  # type: typing.Tuple[str, int]
+        self._logger.debug(f"{addr!r} is connected !!!!")
 
-        # _tcp_conn.set_entity(_ppt)
-        # _pbe = PuppetBindEntity()
-        # _tcp_conn.set_entity(_pbe)
-        # _tcp_conn.set_entity(_ppt)
-        # _ppt.set_connection(_tcp_conn)
-        # _pbe.set_connection(_tcp_conn)
-        # _pbe.set_puppet(_ppt)
-        # _ppt.set_puppet_bind_entity(_pbe)
-        # _ppt.init_from_dict({})
-
-        self.add_conn(addr, _tcp_conn)
-        # self._addr_2_conn_map[addr] = _tcp_conn
-        message = f"{addr!r} is connected !!!!"
-        self._logger.debug(message)
-        # _tcp_conn.loop()
-        # self.forward(writer, addr, message)
-        # while True:
-        #     data = await reader.read(100)
-        #     # message = data.decode().strip()
-        #     message = MsgpackSupport.decode(data)
-        #     self.forward(writer, addr, message)
-        #     await writer.drain()
-        #     if message == "exit":
-        #         message = f"{addr!r} wants to close the connection."
-        #         self.logger.debug(message)
-        #         self.forward(writer, "Server", message)
-        #         break
-        # self.writers.remove(writer)
-        # writer.close()
-
-    async def start_server_task(self):
+    async def _start_server_task(self):
         # server = await asyncio.start_server(
         #     handle_echo, '192.168.82.177', 8888)
         # _ip = gr.game_json_conf[gr.game_server_name]["ip"]
         # _port = gr.game_json_conf[gr.game_server_name]["port"]
         try:
             server = await asyncio.start_server(
-                self.handle_client_connected, gv.local_ip, gv.local_port)
+                self._handle_client_connected, gv.local_ip, gv.local_port)
             # _start_srv_task = asyncio.create_task(asyncio.start_server(self.handle_client_connected, '192.168.82.177', 8888))
             # await _etcd_support_task
             # server = await _start_srv_task
@@ -238,8 +215,8 @@ class TcpServer:
             self._logger.log_last_except()
             raise
 
-    async def main(self):
-        self.handle_sig()
+    async def _main(self):
+        self._handle_sig()
 
         # etcd_addr_list = [('127.0.0.1', '2379'),]
         # etcd_addr_list = [('192.168.83.23', '2379'),]
@@ -259,13 +236,13 @@ class TcpServer:
         # gr.etcd_service_node = self._etcd_service_node
         # self._timer_hub.call_later(4, self._check_game_start)
 
-        _etcd_support_task = asyncio.create_task(self.start_etcd_task())
-        _start_srv_task = asyncio.create_task(self.start_server_task())
+        _etcd_support_task = asyncio.create_task(self._start_etcd_task())
+        _start_srv_task = asyncio.create_task(self._start_server_task())
 
         await _etcd_support_task
         await _start_srv_task
 
-    async def start_etcd_task(self):
+    async def _start_etcd_task(self):
         etcd_addr_list = [
             (ip_port_map["ip"], str(ip_port_map["port"])) for ip_port_map in gv.game_json_conf["etcd_servers"]]
 
@@ -283,7 +260,7 @@ class TcpServer:
         gv.etcd_service_node = self._etcd_service_node
         await self._etcd_service_node.start()
 
-    def handle_sig(self):
+    def _handle_sig(self):
 
         def ask_exit(sig_name, loop):
             self._logger.debug('got signal %s: exit' % sig_name)
@@ -306,7 +283,7 @@ class TcpServer:
             # if debug is not None:
             #     loop.set_debug(debug)
             # return loop.run_until_complete(main)
-            self._ev_loop.run_until_complete(self.main())
+            self._ev_loop.run_until_complete(self._main())
         finally:
             try:
                 # _cancel_all_tasks(self._ev_loop)

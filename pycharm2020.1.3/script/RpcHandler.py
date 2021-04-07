@@ -1,9 +1,9 @@
 from __future__ import annotations
 
 import asyncio
-import time
+import collections
 import typing
-from asyncio import futures, shield
+from asyncio import futures
 
 from core.util.TimerHub import TimerHub
 from core.util.UtilApi import wait_or_not
@@ -23,6 +23,9 @@ RPC_TYPE_REQUEST = 1
 RPC_TYPE_REPLY = 2
 RPC_TYPE_HEARTBEAT = 3
 
+RECONNECT_MAX_TIMES = 6
+RECONNECT_INTERVAL = 0.6  # sec
+
 
 class RpcHandler:
 
@@ -34,6 +37,13 @@ class RpcHandler:
         self._entity = entity  # type: typing.Optional[ServerEntity]
         self._next_reply_id = 0
         self._pending_requests = {}  # type: typing.Dict[int, typing.Tuple[str, futures.Future]]
+        self._msg_buffer = []  # type: typing.List[typing.Tuple]
+        self._timer_hub = TimerHub()
+        self._connect_fail_times = 0
+
+    def on_conn_close(self, close_reason):
+        self.fire_all_future_with_result(close_reason)
+        self._conn = None
 
     def fire_all_future_with_result(self, error: str, result=None):
         for _reply_id, _reply_fut_tuple in self._pending_requests.items():
@@ -93,9 +103,7 @@ class RpcHandler:
                     if callable(cb):
                         cb(*fut.result())
 
-                _reply_fut.add_done_callback(
-                    # lambda fut, rid=_reply_id: self._pending_requests.pop(rid, None))
-                    final_fut_cb)
+                _reply_fut.add_done_callback(final_fut_cb)
                 self._pending_requests[_reply_id] = (rpc_fuc_name, _reply_fut)
                 await self._send_rpc_msg(msg, ip_port_tuple)
                 try:
@@ -103,10 +111,13 @@ class RpcHandler:
                 except asyncio.exceptions.TimeoutError:
                     # self._logger.error(f"rpc_fuc_name={rpc_fuc_name}, asyncio.exceptions.TimeoutError")
                     # _reply_fut.set_exception(e)
-                    _reply_fut.set_result((f"request rpc timeout: {rpc_fuc_name}", None))
-                    # self._pending_requests.pop(_reply_id, None)
-                    # return None
-                    return await _reply_fut
+                    if self._conn is None:
+                        self._logger.error(
+                            f"request rpc({rpc_fuc_name}) timeout because conn lost, try reconnect ...")
+                        return
+                    else:
+                        _reply_fut.set_result((f"request rpc timeout: {rpc_fuc_name}", None))
+                        return await _reply_fut
             else:
                 msg = (RPC_TYPE_NOTIFY, rpc_remote_entity_type, rpc_fuc_name, rpc_fuc_args, rpc_fuc_kwargs)
                 await self._send_rpc_msg(msg, ip_port_tuple)
@@ -116,15 +127,34 @@ class RpcHandler:
 
     # @wait_or_not
     async def _send_rpc_msg(self, msg, ip_port_tuple=None):
-        encoded_msg = self.do_encode(msg)
-        # msg_len = len(encoded_msg) if encoded_msg else 0
-        # header_data = struct.pack("i", msg_len)
-        # final_data = header_data + encoded_msg
         if self._conn is None:
-            self._conn = await gv.get_cur_server().get_conn_by_addr(
-                ip_port_tuple, self)
-            # self._conn.set_entity(from_entity)
-        self._conn.send_data_and_count(encoded_msg)
+            self._msg_buffer.append(msg)
+            await self._handle_create_conn(ip_port_tuple)
+            return
+        self._conn.send_data_and_count(self.do_encode(msg))
+
+    # @wait_or_not
+    async def _handle_create_conn(self, addr: typing.Tuple[str, int]):
+        try:
+            self._conn = await gv.get_cur_server().get_conn_by_addr(addr, self)
+        except ConnectionRefusedError:
+            self._connect_fail_times += 1
+            if self._connect_fail_times <= RECONNECT_MAX_TIMES:
+                print(f"try reconnect {str(addr)} ... {self._connect_fail_times}")
+                self._timer_hub.call_later(RECONNECT_INTERVAL, lambda: self._handle_create_conn(addr))
+            else:
+                self._logger.error(f"try {self._connect_fail_times} times , still cant connect remote addr: {addr}")
+                for _msg in self._msg_buffer:
+                    if _msg[0] == RPC_TYPE_REQUEST:
+                        # self._pending_requests.get
+                        self._pending_requests[_msg[1]][1].set_result(
+                            (f"cant connect remote addr: {addr}", None))
+                self._connect_fail_times = 0
+            return
+        else:
+            for _msg in self._msg_buffer:
+                self._conn.send_data_and_count(self.do_encode(_msg))
+            self._msg_buffer.clear()
 
     @staticmethod
     async def handle_request_notify_rpc(_method, _method_name, _method_args, _method_kwargs):
