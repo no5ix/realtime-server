@@ -125,7 +125,7 @@ class TcpConn(object):
             except (ConnectionResetError,
                     # ConnectionAbortedError, ConnectionRefusedError
             ):
-                self.handle_close("connection is closed by remote client..with ConnectionResetError")
+                self.handle_close("connection is closed by remote client with ConnectionResetError")
                 return
             except CancelledError as e:
                 self._logger.error(str(e))  # TODO

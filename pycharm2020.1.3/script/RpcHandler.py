@@ -42,7 +42,7 @@ class RpcHandler:
         self._connect_fail_times = 0
 
     def on_conn_close(self, close_reason):
-        self.fire_all_future_with_result(close_reason)
+        # self.fire_all_future_with_result(close_reason)
         self._conn = None
 
     def fire_all_future_with_result(self, error: str, result=None):
@@ -99,6 +99,7 @@ class RpcHandler:
                 _reply_fut = gv.get_ev_loop().create_future()
 
                 def final_fut_cb(fut, rid=_reply_id, cb=rpc_callback):
+                    self._logger.debug(f"final_fut_cb: rid={rid}")
                     self._pending_requests.pop(rid, None)
                     if callable(cb):
                         cb(*fut.result())
@@ -113,7 +114,7 @@ class RpcHandler:
                     # _reply_fut.set_exception(e)
                     if self._conn is None:
                         self._logger.error(
-                            f"request rpc({rpc_fuc_name}) timeout because conn lost, try reconnect ...")
+                            f"request rpc(`{rpc_fuc_name}`) timeout because conn lost, try reconnect ...")
                         return
                     else:
                         _reply_fut.set_result((f"request rpc timeout: {rpc_fuc_name}", None))
@@ -143,12 +144,16 @@ class RpcHandler:
                 print(f"try reconnect {str(addr)} ... {self._connect_fail_times}")
                 self._timer_hub.call_later(RECONNECT_INTERVAL, lambda: self._handle_create_conn(addr))
             else:
-                self._logger.error(f"try {self._connect_fail_times} times , still cant connect remote addr: {addr}")
+                self._logger.error(f"try {RECONNECT_MAX_TIMES} times , still can't connect remote addr: {addr}")
                 for _msg in self._msg_buffer:
                     if _msg[0] == RPC_TYPE_REQUEST:
                         # self._pending_requests.get
-                        self._pending_requests[_msg[1]][1].set_result(
-                            (f"cant connect remote addr: {addr}", None))
+                        self._logger.error(f"fire pending requests future, rpc func: {_msg[3]}")
+                        try:
+                            self._pending_requests[_msg[1]][1].set_result(
+                                (f"cant connect remote addr: {addr}", None))
+                        except KeyError:
+                            pass
                 self._connect_fail_times = 0
             return
         else:
