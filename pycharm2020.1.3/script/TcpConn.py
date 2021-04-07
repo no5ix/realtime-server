@@ -29,6 +29,11 @@ HEARTBEAT_INTERVAL = 6
 ROLE_TYPE_ACTIVE = 0
 ROLE_TYPE_PASSIVE = 1
 
+CONN_STATE_CONNECTING = 0
+CONN_STATE_CONNECTED = 1
+CONN_STATE_DISCONNECTING = 2
+CONN_STATE_DISCONNECTED = 3
+
 
 class TcpConn(object):
 
@@ -41,11 +46,13 @@ class TcpConn(object):
             rpc_handler: RpcHandler = None,
             close_cb: typing.Callable = lambda: None,
     ):
+        self._is_connected = True
+
         self._role_type = role_type
         self._addr = addr  # type: typing.Tuple[str, int]
         self._asyncio_writer = asyncio_writer  # type: asyncio.StreamWriter
         self._asyncio_reader = asyncio_reader  # type: asyncio.StreamReader
-        self._close_cb = close_cb  # TODO for 主动连 load report
+        self._close_cb = close_cb
 
         self._send_cnt = 0
         self._recv_cnt = 0
@@ -64,6 +71,18 @@ class TcpConn(object):
         self._last_heartbeat_ts = 0
         self._timer_hub.call_later(HEARTBEAT_TIMEOUT, self.handle_remote_heartbeat_timeout, repeat_count=-1)
         self._timer_hub.call_later(HEARTBEAT_INTERVAL, self.heartbeat, repeat_count=-1)
+
+    def get_addr(self):
+        return self._addr
+
+    def is_connected(self):
+        return self._is_connected
+
+    def set_connection_state(self, is_conned):
+        self._is_connected = is_conned
+
+    def is_passive(self):
+        return self._role_type == ROLE_TYPE_PASSIVE
 
     async def handle_remote_heartbeat_timeout(self):
         print("ckkkkcheck handle_remote_heartbeat_timeout")
@@ -125,7 +144,7 @@ class TcpConn(object):
             except (ConnectionResetError,
                     # ConnectionAbortedError, ConnectionRefusedError
             ):
-                self.handle_close("connection is closed by remote client with ConnectionResetError")
+                self.handle_close("connection is closed by remote side with ConnectionResetError")
                 return
             except CancelledError as e:
                 self._logger.error(str(e))  # TODO
@@ -144,11 +163,14 @@ class TcpConn(object):
 
     # @wait_or_not
     def handle_close(self, close_reason: str):
+        if not self.is_connected():
+            return
         self._logger.debug(close_reason)
+        self.set_connection_state(False)
         self._close_cb()
         # await self._asyncio_writer.drain()
         self._asyncio_writer.close()
-        self._rpc_handler.on_conn_close("connection_closed")
+        self._rpc_handler.on_conn_close(close_reason)
         self._timer_hub.destroy()
         # gv.get_cur_server().remove_conn(self._addr)
 
