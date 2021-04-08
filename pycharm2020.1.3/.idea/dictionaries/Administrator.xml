@@ -5,6 +5,7 @@
       <w>asyncio</w>
       <w>etcd</w>
       <w>gevent</w>
+      <w>peername</w>
       <w>regist</w>
       <w>unregist</w>
     </words>

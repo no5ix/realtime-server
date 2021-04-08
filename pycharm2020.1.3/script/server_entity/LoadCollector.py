@@ -2,17 +2,17 @@ import functools
 
 from RpcHandler import rpc_func
 from common import gv
-from core.util.UtilApi import async_wrap
+from core.util.UtilApi import async_wrap, Singleton
 from server_entity.ServerEntity import ServerEntity
 import typing
 import redis
 
 
+@Singleton
 class LoadCollector(ServerEntity):
 
     def __init__(self):
         super().__init__()
-        gv.add_server_singleton(self)
 
         _pool = redis.ConnectionPool(host='localhost', port=6379, decode_responses=True)
         self._redis_cli = redis.Redis(connection_pool=_pool)

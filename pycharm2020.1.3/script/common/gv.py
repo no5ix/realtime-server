@@ -6,10 +6,11 @@ from asyncio import AbstractEventLoop
 # from TcpServer import ev_loop
 import typing
 
+
 if typing.TYPE_CHECKING:
-# if True:
     from TcpServer import TcpServer
     from core.EtcdSupport import ServiceNode
+    from ConnMgr import ConnMgr
 
 # usage: r = await AioApi.async_wrap(lambda: requests.request("GET", 'http://baidu.com', timeout=2))
 # lambda关键字不可少
@@ -49,6 +50,10 @@ def get_cur_server() -> TcpServer:
     return get_server_singleton("TcpServer")
 
 
+def get_conn_mgr() -> ConnMgr:
+    return get_server_singleton("ConnMgr")
+
+
 def get_ev_loop() -> asyncio.AbstractEventLoop:
     global EV_LOOP
     if EV_LOOP is None:
@@ -57,4 +62,3 @@ def get_ev_loop() -> asyncio.AbstractEventLoop:
         except RuntimeError:
             pass  # 正常情况不可能会发生调用此get_ev_loop比server启动还要早, 所以直接pass
     return EV_LOOP
-

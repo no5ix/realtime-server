@@ -6,6 +6,57 @@ from typing import Callable
 from common import gv
 
 
+class Singleton:
+    """
+    ```
+    @Singleton
+    class Foo:
+        def __init__(self):
+            print('Foo created')
+
+    f = Foo() # Error, this isn't how you get the instance of a singleton
+    f = Foo.instance() # Good. Being explicit is in line with the Python Zen
+    g = Foo.instance() # Returns already created instance
+    print(f is g) # True
+    ```
+
+    ------------------------
+    A non-thread-safe helper class to ease implementing singletons.
+    This should be used as a decorator -- not a metaclass -- to the
+    class that should be a singleton.
+
+    The decorated_cls class can define one `__init__` function that
+    takes only the `self` argument. Also, the decorated_cls class cannot be
+    inherited from. Other than that, there are no restrictions that apply
+    to the decorated_cls class.
+
+    To get the singleton instance, use the `instance` method. Trying
+    to use `__call__` will result in a `TypeError` being raised.
+    """
+
+    def __init__(self, decorated_cls):
+        self._decorated_cls = decorated_cls
+
+    def instance(self):
+        """
+        Returns the singleton instance. Upon its first call, it creates a
+        new instance of the decorated_cls class and calls its `__init__` method.
+        On all subsequent calls, the already created instance is returned.
+
+        """
+        try:
+            return self._instance
+        except AttributeError:
+            self._instance = self._decorated_cls()
+            return self._instance
+
+    def __call__(self):
+        raise TypeError('Singletons must be accessed through `instance()`.')
+
+    def __instancecheck__(self, inst):
+        return isinstance(inst, self._decorated_cls)
+
+
 def wait_or_not(f):
     def wrapped(*args, **kwargs):
         if asyncio.iscoroutinefunction(f):

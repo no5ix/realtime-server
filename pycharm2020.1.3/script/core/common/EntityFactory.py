@@ -6,24 +6,18 @@ from ..mobilelog.LogManager import LogManager
 # from Md5OrIndexCodec import  Md5OrIndexDecoder
 # from mobilecommon import extendabletype
 # from RpcIndex import RpcIndexer
+from ..util.UtilApi import Singleton
 
 
+@Singleton
 class EntityFactory(object):
     # __metaclass__ = extendabletype
-
-    _instance = None
 
     def __init__(self):
         # logger for EntityFactory
         self.logger = LogManager.get_logger("server.EntityFactory")
         #registered classed for EntityFactory
         self.entity_classes = {}
-
-    @classmethod
-    def instance(cls):
-        if cls._instance is None:
-            cls._instance = EntityFactory()
-        return cls._instance
 
     def register_entity(self, entitytype, entityclass):
         """注册entity 类"""

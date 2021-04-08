@@ -1,6 +1,9 @@
 from __future__ import annotations
 
 import typing
+
+from ..util.UtilApi import Singleton
+
 if typing.TYPE_CHECKING:
 	from server_entity.ServerEntity import ServerEntity
 from .IdManager import IdManager
@@ -86,10 +89,8 @@ class EntityIdOrLocalId(object):
 		return '', localid
 
 
+@Singleton
 class EntityManager(object):
-	# __metaclass__ = extendabletype
-
-	_instance = None
 
 	def __init__(self):
 		# logger for EntityFactory
@@ -97,12 +98,6 @@ class EntityManager(object):
 		# registered classed for EntityFactory
 		# self.entity_classes = {}
 		self._entities = {}  # type: typing.Dict[int, ServerEntity]
-
-	@classmethod
-	def instance(cls):
-		if cls._instance is None:
-			cls._instance = EntityManager()
-		return cls._instance
 
 # class EntityManager(object):
 	""" 管理所有的Entity的管理器"""

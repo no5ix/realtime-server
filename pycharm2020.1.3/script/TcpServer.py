@@ -17,6 +17,8 @@ from asyncio import events, tasks
 import typing
 
 # from core.util.performance.cpu_load_handler import CpuLoad
+from ConnMgr import ConnMgr
+from core.util.UtilApi import wait_or_not, Singleton
 
 if typing.TYPE_CHECKING:
     from RpcHandler import RpcHandler
@@ -46,9 +48,10 @@ class TcpServer:
         events.set_event_loop(self._ev_loop)
 
         self._timer_hub = TimerHub()
+        # self._conn_mgr = ConnMgr()
 
-        self._addr_2_conn_map = {}
-        self._etcd_service_node = None
+        # self._addr_2_conn_map = {}
+        self._etcd_service_node = None  # type: typing.Optional[ServiceNode]
         # self.register_entities()
 
         self._parse_json_conf(json_conf_path)
@@ -58,7 +61,7 @@ class TcpServer:
         LogManager.set_log_path(gv.game_json_conf["log_path"])
         self._logger = LogManager.get_logger()
 
-        gv.add_server_singleton(self)
+        # gv.add_server_singleton(self)
 
         self._register_server_entities()
         # self.register_battle_entities()
@@ -158,32 +161,33 @@ class TcpServer:
     #             # w.write(MsgpackSupport.encode(f"{addr!r}: {message!r}\n"))
     #         _tcp_conn.send_msg(f"{addr!r}: {message!r}\n")
 
-    def _add_conn(
-            self,
-            role_type: int,
-            writer: asyncio.StreamWriter,
-            reader: asyncio.StreamReader,
-            rpc_handler: RpcHandler = None
-    ):
-        addr = writer.get_extra_info("peername")
-        conn = TcpConn.TcpConn(
-            role_type, addr, writer, reader, rpc_handler,
-            close_cb=lambda: self._remove_conn(addr))
-        self._addr_2_conn_map[addr] = conn
-        return conn
-
-    def _remove_conn(self, addr: typing.Tuple[str, int]):
-        self._addr_2_conn_map.pop(addr, None)
-
-    async def get_conn_by_addr(self, addr: typing.Tuple[str, int], rpc_handler: RpcHandler):
-        _conn = self._addr_2_conn_map.get(addr, None)
-        if _conn is None:
-            reader, writer = await asyncio.open_connection(addr[0], addr[1])
-            _conn = self._add_conn(TcpConn.ROLE_TYPE_ACTIVE, writer, reader, rpc_handler)
-        return _conn
+    # def _add_conn(
+    #         self,
+    #         role_type: int,
+    #         writer: asyncio.StreamWriter,
+    #         reader: asyncio.StreamReader,
+    #         rpc_handler: RpcHandler = None
+    # ):
+    #     addr = writer.get_extra_info("peername")
+    #     conn = TcpConn.TcpConn(
+    #         role_type, addr, writer, reader, rpc_handler,
+    #         close_cb=lambda: self._remove_conn(addr))
+    #     self._addr_2_conn_map[addr] = conn
+    #     return conn
+    #
+    # def _remove_conn(self, addr: typing.Tuple[str, int]):
+    #     self._addr_2_conn_map.pop(addr, None)
+    #
+    # async def get_conn_by_addr(self, addr: typing.Tuple[str, int], rpc_handler: RpcHandler):
+    #     _conn = self._addr_2_conn_map.get(addr, None)
+    #     if _conn is None:
+    #         reader, writer = await asyncio.open_connection(addr[0], addr[1])
+    #         _conn = self._add_conn(TcpConn.ROLE_TYPE_ACTIVE, writer, reader, rpc_handler)
+    #     return _conn
 
     async def _handle_client_connected(self, reader, writer):
-        self._add_conn(TcpConn.ROLE_TYPE_PASSIVE, writer, reader)
+        # self._add_conn(TcpConn.ROLE_TYPE_PASSIVE, writer, reader)
+        ConnMgr.instance().add_conn(TcpConn.ROLE_TYPE_PASSIVE, writer, reader)
         addr = writer.get_extra_info('peername')  # type: typing.Tuple[str, int]
         self._logger.debug(f"{addr!r} is connected !!!!")
 
@@ -338,7 +342,7 @@ class TcpServer:
 if __name__ == '__main__':
     game_server_name = sys.argv[1]
     server_json_conf_path = r"../bin/win/conf/battle_server.json"
-    tcp_server = TcpServer(game_server_name, server_json_conf_path)
+    tcp_server = TcpServer.instance(game_server_name, server_json_conf_path)
     # TCP_SERVER = tcp_server
     tcp_server.run()
 

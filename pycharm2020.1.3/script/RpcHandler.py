@@ -1,10 +1,11 @@
 from __future__ import annotations
 
 import asyncio
-import collections
+# import collections
 import typing
 from asyncio import futures
 
+from ConnMgr import ConnMgr
 from core.util.TimerHub import TimerHub
 from core.util.UtilApi import wait_or_not
 
@@ -30,23 +31,22 @@ RECONNECT_INTERVAL = 0.6  # sec
 class RpcHandler:
 
     def __init__(
-            self, conn: typing.Optional[TcpConn] = None,
-            entity: typing.Optional[ServerEntity] = None):
+            self, conn: TcpConn = None,
+            entity: ServerEntity = None):
         self._logger = LogManager.get_logger()
-        self._conn = conn  # type: typing.Optional[TcpConn]
-        self._entity = entity  # type: typing.Optional[ServerEntity]
+        self._conn = conn  # type: TcpConn
+        self._entity = entity  # type: ServerEntity
         self._next_reply_id = 0
         self._pending_requests = {}  # type: typing.Dict[int, typing.Tuple[str, futures.Future]]
         self._msg_buffer = []  # type: typing.List[typing.Tuple]
         self._timer_hub = TimerHub()
         self._try_connect_times = 0
 
-    def on_conn_close(self, close_reason):
+    def on_conn_close(self):
         # self.fire_all_future_with_result(close_reason)
-        if not self._conn.is_passive():
+        if self._conn.is_active():
             self._handle_create_conn(self._conn.get_addr())
         self._conn = None
-        # pass
 
     def fire_all_future_with_result(self, error: str, result=None):
         for _reply_id, _reply_fut_tuple in self._pending_requests.items():
@@ -143,7 +143,7 @@ class RpcHandler:
     async def _handle_create_conn(self, addr: typing.Tuple[str, int]):
         try:
             self._try_connect_times += 1
-            self._conn = await gv.get_cur_server().get_conn_by_addr(addr, self)
+            self._conn = await ConnMgr.instance().get_conn_by_addr(addr, self)
         except ConnectionRefusedError:
             if self._try_connect_times < RECONNECT_MAX_TIMES:
                 print(f"try reconnect {str(addr)} ... {self._try_connect_times}")

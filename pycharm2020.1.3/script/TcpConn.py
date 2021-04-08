@@ -6,13 +6,13 @@ import struct
 import typing
 from asyncio.exceptions import CancelledError
 
-from RpcHandler import RpcHandler
 from common import gv
 from core.util.TimerHub import TimerHub
 from core.util.UtilApi import wait_or_not
 
 if typing.TYPE_CHECKING:
     from server_entity.ServerEntity import ServerEntity
+    from RpcHandler import RpcHandler
 
 # from common import gr
 # from core.common import MsgpackSupport
@@ -64,6 +64,7 @@ class TcpConn(object):
             rpc_handler.set_conn(self)
             self._rpc_handler = rpc_handler
         else:
+            from RpcHandler import RpcHandler
             self._rpc_handler = RpcHandler(self)
 
         self.loop()
@@ -81,8 +82,8 @@ class TcpConn(object):
     def set_connection_state(self, is_conned):
         self._is_connected = is_conned
 
-    def is_passive(self):
-        return self._role_type == ROLE_TYPE_PASSIVE
+    def is_active(self):
+        return self._role_type == ROLE_TYPE_ACTIVE
 
     async def handle_remote_heartbeat_timeout(self):
         print("ckkkkcheck handle_remote_heartbeat_timeout")
@@ -170,7 +171,7 @@ class TcpConn(object):
         self._close_cb()
         # await self._asyncio_writer.drain()
         self._asyncio_writer.close()
-        self._rpc_handler.on_conn_close(close_reason)
+        self._rpc_handler.on_conn_close()
         self._timer_hub.destroy()
         # gv.get_cur_server().remove_conn(self._addr)
 

@@ -154,7 +154,8 @@ class ServiceRegister(EtcdProcessor):
                     return True
                 else:
                     self._fail_time += 1
-                    self._logger.error("regist service : %s error: %s, fail time: %d", service_name, r.text, self._fail_time)
+                    self._logger.error(
+                        "regist service : %s error: %s, fail time: %d", service_name, r.text, self._fail_time)
             except:
                 self._fail_time += 1
                 self._logger.error("regist service : %s error", service_name)

@@ -1,6 +1,7 @@
 from common import service_const, gv
 # from common.service_const import DISPATCHER_SERVICE
 from core.util import UtilApi
+from core.util.UtilApi import Singleton
 from core.util.performance.cpu_load_handler import AvgCpuLoad
 from server_entity.ServerEntity import ServerEntity
 
@@ -29,4 +30,3 @@ class LoadReporter(ServerEntity):
                 self.logger.error("can not find dispatcher_service_addr")
         except:
             self.logger.log_last_except()
-
