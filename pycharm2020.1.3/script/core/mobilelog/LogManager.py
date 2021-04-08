@@ -33,8 +33,6 @@ from logging.handlers import TimedRotatingFileHandler
 # from aiologger.formatters.base import Formatter
 import inspect
 
-from common import gv
-
 
 _log_tp_executor = ThreadPoolExecutor(max_workers=1)  # 1 for sequentiality
 
@@ -46,13 +44,22 @@ class WholeIntervalRotatingFileHandler(TimedRotatingFileHandler):
             # use existing computation
             return super().computeRollover(currentTime)
         # round time up to nearest next multiple of the interval
+        print(f"cur ts: {int(time.time())}")
+        print(f"currentTime: {currentTime}")
+        # print("\033[1;31;40m您输入的帐号或密码错误！\033[0m")
+        # print("\033[0;31m%s\033[0m" % "输出红色字符")
+        print(f"dssss: {((currentTime // self.interval) + 1) * self.interval}")
         return ((currentTime // self.interval) + 1) * self.interval
+
+    def doRollover(self):
+        super(WholeIntervalRotatingFileHandler, self).doRollover()
 
 
 class LogManager:
     log_tag = ""
     log_path = ""
     file_handler = None
+    stream_handler = None
 
     @staticmethod
     def set_log_tag(tag):
@@ -80,13 +87,16 @@ class LogManager:
         if LogManager.file_handler is None:
             if LogManager.log_tag == "":
                 raise Exception("LogManager Error: log tag is empty!")
-            LogManager.file_handler = TimedRotatingFileHandler(
-                "".join((LogManager.log_path + LogManager.log_tag + ".log."
-                         # + time.strftime("%Y-%m-%d_%H-%M-%S", time.localtime())
+            # LogManager.file_handler = TimedRotatingFileHandler(
+            LogManager.file_handler = WholeIntervalRotatingFileHandler(
+                "".join((LogManager.log_path + LogManager.log_tag + ".log"
+                         # + "." + time.strftime("%Y-%m-%d_%H-%M-%S", time.localtime())
                          ))
                 , when="M")
+        if LogManager.stream_handler is None:
+            LogManager.stream_handler = logging.StreamHandler()
             # LogManager.file_handler.doRollover()
-        return AsyncLogger(logger_name, LogManager.file_handler)
+        return AsyncLogger(logger_name)
         # _temp_file_name = 'test_log.log'
         #
         # use_st_logger = True
@@ -147,27 +157,46 @@ class LogManager:
 
 class AsyncLogger:
 
-    def __init__(self, logger_name, fh):
+    def __init__(self, logger_name):
         # logging.basicConfig(
         #     format='%(asctime)s - %(name)s - %(levelname)s : %(message)s',
         #     handlers=[TimedRotatingFileHandler(
         #         LogManager.log_path + LogManager.log_tag + ".log", when='S')],
         # )
-        _logger = logging.getLogger(logger_name)
+        self._logger = logging.getLogger(logger_name)
 
         # fh = TimedRotatingFileHandler(
         #     LogManager.log_path + LogManager.log_tag + ".log", when='D')
         # fh = TimedRotatingFileHandler(_temp_file_name, when='S')
         # fh.setLevel(logging.DEBUG)
         # formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - [%(filename)s:%(lineno)d] : %(message)s')
+        # add 'levelname_c' attribute to log resords
+        orig_record_factory = logging.getLogRecordFactory()
+        log_colors = {
+            logging.DEBUG: "\033[1;34m",  # blue
+            logging.INFO: "\033[1;32m",  # green
+            logging.WARNING: "\033[1;35m",  # magenta
+            logging.ERROR: "\033[1;31m",  # red
+            logging.CRITICAL: "\033[1;41m",  # red reverted
+        }
 
-        _formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(name)s : %(message)s')
-        fh.setFormatter(_formatter)
-        _logger.addHandler(fh)
+        def record_factory(*args, **kwargs):
+            record = orig_record_factory(*args, **kwargs)
+            record.levelname_colored = "{}{}{}".format(
+                log_colors[record.levelno], record.levelname, "\033[0m")
+            return record
+
+        logging.setLogRecordFactory(record_factory)
+
+        _file_formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(name)s : %(message)s')
+        _stream_formatter = logging.Formatter('%(asctime)s - %(levelname_colored)s - %(name)s : %(message)s')
+        LogManager.file_handler.setFormatter(_file_formatter)
+        LogManager.stream_handler.setFormatter(_stream_formatter)
+
+        self._logger.addHandler(LogManager.file_handler)
+        self._logger.addHandler(LogManager.stream_handler)
         # fh.setLevel(logging.DEBUG)
-        _logger.setLevel(logging.DEBUG)
-
-        self._logger = _logger
+        self._logger.setLevel(logging.DEBUG)
 
     def _log_decorator(func):
         # @wraps(func)
@@ -176,11 +205,11 @@ class AsyncLogger:
             # final_msg = self.join_caller_filename_lineno(msg, kw.get("stack_incr_cnt", 0))
             final_msg = self.join_caller_filename_lineno(msg, stack_incr_cnt)
             _func_name = func.__name__
-            if gv.is_dev_version:
-                # and func.__name__ in ("debug", "error", "warning", "critical"):
-                print(" - ".join(
-                    (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
-                     _func_name.upper(), self._logger.name, final_msg)) % args)
+            # if gv.is_dev_version:
+            #     # and func.__name__ in ("debug", "error", "warning", "critical"):
+            #     print(" - ".join(
+            #         (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
+            #          _func_name.upper(), self._logger.name, final_msg)) % args)
             _log_tp_executor.submit(
                 getattr(self._logger, _func_name), final_msg, *args, **kwargs)
             return
