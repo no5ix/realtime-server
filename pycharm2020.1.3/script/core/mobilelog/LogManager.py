@@ -1,11 +1,14 @@
 import os
 import sys
+
+from datetime import time as dt_time
 # import platform
 import logging
 import time
 from concurrent.futures.thread import ThreadPoolExecutor
 # from functools import wraps
 from logging.handlers import TimedRotatingFileHandler
+
 # import aiologger
 #
 # from aiologger.handlers.files import (
@@ -36,6 +39,16 @@ from common import gv
 _log_tp_executor = ThreadPoolExecutor(max_workers=1)  # 1 for sequentiality
 
 
+class WholeIntervalRotatingFileHandler(TimedRotatingFileHandler):
+
+    def computeRollover(self, currentTime):
+        if self.when[0] == 'W' or self.when == 'MIDNIGHT':
+            # use existing computation
+            return super().computeRollover(currentTime)
+        # round time up to nearest next multiple of the interval
+        return ((currentTime // self.interval) + 1) * self.interval
+
+
 class LogManager:
     log_tag = ""
     log_path = ""
@@ -64,12 +77,15 @@ class LogManager:
                     logger_name = inspect.getmodule(caller_module).__name__
             except:
                 raise Exception("logger_name is None and can't get caller name")
-        # if LogManager.file_handler is None or True:  # TODO del
         if LogManager.file_handler is None:
             if LogManager.log_tag == "":
                 raise Exception("LogManager Error: log tag is empty!")
             LogManager.file_handler = TimedRotatingFileHandler(
-                LogManager.log_path + LogManager.log_tag + ".log", when="D")
+                "".join((LogManager.log_path + LogManager.log_tag + ".log."
+                         # + time.strftime("%Y-%m-%d_%H-%M-%S", time.localtime())
+                         ))
+                , when="M")
+            # LogManager.file_handler.doRollover()
         return AsyncLogger(logger_name, LogManager.file_handler)
         # _temp_file_name = 'test_log.log'
         #
