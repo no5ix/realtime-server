@@ -26,6 +26,7 @@ class TimerHub:
         self._final_key_2_timer_info_map = {}
         self._original_key_2_final_key_set_map = defaultdict(set)
         self._key_incr = 0
+        self._destroyed = False
 
     def call_later(
             self, delay_second: typing.Union[int, float],
@@ -40,6 +41,7 @@ class TimerHub:
         :param repeat_interval_sec:
         :return: 最终的唯一key
         """
+        assert (not self._destroyed)
         assert (repeat_count >= 0 or repeat_count == -1)
         # if repeat_count < 0 and repeat_count != -1:
         #     raise Exception("err: TimerHub.call_later repeat_count < 0 and not equal to -1 !!")
@@ -100,6 +102,7 @@ class TimerHub:
         self._original_key_2_final_key_set_map.clear()
         self._original_key_2_final_key_set_map = None
         self._ev_loop = None
+        self._destroyed = True
 
     def _get_final_key(self, key):
         self._key_incr += 1
@@ -111,6 +114,8 @@ class TimerHub:
             self, delay_second: typing.Union[int, float],
             delay_callback: typing.Callable, original_key: str = "", final_key: str = "",
             repeat_count: int = 0, repeat_interval_sec: typing.Union[int, float] = None):
+        if self._destroyed:
+            return
 
         @wait_or_not
         async def repeat_cb_wrapper(ds=delay_second, rc=repeat_count, ris=repeat_interval_sec):

@@ -127,7 +127,7 @@ class ServiceRegister(EtcdProcessor):
         #             res = json.loads(r.text)
         #             self._fail_time = 0
         #             if res.get("action") == "get" and res.get("node", {}).get("nodes", []):
-        #                 self.logger.info("servcie : %s not stateless, but exist, %s", service_name, r.text)
+        #                 self.logger.debug("service : %s not stateless, but exist, %s", service_name, r.text)
         #                 return False
         #             break
         #         except:

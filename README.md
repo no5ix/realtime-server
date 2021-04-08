@@ -12,14 +12,14 @@ python 3.8.8
 - [ ] dungeon
 <!-- - [ ] reload 支持 `rpc_func`装饰器的增删 -->
 - [ ] 启动脚本
-- [ ] 手动心跳
-- [ ] 断线重连
-- [ ] battle_server
+<!-- - [ ] 手动心跳 -->
+<!-- - [ ] 断线重连 -->
+<!-- - [ ] battle_server -->
 - [ ] tick loop
-- [ ] battle_service
+- [ ] dispatcher_service
 - [ ] 大厅服务器通知战斗服务器相关puppet的信息已经加密令牌, 约定通信协议
 - [ ] 客户端拿着令牌来和战斗服务器连接并交互
-- [ ] 各个战斗服务器之间的协同center stub, center掉了, stub尝试重连center的逻辑
+<!-- - [ ] 各个战斗服务器之间的协同center stub, center掉了, stub尝试重连center的逻辑 -->
 
 
 - [ ] base on etcd distributed lock

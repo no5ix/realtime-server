@@ -111,7 +111,7 @@ class CompPuppetTest(Component):
         print(f"test_response_rpc: a={a}, b={b}, c={c}")
         # print(f"test_response_rpc: a={a}")
         # time.sleep(2)
-        await asyncio.sleep(1)
+        await asyncio.sleep(6)
         # 1/0
         return b
 

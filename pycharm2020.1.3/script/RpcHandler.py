@@ -76,7 +76,7 @@ class RpcHandler:
 
     async def send_heartbeat(self):
         try:
-            print("sennnnnnnnnd heartbeatttt")
+            # print("sennnnnnnnnd heartbeatttt")
             msg = (RPC_TYPE_HEARTBEAT, )
             await self._send_rpc_msg(msg)
         except:
@@ -102,7 +102,7 @@ class RpcHandler:
                 _reply_fut = gv.get_ev_loop().create_future()
 
                 def final_fut_cb(fut, rid=_reply_id, cb=rpc_callback):
-                    self._logger.debug(f"final_fut_cb: rid={rid}")
+                    # self._logger.debug(f"final_fut_cb: rid={rid}")
                     self._pending_requests.pop(rid, None)
                     if callable(cb):
                         cb(*fut.result())
@@ -115,13 +115,13 @@ class RpcHandler:
                 except asyncio.exceptions.TimeoutError:
                     # self._logger.error(f"rpc_fuc_name={rpc_fuc_name}, asyncio.exceptions.TimeoutError")
                     # _reply_fut.set_exception(e)
-                    if self._conn is None:
-                        self._logger.error(
-                            f"request rpc(`{rpc_fuc_name}`) timeout because conn lost, try reconnect ...")
-                        return
-                    else:
-                        _reply_fut.set_result((f"request rpc timeout: {rpc_fuc_name}", None))
-                        return await _reply_fut
+                    # if self._conn is None:
+                    #     self._logger.error(
+                    #         f"request rpc(`{rpc_fuc_name}`) timeout because conn lost, try reconnect ...")
+                    #     return await asyncio.wait_for(asyncio.shield(_reply_fut), timeout=None)
+                    # else:
+                    _reply_fut.set_result((f"request rpc timeout: {rpc_fuc_name}", None))
+                    return await _reply_fut
             else:
                 msg = (RPC_TYPE_NOTIFY, rpc_remote_entity_type, rpc_fuc_name, rpc_fuc_args, rpc_fuc_kwargs)
                 await self._send_rpc_msg(msg, ip_port_tuple)
@@ -240,7 +240,7 @@ class RpcHandler:
                 # else:
                 _reply_fut.set_result((_error, _reply_result))
             elif _rpc_type == RPC_TYPE_HEARTBEAT:
-                print("remote_heart_beatttttttt")
+                # print("remote_heart_beatttttttt")
                 self._conn.remote_heart_beat()
             else:
                 self._logger.error(f"unknown RPC type: {_rpc_type}")

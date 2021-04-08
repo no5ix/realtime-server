@@ -20,12 +20,12 @@ class LoadReporter(ServerEntity):
         try:
             dispatcher_service_addr = UtilApi.get_service_info(service_const.DISPATCHER_SERVICE)
             if dispatcher_service_addr:
-                print(f"report_server_load: {self._avg_load.get_avg_cpu_by_period(10)}")
                 self.call_remote_method(
                     "report_load",
                     [gv.etcd_tag, gv.game_server_name, gv.local_ip, gv.local_port,
                         self._avg_load.get_avg_cpu_by_period(10)],
                     rpc_remote_entity_type="LoadCollector", ip_port_tuple=dispatcher_service_addr)
+                # print(f"report_server_load: {self._avg_load.get_avg_cpu_by_period(10)}")
             else:
                 self.logger.error("can not find dispatcher_service_addr")
         except:

@@ -56,39 +56,20 @@ class CompPuppetTest(Component):
     async def test_response_rpc(self, msg):
         print("callll test_response_rpc")
 
-        # msg = "calll test_timer_async"
-        # timer_key = self.entity.timer_hub.call_later(3, lambda m=msg: self.test_timer_async(m), repeat_count=2)
-        timer_key = self.timer_hub.call_later(3, lambda: self.test_timer_async(msg), repeat_count=2)
-        # self.entity.timer_hub.cancel_timer(timer_key)
-        # msg = "calll test_timer_async nonono"
+        timer_key = self.entity.timer_hub.call_later(3, lambda: self.test_timer_async(msg), repeat_count=2)
 
         self.remote_comp.make_server_reload()
-        # try:
-        # err = None
-        # # gg = await self.remote_entity.CompPuppetTest.test_response_rpc(997)
-        # err, gg = await\
 
-        # def mmp(_fut: Future):
         def mmp(error, result):
             print("mmmmmmmmmmmp")
             print(f"err={error}")
             print(f"res={result}")
             # print(_fut.result())
 
-        _fut = self.remote_entity.CompPuppetTest.test_response_rpc2(
-        # _fut = self.remote_comp.test_response_rpc2(
+        self.remote_entity.CompPuppetTest.test_response_rpc2(
             997,
-            # need_reply=False, reply_timeout=3
-            # reply_timeout=6
             rpc_callback=mmp
         )
-        # _fut.add_done_callback(mmp)
-        # print(await _fut)
-        # # except RpcReplyError as e:
-        # #     print("rpc reply errr")
-        # #     print(e)
-        # # self.remote_entity.CompPuppetTest.test_response_rpc(997)
-        # print(f"gg={gg}, err={err}")
 
         err, hh = await self.remote_comp.test_response_rpc1(
             886, c=11,
@@ -97,12 +78,3 @@ class CompPuppetTest(Component):
             rpc_callback=mmp
         )
         print(f"hh={hh}, err={err}")
-
-        # self.remote_comp.test_response_rpc(886)
-        # print("testttt")
-        # final_rpc_name = "CompPuppetTest.test_response_rpc"
-        # args = [110]
-        # need_reply = False
-        # reply_timeout = 2
-        # self.entity.call_remote_method(
-        #     final_rpc_name, [*args], need_reply, reply_timeout)
