@@ -136,7 +136,7 @@ class EntityManager(object):
 			self._logger.warn(" entity  %s already exist", entityid)
 			if not override:
 				return
-		self._logger.info("addentity  entity id  %s ", entityid)
+		self._logger.debug("addentity  entity id  %s ", entityid)
 		self._entities[entityid] = entity
 
 	def iter_entity(self):

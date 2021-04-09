@@ -8,6 +8,9 @@
       <w>peername</w>
       <w>regist</w>
       <w>unregist</w>
+      <w>zadd</w>
+      <w>zpopmin</w>
+      <w>zrange</w>
     </words>
   </dictionary>
 </component>

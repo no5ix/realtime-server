@@ -22,9 +22,9 @@ rmdir /S /Q infra2.etcd
 @REM     --initial-cluster-token etcd-cluster-0 ^
 @REM     --initial-cluster-state new
 
-@REM set MY_IP=192.168.82.177
+set MY_IP=192.168.82.177
 @REM set MY_IP=192.168.1.4
-set MY_IP=127.0.0.1
+@REM set MY_IP=127.0.0.1
 
 
 start /b etcd\etcd.exe --name infra0 ^

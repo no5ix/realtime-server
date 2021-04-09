@@ -1,7 +1,7 @@
-import functools
+# import functools
 
 from RpcHandler import rpc_func
-from common import gv
+# from common import gv
 from core.util.UtilApi import async_wrap, Singleton
 from server_entity.ServerEntity import ServerEntity
 import typing
@@ -20,14 +20,13 @@ class LoadCollector(ServerEntity):
 
     @rpc_func
     def report_load(self, etcd_tag, server_name, ip, port, load):
-        print(f"etcd_tag: {etcd_tag} server_name: {server_name} load: {load}")
-        # self._pipe.zadd(etcd_tag, {server_name: load})
+        self.logger.debug(f"_etcd_tag: {etcd_tag} server_name: {server_name} load: {load}")
+        # self._pipe.zadd(_etcd_tag, {server_name: load})
         async_wrap(lambda: self._redis_cli.zadd(etcd_tag, {"|".join([server_name, ip, str(port)]): load}))
-        self.timer_hub.call_later(2, lambda: self.pick_lowest_load_service(etcd_tag))
-        # async_wrap(lambda: self.pick_lowest_load_service(etcd_tag))
+        # self.timer_hub.call_later(2, lambda: self.pick_lowest_load_service_addr(etcd_tag))
 
     @rpc_func
-    async def pick_lowest_load_service(self, etcd_tag: str) -> typing.Tuple[str, int]:
+    async def pick_lowest_load_service_addr(self, etcd_tag: str) -> typing.Tuple[str, int]:
         # self._pipe.zpopmin()
         # self._pipe.zrange()
         _res_list = await async_wrap(lambda: self._redis_cli.zrange(etcd_tag, 0, 0))  # type: typing.List[str]
@@ -35,30 +34,30 @@ class LoadCollector(ServerEntity):
         if _res_list:
             split_res = _res_list[0].split("|")
             _ret = (split_res[1], int(split_res[2]))
-        print(f"pick_lowest_load_service _ret: {_ret}")
+            self.logger.debug(f"pick_lowest_load_service server_name: {split_res[0]}, addr: {_ret}")
         return _ret
 
 
-if __name__ == "__main__":
-    pool = redis.ConnectionPool(host='localhost', port=6379, decode_responses=True)
-    redis_redis = redis.Redis(connection_pool=pool)
-    _pipe = redis_redis.pipeline(transaction=False)
-
-    # @rpc_method(SERVER_ONLY, [Str("sn"), Float("l")])
-    etcd_tag = "battle_server"
-    server_name = "battle_0"
-    load = 12
-    print(f"etcd_tag: {etcd_tag} server_name: {server_name} load: {load}")
-    redis_redis.zadd(etcd_tag, {server_name: load})
-
-    etcd_tag = "battle_server"
-    server_name = "battle_1"
-    load = 14
-    redis_redis.zadd(etcd_tag, {server_name: load})
-
-    # self.redis_redis.zpopmin()
-    print(redis_redis.zrange(etcd_tag, 0, 1))
-    print(redis_redis.zrange(etcd_tag, 1, 1))
-    print(redis_redis.keys())
-    # s = _pipe.execute()
+# if __name__ == "__main__":
+#     pool = redis.ConnectionPool(host='localhost', port=6379, decode_responses=True)
+#     redis_redis = redis.Redis(connection_pool=pool)
+#     _pipe = redis_redis.pipeline(transaction=False)
+#
+#     # @rpc_method(SERVER_ONLY, [Str("sn"), Float("l")])
+#     _etcd_tag = "battle_server"
+#     server_name = "battle_0"
+#     load = 12
+#     print(f"_etcd_tag: {_etcd_tag} server_name: {server_name} load: {load}")
+#     redis_redis.zadd(_etcd_tag, {server_name: load})
+#
+#     _etcd_tag = "battle_server"
+#     server_name = "battle_1"
+#     load = 14
+#     redis_redis.zadd(_etcd_tag, {server_name: load})
+#
+#     # self.redis_redis.zpopmin()
+#     print(redis_redis.zrange(_etcd_tag, 0, 1))
+#     print(redis_redis.zrange(_etcd_tag, 1, 1))
+#     print(redis_redis.keys())
+#     # s = _pipe.execute()
     # print(s)
