@@ -199,12 +199,16 @@ class ServiceRegister(EtcdProcessor):
         for _ in range(10):
             """在退出的时候，将注册的信息删除掉，如果删除失败，那就靠ttl自动删除吧"""
             try:
+                self._logger.debug(f"try delete service: {service_name}")
                 r = await UtilApi.async_wrap(
                     lambda: requests.request("DELETE", self._get_url(service_name)))
                 res = json.loads(r.text)
                 if res.get("action", "") == "delete":
                     self._logger.debug("delete service : %s success", service_name)
                     break
+                else:
+                    self._logger.error(
+                        f"delete service {service_name} error: {r.text}, now_url: {self._get_url(service_name)}")
             except:
                 self._logger.log_last_except()
                 # if GameServerRepo.game_event_callback is not None:

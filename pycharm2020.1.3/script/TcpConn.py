@@ -144,10 +144,12 @@ class TcpConn(object):
                         self._recv_data = self._recv_data[_input_data_len:]
                     else:
                         break
-            except (ConnectionResetError,
-                    # ConnectionAbortedError, ConnectionRefusedError
-            ):
-                self.handle_close("connection is closed by remote side with ConnectionResetError")
+            except (
+                    ConnectionResetError,
+                    ConnectionAbortedError,
+                    # ConnectionRefusedError
+            ) as e:
+                self.handle_close(f"connection is closed by remote side with {str(e)}")
                 return
             except CancelledError as e:
                 self._logger.error(str(e))  # TODO
@@ -168,7 +170,7 @@ class TcpConn(object):
     def handle_close(self, close_reason: str):
         if not self.is_connected():
             return
-        self._logger.debug(close_reason)
+        self._logger.info(close_reason)
         self.set_connection_state(False)
         self._close_cb()
         # await self._asyncio_writer.drain()

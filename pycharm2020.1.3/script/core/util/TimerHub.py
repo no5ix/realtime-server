@@ -170,6 +170,12 @@ if __name__ == "__main__":
 
     th = TimerHub()
 
+    async def test_lambda_async_func():
+        await asyncio.sleep(1)
+        print("test_lambda_async_func success")
+
+    th.call_later(1, lambda: test_lambda_async_func())
+
     def print_key1():
         print(test_timer_key1_str)
 

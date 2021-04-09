@@ -42,10 +42,11 @@ class RpcHandler:
         self._timer_hub = TimerHub()
         self._try_connect_times = 0
 
-    def on_conn_close(self):
+    @wait_or_not
+    async def on_conn_close(self):
         # self.fire_all_future_with_result(close_reason)
         if self._conn.is_active():
-            self._handle_create_conn(self._conn.get_addr())
+            await self._handle_create_conn(self._conn.get_addr())
         self._conn = None
 
     def fire_all_future_with_result(self, error: str, result=None):
@@ -133,20 +134,25 @@ class RpcHandler:
     async def _send_rpc_msg(self, msg, ip_port_tuple=None):
         if self._conn is None:
             self._msg_buffer.append(msg)
+            print(f"_send_rpc_msg  _try_connect_times={self._try_connect_times}, id(self._conn)= {id(self._conn)}")
             if self._try_connect_times > 0:  # means connecting ...
                 return
             await self._handle_create_conn(ip_port_tuple)
             return
         self._conn.send_data_and_count(self.do_encode(msg))
 
-    @wait_or_not
+    # @wait_or_not
     async def _handle_create_conn(self, addr: typing.Tuple[str, int]):
         try:
+            print(f"bbb _try_connect_times={self._try_connect_times}, id(self._conn)= {id(self._conn)}")
             self._try_connect_times += 1
             self._conn = await ConnMgr.instance().get_conn_by_addr(addr, self)
-        except ConnectionRefusedError:
+            print(f"aaa _try_connect_times={self._try_connect_times}, id(self._conn)= {id(self._conn)}")
+        # except ConnectionRefusedError:
+        except Exception as e:
+            self._logger.error(str(e))
             if self._try_connect_times < RECONNECT_MAX_TIMES:
-                print(f"try reconnect {str(addr)} ... {self._try_connect_times}")
+                self._logger.warning(f"try reconnect {str(addr)} ... {self._try_connect_times}")
                 self._timer_hub.call_later(RECONNECT_INTERVAL, lambda: self._handle_create_conn(addr))
             else:
                 self._logger.error(f"try {RECONNECT_MAX_TIMES} times , still can't connect remote addr: {addr}")
@@ -156,13 +162,14 @@ class RpcHandler:
                         _reply_id = _msg[1]
                         if _reply_id not in self._pending_requests:
                             continue
-                        self._logger.debug(
+                        self._logger.warning(
                             f"fire pending requests future, rpc func: {_msg[3]}, reply_id: {_reply_id}")
                         self._pending_requests[_reply_id][1].set_result(
                             (f"cant connect remote addr: {addr}", None))
                 self._try_connect_times = 0
             return
         else:
+            print(f"rrr _try_connect_times={self._try_connect_times}, id(self._conn)= {id(self._conn)}")
             self._try_connect_times = 0
             for _msg in self._msg_buffer:
                 self._conn.send_data_and_count(self.do_encode(_msg))
@@ -261,11 +268,6 @@ class RpcHandler:
             # _method(_parameters)
         except:
             self._logger.log_last_except()
-
-    async def send_heartbeat_rpc(self):
-        msg = (RPC_TYPE_HEARTBEAT, )
-        await self._send_rpc_msg(msg)
-        print("calllll send_heartbeat_rpc")
 
 
 def rpc_func(func):

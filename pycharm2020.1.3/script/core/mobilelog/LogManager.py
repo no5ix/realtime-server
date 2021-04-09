@@ -311,8 +311,8 @@ class AsyncLogger:
 
         logging.setLogRecordFactory(record_factory)
 
-        _file_formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(name)s : %(message)s')
-        _stream_formatter = logging.Formatter('%(asctime)s - %(levelname_colored)s - %(name)s : %(message)s')
+        _file_formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(name)s - %(message)s')
+        _stream_formatter = logging.Formatter('%(asctime)s - %(levelname_colored)s - %(name)s - %(message)s')
         LogManager.file_handler.setFormatter(_file_formatter)
         LogManager.stream_handler.setFormatter(_stream_formatter)
 
