@@ -36,7 +36,9 @@ class LoadCollector(ServerEntity):
         #     self.logger.debug(f"pick_lowest_load_service server_name: {split_res[0]}, addr: {_ret}")
         # return _ret
 
+        # todo: del
         await asyncio.sleep(10)
+        self.logger.debug(f"pick_lowest_load_service server_name: fake, addr: fake")
         return "", 1
 
 # if __name__ == "__main__":
