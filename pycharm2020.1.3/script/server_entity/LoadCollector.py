@@ -28,18 +28,18 @@ class LoadCollector(ServerEntity):
 
     @rpc_func
     async def pick_lowest_load_service_addr(self, etcd_tag: str) -> typing.Tuple[str, int]:
-        # _res_list = await async_wrap(lambda: self._redis_cli.zrange(etcd_tag, 0, 0))  # type: typing.List[str]
-        # _ret = None
-        # if _res_list:
-        #     split_res = _res_list[0].split("|")
-        #     _ret = (split_res[1], int(split_res[2]))
-        #     self.logger.debug(f"pick_lowest_load_service server_name: {split_res[0]}, addr: {_ret}")
-        # return _ret
+        _res_list = await async_wrap(lambda: self._redis_cli.zrange(etcd_tag, 0, 0))  # type: typing.List[str]
+        _ret = None
+        if _res_list:
+            split_res = _res_list[0].split("|")
+            _ret = (split_res[1], int(split_res[2]))
+            self.logger.debug(f"pick_lowest_load_service server_name: {split_res[0]}, addr: {_ret}")
+        return _ret
 
-        # todo: del
-        await asyncio.sleep(10)
-        self.logger.debug(f"pick_lowest_load_service server_name: fake, addr: fake")
-        return "", 1
+        # # todo: del
+        # await asyncio.sleep(10)
+        # self.logger.debug(f"pick_lowest_load_service server_name: fake, addr: fake")
+        # return "", 1
 
 # if __name__ == "__main__":
 #     pool = redis.ConnectionPool(host='localhost', port=6379, decode_responses=True)

@@ -32,8 +32,6 @@ etcd_tag = None
 game_json_conf = None
 etcd_service_node = None  # type: typing.Union[ServiceNode, None]
 
-EV_LOOP = None  # type: typing.Union[None, AbstractEventLoop]
-
 server_singletons = {}
 
 
@@ -54,11 +52,14 @@ def get_conn_mgr() -> ConnMgr:
     return get_server_singleton("ConnMgr")
 
 
+_EV_LOOP = None  # type: typing.Union[None, AbstractEventLoop]
+
+
 def get_ev_loop() -> asyncio.AbstractEventLoop:
-    global EV_LOOP
-    if EV_LOOP is None:
+    global _EV_LOOP
+    if _EV_LOOP is None:
         try:
-            EV_LOOP = asyncio.get_running_loop()
+            _EV_LOOP = asyncio.get_running_loop()
         except RuntimeError:
             pass  # 正常情况不可能会发生调用此get_ev_loop比server启动还要早, 所以直接pass
-    return EV_LOOP
+    return _EV_LOOP

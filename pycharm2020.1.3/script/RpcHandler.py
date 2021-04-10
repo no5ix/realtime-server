@@ -42,12 +42,12 @@ class RpcHandler:
         self._timer_hub = TimerHub()
         self._try_connect_times = 0
 
-    @wait_or_not
+    @wait_or_not()
     async def on_conn_close(self):
         # self.fire_all_future_with_result(close_reason)
         if self._conn.is_active():
             await self._handle_create_conn(self._conn.get_addr())
-        self._conn = None
+        # self._conn = None
 
     def fire_all_future_with_result(self, error: str, result=None):
         for _reply_id, _reply_fut_tuple in self._pending_requests.items():
@@ -83,7 +83,7 @@ class RpcHandler:
         except:
             self._logger.log_last_except()
 
-    @wait_or_not
+    @wait_or_not()
     async def request_rpc(
             self,
             rpc_fuc_name: str,
@@ -95,59 +95,62 @@ class RpcHandler:
             rpc_remote_entity_type: typing.Union[None, str] = None,
             ip_port_tuple: typing.Tuple[str, int] = None
     ):
-        try:
-            rpc_fuc_kwargs = {} if rpc_fuc_kwargs is None else rpc_fuc_kwargs
-            if rpc_need_reply:
-                _reply_id = self.get_reply_id()
-                msg = (RPC_TYPE_REQUEST, _reply_id, rpc_remote_entity_type, rpc_fuc_name, rpc_fuc_args, rpc_fuc_kwargs)
-                _reply_fut = gv.get_ev_loop().create_future()
+        rpc_fuc_kwargs = {} if rpc_fuc_kwargs is None else rpc_fuc_kwargs
+        if rpc_need_reply:
+            _reply_id = self.get_reply_id()
+            msg = (RPC_TYPE_REQUEST, _reply_id, rpc_remote_entity_type, rpc_fuc_name, rpc_fuc_args, rpc_fuc_kwargs)
+            _reply_fut = gv.get_ev_loop().create_future()
 
-                def final_fut_cb(fut, rid=_reply_id, cb=rpc_callback):
-                    # self._logger.debug(f"final_fut_cb: rid={rid}")
-                    self._pending_requests.pop(rid, None)
-                    if callable(cb):
-                        cb(*fut.result())
+            def final_fut_cb(fut, rid=_reply_id, cb=rpc_callback):
+                # self._logger.debug(f"final_fut_cb: rid={rid}")
+                self._pending_requests.pop(rid, None)
+                if callable(cb):
+                    cb(*fut.result())
 
-                _reply_fut.add_done_callback(final_fut_cb)
-                self._pending_requests[_reply_id] = (rpc_fuc_name, _reply_fut)
-                await self._send_rpc_msg(msg, ip_port_tuple)
-                try:
-                    return await asyncio.wait_for(asyncio.shield(_reply_fut), timeout=rpc_reply_timeout)
-                except asyncio.exceptions.TimeoutError:
-                    # self._logger.error(f"rpc_fuc_name={rpc_fuc_name}, asyncio.exceptions.TimeoutError")
-                    # _reply_fut.set_exception(e)
-                    # if self._conn is None:
-                    #     self._logger.error(
-                    #         f"request rpc(`{rpc_fuc_name}`) timeout because conn lost, try reconnect ...")
-                    #     return await asyncio.wait_for(asyncio.shield(_reply_fut), timeout=None)
-                    # else:
+            _reply_fut.add_done_callback(final_fut_cb)
+            self._pending_requests[_reply_id] = (rpc_fuc_name, _reply_fut)
+            await self._send_rpc_msg(msg, ip_port_tuple)
+            try:
+                return await asyncio.wait_for(asyncio.shield(_reply_fut), timeout=rpc_reply_timeout)
+            except asyncio.exceptions.TimeoutError:
+                # self._logger.error(f"rpc_fuc_name={rpc_fuc_name}, asyncio.exceptions.TimeoutError")
+                # _reply_fut.set_exception(e)
+                # if self._conn is None:
+                #     self._logger.error(
+                #         f"request rpc(`{rpc_fuc_name}`) timeout because conn lost, try reconnect ...")
+                #     return await asyncio.wait_for(asyncio.shield(_reply_fut), timeout=None)
+                # else:
+                if not _reply_fut.done():
                     _reply_fut.set_result((f"request rpc timeout: {rpc_fuc_name}", None))
-                    return await _reply_fut
-            else:
-                msg = (RPC_TYPE_NOTIFY, rpc_remote_entity_type, rpc_fuc_name, rpc_fuc_args, rpc_fuc_kwargs)
-                await self._send_rpc_msg(msg, ip_port_tuple)
-                return None
-        except:
-            self._logger.log_last_except()
+                return await _reply_fut
+        else:
+            msg = (RPC_TYPE_NOTIFY, rpc_remote_entity_type, rpc_fuc_name, rpc_fuc_args, rpc_fuc_kwargs)
+            await self._send_rpc_msg(msg, ip_port_tuple)
+            return None
 
     # @wait_or_not
     async def _send_rpc_msg(self, msg, ip_port_tuple=None):
-        if self._conn is None:
+        assert ((self._conn is None and ip_port_tuple) or (not self._conn.is_connected()) or self._conn)
+        # if ip_port_tuple:
+        #     _cur_addr = ip_port_tuple
+        # else:
+        #     _cur_addr = self._conn.get_addr()
+        if self._conn is None or not self._conn.is_connected():
             self._msg_buffer.append(msg)
-            print(f"_send_rpc_msg  _try_connect_times={self._try_connect_times}, id(self._conn)= {id(self._conn)}")
+            # print(f"_send_rpc_msg  _try_connect_times={self._try_connect_times}, id(self._conn)= {id(self._conn)}")
             if self._try_connect_times > 0:  # means connecting ...
                 return
-            await self._handle_create_conn(ip_port_tuple)
+            await self._handle_create_conn(ip_port_tuple or self._conn.get_addr())
             return
         self._conn.send_data_and_count(self.do_encode(msg))
 
     # @wait_or_not
     async def _handle_create_conn(self, addr: typing.Tuple[str, int]):
         try:
-            print(f"bbb _try_connect_times={self._try_connect_times}, id(self._conn)= {id(self._conn)}")
+            self._logger.warning(f"bbb _try_connect_times={self._try_connect_times}, id(self._conn)= {id(self._conn)}")
             self._try_connect_times += 1
             self._conn = await ConnMgr.instance().get_conn_by_addr(addr, self)
-            print(f"aaa _try_connect_times={self._try_connect_times}, id(self._conn)= {id(self._conn)}")
+            self._logger.warning(f"aaa _try_connect_times={self._try_connect_times}, id(self._conn)= {id(self._conn)}")
         # except ConnectionRefusedError:
         except Exception as e:
             self._logger.error(str(e))
@@ -169,7 +172,7 @@ class RpcHandler:
                 self._try_connect_times = 0
             return
         else:
-            print(f"rrr _try_connect_times={self._try_connect_times}, id(self._conn)= {id(self._conn)}")
+            self._logger.warning(f"rrr _try_connect_times={self._try_connect_times}, id(self._conn)= {id(self._conn)}")
             self._try_connect_times = 0
             for _msg in self._msg_buffer:
                 self._conn.send_data_and_count(self.do_encode(_msg))
@@ -189,7 +192,8 @@ class RpcHandler:
             return
         return _method_res
 
-    @wait_or_not
+    @wait_or_not(concurrency_limit=200)
+    # @wait_or_not
     async def handle_rpc(self, rpc_msg):
         try:
             _rpc_msg_tuple = self.do_decode(rpc_msg)

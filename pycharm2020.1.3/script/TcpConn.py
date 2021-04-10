@@ -116,7 +116,7 @@ class TcpConn(object):
     # def loop(self):
     #     return asyncio.create_task(self._loop())
 
-    @wait_or_not
+    @wait_or_not()
     async def loop(self):
         while True:
             try:
@@ -149,7 +149,7 @@ class TcpConn(object):
                     ConnectionAbortedError,
                     # ConnectionRefusedError
             ) as e:
-                self.handle_close(f"connection is closed by remote side with {str(e)}")
+                self.handle_close(f"connection is closed by error: {str(e)}")
                 return
             except CancelledError as e:
                 self._logger.error(str(e))  # TODO
@@ -170,7 +170,7 @@ class TcpConn(object):
     def handle_close(self, close_reason: str):
         if not self.is_connected():
             return
-        self._logger.info(close_reason)
+        self._logger.warning(close_reason)
         self.set_connection_state(False)
         self._close_cb()
         # await self._asyncio_writer.drain()

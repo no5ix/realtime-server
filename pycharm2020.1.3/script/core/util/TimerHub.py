@@ -3,7 +3,7 @@ from collections import defaultdict
 import typing
 from time import monotonic_ns, time
 
-from core.util.UtilApi import wait_or_not
+# from core.util.UtilApi import wait_or_not
 
 
 class TimerInfo:
@@ -117,14 +117,13 @@ class TimerHub:
         if self._destroyed:
             return
 
-        @wait_or_not
-        async def repeat_cb_wrapper(ds=delay_second, rc=repeat_count, ris=repeat_interval_sec):
+        def repeat_cb_wrapper(ds=delay_second, rc=repeat_count, ris=repeat_interval_sec):
             if ris is not None:
                 assert (type(ris) in (int, float))
                 ds = ris
             _cb_res = delay_callback()
             if asyncio.iscoroutine(_cb_res):
-                await _cb_res
+                self._ev_loop.create_task(_cb_res)
             if rc == 1:
                 self._handle_disposable_timer(
                     ds, delay_callback, original_key, final_key)
@@ -140,11 +139,10 @@ class TimerHub:
             self, delay_second: typing.Union[int, float],
             delay_callback: typing.Callable, original_key: str = "", final_key: str = ""):
 
-        @wait_or_not
-        async def funeral_cb_wrapper(_ok=original_key, _fk=final_key):
+        def funeral_cb_wrapper(_ok=original_key, _fk=final_key):
             _cb_res = delay_callback()
             if asyncio.iscoroutine(_cb_res):
-                await _cb_res
+                self._ev_loop.create_task(_cb_res)
             # print(f"funeral_cb_wrapper: _ok: {_ok}")
             # print(f"funeral_cb_wrapper: _fk: {_fk}")
             if self._final_key_2_timer_info_map is not None and self._original_key_2_final_key_set_map is not None:
@@ -158,7 +156,7 @@ class TimerHub:
 if __name__ == "__main__":
 
     # hello_str = "hhx"
-    EV_LOOP = asyncio.get_event_loop()
+    _EV_LOOP = asyncio.get_event_loop()
     # # EV_LOOP.call_later(2, partial(print, hello_str))
     # # EV_LOOP.call_later(2, print, hello_str)
     # cur_timer = EV_LOOP.call_later(1, lambda h=hello_str: print(h))
@@ -223,4 +221,4 @@ if __name__ == "__main__":
     # print(f"daffinal: {th._final_key_2_timer_info_map}")
     # th.destroy()
 
-    EV_LOOP.run_forever()
+    _EV_LOOP.run_forever()

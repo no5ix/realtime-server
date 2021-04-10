@@ -15,7 +15,7 @@ import typing
 
 from core.mobilelog.LogManager import LogManager
 from core.tool import incremental_reload
-from core.util.UtilApi import log
+# from core.util.UtilApi import log
 
 
 class CompPuppetTest(Component):
@@ -78,6 +78,17 @@ class CompPuppetTest(Component):
         # print("test_reload  after")
         print(TEST_CONST_STR)
         self.test_reload_impl()
+
+    def log(text):
+        def decorator(func):
+            # @functools.wraps(func)
+            def wrapper(*args, **kw):
+                print('%s %s():' % (text, func.__name__))
+                return func(*args, **kw)
+
+            return wrapper
+
+        return decorator
 
     @log("execute")
     def test_reload_impl(self):

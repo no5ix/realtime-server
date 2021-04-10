@@ -44,8 +44,11 @@ from core.tool import incremental_reload
 class TcpServer:
 
     def __init__(self, server_name, json_conf_path):
-        self._ev_loop = events.new_event_loop()
-        events.set_event_loop(self._ev_loop)
+        self._ev_loop = asyncio.get_event_loop()
+        # print(f"TcpServer._ev_loop is {id(self._ev_loop)=}")
+        self._ev_loop.set_debug(gv.is_dev_version)
+
+        # events.set_event_loop(self._ev_loop)
 
         self._timer_hub = TimerHub()
         # self._conn_mgr = ConnMgr()
@@ -342,7 +345,7 @@ class TcpServer:
 if __name__ == '__main__':
     game_server_name = sys.argv[1]
     server_json_conf_path = r"../bin/win/conf/battle_server.json"
-    tcp_server = TcpServer.instance(game_server_name, server_json_conf_path)
+    tcp_server = TcpServer(game_server_name, server_json_conf_path)
     # TCP_SERVER = tcp_server
     tcp_server.run()
 

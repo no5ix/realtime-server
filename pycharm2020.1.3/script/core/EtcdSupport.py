@@ -185,6 +185,7 @@ class ServiceRegister(EtcdProcessor):
                         lambda: requests.request("PUT", now_url, data=ttl_refresh_data, headers=_HEADER, timeout=2))
                     res = json.loads(r.text)
                     if res.get("action", "") == "set":
+                        self._logger.debug(f"refresh service success: {service_name}: {r.text}, now_url: {now_url}")
                         self._fail_time = 0
                         break
                     else:

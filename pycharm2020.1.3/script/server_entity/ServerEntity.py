@@ -80,12 +80,14 @@ class ServerEntity:
         #         self.logger.error("self._conn is None and ip_port_tuple is None")
         #         return
         #     self._rpc_handler = RpcHandler()
-
-        return self._rpc_handler.request_rpc(
-            rpc_fuc_name, rpc_fuc_args, rpc_fuc_kwargs, rpc_callback, rpc_need_reply, rpc_reply_timeout,
-            rpc_remote_entity_type or self.__class__.__name__, ip_port_tuple
-            # *args, **kwargs
-        )
+        try:
+            return self._rpc_handler.request_rpc(
+                rpc_fuc_name, rpc_fuc_args, rpc_fuc_kwargs, rpc_callback, rpc_need_reply, rpc_reply_timeout,
+                rpc_remote_entity_type or self.__class__.__name__, ip_port_tuple
+                # *args, **kwargs
+            )
+        except:
+            self.logger.log_last_except()
 
     # async def call_server_fuc_with_ip_port(
     #         self, server_ip_port_tuple, method_name, parameters=None,

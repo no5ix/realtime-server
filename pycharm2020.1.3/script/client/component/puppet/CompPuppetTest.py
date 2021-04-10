@@ -52,7 +52,7 @@ class CompPuppetTest(Component):
         print(msg)
         # asyncio.coroutine
 
-    @wait_or_not
+    @wait_or_not()
     async def test_response_rpc(self, msg):
         print("callll test_response_rpc")
 

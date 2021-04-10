@@ -18,12 +18,12 @@ from core.util.TimerHub import TimerHub
 async def tcp_echo_client():
     LogManager.set_log_tag("TcpClient")
     LogManager.set_log_path("../bin/win/log/")
-    # local_server_port_tuple = (8888, 8889, 9000)
-    local_server_port_tuple = (8888,)
+    local_server_port_tuple = (8888, 8889, 9000)
+    # local_server_port_tuple = (8888,)
     port = random.choice(local_server_port_tuple)
     reader, writer = await asyncio.open_connection(
-        '192.168.82.177', port)
-        # '192.168.1.4', port)
+        # '192.168.82.177', port)
+        '192.168.1.4', port)
         # '127.0.0.1', port)
     # peer_name = writer.get_extra_info('peername')
     _ppt = Puppet()
