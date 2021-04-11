@@ -3,6 +3,7 @@ import asyncio
 import functools
 from asyncio import Future
 
+from RpcHandler import rpc_func
 from common.component.Component import Component
 from core.common.RpcMethodArgs import Dict
 from core.common.RpcSupport import rpc_method, CLI_TO_SRV, SRV_TO_CLI
@@ -24,8 +25,9 @@ class CompPuppetTest(Component):
 
     def puppet_chat_to_ppt(self, chat_info):
         print("call puppet_chat_to_ppt")
-        self.call_server_comp_method(
-            self.VAR_NAME, 'puppet_chat_to_ppt', {'p': chat_info})
+        self.remote_comp.puppet_chat_to_ppt(chat_info)
+        # self.call_server_comp_method(
+        #     self.VAR_NAME, 'puppet_chat_to_ppt', {'p': chat_info})
 
     def test_reload(self):
         print("call test_reload")
@@ -39,8 +41,9 @@ class CompPuppetTest(Component):
 
     # @rpc_method(CLIENT_STUB, (Dict('i'),))
     # @rpc_method(CLIENT_STUB, Dict('i'))
-    @rpc_method(SRV_TO_CLI, [Dict('i')])
+    # @rpc_method(SRV_TO_CLI, [Dict('i')])
     # @rpc_method(CLIENT_STUB, {Dict('i')})
+    @rpc_func
     def puppet_chat_from_srv(self, chat_info):
         print(chat_info)
         self._cnt -= 1

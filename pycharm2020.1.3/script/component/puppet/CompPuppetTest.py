@@ -47,14 +47,15 @@ class CompPuppetTest(Component):
     def test_delay_func(self):
         print('test_delay_func')
 
-    @rpc_method(CLI_TO_SRV, (Dict('p'),))
+    # @rpc_method(CLI_TO_SRV, (Dict('p'),))
+    @rpc_func
     def puppet_chat_to_ppt(self, chat_info: typing.Dict):
         # print(chat_info)
         # self._cnt -= 1
         # print("self._cnt:" + str(self._cnt))
         chat_info.update({'cnt': self._cnt})
-
-        self.call_client_comp_method(self.VAR_NAME, 'puppet_chat_from_srv', {'i': chat_info})
+        self.remote_comp.puppet_chat_from_srv(chat_info)
+        # self.call_client_comp_method(self.VAR_NAME, 'puppet_chat_from_srv', {'i': chat_info})
 
     # @rpc_method(CLI_TO_SRV)
 

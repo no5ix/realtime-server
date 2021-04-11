@@ -6,8 +6,8 @@ from core.util.performance.cpu_load_handler import AvgCpuLoad
 from server_entity.ServerEntity import ServerEntity
 
 
-LOAD_REPORT_INTERVAL = 0.01  # todo modify to 8
-# LOAD_REPORT_INTERVAL = 8  # todo modify to 8
+# LOAD_REPORT_INTERVAL = 0.01  # todo modify to 8
+LOAD_REPORT_INTERVAL = 8  # todo modify to 8
 
 
 class LoadReporter(ServerEntity):
@@ -33,7 +33,7 @@ class LoadReporter(ServerEntity):
                     "pick_lowest_load_service_addr",
                     [gv.etcd_tag],
                     # rpc_remote_entity_type="LoadCollector", ip_port_tuple=dispatcher_service_addr
-                    rpc_callback=lambda err, res: print(err, f"pick_lowest_load_service_addr: {res}"),
+                    rpc_callback=lambda err, res: self.logger.info(f"pick_lowest_load_service_addr: {err=} {res=}"),
                     rpc_remote_entity_type="LoadCollector", ip_port_tuple=dispatcher_service_addr
                 )
             else:
