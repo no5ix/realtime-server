@@ -7,6 +7,7 @@ from core.util.UtilApi import async_wrap, Singleton
 from server_entity.ServerEntity import ServerEntity
 import typing
 import redis
+import aioredis  # TODO
 
 
 @Singleton

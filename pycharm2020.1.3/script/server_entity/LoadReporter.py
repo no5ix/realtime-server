@@ -6,8 +6,8 @@ from core.util.performance.cpu_load_handler import AvgCpuLoad
 from server_entity.ServerEntity import ServerEntity
 
 
-# LOAD_REPORT_INTERVAL = 0.01  # todo modify to 8
-LOAD_REPORT_INTERVAL = 8  # todo modify to 8
+LOAD_REPORT_INTERVAL = 0.01  # todo modify to 8
+# LOAD_REPORT_INTERVAL = 8  # todo modify to 8
 
 
 class LoadReporter(ServerEntity):

@@ -249,7 +249,7 @@ class RpcHandler:
                     self._logger.error(f"{_rpc_func_name}: {_error}")
                 #     _reply_fut.set_exception(RpcReplyError(_error))
                 # else:
-                _reply_fut.set_result((_error, _reply_result))
+                _reply_fut.set_result((_error, _reply_result))  # TODO for invalidState ERROR
             elif _rpc_type == RPC_TYPE_HEARTBEAT:
                 # print("remote_heart_beatttttttt")
                 self._conn.remote_heart_beat()

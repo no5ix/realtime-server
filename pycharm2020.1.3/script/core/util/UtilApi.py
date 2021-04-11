@@ -67,45 +67,18 @@ def wait_or_not(concurrency_limit=88):
     def wait_or_not_without_limit(f):
         def _wrapped(*args, **kwargs):
             return gv.get_ev_loop().create_task(f(*args, **kwargs))
-            # if asyncio.iscoroutinefunction(f):
-            #     # is_running = gv.get_ev_loop().is_running()
-            #     # is_closed = gv.get_ev_loop().is_closed()
-            #     return gv.get_ev_loop().create_task(f(*args, **kwargs))
-            # else:
-            #     return gv.get_ev_loop().run_in_executor(None, f, *args, *kwargs)
         return _wrapped
 
     def executor(f):
+        assert(asyncio.iscoroutinefunction(f))
+
         @functools.wraps(f)
         @wait_or_not_without_limit
         async def wrapped(*args, **kwargs):
             async with sem:
-                # _res = f(*args, **kwargs)
-                # if asyncio.iscoroutine(_res):
-                #     return await _res
-                # return _res
-                return f(*args, **kwargs)
+                return await f(*args, **kwargs)
         return wrapped
     return executor
-
-
-# def request_concurrency_limit(limit=3):
-#     # Bind the default event loop
-#     sem = asyncio.BoundedSemaphore(limit)
-#
-#     def executor(func):
-#         @functools.wraps(func)
-#         async def wrapper(*args, **kwargs):
-#             async with sem:
-#                 if asyncio.iscoroutinefunction(func):
-#                     # is_running = gv.get_ev_loop().is_running()
-#                     # is_closed = gv.get_ev_loop().is_closed()
-#                     return await gv.get_ev_loop().create_task(func(*args, **kwargs))
-#                 else:
-#                     return await gv.get_ev_loop().run_in_executor(None, func, *args, *kwargs)
-#
-#         return wrapper
-#     return executor
 
 
 def async_wrap(func: Callable):
@@ -113,6 +86,8 @@ def async_wrap(func: Callable):
     usage: r = await AioApi.async_wrap(lambda: requests.request("GET", 'http://baidu.com', timeout=2))
     lambda关键字不可少
     """
+    if not callable(func):
+        raise Exception(f"{func=} is not callable")
     return gv.get_ev_loop().run_in_executor(None, func)
 
 
