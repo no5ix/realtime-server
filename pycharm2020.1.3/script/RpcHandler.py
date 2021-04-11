@@ -28,6 +28,21 @@ RECONNECT_MAX_TIMES = 6
 RECONNECT_INTERVAL = 0.6  # sec
 
 
+class RpcReplyFuture:
+
+    def __init__(self, rpc_reply_id: int, rpc_func_name: str, fut: futures.Future):
+        self.rpc_reply_id = rpc_reply_id
+        self.rpc_func_name = rpc_func_name
+        self.fut = fut
+
+    def set_error_and_result(self, error_msg: str, result_val):
+        try:
+            self.fut.set_result((error_msg, result_val))
+        except asyncio.InvalidStateError:
+            # 并发情况即使`self.fut`已经done了也无所谓, 不处理即可
+            pass
+
+
 class RpcHandler:
 
     def __init__(
@@ -37,7 +52,7 @@ class RpcHandler:
         self._conn = conn  # type: TcpConn
         self._entity = entity  # type: ServerEntity
         self._next_reply_id = 0
-        self._pending_requests = {}  # type: typing.Dict[int, typing.Tuple[str, futures.Future]]
+        self._pending_requests = {}  # type: typing.Dict[int, RpcReplyFuture]
         self._msg_buffer = []  # type: typing.List[typing.Tuple]
         self._timer_hub = TimerHub()
         self._try_connect_times = 0
@@ -49,11 +64,11 @@ class RpcHandler:
             await self._handle_create_conn(self._conn.get_addr())
         # self._conn = None
 
-    def fire_all_future_with_result(self, error: str, result=None):
-        for _reply_id, _reply_fut_tuple in self._pending_requests.items():
-            # _reply_fut.set_exception(RpcReplyError(error))
-            _reply_fut_tuple[1].set_result((error, result))
-        self._pending_requests.clear()
+    # def fire_all_future_with_result(self, error: str, result=None):
+    #     for _reply_id, _reply_fut_tuple in self._pending_requests.items():
+    #         # _reply_fut.set_exception(RpcReplyError(error))
+    #         _reply_fut_tuple[1].set_result((error, result))
+    #     self._pending_requests.clear()
 
     def set_conn(self, conn):
         self._conn = conn
@@ -108,7 +123,8 @@ class RpcHandler:
                     cb(*fut.result())
 
             _reply_fut.add_done_callback(final_fut_cb)
-            self._pending_requests[_reply_id] = (rpc_fuc_name, _reply_fut)
+            _rpc_reply_fut_obj = RpcReplyFuture(_reply_id, rpc_fuc_name, _reply_fut)
+            self._pending_requests[_reply_id] = _rpc_reply_fut_obj
             await self._send_rpc_msg(msg, ip_port_tuple)
             try:
                 return await asyncio.wait_for(asyncio.shield(_reply_fut), timeout=rpc_reply_timeout)
@@ -120,8 +136,14 @@ class RpcHandler:
                 #         f"request rpc(`{rpc_fuc_name}`) timeout because conn lost, try reconnect ...")
                 #     return await asyncio.wait_for(asyncio.shield(_reply_fut), timeout=None)
                 # else:
-                if not _reply_fut.done():
-                    _reply_fut.set_result((f"request rpc timeout: {rpc_fuc_name}", None))
+                # if not _reply_fut.done():
+                _rpc_reply_fut_obj.set_error_and_result(
+                    f"request rpc timeout, {rpc_fuc_name=}, {rpc_fuc_args=}, {rpc_fuc_kwargs=}",
+                    None)
+                # try:
+                #     _reply_fut.set_result((f"request rpc timeout: {rpc_fuc_name}", None))
+                # except asyncio.InvalidStateError:
+                #     pass
                 return await _reply_fut
         else:
             msg = (RPC_TYPE_NOTIFY, rpc_remote_entity_type, rpc_fuc_name, rpc_fuc_args, rpc_fuc_kwargs)
@@ -161,14 +183,13 @@ class RpcHandler:
                 self._logger.error(f"try {RECONNECT_MAX_TIMES} times , still can't connect remote addr: {addr}")
                 for _msg in self._msg_buffer:
                     if _msg[0] == RPC_TYPE_REQUEST:
-                        # self._pending_requests.get
                         _reply_id = _msg[1]
                         if _reply_id not in self._pending_requests:
                             continue
                         self._logger.warning(
                             f"fire pending requests future, rpc func: {_msg[3]}, reply_id: {_reply_id}")
-                        self._pending_requests[_reply_id][1].set_result(
-                            (f"cant connect remote addr: {addr}", None))
+                        self._pending_requests[_reply_id].set_error_and_result(
+                            f"cant connect remote addr: {addr}", None)
                 self._try_connect_times = 0
             return
         else:
@@ -241,15 +262,15 @@ class RpcHandler:
             #     pass
             elif _rpc_type == RPC_TYPE_REPLY:
                 _reply_id, _error, _reply_result = _rpc_msg_tuple[-3:]
-                _rpc_func_name, _reply_fut = self._pending_requests.get(_reply_id, (None, None))
-                if _reply_fut is None:
+                _rpc_reply_fut_obj = self._pending_requests.get(_reply_id, None)
+                if _rpc_reply_fut_obj is None:
                     # self._logger.warning(f"{_rpc_func_name} _reply_future already fired or timeout")
                     return
                 if _error:
-                    self._logger.error(f"{_rpc_func_name}: {_error}")
+                    self._logger.error(f"{_rpc_reply_fut_obj.rpc_func_name=}: {_error=}")
                 #     _reply_fut.set_exception(RpcReplyError(_error))
                 # else:
-                _reply_fut.set_result((_error, _reply_result))  # TODO for invalidState ERROR
+                _rpc_reply_fut_obj.set_error_and_result(_error, _reply_result)
             elif _rpc_type == RPC_TYPE_HEARTBEAT:
                 # print("remote_heart_beatttttttt")
                 self._conn.remote_heart_beat()
