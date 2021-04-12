@@ -26,7 +26,8 @@ class CompPuppetTest(Component):
         super().__init__()
         self._cnt = random.randint(0, 10)
 
-    @rpc_method(CLI_TO_SRV, (Str('i'),))
+    # @rpc_method(CLI_TO_SRV, (Str('i'),))
+    @rpc_func
     def puppet_chat_to_channel(self, chat_info):
         # import sys
         # isin = "component.puppet.CompPuppetTest" in sys.modules  # TODO del
@@ -41,7 +42,8 @@ class CompPuppetTest(Component):
         # loop.call_later(4, self.test_delay_func)
         # chat_info.update({'cnt': self._cnt})
 
-        self.call_client_comp_method(self.VAR_NAME, 'puppet_chat_from_srv', {'i': {"lk": 8}})
+        # self.call_client_comp_method(self.VAR_NAME, 'puppet_chat_from_srv', {'i': {"lk": 8}})
+        self.remote_comp.puppet_chat_from_srv({"lk": 8})
         print("call client puppet_chat_from_srv")
 
     def test_delay_func(self):
@@ -52,7 +54,7 @@ class CompPuppetTest(Component):
     def puppet_chat_to_ppt(self, chat_info: typing.Dict):
         # print(chat_info)
         # self._cnt -= 1
-        # print("self._cnt:" + str(self._cnt))
+        print("self._cnt:" + str(self._cnt))
         chat_info.update({'cnt': self._cnt})
         self.remote_comp.puppet_chat_from_srv(chat_info)
         # self.call_client_comp_method(self.VAR_NAME, 'puppet_chat_from_srv', {'i': chat_info})

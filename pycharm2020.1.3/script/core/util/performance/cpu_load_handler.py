@@ -47,12 +47,14 @@ class AvgCpuLoad:
             repeat_count=-1)
 
     def get_avg_cpu_by_period(self, period_second: int):
+        _len = len(self._cpu_load_deque)
+        if _len == 0:
+            return 0
         _sum_load = 0
         for _i, _load in enumerate(self._cpu_load_deque):
             _sum_load += _load
             if _i >= period_second - 1:
                 break
-        _len = len(self._cpu_load_deque)
         _ret = _sum_load / (_len if _len < period_second else period_second)
         return _ret
 

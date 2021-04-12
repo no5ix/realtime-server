@@ -13,17 +13,42 @@ from core.mobilelog.LogManager import LogManager
 # from core.util import UtilApi
 from core.util import UtilApi
 from core.util.TimerHub import TimerHub
+from server_entity.ServerEntity import ServerEntity
 
 
 async def tcp_echo_client():
     LogManager.set_log_tag("TcpClient")
     LogManager.set_log_path("../bin/win/log/")
-    # local_server_port_tuple = (8888, 8889, 9000)
+
+    json_conf_path = r"../bin/win/conf/battle_server.json"
+    UtilApi.parse_json_conf(json_conf_path)
+    rand_dispatcher_service_addr = None
+    for _svr_name, _svr_info in gv.game_json_conf.items():
+        if type(_svr_info) is dict and _svr_info.get("etcd_tag", None) == "dispatcher_service":
+            rand_dispatcher_service_addr = (_svr_info["ip"], _svr_info["port"])
+            break
+
+    temp_se = ServerEntity()
+    _err, _res = await temp_se.call_remote_method(
+        "pick_lowest_load_service_addr",
+        # [gv.etcd_tag],
+        ["battle_server"],
+        # rpc_remote_entity_type="LoadCollector", ip_port_tuple=dispatcher_service_addr
+        # rpc_callback=lambda err, res: self.logger.info(f"pick_lowest_load_service_addr: {err=} {res=}"),
+        rpc_remote_entity_type="LoadCollector", ip_port_tuple=rand_dispatcher_service_addr)
+    if _err:
+        print(f"{_err=}")
+        return
+
+
+    # local_server_port_tuple = (8888, 8889, 9000, 9001, 9002, 9003, 9004)
     local_server_port_tuple = (8888,)
     port = random.choice(local_server_port_tuple)
+
     reader, writer = await asyncio.open_connection(
+        _res[0], _res[1])
         # '192.168.82.177', port)
-        '192.168.1.4', port)
+        # '192.168.1.4', port)
         # '127.0.0.1', port)
     # peer_name = writer.get_extra_info('peername')
     _ppt = Puppet()
@@ -56,7 +81,7 @@ async def tcp_echo_client():
 
     # _cnt = 1000000
     # while _cnt > 0:
-    # _ppt.CompPuppetTest.puppet_chat_to_ppt({'content': 'puppet_chat_to_ppt'})
+    _ppt.CompPuppetTest.puppet_chat_to_ppt({'content': 'puppet_chat_to_ppt'})
         # _cnt -= 1
         # print(_cnt)
         # await asyncio.sleep(1)

@@ -5,6 +5,7 @@ from typing import Callable
 # from TcpServer import ev_loop
 # import typing
 from common import gv
+from core.util import EnhancedJson
 
 
 class Singleton:
@@ -58,7 +59,7 @@ class Singleton:
         return isinstance(inst, self._decorated_cls)
 
 
-def wait_or_not(concurrency_limit=88):
+def wait_or_not(concurrency_limit=888):
     # Bind the default event loop
     # print("a bousennnnnn")
     sem = asyncio.BoundedSemaphore(concurrency_limit)
@@ -96,6 +97,8 @@ def get_global_entity_mailbox(entity_unique_name):
 
 
 def get_service_info(service_name):
+    if gv.etcd_service_node is None:
+        return None
     return gv.etcd_service_node.get_service_info(service_name)
 
 
@@ -113,3 +116,23 @@ def unregister_entity_from_etcd(name):
     pass
 
 
+def parse_json_conf(json_conf_path):
+    # with open(r"../bin/win/conf/battle_server.json") as conf_file:
+    with open(json_conf_path) as conf_file:
+        # data = file.read()
+        # _name = r'../bin/win/conf/battle_server.json'
+        # file_name = r'D:\Documents\github\realtime-server\pycharm2020.1.3\bin\win\conf\battle_server.json'
+        # file_name = r'C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\bin\win\conf\battle_server.json'
+        # conf_file = open(file_name)
+        json_conf = EnhancedJson.load(conf_file)
+        # conf_file.close()
+        gv.game_json_conf = json_conf
+
+    # file_name = r'../bin/win/conf/battle_server.json'
+    # # file_name = r'D:\Documents\github\realtime-server\pycharm2020.1.3\bin\win\conf\battle_server.json'
+    # # file_name = r'C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\bin\win\conf\battle_server.json'
+    # conf_file = open(file_name)
+    # json_conf = json.load(conf_file)
+    # conf_file.close()
+    # gr.game_json_conf = json_conf
+    return json_conf

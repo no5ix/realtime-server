@@ -1,6 +1,7 @@
 # from RpcHandler import RpcReplyError
 import asyncio
 import functools
+import time
 from asyncio import Future
 
 from RpcHandler import rpc_func
@@ -45,10 +46,10 @@ class CompPuppetTest(Component):
     # @rpc_method(CLIENT_STUB, {Dict('i')})
     @rpc_func
     def puppet_chat_from_srv(self, chat_info):
-        print(chat_info)
+        print(f"{chat_info=}, {time.time()=}")
         self._cnt -= 1
         if self._cnt > 0:
-            self.puppet_chat_to_ppt({'content': 'puppet_chat_to_ppt'})
+            self.remote_comp.puppet_chat_to_ppt({'content': 'puppet_chat_to_ppt'})
 
     async def test_timer_async(self, msg):
         await asyncio.sleep(1)

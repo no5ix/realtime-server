@@ -243,7 +243,7 @@ class ServiceFinder(EtcdProcessor):
         self._watch_index = 0  # 当前watch所在的index
 
     async def start(self):
-        await asyncio.sleep(5)
+        # await asyncio.sleep(5)
         if await self._init_info():
             self._logger.debug(
                 "init service info from etcd success, will going to watch, at etcd index -> %s", self._etcd_index)

@@ -18,6 +18,7 @@ import typing
 
 # from core.util.performance.cpu_load_handler import CpuLoad
 from ConnMgr import ConnMgr
+from core.util import UtilApi
 from core.util.UtilApi import wait_or_not, Singleton
 
 if typing.TYPE_CHECKING:
@@ -29,7 +30,7 @@ from core.EtcdSupport import ServiceNode
 # from core.common import EntityScanner
 # from core.common.EntityFactory import EntityFactory
 from core.mobilelog.LogManager import LogManager
-from core.util import EnhancedJson
+# from core.util import EnhancedJson
 from core.util.TimerHub import TimerHub
 # from util.SingletonEntityManager import SingletonEntityManager
 from common import gv
@@ -44,6 +45,8 @@ from core.tool import incremental_reload
 class TcpServer:
 
     def __init__(self, server_name, json_conf_path):
+        UtilApi.parse_json_conf(json_conf_path)
+
         self._ev_loop = asyncio.get_event_loop()
         # print(f"TcpServer._ev_loop is {id(self._ev_loop)=}")
         self._ev_loop.set_debug(gv.is_dev_version)
@@ -57,7 +60,6 @@ class TcpServer:
         self._etcd_service_node = None  # type: typing.Optional[ServiceNode]
         # self.register_entities()
 
-        self._parse_json_conf(json_conf_path)
         gv.game_server_name = server_name
 
         LogManager.set_log_tag(gv.game_server_name)
@@ -134,28 +136,6 @@ class TcpServer:
             entity_classes = entity_classes.items()
             for cls_name, cls in entity_classes:
                 EntityFactory.instance().register_entity(cls_name, cls)
-
-    @staticmethod
-    def _parse_json_conf(json_conf_path):
-        # with open(r"../bin/win/conf/battle_server.json") as conf_file:
-        with open(json_conf_path) as conf_file:
-            # data = file.read()
-            # _name = r'../bin/win/conf/battle_server.json'
-            # file_name = r'D:\Documents\github\realtime-server\pycharm2020.1.3\bin\win\conf\battle_server.json'
-            # file_name = r'C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\bin\win\conf\battle_server.json'
-            # conf_file = open(file_name)
-            json_conf = EnhancedJson.load(conf_file)
-            # conf_file.close()
-            gv.game_json_conf = json_conf
-
-        # file_name = r'../bin/win/conf/battle_server.json'
-        # # file_name = r'D:\Documents\github\realtime-server\pycharm2020.1.3\bin\win\conf\battle_server.json'
-        # # file_name = r'C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\bin\win\conf\battle_server.json'
-        # conf_file = open(file_name)
-        # json_conf = json.load(conf_file)
-        # conf_file.close()
-        # gr.game_json_conf = json_conf
-        return json_conf
 
     # def forward(self, addr, message):
     #     for _addr, _tcp_conn in self._addr_2_conn_map.items():

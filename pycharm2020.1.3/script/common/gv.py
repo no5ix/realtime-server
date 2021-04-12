@@ -29,7 +29,7 @@ game_server_name = None
 etcd_tag = None
 # game_server_name = 'battle_1'
 
-game_json_conf = None
+game_json_conf = None  # type: typing.Union[typing.Dict, None]
 etcd_service_node = None  # type: typing.Union[ServiceNode, None]
 
 server_singletons = {}

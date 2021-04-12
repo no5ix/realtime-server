@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import asyncio
 # import collections
+import functools
 import typing
 from asyncio import futures
 
@@ -169,10 +170,12 @@ class RpcHandler:
     # @wait_or_not
     async def _handle_create_conn(self, addr: typing.Tuple[str, int]):
         try:
-            self._logger.warning(f"bbb _try_connect_times={self._try_connect_times}, id(self._conn)= {id(self._conn)}")
+            if self._try_connect_times > 0:
+                self._logger.warning(f"bbb _try_connect_times={self._try_connect_times}, id(self._conn)= {id(self._conn)}")
             self._try_connect_times += 1
             self._conn = await ConnMgr.instance().get_conn_by_addr(addr, self)
-            self._logger.warning(f"aaa _try_connect_times={self._try_connect_times}, id(self._conn)= {id(self._conn)}")
+            if self._try_connect_times > 1:
+                self._logger.warning(f"aaa _try_connect_times={self._try_connect_times}, id(self._conn)= {id(self._conn)}")
         # except ConnectionRefusedError:
         except Exception as e:
             self._logger.error(str(e))
@@ -193,7 +196,8 @@ class RpcHandler:
                 self._try_connect_times = 0
             return
         else:
-            self._logger.warning(f"rrr _try_connect_times={self._try_connect_times}, id(self._conn)= {id(self._conn)}")
+            if self._try_connect_times > 1:
+                self._logger.warning(f"rrr _try_connect_times={self._try_connect_times}, id(self._conn)= {id(self._conn)}")
             self._try_connect_times = 0
             for _msg in self._msg_buffer:
                 self._conn.send_data_and_count(self.do_encode(_msg))
@@ -213,8 +217,7 @@ class RpcHandler:
             return
         return _method_res
 
-    @wait_or_not(concurrency_limit=200)
-    # @wait_or_not
+    @wait_or_not()
     async def handle_rpc(self, rpc_msg):
         try:
             _rpc_msg_tuple = self.do_decode(rpc_msg)
@@ -296,8 +299,11 @@ class RpcHandler:
 
 
 def rpc_func(func):
+
+    @functools.wraps(func)
     def wrapper(*args, **kwargs):
         # func_for_reload = func
         return func(*args, **kwargs)
+
     wrapper.is_rpc_func = True
     return wrapper
