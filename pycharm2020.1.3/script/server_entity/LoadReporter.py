@@ -1,3 +1,4 @@
+from RpcHandler import rpc_func
 from common import service_const, gv
 # from common.service_const import DISPATCHER_SERVICE
 from core.util import UtilApi
@@ -32,15 +33,17 @@ class LoadReporter(ServerEntity):
                         self._avg_load.get_avg_cpu_by_period(10)],
                     rpc_remote_entity_type="LoadCollector", ip_port_tuple=dispatcher_service_addr)
                 self.logger.info(f"report_server_load: {self._avg_load.get_avg_cpu_by_period(10)}")
-
-                # todo: del
-                self.call_remote_method(
-                    "pick_lowest_load_service_addr",
-                    [gv.etcd_tag],
-                    # rpc_remote_entity_type="LoadCollector", ip_port_tuple=dispatcher_service_addr
-                    rpc_callback=lambda err, res: self.logger.info(f"pick_lowest_load_service_addr: {err=} {res=}"),
-                    rpc_remote_entity_type="LoadCollector", ip_port_tuple=dispatcher_service_addr)
             else:
                 self.logger.error("can not find dispatcher_service_addr")
         except:
             self.logger.log_last_except()
+
+    # todo: del
+    @rpc_func
+    def report_load_reply(self):
+        self.call_remote_method(
+            "pick_lowest_load_service_addr",
+            [gv.etcd_tag],
+            # rpc_remote_entity_type="LoadCollector", ip_port_tuple=dispatcher_service_addr
+            rpc_callback=lambda err, res: self.logger.info(f"pick_lowest_load_service_addr: {err=} {res=}"),
+            rpc_remote_entity_type="LoadCollector")
