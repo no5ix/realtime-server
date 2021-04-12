@@ -28,12 +28,12 @@ class LoadCollector(ServerEntity):
         # self.timer_hub.call_later(2, lambda: self.pick_lowest_load_service_addr(etcd_tag))
 
     @rpc_func
-    async def pick_lowest_load_service_addr(self, etcd_tag: str) -> typing.Tuple[str, int]:
+    async def pick_lowest_load_service_addr(self, etcd_tag: str) -> typing.Tuple[str, str, int]:
         _res_list = await async_wrap(lambda: self._redis_cli.zrange(etcd_tag, 0, 0))  # type: typing.List[str]
         _ret = None
         if _res_list:
             split_res = _res_list[0].split("|")
-            _ret = (split_res[1], int(split_res[2]))
+            _ret = (split_res[0], split_res[1], int(split_res[2]))
             self.logger.debug(f"pick_lowest_load_service server_name: {split_res[0]}, addr: {_ret}")
         return _ret
 

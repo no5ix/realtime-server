@@ -8,7 +8,7 @@ from asyncio.exceptions import CancelledError
 
 from common import gv
 from core.util.TimerHub import TimerHub
-from core.util.UtilApi import wait_or_not
+from core.util.UtilApi import wait_or_not, async_lock
 
 if typing.TYPE_CHECKING:
     from server_entity.ServerEntity import ServerEntity
@@ -240,7 +240,8 @@ class TcpConn(object):
     # def do_encode(message):
     #     return MsgpackSupport.encode(message)
 
-    def send_data_and_count(self, data: str):
+    # @async_lock
+    async def send_data_and_count(self, data: bytes):
         self._send_cnt += 1
         data_len = len(data) if data else 0
         header_data = struct.pack("i", data_len)

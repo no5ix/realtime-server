@@ -1,7 +1,7 @@
 import asyncio
 import random
-# import sys
-from asyncio import events
+import sys
+# from asyncio import events
 
 import TcpConn
 from client.Puppet import Puppet
@@ -16,9 +16,11 @@ from core.util.TimerHub import TimerHub
 from server_entity.ServerEntity import ServerEntity
 
 
-async def tcp_echo_client():
-    LogManager.set_log_tag("TcpClient")
+async def tcp_echo_client(cli_index):
+    LogManager.set_log_tag("tcp_client_" + str(cli_index))
     LogManager.set_log_path("../bin/win/log/")
+
+    cli_log = LogManager.get_logger()
 
     json_conf_path = r"../bin/win/conf/battle_server.json"
     UtilApi.parse_json_conf(json_conf_path)
@@ -37,7 +39,7 @@ async def tcp_echo_client():
         # rpc_callback=lambda err, res: self.logger.info(f"pick_lowest_load_service_addr: {err=} {res=}"),
         rpc_remote_entity_type="LoadCollector", ip_port_tuple=rand_dispatcher_service_addr)
     if _err:
-        print(f"{_err=}")
+        cli_log.error(f"{_err=}")
         return
 
 
@@ -45,8 +47,9 @@ async def tcp_echo_client():
     local_server_port_tuple = (8888,)
     port = random.choice(local_server_port_tuple)
 
+    cli_log.debug(f"bs: {_res}")
     reader, writer = await asyncio.open_connection(
-        _res[0], _res[1])
+        _res[1], _res[2])
         # '192.168.82.177', port)
         # '192.168.1.4', port)
         # '127.0.0.1', port)
@@ -120,4 +123,4 @@ if __name__ == '__main__':
     # events.set_event_loop(_ev_loop)
     # _ev_loop.run_until_complete(tcp_echo_client())
     # _ev_loop.run_forever()
-    asyncio.run(tcp_echo_client())
+    asyncio.run(tcp_echo_client(sys.argv[1]))

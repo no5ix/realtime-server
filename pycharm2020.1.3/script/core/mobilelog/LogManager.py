@@ -278,6 +278,9 @@ class LogManager:
         # #     return logger
 
 
+ORIGINAL_RECORD_FACTORY = logging.getLogRecordFactory()
+
+
 class AsyncLogger:
 
     def __init__(self, logger_name):
@@ -294,7 +297,7 @@ class AsyncLogger:
         # fh.setLevel(logging.DEBUG)
         # formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - [%(filename)s:%(lineno)d] : %(message)s')
         # add 'levelname_c' attribute to log resords
-        orig_record_factory = logging.getLogRecordFactory()
+
         log_colors = {
             logging.DEBUG: "\033[1;34m",  # blue
             logging.INFO: "\033[1;32m",  # green
@@ -304,7 +307,7 @@ class AsyncLogger:
         }
 
         def record_factory(*args, **kwargs):
-            record = orig_record_factory(*args, **kwargs)
+            record = ORIGINAL_RECORD_FACTORY(*args, **kwargs)
             record.levelname_colored = "{}{}{}".format(
                 log_colors[record.levelno], record.levelname, "\033[0m")
             return record

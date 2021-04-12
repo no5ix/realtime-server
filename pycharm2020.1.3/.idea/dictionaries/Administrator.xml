@@ -2,9 +2,11 @@
   <dictionary name="Administrator">
     <words>
       <w>Msgpack</w>
+      <w>asctime</w>
       <w>asyncio</w>
       <w>etcd</w>
       <w>gevent</w>
+      <w>levelname</w>
       <w>peername</w>
       <w>regist</w>
       <w>unregist</w>

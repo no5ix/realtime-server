@@ -28,6 +28,8 @@ RPC_TYPE_HEARTBEAT = 3
 RECONNECT_MAX_TIMES = 6
 RECONNECT_INTERVAL = 0.6  # sec
 
+REQUEST_RPC_TIMEOUT = 2  # sec
+
 
 class RpcReplyFuture:
 
@@ -62,7 +64,7 @@ class RpcHandler:
     async def on_conn_close(self):
         # self.fire_all_future_with_result(close_reason)
         if self._conn.is_active():
-            await self._handle_create_conn(self._conn.get_addr())
+            await self._handle_create_conn()
         # self._conn = None
 
     # def fire_all_future_with_result(self, error: str, result=None):
@@ -107,7 +109,7 @@ class RpcHandler:
             rpc_fuc_kwargs: typing.Union[None, typing.Dict] = None,
             rpc_callback: typing.Callable = None,
             rpc_need_reply: bool = True,
-            rpc_reply_timeout: typing.Union[int, float] = 2,
+            rpc_reply_timeout: typing.Union[int, float] = REQUEST_RPC_TIMEOUT,
             rpc_remote_entity_type: typing.Union[None, str] = None,
             ip_port_tuple: typing.Tuple[str, int] = None
     ):
@@ -163,13 +165,17 @@ class RpcHandler:
             # print(f"_send_rpc_msg  _try_connect_times={self._try_connect_times}, id(self._conn)= {id(self._conn)}")
             if self._try_connect_times > 0:  # means connecting ...
                 return
-            await self._handle_create_conn(ip_port_tuple or self._conn.get_addr())
+            await self._handle_create_conn(ip_port_tuple)
             return
-        self._conn.send_data_and_count(self.do_encode(msg))
+        await self._conn.send_data_and_count(self.do_encode(msg))
 
     # @wait_or_not
-    async def _handle_create_conn(self, addr: typing.Tuple[str, int]):
+    async def _handle_create_conn(self, addr: typing.Tuple[str, int] = None):
         try:
+            if self._conn:
+                if not self._conn.is_active():
+                    return
+                addr = self._conn.get_addr()
             if self._try_connect_times > 0:
                 self._logger.warning(f"bbb _try_connect_times={self._try_connect_times}, id(self._conn)= {id(self._conn)}")
             self._try_connect_times += 1
@@ -200,7 +206,7 @@ class RpcHandler:
                 self._logger.warning(f"rrr _try_connect_times={self._try_connect_times}, id(self._conn)= {id(self._conn)}")
             self._try_connect_times = 0
             for _msg in self._msg_buffer:
-                self._conn.send_data_and_count(self.do_encode(_msg))
+                await self._conn.send_data_and_count(self.do_encode(_msg))
             self._msg_buffer.clear()
 
     @staticmethod
@@ -213,8 +219,8 @@ class RpcHandler:
         _method_res = _method(*_method_args, **_method_kwargs)
         if asyncio.iscoroutine(_method_res):
             _method_res = await _method_res
-        if _method_res is None:
-            return
+        # if _method_res is None:
+        #     return
         return _method_res
 
     @wait_or_not()

@@ -59,6 +59,17 @@ class Singleton:
         return isinstance(inst, self._decorated_cls)
 
 
+def async_lock(f):
+
+    lock = asyncio.Lock()
+
+    @functools.wraps(f)
+    async def _wrapped(*args, **kwargs):
+        async with lock:
+            return await f(*args, **kwargs)
+    return _wrapped
+
+
 def wait_or_not(concurrency_limit=888):
     # Bind the default event loop
     # print("a bousennnnnn")
@@ -66,6 +77,7 @@ def wait_or_not(concurrency_limit=888):
     # print(f"b bousennnnnn{id(sem._loop)=}")
 
     def wait_or_not_without_limit(f):
+        @functools.wraps(f)
         def _wrapped(*args, **kwargs):
             return gv.get_ev_loop().create_task(f(*args, **kwargs))
         return _wrapped
