@@ -35,6 +35,7 @@ async def tcp_echo_client(cli_index):
         "pick_lowest_load_service_addr",
         # [gv.etcd_tag],
         ["battle_server"],
+        rpc_reply_timeout=None,
         # rpc_remote_entity_type="LoadCollector", ip_port_tuple=dispatcher_service_addr
         # rpc_callback=lambda err, res: self.logger.info(f"pick_lowest_load_service_addr: {err=} {res=}"),
         rpc_remote_entity_type="LoadCollector", ip_port_tuple=rand_dispatcher_service_addr)

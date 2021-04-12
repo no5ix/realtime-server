@@ -6,7 +6,7 @@ from __future__ import annotations
 
 import typing
 # if typing.TYPE_CHECKING:
-from RpcHandler import RpcHandler
+import RpcHandler
 
 # from TcpConn import TcpConn
 # from common import gr
@@ -32,7 +32,7 @@ class ServerEntity:
         # save_time = self.get_persistent_time()
 
         # self._conn = None
-        self._rpc_handler = RpcHandler(entity=self)
+        self._rpc_handler = RpcHandler.RpcHandler(entity=self)
         self.timer_hub = TimerHub()
 
     def set_rpc_handler(self, rpc_handler):
@@ -71,7 +71,7 @@ class ServerEntity:
             rpc_fuc_kwargs: typing.Union[None, typing.Dict] = None,
             rpc_callback: typing.Callable = None,
             rpc_need_reply: bool = True,
-            rpc_reply_timeout: typing.Union[int, float] = 2,
+            rpc_reply_timeout: typing.Union[None, int, float] = RpcHandler.REQUEST_RPC_TIMEOUT,
             rpc_remote_entity_type: typing.Union[None, str] = None,
             ip_port_tuple: typing.Tuple[str, int] = None
     ):

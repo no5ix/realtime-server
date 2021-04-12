@@ -6,6 +6,8 @@ import functools
 import typing
 from asyncio import futures
 
+import time
+
 from ConnMgr import ConnMgr
 from core.util.TimerHub import TimerHub
 from core.util.UtilApi import wait_or_not
@@ -28,7 +30,7 @@ RPC_TYPE_HEARTBEAT = 3
 RECONNECT_MAX_TIMES = 6
 RECONNECT_INTERVAL = 0.6  # sec
 
-REQUEST_RPC_TIMEOUT = 2  # sec
+REQUEST_RPC_TIMEOUT = 3  # sec
 
 
 class RpcReplyFuture:
@@ -109,7 +111,7 @@ class RpcHandler:
             rpc_fuc_kwargs: typing.Union[None, typing.Dict] = None,
             rpc_callback: typing.Callable = None,
             rpc_need_reply: bool = True,
-            rpc_reply_timeout: typing.Union[int, float] = REQUEST_RPC_TIMEOUT,
+            rpc_reply_timeout: typing.Union[None, int, float] = REQUEST_RPC_TIMEOUT,  # None for no timeout
             rpc_remote_entity_type: typing.Union[None, str] = None,
             ip_port_tuple: typing.Tuple[str, int] = None
     ):
@@ -130,8 +132,10 @@ class RpcHandler:
             self._pending_requests[_reply_id] = _rpc_reply_fut_obj
             await self._send_rpc_msg(msg, ip_port_tuple)
             try:
+                # print(f"deaaaaaaa before{time.time()=}")
                 return await asyncio.wait_for(asyncio.shield(_reply_fut), timeout=rpc_reply_timeout)
             except asyncio.exceptions.TimeoutError:
+                # print(f"afterrrr {time.time()=}")
                 # self._logger.error(f"rpc_fuc_name={rpc_fuc_name}, asyncio.exceptions.TimeoutError")
                 # _reply_fut.set_exception(e)
                 # if self._conn is None:
@@ -167,7 +171,7 @@ class RpcHandler:
                 return
             await self._handle_create_conn(ip_port_tuple)
             return
-        await self._conn.send_data_and_count(self.do_encode(msg))
+        self._conn.send_data_and_count(self.do_encode(msg))
 
     # @wait_or_not
     async def _handle_create_conn(self, addr: typing.Tuple[str, int] = None):
@@ -180,6 +184,7 @@ class RpcHandler:
                 self._logger.warning(f"bbb _try_connect_times={self._try_connect_times}, id(self._conn)= {id(self._conn)}")
             self._try_connect_times += 1
             self._conn = await ConnMgr.instance().get_conn_by_addr(addr, self)
+#             # print(f"{self._conn=}")
             if self._try_connect_times > 1:
                 self._logger.warning(f"aaa _try_connect_times={self._try_connect_times}, id(self._conn)= {id(self._conn)}")
         # except ConnectionRefusedError:
@@ -206,7 +211,9 @@ class RpcHandler:
                 self._logger.warning(f"rrr _try_connect_times={self._try_connect_times}, id(self._conn)= {id(self._conn)}")
             self._try_connect_times = 0
             for _msg in self._msg_buffer:
-                await self._conn.send_data_and_count(self.do_encode(_msg))
+                # print(f"send before{time.time()=}")
+                self._conn.send_data_and_count(self.do_encode(_msg))
+                # print(f"send after{time.time()=}")
             self._msg_buffer.clear()
 
     @staticmethod

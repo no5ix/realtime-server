@@ -241,7 +241,8 @@ class TcpConn(object):
     #     return MsgpackSupport.encode(message)
 
     # @async_lock
-    async def send_data_and_count(self, data: bytes):
+    # async def send_data_and_count(self, data: bytes):
+    def send_data_and_count(self, data: bytes):
         self._send_cnt += 1
         data_len = len(data) if data else 0
         header_data = struct.pack("i", data_len)
