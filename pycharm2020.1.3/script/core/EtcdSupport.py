@@ -178,7 +178,7 @@ class ServiceRegister(EtcdProcessor):
         ttl_refresh_data = urllib.parse.urlencode({"ttl": _KEY_TIME_OUT, "refresh": True})
         while self.check_ok():
             # self._stop_event.wait(random.randint(_TTL_INTERVAL, _TTL_INTERVAL + 10))
-            await asyncio.sleep(random.randint(_TTL_INTERVAL, _TTL_INTERVAL + 10))
+            await asyncio.sleep(random.randint(_TTL_INTERVAL, _TTL_INTERVAL + 10))  # TODO: revert
             while self.check_ok():
                 try:
                     now_url = self._get_url(service_name)
@@ -197,12 +197,12 @@ class ServiceRegister(EtcdProcessor):
 
                     res = json.loads(r.text)
                     if res.get("action", "") == "set":
-                        self._logger.debug(f"refresh service success: {service_name}: {r.text}, now_url: {now_url}")
+                        self._logger.debug(f"{time.time()=}, refresh service success: {service_name}: {r.text}, now_url: {now_url}")
                         self._fail_time = 0
                         break
                     else:
                         self._fail_time += 1
-                        self._logger.error(f"refresh service {service_name} error: {r.text}, now_url: {now_url}")
+                        self._logger.error(f"{time.time()=}, refresh service {service_name} error: {r.text}, now_url: {now_url}")
                 except:
                     self._fail_time += 1
                     self._logger.log_last_except()
@@ -379,8 +379,10 @@ class ServiceFinder(EtcdProcessor):
         if self._watch_index:
             now_url += "&waitIndex=" + str(self._watch_index + 1)
             # self.logger.debug(f"waiting _watch_process_impl2 {now_url}")
-
+        # self._logger.debug("bbb ttt test wait longpoll")  # TODO: DEL
         r = await UtilApi.async_wrap(lambda: requests.request("GET", now_url))
+        # self._logger.debug("bafter ttt test wait longpoll")  # TODO: DEL
+
         res = json.loads(r.text)
         action = res.get("action", "")
         key_path = res.get("node", {}).get("key", "")

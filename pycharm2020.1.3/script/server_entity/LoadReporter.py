@@ -1,3 +1,5 @@
+import random
+
 from RpcHandler import rpc_func
 from common import service_const, gv
 # from common.service_const import DISPATCHER_SERVICE
