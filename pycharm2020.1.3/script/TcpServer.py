@@ -168,7 +168,7 @@ class TcpServer:
     #         _conn = self._add_conn(TcpConn.ROLE_TYPE_ACTIVE, writer, reader, rpc_handler)
     #     return _conn
 
-    async def _handle_client_connected(self, reader, writer):
+    def _handle_client_connected(self, reader, writer):
         # self._add_conn(TcpConn.ROLE_TYPE_PASSIVE, writer, reader)
         ConnMgr.instance().add_conn(TcpConn.ROLE_TYPE_PASSIVE, writer, reader)
         addr = writer.get_extra_info('peername')  # type: typing.Tuple[str, int]

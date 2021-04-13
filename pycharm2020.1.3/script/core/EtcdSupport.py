@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import collections
 
+import aiohttp
 import requests
 import asyncio
 
@@ -19,12 +20,15 @@ import json
 import random
 
 _WATCH_TIMEOUT = 60                             # watch执行的超时时间
+# _WATCH_TIMEOUT = 0.5                             # watch执行的超时时间  # TODO: del
 _GET_TIMEOUT = 5                                # 获取节点值或者refresh ttl的超时
 _MAX_FAIL_TIME = 10                             # get 或者 regist, refresh ttl 的时候最多的失败尝试次数
 
 
 _KEY_TIME_OUT = 180                             # key超时时间
 _TTL_INTERVAL = 100                             # ttl refresh间隔时间
+# _KEY_TIME_OUT = 2                             # key超时时间  # TODO: del
+# _TTL_INTERVAL = 1                             # ttl refresh间隔时间  # TODO: del
 _TTL_RETRY = 2                                  # ttl刷新失败之后重新尝试的延迟间隔
 
 
@@ -179,6 +183,8 @@ class ServiceRegister(EtcdProcessor):
         while self.check_ok():
             # self._stop_event.wait(random.randint(_TTL_INTERVAL, _TTL_INTERVAL + 10))
             await asyncio.sleep(random.randint(_TTL_INTERVAL, _TTL_INTERVAL + 10))  # TODO: revert
+            # await asyncio.sleep(random.randint(_TTL_INTERVAL, _TTL_INTERVAL + 1))  # TODO: revert
+            # await asyncio.sleep(_TTL_INTERVAL)  # TODO: revert
             while self.check_ok():
                 try:
                     now_url = self._get_url(service_name)
@@ -380,49 +386,74 @@ class ServiceFinder(EtcdProcessor):
             now_url += "&waitIndex=" + str(self._watch_index + 1)
             # self.logger.debug(f"waiting _watch_process_impl2 {now_url}")
         # self._logger.debug("bbb ttt test wait longpoll")  # TODO: DEL
-        r = await UtilApi.async_wrap(lambda: requests.request("GET", now_url))
-        # self._logger.debug("bafter ttt test wait longpoll")  # TODO: DEL
 
-        res = json.loads(r.text)
-        action = res.get("action", "")
-        key_path = res.get("node", {}).get("key", "")
-        etcd_modify_index = res.get("node", {}).get("modifiedIndex", 0)
-        if etcd_modify_index:
-            self._watch_index = etcd_modify_index
-        if action in ("create", "set"):
-            """key的创建"""
-            if key_path.startswith(_MOBILE_SERVICE_PREFIX):
-                service_name, address = self._get_service_node_info(key_path)
-                self._logger.debug(
-                    "recv watch %s service node info--> %s: %s - [%s]",
-                    action, service_name, address, self._watch_index)
-                self._add_service_info(service_name, address)
-            elif key_path.startswith(_NAME_ENTITY_PREFIX):
-                self._logger.debug("recv watch %s entity info -> %s", action, res)
-                self._process_add_entity_info(res.get("node", {}))
-        elif action in ("expire", "delete"):
-            """key超时销毁或删除"""
-            if key_path.startswith(_MOBILE_SERVICE_PREFIX):
-                service_name, address = self._get_service_node_info(key_path)
-                self._logger.debug(
-                    "recv watch %s, info--> %s: %s - [%s]", action, service_name, address, self._watch_index)
-                self._delete_service_info(service_name, address)
-            elif key_path.startswith(_NAME_ENTITY_PREFIX):
-                self._logger.debug("recv watch %s entity info -> %s", action, res)
-                self._process_delete_enttiy_info(key_path)
-        elif res.get("errorCode", 0) == 401:
-            """
-            当前etcd的watch index已经失效了，也就是index已经落后当前etcd服务器的index超过了1000次更改
-            由于现在是全量更新，所以这种情况出现的可能性应该很小很小，除非同时启动或者停止大量的服务，不过如果
-            出现了这种情况，还是重置一下数据吧
-            """
-            self._logger.debug("recv watch index out of date, %s", r.text)
-            if not await self._init_info():
-                self._logger.error("reset etcd data error, will stop")
-                return
-        else:
-            self._logger.error("recv unknown watch info, %s", r.text)
-        self._fail_time = 0
+        # r = await UtilApi.async_wrap(lambda: requests.request("GET", now_url))
+
+        #############################
+        async with aiohttp.ClientSession() as session:
+            async with session.get(now_url) as response:
+                # print("Status:", response.status)
+                # print("Content-type:", response.headers['content-type'])
+
+                html = await response.text()
+                # print("Body:", html[:15], "...")
+
+                ####################
+
+                r = html
+
+                # self._logger.debug("bafter ttt test wait longpoll")  # TODO: DEL
+                # return
+                # print(r.text)
+                # return  # TODO: DEL yes
+                # raise asyncio.TimeoutError  # TODO: no
+
+                res = json.loads(r)
+                # res = json.loads(r.text)
+
+                action = res.get("action", "")
+                key_path = res.get("node", {}).get("key", "")
+                etcd_modify_index = res.get("node", {}).get("modifiedIndex", 0)
+                if etcd_modify_index:
+                    self._watch_index = etcd_modify_index
+                # return  # TODO: DEL no
+
+                if action in ("create", "set"):
+                    """key的创建"""
+                    if key_path.startswith(_MOBILE_SERVICE_PREFIX):
+                        # return  # TODO: DEL no
+
+                        service_name, address = self._get_service_node_info(key_path)
+                        self._logger.debug(
+                            "recv watch %s service node info--> %s: %s - [%s]",
+                            action, service_name, address, self._watch_index)
+                        self._add_service_info(service_name, address)
+                    elif key_path.startswith(_NAME_ENTITY_PREFIX):
+                        self._logger.debug("recv watch %s entity info -> %s", action, res)
+                        self._process_add_entity_info(res.get("node", {}))
+                elif action in ("expire", "delete"):
+                    """key超时销毁或删除"""
+                    if key_path.startswith(_MOBILE_SERVICE_PREFIX):
+                        service_name, address = self._get_service_node_info(key_path)
+                        self._logger.debug(
+                            "recv watch %s, info--> %s: %s - [%s]", action, service_name, address, self._watch_index)
+                        self._delete_service_info(service_name, address)
+                    elif key_path.startswith(_NAME_ENTITY_PREFIX):
+                        self._logger.debug("recv watch %s entity info -> %s", action, res)
+                        self._process_delete_enttiy_info(key_path)
+                elif res.get("errorCode", 0) == 401:
+                    """
+                    当前etcd的watch index已经失效了，也就是index已经落后当前etcd服务器的index超过了1000次更改
+                    由于现在是全量更新，所以这种情况出现的可能性应该很小很小，除非同时启动或者停止大量的服务，不过如果
+                    出现了这种情况，还是重置一下数据吧
+                    """
+                    self._logger.debug("recv watch index out of date, %s", r.text)
+                    if not await self._init_info():
+                        self._logger.error("reset etcd data error, will stop")
+                        return
+                else:
+                    self._logger.error("recv unknown watch info, %s", r.text)
+                self._fail_time = 0
 
     async def _watch_process(self):
         """
@@ -440,6 +471,7 @@ class ServiceFinder(EtcdProcessor):
                 await asyncio.wait_for(
                     self._watch_process_impl(),
                     random.randint(_WATCH_TIMEOUT, _WATCH_TIMEOUT + 10))
+                    # _WATCH_TIMEOUT)  # TODO: revert
             # except gevent.Timeout, e:
             except asyncio.TimeoutError:
                 # if e is now_timeout:

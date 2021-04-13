@@ -6,6 +6,7 @@ from typing import Callable
 # import typing
 from common import gv
 from core.util import EnhancedJson
+from concurrent.futures.thread import ThreadPoolExecutor
 
 
 class Singleton:
@@ -94,13 +95,20 @@ def wait_or_not(concurrency_limit=888):
     return executor
 
 
-def async_wrap(func: Callable):
+# _async_wrap_tp_executor = ThreadPoolExecutor()
+
+
+def async_wrap(func: Callable):  # 貌似和long polling 不和, 不适合用在 cpu bound 之处
     """
     usage: r = await AioApi.async_wrap(lambda: requests.request("GET", 'http://baidu.com', timeout=2))
     lambda关键字不可少
     """
     if not callable(func):
         raise Exception(f"{func=} is not callable")
+    # dv_loop = gv.get_ev_loop()
+    # print(f"{id(gv.get_ev_loop())=}")
+    # print(f"{(gv.get_ev_loop()._default_executor)=}")
+    # print(f"{id(gv.get_ev_loop()._default_executor)=}")
     return gv.get_ev_loop().run_in_executor(None, func)
 
 
