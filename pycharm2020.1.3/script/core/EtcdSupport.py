@@ -6,6 +6,8 @@ import asyncio
 
 import typing
 
+import time
+
 from core.util import UtilApi
 # from ..distserver.game import GameServerRepo
 from common import gv
@@ -180,9 +182,19 @@ class ServiceRegister(EtcdProcessor):
             while self.check_ok():
                 try:
                     now_url = self._get_url(service_name)
-                    self._logger.debug(f"refresh service {service_name}, now_url: {now_url}")
+                    self._logger.debug(f"outside, {time.time()=}, refresh service {service_name}, now_url: {now_url}")
+
+                    def request_etcd_put():
+                        self._logger.debug(f"inside before, {time.time()=}, refresh service {service_name}, now_url: {now_url}")
+                        req_res = requests.request("PUT", now_url, data=ttl_refresh_data, headers=_HEADER, timeout=2)
+                        self._logger.debug(
+                            f"inside after, {time.time()=}, refresh service {service_name}, now_url: {now_url}")
+                        return req_res
+
                     r = await UtilApi.async_wrap(
-                        lambda: requests.request("PUT", now_url, data=ttl_refresh_data, headers=_HEADER, timeout=2))
+                        # lambda: requests.request("PUT", now_url, data=ttl_refresh_data, headers=_HEADER, timeout=2))
+                        request_etcd_put)  # TODO: sometime PUT ERROR
+
                     res = json.loads(r.text)
                     if res.get("action", "") == "set":
                         self._logger.debug(f"refresh service success: {service_name}: {r.text}, now_url: {now_url}")
@@ -486,7 +498,7 @@ class ServiceNode(object):
     def __init__(self, etcd_address_list, my_address, service_module_dict):
         self._logger = LogManager.get_logger("ServiceNode")
         self._register = ServiceRegister(etcd_address_list, my_address, service_module_dict)
-        self._logger.debug("we have create ServiceRegister, wait 5 seconds")
+        # self._logger.debug("we have create ServiceRegister, wait 5 seconds")
         # gevent.sleep(5)
         self._finder = ServiceFinder(etcd_address_list)
         self._logger.debug("we have create ServiceFinder")

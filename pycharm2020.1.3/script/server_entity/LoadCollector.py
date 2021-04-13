@@ -22,7 +22,8 @@ class LoadCollector(ServerEntity):
 
     @rpc_func
     def report_load(self, etcd_tag, server_name, ip, port, load):
-        self.logger.debug(f"_etcd_tag: {etcd_tag} server_name: {server_name} load: {load}")
+        # self.logger.debug(f"_etcd_tag: {etcd_tag} server_name: {server_name} load: {load}")
+        print(f"_etcd_tag: {etcd_tag} server_name: {server_name} load: {load}")  # TODO: DEL
         # self._pipe.zadd(_etcd_tag, {server_name: load})
         async_wrap(lambda: self._redis_cli.zadd(etcd_tag, {"|".join([server_name, ip, str(port)]): load}))
         # self.call_remote_method("report_load_pingpong_test")

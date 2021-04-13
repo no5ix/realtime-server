@@ -17,8 +17,8 @@ class LoadReporter(ServerEntity):
     def __init__(self):
         super().__init__()
         self._avg_load = AvgCpuLoad()
-        # self.timer_hub.call_later(LOAD_REPORT_INTERVAL, self.report_load, repeat_count=-1)
-        self.timer_hub.call_later(LOAD_REPORT_INTERVAL, self.report_load, repeat_count=8)  # TODO: del
+        self.timer_hub.call_later(LOAD_REPORT_INTERVAL, self.report_load, repeat_count=-1)
+        # self.timer_hub.call_later(LOAD_REPORT_INTERVAL, self.report_load, repeat_count=8)  # TODO: del
 
     def report_load(self):
         try:
@@ -34,7 +34,7 @@ class LoadReporter(ServerEntity):
                         self._avg_load.get_avg_cpu_by_period(10)],
                     rpc_remote_entity_type="LoadCollector", ip_port_tuple=dispatcher_service_addr)
                 # self.logger.info(f"report_server_load: {self._avg_load.get_avg_cpu_by_period(10)}")
-                print(f"report_server_load: {self._avg_load.get_avg_cpu_by_period(10)}")
+                print(f"report_server_load: {self._avg_load.get_avg_cpu_by_period(10)}")  # TODO: DEL
             else:
                 self.logger.error("can not find dispatcher_service_addr")
         except:
