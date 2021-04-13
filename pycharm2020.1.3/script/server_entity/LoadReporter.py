@@ -33,7 +33,8 @@ class LoadReporter(ServerEntity):
                     [gv.etcd_tag, gv.game_server_name, gv.local_ip, gv.local_port,
                         self._avg_load.get_avg_cpu_by_period(10)],
                     rpc_remote_entity_type="LoadCollector", ip_port_tuple=dispatcher_service_addr)
-                self.logger.info(f"report_server_load: {self._avg_load.get_avg_cpu_by_period(10)}")
+                # self.logger.info(f"report_server_load: {self._avg_load.get_avg_cpu_by_period(10)}")
+                print(f"report_server_load: {self._avg_load.get_avg_cpu_by_period(10)}")
             else:
                 self.logger.error("can not find dispatcher_service_addr")
         except:
@@ -46,7 +47,8 @@ class LoadReporter(ServerEntity):
             "pick_lowest_load_service_addr",
             [gv.etcd_tag],
             # rpc_remote_entity_type="LoadCollector", ip_port_tuple=dispatcher_service_addr
-            rpc_callback=lambda err, res: self.logger.info(f"pick_lowest_load_service_addr: {err=} {res=}"),
+            # rpc_callback=lambda err, res: self.logger.info(f"pick_lowest_load_service_addr: {err=} {res=}"),
+            rpc_callback=lambda err, res: print(f"pick_lowest_load_service_addr: {err=} {res=}"),
             rpc_remote_entity_type="LoadCollector")
         self.report_load()
 

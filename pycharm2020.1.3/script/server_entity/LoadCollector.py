@@ -35,7 +35,8 @@ class LoadCollector(ServerEntity):
         if _res_list:
             split_res = _res_list[0].split("|")
             _ret = (split_res[0], split_res[1], int(split_res[2]))
-            self.logger.debug(f"pick_lowest_load_service server_name: {split_res[0]}, addr: {_ret}")
+            # self.logger.debug(f"pick_lowest_load_service server_name: {split_res[0]}, addr: {_ret}")
+            print(f"pick_lowest_load_service server_name: {split_res[0]}, addr: {_ret}")
         return _ret
 
         # # todo: del
