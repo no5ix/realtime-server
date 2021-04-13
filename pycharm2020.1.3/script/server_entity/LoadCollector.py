@@ -25,8 +25,7 @@ class LoadCollector(ServerEntity):
         self.logger.debug(f"_etcd_tag: {etcd_tag} server_name: {server_name} load: {load}")
         # self._pipe.zadd(_etcd_tag, {server_name: load})
         async_wrap(lambda: self._redis_cli.zadd(etcd_tag, {"|".join([server_name, ip, str(port)]): load}))
-        # self.timer_hub.call_later(2, lambda: self.pick_lowest_load_service_addr(etcd_tag))
-        self.call_remote_method("report_load_reply")
+        # self.call_remote_method("report_load_pingpong_test")
 
     @rpc_func
     async def pick_lowest_load_service_addr(self, etcd_tag: str) -> typing.Tuple[str, str, int]:

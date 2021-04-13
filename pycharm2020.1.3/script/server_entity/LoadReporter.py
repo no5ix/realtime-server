@@ -42,7 +42,7 @@ class LoadReporter(ServerEntity):
 
     # todo: del
     @rpc_func
-    def report_load_reply(self):
+    def report_load_pingpong_test(self):
         self.call_remote_method(
             "pick_lowest_load_service_addr",
             [gv.etcd_tag],
