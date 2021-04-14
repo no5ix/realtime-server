@@ -4,6 +4,8 @@ import functools
 from typing import Callable
 # from TcpServer import ev_loop
 # import typing
+import aiohttp
+
 from common import gv
 # from core.mobilelog.LogManager import LogManager
 from core.util import EnhancedJson
@@ -119,6 +121,21 @@ def async_wrap(func: Callable):  # TODO: 貌似和long polling 不和, 不适合
     # print(f"{(gv.get_ev_loop()._default_executor)=}")
     # print(f"{id(gv.get_ev_loop()._default_executor)=}")
     return gv.get_ev_loop().run_in_executor(None, func)
+
+
+async def async_http_requests(method: str, url: str, session: aiohttp.ClientSession = None, **kwargs) -> (str, dict):
+    method = method.lower()
+    assert(method in ("get", "put", "post", "delete"))
+
+    async def _async_http_requests_impl(_method, _url, _session, **_kwargs):
+        async with getattr(_session, _method)(_url, **_kwargs) as response:  # type: aiohttp.ClientResponse
+            return await response.text(), response.headers
+
+    if session is None:
+        async with aiohttp.ClientSession() as session:
+            return await _async_http_requests_impl(method, url, session, **kwargs)
+    else:
+        return await _async_http_requests_impl(method, url, session, **kwargs)
 
 
 def get_global_entity_mailbox(entity_unique_name):

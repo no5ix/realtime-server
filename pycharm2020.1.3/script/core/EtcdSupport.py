@@ -55,6 +55,7 @@ class EtcdProcessor(object):
         self._stop = False
         self._etcd_address_list = self._form_etcd_url(etcd_address_list)         # 构建etcd服务器列表
         self._server_len = len(self._etcd_address_list) - 1
+        self._session = None  # type: typing.Optional[aiohttp.ClientSession]
 
     def _get_server_info(self):
         return random.choice(self._etcd_address_list)
@@ -96,10 +97,11 @@ class ServiceRegister(EtcdProcessor):
         # await asyncio.gather(*self._threads)
 
     # async def _dead_check_process(self):
-    async def start(self):
+    async def start(self, session: aiohttp.ClientSession):
         # for thread in self._threads:
         #     thread.join()
         # self._die_event.set()
+        self._session = session
         await asyncio.gather(*self._threads)
 
     # def wait_dead(self, timeout):
@@ -130,10 +132,10 @@ class ServiceRegister(EtcdProcessor):
         #         try:
         #             now_url = self._get_server_info() + _MOBILE_SERVICE_DOMAIN + service_name
         #             r = await AioApi.async_wrap(lambda: requests.request("GET", now_url, timeout=2))
-        #             res = json.loads(r.text)
+        #             res = json.loads(r_text)
         #             self._fail_time = 0
         #             if res.get("action") == "get" and res.get("node", {}).get("nodes", []):
-        #                 self.logger.debug("service : %s not stateless, but exist, %s", service_name, r.text)
+        #                 self.logger.debug("service : %s not stateless, but exist, %s", service_name, r_text)
         #                 return False
         #             break
         #         except:
@@ -151,17 +153,20 @@ class ServiceRegister(EtcdProcessor):
                 #     now_url = self._get_url(service_name) + "?prevExist=false"
                 # r = requests.request("PUT", now_url, data=data, headers=_HEADER, timeout=2)
                 self._logger.debug(f"_do_regist: now_url: {now_url}")
-                r = await UtilApi.async_wrap(
-                    lambda: requests.request("PUT", now_url, data=data, headers=_HEADER, timeout=2))
-                res = json.loads(r.text)
+                # r = await UtilApi.async_wrap(
+                #     lambda: requests.request("PUT", now_url, data=data, headers=_HEADER, timeout=2))
+                r_text, _ = await UtilApi.async_http_requests(
+                    "PUT", now_url, data=data, headers=_HEADER, timeout=2, session=self._session)
+
+                res = json.loads(r_text)
                 if res.get("action") in ("create", "set"):
-                    self._logger.debug("regist service : %s success, %s", service_name, r.text)
+                    self._logger.debug("regist service : %s success, %s", service_name, r_text)
                     self._fail_time = 0
                     return True
                 else:
                     self._fail_time += 1
                     self._logger.error(
-                        "regist service : %s error: %s, fail time: %d", service_name, r.text, self._fail_time)
+                        "regist service : %s error: %s, fail time: %d", service_name, r_text, self._fail_time)
             except:
                 self._fail_time += 1
                 self._logger.error("regist service : %s error", service_name)
@@ -190,25 +195,28 @@ class ServiceRegister(EtcdProcessor):
                     now_url = self._get_url(service_name)
                     self._logger.debug(f"outside, {time.time()=}, refresh service {service_name}, now_url: {now_url}")
 
-                    def request_etcd_put():
-                        self._logger.debug(f"inside before, {time.time()=}, refresh service {service_name}, now_url: {now_url}")
-                        req_res = requests.request("PUT", now_url, data=ttl_refresh_data, headers=_HEADER, timeout=2)
-                        self._logger.debug(
-                            f"inside after, {time.time()=}, refresh service {service_name}, now_url: {now_url}")
-                        return req_res
+                    # def request_etcd_put():
+                    #     self._logger.debug(f"inside before, {time.time()=}, refresh service {service_name}, now_url: {now_url}")
+                    #     req_res = requests.request("PUT", now_url, data=ttl_refresh_data, headers=_HEADER, timeout=2)
+                    #     self._logger.debug(
+                    #         f"inside after, {time.time()=}, refresh service {service_name}, now_url: {now_url}")
+                    #     return req_res
+                    #
+                    # r = await UtilApi.async_wrap(
+                    #     # lambda: requests.request("PUT", now_url, data=ttl_refresh_data, headers=_HEADER, timeout=2))
+                    #     request_etcd_put)  # TODO: sometime PUT ERROR
 
-                    r = await UtilApi.async_wrap(
-                        # lambda: requests.request("PUT", now_url, data=ttl_refresh_data, headers=_HEADER, timeout=2))
-                        request_etcd_put)  # TODO: sometime PUT ERROR
+                    r_text, _ = await UtilApi.async_http_requests(
+                        "PUT", now_url, data=ttl_refresh_data, headers=_HEADER, timeout=2, session=self._session)
 
-                    res = json.loads(r.text)
+                    res = json.loads(r_text)
                     if res.get("action", "") == "set":
-                        self._logger.debug(f"{time.time()=}, refresh service success: {service_name}: {r.text}, now_url: {now_url}")
+                        self._logger.debug(f"{time.time()=}, refresh service success: {service_name}: {r_text}, now_url: {now_url}")
                         self._fail_time = 0
                         break
                     else:
                         self._fail_time += 1
-                        self._logger.error(f"{time.time()=}, refresh service {service_name} error: {r.text}, now_url: {now_url}")
+                        self._logger.error(f"{time.time()=}, refresh service {service_name} error: {r_text}, now_url: {now_url}")
                 except:
                     self._fail_time += 1
                     self._logger.log_last_except()
@@ -219,15 +227,17 @@ class ServiceRegister(EtcdProcessor):
             """在退出的时候，将注册的信息删除掉，如果删除失败，那就靠ttl自动删除吧"""
             try:
                 self._logger.debug(f"try delete service: {service_name}")
-                r = await UtilApi.async_wrap(
-                    lambda: requests.request("DELETE", self._get_url(service_name)))
-                res = json.loads(r.text)
+                # r = await UtilApi.async_wrap(
+                #     lambda: requests.request("DELETE", self._get_url(service_name)))
+                r_text, _ = await UtilApi.async_http_requests(
+                    "DELETE", self._get_url(service_name), session=self._session)
+                res = json.loads(r_text)
                 if res.get("action", "") == "delete":
                     self._logger.debug("delete service : %s success", service_name)
                     break
                 else:
                     self._logger.error(
-                        f"delete service {service_name} error: {r.text}, now_url: {self._get_url(service_name)}")
+                        f"delete service {service_name} error: {r_text}, now_url: {self._get_url(service_name)}")
             except:
                 self._logger.log_last_except()
                 # if GameServerRepo.game_event_callback is not None:
@@ -238,9 +248,9 @@ class ServiceRegister(EtcdProcessor):
         if not self._stop:
             self._stop = True
             # self._stop_event.set()
-            for thread in self._threads:
-                thread.join()
-            self._threads = []
+            # for thread in self._threads:
+            #     thread.join()
+            # self._threads = []
 
 
 class ServiceFinder(EtcdProcessor):
@@ -260,7 +270,8 @@ class ServiceFinder(EtcdProcessor):
         self._etcd_index = 0  # 最近一次get获取的etcd服务器所处的index
         self._watch_index = 0  # 当前watch所在的index
 
-    async def start(self):
+    async def start(self, session: aiohttp.ClientSession):
+        self._session = session
         # await asyncio.sleep(5)
         if await self._init_info():
             self._logger.debug(
@@ -339,10 +350,11 @@ class ServiceFinder(EtcdProcessor):
             try:
                 now_url = self._get_server_info() + _ETCD_KEY_PREFIX + "?recursive=true"
                 self._logger.debug(f"_init_info, now_url: {now_url}")
-                r = await UtilApi.async_wrap(lambda: requests.request("GET", now_url))
-                res = json.loads(r.text)
+                # r = await UtilApi.async_wrap(lambda: requests.request("GET", now_url))
+                r_text, r_headers = await UtilApi.async_http_requests("GET", now_url, session=self._session)
+                res = json.loads(r_text)
                 self._fail_time = 0
-                self._etcd_index = int(r.headers["x-etcd-index"])
+                self._etcd_index = int(r_headers["x-etcd-index"])
                 self._watch_index = self._etcd_index
                 self._services = collections.defaultdict(set)  # service的信息重置
                 self._es = dict()            # MobileServer注册的Entity信息重置
@@ -379,8 +391,10 @@ class ServiceFinder(EtcdProcessor):
     async def _watch_process_impl(self):
         # self.logger.debug(f"_watch_process_impl1, now_url: {self._get_server_info() + _ETCD_KEY_PREFIX}")
 
-        r = await UtilApi.async_wrap(lambda: requests.request("GET", self._get_server_info() + _ETCD_KEY_PREFIX))
-        self._etcd_index = int(r.headers["x-etcd-index"])
+        # r = await UtilApi.async_wrap(lambda: requests.request("GET", self._get_server_info() + _ETCD_KEY_PREFIX))
+        _, r_headers = await UtilApi.async_http_requests(
+            "GET", self._get_server_info() + _ETCD_KEY_PREFIX, session=self._session)
+        self._etcd_index = int(r_headers["x-etcd-index"])
         now_url = self._get_server_info() + _ETCD_KEY_PREFIX + "?wait=true&recursive=true"
         if self._watch_index:
             now_url += "&waitIndex=" + str(self._watch_index + 1)
@@ -388,72 +402,53 @@ class ServiceFinder(EtcdProcessor):
         # self._logger.debug("bbb ttt test wait longpoll")  # TODO: DEL
 
         # r = await UtilApi.async_wrap(lambda: requests.request("GET", now_url))
+        r_text, _ = await UtilApi.async_http_requests("GET", now_url, session=self._session)
 
-        #############################
-        async with aiohttp.ClientSession() as session:
-            async with session.get(now_url) as response:
-                # print("Status:", response.status)
-                # print("Content-type:", response.headers['content-type'])
+        res = json.loads(r_text)
 
-                html = await response.text()
-                # print("Body:", html[:15], "...")
+        action = res.get("action", "")
+        key_path = res.get("node", {}).get("key", "")
+        etcd_modify_index = res.get("node", {}).get("modifiedIndex", 0)
+        if etcd_modify_index:
+            self._watch_index = etcd_modify_index
+        # return  # TODO: DEL no
 
-                ####################
-
-                r = html
-
-                # self._logger.debug("bafter ttt test wait longpoll")  # TODO: DEL
-                # return
-                # print(r.text)
-                # return  # TODO: DEL yes
-                # raise asyncio.TimeoutError  # TODO: no
-
-                res = json.loads(r)
-                # res = json.loads(r.text)
-
-                action = res.get("action", "")
-                key_path = res.get("node", {}).get("key", "")
-                etcd_modify_index = res.get("node", {}).get("modifiedIndex", 0)
-                if etcd_modify_index:
-                    self._watch_index = etcd_modify_index
+        if action in ("create", "set"):
+            """key的创建"""
+            if key_path.startswith(_MOBILE_SERVICE_PREFIX):
                 # return  # TODO: DEL no
 
-                if action in ("create", "set"):
-                    """key的创建"""
-                    if key_path.startswith(_MOBILE_SERVICE_PREFIX):
-                        # return  # TODO: DEL no
-
-                        service_name, address = self._get_service_node_info(key_path)
-                        self._logger.debug(
-                            "recv watch %s service node info--> %s: %s - [%s]",
-                            action, service_name, address, self._watch_index)
-                        self._add_service_info(service_name, address)
-                    elif key_path.startswith(_NAME_ENTITY_PREFIX):
-                        self._logger.debug("recv watch %s entity info -> %s", action, res)
-                        self._process_add_entity_info(res.get("node", {}))
-                elif action in ("expire", "delete"):
-                    """key超时销毁或删除"""
-                    if key_path.startswith(_MOBILE_SERVICE_PREFIX):
-                        service_name, address = self._get_service_node_info(key_path)
-                        self._logger.debug(
-                            "recv watch %s, info--> %s: %s - [%s]", action, service_name, address, self._watch_index)
-                        self._delete_service_info(service_name, address)
-                    elif key_path.startswith(_NAME_ENTITY_PREFIX):
-                        self._logger.debug("recv watch %s entity info -> %s", action, res)
-                        self._process_delete_enttiy_info(key_path)
-                elif res.get("errorCode", 0) == 401:
-                    """
-                    当前etcd的watch index已经失效了，也就是index已经落后当前etcd服务器的index超过了1000次更改
-                    由于现在是全量更新，所以这种情况出现的可能性应该很小很小，除非同时启动或者停止大量的服务，不过如果
-                    出现了这种情况，还是重置一下数据吧
-                    """
-                    self._logger.debug("recv watch index out of date, %s", r.text)
-                    if not await self._init_info():
-                        self._logger.error("reset etcd data error, will stop")
-                        return
-                else:
-                    self._logger.error("recv unknown watch info, %s", r.text)
-                self._fail_time = 0
+                service_name, address = self._get_service_node_info(key_path)
+                self._logger.debug(
+                    "recv watch %s service node info--> %s: %s - [%s]",
+                    action, service_name, address, self._watch_index)
+                self._add_service_info(service_name, address)
+            elif key_path.startswith(_NAME_ENTITY_PREFIX):
+                self._logger.debug("recv watch %s entity info -> %s", action, res)
+                self._process_add_entity_info(res.get("node", {}))
+        elif action in ("expire", "delete"):
+            """key超时销毁或删除"""
+            if key_path.startswith(_MOBILE_SERVICE_PREFIX):
+                service_name, address = self._get_service_node_info(key_path)
+                self._logger.debug(
+                    "recv watch %s, info--> %s: %s - [%s]", action, service_name, address, self._watch_index)
+                self._delete_service_info(service_name, address)
+            elif key_path.startswith(_NAME_ENTITY_PREFIX):
+                self._logger.debug("recv watch %s entity info -> %s", action, res)
+                self._process_delete_enttiy_info(key_path)
+        elif res.get("errorCode", 0) == 401:
+            """
+            当前etcd的watch index已经失效了，也就是index已经落后当前etcd服务器的index超过了1000次更改
+            由于现在是全量更新，所以这种情况出现的可能性应该很小很小，除非同时启动或者停止大量的服务，不过如果
+            出现了这种情况，还是重置一下数据吧
+            """
+            self._logger.debug("recv watch index out of date, %s", r_text)
+            if not await self._init_info():
+                self._logger.error("reset etcd data error, will stop")
+                return
+        else:
+            self._logger.error("recv unknown watch info, %s", r_text)
+        self._fail_time = 0
 
     async def _watch_process(self):
         """
@@ -541,12 +536,14 @@ class ServiceNode(object):
         # await self._register.start()
         # await asyncio.sleep(5)
         # await self._finder.start()
+        async with aiohttp.ClientSession() as session:
+            # html = await fetch(session, 'http://python.org')
 
-        register_task = asyncio.create_task(self._register.start())
-        finder_task = asyncio.create_task(self._finder.start())
-        await register_task
-        # await asyncio.sleep(5)
-        await finder_task
+            register_task = asyncio.create_task(self._register.start(session))
+            finder_task = asyncio.create_task(self._finder.start(session))
+            await register_task
+            # await asyncio.sleep(5)
+            await finder_task
 
     def stop(self):
         self._register.stop()
