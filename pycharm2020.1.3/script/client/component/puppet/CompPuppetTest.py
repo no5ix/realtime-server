@@ -17,7 +17,7 @@ class CompPuppetTest(Component):
 
     def __init__(self):
         super().__init__()
-        self._cnt = 1000000
+        self._cnt = 1
 
     def puppet_chat_to_channel(self, chat_info):
         print("call puppet_chat_to_channel")
@@ -46,7 +46,7 @@ class CompPuppetTest(Component):
     # @rpc_method(CLIENT_STUB, {Dict('i')})
     @rpc_func
     def puppet_chat_from_srv(self, chat_info):
-        print(f"{chat_info=}, {time.time()=}")
+        print(f"call puppet_chat_from_srv {chat_info=}, {time.time()=}")
         self._cnt -= 1
         if self._cnt > 0:
             self.remote_comp.puppet_chat_to_ppt({'content': 'puppet_chat_to_ppt'})

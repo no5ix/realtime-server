@@ -61,5 +61,8 @@ def get_ev_loop() -> asyncio.AbstractEventLoop:
         try:
             _EV_LOOP = asyncio.get_running_loop()
         except RuntimeError:
-            pass  # 正常情况不可能会发生调用此get_ev_loop比server启动还要早, 所以直接pass
+            # pass  # 正常情况不可能会发生调用此get_ev_loop比server启动还要早
+            _EV_LOOP = asyncio.new_event_loop()
+            asyncio.set_event_loop(_EV_LOOP)
+        _EV_LOOP.set_debug(is_dev_version)
     return _EV_LOOP

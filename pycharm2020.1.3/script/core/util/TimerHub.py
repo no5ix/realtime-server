@@ -4,6 +4,7 @@ import typing
 from time import monotonic_ns, time
 
 # from core.util.UtilApi import wait_or_not
+# from common import gv
 
 
 class TimerInfo:
@@ -20,8 +21,13 @@ class TimerHub:
     def __init__(self, ev_loop=None):
         try:
             self._ev_loop = asyncio.get_running_loop() if ev_loop is None else ev_loop
+        #     print(f"normallll {id(self._ev_loop)=}")
         except RuntimeError:
             self._ev_loop = asyncio.get_event_loop()
+        #     print(f"runtime eee {id(self._ev_loop)=}")
+
+        # self._ev_loop = gv.get_ev_loop()
+        # print(f"runtime eee {id(self._ev_loop)=}")
 
         self._final_key_2_timer_info_map = {}
         self._original_key_2_final_key_set_map = defaultdict(set)

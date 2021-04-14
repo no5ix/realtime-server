@@ -47,9 +47,9 @@ class TcpServer:
     def __init__(self, server_name, json_conf_path):
         UtilApi.parse_json_conf(json_conf_path)
 
-        self._ev_loop = asyncio.get_event_loop()
+        self._ev_loop = gv.get_ev_loop()
         # print(f"TcpServer._ev_loop is {id(self._ev_loop)=}")
-        self._ev_loop.set_debug(gv.is_dev_version)
+        # self._ev_loop.set_debug(gv.is_dev_version)
 
         # events.set_event_loop(self._ev_loop)
 

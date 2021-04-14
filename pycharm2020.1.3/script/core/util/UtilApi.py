@@ -5,8 +5,9 @@ from typing import Callable
 # from TcpServer import ev_loop
 # import typing
 from common import gv
+# from core.mobilelog.LogManager import LogManager
 from core.util import EnhancedJson
-from concurrent.futures.thread import ThreadPoolExecutor
+# from concurrent.futures.thread import ThreadPoolExecutor
 
 
 class Singleton:
@@ -74,12 +75,20 @@ def async_lock(f):
 def wait_or_not(concurrency_limit=888):
     # Bind the default event loop
     # print("a bousennnnnn")
-    sem = asyncio.BoundedSemaphore(concurrency_limit)
-    # print(f"b bousennnnnn{id(sem._loop)=}")
+    # sem = asyncio.BoundedSemaphore(concurrency_limit)
+    sem = asyncio.BoundedSemaphore(concurrency_limit, loop=gv.get_ev_loop())
+
+    # LogManager.set_log_tag("tcp_client_" + str(1))
+    # LogManager.set_log_path("../bin/win/log/")
+    # logger = LogManager.get_logger()
+    # logger.debug(f"b bousennnnnn {id(sem._loop)=}")
+    # logger.debug(f"b bousennnnnn{id(sem)=}")
 
     def wait_or_not_without_limit(f):
         @functools.wraps(f)
         def _wrapped(*args, **kwargs):
+            # logger.debug(f"b withold {id(gv.get_ev_loop())=}")
+
             return gv.get_ev_loop().create_task(f(*args, **kwargs))
         return _wrapped
 
@@ -98,7 +107,7 @@ def wait_or_not(concurrency_limit=888):
 # _async_wrap_tp_executor = ThreadPoolExecutor()
 
 
-def async_wrap(func: Callable):  # 貌似和long polling 不和, 不适合用在 cpu bound 之处
+def async_wrap(func: Callable):  # TODO: 貌似和long polling 不和, 不适合用在 cpu bound 之处
     """
     usage: r = await AioApi.async_wrap(lambda: requests.request("GET", 'http://baidu.com', timeout=2))
     lambda关键字不可少

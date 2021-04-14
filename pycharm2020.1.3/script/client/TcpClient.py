@@ -85,7 +85,14 @@ async def tcp_echo_client(cli_index):
 
     # _cnt = 1000000
     # while _cnt > 0:
-    _ppt.CompPuppetTest.puppet_chat_to_ppt({'content': 'puppet_chat_to_ppt'})
+    th = TimerHub()
+    th.call_later(
+        # 1,
+        # 0.04,
+        0.01,
+        lambda: _ppt.CompPuppetTest.puppet_chat_to_ppt({'content': 'puppet_chat_to_ppt'}),
+        repeat_count=-1
+    )
         # _cnt -= 1
         # print(_cnt)
         # await asyncio.sleep(1)
@@ -124,4 +131,5 @@ if __name__ == '__main__':
     # events.set_event_loop(_ev_loop)
     # _ev_loop.run_until_complete(tcp_echo_client())
     # _ev_loop.run_forever()
-    asyncio.run(tcp_echo_client(sys.argv[1]))
+    gv.get_ev_loop().run_until_complete(tcp_echo_client(sys.argv[1]))
+    # asyncio.run(tcp_echo_client(sys.argv[1]))
