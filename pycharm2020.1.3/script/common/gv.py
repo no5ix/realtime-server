@@ -8,9 +8,7 @@ import typing
 
 
 if typing.TYPE_CHECKING:
-    from TcpServer import TcpServer
     from core.EtcdSupport import ServiceNode
-    from ConnMgr import ConnMgr
 
 # usage: r = await AioApi.async_wrap(lambda: requests.request("GET", 'http://baidu.com', timeout=2))
 # lambda关键字不可少
@@ -31,25 +29,6 @@ etcd_tag = None
 
 game_json_conf = None  # type: typing.Union[typing.Dict, None]
 etcd_service_node = None  # type: typing.Union[ServiceNode, None]
-
-server_singletons = {}
-
-
-def add_server_singleton(entity, postfix=''):
-    """添加一个GameServer内唯一的entity"""
-    server_singletons[entity.__class__.__name__ + postfix] = entity
-
-
-def get_server_singleton(entity_name):
-    return server_singletons.get(entity_name, None)
-
-
-def get_cur_server() -> TcpServer:
-    return get_server_singleton("TcpServer")
-
-
-def get_conn_mgr() -> ConnMgr:
-    return get_server_singleton("ConnMgr")
 
 
 _EV_LOOP = None  # type: typing.Union[None, AbstractEventLoop]

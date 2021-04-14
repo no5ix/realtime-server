@@ -20,7 +20,7 @@ class BattleServer(object):
         self._logger = LogManager.get_logger()
         self._timer_hub = TimerHub()
 
-        self._load_report = LoadReporter()
+        self._load_reporter = LoadReporter()
         # self.external_task()
 
     def external_task(self):

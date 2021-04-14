@@ -1,3 +1,4 @@
+import core.util.UtilApi
 from common import gv
 import sys
 from collections import namedtuple
@@ -113,7 +114,7 @@ class SingletonEntityManager(object):
             return
         if game_conf_info.get("is_center", False):
             center = EntityFactory.instance().create_entity('BattleAllocatorCenter')
-            gv.add_server_singleton(center)
+            core.util.UtilApi.add_server_singleton(center)
         # else:
         #     EntityFactory.instance().create_entity('BattleAllocatorStub')
         self.logger.debug('_register_relevant_centers_cb, status:%s' % 'good')
@@ -129,7 +130,7 @@ class SingletonEntityManager(object):
         # else:
             name = 'BattleAllocatorStub'
             stub = EntityFactory.instance().create_entity(name)  # type: BattleAllocatorStub
-            gv.add_server_singleton(stub)
+            core.util.UtilApi.add_server_singleton(stub)
             name_prefix = name[:-4]
             center_name = name_prefix + 'Center'
             stub.start_connect(center_name)

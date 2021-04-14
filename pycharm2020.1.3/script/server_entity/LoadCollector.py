@@ -3,10 +3,10 @@ import asyncio
 
 from RpcHandler import rpc_func
 # from common import gv
-from core.util.UtilApi import async_wrap, Singleton
+from core.util.UtilApi import Singleton, wait_or_not
 from server_entity.ServerEntity import ServerEntity
 import typing
-import redis
+# import redis
 import aioredis  # TODO
 
 
@@ -16,21 +16,38 @@ class LoadCollector(ServerEntity):
     def __init__(self):
         super().__init__()
 
-        _pool = redis.ConnectionPool(host='localhost', port=6379, decode_responses=True)
-        self._redis_cli = redis.Redis(connection_pool=_pool)
-        self._pipe = self._redis_cli.pipeline(transaction=False)
+        # _pool = redis.ConnectionPool(host='localhost', port=6379, decode_responses=True)
+        # self._redis_cli = redis.Redis(connection_pool=_pool)
+        # self._pipe = self._redis_cli.pipeline(transaction=False)
+
+        self._redis_cli = None  # type: typing.Optional[aioredis.commands.Redis]
+        self.start()
+
+    @wait_or_not()
+    async def start(self):
+        self._redis_cli = await aioredis.create_redis_pool(('127.0.0.1', 6379), encoding="utf-8")
+        # print(f"{self._redis_cli.__class__.__name__=}")
+        # await self._redis_cli.set("my-key", "valuemmp")
+        # value = await self._redis_cli.get("my-key")
+        # print(f"vvvvvvvvvv {value=}")
+
+    async def stop(self):
+        self._redis_cli.close()
+        await self._redis_cli.wait_closed()
 
     @rpc_func
     def report_load(self, etcd_tag, server_name, ip, port, load):
         # self.logger.debug(f"_etcd_tag: {etcd_tag} server_name: {server_name} load: {load}")
         print(f"_etcd_tag: {etcd_tag} server_name: {server_name} load: {load}")  # TODO: DEL
         # self._pipe.zadd(_etcd_tag, {server_name: load})
-        async_wrap(lambda: self._redis_cli.zadd(etcd_tag, {"|".join([server_name, ip, str(port)]): load}))
+        # async_wrap(lambda: self._redis_cli.zadd(etcd_tag, {"|".join([server_name, ip, str(port)]): load}))
+        self._redis_cli.zadd(etcd_tag, load, "|".join([server_name, ip, str(port)]))
         # self.call_remote_method("report_load_pingpong_test")
 
     @rpc_func
     async def pick_lowest_load_service_addr(self, etcd_tag: str) -> typing.Tuple[str, str, int]:
-        _res_list = await async_wrap(lambda: self._redis_cli.zrange(etcd_tag, 0, 0))  # type: typing.List[str]
+        # _res_list = await async_wrap(lambda: self._redis_cli.zrange(etcd_tag, 0, 0))  # type: typing.List[str]
+        _res_list = await self._redis_cli.zrange(etcd_tag, 0, 0)
         _ret = None
         if _res_list:
             split_res = _res_list[0].split("|")

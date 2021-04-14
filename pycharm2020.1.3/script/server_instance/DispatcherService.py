@@ -5,6 +5,7 @@ from TcpServer import TcpServer
 from core.common.RpcMethodArgs import RpcMethodArg, Float
 from core.common.RpcSupport import rpc_method, SRV_TO_SRV
 from core.mobilelog.LogManager import LogManager
+from server_entity.LoadCollector import LoadCollector
 from server_entity.ServerEntity import ServerEntity
 
 
@@ -16,6 +17,8 @@ class DispatcherService(object):
         server_json_conf_path = r"../bin/win/conf/battle_server.json"
         self._server = TcpServer(server_name, server_json_conf_path)
         self._logger = LogManager.get_logger()
+
+        self._load_collector = LoadCollector.instance()
 
     def start(self):
         self._server.run()

@@ -8,6 +8,7 @@ from asyncio import futures
 
 import time
 
+import core.util.UtilApi
 from ConnMgr import ConnMgr
 from core.util.TimerHub import TimerHub
 from core.util.UtilApi import wait_or_not
@@ -239,7 +240,7 @@ class RpcHandler:
                 try:
                     _entity_type_str, _method_name, _method_args, _method_kwargs = _rpc_msg_tuple[-4:]
                     if self._entity is None:
-                        self._entity = gv.get_server_singleton(_entity_type_str)
+                        self._entity = core.util.UtilApi.get_server_singleton(_entity_type_str)
                         if self._entity is None:
                             self._entity = EntityFactory.instance().create_entity(_entity_type_str)
                         self._entity.set_rpc_handler(self)
@@ -270,6 +271,7 @@ class RpcHandler:
                         _rpc_reply = (RPC_TYPE_REPLY, _rpc_msg_tuple[1], None, _method_res)
                 except Exception as e:
                     self._logger.error("Exception %r in call handler %r", e, _method_name)
+                    self._logger.log_last_except()
                     if _rpc_type == RPC_TYPE_REQUEST:
                         _rpc_reply = (RPC_TYPE_REPLY, _rpc_msg_tuple[1], str(e), None)
                 if _rpc_type == RPC_TYPE_REQUEST:

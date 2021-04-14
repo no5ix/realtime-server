@@ -1,3 +1,4 @@
+from __future__ import annotations
 import asyncio
 # from asyncio import AbstractEventLoop
 import functools
@@ -5,6 +6,11 @@ from typing import Callable
 # from TcpServer import ev_loop
 # import typing
 import aiohttp
+import typing
+
+if typing.TYPE_CHECKING:
+    from ConnMgr import ConnMgr
+    from TcpServer import TcpServer
 
 from common import gv
 # from core.mobilelog.LogManager import LogManager
@@ -12,48 +18,28 @@ from core.util import EnhancedJson
 # from concurrent.futures.thread import ThreadPoolExecutor
 
 
+server_singletons = {}
+
+
+def add_server_singleton(entity, postfix=''):
+    """添加一个GameServer内唯一的entity"""
+    server_singletons[entity.__class__.__name__ + postfix] = entity
+
+
+def get_server_singleton(entity_name):
+    return server_singletons.get(entity_name, None)
+
+
 class Singleton:
-    """
-    ```
-    @Singleton
-    class Foo:
-        def __init__(self):
-            print('Foo created')
-
-    f = Foo() # Error, this isn't how you get the instance of a singleton
-    f = Foo.instance() # Good. Being explicit is in line with the Python Zen
-    g = Foo.instance() # Returns already created instance
-    print(f is g) # True
-    ```
-
-    ------------------------
-    A non-thread-safe helper class to ease implementing singletons.
-    This should be used as a decorator -- not a metaclass -- to the
-    class that should be a singleton.
-
-    The decorated_cls class can define one `__init__` function that
-    takes only the `self` argument. Also, the decorated_cls class cannot be
-    inherited from. Other than that, there are no restrictions that apply
-    to the decorated_cls class.
-
-    To get the singleton instance, use the `instance` method. Trying
-    to use `__call__` will result in a `TypeError` being raised.
-    """
-
     def __init__(self, decorated_cls):
         self._decorated_cls = decorated_cls
 
     def instance(self):
-        """
-        Returns the singleton instance. Upon its first call, it creates a
-        new instance of the decorated_cls class and calls its `__init__` method.
-        On all subsequent calls, the already created instance is returned.
-
-        """
         try:
             return self._instance
         except AttributeError:
             self._instance = self._decorated_cls()
+            add_server_singleton(self._instance)
             return self._instance
 
     def __call__(self):
@@ -182,3 +168,11 @@ def parse_json_conf(json_conf_path):
     # conf_file.close()
     # gr.game_json_conf = json_conf
     return json_conf
+
+
+def get_cur_server() -> TcpServer:
+    return get_server_singleton("TcpServer")
+
+
+def get_conn_mgr() -> ConnMgr:
+    return get_server_singleton("ConnMgr")
