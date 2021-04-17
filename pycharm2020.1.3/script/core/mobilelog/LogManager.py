@@ -1,10 +1,12 @@
-import os
 import sys
-
-from datetime import time as dt_time
-# import platform
 import logging
+import logging.handlers
+import os
 import time
+import re
+import datetime as dt
+from datetime import datetime
+
 from concurrent.futures.thread import ThreadPoolExecutor
 # from functools import wraps
 from logging.handlers import TimedRotatingFileHandler
@@ -34,25 +36,143 @@ from logging.handlers import TimedRotatingFileHandler
 import inspect
 
 
-_log_tp_executor = ThreadPoolExecutor(max_workers=1)  # 1 for sequentiality
+_log_tp_executor = ThreadPoolExecutor(max_workers=1)
 
 
-class WholeIntervalRotatingFileHandler(TimedRotatingFileHandler):
+class ParallelTimedRotatingFileHandler(logging.handlers.TimedRotatingFileHandler):
+
+    def __init__(self, filename, when='h', interval=1, backupCount=0, encoding=None, delay=False, utc=False,
+                 postfix=".log"):
+
+        self.origFileName = filename
+        self.when = when.upper()
+        self.interval = interval
+        self.backupCount = backupCount
+        self.utc = utc
+        self.postfix = postfix
+
+        if self.when == 'S':
+            self.interval = 1  # one second
+            self.suffix = "%Y-%m-%d_%H-%M-%S"
+            self.extMatch = r"^\d{4}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2}$"
+        elif self.when == 'M':
+            self.interval = 60  # one minute
+            self.suffix = "%Y-%m-%d_%H-%M"
+            self.extMatch = r"^\d{4}-\d{2}-\d{2}_\d{2}-\d{2}$"
+        elif self.when == 'H':
+            self.interval = 60 * 60  # one hour
+            self.suffix = "%Y-%m-%d_%H"
+            self.extMatch = r"^\d{4}-\d{2}-\d{2}_\d{2}$"
+        elif self.when == 'D' or self.when == 'MIDNIGHT':
+            self.interval = 60 * 60 * 24  # one day
+            self.suffix = "%Y-%m-%d"
+            self.extMatch = r"^\d{4}-\d{2}-\d{2}$"
+        elif self.when.startswith('W'):
+            self.interval = 60 * 60 * 24 * 7  # one week
+            if len(self.when) != 2:
+                raise ValueError("You must specify a day for weekly rollover from 0 to 6 (0 is Monday): %s" % self.when)
+            if self.when[1] < '0' or self.when[1] > '6':
+                raise ValueError("Invalid day specified for weekly rollover: %s" % self.when)
+            self.dayOfWeek = int(self.when[1])
+            self.suffix = "%Y-%m-%d"
+            self.extMatch = r"^\d{4}-\d{2}-\d{2}$"
+        else:
+            raise ValueError("Invalid rollover interval specified: %s" % self.when)
+
+        currenttime = int(time.time())
+        logging.handlers.BaseRotatingHandler.__init__(self, self.calculateFileName(currenttime), 'a', encoding, delay)
+
+        self.extMatch = re.compile(self.extMatch)
+        self.interval = self.interval * interval  # multiply by units requested
+
+        self.rolloverAt = self.computeRollover(currenttime)
 
     def computeRollover(self, currentTime):
         if self.when[0] == 'W' or self.when == 'MIDNIGHT':
             # use existing computation
             return super().computeRollover(currentTime)
         # round time up to nearest next multiple of the interval
-        print(f"cur ts: {int(time.time())}")
-        print(f"currentTime: {currentTime}")
-        # print("\033[1;31;40m您输入的帐号或密码错误！\033[0m")
-        # print("\033[0;31m%s\033[0m" % "输出红色字符")
-        print(f"dssss: {((currentTime // self.interval) + 1) * self.interval}")
+        # print(f"cur ts: {int(time.time())}")
+        # print(f"currentTime: {currentTime}")
+        # print(f"self.interval: {self.interval}")
+        # # # print("\033[1;31;40m您输入的帐号或密码错误！\033[0m")
+        # # # print("\033[0;31m%s\033[0m" % "输出红色字符")
+        # print(f"dssss: {((currentTime // self.interval) + 1) * self.interval}")
+        if self.when == "D":
+            # timeArray = time.localtime(time.mktime(
+            #     datetime.strptime((dt.date.fromtimestamp(currentTime) + dt.timedelta(days=1)).strftime('%Y%m%d'),
+            #                       '%Y%m%d').timetuple()))
+            # otherStyleTime = time.strftime("%Y-%m-%d %H:%M:%S", timeArray)
+            # # print(otherStyleTime)
+            # print(f"next_rollat: {otherStyleTime}")
+            return time.mktime(datetime.strptime(
+                (dt.date.fromtimestamp(currentTime) + dt.timedelta(days=1)).strftime(
+                    '%Y%m%d'), '%Y%m%d').timetuple())
         return ((currentTime // self.interval) + 1) * self.interval
 
+    def calculateFileName(self, currenttime):
+        if self.utc:
+            timeTuple = time.gmtime(currenttime)
+        else:
+            timeTuple = time.localtime(currenttime)
+        return self.origFileName + "." + time.strftime(self.suffix, timeTuple) + self.postfix
+
+    def getFilesToDelete(self, newFileName):
+        dirName, fName = os.path.split(self.origFileName)
+        dName, newFileName = os.path.split(newFileName)
+
+        fileNames = os.listdir(dirName)
+        result = []
+        prefix = fName + "."
+        postfix = self.postfix
+        prelen = len(prefix)
+        postlen = len(postfix)
+        for fileName in fileNames:
+            if fileName[:prelen] == prefix and fileName[-postlen:] == postfix and len(
+                    fileName) - postlen > prelen and fileName != newFileName:
+                suffix = fileName[prelen:len(fileName) - postlen]
+                if self.extMatch.match(suffix):
+                    result.append(os.path.join(dirName, fileName))
+        result.sort()
+        if len(result) < self.backupCount:
+            result = []
+        else:
+            result = result[:len(result) - self.backupCount]
+        return result
+
     def doRollover(self):
-        super(WholeIntervalRotatingFileHandler, self).doRollover()
+        if self.stream:
+            self.stream.close()
+            self.stream = None
+
+        currentTime = self.rolloverAt
+        newFileName = self.calculateFileName(currentTime)
+        newBaseFileName = os.path.abspath(newFileName)
+        self.baseFilename = newBaseFileName
+        self.mode = 'a'
+        self.stream = self._open()
+
+        if self.backupCount > 0:
+            for s in self.getFilesToDelete(newFileName):
+                try:
+                    os.remove(s)
+                except:
+                    pass
+
+        newRolloverAt = self.computeRollover(currentTime)
+        while newRolloverAt <= currentTime:
+            newRolloverAt = newRolloverAt + self.interval
+
+        # If DST changes and midnight or weekly rollover, adjust for this.
+        if (self.when == 'MIDNIGHT' or self.when.startswith('W')) and not self.utc:
+            dstNow = time.localtime(currentTime)[-1]
+            dstAtRollover = time.localtime(newRolloverAt)[-1]
+            if dstNow != dstAtRollover:
+                if not dstNow:  # DST kicks in before next rollover, so we need to deduct an hour
+                    newRolloverAt = newRolloverAt - 3600
+                else:  # DST bows out before next rollover, so we need to add an hour
+                    newRolloverAt = newRolloverAt + 3600
+        self.rolloverAt = newRolloverAt
 
 
 class LogManager:
@@ -88,11 +208,14 @@ class LogManager:
             if LogManager.log_tag == "":
                 raise Exception("LogManager Error: log tag is empty!")
             # LogManager.file_handler = TimedRotatingFileHandler(
-            LogManager.file_handler = WholeIntervalRotatingFileHandler(
-                "".join((LogManager.log_path + LogManager.log_tag + ".log"
+            # LogManager.file_handler = WholeIntervalRotatingFileHandler(
+            LogManager.file_handler = ParallelTimedRotatingFileHandler(
+                "".join((LogManager.log_path + LogManager.log_tag
                          # + "." + time.strftime("%Y-%m-%d_%H-%M-%S", time.localtime())
                          ))
-                , when="M")
+                # , when="M")
+                , when="D")
+            # LogManager.file_handler.suffix = "%Y-%m-%d.log"
         if LogManager.stream_handler is None:
             LogManager.stream_handler = logging.StreamHandler()
             # LogManager.file_handler.doRollover()
@@ -268,18 +391,17 @@ class AsyncLogger:
 
     def log_last_except(self):
         tp, value, traceback = sys.exc_info()
-        tb_cont = self.convert_python_tb_to_str(tp, value, traceback)
+        tb_cont = self.convert_tb_to_str(tp, value, traceback)
         self.critical(f'on_traceback, type:{tp}, value:{value}, traceback:{tb_cont}', stack_incr_cnt=1)
 
     @staticmethod
-    def convert_python_tb_to_str(t, v, tb, limit=None):
+    def convert_tb_to_str(t, v, tb, limit=None):
         tb_info = [str(t), str(v)]
         if tb is None:
             return
         n = 0
         while tb and (limit is None or n < limit):
             frame = tb.tb_frame
-            # 上传服务器的文件名筛选
             # script_idx = frame.f_code.co_filename.find('script', 0)
             # if script_idx != -1:
             #	filename = frame.f_code.co_filename[script_idx:]
@@ -347,7 +469,7 @@ if __name__ == '__main__':
         # import sys
         # tp, value, traceback = sys.exc_info()
         #
-        # tb_cont = convert_python_tb_to_str(tp, value, traceback)
+        # tb_cont = convert_tb_to_str(tp, value, traceback)
         # logger.error(f'on_traceback, type:{tp}, value:{value}, traceback:{tb_cont}')
         # logging.exception("Deliberate divide by zero traceback")
         logger.log_last_except()
