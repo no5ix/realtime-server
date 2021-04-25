@@ -2,7 +2,7 @@
 import collections
 
 import aiohttp
-import requests
+# import requests
 import asyncio
 
 import typing
@@ -11,7 +11,7 @@ import time
 
 from core.util import UtilApi
 # from ..distserver.game import GameServerRepo
-from common import gv
+# from common import gv
 from core.mobilelog.LogManager import LogManager
 import urllib.parse
 import json
