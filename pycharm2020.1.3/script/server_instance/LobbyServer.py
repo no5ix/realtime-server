@@ -65,18 +65,17 @@ if __name__ == '__main__':
     db = connection[database]
     start = time.time()
 
-    for doc in db.post.find({}, ['item_id', 'title', 'content']):
-        db.post.update({'item_id': doc.get('item_id')}, {
+    for doc in db.LiePin_Analysis1.find({}, ['_id', 'JobTitle', 'is_end']):
+        db.LiePin_Analysis1.update_one({'_id': doc.get('_id')}, {
             '$set': {
-                'title': doc.get('title'),
-                'content': doc.get('title')
+                'is_end': 1
             }
         })
 
     elapsed = (time.time() - start)
     print("Time used:", elapsed)
 
-    ##############################################
+    ######################################
 
     connection = AsyncIOMotorClient(
         host,
@@ -87,65 +86,11 @@ if __name__ == '__main__':
     start = time.time()
 
     async def run():
-        async for doc in db.post.find({}, ['item_id', 'title', 'content']):
-            db.post.update({'item_id': doc.get('item_id')}, {
-                '$set': {
-                    'title': doc.get('title'),
-                    'content': doc.get('content'),
-                }
-            })
+        async for doc in db.LiePin_Analysis1.find({}, ['_id', 'JobTitle', 'is_end']):
+            db.LiePin_Analysis1.update_one({'_id': doc.get('_id')}, {'$set': {'is_end': 0}})
 
 
     asyncio.get_event_loop().run_until_complete(run())
 
     elapsed = (time.time() - start)
     print("Time used:", elapsed)
-##############################################
-
-
-    # host = '127.0.0.1'
-    # port = 27017
-    # database = 'LiePin'
-    #
-    # start = time.time()
-    #
-    # connection = MongoClient(
-    #     host,
-    #     port
-    # )
-    # db = connection[database]
-    #
-    # for doc in db.LiePin_Analysis1.find({}, ['_id', 'JobTitle', 'is_end']):
-    #     db.LiePin_Analysis1.update_one({'_id': doc.get('_id')}, {
-    #         '$set': {
-    #             'is_end': 1
-    #         }
-    #     })
-    #
-    # elapsed = (time.time() - start)
-    # print("Time used:", elapsed)
-    #
-    # ######################################
-    #
-    # host = '127.0.0.1'
-    # port = 27017
-    # database = 'LiePin'
-    #
-    # start = time.time()
-    #
-    # connection = AsyncIOMotorClient(
-    #     host,
-    #     port
-    # )
-    # db = connection[database]
-    #
-    #
-    # async def run():
-    #     async for doc in db.LiePin_Analysis1.find({}, ['_id', 'JobTitle', 'is_end']):
-    #         db.LiePin_Analysis1.update_one({'_id': doc.get('_id')}, {'$set': {'is_end': 0}})
-    #
-    #
-    # asyncio.get_event_loop().run_until_complete(run())
-    #
-    # elapsed = (time.time() - start)
-    # print("Time used:", elapsed)

@@ -48,8 +48,8 @@ class CompPuppetTest(Component):
     def puppet_chat_from_srv(self, chat_info):
         print(f"call puppet_chat_from_srv {chat_info=}, {time.time()=}")
         self._cnt -= 1
-        if self._cnt > 0:
-            self.remote_comp.puppet_chat_to_ppt({'content': 'puppet_chat_to_ppt'})
+        # if self._cnt > 0:
+        #     self.remote_comp.puppet_chat_to_ppt({'content': 'puppet_chat_to_ppt'})
 
     async def test_timer_async(self, msg):
         await asyncio.sleep(1)
@@ -62,7 +62,7 @@ class CompPuppetTest(Component):
 
         timer_key = self.entity.timer_hub.call_later(3, lambda: self.test_timer_async(msg), repeat_count=2)
 
-        self.remote_comp.make_server_reload()
+        # self.remote_comp.make_server_reload()
 
         def mmp(error, result):
             print("mmmmmmmmmmmp")
