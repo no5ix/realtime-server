@@ -10,11 +10,10 @@ import typing
 if typing.TYPE_CHECKING:
     from core.EtcdSupport import ServiceNode
 
-# usage: r = await AioApi.async_wrap(lambda: requests.request("GET", 'http://baidu.com', timeout=2))
-# lambda关键字不可少
-# from TcpServer import TcpServer
 
 is_dev_version = True
+
+db_save_interval_sec = 8
 
 bind_entity = None
 is_client = False

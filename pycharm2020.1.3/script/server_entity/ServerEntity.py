@@ -1,15 +1,14 @@
-# import asyncio
 from __future__ import annotations
-
-# from TcpConn import TcpConn
-# import asyncio
-
 import typing
-# if typing.TYPE_CHECKING:
+
+from core.util import DbUtil
+
+if typing.TYPE_CHECKING:
+    pass
+
 import RpcHandler
 
-# from TcpConn import TcpConn
-# from common import gr
+from common import gv
 from core.common.EntityManager import EntityManager
 from core.common.IdManager import IdManager
 from core.mobilelog.LogManager import LogManager
@@ -18,22 +17,29 @@ from core.util.TimerHub import TimerHub
 
 class ServerEntity:
     def __init__(self, entity_id=None):
-        # super(ServerEntity, self).__init__()
         self.id = (entity_id is None) and IdManager.genid() or entity_id
         self.local_id = -1
         self.logger = LogManager.get_logger("ServerEntity." + self.__class__.__name__)
         self.logger.debug("__init__ create entity %s with id %s mem_id=%s", self.__class__.__name__, self.id, id(self))
-        # entity所对应的gate proxy, 使用请调_get_gate_proxy方法，不要直接使用此变量
-        # self._gate_proxy = None
-        # self._src_mailbox_info = None                              # 缓存自己的src_mailbox_info信息
         EntityManager.instance().addentity(self.id, self, False)
-        # self._save_timer = None
         self.is_destroy = False
-        # save_time = self.get_persistent_time()
 
-        # self._conn = None
         self._rpc_handler = RpcHandler.RpcHandler(entity=self)
         self.timer_hub = TimerHub()
+        self.timer_hub.call_later(gv.db_save_interval_sec, lambda: self.db_save(), repeat_count=-1)
+
+    def destroy(self):
+        self.timer_hub.destroy()
+        self.timer_hub = None
+        self.is_destroy = True
+
+    def should_db_save(self):
+        return False
+
+    def db_save(self):
+        if not self.should_db_save():
+            return
+        DbUtil.save_entity(self)
 
     def set_rpc_handler(self, rpc_handler):
         self._rpc_handler = rpc_handler

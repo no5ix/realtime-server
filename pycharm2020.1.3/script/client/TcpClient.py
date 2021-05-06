@@ -87,9 +87,9 @@ async def tcp_echo_client(cli_index):
     # while _cnt > 0:
     th = TimerHub()
     th.call_later(
-        1,
-        # 0.04,
-        # 0.01,
+        # 1,
+        0.016,  # 极限
+        # 0.01,  # 基本已经处理不过来
         lambda: _ppt.CompPuppetTest.puppet_chat_to_ppt({'content': 'puppet_chat_to_ppt'}),
         repeat_count=-1
     )
