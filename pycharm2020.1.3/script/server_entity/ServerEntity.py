@@ -36,6 +36,9 @@ class ServerEntity:
     def should_db_save(self):
         return False
 
+    def get_db_save_dict(self):
+        return {}
+
     def db_save(self):
         if not self.should_db_save():
             return
