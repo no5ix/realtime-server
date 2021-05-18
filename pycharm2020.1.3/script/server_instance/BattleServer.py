@@ -2,6 +2,7 @@ import sys
 
 from TcpServer import TcpServer
 from common import gv
+from common.service_const import ETCD_TAG_DISPATCHER_SERVICE
 from core.mobilelog.LogManager import LogManager
 from core.common import EntityScanner
 from core.common.EntityFactory import EntityFactory
@@ -20,7 +21,7 @@ class BattleServer(object):
         self._logger = LogManager.get_logger()
         self._timer_hub = TimerHub()
 
-        self._load_reporter = LoadReporter()
+        self._load_reporter = LoadReporter(ETCD_TAG_DISPATCHER_SERVICE)
         # self.external_task()
 
     def external_task(self):

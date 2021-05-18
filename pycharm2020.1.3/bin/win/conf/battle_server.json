@@ -15,8 +15,8 @@
 
     "etcd_servers": [
         {"ip": "$ETCD_IP$", "port": 2379},
-        {"ip": "$ETCD_IP$", "port": 2381},
-        {"ip": "$ETCD_IP$", "port": 2383}
+//        {"ip": "$ETCD_IP$", "port": 2381},
+//        {"ip": "$ETCD_IP$", "port": 2383}
     ],
     "log_path": "../bin/win/log/",
     "lobby_entity_root": "lobby_entity",
