@@ -1,3 +1,0 @@
-2021-04-15 01:08:37,705 - DEBUG - ServerEntity.ServerEntity - [ServerEntity.py:25]: __init__ create entity ServerEntity with id 60772195d164121b98c197b9 mem_id=1840777763616
-2021-04-15 01:08:37,707 - DEBUG - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60772195d164121b98c197b9 
-2021-04-15 01:08:37,723 - DEBUG - __main__ - [TcpClient.py:51]: bs: ('battle_0', '127.0.0.1', 8888)
