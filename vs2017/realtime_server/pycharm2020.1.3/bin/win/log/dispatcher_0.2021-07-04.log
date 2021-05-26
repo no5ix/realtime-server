@@ -1,0 +1,780 @@
+2021-07-04 00:00:14,032 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e0898eccd0048c0c4c00c4 mem_id=2065829714336
+2021-07-04 00:00:14,033 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e0898eccd0048c0c4c00c4 
+2021-07-04 00:00:14,046 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 00:00:14,048 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 00:00:14,063 - INFO - TcpServer - [TcpServer.py:119]: Server on ('127.0.0.1', 9100)
+2021-07-04 00:00:17,065 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 00:00:17,069 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 00:00:17,071 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 642
+2021-07-04 00:01:20,986 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e089d0efd4849fdb21cf7d mem_id=2823485188416
+2021-07-04 00:01:20,987 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e089d0efd4849fdb21cf7d 
+2021-07-04 00:01:20,999 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 00:01:21,000 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 00:01:21,014 - INFO - TcpServer - [TcpServer.py:119]: Server on ('127.0.0.1', 9100)
+2021-07-04 00:01:24,021 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 00:01:24,025 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 00:01:24,026 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 644
+2021-07-04 00:01:57,452 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e089f527fbbdfd6b451e94 mem_id=2167332919664
+2021-07-04 00:01:57,453 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e089f527fbbdfd6b451e94 
+2021-07-04 00:01:57,463 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 00:01:57,464 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 00:01:57,475 - INFO - TcpServer - [TcpServer.py:119]: Server on ('127.0.0.1', 9100)
+2021-07-04 00:02:00,479 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 00:02:00,483 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 00:02:00,484 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 646
+2021-07-04 00:04:14,943 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e08a7e26cdd4d7116428e3 mem_id=2403089049920
+2021-07-04 00:04:14,944 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e08a7e26cdd4d7116428e3 
+2021-07-04 00:04:14,953 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 00:04:14,954 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 00:04:14,965 - INFO - TcpServer - [TcpServer.py:122]: Server on ('127.0.0.1', 9100)
+2021-07-04 00:04:17,977 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 00:04:17,982 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 00:04:17,983 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 648
+2021-07-04 00:04:26,540 - INFO - TcpServerProtocol - [TcpServer.py:84]: ('127.0.0.1', 3221) is connected !!!!
+2021-07-04 00:04:46,597 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e08a9e545b7cab859f8da9 mem_id=1972297136208
+2021-07-04 00:04:46,598 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e08a9e545b7cab859f8da9 
+2021-07-04 00:04:46,610 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 00:04:46,612 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 00:04:46,623 - INFO - TcpServer - [TcpServer.py:122]: Server on ('127.0.0.1', 9100)
+2021-07-04 00:04:49,626 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 00:04:49,631 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 00:04:49,632 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 650
+2021-07-04 00:04:50,163 - INFO - TcpServerProtocol - [TcpServer.py:84]: ('127.0.0.1', 3240) is connected !!!!
+2021-07-04 00:05:38,503 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e08ad27e4a9301bc7c534a mem_id=1892262602976
+2021-07-04 00:05:38,504 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e08ad27e4a9301bc7c534a 
+2021-07-04 00:05:38,515 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 00:05:38,516 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 00:05:38,528 - INFO - TcpServer - [TcpServer.py:122]: Server on ('127.0.0.1', 9100)
+2021-07-04 00:05:41,530 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 00:05:41,534 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 00:05:41,535 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 652
+2021-07-04 00:05:55,871 - INFO - TcpServerProtocol - [TcpServer.py:84]: ('127.0.0.1', 3280) is connected !!!!
+2021-07-04 00:06:24,338 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e08b003baf907e980c6166 mem_id=1685855529184
+2021-07-04 00:06:24,339 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e08b003baf907e980c6166 
+2021-07-04 00:06:24,349 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 00:06:24,350 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 00:06:24,362 - INFO - TcpServer - [TcpServer.py:122]: Server on ('127.0.0.1', 9100)
+2021-07-04 00:06:27,363 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 00:06:27,367 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 00:06:27,369 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 661
+2021-07-04 00:06:30,789 - INFO - TcpServerProtocol - [TcpServer.py:84]: ('127.0.0.1', 3311) is connected !!!!
+2021-07-04 00:07:03,653 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e08b2791bf5bb41cacef98 mem_id=2453412459472
+2021-07-04 00:07:03,654 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e08b2791bf5bb41cacef98 
+2021-07-04 00:07:03,670 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 00:07:03,673 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 00:07:03,694 - INFO - TcpServer - [TcpServer.py:122]: Server on ('127.0.0.1', 9100)
+2021-07-04 00:07:06,688 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 00:07:06,698 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 00:07:06,702 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 663
+2021-07-04 00:07:20,444 - INFO - TcpServerProtocol - [TcpServer.py:84]: ('127.0.0.1', 3343) is connected !!!!
+2021-07-04 00:08:41,418 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e08b893b13d311dbab14e3 mem_id=2411949073552
+2021-07-04 00:08:41,419 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e08b893b13d311dbab14e3 
+2021-07-04 00:08:41,435 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 00:08:41,437 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 00:08:41,458 - INFO - TcpServer - [TcpServer.py:122]: Server on ('127.0.0.1', 9100)
+2021-07-04 00:08:44,468 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 00:08:44,476 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 00:08:44,479 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 667
+2021-07-04 00:08:56,267 - INFO - TcpServerProtocol - [TcpServer.py:84]: ('127.0.0.1', 3392) is connected !!!!
+2021-07-04 00:10:09,556 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e08be12e8d795fa8ae9a5b mem_id=1512909133136
+2021-07-04 00:10:09,557 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e08be12e8d795fa8ae9a5b 
+2021-07-04 00:10:09,575 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 00:10:09,578 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 00:10:09,603 - INFO - TcpServer - [TcpServer.py:122]: Server on ('127.0.0.1', 9100)
+2021-07-04 00:10:10,745 - INFO - TcpServerProtocol - [TcpServer.py:84]: ('127.0.0.1', 2332) is connected !!!!
+2021-07-04 00:12:29,036 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e08c6d44e91cf560e82288 mem_id=2145145865648
+2021-07-04 00:12:29,037 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e08c6d44e91cf560e82288 
+2021-07-04 00:12:29,053 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 00:12:29,056 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 00:12:29,077 - INFO - TcpServer - [TcpServer.py:122]: Server on ('127.0.0.1', 9100)
+2021-07-04 00:12:31,518 - INFO - TcpServerProtocol - [TcpServer.py:84]: ('127.0.0.1', 2431) is connected !!!!
+2021-07-04 00:16:15,272 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e08d4f7629d6359e763c53 mem_id=2397814801504
+2021-07-04 00:16:15,272 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e08d4f7629d6359e763c53 
+2021-07-04 00:16:15,289 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 00:16:15,293 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 00:16:15,316 - INFO - TcpServer - [TcpServer.py:122]: Server on ('127.0.0.1', 9100)
+2021-07-04 00:16:18,323 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 00:16:18,335 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 00:16:18,339 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 675
+2021-07-04 00:16:19,390 - INFO - TcpServerProtocol - [TcpServer.py:84]: ('127.0.0.1', 13307) is connected !!!!
+2021-07-04 00:18:51,120 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e08debab798cdb6b007a02 mem_id=2261957227904
+2021-07-04 00:18:51,120 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e08debab798cdb6b007a02 
+2021-07-04 00:18:51,134 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 00:18:51,137 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 00:18:51,157 - INFO - TcpServer - [TcpServer.py:122]: Server on ('127.0.0.1', 9100)
+2021-07-04 00:18:52,665 - INFO - TcpServerProtocol - [TcpServer.py:84]: ('127.0.0.1', 13382) is connected !!!!
+2021-07-04 00:19:35,152 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e08e173d52cd66a47582ba mem_id=1825204074624
+2021-07-04 00:19:35,153 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e08e173d52cd66a47582ba 
+2021-07-04 00:19:35,163 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 00:19:35,164 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 00:19:35,175 - INFO - TcpServer - [TcpServer.py:122]: Server on ('127.0.0.1', 9100)
+2021-07-04 00:19:38,173 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 00:19:38,178 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> lobby_server: ('127.0.0.1', 10001)
+2021-07-04 00:19:38,180 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 00:19:38,181 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 680
+2021-07-04 00:19:45,285 - INFO - TcpServerProtocol - [TcpServer.py:84]: ('127.0.0.1', 12203) is connected !!!!
+2021-07-04 00:25:53,813 - WARNING - TcpConn - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\TcpConn.py:161"]: peer addr: ('127.0.0.1', 12203), close_reason='[WinError 64] The specified network name is no longer available'
+2021-07-04 00:25:54,968 - INFO - TcpServerProtocol - [TcpServer.py:84]: ('127.0.0.1', 12374) is connected !!!!
+2021-07-04 00:25:59,283 - WARNING - TcpConn - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\TcpConn.py:161"]: peer addr: ('127.0.0.1', 12374), close_reason='[WinError 64] The specified network name is no longer available'
+2021-07-04 00:26:26,093 - INFO - TcpServerProtocol - [TcpServer.py:84]: ('127.0.0.1', 12392) is connected !!!!
+2021-07-04 00:26:32,624 - WARNING - TcpConn - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\TcpConn.py:161"]: peer addr: ('127.0.0.1', 12392), close_reason='[WinError 64] The specified network name is no longer available'
+2021-07-04 00:26:48,516 - INFO - TcpServerProtocol - [TcpServer.py:84]: ('127.0.0.1', 12403) is connected !!!!
+2021-07-04 00:26:53,296 - WARNING - TcpConn - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\TcpConn.py:161"]: peer addr: ('127.0.0.1', 12403), close_reason='[WinError 64] The specified network name is no longer available'
+2021-07-04 00:27:24,615 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e08fec6a171945a08defb8 mem_id=3112105990512
+2021-07-04 00:27:24,617 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e08fec6a171945a08defb8 
+2021-07-04 00:27:24,630 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 00:27:24,631 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 00:27:24,643 - INFO - TcpServer - [TcpServer.py:122]: Server on ('127.0.0.1', 9100)
+2021-07-04 00:27:27,642 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 00:27:27,649 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> lobby_server: ('127.0.0.1', 10001)
+2021-07-04 00:27:27,650 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 00:27:27,652 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> lobby_gate: ('127.0.0.1', 9201)
+2021-07-04 00:27:27,653 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 971
+2021-07-04 00:27:31,168 - INFO - TcpServerProtocol - [TcpServer.py:84]: ('127.0.0.1', 12434) is connected !!!!
+2021-07-04 00:28:15,323 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e0901f3713bf528b512ee8 mem_id=1478192523536
+2021-07-04 00:28:15,324 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e0901f3713bf528b512ee8 
+2021-07-04 00:28:15,333 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 00:28:15,334 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 00:28:15,345 - INFO - TcpServer - [TcpServer.py:122]: Server on ('127.0.0.1', 9100)
+2021-07-04 00:28:18,352 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 00:28:18,356 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> lobby_server: ('127.0.0.1', 10001)
+2021-07-04 00:28:18,358 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 00:28:18,359 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 979
+2021-07-04 00:28:36,497 - INFO - TcpServerProtocol - [TcpServer.py:84]: ('127.0.0.1', 12484) is connected !!!!
+2021-07-04 00:41:08,670 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e0932429b1c33663734c98 mem_id=1927977560336
+2021-07-04 00:41:08,672 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e0932429b1c33663734c98 
+2021-07-04 00:41:08,680 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 00:41:08,681 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 00:41:08,693 - INFO - TcpServer - [TcpServer.py:122]: Server on ('127.0.0.1', 9100)
+2021-07-04 00:41:11,681 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 00:41:11,687 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> lobby_server: ('127.0.0.1', 10001)
+2021-07-04 00:41:11,688 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 00:41:11,689 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 999
+2021-07-04 00:41:24,760 - INFO - TcpServerProtocol - [TcpServer.py:84]: ('127.0.0.1', 9745) is connected !!!!
+2021-07-04 00:42:00,103 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e09358e5927b4d46de713c mem_id=2788814543264
+2021-07-04 00:42:00,104 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e09358e5927b4d46de713c 
+2021-07-04 00:42:00,113 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 00:42:00,114 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 00:42:00,125 - INFO - TcpServer - [TcpServer.py:122]: Server on ('127.0.0.1', 9100)
+2021-07-04 00:42:03,117 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 00:42:03,122 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> lobby_server: ('127.0.0.1', 10001)
+2021-07-04 00:42:03,123 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 00:42:03,125 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> lobby_gate: ('127.0.0.1', 9201)
+2021-07-04 00:42:03,126 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 1028
+2021-07-04 00:42:20,474 - INFO - ServiceFinder - [EtcdSupport.py:464]: recv watch expire, info--> lobby_0: ('127.0.0.1', 10001) - [1034]
+2021-07-04 00:42:55,081 - INFO - TcpServerProtocol - [TcpServer.py:84]: ('127.0.0.1', 9807) is connected !!!!
+2021-07-04 00:45:07,066 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e094138d86872b719e7de6 mem_id=2645011126592
+2021-07-04 00:45:07,067 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e094138d86872b719e7de6 
+2021-07-04 00:45:07,076 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 00:45:07,077 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 00:45:07,087 - INFO - TcpServer - [TcpServer.py:122]: Server on ('127.0.0.1', 9100)
+2021-07-04 00:45:10,087 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 00:45:10,092 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 00:45:10,094 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> lobby_gate: ('127.0.0.1', 9201)
+2021-07-04 00:45:10,095 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 1100
+2021-07-04 00:45:20,763 - INFO - TcpServerProtocol - [TcpServer.py:84]: ('127.0.0.1', 9742) is connected !!!!
+2021-07-04 00:50:29,277 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e09555089a4bb38c62826e mem_id=1804009273520
+2021-07-04 00:50:29,278 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e09555089a4bb38c62826e 
+2021-07-04 00:50:29,288 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 00:50:29,289 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 00:50:29,299 - INFO - TcpServer - [TcpServer.py:124]: Server on ('127.0.0.1', 9100)
+2021-07-04 00:50:32,287 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 00:50:32,292 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> lobby_server: ('127.0.0.1', 10001)
+2021-07-04 00:50:32,293 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 00:50:32,295 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 1166
+2021-07-04 00:50:37,683 - INFO - TcpServerProtocol - [TcpServer.py:86]: ('127.0.0.1', 9859) is connected !!!!
+2021-07-04 00:50:59,392 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e09573dc44e96f6635395b mem_id=1408023521504
+2021-07-04 00:50:59,393 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e09573dc44e96f6635395b 
+2021-07-04 00:50:59,401 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 00:50:59,403 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 00:50:59,413 - INFO - TcpServer - [TcpServer.py:124]: Server on ('127.0.0.1', 9100)
+2021-07-04 00:51:02,418 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 00:51:02,423 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> lobby_server: ('127.0.0.1', 10001)
+2021-07-04 00:51:02,424 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 00:51:02,426 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> lobby_gate: ('127.0.0.1', 9201)
+2021-07-04 00:51:02,427 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 1172
+2021-07-04 00:51:08,474 - INFO - ServiceFinder - [EtcdSupport.py:464]: recv watch expire, info--> lobby_0: ('127.0.0.1', 10001) - [1177]
+2021-07-04 00:51:16,476 - INFO - TcpServerProtocol - [TcpServer.py:86]: ('127.0.0.1', 9900) is connected !!!!
+2021-07-04 00:54:38,425 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e0964e2c1c933d89849c41 mem_id=2134347675920
+2021-07-04 00:54:38,426 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e0964e2c1c933d89849c41 
+2021-07-04 00:54:38,436 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 00:54:38,438 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 00:54:38,450 - INFO - TcpServer - [TcpServer.py:127]: Server on ('127.0.0.1', 9100)
+2021-07-04 00:54:41,461 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 00:54:41,466 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 00:54:41,467 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> lobby_gate: ('127.0.0.1', 9201)
+2021-07-04 00:54:41,469 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 1256
+2021-07-04 00:54:53,974 - INFO - ServiceFinder - [EtcdSupport.py:464]: recv watch expire, info--> gate_0: ('127.0.0.1', 9201) - [1259]
+2021-07-04 00:56:08,010 - INFO - TcpServerProtocol - [TcpServer.py:89]: ('127.0.0.1', 9536) is connected !!!!
+2021-07-04 00:57:34,869 - INFO - TcpServerProtocol - [TcpServer.py:89]: ('127.0.0.1', 10872) is connected !!!!
+2021-07-04 00:58:02,066 - INFO - TcpServerProtocol - [TcpServer.py:89]: ('127.0.0.1', 10914) is connected !!!!
+2021-07-04 00:58:04,877 - INFO - TcpServerProtocol - [TcpServer.py:89]: ('127.0.0.1', 10923) is connected !!!!
+2021-07-04 00:59:58,491 - WARNING - TcpConn - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\TcpConn.py:162"]: peer addr: ('127.0.0.1', 10923), close_reason='[WinError 64] The specified network name is no longer available'
+2021-07-04 01:00:07,339 - WARNING - TcpConn - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\TcpConn.py:162"]: peer addr: ('127.0.0.1', 9536), close_reason='[WinError 64] The specified network name is no longer available'
+2021-07-04 11:55:21,787 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e131292c36a5ad5a1921f0 mem_id=1603438773152
+2021-07-04 11:55:21,792 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e131292c36a5ad5a1921f0 
+2021-07-04 11:55:22,073 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 11:55:22,076 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 11:55:22,131 - INFO - TcpServer - [TcpServer.py:127]: Server on ('127.0.0.1', 9100)
+2021-07-04 12:16:58,121 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e1363a84078bccc3d6f304 mem_id=1772106424480
+2021-07-04 12:16:58,123 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e1363a84078bccc3d6f304 
+2021-07-04 12:16:58,136 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 12:16:58,138 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 12:16:58,151 - INFO - TcpServer - [TcpServer.py:127]: Server on ('127.0.0.1', 9100)
+2021-07-04 12:17:01,144 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 12:17:01,153 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 12:17:01,154 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 1583
+2021-07-04 12:17:55,524 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e136733912b54c521b60da mem_id=2362734676672
+2021-07-04 12:17:55,526 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e136733912b54c521b60da 
+2021-07-04 12:17:55,547 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 12:17:55,565 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 12:17:55,576 - CRITICAL - RudpServer - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RudpServer.py:138"]: on_traceback, type:<class 'TypeError'>, value:__init__() takes 1 positional argument but 2 were given, traceback:<class 'TypeError'>
+__init__() takes 1 positional argument but 2 were given
+  File "C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RudpServer.py", line 118, in _start_server_task
+    locals={'self': <RudpServer.RudpServer object at 0x0000022619C1C730>, '_ev_loop': <ProactorEventLoop running=True closed=False debug=True>}
+  File "C:\Program Files\Python38\lib\asyncio\base_events.py", line 1334, in create_datagram_endpoint
+    locals={'self': <ProactorEventLoop running=True closed=False debug=True>, 'protocol_factory': <function RudpServer._start_server_task.<locals>.<lambda> at 0x000002261E08B700>, 'family': <AddressFamily.AF_INET: 2>, 'proto': 17, 'flags': 0, 'reuse_address': <object object at 0x000002261BF531C0>, 'reuse_port': None, 'allow_broadcast': None, 'sock': <socket.socket fd=1144, family=AddressFamily.AF_INET, type=SocketKind.SOCK_DGRAM, proto=17, laddr=('127.0.0.1', 9100)>, 'r_addr': None, 'addr_pairs_info': [((<AddressFamily.AF_INET: 2>, 17), [('127.0.0.1', 9100), None])], 'addr': None, 'addr_infos': {(<AddressFamily.AF_INET: 2>, 17): [('127.0.0.1', 9100), None]}, 'idx': 1, 'infos': [(<AddressFamily.AF_INET: 2>, <SocketKind.SOCK_DGRAM: 2>, 17, '', ('127.0.0.1', 9100))], 'fam': <AddressFamily.AF_INET: 2>, '_': '', 'pro': 17, 'address': ('127.0.0.1', 9100), 'key': (<AddressFamily.AF_INET: 2>, 17), 'exceptions': [], 'local_address': ('127.0.0.1', 9100), 'remote_address': None, 'local_addr': ('127.0.0.1', 9100), 'remote_addr': No...
+  File "C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RudpServer.py", line 119, in <lambda>
+    locals={'self': <RudpServer.RudpServer object at 0x0000022619C1C730>, }
+2021-07-04 12:18:36,082 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e1369cd6c96d69d360ae64 mem_id=1930601302672
+2021-07-04 12:18:36,084 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e1369cd6c96d69d360ae64 
+2021-07-04 12:18:36,118 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 12:18:36,142 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 12:18:36,160 - INFO - RudpServer - [RudpServer.py:116]: Server on ('127.0.0.1', 9100)
+2021-07-04 12:18:39,130 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 12:18:39,138 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 12:18:39,140 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 1587
+2021-07-04 12:19:26,566 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e136cec21319055a0d271d mem_id=2121743862320
+2021-07-04 12:19:26,568 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e136cec21319055a0d271d 
+2021-07-04 12:19:26,598 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 12:19:26,599 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 12:19:26,609 - INFO - RudpServer - [RudpServer.py:116]: RUDP Server on ('127.0.0.1', 9100)
+2021-07-04 12:19:29,624 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 12:19:29,634 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 12:19:29,637 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 1596
+2021-07-04 12:30:06,201 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e1394e2650ac66641b1299 mem_id=1776144288112
+2021-07-04 12:30:06,205 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e1394e2650ac66641b1299 
+2021-07-04 12:30:06,227 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 12:30:06,251 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 12:30:06,276 - INFO - TcpServer - [TcpServer.py:127]: TCP Server on ('127.0.0.1', 9100)
+2021-07-04 12:30:09,265 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 12:30:09,273 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 12:30:09,276 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 1721
+2021-07-04 12:30:14,088 - INFO - TcpServerProtocol - [TcpServer.py:89]: ('127.0.0.1', 7981) is connected !!!!
+2021-07-04 14:50:42,504 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e15a421dfeab99c5e5a67e mem_id=1535566422416
+2021-07-04 14:50:42,506 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e15a421dfeab99c5e5a67e 
+2021-07-04 14:50:42,536 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 14:50:42,537 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 14:50:42,546 - INFO - RudpServer - [RudpServer.py:62]: RUDP Server on ('127.0.0.1', 9100)
+2021-07-04 14:50:45,552 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 14:50:45,556 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 14:50:45,557 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 1729
+2021-07-04 14:58:45,739 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e15c25505d70c75c20bbfc mem_id=2108491907184
+2021-07-04 14:58:45,741 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e15c25505d70c75c20bbfc 
+2021-07-04 14:58:45,771 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 14:58:45,772 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 14:58:45,781 - INFO - RudpServer - [RudpServer.py:62]: RUDP Server on ('127.0.0.1', 9100)
+2021-07-04 14:58:48,778 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 14:58:48,784 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 14:58:48,786 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 1813
+2021-07-04 15:03:37,440 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e15d49e6fc9697f9f20984 mem_id=2421068079312
+2021-07-04 15:03:37,443 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e15d49e6fc9697f9f20984 
+2021-07-04 15:03:37,468 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 15:03:37,469 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 15:03:37,479 - INFO - RudpServer - [RudpServer.py:62]: RUDP Server on ('127.0.0.1', 9100)
+2021-07-04 15:03:40,484 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 15:03:40,488 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 15:03:40,490 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 1835
+2021-07-04 15:06:03,289 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e15ddb35730d7b3f9d9f87 mem_id=1641622198448
+2021-07-04 15:06:03,289 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e15ddb35730d7b3f9d9f87 
+2021-07-04 15:06:03,303 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 15:06:03,306 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 15:06:03,320 - INFO - RudpServer - [RudpServer.py:62]: RUDP Server on ('127.0.0.1', 9100)
+2021-07-04 15:06:06,323 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 15:06:06,333 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 15:06:06,336 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 1862
+2021-07-04 15:06:14,651 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e15de6b5bbd8fa5553f6f5 mem_id=2590130257984
+2021-07-04 15:06:14,653 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e15de6b5bbd8fa5553f6f5 
+2021-07-04 15:06:14,674 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 15:06:14,676 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 15:06:14,693 - INFO - TcpServer - [TcpServer.py:100]: TCP Server on ('127.0.0.1', 9100)
+2021-07-04 15:06:17,691 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 15:06:17,696 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 15:06:17,698 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 1863
+2021-07-04 15:06:18,126 - INFO - TcpServerProtocol - [ConnMgr.py:52]: ('127.0.0.1', 7405) is connected !!!!
+2021-07-04 15:06:39,080 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e15dffb922aa472349c7a1 mem_id=1738966638848
+2021-07-04 15:06:39,082 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e15dffb922aa472349c7a1 
+2021-07-04 15:06:39,109 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 15:06:39,110 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 15:06:39,125 - INFO - TcpServer - [TcpServer.py:100]: TCP Server on ('127.0.0.1', 9100)
+2021-07-04 15:06:42,127 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 15:06:42,131 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> lobby_server: ('127.0.0.1', 10001)
+2021-07-04 15:06:42,133 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 15:06:42,134 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 1867
+2021-07-04 15:06:45,368 - INFO - TcpServerProtocol - [ConnMgr.py:52]: ('127.0.0.1', 14536) is connected !!!!
+2021-07-04 15:06:49,717 - WARNING - TcpConn - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\ConnBase.py:173"]: peer addr: ('127.0.0.1', 14536), close_reason='[WinError 64] The specified network name is no longer available'
+2021-07-04 17:19:08,805 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e17d0c865705c71d27180e mem_id=2533088158480
+2021-07-04 17:19:08,806 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e17d0c865705c71d27180e 
+2021-07-04 17:19:08,840 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 17:19:08,841 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 17:19:08,850 - INFO - RudpServer - [RudpServer.py:62]: RUDP Server on ('127.0.0.1', 9100)
+2021-07-04 17:19:11,857 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 17:19:11,862 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 17:19:11,865 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 1888
+2021-07-04 17:19:49,535 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e17d35dd8623b8529fb00b mem_id=2048307938112
+2021-07-04 17:19:49,537 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e17d35dd8623b8529fb00b 
+2021-07-04 17:19:49,560 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 17:19:49,561 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 17:19:49,569 - INFO - RudpServer - [RudpServer.py:62]: RUDP Server on ('127.0.0.1', 9100)
+2021-07-04 17:19:52,579 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 17:19:52,584 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 17:19:52,585 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 1895
+2021-07-04 17:21:15,378 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e17d8be18aceda57dc94f2 mem_id=2352979301136
+2021-07-04 17:21:15,379 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e17d8be18aceda57dc94f2 
+2021-07-04 17:21:15,401 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 17:21:15,403 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 17:21:15,410 - INFO - RudpServer - [RudpServer.py:62]: RUDP Server on ('127.0.0.1', 9100)
+2021-07-04 17:21:18,417 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 17:21:18,423 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 17:21:18,425 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 1908
+2021-07-04 17:21:36,386 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e17da0a2da44bf84d92b12 mem_id=1354493907680
+2021-07-04 17:21:36,387 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e17da0a2da44bf84d92b12 
+2021-07-04 17:21:36,412 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 17:21:36,414 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 17:21:36,422 - INFO - RudpServer - [RudpServer.py:62]: RUDP Server on ('127.0.0.1', 9100)
+2021-07-04 17:21:39,421 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 17:21:39,426 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 17:21:39,427 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 1911
+2021-07-04 17:25:12,291 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e17e7885445170b90458b9 mem_id=1488424653632
+2021-07-04 17:25:12,292 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e17e7885445170b90458b9 
+2021-07-04 17:25:12,313 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 17:25:12,314 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 17:25:12,322 - INFO - RudpServer - [RudpServer.py:62]: RUDP Server on ('127.0.0.1', 9100)
+2021-07-04 17:25:15,337 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 17:25:15,341 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 17:25:15,342 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 1952
+2021-07-04 17:26:30,440 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e17ec69072e7ac93d484f6 mem_id=2023024481184
+2021-07-04 17:26:30,441 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e17ec69072e7ac93d484f6 
+2021-07-04 17:26:30,462 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 17:26:30,463 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 17:26:30,470 - INFO - RudpServer - [RudpServer.py:62]: RUDP Server on ('127.0.0.1', 9100)
+2021-07-04 17:26:33,480 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 17:26:33,485 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 17:26:33,486 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 1954
+2021-07-04 17:29:24,713 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e17f748598500568598439 mem_id=1551568744656
+2021-07-04 17:29:24,714 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e17f748598500568598439 
+2021-07-04 17:29:24,734 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 17:29:24,736 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 17:29:24,743 - INFO - RudpServer - [RudpServer.py:62]: RUDP Server on ('127.0.0.1', 9100)
+2021-07-04 17:29:27,760 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 17:29:27,764 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 17:29:27,765 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 1987
+2021-07-04 17:32:29,581 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e1802d03fea012e38754b8 mem_id=2196023480768
+2021-07-04 17:32:29,583 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e1802d03fea012e38754b8 
+2021-07-04 17:32:29,606 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 17:32:29,607 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 17:32:29,619 - INFO - TcpServer - [TcpServer.py:100]: TCP Server on ('127.0.0.1', 9100)
+2021-07-04 17:32:32,616 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 17:32:32,620 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 17:32:32,621 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 2018
+2021-07-04 17:32:33,090 - INFO - TcpProtocol - [ConnMgr.py:49]: ('127.0.0.1', 8284) is connected !!!!
+2021-07-04 17:32:52,242 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e18044ed3cc0174a241979 mem_id=1839942021424
+2021-07-04 17:32:52,244 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e18044ed3cc0174a241979 
+2021-07-04 17:32:52,268 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 17:32:52,269 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 17:32:52,281 - INFO - TcpServer - [TcpServer.py:100]: TCP Server on ('127.0.0.1', 9100)
+2021-07-04 17:32:55,284 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 17:32:55,288 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 17:32:55,290 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 2021
+2021-07-04 17:33:14,032 - INFO - TcpProtocol - [ConnMgr.py:49]: ('127.0.0.1', 8315) is connected !!!!
+2021-07-04 17:34:58,017 - WARNING - TcpConn - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\ConnBase.py:188"]: peer addr: ('127.0.0.1', 8315), close_reason='[WinError 64] The specified network name is no longer available'
+2021-07-04 17:34:59,650 - INFO - TcpProtocol - [ConnMgr.py:49]: ('127.0.0.1', 8321) is connected !!!!
+2021-07-04 17:36:12,436 - WARNING - TcpConn - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\ConnBase.py:188"]: peer addr: ('127.0.0.1', 8321), close_reason='[WinError 64] The specified network name is no longer available'
+2021-07-04 17:36:13,736 - INFO - TcpProtocol - [ConnMgr.py:49]: ('127.0.0.1', 10993) is connected !!!!
+2021-07-04 17:36:14,759 - WARNING - TcpConn - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\ConnBase.py:188"]: peer addr: ('127.0.0.1', 10993), close_reason='[WinError 64] The specified network name is no longer available'
+2021-07-04 17:36:23,211 - INFO - TcpProtocol - [ConnMgr.py:49]: ('127.0.0.1', 11000) is connected !!!!
+2021-07-04 17:37:12,926 - WARNING - TcpConn - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\ConnBase.py:188"]: peer addr: ('127.0.0.1', 11000), close_reason='[WinError 64] The specified network name is no longer available'
+2021-07-04 17:37:15,079 - INFO - TcpProtocol - [ConnMgr.py:49]: ('127.0.0.1', 11026) is connected !!!!
+2021-07-04 17:37:33,919 - WARNING - TcpConn - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\ConnBase.py:188"]: peer addr: ('127.0.0.1', 11026), close_reason='[WinError 64] The specified network name is no longer available'
+2021-07-04 17:37:36,035 - INFO - TcpProtocol - [ConnMgr.py:49]: ('127.0.0.1', 11035) is connected !!!!
+2021-07-04 17:37:48,932 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e1816c6a59f483650b38cb mem_id=1793234047232
+2021-07-04 17:37:48,933 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e1816c6a59f483650b38cb 
+2021-07-04 17:37:48,950 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 17:37:48,953 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 17:37:48,975 - INFO - TcpServer - [TcpServer.py:100]: TCP Server on ('127.0.0.1', 9100)
+2021-07-04 17:37:51,970 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 17:37:51,982 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 17:37:51,985 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 2080
+2021-07-04 17:37:55,024 - INFO - TcpProtocol - [ConnMgr.py:49]: ('127.0.0.1', 11049) is connected !!!!
+2021-07-04 17:38:25,462 - WARNING - TcpConn - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\ConnBase.py:188"]: peer addr: ('127.0.0.1', 11049), close_reason='[WinError 64] The specified network name is no longer available'
+2021-07-04 17:40:45,449 - INFO - TcpProtocol - [ConnMgr.py:49]: ('127.0.0.1', 11054) is connected !!!!
+2021-07-04 17:40:45,455 - INFO - ServiceFinder - [EtcdSupport.py:464]: recv watch expire, info--> dispatcher_0: ('127.0.0.1', 9100) - [2089]
+2021-07-04 17:40:57,740 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e18229ad14589ddf6bbd70 mem_id=3016040059136
+2021-07-04 17:40:57,742 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e18229ad14589ddf6bbd70 
+2021-07-04 17:40:57,763 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 17:40:57,764 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 17:40:57,776 - INFO - TcpServer - [TcpServer.py:100]: TCP Server on ('127.0.0.1', 9100)
+2021-07-04 17:41:00,783 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 17:41:00,787 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 17:41:00,788 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 2092
+2021-07-04 17:41:04,075 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e182307d0187a4e5616f1f mem_id=2967532100864
+2021-07-04 17:41:04,075 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e182307d0187a4e5616f1f 
+2021-07-04 17:41:04,093 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 17:41:04,096 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 17:41:04,119 - INFO - TcpServer - [TcpServer.py:100]: TCP Server on ('127.0.0.1', 9100)
+2021-07-04 17:41:08,755 - INFO - TcpProtocol - [ConnMgr.py:49]: ('127.0.0.1', 11092) is connected !!!!
+2021-07-04 17:41:08,760 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 17:41:08,771 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 17:41:08,775 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 2093
+2021-07-04 20:54:02,337 - INFO - ServiceFinder - [EtcdSupport.py:464]: recv watch expire, info--> dispatcher_0: ('127.0.0.1', 9100) - [2142]
+2021-07-04 20:57:59,513 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e1b05752e13268bfd64610 mem_id=2083832335568
+2021-07-04 20:57:59,514 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e1b05752e13268bfd64610 
+2021-07-04 20:57:59,537 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 20:57:59,540 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 20:57:59,562 - INFO - TcpServer - [TcpServer.py:100]: TCP Server on ('127.0.0.1', 9100)
+2021-07-04 20:58:02,560 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 20:58:02,568 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 20:58:02,573 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 2189
+2021-07-04 20:58:45,469 - INFO - TcpProtocol - [ConnMgr.py:49]: ('127.0.0.1', 9765) is connected !!!!
+2021-07-04 20:58:45,475 - INFO - ServiceFinder - [EtcdSupport.py:464]: recv watch expire, info--> dispatcher_0: ('127.0.0.1', 9100) - [2190]
+2021-07-04 20:59:16,367 - WARNING - TcpConn - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\ConnBase.py:188"]: peer addr: ('127.0.0.1', 9765), close_reason='[WinError 64] The specified network name is no longer available'
+2021-07-04 21:04:54,438 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e1b1f65164b43d7090b7fd mem_id=2180731638064
+2021-07-04 21:04:54,439 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e1b1f65164b43d7090b7fd 
+2021-07-04 21:04:54,461 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 21:04:54,462 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 21:04:54,473 - INFO - TcpServer - [TcpServer.py:100]: TCP Server on ('127.0.0.1', 9100)
+2021-07-04 21:04:57,478 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 21:04:57,483 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 21:04:57,484 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 2202
+2021-07-04 21:04:57,834 - INFO - TcpProtocol - [ConnMgr.py:49]: ('127.0.0.1', 11721) is connected !!!!
+2021-07-04 21:10:06,831 - WARNING - TcpConn - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\ConnBase.py:188"]: peer addr: ('127.0.0.1', 11721), close_reason='[WinError 64] The specified network name is no longer available'
+2021-07-04 21:10:31,173 - INFO - TcpProtocol - [ConnMgr.py:49]: ('127.0.0.1', 7572) is connected !!!!
+2021-07-04 21:12:59,850 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e1b3db3083927c0e84338a mem_id=2429892817296
+2021-07-04 21:12:59,852 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e1b3db3083927c0e84338a 
+2021-07-04 21:12:59,873 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 21:12:59,875 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 21:12:59,887 - INFO - TcpServer - [TcpServer.py:100]: TCP Server on ('127.0.0.1', 9100)
+2021-07-04 21:13:02,898 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 21:13:02,902 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 21:13:02,903 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 2272
+2021-07-04 21:13:03,488 - INFO - TcpProtocol - [ConnMgr.py:52]: ('127.0.0.1', 7605) is connected !!!!
+2021-07-04 21:13:33,565 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e1b3fd9e79fad8c87b8d08 mem_id=1961810473072
+2021-07-04 21:13:33,566 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e1b3fd9e79fad8c87b8d08 
+2021-07-04 21:13:33,588 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 21:13:33,589 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 21:13:33,599 - INFO - TcpServer - [TcpServer.py:100]: TCP Server on ('127.0.0.1', 9100)
+2021-07-04 21:13:36,602 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 21:13:36,608 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 21:13:36,609 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 2274
+2021-07-04 21:14:00,182 - INFO - TcpProtocol - [ConnMgr.py:52]: ('127.0.0.1', 7621) is connected !!!!
+2021-07-04 21:17:41,962 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e1b4f59e5161f0d18b723f mem_id=1959340552640
+2021-07-04 21:17:41,963 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e1b4f59e5161f0d18b723f 
+2021-07-04 21:17:41,985 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 21:17:41,986 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 21:17:41,994 - INFO - RudpServer - [RudpServer.py:62]: RUDP Server on ('127.0.0.1', 9100)
+2021-07-04 21:17:45,004 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 21:17:45,009 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 21:17:45,010 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 2292
+2021-07-04 21:18:12,116 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e1b5142a05162b34bdbe91 mem_id=2528151142800
+2021-07-04 21:18:12,117 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e1b5142a05162b34bdbe91 
+2021-07-04 21:18:12,138 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 21:18:12,140 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 21:18:12,148 - INFO - RudpServer - [RudpServer.py:62]: RUDP Server on ('127.0.0.1', 9100)
+2021-07-04 21:18:15,156 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 21:18:15,162 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 21:18:15,163 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 2295
+2021-07-04 21:20:05,526 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e1b5853c914a3f9e4b8b87 mem_id=2237405004080
+2021-07-04 21:20:05,527 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e1b5853c914a3f9e4b8b87 
+2021-07-04 21:20:05,549 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 21:20:05,550 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 21:20:05,560 - INFO - RudpServer - [RudpServer.py:62]: RUDP Server on ('127.0.0.1', 9100)
+2021-07-04 21:20:08,572 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 21:20:08,577 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 21:20:08,578 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 2312
+2021-07-04 21:24:43,155 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e1b69bb6ce9355c264e79c mem_id=2167402873184
+2021-07-04 21:24:43,156 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e1b69bb6ce9355c264e79c 
+2021-07-04 21:24:43,180 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 21:24:43,182 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 21:24:43,193 - INFO - RudpServer - [RudpServer.py:62]: RUDP Server on ('127.0.0.1', 9100)
+2021-07-04 21:24:46,196 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 21:24:46,206 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 21:24:46,208 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 2365
+2021-07-04 21:27:39,343 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e1b74b0bcb3b61bb95cf2c mem_id=1740542198064
+2021-07-04 21:27:39,344 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e1b74b0bcb3b61bb95cf2c 
+2021-07-04 21:27:39,369 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 21:27:39,370 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 21:27:39,380 - INFO - RudpServer - [RudpServer.py:62]: RUDP Server on ('127.0.0.1', 9100)
+2021-07-04 21:27:43,891 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e1b74f503718296fbdbe78 mem_id=1662466338624
+2021-07-04 21:27:43,892 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e1b74f503718296fbdbe78 
+2021-07-04 21:27:43,907 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 21:27:43,910 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 21:27:43,924 - INFO - RudpServer - [RudpServer.py:62]: RUDP Server on ('127.0.0.1', 9100)
+2021-07-04 21:27:46,927 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 21:27:46,936 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 21:27:46,939 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 2399
+2021-07-04 21:28:35,316 - INFO - ServiceFinder - [EtcdSupport.py:464]: recv watch expire, info--> dispatcher_0: ('127.0.0.1', 9100) - [2404]
+2021-07-04 21:58:24,254 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e1be80b1d9731ebae08f9e mem_id=2272062219216
+2021-07-04 21:58:24,257 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e1be80b1d9731ebae08f9e 
+2021-07-04 21:58:24,278 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 21:58:24,280 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 21:58:24,298 - INFO - RudpServer - [RudpServer.py:64]: RUDP Server on ('127.0.0.1', 9100)
+2021-07-04 21:58:27,293 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 21:58:27,300 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 21:58:27,302 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 2761
+2021-07-04 22:01:20,348 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e1bf30406e36a5c6a6e267 mem_id=2407560533760
+2021-07-04 22:01:20,348 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e1bf30406e36a5c6a6e267 
+2021-07-04 22:01:20,365 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 22:01:20,369 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 22:01:37,449 - INFO - RudpServer - [RudpServer.py:64]: RUDP Server on ('127.0.0.1', 9100)
+2021-07-04 22:01:37,460 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 22:01:37,489 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 22:01:37,493 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 2765
+2021-07-04 22:02:05,279 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e1bf5daafe1dc41495c4d2 mem_id=1984415160160
+2021-07-04 22:02:05,279 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e1bf5daafe1dc41495c4d2 
+2021-07-04 22:02:05,297 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 22:02:05,300 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 22:02:09,730 - CRITICAL - RudpServer - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RudpServer.py:78"]: on_traceback, type:<class 'sanic_jwt_extended.exceptions.ConfigurationConflictError'>, value:HS* algorithm needs secret key to encode token, traceback:<class 'sanic_jwt_extended.exceptions.ConfigurationConflictError'>
+HS* algorithm needs secret key to encode token
+  File "C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RudpServer.py", line 58, in _start_server_task
+    locals={'self': <RudpServer.RudpServer object at 0x000001CE0702C700>, '_ev_loop': <ProactorEventLoop running=True closed=False debug=True>}
+  File "C:\Program Files\Python38\lib\asyncio\base_events.py", line 1334, in create_datagram_endpoint
+    locals={'self': <ProactorEventLoop running=True closed=False debug=True>, 'protocol_factory': <function RudpServer._start_server_task.<locals>.<lambda> at 0x000001CE087273A0>, 'family': <AddressFamily.AF_INET: 2>, 'proto': 17, 'flags': 0, 'reuse_address': <object object at 0x000001CE0671B9E0>, 'reuse_port': None, 'allow_broadcast': None, 'sock': <socket.socket fd=1040, family=AddressFamily.AF_INET, type=SocketKind.SOCK_DGRAM, proto=17, laddr=('127.0.0.1', 9100)>, 'local_addr': ('127.0.0.1', 9100), 'remote_addr': None, 'r_addr': None, 'addr_pairs_info': [((<AddressFamily.AF_INET: 2>, 17), [('127.0.0.1', 9100), None])], 'addr': None, 'addr_infos': {(<AddressFamily.AF_INET: 2>, 17): [('127.0.0.1', 9100), None]}, 'idx': 1, 'infos': [(<AddressFamily.AF_INET: 2>, <SocketKind.SOCK_DGRAM: 2>, 17, '', ('127.0.0.1', 9100))], 'fam': <AddressFamily.AF_INET: 2>, '_': '', 'pro': 17, 'address': ('127.0.0.1', 9100), 'key': (<AddressFamily.AF_INET: 2>, 17), 'exceptions': [], 'local_address': ('127.0.0.1', 9100), 'remote_address': No...
+  File "C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RudpServer.py", line 59, in <lambda>
+    locals={}
+  File "C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\ConnMgr.py", line 74, in __init__
+    locals={'self': <ConnMgr.RudpProtocol object at 0x000001CE08609C70>, 'manager': <class 'sanic_jwt_extended.jwt_manager.JWT'>}
+  File "C:\Program Files\Python38\lib\contextlib.py", line 120, in __exit__
+    locals={'self': <contextlib._GeneratorContextManager object at 0x000001CE07025040>, 'type': None, 'value': None, 'traceback': None}
+  File "C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\sanic_jwt_extended\jwt_manager.py", line 40, in initialize
+    locals={'cls': <class 'sanic_jwt_extended.jwt_manager.JWT'>, 'sanic_app': None}
+  File "C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\sanic_jwt_extended\jwt_manager.py", line 61, in _validate_config
+    locals={'cls': <class 'sanic_jwt_extended.jwt_manager.JWT'>}
+2021-07-04 22:02:09,747 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 22:02:09,782 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 22:02:09,786 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 2770
+2021-07-04 22:04:22,053 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e1bfe62fa9eff8bbf91e07 mem_id=2552442472096
+2021-07-04 22:04:22,054 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e1bfe62fa9eff8bbf91e07 
+2021-07-04 22:04:22,071 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 22:04:22,075 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 22:04:24,949 - INFO - RudpServer - [RudpServer.py:64]: RUDP Server on ('127.0.0.1', 9100)
+2021-07-04 22:04:25,095 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 22:04:25,106 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 22:04:25,109 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 2799
+2021-07-04 22:04:57,952 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e1c009d8a6a0a9477f91c7 mem_id=2753788397168
+2021-07-04 22:04:57,952 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e1c009d8a6a0a9477f91c7 
+2021-07-04 22:04:57,971 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 22:04:57,973 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 22:05:02,071 - INFO - RudpServer - [RudpServer.py:64]: RUDP Server on ('127.0.0.1', 9100)
+2021-07-04 22:05:02,081 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 22:05:02,111 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 22:05:02,114 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 2801
+2021-07-04 22:06:43,497 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e1c073e9a6c97a561d1826 mem_id=2577692693456
+2021-07-04 22:06:43,498 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e1c073e9a6c97a561d1826 
+2021-07-04 22:06:43,510 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 22:06:43,510 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 22:06:43,532 - INFO - RudpServer - [RudpServer.py:64]: RUDP Server on ('127.0.0.1', 9100)
+2021-07-04 22:06:46,511 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 22:06:46,517 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 22:06:46,519 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 2803
+2021-07-04 22:06:47,805 - INFO - RudpProtocol - [ConnMgr.py:110]: ('127.0.0.1', 52994) is connected !!!!
+2021-07-04 22:06:48,426 - INFO - RudpProtocol - [ConnMgr.py:110]: ('127.0.0.1', 52995) is connected !!!!
+2021-07-04 22:06:49,025 - INFO - RudpProtocol - [ConnMgr.py:110]: ('127.0.0.1', 52996) is connected !!!!
+2021-07-04 22:06:49,644 - INFO - RudpProtocol - [ConnMgr.py:110]: ('127.0.0.1', 52997) is connected !!!!
+2021-07-04 22:06:50,270 - INFO - RudpProtocol - [ConnMgr.py:110]: ('127.0.0.1', 52998) is connected !!!!
+2021-07-04 22:06:50,891 - INFO - RudpProtocol - [ConnMgr.py:110]: ('127.0.0.1', 52999) is connected !!!!
+2021-07-04 22:12:06,764 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e1c1b6ff64174d1d8d3019 mem_id=1715989128240
+2021-07-04 22:12:06,766 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e1c1b6ff64174d1d8d3019 
+2021-07-04 22:12:06,777 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 22:12:06,779 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 22:12:06,801 - INFO - RudpServer - [RudpServer.py:64]: RUDP Server on ('127.0.0.1', 9100)
+2021-07-04 22:12:09,790 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 22:12:09,795 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 22:12:09,796 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 2805
+2021-07-04 22:12:09,895 - INFO - RudpProtocol - [ConnMgr.py:110]: ('127.0.0.1', 52205) is connected !!!!
+2021-07-04 22:17:33,142 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e1c2fd94b3d8981cb98b7c mem_id=2036875146288
+2021-07-04 22:17:33,143 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e1c2fd94b3d8981cb98b7c 
+2021-07-04 22:17:33,155 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 22:17:33,156 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 22:17:33,174 - INFO - RudpServer - [RudpServer.py:64]: RUDP Server on ('127.0.0.1', 9100)
+2021-07-04 22:17:36,174 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 22:17:36,178 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 22:17:36,180 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 2809
+2021-07-04 22:25:27,146 - INFO - RudpProtocol - [ConnMgr.py:110]: ('127.0.0.1', 51890) is connected !!!!
+2021-07-04 22:29:43,146 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e1c5d7f8b1747c3142d77f mem_id=2202982167600
+2021-07-04 22:29:43,148 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e1c5d7f8b1747c3142d77f 
+2021-07-04 22:29:43,158 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 22:29:43,159 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 22:29:43,186 - INFO - TcpServer - [TcpServer.py:100]: TCP Server on ('127.0.0.1', 9100)
+2021-07-04 22:29:46,175 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 22:29:46,179 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 22:29:46,180 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 3179
+2021-07-04 22:39:06,654 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e1c80adaba4a1cc73a3f7d mem_id=1697503442064
+2021-07-04 22:39:06,655 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e1c80adaba4a1cc73a3f7d 
+2021-07-04 22:39:06,665 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 22:39:06,666 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 22:39:06,688 - INFO - TcpServer - [TcpServer.py:100]: TCP Server on ('127.0.0.1', 9100)
+2021-07-04 22:39:09,665 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 22:39:09,670 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> lobby_server: ('127.0.0.1', 10001)
+2021-07-04 22:39:09,672 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 22:39:09,674 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> lobby_gate: ('127.0.0.1', 9201)
+2021-07-04 22:39:09,675 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 3516
+2021-07-04 22:39:30,548 - INFO - TcpProtocol - [ConnMgr.py:52]: TCP ('127.0.0.1', 14788) is connected !!!!
+2021-07-04 22:39:45,090 - WARNING - TcpConn - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\ConnBase.py:191"]: peer addr: ('127.0.0.1', 14788), close_reason='[WinError 64] The specified network name is no longer available'
+2021-07-04 22:43:42,834 - INFO - TcpProtocol - [ConnMgr.py:52]: TCP ('127.0.0.1', 14839) is connected !!!!
+2021-07-04 22:46:37,023 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e1c9cdb4eba17fb205a572 mem_id=2329013712112
+2021-07-04 22:46:37,024 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e1c9cdb4eba17fb205a572 
+2021-07-04 22:46:37,034 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 22:46:37,035 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 22:46:37,058 - INFO - TcpServer - [TcpServer.py:100]: TCP Server on ('127.0.0.1', 9100)
+2021-07-04 22:46:40,045 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 22:46:40,050 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> lobby_server: ('127.0.0.1', 10001)
+2021-07-04 22:46:40,052 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 22:46:40,054 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 3691
+2021-07-04 22:59:09,264 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e1ccbde5e0a50a1cf5b1e1 mem_id=1945866077280
+2021-07-04 22:59:09,265 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e1ccbde5e0a50a1cf5b1e1 
+2021-07-04 22:59:09,276 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 22:59:09,278 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 22:59:09,298 - INFO - TcpServer - [TcpServer.py:100]: TCP Server on ('127.0.0.1', 9100)
+2021-07-04 22:59:12,296 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 22:59:12,302 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 22:59:12,303 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 3706
+2021-07-04 23:01:47,320 - INFO - TcpProtocol - [ConnMgr.py:52]: TCP ('127.0.0.1', 2728) is connected !!!!
+2021-07-04 23:02:14,071 - WARNING - TcpConn - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\ConnBase.py:192"]: peer addr: ('127.0.0.1', 2728), close_reason='[WinError 64] The specified network name is no longer available'
+2021-07-04 23:11:29,052 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e1cfa1c97593883f09dc2b mem_id=2337355986112
+2021-07-04 23:11:29,054 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e1cfa1c97593883f09dc2b 
+2021-07-04 23:11:29,065 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 23:11:29,066 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 23:11:29,089 - INFO - TcpServer - [TcpServer.py:100]: TCP Server on ('127.0.0.1', 9100)
+2021-07-04 23:11:32,079 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 23:11:32,083 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 23:11:32,084 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 4126
+2021-07-04 23:14:29,632 - INFO - TcpProtocol - [ConnMgr.py:52]: TCP ('127.0.0.1', 13840) is connected !!!!
+2021-07-04 23:16:08,247 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e1d0b8fa43051998cd237e mem_id=2016246559888
+2021-07-04 23:16:08,248 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e1d0b8fa43051998cd237e 
+2021-07-04 23:16:08,260 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 23:16:08,262 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 23:16:08,283 - INFO - TcpServer - [TcpServer.py:100]: TCP Server on ('127.0.0.1', 9100)
+2021-07-04 23:16:11,267 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 23:16:11,272 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 23:16:11,273 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 4252
+2021-07-04 23:16:27,966 - INFO - TcpProtocol - [ConnMgr.py:52]: TCP ('127.0.0.1', 13870) is connected !!!!
+2021-07-04 23:18:35,830 - WARNING - TcpConn - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\ConnBase.py:192"]: peer addr: ('127.0.0.1', 13870), close_reason='[WinError 64] The specified network name is no longer available'
+2021-07-04 23:18:37,225 - INFO - TcpProtocol - [ConnMgr.py:52]: TCP ('127.0.0.1', 3651) is connected !!!!
+2021-07-04 23:19:01,406 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e1d1650ebec45e24746c6c mem_id=2828015887504
+2021-07-04 23:19:01,407 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e1d1650ebec45e24746c6c 
+2021-07-04 23:19:01,420 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 23:19:01,421 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 23:19:01,445 - INFO - TcpServer - [TcpServer.py:100]: TCP Server on ('127.0.0.1', 9100)
+2021-07-04 23:19:04,427 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 23:19:04,432 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> lobby_server: ('127.0.0.1', 10001)
+2021-07-04 23:19:04,433 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 23:19:04,435 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> lobby_gate: ('127.0.0.1', 9201)
+2021-07-04 23:19:04,437 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 4352
+2021-07-04 23:19:10,994 - INFO - TcpProtocol - [ConnMgr.py:52]: TCP ('127.0.0.1', 3666) is connected !!!!
+2021-07-04 23:19:18,529 - WARNING - TcpConn - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\ConnBase.py:192"]: peer addr: ('127.0.0.1', 3666), close_reason='[WinError 64] The specified network name is no longer available'
+2021-07-04 23:19:19,914 - INFO - TcpProtocol - [ConnMgr.py:52]: TCP ('127.0.0.1', 3676) is connected !!!!
+2021-07-04 23:19:32,690 - WARNING - TcpConn - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\ConnBase.py:192"]: peer addr: ('127.0.0.1', 3676), close_reason='[WinError 64] The specified network name is no longer available'
+2021-07-04 23:19:34,025 - INFO - TcpProtocol - [ConnMgr.py:52]: TCP ('127.0.0.1', 3681) is connected !!!!
+2021-07-04 23:19:38,510 - WARNING - TcpConn - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\ConnBase.py:192"]: peer addr: ('127.0.0.1', 3681), close_reason='[WinError 64] The specified network name is no longer available'
+2021-07-04 23:19:39,828 - INFO - TcpProtocol - [ConnMgr.py:52]: TCP ('127.0.0.1', 3685) is connected !!!!
+2021-07-04 23:22:00,665 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e1d218cbfd560c3f88e0a9 mem_id=2080806266096
+2021-07-04 23:22:00,666 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e1d218cbfd560c3f88e0a9 
+2021-07-04 23:22:00,676 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 23:22:00,677 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 23:22:00,699 - INFO - TcpServer - [TcpServer.py:100]: TCP Server on ('127.0.0.1', 9100)
+2021-07-04 23:22:03,695 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 23:22:03,698 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 23:22:03,700 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 4385
+2021-07-04 23:22:32,966 - INFO - TcpProtocol - [ConnMgr.py:52]: TCP ('127.0.0.1', 3719) is connected !!!!
+2021-07-04 23:22:36,219 - WARNING - TcpConn - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\ConnBase.py:192"]: peer addr: ('127.0.0.1', 3719), close_reason='[WinError 64] The specified network name is no longer available'
+2021-07-04 23:22:37,547 - INFO - TcpProtocol - [ConnMgr.py:52]: TCP ('127.0.0.1', 3724) is connected !!!!
+2021-07-04 23:22:44,591 - INFO - TcpProtocol - [ConnMgr.py:52]: TCP ('127.0.0.1', 3731) is connected !!!!
+2021-07-04 23:22:51,132 - WARNING - TcpConn - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\ConnBase.py:192"]: peer addr: ('127.0.0.1', 3731), close_reason='[WinError 64] The specified network name is no longer available'
+2021-07-04 23:23:05,304 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e1d2592bbb658d221d1a42 mem_id=2605461935200
+2021-07-04 23:23:05,306 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e1d2592bbb658d221d1a42 
+2021-07-04 23:23:05,316 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 23:23:05,318 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 23:23:05,346 - INFO - TcpServer - [TcpServer.py:100]: TCP Server on ('127.0.0.1', 9100)
+2021-07-04 23:23:08,337 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 23:23:08,341 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> lobby_gate: ('127.0.0.1', 9201)
+2021-07-04 23:23:08,342 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> lobby_server: ('127.0.0.1', 10001)
+2021-07-04 23:23:08,343 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 23:23:08,344 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 4416
+2021-07-04 23:23:15,450 - INFO - TcpProtocol - [ConnMgr.py:52]: TCP ('127.0.0.1', 3745) is connected !!!!
+2021-07-04 23:24:18,948 - INFO - TcpProtocol - [ConnMgr.py:52]: TCP ('127.0.0.1', 3765) is connected !!!!
+2021-07-04 23:25:15,274 - INFO - ServiceFinder - [EtcdSupport.py:464]: recv watch expire, info--> lobby_0: ('127.0.0.1', 10001) - [4487]
+2021-07-04 23:35:02,198 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e1d526ea13abb47dfcd8ff mem_id=2802579993744
+2021-07-04 23:35:02,200 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e1d526ea13abb47dfcd8ff 
+2021-07-04 23:35:02,214 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 23:35:02,215 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 23:35:02,238 - INFO - TcpServer - [TcpServer.py:100]: TCP Server on ('127.0.0.1', 9100)
+2021-07-04 23:35:05,228 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 23:35:05,233 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 23:35:05,234 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> lobby_gate: ('127.0.0.1', 9201)
+2021-07-04 23:35:05,235 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 4730
+2021-07-04 23:35:26,801 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e1d53eecbd807cfc137e66 mem_id=1606721529024
+2021-07-04 23:35:26,802 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e1d53eecbd807cfc137e66 
+2021-07-04 23:35:26,812 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 23:35:26,813 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 23:35:26,836 - INFO - TcpServer - [TcpServer.py:100]: TCP Server on ('127.0.0.1', 9100)
+2021-07-04 23:35:29,826 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 23:35:29,832 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> lobby_server: ('127.0.0.1', 10001)
+2021-07-04 23:35:29,834 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 23:35:29,836 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> lobby_gate: ('127.0.0.1', 9201)
+2021-07-04 23:35:29,838 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 4740
+2021-07-04 23:35:38,690 - INFO - TcpProtocol - [ConnMgr.py:52]: TCP ('127.0.0.1', 14048) is connected !!!!
+2021-07-04 23:36:02,038 - WARNING - TcpConn - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\ConnBase.py:192"]: peer addr: ('127.0.0.1', 14048), close_reason='[WinError 64] The specified network name is no longer available'
+2021-07-04 23:37:39,812 - INFO - TcpProtocol - [ConnMgr.py:52]: TCP ('127.0.0.1', 14071) is connected !!!!
+2021-07-04 23:37:44,479 - WARNING - TcpConn - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\ConnBase.py:192"]: peer addr: ('127.0.0.1', 14071), close_reason='[WinError 64] The specified network name is no longer available'
+2021-07-04 23:39:04,860 - INFO - TcpProtocol - [ConnMgr.py:52]: TCP ('127.0.0.1', 14081) is connected !!!!
+2021-07-04 23:39:11,190 - WARNING - TcpConn - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\ConnBase.py:192"]: peer addr: ('127.0.0.1', 14081), close_reason='[WinError 64] The specified network name is no longer available'
+2021-07-04 23:39:19,601 - INFO - TcpProtocol - [ConnMgr.py:52]: TCP ('127.0.0.1', 14086) is connected !!!!
+2021-07-04 23:39:50,287 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e1d646aa99b8335dcef410 mem_id=2817030747424
+2021-07-04 23:39:50,288 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e1d646aa99b8335dcef410 
+2021-07-04 23:39:50,298 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 23:39:50,299 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 23:39:50,321 - INFO - TcpServer - [TcpServer.py:100]: TCP Server on ('127.0.0.1', 9100)
+2021-07-04 23:39:53,319 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 23:39:53,324 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> lobby_server: ('127.0.0.1', 10001)
+2021-07-04 23:39:53,325 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 23:39:53,327 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> lobby_gate: ('127.0.0.1', 9201)
+2021-07-04 23:39:53,328 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 4890
+2021-07-04 23:40:00,557 - INFO - TcpProtocol - [ConnMgr.py:52]: TCP ('127.0.0.1', 14105) is connected !!!!
+2021-07-04 23:40:13,132 - WARNING - TcpConn - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\ConnBase.py:192"]: peer addr: ('127.0.0.1', 14105), close_reason='[WinError 64] The specified network name is no longer available'
+2021-07-04 23:40:20,717 - INFO - TcpProtocol - [ConnMgr.py:52]: TCP ('127.0.0.1', 14116) is connected !!!!
+2021-07-04 23:42:06,990 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e1d6ce082c69f54210c6f0 mem_id=1808417682672
+2021-07-04 23:42:06,992 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e1d6ce082c69f54210c6f0 
+2021-07-04 23:42:07,002 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 23:42:07,004 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 23:42:07,028 - INFO - TcpServer - [TcpServer.py:100]: TCP Server on ('127.0.0.1', 9100)
+2021-07-04 23:47:27,864 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e1d80f57f69da33deabd6f mem_id=1868585444352
+2021-07-04 23:47:27,865 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e1d80f57f69da33deabd6f 
+2021-07-04 23:47:27,875 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 23:47:27,876 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 23:47:27,898 - INFO - TcpServer - [TcpServer.py:100]: TCP Server on ('127.0.0.1', 9100)
+2021-07-04 23:47:30,887 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 23:47:30,892 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> lobby_server: ('127.0.0.1', 10001)
+2021-07-04 23:47:30,894 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 23:47:30,895 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 4925
+2021-07-04 23:47:53,597 - INFO - TcpProtocol - [ConnMgr.py:49]: TCP ROLE_TYPE_PASSIVE ('127.0.0.1', 14174) is connected !!!!
+2021-07-04 23:47:53,602 - DEBUG - TcpConn - [ConnBase.py:233]: send_data_and_count: peer_addr=('127.0.0.1', 14174)
+2021-07-04 23:47:58,999 - WARNING - TcpConn - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\ConnBase.py:192"]: peer addr: ('127.0.0.1', 14174), close_reason='[WinError 64] The specified network name is no longer available'
+2021-07-04 23:52:00,629 - INFO - TcpProtocol - [ConnMgr.py:49]: TCP ROLE_TYPE_PASSIVE ('127.0.0.1', 14198) is connected !!!!
+2021-07-04 23:52:00,634 - DEBUG - TcpConn - [ConnBase.py:233]: send_data_and_count: peer_addr=('127.0.0.1', 14198)
+2021-07-04 23:52:09,693 - WARNING - TcpConn - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\ConnBase.py:192"]: peer addr: ('127.0.0.1', 14198), close_reason='[WinError 64] The specified network name is no longer available'
+2021-07-04 23:55:41,600 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e1d9fd94bb3d6d1ed1a831 mem_id=2102930908160
+2021-07-04 23:55:41,601 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e1d9fd94bb3d6d1ed1a831 
+2021-07-04 23:55:41,612 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 23:55:41,613 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 23:55:41,635 - INFO - TcpServer - [TcpServer.py:100]: TCP Server on ('127.0.0.1', 9100)
+2021-07-04 23:55:44,630 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 23:55:44,635 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> lobby_server: ('127.0.0.1', 10001)
+2021-07-04 23:55:44,636 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 23:55:44,637 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> lobby_gate: ('127.0.0.1', 9201)
+2021-07-04 23:55:44,638 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 5218
+2021-07-04 23:56:04,525 - INFO - TcpProtocol - [ConnMgr.py:49]: TCP ROLE_TYPE_PASSIVE peer_addr=('127.0.0.1', 14246) is connected !!!!
+2021-07-04 23:56:04,531 - DEBUG - TcpConn - [ConnBase.py:233]: send_data_and_count: peer_addr=('127.0.0.1', 14246)
+2021-07-04 23:56:24,305 - WARNING - TcpConn - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\ConnBase.py:192"]: peer addr: ('127.0.0.1', 14246), close_reason='[WinError 64] The specified network name is no longer available'
+2021-07-04 23:57:14,477 - INFO - TcpProtocol - [ConnMgr.py:49]: TCP ROLE_TYPE_PASSIVE peer_addr=('127.0.0.1', 14258) is connected !!!!
+2021-07-04 23:57:14,482 - DEBUG - TcpConn - [ConnBase.py:233]: send_data_and_count: peer_addr=('127.0.0.1', 14258)
+2021-07-04 23:57:39,775 - INFO - ServiceFinder - [EtcdSupport.py:464]: recv watch expire, info--> gate_0: ('127.0.0.1', 9201) - [5283]

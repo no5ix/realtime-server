@@ -1,0 +1,147 @@
+2021-07-05 01:31:52,229 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-05 01:31:52,230 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-05 01:31:52,240 - INFO - TcpServer - [TcpServer.py:100]: TCP Server on ('127.0.0.1', 10002)
+2021-07-05 01:31:55,238 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-05 01:31:55,243 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> lobby_server: ('127.0.0.1', 10001)
+2021-07-05 01:31:55,244 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> lobby_server: ('127.0.0.1', 10002)
+2021-07-05 01:31:55,246 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-05 01:31:55,247 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9101)
+2021-07-05 01:31:55,248 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 7960
+2021-07-05 01:32:04,326 - INFO - TcpProtocol - [ConnMgr.py:49]: TCP ROLE_TYPE_PASSIVE peer_addr=('127.0.0.1', 2851) is connected !!!!
+2021-07-05 01:32:04,336 - INFO - ServerEntity.Avatar - [ServerEntity.py:25]: __init__ create entity Avatar with id 60e1f094372fd07f8be5a865 mem_id=1764842545312
+2021-07-05 01:32:04,338 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e1f094372fd07f8be5a865 
+2021-07-05 01:32:04,341 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:58
+2021-07-05 01:32:05,325 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:58
+2021-07-05 01:32:06,320 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:58
+2021-07-05 01:32:07,171 - INFO - TcpProtocol - [ConnMgr.py:49]: TCP ROLE_TYPE_PASSIVE peer_addr=('127.0.0.1', 2855) is connected !!!!
+2021-07-05 01:32:07,177 - INFO - ServerEntity.Avatar - [ServerEntity.py:25]: __init__ create entity Avatar with id 60e1f097372fd07f8be5a867 mem_id=1764843674496
+2021-07-05 01:32:07,178 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e1f097372fd07f8be5a867 
+2021-07-05 01:32:07,181 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:3
+2021-07-05 01:32:07,319 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:58
+2021-07-05 01:32:08,147 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:3
+2021-07-05 01:32:08,329 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:58
+2021-07-05 01:32:09,172 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:3
+2021-07-05 01:32:09,326 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:58
+2021-07-05 01:32:10,166 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:3
+2021-07-05 01:32:10,321 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:58
+2021-07-05 01:32:11,167 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:3
+2021-07-05 01:32:11,324 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:58
+2021-07-05 01:32:12,152 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:3
+2021-07-05 01:32:12,318 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:58
+2021-07-05 01:32:12,339 - INFO - core.util.DbUtil - [DbUtil.py:33]: [DB] Establishing DB connection to: 127.0.0.1:27017 
+2021-07-05 01:32:13,161 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:3
+2021-07-05 01:32:13,318 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:58
+2021-07-05 01:32:14,172 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:3
+2021-07-05 01:32:14,328 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:58
+2021-07-05 01:32:15,158 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:3
+2021-07-05 01:32:15,328 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:58
+2021-07-05 01:32:16,171 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:3
+2021-07-05 01:32:16,327 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:58
+2021-07-05 01:32:17,165 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:3
+2021-07-05 01:32:17,323 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:58
+2021-07-05 01:32:18,172 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:3
+2021-07-05 01:32:18,328 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:58
+2021-07-05 01:32:19,169 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:3
+2021-07-05 01:32:19,327 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:58
+2021-07-05 01:32:20,322 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:58
+2021-07-05 01:32:21,318 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:58
+2021-07-05 01:32:22,329 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:58
+2021-07-05 01:32:23,325 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:58
+2021-07-05 01:32:24,324 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:58
+2021-07-05 01:32:25,318 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:58
+2021-07-05 01:32:26,329 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:58
+2021-07-05 01:32:27,325 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:58
+2021-07-05 01:32:28,324 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:58
+2021-07-05 01:32:29,321 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:58
+2021-07-05 01:32:30,330 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:58
+2021-07-05 01:32:31,324 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:58
+2021-07-05 01:32:32,320 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:58
+2021-07-05 01:32:33,318 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:58
+2021-07-05 01:32:34,327 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:58
+2021-07-05 01:32:53,274 - INFO - ServiceFinder - [EtcdSupport.py:464]: recv watch expire, info--> dispatcher_0: ('127.0.0.1', 9100) - [8025]
+2021-07-05 01:35:55,110 - INFO - ServerEntity.Avatar - [ServerEntity.py:25]: __init__ create entity Avatar with id 60e1f17b372fd07f8be5a86a mem_id=1764844222784
+2021-07-05 01:35:55,112 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e1f17b372fd07f8be5a86a 
+2021-07-05 01:35:55,116 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:56
+2021-07-05 01:35:56,097 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:56
+2021-07-05 01:35:57,110 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:56
+2021-07-05 01:38:06,354 - INFO - ServerEntity.Avatar - [ServerEntity.py:25]: __init__ create entity Avatar with id 60e1f1fe372fd07f8be5a86c mem_id=1764844853520
+2021-07-05 01:38:06,356 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e1f1fe372fd07f8be5a86c 
+2021-07-05 01:38:06,360 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:83
+2021-07-05 01:38:07,360 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:83
+2021-07-05 01:38:08,347 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:83
+2021-07-05 01:38:09,355 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:83
+2021-07-05 01:38:10,348 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:83
+2021-07-05 01:38:56,257 - INFO - ServerEntity.Avatar - [ServerEntity.py:25]: __init__ create entity Avatar with id 60e1f230372fd07f8be5a86e mem_id=1764843139184
+2021-07-05 01:38:56,259 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e1f230372fd07f8be5a86e 
+2021-07-05 01:38:56,261 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:15
+2021-07-05 01:38:57,251 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:15
+2021-07-05 01:38:58,246 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:15
+2021-07-05 01:38:59,242 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:15
+2021-07-05 01:41:43,548 - INFO - ServerEntity.Avatar - [ServerEntity.py:25]: __init__ create entity Avatar with id 60e1f2d7372fd07f8be5a870 mem_id=1764843142832
+2021-07-05 01:41:43,551 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e1f2d7372fd07f8be5a870 
+2021-07-05 01:41:43,554 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:42
+2021-07-05 01:41:44,550 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:42
+2021-07-05 01:41:45,545 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:42
+2021-07-05 01:41:46,542 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:42
+2021-07-05 01:41:47,544 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:42
+2021-07-05 01:41:48,541 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:42
+2021-07-05 01:41:49,536 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:42
+2021-07-05 01:41:50,549 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:42
+2021-07-05 01:41:51,546 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:42
+2021-07-05 01:41:52,542 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:42
+2021-07-05 01:41:53,537 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:42
+2021-07-05 01:41:54,537 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:42
+2021-07-05 01:41:55,547 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:42
+2021-07-05 01:41:56,543 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:42
+2021-07-05 01:41:57,536 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:42
+2021-07-05 01:41:58,544 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:42
+2021-07-05 01:41:59,539 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:42
+2021-07-05 01:42:00,548 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:42
+2021-07-05 01:42:01,543 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:42
+2021-07-05 01:42:02,543 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:42
+2021-07-05 01:42:03,535 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:42
+2021-07-05 01:42:04,550 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:42
+2021-07-05 01:42:05,542 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:42
+2021-07-05 01:42:06,540 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:42
+2021-07-05 01:42:07,537 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:42
+2021-07-05 01:42:08,523 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:42
+2021-07-05 01:42:09,547 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:42
+2021-07-05 01:42:10,542 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:42
+2021-07-05 01:42:11,541 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:42
+2021-07-05 01:42:12,536 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:42
+2021-07-05 01:42:13,549 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:42
+2021-07-05 01:42:14,546 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:42
+2021-07-05 01:42:15,542 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:42
+2021-07-05 01:42:16,539 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:42
+2021-07-05 01:42:17,550 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:42
+2021-07-05 01:42:18,546 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:42
+2021-07-05 01:42:19,543 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:42
+2021-07-05 01:42:20,540 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:42
+2021-07-05 01:42:21,538 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:42
+2021-07-05 01:42:22,551 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:42
+2021-07-05 01:42:23,550 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:42
+2021-07-05 01:42:24,548 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:42
+2021-07-05 01:42:25,542 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:42
+2021-07-05 01:42:26,527 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:42
+2021-07-05 01:42:27,535 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:42
+2021-07-05 01:42:28,548 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:42
+2021-07-05 01:42:29,535 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:42
+2021-07-05 01:42:30,546 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:42
+2021-07-05 01:42:31,542 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:42
+2021-07-05 01:42:32,537 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:42
+2021-07-05 01:42:33,534 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:42
+2021-07-05 01:42:34,546 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:42
+2021-07-05 01:44:07,029 - INFO - ServerEntity.Avatar - [ServerEntity.py:25]: __init__ create entity Avatar with id 60e1f367372fd07f8be5a872 mem_id=1764843671760
+2021-07-05 01:44:07,030 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e1f367372fd07f8be5a872 
+2021-07-05 01:44:07,034 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:80
+2021-07-05 01:44:08,023 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:80
+2021-07-05 01:44:09,031 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:80
+2021-07-05 01:44:32,675 - INFO - ServerEntity.Avatar - [ServerEntity.py:25]: __init__ create entity Avatar with id 60e1f380372fd07f8be5a874 mem_id=1764844376608
+2021-07-05 01:44:32,677 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e1f380372fd07f8be5a874 
+2021-07-05 01:44:32,681 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:76
+2021-07-05 01:44:33,666 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:76
+2021-07-05 01:44:34,665 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:76
+2021-07-05 01:44:35,662 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:76
+2021-07-05 01:44:36,673 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:76
+2021-07-05 01:44:37,666 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:76
+2021-07-05 01:44:38,662 - INFO - ServerEntity.Avatar - [CompAvatarTest.py:35]: self._cnt:76

@@ -1,0 +1,20 @@
+2021-07-05 01:32:01,387 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-05 01:32:01,389 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-05 01:32:01,396 - INFO - RudpServer - [RudpServer.py:64]: RUDP Server on ('127.0.0.1', 9203)
+2021-07-05 01:32:04,407 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-05 01:32:04,425 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> lobby_server: ('127.0.0.1', 10001)
+2021-07-05 01:32:04,426 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> lobby_server: ('127.0.0.1', 10002)
+2021-07-05 01:32:04,428 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-05 01:32:04,429 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9101)
+2021-07-05 01:32:04,430 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> lobby_gate: ('127.0.0.1', 9202)
+2021-07-05 01:32:04,432 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> lobby_gate: ('127.0.0.1', 9203)
+2021-07-05 01:32:04,434 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 7970
+2021-07-05 01:32:07,126 - INFO - RudpProtocol - [ConnMgr.py:111]: RUDP ROLE_TYPE_PASSIVE peer_addr=('127.0.0.1', 63181) is connected !!!!
+2021-07-05 01:32:07,168 - DEBUG - ProxyLobbyRpcHandler - [RpcHandler.py:218]: _handle_create_conn: addr=('127.0.0.1', 10002)
+2021-07-05 01:32:07,173 - INFO - TcpProtocol - [ConnMgr.py:53]: TCP ROLE_TYPE_ACTIVE peer_addr=('127.0.0.1', 10002) is connected !!!!
+2021-07-05 01:32:20,893 - INFO - RudpProtocol - [ConnMgr.py:111]: RUDP ROLE_TYPE_PASSIVE peer_addr=('127.0.0.1', 63184) is connected !!!!
+2021-07-05 01:32:20,931 - DEBUG - ProxyLobbyRpcHandler - [RpcHandler.py:218]: _handle_create_conn: addr=('127.0.0.1', 10001)
+2021-07-05 01:32:20,936 - INFO - TcpProtocol - [ConnMgr.py:53]: TCP ROLE_TYPE_ACTIVE peer_addr=('127.0.0.1', 10001) is connected !!!!
+2021-07-05 01:32:53,274 - INFO - ServiceFinder - [EtcdSupport.py:464]: recv watch expire, info--> dispatcher_0: ('127.0.0.1', 9100) - [8025]
+2021-07-05 01:38:56,202 - INFO - RudpProtocol - [ConnMgr.py:111]: RUDP ROLE_TYPE_PASSIVE peer_addr=('127.0.0.1', 55833) is connected !!!!
+2021-07-05 01:38:56,254 - DEBUG - ProxyLobbyRpcHandler - [RpcHandler.py:218]: _handle_create_conn: addr=('127.0.0.1', 10002)

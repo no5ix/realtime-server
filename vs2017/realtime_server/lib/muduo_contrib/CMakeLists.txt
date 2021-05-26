@@ -1,0 +1,5 @@
+if(HIREDIS_INCLUDE_DIR AND HIREDIS_LIBRARY)
+  add_subdirectory(hiredis)
+else()
+  add_subdirectory(hiredis EXCLUDE_FROM_ALL)
+endif()

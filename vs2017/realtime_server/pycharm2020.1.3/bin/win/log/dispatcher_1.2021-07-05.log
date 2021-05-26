@@ -1,0 +1,20 @@
+2021-07-05 01:31:54,942 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e1f08afa9a191fa80c446d mem_id=1816260502720
+2021-07-05 01:31:54,943 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e1f08afa9a191fa80c446d 
+2021-07-05 01:31:54,953 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-05 01:31:54,954 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-05 01:31:54,974 - INFO - RudpServer - [RudpServer.py:64]: RUDP Server on ('127.0.0.1', 9101)
+2021-07-05 01:31:57,976 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-05 01:31:57,980 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> lobby_server: ('127.0.0.1', 10001)
+2021-07-05 01:31:57,981 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> lobby_server: ('127.0.0.1', 10002)
+2021-07-05 01:31:57,983 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9101)
+2021-07-05 01:31:57,984 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-05 01:31:57,985 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 7962
+2021-07-05 01:32:20,850 - INFO - RudpProtocol - [ConnMgr.py:111]: RUDP ROLE_TYPE_PASSIVE peer_addr=('127.0.0.1', 63183) is connected !!!!
+2021-07-05 01:32:53,274 - INFO - ServiceFinder - [EtcdSupport.py:464]: recv watch expire, info--> dispatcher_0: ('127.0.0.1', 9100) - [8025]
+2021-07-05 01:35:55,015 - INFO - RudpProtocol - [ConnMgr.py:111]: RUDP ROLE_TYPE_PASSIVE peer_addr=('127.0.0.1', 56551) is connected !!!!
+2021-07-05 01:38:06,254 - INFO - RudpProtocol - [ConnMgr.py:111]: RUDP ROLE_TYPE_PASSIVE peer_addr=('127.0.0.1', 50821) is connected !!!!
+2021-07-05 01:38:56,149 - INFO - RudpProtocol - [ConnMgr.py:111]: RUDP ROLE_TYPE_PASSIVE peer_addr=('127.0.0.1', 55832) is connected !!!!
+2021-07-05 01:41:43,451 - INFO - RudpProtocol - [ConnMgr.py:111]: RUDP ROLE_TYPE_PASSIVE peer_addr=('127.0.0.1', 49728) is connected !!!!
+2021-07-05 01:44:06,932 - INFO - RudpProtocol - [ConnMgr.py:111]: RUDP ROLE_TYPE_PASSIVE peer_addr=('127.0.0.1', 58381) is connected !!!!
+2021-07-05 01:44:13,696 - INFO - RudpProtocol - [ConnMgr.py:111]: RUDP ROLE_TYPE_PASSIVE peer_addr=('127.0.0.1', 58385) is connected !!!!
+2021-07-05 01:44:32,568 - INFO - RudpProtocol - [ConnMgr.py:111]: RUDP ROLE_TYPE_PASSIVE peer_addr=('127.0.0.1', 55928) is connected !!!!

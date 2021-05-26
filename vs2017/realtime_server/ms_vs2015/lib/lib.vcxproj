@@ -1,0 +1,308 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\lib\concurrent_queue\blockingconcurrentqueue.h" />
+    <ClInclude Include="..\..\lib\concurrent_queue\concurrentqueue.h" />
+    <ClInclude Include="..\..\lib\inih\include\ini.h" />
+    <ClInclude Include="..\..\lib\inih\include\INIReader.h" />
+    <ClInclude Include="..\..\lib\lualib\lua53\lapi.h" />
+    <ClInclude Include="..\..\lib\lualib\lua53\lauxlib.h" />
+    <ClInclude Include="..\..\lib\lualib\lua53\lcode.h" />
+    <ClInclude Include="..\..\lib\lualib\lua53\lctype.h" />
+    <ClInclude Include="..\..\lib\lualib\lua53\ldebug.h" />
+    <ClInclude Include="..\..\lib\lualib\lua53\ldo.h" />
+    <ClInclude Include="..\..\lib\lualib\lua53\lfunc.h" />
+    <ClInclude Include="..\..\lib\lualib\lua53\lgc.h" />
+    <ClInclude Include="..\..\lib\lualib\lua53\llex.h" />
+    <ClInclude Include="..\..\lib\lualib\lua53\llimits.h" />
+    <ClInclude Include="..\..\lib\lualib\lua53\lmem.h" />
+    <ClInclude Include="..\..\lib\lualib\lua53\lobject.h" />
+    <ClInclude Include="..\..\lib\lualib\lua53\lopcodes.h" />
+    <ClInclude Include="..\..\lib\lualib\lua53\lparser.h" />
+    <ClInclude Include="..\..\lib\lualib\lua53\lprefix.h" />
+    <ClInclude Include="..\..\lib\lualib\lua53\lstate.h" />
+    <ClInclude Include="..\..\lib\lualib\lua53\lstring.h" />
+    <ClInclude Include="..\..\lib\lualib\lua53\ltable.h" />
+    <ClInclude Include="..\..\lib\lualib\lua53\ltm.h" />
+    <ClInclude Include="..\..\lib\lualib\lua53\lua.h" />
+    <ClInclude Include="..\..\lib\lualib\lua53\lua.hpp" />
+    <ClInclude Include="..\..\lib\lualib\lua53\luaconf.h" />
+    <ClInclude Include="..\..\lib\lualib\lua53\lualib.h" />
+    <ClInclude Include="..\..\lib\lualib\lua53\lundump.h" />
+    <ClInclude Include="..\..\lib\lualib\lua53\lvm.h" />
+    <ClInclude Include="..\..\lib\lualib\lua53\lzio.h" />
+    <ClInclude Include="..\..\lib\lualib\sol.hpp" />
+    <ClInclude Include="..\..\lib\muduo_contrib\hiredis\Hiredis.h" />
+    <ClInclude Include="..\..\lib\realtinet\core\any.h" />
+    <ClInclude Include="..\..\lib\realtinet\core\UdpAcceptor.h" />
+    <ClInclude Include="..\..\lib\realtinet\core\UdpCallbacks.h" />
+    <ClInclude Include="..\..\lib\realtinet\core\UdpClient.h" />
+    <ClInclude Include="..\..\lib\realtinet\core\UdpConnection.h" />
+    <ClInclude Include="..\..\lib\realtinet\core\UdpConnector.h" />
+    <ClInclude Include="..\..\lib\realtinet\core\UdpServer.h" />
+    <ClInclude Include="..\..\lib\realtinet\core\UdpSocketsOps.h" />
+    <ClInclude Include="..\..\lib\realtinet\third\kcpsess\ikcp.h" />
+    <ClInclude Include="..\..\lib\realtinet\third\kcpsess\kcpsess.h" />
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\base\Atomic.h" />
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\base\Condition.h" />
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\base\copyable.h" />
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\base\CountDownLatch.h" />
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\base\CurrentThread.h" />
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\base\Date.h" />
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\base\Exception.h" />
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\base\Logging.h" />
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\base\LogStream.h" />
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\base\Mutex.h" />
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\base\noncopyable.h" />
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\base\StringPiece.h" />
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\base\Thread.h" />
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\base\ThreadLocal.h" />
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\base\ThreadLocalSingleton.h" />
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\base\ThreadPool.h" />
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\base\Timestamp.h" />
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\base\TimeZone.h" />
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\base\Types.h" />
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\base\WeakCallback.h" />
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\net\Acceptor.h" />
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\net\Buffer.h" />
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\net\Callbacks.h" />
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\net\Channel.h" />
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\net\Connector.h" />
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\net\Endian.h" />
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\net\EventLoop.h" />
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\net\EventLoopThread.h" />
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\net\EventLoopThreadPool.h" />
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\net\InetAddress.h" />
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\net\Poller.h" />
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\net\poller\EPollPoller.h" />
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\net\poller\PollPoller.h" />
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\net\Socket.h" />
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\net\SocketsOps.h" />
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\net\TcpClient.h" />
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\net\TcpConnection.h" />
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\net\TcpServer.h" />
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\net\Timer.h" />
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\net\TimerId.h" />
+    <ClInclude Include="..\..\lib\realtinet\third\muduo\net\TimerQueue.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\lib\inih\lib\ini.c" />
+    <ClCompile Include="..\..\lib\inih\lib\INIReader.cpp" />
+    <ClCompile Include="..\..\lib\lualib\lua53\lapi.c" />
+    <ClCompile Include="..\..\lib\lualib\lua53\lauxlib.c" />
+    <ClCompile Include="..\..\lib\lualib\lua53\lbaselib.c" />
+    <ClCompile Include="..\..\lib\lualib\lua53\lbitlib.c" />
+    <ClCompile Include="..\..\lib\lualib\lua53\lcode.c" />
+    <ClCompile Include="..\..\lib\lualib\lua53\lcorolib.c" />
+    <ClCompile Include="..\..\lib\lualib\lua53\lctype.c" />
+    <ClCompile Include="..\..\lib\lualib\lua53\ldblib.c" />
+    <ClCompile Include="..\..\lib\lualib\lua53\ldebug.c" />
+    <ClCompile Include="..\..\lib\lualib\lua53\ldo.c" />
+    <ClCompile Include="..\..\lib\lualib\lua53\ldump.c" />
+    <ClCompile Include="..\..\lib\lualib\lua53\lfunc.c" />
+    <ClCompile Include="..\..\lib\lualib\lua53\lgc.c" />
+    <ClCompile Include="..\..\lib\lualib\lua53\linit.c" />
+    <ClCompile Include="..\..\lib\lualib\lua53\liolib.c" />
+    <ClCompile Include="..\..\lib\lualib\lua53\llex.c" />
+    <ClCompile Include="..\..\lib\lualib\lua53\lmathlib.c" />
+    <ClCompile Include="..\..\lib\lualib\lua53\lmem.c" />
+    <ClCompile Include="..\..\lib\lualib\lua53\loadlib.c" />
+    <ClCompile Include="..\..\lib\lualib\lua53\lobject.c" />
+    <ClCompile Include="..\..\lib\lualib\lua53\lopcodes.c" />
+    <ClCompile Include="..\..\lib\lualib\lua53\loslib.c" />
+    <ClCompile Include="..\..\lib\lualib\lua53\lparser.c" />
+    <ClCompile Include="..\..\lib\lualib\lua53\lstate.c" />
+    <ClCompile Include="..\..\lib\lualib\lua53\lstring.c" />
+    <ClCompile Include="..\..\lib\lualib\lua53\lstrlib.c" />
+    <ClCompile Include="..\..\lib\lualib\lua53\ltable.c" />
+    <ClCompile Include="..\..\lib\lualib\lua53\ltablib.c" />
+    <ClCompile Include="..\..\lib\lualib\lua53\ltm.c" />
+    <ClCompile Include="..\..\lib\lualib\lua53\lua.c" />
+    <ClCompile Include="..\..\lib\lualib\lua53\luac.c" />
+    <ClCompile Include="..\..\lib\lualib\lua53\lundump.c" />
+    <ClCompile Include="..\..\lib\lualib\lua53\lutf8lib.c" />
+    <ClCompile Include="..\..\lib\lualib\lua53\lvm.c" />
+    <ClCompile Include="..\..\lib\lualib\lua53\lzio.c" />
+    <ClCompile Include="..\..\lib\muduo_contrib\hiredis\Hiredis.cc" />
+    <ClCompile Include="..\..\lib\muduo_contrib\hiredis\mrediscli.cc" />
+    <ClCompile Include="..\..\lib\realtinet\core\UdpAcceptor.cpp" />
+    <ClCompile Include="..\..\lib\realtinet\core\UdpClient.cpp" />
+    <ClCompile Include="..\..\lib\realtinet\core\UdpConnection.cpp" />
+    <ClCompile Include="..\..\lib\realtinet\core\UdpConnector.cpp" />
+    <ClCompile Include="..\..\lib\realtinet\core\UdpServer.cpp" />
+    <ClCompile Include="..\..\lib\realtinet\core\UdpSocketsOps.cpp" />
+    <ClCompile Include="..\..\lib\realtinet\third\kcpsess\ikcp.c" />
+    <ClCompile Include="..\..\lib\realtinet\third\kcpsess\TestKcpSessionClient.cpp" />
+    <ClCompile Include="..\..\lib\realtinet\third\kcpsess\TestKcpSessionServer.cpp" />
+    <ClCompile Include="..\..\lib\realtinet\third\muduo\base\Condition.cc" />
+    <ClCompile Include="..\..\lib\realtinet\third\muduo\base\CountDownLatch.cc" />
+    <ClCompile Include="..\..\lib\realtinet\third\muduo\base\Date.cc" />
+    <ClCompile Include="..\..\lib\realtinet\third\muduo\base\Exception.cc" />
+    <ClCompile Include="..\..\lib\realtinet\third\muduo\base\Logging.cc" />
+    <ClCompile Include="..\..\lib\realtinet\third\muduo\base\LogStream.cc" />
+    <ClCompile Include="..\..\lib\realtinet\third\muduo\base\Thread.cc" />
+    <ClCompile Include="..\..\lib\realtinet\third\muduo\base\ThreadPool.cc" />
+    <ClCompile Include="..\..\lib\realtinet\third\muduo\base\Timestamp.cc" />
+    <ClCompile Include="..\..\lib\realtinet\third\muduo\base\TimeZone.cc" />
+    <ClCompile Include="..\..\lib\realtinet\third\muduo\net\Acceptor.cc" />
+    <ClCompile Include="..\..\lib\realtinet\third\muduo\net\Buffer.cc" />
+    <ClCompile Include="..\..\lib\realtinet\third\muduo\net\Channel.cc" />
+    <ClCompile Include="..\..\lib\realtinet\third\muduo\net\Connector.cc" />
+    <ClCompile Include="..\..\lib\realtinet\third\muduo\net\EventLoop.cc" />
+    <ClCompile Include="..\..\lib\realtinet\third\muduo\net\EventLoopThread.cc" />
+    <ClCompile Include="..\..\lib\realtinet\third\muduo\net\EventLoopThreadPool.cc" />
+    <ClCompile Include="..\..\lib\realtinet\third\muduo\net\InetAddress.cc" />
+    <ClCompile Include="..\..\lib\realtinet\third\muduo\net\Poller.cc" />
+    <ClCompile Include="..\..\lib\realtinet\third\muduo\net\poller\DefaultPoller.cc" />
+    <ClCompile Include="..\..\lib\realtinet\third\muduo\net\poller\EPollPoller.cc" />
+    <ClCompile Include="..\..\lib\realtinet\third\muduo\net\poller\PollPoller.cc" />
+    <ClCompile Include="..\..\lib\realtinet\third\muduo\net\Socket.cc" />
+    <ClCompile Include="..\..\lib\realtinet\third\muduo\net\SocketsOps.cc" />
+    <ClCompile Include="..\..\lib\realtinet\third\muduo\net\TcpClient.cc" />
+    <ClCompile Include="..\..\lib\realtinet\third\muduo\net\TcpConnection.cc" />
+    <ClCompile Include="..\..\lib\realtinet\third\muduo\net\TcpServer.cc" />
+    <ClCompile Include="..\..\lib\realtinet\third\muduo\net\Timer.cc" />
+    <ClCompile Include="..\..\lib\realtinet\third\muduo\net\TimerQueue.cc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\lib\inih\CMakeLists.txt" />
+    <Text Include="..\..\lib\inih\include\CMakeLists.txt" />
+    <Text Include="..\..\lib\inih\lib\CMakeLists.txt" />
+    <Text Include="..\..\lib\lualib\CMakeLists.txt" />
+    <Text Include="..\..\lib\muduo_contrib\CMakeLists.txt" />
+    <Text Include="..\..\lib\muduo_contrib\hiredis\CMakeLists.txt" />
+    <Text Include="..\..\lib\realtinet\CMakeLists.txt" />
+    <Text Include="..\..\lib\realtinet\core\CMakeLists.txt" />
+    <Text Include="..\..\lib\realtinet\third\kcpsess\CMakeLists.txt" />
+    <Text Include="..\..\lib\realtinet\third\muduo\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\lib\inih\.gitignore" />
+    <None Include="..\..\lib\inih\inih.pc.in" />
+    <None Include="..\..\lib\inih\inihcpp.pc.in" />
+    <None Include="..\..\lib\inih\LICENSE" />
+    <None Include="..\..\lib\inih\README" />
+    <None Include="..\..\lib\lualib\lua53\Makefile" />
+    <None Include="..\..\lib\lualib\lua53\README" />
+    <None Include="..\..\lib\muduo_contrib\hiredis\README.md" />
+    <None Include="..\..\lib\realtinet\.gitignore" />
+    <None Include="..\..\lib\realtinet\README.md" />
+    <None Include="..\..\lib\realtinet\third\kcpsess\.gitignore" />
+    <None Include="..\..\lib\realtinet\third\kcpsess\README.md" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{5B6015EC-52C5-48B2-AA95-A7E113EDC72C}</ProjectGuid>
+    <RootNamespace>lib</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <SourcePath>
+    </SourcePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

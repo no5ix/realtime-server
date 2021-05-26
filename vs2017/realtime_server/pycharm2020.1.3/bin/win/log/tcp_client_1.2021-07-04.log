@@ -1,0 +1,8 @@
+2021-07-04 00:57:34,872 - INFO - TcpServerProtocol - [TcpServer.py:89]: ('127.0.0.1', 9100) is connected !!!!
+2021-07-04 00:57:34,874 - WARNING - RpcHandler - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py:217"]: self._try_connect_times=1, id(self._conn)=1741010569824
+2021-07-04 00:57:34,879 - WARNING - RpcHandler - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py:81"]: self.rpc_handler_id=b'`\xe0\x96\xfeG\xd5=\x9fN?|\xe0' RpcHandler Destroy!
+2021-07-04 00:57:34,880 - DEBUG - __main__ - [TcpClient2.py:84]: lobby server info: ('gate_0', '127.0.0.1', 9201)
+2021-07-04 00:57:34,883 - INFO - ServerEntity.Avatar - [ServerEntity.py:25]: __init__ create entity Avatar with id 60e096fe47d53d9f4e3f7ce1 mem_id=1741010232128
+2021-07-04 00:57:34,885 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e096fe47d53d9f4e3f7ce1 
+2021-07-04 00:57:34,890 - INFO - TcpServerProtocol - [TcpServer.py:89]: ('127.0.0.1', 9201) is connected !!!!
+2021-07-04 01:00:07,347 - WARNING - TcpConn - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\TcpConn.py:162"]: peer addr: ('127.0.0.1', 9201), close_reason='[WinError 64] The specified network name is no longer available'

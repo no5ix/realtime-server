@@ -1,0 +1,90 @@
+2021-06-29 00:10:27,138 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60d9f473a3b505651cca334c mem_id=1517516600608
+2021-06-29 00:10:27,141 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60d9f473a3b505651cca334c 
+2021-06-29 00:10:27,165 - INFO - ServiceNode - [EtcdSupport.py:533]: we have create ServiceFinder
+2021-06-29 00:10:27,179 - INFO - ServiceFinder - [EtcdSupport.py:352]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-06-29 00:10:27,189 - INFO - ServiceRegister - [EtcdSupport.py:155]: _do_regist: now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-29 00:10:27,210 - INFO - TcpServer - [TcpServer.py:200]: Server on ('127.0.0.1', 9100)
+2021-06-29 00:10:27,239 - INFO - ServiceFinder - [EtcdSupport.py:277]: init service info from etcd success, will going to watch, at etcd index -> 314
+2021-06-29 00:10:27,255 - INFO - ServiceRegister - [EtcdSupport.py:163]: regist service : dispatcher_service success, {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-28T16:13:27.232959Z","ttl":180,"modifiedIndex":315,"createdIndex":315}}
+
+2021-06-29 00:10:27,268 - INFO - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> dispatcher_service: ('127.0.0.1', 9100) - [315]
+2021-06-29 00:10:35,145 - INFO - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> dispatcher_service: ('127.0.0.1', 9101) - [316]
+2021-06-29 00:10:38,056 - INFO - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> dispatcher_service: ('127.0.0.1', 9102) - [317]
+2021-06-29 00:10:42,598 - INFO - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> lobby_server: ('127.0.0.1', 10001) - [318]
+2021-06-29 00:10:47,076 - INFO - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> lobby_server: ('127.0.0.1', 10002) - [319]
+2021-06-29 00:10:48,563 - INFO - TcpServer - [TcpServer.py:186]: ('127.0.0.1', 6619) is connected !!!!
+2021-06-29 00:10:50,617 - INFO - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> lobby_server: ('127.0.0.1', 10003) - [320]
+2021-06-29 00:10:53,032 - INFO - TcpServer - [TcpServer.py:186]: ('127.0.0.1', 6625) is connected !!!!
+2021-06-29 00:10:55,243 - INFO - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> lobby_gate: ('127.0.0.1', 9201) - [321]
+2021-06-29 00:10:56,593 - INFO - TcpServer - [TcpServer.py:186]: ('127.0.0.1', 6632) is connected !!!!
+2021-06-29 00:10:58,305 - INFO - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> lobby_gate: ('127.0.0.1', 9202) - [322]
+2021-06-29 00:11:01,385 - INFO - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> lobby_gate: ('127.0.0.1', 9203) - [323]
+2021-06-29 00:11:07,362 - INFO - TcpServer - [TcpServer.py:186]: ('127.0.0.1', 6657) is connected !!!!
+2021-06-29 00:12:03,417 - INFO - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 323 -> 323
+2021-06-29 00:12:16,273 - INFO - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624896736.2689245, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-29 00:12:16,292 - INFO - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624896736.289985, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-28T16:15:16.2869958Z","ttl":180,"modifiedIndex":324,"createdIndex":324},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-28T16:13:27.232959Z","ttl":71,"modifiedIndex":315,"createdIndex":315}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-29 00:12:24,507 - INFO - TcpServer - [TcpServer.py:186]: ('127.0.0.1', 6711) is connected !!!!
+2021-06-29 00:12:24,524 - DEBUG - ServerEntity.LoadCollector - [LoadCollector.py:63]: pick_lowest_load_service_addr server_name: gate_2, addr: ('gate_2', '127.0.0.1', 9203)
+2021-06-29 00:13:08,444 - INFO - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 323 -> 323
+2021-06-29 00:14:01,300 - INFO - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624896841.2937596, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-29 00:14:01,339 - INFO - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624896841.3336773, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-28T16:17:01.3283284Z","ttl":180,"modifiedIndex":334,"createdIndex":334},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-28T16:15:16.2869958Z","ttl":75,"modifiedIndex":324,"createdIndex":324}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-29 00:14:08,485 - INFO - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 323 -> 332
+2021-06-29 00:15:16,532 - INFO - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 332 -> 334
+2021-06-29 00:15:41,353 - INFO - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624896941.3473125, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-29 00:15:41,388 - INFO - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624896941.3838668, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-28T16:18:41.3782187Z","ttl":180,"modifiedIndex":342,"createdIndex":342},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-28T16:17:01.3283284Z","ttl":80,"modifiedIndex":334,"createdIndex":334}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-29 00:16:23,568 - INFO - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 334 -> 341
+2021-06-29 00:17:24,379 - INFO - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624897044.3745868, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-29 00:17:24,418 - INFO - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624897044.4138052, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-28T16:20:24.4073236Z","ttl":180,"modifiedIndex":351,"createdIndex":351},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-28T16:18:41.3782187Z","ttl":77,"modifiedIndex":342,"createdIndex":342}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-29 00:17:33,596 - INFO - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 341 -> 350
+2021-06-29 00:18:48,477 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60d9f668bc00918604d43bf2 mem_id=1822814024896
+2021-06-29 00:18:48,480 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60d9f668bc00918604d43bf2 
+2021-06-29 00:18:48,500 - INFO - ServiceNode - [EtcdSupport.py:533]: we have create ServiceFinder
+2021-06-29 00:18:48,513 - INFO - ServiceFinder - [EtcdSupport.py:352]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-06-29 00:18:48,520 - INFO - ServiceRegister - [EtcdSupport.py:155]: _do_regist: now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-29 00:18:48,537 - INFO - TcpServer - [TcpServer.py:200]: Server on ('127.0.0.1', 9100)
+2021-06-29 00:18:48,562 - INFO - ServiceFinder - [EtcdSupport.py:323]: add service node info--> lobby_server: ('127.0.0.1', 10001)
+2021-06-29 00:18:48,565 - INFO - ServiceFinder - [EtcdSupport.py:323]: add service node info--> lobby_server: ('127.0.0.1', 10002)
+2021-06-29 00:18:48,568 - INFO - ServiceFinder - [EtcdSupport.py:323]: add service node info--> lobby_server: ('127.0.0.1', 10003)
+2021-06-29 00:18:48,571 - INFO - ServiceFinder - [EtcdSupport.py:323]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-06-29 00:18:48,574 - INFO - ServiceFinder - [EtcdSupport.py:323]: add service node info--> dispatcher_service: ('127.0.0.1', 9101)
+2021-06-29 00:18:48,577 - INFO - ServiceFinder - [EtcdSupport.py:323]: add service node info--> dispatcher_service: ('127.0.0.1', 9102)
+2021-06-29 00:18:48,580 - INFO - ServiceFinder - [EtcdSupport.py:323]: add service node info--> lobby_gate: ('127.0.0.1', 9201)
+2021-06-29 00:18:48,582 - INFO - ServiceFinder - [EtcdSupport.py:323]: add service node info--> lobby_gate: ('127.0.0.1', 9202)
+2021-06-29 00:18:48,585 - INFO - ServiceFinder - [EtcdSupport.py:323]: add service node info--> lobby_gate: ('127.0.0.1', 9203)
+2021-06-29 00:18:48,587 - INFO - ServiceFinder - [EtcdSupport.py:277]: init service info from etcd success, will going to watch, at etcd index -> 359
+2021-06-29 00:18:48,596 - INFO - ServiceRegister - [EtcdSupport.py:163]: regist service : dispatcher_service success, {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-28T16:21:48.5557614Z","ttl":180,"modifiedIndex":360,"createdIndex":360},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-28T16:20:24.4073236Z","ttl":96,"modifiedIndex":351,"createdIndex":351}}
+
+2021-06-29 00:18:48,607 - INFO - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> dispatcher_service: ('127.0.0.1', 9100) - [360]
+2021-06-29 00:18:48,610 - INFO - ServiceFinder - [EtcdSupport.py:299]: duplicate service info  -> dispatcher_service:('127.0.0.1', 9100)
+2021-06-29 00:18:51,344 - INFO - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> dispatcher_service: ('127.0.0.1', 9101) - [361]
+2021-06-29 00:18:51,348 - INFO - ServiceFinder - [EtcdSupport.py:299]: duplicate service info  -> dispatcher_service:('127.0.0.1', 9101)
+2021-06-29 00:18:53,832 - INFO - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> dispatcher_service: ('127.0.0.1', 9102) - [362]
+2021-06-29 00:18:53,835 - INFO - ServiceFinder - [EtcdSupport.py:299]: duplicate service info  -> dispatcher_service:('127.0.0.1', 9102)
+2021-06-29 00:18:57,416 - INFO - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> lobby_server: ('127.0.0.1', 10001) - [363]
+2021-06-29 00:18:57,422 - INFO - ServiceFinder - [EtcdSupport.py:299]: duplicate service info  -> lobby_server:('127.0.0.1', 10001)
+2021-06-29 00:19:03,367 - INFO - TcpServer - [TcpServer.py:186]: ('127.0.0.1', 7103) is connected !!!!
+2021-06-29 00:19:05,749 - INFO - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> lobby_gate: ('127.0.0.1', 9201) - [364]
+2021-06-29 00:19:05,755 - INFO - ServiceFinder - [EtcdSupport.py:299]: duplicate service info  -> lobby_gate:('127.0.0.1', 9201)
+2021-06-29 00:19:11,709 - INFO - TcpServer - [TcpServer.py:186]: ('127.0.0.1', 7122) is connected !!!!
+2021-06-29 00:19:31,490 - INFO - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> lobby_server: ('127.0.0.1', 10002) - [365]
+2021-06-29 00:19:31,497 - INFO - ServiceFinder - [EtcdSupport.py:299]: duplicate service info  -> lobby_server:('127.0.0.1', 10002)
+2021-06-29 00:19:34,332 - INFO - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> lobby_server: ('127.0.0.1', 10003) - [366]
+2021-06-29 00:19:34,338 - INFO - ServiceFinder - [EtcdSupport.py:299]: duplicate service info  -> lobby_server:('127.0.0.1', 10003)
+2021-06-29 00:19:37,422 - INFO - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> lobby_gate: ('127.0.0.1', 9202) - [367]
+2021-06-29 00:19:37,429 - INFO - ServiceFinder - [EtcdSupport.py:299]: duplicate service info  -> lobby_gate:('127.0.0.1', 9202)
+2021-06-29 00:19:37,470 - INFO - TcpServer - [TcpServer.py:186]: ('127.0.0.1', 7144) is connected !!!!
+2021-06-29 00:19:40,293 - INFO - TcpServer - [TcpServer.py:186]: ('127.0.0.1', 7146) is connected !!!!
+2021-06-29 00:19:42,062 - INFO - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> lobby_gate: ('127.0.0.1', 9203) - [368]
+2021-06-29 00:19:42,071 - INFO - ServiceFinder - [EtcdSupport.py:299]: duplicate service info  -> lobby_gate:('127.0.0.1', 9203)
+2021-06-29 00:19:53,827 - INFO - TcpServer - [TcpServer.py:186]: ('127.0.0.1', 7168) is connected !!!!
+2021-06-29 00:19:53,844 - DEBUG - ServerEntity.LoadCollector - [LoadCollector.py:63]: pick_lowest_load_service_addr server_name: lobby_2, addr: ('lobby_2', '127.0.0.1', 10003)
+2021-06-29 00:20:06,814 - INFO - TcpServer - [TcpServer.py:186]: ('127.0.0.1', 7189) is connected !!!!
+2021-06-29 00:20:06,850 - DEBUG - ServerEntity.LoadCollector - [LoadCollector.py:63]: pick_lowest_load_service_addr server_name: gate_2, addr: ('gate_2', '127.0.0.1', 9203)
+2021-06-29 00:20:36,611 - INFO - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624897236.6055639, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-29 00:20:36,667 - INFO - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624897236.6604955, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-28T16:23:36.6502214Z","ttl":180,"modifiedIndex":369,"createdIndex":369},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-28T16:21:48.5557614Z","ttl":72,"modifiedIndex":360,"createdIndex":360}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-29 00:20:47,103 - INFO - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 368 -> 368

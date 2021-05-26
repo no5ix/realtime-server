@@ -1,0 +1,157 @@
+2021-06-27 02:13:13,368 - DEBUG - ServerEntity.ServerEntity - [ServerEntity.py:24]: __init__ create entity ServerEntity with id 60d76e39e562d2fe3334bc79 mem_id=2652327811008
+2021-06-27 02:13:13,370 - DEBUG - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60d76e39e562d2fe3334bc79 
+2021-06-27 02:13:13,387 - DEBUG - __main__ - [TcpClient2.py:71]: bs: ('gate_0', '127.0.0.1', 9201)
+2021-06-27 02:13:13,391 - DEBUG - ServerEntity.Avatar - [ServerEntity.py:24]: __init__ create entity Avatar with id 60d76e39e562d2fe3334bc7a mem_id=2652327813024
+2021-06-27 02:13:13,392 - DEBUG - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60d76e39e562d2fe3334bc7a 
+2021-06-27 02:14:03,728 - DEBUG - ServerEntity.ServerEntity - [ServerEntity.py:24]: __init__ create entity ServerEntity with id 60d76e6bf4908238ec7794f3 mem_id=2855541350656
+2021-06-27 02:14:03,729 - DEBUG - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60d76e6bf4908238ec7794f3 
+2021-06-27 02:14:03,750 - DEBUG - __main__ - [TcpClient2.py:71]: bs: ('gate_0', '127.0.0.1', 9201)
+2021-06-27 02:14:03,757 - DEBUG - ServerEntity.Avatar - [ServerEntity.py:24]: __init__ create entity Avatar with id 60d76e6bf4908238ec7794f4 mem_id=2855541354304
+2021-06-27 02:14:03,760 - DEBUG - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60d76e6bf4908238ec7794f4 
+2021-06-27 02:14:05,629 - DEBUG - ServerEntity.ServerEntity - [ServerEntity.py:24]: __init__ create entity ServerEntity with id 60d76e6d0d1d87373a688de5 mem_id=1999183190000
+2021-06-27 02:14:05,631 - DEBUG - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60d76e6d0d1d87373a688de5 
+2021-06-27 02:14:05,676 - DEBUG - __main__ - [TcpClient2.py:71]: bs: ('gate_0', '127.0.0.1', 9201)
+2021-06-27 02:14:05,682 - DEBUG - ServerEntity.Avatar - [ServerEntity.py:24]: __init__ create entity Avatar with id 60d76e6d0d1d87373a688de6 mem_id=1999183357936
+2021-06-27 02:14:05,684 - DEBUG - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60d76e6d0d1d87373a688de6 
+2021-06-27 03:09:02,458 - DEBUG - ServerEntity.ServerEntity - [ServerEntity.py:24]: __init__ create entity ServerEntity with id 60d77b4e07f90028ec70744d mem_id=1967777802464
+2021-06-27 03:09:02,460 - DEBUG - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60d77b4e07f90028ec70744d 
+2021-06-27 03:09:02,477 - DEBUG - __main__ - [TcpClient2.py:71]: bs: ('gate_0', '127.0.0.1', 9201)
+2021-06-27 03:09:02,481 - DEBUG - ServerEntity.Avatar - [ServerEntity.py:24]: __init__ create entity Avatar with id 60d77b4e07f90028ec70744e mem_id=1967778051504
+2021-06-27 03:09:02,483 - DEBUG - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60d77b4e07f90028ec70744e 
+2021-06-27 03:35:19,151 - DEBUG - ServerEntity.ServerEntity - [ServerEntity.py:24]: __init__ create entity ServerEntity with id 60d7817798f82ef5fe5195b3 mem_id=1972824209584
+2021-06-27 03:35:19,152 - DEBUG - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60d7817798f82ef5fe5195b3 
+2021-06-27 03:35:19,167 - DEBUG - __main__ - [TcpClient2.py:71]: bs: ('gate_0', '127.0.0.1', 9201)
+2021-06-27 03:35:19,171 - DEBUG - ServerEntity.Avatar - [ServerEntity.py:24]: __init__ create entity Avatar with id 60d7817798f82ef5fe5195b4 mem_id=1972824388992
+2021-06-27 03:35:19,172 - DEBUG - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60d7817798f82ef5fe5195b4 
+2021-06-27 03:44:22,008 - DEBUG - ServerEntity.ServerEntity - [ServerEntity.py:24]: __init__ create entity ServerEntity with id 60d783969952b9f57c0ce3dc mem_id=1656344770592
+2021-06-27 03:44:22,011 - DEBUG - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60d783969952b9f57c0ce3dc 
+2021-06-27 03:44:22,025 - DEBUG - __main__ - [TcpClient2.py:71]: bs: ('gate_0', '127.0.0.1', 9201)
+2021-06-27 03:44:22,029 - DEBUG - ServerEntity.Avatar - [ServerEntity.py:24]: __init__ create entity Avatar with id 60d783969952b9f57c0ce3dd mem_id=1656344945904
+2021-06-27 03:44:22,031 - DEBUG - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60d783969952b9f57c0ce3dd 
+2021-06-27 03:45:25,693 - DEBUG - ServerEntity.ServerEntity - [ServerEntity.py:24]: __init__ create entity ServerEntity with id 60d783d5275d194744ae9fb9 mem_id=1862281079056
+2021-06-27 03:45:25,695 - DEBUG - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60d783d5275d194744ae9fb9 
+2021-06-27 03:45:25,710 - DEBUG - __main__ - [TcpClient2.py:71]: bs: ('gate_0', '127.0.0.1', 9201)
+2021-06-27 03:45:25,714 - DEBUG - ServerEntity.Avatar - [ServerEntity.py:24]: __init__ create entity Avatar with id 60d783d5275d194744ae9fba mem_id=1862281868720
+2021-06-27 03:45:25,716 - DEBUG - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60d783d5275d194744ae9fba 
+2021-06-27 03:46:08,973 - WARNING - TcpConn - [TcpConn.py:179]: peer addr: ('127.0.0.1', 9201), close_reason='connection is closed by error: [WinError 64] The specified network name is no longer available'
+2021-06-27 03:46:11,015 - ERROR - RpcHandler - [RpcHandler.py:193]: [WinError 1225] The remote computer refused the network connection
+2021-06-27 03:46:11,016 - WARNING - RpcHandler - [RpcHandler.py:195]: try reconnect ('127.0.0.1', 9201) ... 1
+2021-06-27 03:46:11,639 - WARNING - RpcHandler - [RpcHandler.py:185]: bbb _try_connect_times=1, id(self._conn)= 1862281870064
+2021-06-27 04:13:01,027 - DEBUG - ServerEntity.ServerEntity - [ServerEntity.py:24]: __init__ create entity ServerEntity with id 60d78a4d43063625c1debeb7 mem_id=2483471585488
+2021-06-27 04:13:01,028 - DEBUG - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60d78a4d43063625c1debeb7 
+2021-06-27 04:13:01,068 - DEBUG - __main__ - [TcpClient2.py:71]: bs: ('lobby_0', '127.0.0.1', 10001)
+2021-06-27 04:13:01,077 - DEBUG - ServerEntity.Avatar - [ServerEntity.py:24]: __init__ create entity Avatar with id 60d78a4d43063625c1debeb8 mem_id=2483471588128
+2021-06-27 04:13:01,083 - DEBUG - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60d78a4d43063625c1debeb8 
+2021-06-27 04:15:01,031 - DEBUG - ServerEntity.ServerEntity - [ServerEntity.py:24]: __init__ create entity ServerEntity with id 60d78ac5cdde8ad0229351a8 mem_id=2658326050944
+2021-06-27 04:15:01,037 - DEBUG - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60d78ac5cdde8ad0229351a8 
+2021-06-27 04:15:01,108 - DEBUG - __main__ - [TcpClient2.py:71]: bs: ('gate_0', '127.0.0.1', 9201)
+2021-06-27 04:15:01,119 - DEBUG - ServerEntity.Avatar - [ServerEntity.py:24]: __init__ create entity Avatar with id 60d78ac5cdde8ad0229351a9 mem_id=2658326226256
+2021-06-27 04:15:01,127 - DEBUG - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60d78ac5cdde8ad0229351a9 
+2021-06-27 04:15:33,163 - WARNING - TcpConn - [TcpConn.py:179]: peer addr: ('127.0.0.1', 9201), close_reason='heartbeat timeout'
+2021-06-27 04:15:49,186 - WARNING - TcpConn - [TcpConn.py:179]: peer addr: ('127.0.0.1', 9201), close_reason='heartbeat timeout'
+2021-06-27 04:16:05,207 - WARNING - TcpConn - [TcpConn.py:179]: peer addr: ('127.0.0.1', 9201), close_reason='heartbeat timeout'
+2021-06-27 04:16:22,495 - WARNING - TcpConn - [TcpConn.py:179]: peer addr: ('127.0.0.1', 9201), close_reason='the peer has performed an orderly shutdown (recv 0 byte).'
+2021-06-27 14:34:49,382 - DEBUG - ServerEntity.ServerEntity - [ServerEntity.py:24]: __init__ create entity ServerEntity with id 60d81c096fd452640f8da9c3 mem_id=2505715099920
+2021-06-27 14:34:49,384 - DEBUG - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60d81c096fd452640f8da9c3 
+2021-06-27 14:34:49,401 - DEBUG - __main__ - [TcpClient2.py:71]: bs: ('gate_0', '127.0.0.1', 9201)
+2021-06-27 14:34:49,405 - DEBUG - ServerEntity.Avatar - [ServerEntity.py:24]: __init__ create entity Avatar with id 60d81c096fd452640f8da9c4 mem_id=2505715885488
+2021-06-27 14:34:49,406 - DEBUG - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60d81c096fd452640f8da9c4 
+2021-06-27 14:37:49,486 - DEBUG - ServerEntity.ServerEntity - [ServerEntity.py:24]: __init__ create entity ServerEntity with id 60d81cbdbcecd8f408ba7ce5 mem_id=2301669771152
+2021-06-27 14:37:49,488 - DEBUG - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60d81cbdbcecd8f408ba7ce5 
+2021-06-27 14:37:49,504 - DEBUG - __main__ - [TcpClient2.py:71]: bs: ('gate_0', '127.0.0.1', 9201)
+2021-06-27 14:37:49,508 - DEBUG - ServerEntity.Avatar - [ServerEntity.py:24]: __init__ create entity Avatar with id 60d81cbdbcecd8f408ba7ce6 mem_id=2301669773168
+2021-06-27 14:37:49,509 - DEBUG - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60d81cbdbcecd8f408ba7ce6 
+2021-06-27 14:40:38,128 - WARNING - TcpConn - [TcpConn.py:179]: peer addr: ('127.0.0.1', 9201), close_reason='connection is closed by error: [WinError 64] The specified network name is no longer available'
+2021-06-27 14:40:40,171 - ERROR - RpcHandler - [RpcHandler.py:193]: [WinError 1225] The remote computer refused the network connection
+2021-06-27 14:40:40,172 - WARNING - RpcHandler - [RpcHandler.py:195]: try reconnect ('127.0.0.1', 9201) ... 1
+2021-06-27 14:41:10,940 - DEBUG - ServerEntity.ServerEntity - [ServerEntity.py:24]: __init__ create entity ServerEntity with id 60d81d869a5dc58129128986 mem_id=1949745772624
+2021-06-27 14:41:10,942 - DEBUG - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60d81d869a5dc58129128986 
+2021-06-27 14:41:10,961 - DEBUG - __main__ - [TcpClient2.py:71]: bs: ('gate_0', '127.0.0.1', 9201)
+2021-06-27 14:41:10,965 - DEBUG - ServerEntity.Avatar - [ServerEntity.py:24]: __init__ create entity Avatar with id 60d81d869a5dc58129128987 mem_id=1949745952032
+2021-06-27 14:41:10,967 - DEBUG - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60d81d869a5dc58129128987 
+2021-06-27 14:44:22,778 - DEBUG - ServerEntity.ServerEntity - [ServerEntity.py:24]: __init__ create entity ServerEntity with id 60d81e46073620fdfb15b621 mem_id=2499901683888
+2021-06-27 14:44:22,780 - DEBUG - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60d81e46073620fdfb15b621 
+2021-06-27 14:44:22,795 - DEBUG - __main__ - [TcpClient2.py:71]: bs: ('gate_0', '127.0.0.1', 9201)
+2021-06-27 14:44:22,799 - DEBUG - ServerEntity.Avatar - [ServerEntity.py:24]: __init__ create entity Avatar with id 60d81e46073620fdfb15b622 mem_id=2499901859200
+2021-06-27 14:44:22,800 - DEBUG - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60d81e46073620fdfb15b622 
+2021-06-27 14:44:51,789 - WARNING - TcpConn - [TcpConn.py:179]: peer addr: ('127.0.0.1', 9201), close_reason='connection is closed by error: [WinError 64] The specified network name is no longer available'
+2021-06-27 14:44:53,827 - ERROR - RpcHandler - [RpcHandler.py:193]: [WinError 1225] The remote computer refused the network connection
+2021-06-27 14:44:53,828 - WARNING - RpcHandler - [RpcHandler.py:195]: try reconnect ('127.0.0.1', 9201) ... 1
+2021-06-27 14:57:46,524 - DEBUG - ServerEntity.ServerEntity - [ServerEntity.py:24]: __init__ create entity ServerEntity with id 60d8216a4e1bf856aa80d8c2 mem_id=2240502528032
+2021-06-27 14:57:46,525 - DEBUG - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60d8216a4e1bf856aa80d8c2 
+2021-06-27 14:57:46,541 - DEBUG - __main__ - [TcpClient2.py:71]: bs: ('gate_0', '127.0.0.1', 9201)
+2021-06-27 14:57:46,544 - DEBUG - ServerEntity.Avatar - [ServerEntity.py:24]: __init__ create entity Avatar with id 60d8216a4e1bf856aa80d8c3 mem_id=2240502703344
+2021-06-27 14:57:46,545 - DEBUG - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60d8216a4e1bf856aa80d8c3 
+2021-06-27 14:58:02,554 - WARNING - TcpConn - [TcpConn.py:179]: peer addr: ('127.0.0.1', 9201), close_reason='heartbeat timeout'
+2021-06-27 14:58:10,562 - WARNING - TcpConn - [TcpConn.py:179]: peer addr: ('127.0.0.1', 9201), close_reason='heartbeat timeout'
+2021-06-27 14:58:18,583 - WARNING - TcpConn - [TcpConn.py:179]: peer addr: ('127.0.0.1', 9201), close_reason='heartbeat timeout'
+2021-06-27 14:58:34,597 - WARNING - TcpConn - [TcpConn.py:179]: peer addr: ('127.0.0.1', 9201), close_reason='heartbeat timeout'
+2021-06-27 14:58:50,604 - WARNING - TcpConn - [TcpConn.py:179]: peer addr: ('127.0.0.1', 9201), close_reason='heartbeat timeout'
+2021-06-27 14:59:06,621 - WARNING - TcpConn - [TcpConn.py:179]: peer addr: ('127.0.0.1', 9201), close_reason='heartbeat timeout'
+2021-06-27 14:59:22,623 - WARNING - TcpConn - [TcpConn.py:179]: peer addr: ('127.0.0.1', 9201), close_reason='heartbeat timeout'
+2021-06-27 14:59:30,633 - WARNING - TcpConn - [TcpConn.py:179]: peer addr: ('127.0.0.1', 9201), close_reason='heartbeat timeout'
+2021-06-27 14:59:38,641 - WARNING - TcpConn - [TcpConn.py:179]: peer addr: ('127.0.0.1', 9201), close_reason='heartbeat timeout'
+2021-06-27 14:59:46,663 - WARNING - TcpConn - [TcpConn.py:179]: peer addr: ('127.0.0.1', 9201), close_reason='heartbeat timeout'
+2021-06-27 14:59:54,676 - WARNING - TcpConn - [TcpConn.py:179]: peer addr: ('127.0.0.1', 9201), close_reason='heartbeat timeout'
+2021-06-27 15:00:02,694 - WARNING - TcpConn - [TcpConn.py:179]: peer addr: ('127.0.0.1', 9201), close_reason='heartbeat timeout'
+2021-06-27 15:00:10,706 - WARNING - TcpConn - [TcpConn.py:179]: peer addr: ('127.0.0.1', 9201), close_reason='heartbeat timeout'
+2021-06-27 15:00:18,714 - WARNING - TcpConn - [TcpConn.py:179]: peer addr: ('127.0.0.1', 9201), close_reason='heartbeat timeout'
+2021-06-27 15:00:26,726 - WARNING - TcpConn - [TcpConn.py:179]: peer addr: ('127.0.0.1', 9201), close_reason='heartbeat timeout'
+2021-06-27 15:01:33,233 - DEBUG - ServerEntity.ServerEntity - [ServerEntity.py:24]: __init__ create entity ServerEntity with id 60d8224d463066bf7a6b2a49 mem_id=2076065953872
+2021-06-27 15:01:33,235 - DEBUG - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60d8224d463066bf7a6b2a49 
+2021-06-27 15:01:33,250 - DEBUG - __main__ - [TcpClient2.py:71]: bs: ('gate_0', '127.0.0.1', 9201)
+2021-06-27 15:01:33,255 - DEBUG - ServerEntity.Avatar - [ServerEntity.py:24]: __init__ create entity Avatar with id 60d8224d463066bf7a6b2a4a mem_id=2076066133280
+2021-06-27 15:01:33,256 - DEBUG - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60d8224d463066bf7a6b2a4a 
+2021-06-27 15:01:49,271 - WARNING - TcpConn - [TcpConn.py:179]: peer addr: ('127.0.0.1', 9201), close_reason='heartbeat timeout'
+2021-06-27 15:01:57,288 - WARNING - TcpConn - [TcpConn.py:179]: peer addr: ('127.0.0.1', 9201), close_reason='heartbeat timeout'
+2021-06-27 15:02:05,296 - WARNING - TcpConn - [TcpConn.py:179]: peer addr: ('127.0.0.1', 9201), close_reason='heartbeat timeout'
+2021-06-27 15:02:13,305 - WARNING - TcpConn - [TcpConn.py:179]: peer addr: ('127.0.0.1', 9201), close_reason='heartbeat timeout'
+2021-06-27 15:02:21,318 - WARNING - TcpConn - [TcpConn.py:179]: peer addr: ('127.0.0.1', 9201), close_reason='heartbeat timeout'
+2021-06-27 15:02:29,327 - WARNING - TcpConn - [TcpConn.py:179]: peer addr: ('127.0.0.1', 9201), close_reason='heartbeat timeout'
+2021-06-27 15:02:37,341 - WARNING - TcpConn - [TcpConn.py:179]: peer addr: ('127.0.0.1', 9201), close_reason='heartbeat timeout'
+2021-06-27 15:02:53,343 - WARNING - TcpConn - [TcpConn.py:179]: peer addr: ('127.0.0.1', 9201), close_reason='heartbeat timeout'
+2021-06-27 15:03:01,366 - WARNING - TcpConn - [TcpConn.py:179]: peer addr: ('127.0.0.1', 9201), close_reason='heartbeat timeout'
+2021-06-27 15:03:09,374 - WARNING - TcpConn - [TcpConn.py:179]: peer addr: ('127.0.0.1', 9201), close_reason='heartbeat timeout'
+2021-06-27 15:03:17,404 - WARNING - TcpConn - [TcpConn.py:179]: peer addr: ('127.0.0.1', 9201), close_reason='heartbeat timeout'
+2021-06-27 15:03:25,417 - WARNING - TcpConn - [TcpConn.py:179]: peer addr: ('127.0.0.1', 9201), close_reason='heartbeat timeout'
+2021-06-27 15:03:41,413 - WARNING - TcpConn - [TcpConn.py:179]: peer addr: ('127.0.0.1', 9201), close_reason='heartbeat timeout'
+2021-06-27 15:03:57,427 - WARNING - TcpConn - [TcpConn.py:179]: peer addr: ('127.0.0.1', 9201), close_reason='heartbeat timeout'
+2021-06-27 15:04:13,448 - WARNING - TcpConn - [TcpConn.py:179]: peer addr: ('127.0.0.1', 9201), close_reason='heartbeat timeout'
+2021-06-27 15:04:21,461 - WARNING - TcpConn - [TcpConn.py:179]: peer addr: ('127.0.0.1', 9201), close_reason='heartbeat timeout'
+2021-06-27 15:04:44,409 - DEBUG - ServerEntity.ServerEntity - [ServerEntity.py:24]: __init__ create entity ServerEntity with id 60d8230c4320c857e38bd2ec mem_id=2971547039920
+2021-06-27 15:04:44,410 - DEBUG - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60d8230c4320c857e38bd2ec 
+2021-06-27 15:04:44,430 - DEBUG - __main__ - [TcpClient2.py:71]: bs: ('gate_0', '127.0.0.1', 9201)
+2021-06-27 15:04:44,434 - DEBUG - ServerEntity.Avatar - [ServerEntity.py:24]: __init__ create entity Avatar with id 60d8230c4320c857e38bd2ed mem_id=2971547219328
+2021-06-27 15:04:44,436 - DEBUG - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60d8230c4320c857e38bd2ed 
+2021-06-27 15:09:47,046 - DEBUG - ServerEntity.ServerEntity - [ServerEntity.py:24]: __init__ create entity ServerEntity with id 60d8243be3da3173a32e82c7 mem_id=2750759532624
+2021-06-27 15:09:47,047 - DEBUG - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60d8243be3da3173a32e82c7 
+2021-06-27 15:09:47,067 - DEBUG - __main__ - [TcpClient2.py:71]: bs: ('gate_0', '127.0.0.1', 9201)
+2021-06-27 15:09:47,072 - DEBUG - ServerEntity.Avatar - [ServerEntity.py:24]: __init__ create entity Avatar with id 60d8243be3da3173a32e82c8 mem_id=2750759712032
+2021-06-27 15:09:47,073 - DEBUG - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60d8243be3da3173a32e82c8 
+2021-06-27 15:13:51,928 - DEBUG - ServerEntity.ServerEntity - [ServerEntity.py:24]: __init__ create entity ServerEntity with id 60d8252f47941826f2c22d50 mem_id=2850668246976
+2021-06-27 15:13:51,930 - DEBUG - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60d8252f47941826f2c22d50 
+2021-06-27 15:13:51,941 - INFO - ConnMgr - [ConnMgr.py:42]: get_conn_by_addr: addr=('127.0.0.1', 9100)
+2021-06-27 15:13:51,952 - DEBUG - __main__ - [TcpClient2.py:71]: bs: ('gate_0', '127.0.0.1', 9201)
+2021-06-27 15:13:51,957 - DEBUG - ServerEntity.Avatar - [ServerEntity.py:24]: __init__ create entity Avatar with id 60d8252f47941826f2c22d51 mem_id=2850668248992
+2021-06-27 15:13:51,959 - DEBUG - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60d8252f47941826f2c22d51 
+2021-06-27 15:16:07,052 - DEBUG - ServerEntity.ServerEntity - [ServerEntity.py:24]: __init__ create entity ServerEntity with id 60d825b7c5b0612d5f72771c mem_id=2237475289072
+2021-06-27 15:16:07,053 - DEBUG - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60d825b7c5b0612d5f72771c 
+2021-06-27 15:16:07,065 - INFO - ConnMgr - [ConnMgr.py:33]: get_conn_by_addr: addr=('127.0.0.1', 9100)
+2021-06-27 15:16:07,077 - DEBUG - __main__ - [TcpClient2.py:71]: bs: ('gate_0', '127.0.0.1', 9201)
+2021-06-27 15:16:07,082 - DEBUG - ServerEntity.Avatar - [ServerEntity.py:24]: __init__ create entity Avatar with id 60d825b7c5b0612d5f72771d mem_id=2237475467904
+2021-06-27 15:16:07,083 - DEBUG - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60d825b7c5b0612d5f72771d 
+2021-06-27 16:52:26,732 - DEBUG - ServerEntity.ServerEntity - [ServerEntity.py:25]: __init__ create entity ServerEntity with id 60d83c4ac62f919bc17bf7b7 mem_id=1922986810288
+2021-06-27 16:52:26,733 - DEBUG - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60d83c4ac62f919bc17bf7b7 
+2021-06-27 16:52:26,753 - DEBUG - __main__ - [TcpClient2.py:71]: bs: ('gate_0', '127.0.0.1', 9201)
+2021-06-27 16:52:26,756 - DEBUG - ServerEntity.Avatar - [ServerEntity.py:25]: __init__ create entity Avatar with id 60d83c4ac62f919bc17bf7b9 mem_id=1922987520544
+2021-06-27 16:52:26,758 - DEBUG - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60d83c4ac62f919bc17bf7b9 
+2021-06-27 16:55:56,298 - DEBUG - ServerEntity.ServerEntity - [ServerEntity.py:25]: __init__ create entity ServerEntity with id 60d83d1c91700696dd77415d mem_id=1546590034672
+2021-06-27 16:55:56,300 - DEBUG - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60d83d1c91700696dd77415d 
+2021-06-27 16:55:56,318 - DEBUG - __main__ - [TcpClient2.py:71]: bs: ('gate_0', '127.0.0.1', 9201)
+2021-06-27 16:55:56,322 - DEBUG - ServerEntity.Avatar - [ServerEntity.py:25]: __init__ create entity Avatar with id 60d83d1c91700696dd77415f mem_id=1546590754800
+2021-06-27 16:55:56,324 - DEBUG - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60d83d1c91700696dd77415f 
+2021-06-27 17:24:41,019 - DEBUG - ServerEntity.ServerEntity - [ServerEntity.py:25]: __init__ create entity ServerEntity with id 60d843d91f291c70258fdb48 mem_id=2700274309872
+2021-06-27 17:24:41,021 - DEBUG - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60d843d91f291c70258fdb48 
+2021-06-27 17:24:41,043 - DEBUG - __main__ - [TcpClient2.py:71]: bs: ('lobby_0', '127.0.0.1', 10001)
+2021-06-27 17:24:41,047 - DEBUG - ServerEntity.Avatar - [ServerEntity.py:25]: __init__ create entity Avatar with id 60d843d91f291c70258fdb4a mem_id=2700275030000
+2021-06-27 17:24:41,049 - DEBUG - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60d843d91f291c70258fdb4a 

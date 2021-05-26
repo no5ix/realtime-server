@@ -1,0 +1,845 @@
+2021-06-26 21:39:42,009 - DEBUG - ServerEntity.LoadCollector - [ServerEntity.py:23]: __init__ create entity LoadCollector with id 60d72e1d1116b2c290e0cc23 mem_id=1258739603488
+2021-06-26 21:39:42,009 - DEBUG - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60d72e1d1116b2c290e0cc23 
+2021-06-26 21:39:42,239 - DEBUG - ServiceNode - [EtcdSupport.py:533]: we have create ServiceFinder
+2021-06-26 21:39:42,300 - DEBUG - ServiceFinder - [EtcdSupport.py:352]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-06-26 21:39:42,311 - DEBUG - ServiceRegister - [EtcdSupport.py:155]: _do_regist: now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 21:39:42,343 - DEBUG - TcpServer - [TcpServer.py:194]: Server on ('127.0.0.1', 9100)
+2021-06-26 21:39:42,484 - DEBUG - ServiceFinder - [EtcdSupport.py:277]: init service info from etcd success, will going to watch, at etcd index -> 3
+2021-06-26 21:39:42,517 - DEBUG - ServiceRegister - [EtcdSupport.py:163]: regist service : dispatcher_service success, {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T13:42:42.4251555Z","ttl":180,"modifiedIndex":4,"createdIndex":4}}
+
+2021-06-26 21:39:42,540 - DEBUG - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> dispatcher_service: ('127.0.0.1', 9100) - [4]
+2021-06-26 21:40:47,571 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 4 -> 4
+2021-06-26 21:41:26,544 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624714886.5370507, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 21:41:26,582 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624714886.5767148, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T13:44:26.5707356Z","ttl":180,"modifiedIndex":5,"createdIndex":5},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T13:42:42.4251555Z","ttl":76,"modifiedIndex":4,"createdIndex":4}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 21:41:48,606 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 4 -> 4
+2021-06-26 21:42:39,318 - DEBUG - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> lobby_server: ('127.0.0.1', 10001) - [6]
+2021-06-26 21:42:45,255 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 8424) is connected !!!!
+2021-06-26 21:42:46,302 - DEBUG - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> lobby_gate: ('127.0.0.1', 9201) - [7]
+2021-06-26 21:42:52,218 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 8433) is connected !!!!
+2021-06-26 21:43:06,588 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624714986.5819404, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 21:43:06,628 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624714986.6218204, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T13:46:06.6160058Z","ttl":180,"modifiedIndex":8,"createdIndex":8},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T13:44:26.5707356Z","ttl":80,"modifiedIndex":5,"createdIndex":5}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 21:43:54,324 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 7 -> 7
+2021-06-26 21:44:54,652 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624715094.6355073, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 21:44:54,729 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624715094.716664, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T13:47:54.7044068Z","ttl":180,"modifiedIndex":11,"createdIndex":11},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T13:46:06.6160058Z","ttl":72,"modifiedIndex":8,"createdIndex":8}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 21:45:01,371 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 7 -> 8
+2021-06-26 21:46:11,402 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 8 -> 11
+2021-06-26 21:46:34,764 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624715194.753956, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 21:46:34,815 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624715194.8103702, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T13:49:34.80051Z","ttl":180,"modifiedIndex":14,"createdIndex":14},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T13:47:54.7044068Z","ttl":80,"modifiedIndex":11,"createdIndex":11}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 21:47:11,428 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 11 -> 12
+2021-06-26 21:48:21,455 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 12 -> 14
+2021-06-26 21:48:21,817 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624715301.8073285, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 21:48:21,875 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624715301.8659534, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T13:51:21.8565813Z","ttl":180,"modifiedIndex":17,"createdIndex":17},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T13:49:34.80051Z","ttl":73,"modifiedIndex":14,"createdIndex":14}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 21:49:23,482 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 14 -> 16
+2021-06-26 21:50:02,910 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624715402.897932, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 21:50:02,969 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624715402.9569974, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T13:53:02.9479067Z","ttl":180,"modifiedIndex":20,"createdIndex":20},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T13:51:21.8565813Z","ttl":79,"modifiedIndex":17,"createdIndex":17}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 21:50:24,525 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 16 -> 17
+2021-06-26 21:51:30,564 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 17 -> 20
+2021-06-26 21:51:51,983 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624715511.9766176, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 21:51:52,023 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624715512.0160284, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T13:54:52.0094419Z","ttl":180,"modifiedIndex":23,"createdIndex":23},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T13:53:02.9479067Z","ttl":71,"modifiedIndex":20,"createdIndex":20}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 21:52:31,593 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 20 -> 21
+2021-06-26 21:53:38,037 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624715618.0283844, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 21:53:38,086 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624715618.0783093, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T13:56:38.0701075Z","ttl":180,"modifiedIndex":26,"createdIndex":26},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T13:54:52.0094419Z","ttl":74,"modifiedIndex":23,"createdIndex":23}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 21:53:41,617 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 21 -> 23
+2021-06-26 21:54:48,655 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 23 -> 26
+2021-06-26 21:55:24,125 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624715724.1170654, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 21:55:24,180 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624715724.1715317, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T13:58:24.1634979Z","ttl":180,"modifiedIndex":29,"createdIndex":29},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T13:56:38.0701075Z","ttl":74,"modifiedIndex":26,"createdIndex":26}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 21:55:48,684 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 26 -> 26
+2021-06-26 21:56:51,727 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 26 -> 29
+2021-06-26 21:57:14,204 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624715834.196932, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 21:57:14,263 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624715834.2535326, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:00:14.2448985Z","ttl":180,"modifiedIndex":32,"createdIndex":32},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T13:58:24.1634979Z","ttl":70,"modifiedIndex":29,"createdIndex":29}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 21:57:51,765 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 29 -> 31
+2021-06-26 21:58:55,791 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 31 -> 32
+2021-06-26 21:58:56,284 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624715936.276888, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 21:58:56,321 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624715936.315131, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:01:56.3088907Z","ttl":180,"modifiedIndex":35,"createdIndex":35},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:00:14.2448985Z","ttl":78,"modifiedIndex":32,"createdIndex":32}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 21:59:55,831 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 32 -> 34
+2021-06-26 22:00:46,339 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624716046.3306508, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 22:00:46,371 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624716046.3662925, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:03:46.3584967Z","ttl":180,"modifiedIndex":38,"createdIndex":38},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:01:56.3088907Z","ttl":70,"modifiedIndex":35,"createdIndex":35}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 22:00:57,852 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 34 -> 35
+2021-06-26 22:02:01,900 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 35 -> 38
+2021-06-26 22:02:27,389 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624716147.380496, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 22:02:27,445 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624716147.434266, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:05:27.4237934Z","ttl":180,"modifiedIndex":41,"createdIndex":41},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:03:46.3584967Z","ttl":79,"modifiedIndex":38,"createdIndex":38}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 22:02:52,701 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 7486) is connected !!!!
+2021-06-26 22:03:06,922 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 38 -> 40
+2021-06-26 22:03:08,729 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-06-26 22:03:11,653 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 7497) is connected !!!!
+2021-06-26 22:03:35,908 - WARNING - TcpConn - [TcpConn.py:173]: connection is closed by error: [WinError 64] The specified network name is no longer available
+2021-06-26 22:04:12,950 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 40 -> 41
+2021-06-26 22:04:17,483 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624716257.4727685, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 22:04:17,524 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624716257.516672, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:07:17.511688Z","ttl":180,"modifiedIndex":44,"createdIndex":44},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:05:27.4237934Z","ttl":70,"modifiedIndex":41,"createdIndex":41}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 22:05:15,988 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 41 -> 43
+2021-06-26 22:06:00,567 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624716360.5560808, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 22:06:00,624 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624716360.6138518, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:09:00.6066417Z","ttl":180,"modifiedIndex":47,"createdIndex":47},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:07:17.511688Z","ttl":77,"modifiedIndex":44,"createdIndex":44}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 22:06:25,010 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 43 -> 44
+2021-06-26 22:07:34,045 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 44 -> 47
+2021-06-26 22:07:43,651 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624716463.6424556, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 22:07:43,706 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624716463.6963358, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:10:43.6887055Z","ttl":180,"modifiedIndex":50,"createdIndex":50},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:09:00.6066417Z","ttl":77,"modifiedIndex":47,"createdIndex":47}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 22:08:40,088 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 47 -> 49
+2021-06-26 22:09:32,730 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624716572.7205343, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 22:09:32,782 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624716572.7733166, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:12:32.7653115Z","ttl":180,"modifiedIndex":53,"createdIndex":53},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:10:43.6887055Z","ttl":71,"modifiedIndex":50,"createdIndex":50}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 22:09:48,114 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 49 -> 50
+2021-06-26 22:10:58,136 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 50 -> 53
+2021-06-26 22:11:21,805 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624716681.7968082, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 22:11:21,850 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624716681.8430853, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:14:21.8365535Z","ttl":180,"modifiedIndex":56,"createdIndex":56},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:12:32.7653115Z","ttl":71,"modifiedIndex":53,"createdIndex":53}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 22:11:58,171 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 53 -> 55
+2021-06-26 22:13:04,199 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 55 -> 56
+2021-06-26 22:13:04,862 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624716784.8553164, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 22:13:04,888 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624716784.8860848, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:16:04.8840794Z","ttl":180,"modifiedIndex":59,"createdIndex":59},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:14:21.8365535Z","ttl":77,"modifiedIndex":56,"createdIndex":56}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 22:13:38,108 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 2950) is connected !!!!
+2021-06-26 22:13:53,791 - WARNING - TcpConn - [TcpConn.py:173]: connection is closed by error: [WinError 64] The specified network name is no longer available
+2021-06-26 22:14:08,897 - WARNING - TcpConn - [TcpConn.py:173]: connection is closed by error: [WinError 64] The specified network name is no longer available
+2021-06-26 22:14:09,225 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 56 -> 58
+2021-06-26 22:14:16,692 - DEBUG - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> lobby_gate: ('127.0.0.1', 9201) - [61]
+2021-06-26 22:14:16,697 - DEBUG - ServiceFinder - [EtcdSupport.py:299]: duplicate service info  -> lobby_gate:('127.0.0.1', 9201)
+2021-06-26 22:14:22,642 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 2986) is connected !!!!
+2021-06-26 22:14:44,910 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624716884.9037132, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 22:14:44,936 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624716884.9337118, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:17:44.9310698Z","ttl":180,"modifiedIndex":62,"createdIndex":62},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:16:04.8840794Z","ttl":80,"modifiedIndex":59,"createdIndex":59}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 22:15:20,733 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 61 -> 61
+2021-06-26 22:16:30,749 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 61 -> 62
+2021-06-26 22:16:31,966 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624716991.9584546, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 22:16:31,989 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624716991.986312, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:19:31.982942Z","ttl":180,"modifiedIndex":65,"createdIndex":65},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:17:44.9310698Z","ttl":73,"modifiedIndex":62,"createdIndex":62}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 22:17:14,260 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 3086) is connected !!!!
+2021-06-26 22:17:31,769 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 62 -> 64
+2021-06-26 22:17:46,373 - WARNING - TcpConn - [TcpConn.py:173]: connection is closed by error: [WinError 64] The specified network name is no longer available
+2021-06-26 22:17:48,801 - WARNING - TcpConn - [TcpConn.py:173]: connection is closed by error: [WinError 64] The specified network name is no longer available
+2021-06-26 22:18:16,993 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624717096.9871402, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 22:18:17,020 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624717097.0179508, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:21:17.0146444Z","ttl":180,"modifiedIndex":67,"createdIndex":67},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:19:31.982942Z","ttl":75,"modifiedIndex":65,"createdIndex":65}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 22:18:39,775 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 64 -> 65
+2021-06-26 22:19:03,055 - DEBUG - ServiceFinder - [EtcdSupport.py:433]: recv watch expire, info--> lobby_gate: ('127.0.0.1', 9201) - [68]
+2021-06-26 22:19:57,036 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624717197.0294657, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 22:19:57,065 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624717197.0633466, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:22:57.0602745Z","ttl":180,"modifiedIndex":70,"createdIndex":70},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:21:17.0146444Z","ttl":80,"modifiedIndex":67,"createdIndex":67}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 22:20:03,090 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 68 -> 68
+2021-06-26 22:21:10,118 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 68 -> 70
+2021-06-26 22:21:39,070 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624717299.0646887, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 22:21:39,094 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624717299.0898907, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:24:39.0858271Z","ttl":180,"modifiedIndex":72,"createdIndex":72},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:22:57.0602745Z","ttl":78,"modifiedIndex":70,"createdIndex":70}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 22:22:18,148 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 70 -> 71
+2021-06-26 22:23:18,175 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 71 -> 72
+2021-06-26 22:23:28,105 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624717408.1007414, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 22:23:28,128 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624717408.1240005, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:26:28.1210106Z","ttl":180,"modifiedIndex":74,"createdIndex":74},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:24:39.0858271Z","ttl":71,"modifiedIndex":72,"createdIndex":72}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 22:23:54,336 - DEBUG - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> lobby_gate: ('127.0.0.1', 9201) - [75]
+2021-06-26 22:24:00,292 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 3305) is connected !!!!
+2021-06-26 22:25:02,377 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 75 -> 75
+2021-06-26 22:25:09,134 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624717509.1305318, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 22:25:09,155 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624717509.152843, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:28:09.1491077Z","ttl":180,"modifiedIndex":77,"createdIndex":77},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:26:28.1210106Z","ttl":79,"modifiedIndex":74,"createdIndex":74}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 22:26:05,411 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 75 -> 76
+2021-06-26 22:26:16,506 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 7624) is connected !!!!
+2021-06-26 22:26:30,236 - WARNING - TcpConn - [TcpConn.py:173]: connection is closed by error: [WinError 64] The specified network name is no longer available
+2021-06-26 22:26:39,749 - WARNING - TcpConn - [TcpConn.py:173]: connection is closed by error: [WinError 64] The specified network name is no longer available
+2021-06-26 22:26:58,174 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624717618.1716835, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 22:26:58,200 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624717618.193894, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:29:58.1893081Z","ttl":180,"modifiedIndex":80,"createdIndex":80},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:28:09.1491077Z","ttl":71,"modifiedIndex":77,"createdIndex":77}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 22:27:11,297 - DEBUG - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> lobby_gate: ('127.0.0.1', 9201) - [81]
+2021-06-26 22:27:11,301 - DEBUG - ServiceFinder - [EtcdSupport.py:299]: duplicate service info  -> lobby_gate:('127.0.0.1', 9201)
+2021-06-26 22:27:17,265 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 7666) is connected !!!!
+2021-06-26 22:27:31,320 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 7677) is connected !!!!
+2021-06-26 22:27:41,307 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-06-26 22:28:13,309 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 81 -> 81
+2021-06-26 22:28:37,559 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 7717) is connected !!!!
+2021-06-26 22:28:37,577 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 7719) is connected !!!!
+2021-06-26 22:28:41,225 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624717721.2192492, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 22:28:41,248 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624717721.2451317, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:31:41.2416357Z","ttl":180,"modifiedIndex":83,"createdIndex":83},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:29:58.1893081Z","ttl":77,"modifiedIndex":80,"createdIndex":80}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 22:28:43,216 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 7724) is connected !!!!
+2021-06-26 22:28:45,587 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-06-26 22:28:51,230 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-06-26 22:28:53,550 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-06-26 22:29:13,346 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 81 -> 82
+2021-06-26 22:30:11,554 - DEBUG - ServiceFinder - [EtcdSupport.py:433]: recv watch expire, info--> lobby_gate: ('127.0.0.1', 9201) - [85]
+2021-06-26 22:30:21,263 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624717821.2593496, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 22:30:21,281 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624717821.278813, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:33:21.2761117Z","ttl":180,"modifiedIndex":86,"createdIndex":86},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:31:41.2416357Z","ttl":80,"modifiedIndex":83,"createdIndex":83}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 22:31:14,705 - DEBUG - ServerEntity.LoadCollector - [ServerEntity.py:23]: __init__ create entity LoadCollector with id 60d73a32609229dc1b888d55 mem_id=1630911897856
+2021-06-26 22:31:14,706 - DEBUG - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60d73a32609229dc1b888d55 
+2021-06-26 22:31:14,731 - DEBUG - ServiceNode - [EtcdSupport.py:533]: we have create ServiceFinder
+2021-06-26 22:31:14,745 - DEBUG - ServiceFinder - [EtcdSupport.py:352]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-06-26 22:31:14,758 - DEBUG - ServiceRegister - [EtcdSupport.py:155]: _do_regist: now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 22:31:14,785 - DEBUG - TcpServer - [TcpServer.py:194]: Server on ('127.0.0.1', 9100)
+2021-06-26 22:31:14,815 - DEBUG - ServiceFinder - [EtcdSupport.py:323]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-06-26 22:31:14,820 - DEBUG - ServiceFinder - [EtcdSupport.py:323]: add service node info--> lobby_server: ('127.0.0.1', 10001)
+2021-06-26 22:31:14,826 - DEBUG - ServiceFinder - [EtcdSupport.py:277]: init service info from etcd success, will going to watch, at etcd index -> 86
+2021-06-26 22:31:14,845 - DEBUG - ServiceRegister - [EtcdSupport.py:163]: regist service : dispatcher_service success, {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:34:14.8085098Z","ttl":180,"modifiedIndex":87,"createdIndex":87},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:33:21.2761117Z","ttl":127,"modifiedIndex":86,"createdIndex":86}}
+
+2021-06-26 22:31:14,870 - DEBUG - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> dispatcher_service: ('127.0.0.1', 9100) - [87]
+2021-06-26 22:31:14,874 - DEBUG - ServiceFinder - [EtcdSupport.py:299]: duplicate service info  -> dispatcher_service:('127.0.0.1', 9100)
+2021-06-26 22:31:25,482 - DEBUG - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> lobby_server: ('127.0.0.1', 10001) - [88]
+2021-06-26 22:31:25,487 - DEBUG - ServiceFinder - [EtcdSupport.py:299]: duplicate service info  -> lobby_server:('127.0.0.1', 10001)
+2021-06-26 22:31:28,795 - DEBUG - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> lobby_gate: ('127.0.0.1', 9201) - [89]
+2021-06-26 22:31:31,432 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 2671) is connected !!!!
+2021-06-26 22:31:34,758 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 2673) is connected !!!!
+2021-06-26 22:31:45,341 - WARNING - TcpConn - [TcpConn.py:173]: connection is closed by error: [WinError 64] The specified network name is no longer available
+2021-06-26 22:31:46,497 - DEBUG - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> lobby_gate: ('127.0.0.1', 9201) - [90]
+2021-06-26 22:31:46,502 - DEBUG - ServiceFinder - [EtcdSupport.py:299]: duplicate service info  -> lobby_gate:('127.0.0.1', 9201)
+2021-06-26 22:31:49,307 - DEBUG - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> lobby_gate: ('127.0.0.1', 9201) - [91]
+2021-06-26 22:31:49,311 - DEBUG - ServiceFinder - [EtcdSupport.py:299]: duplicate service info  -> lobby_gate:('127.0.0.1', 9201)
+2021-06-26 22:31:55,265 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 2696) is connected !!!!
+2021-06-26 22:32:58,868 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624717978.8625534, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 22:32:58,892 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624717978.8892639, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:35:58.8871979Z","ttl":180,"modifiedIndex":92,"createdIndex":92},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:34:14.8085098Z","ttl":76,"modifiedIndex":87,"createdIndex":87}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 22:32:59,335 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 91 -> 91
+2021-06-26 22:33:07,757 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 2735) is connected !!!!
+2021-06-26 22:33:23,402 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-06-26 22:34:09,367 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 91 -> 92
+2021-06-26 22:34:45,915 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624718085.9087512, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 22:34:45,944 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624718085.9415095, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:37:45.9389161Z","ttl":180,"modifiedIndex":94,"createdIndex":94},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:35:58.8871979Z","ttl":73,"modifiedIndex":92,"createdIndex":92}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 22:34:49,546 - DEBUG - ServiceFinder - [EtcdSupport.py:433]: recv watch expire, info--> lobby_gate: ('127.0.0.1', 9201) - [95]
+2021-06-26 22:35:10,716 - WARNING - TcpConn - [TcpConn.py:173]: connection is closed by error: [WinError 64] The specified network name is no longer available
+2021-06-26 22:35:15,818 - DEBUG - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> lobby_gate: ('127.0.0.1', 9201) - [97]
+2021-06-26 22:35:21,764 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 8512) is connected !!!!
+2021-06-26 22:35:25,674 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 8520) is connected !!!!
+2021-06-26 22:35:37,791 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-06-26 22:36:21,833 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 97 -> 97
+2021-06-26 22:36:32,942 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624718192.9383106, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 22:36:32,961 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624718192.9588077, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:39:32.956656Z","ttl":180,"modifiedIndex":98,"createdIndex":98},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:37:45.9389161Z","ttl":73,"modifiedIndex":94,"createdIndex":94}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 22:36:40,899 - DEBUG - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> lobby_gate: ('127.0.0.1', 9201) - [99]
+2021-06-26 22:36:40,904 - DEBUG - ServiceFinder - [EtcdSupport.py:299]: duplicate service info  -> lobby_gate:('127.0.0.1', 9201)
+2021-06-26 22:36:42,187 - WARNING - TcpConn - [TcpConn.py:173]: connection is closed by error: [WinError 64] The specified network name is no longer available
+2021-06-26 22:36:44,018 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 8587) is connected !!!!
+2021-06-26 22:36:44,131 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 8589) is connected !!!!
+2021-06-26 22:36:52,139 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-06-26 22:37:16,657 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 8607) is connected !!!!
+2021-06-26 22:37:16,672 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 8608) is connected !!!!
+2021-06-26 22:37:16,730 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 8609) is connected !!!!
+2021-06-26 22:37:24,681 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-06-26 22:37:24,693 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-06-26 22:37:24,741 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-06-26 22:37:41,934 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 99 -> 99
+2021-06-26 22:37:50,400 - WARNING - TcpConn - [TcpConn.py:173]: connection is closed by error: [WinError 64] The specified network name is no longer available
+2021-06-26 22:38:13,999 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624718293.992061, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 22:38:14,032 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624718294.029404, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:41:14.0203434Z","ttl":180,"modifiedIndex":101,"createdIndex":101},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:39:32.956656Z","ttl":79,"modifiedIndex":98,"createdIndex":98}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 22:38:45,945 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 99 -> 100
+2021-06-26 22:39:41,048 - DEBUG - ServiceFinder - [EtcdSupport.py:433]: recv watch expire, info--> lobby_gate: ('127.0.0.1', 9201) - [103]
+2021-06-26 22:39:57,056 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624718397.050643, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 22:39:57,077 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624718397.0741868, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:42:57.0721932Z","ttl":180,"modifiedIndex":104,"createdIndex":104},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:41:14.0203434Z","ttl":77,"modifiedIndex":101,"createdIndex":101}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 22:40:04,979 - DEBUG - ServerEntity.LoadCollector - [ServerEntity.py:23]: __init__ create entity LoadCollector with id 60d73c44901de570038c46a9 mem_id=2377488140368
+2021-06-26 22:40:04,980 - DEBUG - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60d73c44901de570038c46a9 
+2021-06-26 22:40:04,994 - DEBUG - ServiceNode - [EtcdSupport.py:533]: we have create ServiceFinder
+2021-06-26 22:40:05,010 - DEBUG - ServiceFinder - [EtcdSupport.py:352]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-06-26 22:40:05,020 - DEBUG - ServiceRegister - [EtcdSupport.py:155]: _do_regist: now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 22:40:05,035 - DEBUG - TcpServer - [TcpServer.py:194]: Server on ('127.0.0.1', 9100)
+2021-06-26 22:40:05,061 - DEBUG - ServiceFinder - [EtcdSupport.py:323]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-06-26 22:40:05,065 - DEBUG - ServiceFinder - [EtcdSupport.py:323]: add service node info--> lobby_server: ('127.0.0.1', 10001)
+2021-06-26 22:40:05,071 - DEBUG - ServiceFinder - [EtcdSupport.py:277]: init service info from etcd success, will going to watch, at etcd index -> 104
+2021-06-26 22:40:05,083 - DEBUG - ServiceRegister - [EtcdSupport.py:163]: regist service : dispatcher_service success, {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:43:05.0550869Z","ttl":180,"modifiedIndex":105,"createdIndex":105},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:42:57.0721932Z","ttl":173,"modifiedIndex":104,"createdIndex":104}}
+
+2021-06-26 22:40:05,092 - DEBUG - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> dispatcher_service: ('127.0.0.1', 9100) - [105]
+2021-06-26 22:40:05,097 - DEBUG - ServiceFinder - [EtcdSupport.py:299]: duplicate service info  -> dispatcher_service:('127.0.0.1', 9100)
+2021-06-26 22:40:11,034 - DEBUG - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> lobby_server: ('127.0.0.1', 10001) - [106]
+2021-06-26 22:40:11,040 - DEBUG - ServiceFinder - [EtcdSupport.py:299]: duplicate service info  -> lobby_server:('127.0.0.1', 10001)
+2021-06-26 22:40:13,062 - DEBUG - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> lobby_gate: ('127.0.0.1', 9201) - [107]
+2021-06-26 22:40:16,981 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 8721) is connected !!!!
+2021-06-26 22:40:19,021 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 8723) is connected !!!!
+2021-06-26 22:40:25,748 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 8733) is connected !!!!
+2021-06-26 22:41:13,097 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 107 -> 107
+2021-06-26 22:41:41,017 - WARNING - TcpConn - [TcpConn.py:173]: connection is closed by error: [WinError 64] The specified network name is no longer available
+2021-06-26 22:41:42,822 - WARNING - TcpConn - [TcpConn.py:173]: connection is closed by error: [WinError 64] The specified network name is no longer available
+2021-06-26 22:41:45,090 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624718505.0870624, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 22:41:45,111 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624718505.1074603, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:44:45.103905Z","ttl":180,"modifiedIndex":108,"createdIndex":108},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:43:05.0550869Z","ttl":80,"modifiedIndex":105,"createdIndex":105}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 22:42:19,119 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 107 -> 107
+2021-06-26 22:42:52,720 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 8826) is connected !!!!
+2021-06-26 22:42:58,090 - WARNING - TcpConn - [TcpConn.py:173]: connection is closed by error: [WinError 64] The specified network name is no longer available
+2021-06-26 22:43:13,547 - DEBUG - ServiceFinder - [EtcdSupport.py:433]: recv watch expire, info--> lobby_gate: ('127.0.0.1', 9201) - [110]
+2021-06-26 22:43:33,113 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624718613.1076097, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 22:43:33,147 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624718613.140689, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:46:33.13573Z","ttl":180,"modifiedIndex":111,"createdIndex":111},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:44:45.103905Z","ttl":72,"modifiedIndex":108,"createdIndex":108}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 22:44:23,568 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 110 -> 110
+2021-06-26 22:45:20,153 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624718720.1471646, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 22:45:20,179 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624718720.1778333, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:48:20.1742373Z","ttl":180,"modifiedIndex":113,"createdIndex":113},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:46:33.13573Z","ttl":73,"modifiedIndex":111,"createdIndex":111}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 22:45:31,575 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 110 -> 112
+2021-06-26 22:46:09,299 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 7004) is connected !!!!
+2021-06-26 22:46:13,901 - WARNING - TcpConn - [TcpConn.py:173]: connection is closed by error: [WinError 64] The specified network name is no longer available
+2021-06-26 22:46:34,599 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 112 -> 114
+2021-06-26 22:46:38,512 - DEBUG - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> lobby_gate: ('127.0.0.1', 9201) - [115]
+2021-06-26 22:46:44,487 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 7031) is connected !!!!
+2021-06-26 22:47:04,196 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624718824.193216, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 22:47:04,212 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624718824.2097044, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:50:04.2061721Z","ttl":180,"modifiedIndex":116,"createdIndex":116},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:48:20.1742373Z","ttl":76,"modifiedIndex":113,"createdIndex":113}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 22:47:17,287 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 7052) is connected !!!!
+2021-06-26 22:47:39,542 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 115 -> 115
+2021-06-26 22:47:57,000 - WARNING - TcpConn - [TcpConn.py:173]: connection is closed by error: [WinError 64] The specified network name is no longer available
+2021-06-26 22:47:58,599 - WARNING - TcpConn - [TcpConn.py:173]: connection is closed by error: [WinError 64] The specified network name is no longer available
+2021-06-26 22:48:33,019 - DEBUG - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> lobby_gate: ('127.0.0.1', 9201) - [118]
+2021-06-26 22:48:33,022 - DEBUG - ServiceFinder - [EtcdSupport.py:299]: duplicate service info  -> lobby_gate:('127.0.0.1', 9201)
+2021-06-26 22:48:36,150 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 7103) is connected !!!!
+2021-06-26 22:48:36,212 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 7105) is connected !!!!
+2021-06-26 22:48:50,400 - WARNING - TcpConn - [TcpConn.py:173]: connection is closed by error: [WinError 64] The specified network name is no longer available
+2021-06-26 22:48:52,665 - WARNING - TcpConn - [TcpConn.py:173]: connection is closed by error: [WinError 64] The specified network name is no longer available
+2021-06-26 22:48:53,231 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624718933.2281008, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 22:48:53,246 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624718933.2439861, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:51:53.240995Z","ttl":180,"modifiedIndex":120,"createdIndex":120},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:50:04.2061721Z","ttl":71,"modifiedIndex":116,"createdIndex":116}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 22:49:34,047 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 118 -> 118
+2021-06-26 22:50:18,090 - WARNING - TcpConn - [TcpConn.py:173]: connection is closed by error: [WinError 64] The specified network name is no longer available
+2021-06-26 22:50:19,782 - DEBUG - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> lobby_server: ('127.0.0.1', 10001) - [121]
+2021-06-26 22:50:19,785 - DEBUG - ServiceFinder - [EtcdSupport.py:299]: duplicate service info  -> lobby_server:('127.0.0.1', 10001)
+2021-06-26 22:50:24,143 - DEBUG - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> lobby_gate: ('127.0.0.1', 9201) - [122]
+2021-06-26 22:50:24,147 - DEBUG - ServiceFinder - [EtcdSupport.py:299]: duplicate service info  -> lobby_gate:('127.0.0.1', 9201)
+2021-06-26 22:50:25,737 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 7180) is connected !!!!
+2021-06-26 22:50:26,015 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 7181) is connected !!!!
+2021-06-26 22:50:26,109 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 7183) is connected !!!!
+2021-06-26 22:50:41,267 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624719041.2643695, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 22:50:41,284 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624719041.282309, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:53:41.2783212Z","ttl":180,"modifiedIndex":123,"createdIndex":123},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:51:53.240995Z","ttl":72,"modifiedIndex":120,"createdIndex":120}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 22:51:25,155 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 122 -> 122
+2021-06-26 22:51:28,704 - WARNING - TcpConn - [TcpConn.py:173]: connection is closed by error: [WinError 64] The specified network name is no longer available
+2021-06-26 22:51:30,308 - DEBUG - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> lobby_gate: ('127.0.0.1', 9201) - [124]
+2021-06-26 22:51:30,311 - DEBUG - ServiceFinder - [EtcdSupport.py:299]: duplicate service info  -> lobby_gate:('127.0.0.1', 9201)
+2021-06-26 22:51:31,368 - WARNING - TcpConn - [TcpConn.py:173]: connection is closed by error: [WinError 64] The specified network name is no longer available
+2021-06-26 22:51:32,943 - DEBUG - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> lobby_server: ('127.0.0.1', 10001) - [125]
+2021-06-26 22:51:32,947 - DEBUG - ServiceFinder - [EtcdSupport.py:299]: duplicate service info  -> lobby_server:('127.0.0.1', 10001)
+2021-06-26 22:51:36,267 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 7245) is connected !!!!
+2021-06-26 22:51:38,922 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 7249) is connected !!!!
+2021-06-26 22:51:52,206 - WARNING - TcpConn - [TcpConn.py:173]: connection is closed by error: [WinError 64] The specified network name is no longer available
+2021-06-26 22:51:53,845 - WARNING - TcpConn - [TcpConn.py:173]: connection is closed by error: [WinError 64] The specified network name is no longer available
+2021-06-26 22:52:10,862 - DEBUG - ServerEntity.LoadCollector - [ServerEntity.py:23]: __init__ create entity LoadCollector with id 60d73f1a145495f108d496cb mem_id=1529125734432
+2021-06-26 22:52:10,862 - DEBUG - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60d73f1a145495f108d496cb 
+2021-06-26 22:52:10,878 - DEBUG - ServiceNode - [EtcdSupport.py:533]: we have create ServiceFinder
+2021-06-26 22:52:10,888 - DEBUG - ServiceFinder - [EtcdSupport.py:352]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-06-26 22:52:10,894 - DEBUG - ServiceRegister - [EtcdSupport.py:155]: _do_regist: now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 22:52:10,909 - DEBUG - TcpServer - [TcpServer.py:194]: Server on ('127.0.0.1', 9100)
+2021-06-26 22:52:10,932 - DEBUG - ServiceFinder - [EtcdSupport.py:323]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-06-26 22:52:10,934 - DEBUG - ServiceFinder - [EtcdSupport.py:323]: add service node info--> lobby_server: ('127.0.0.1', 10001)
+2021-06-26 22:52:10,937 - DEBUG - ServiceFinder - [EtcdSupport.py:323]: add service node info--> lobby_gate: ('127.0.0.1', 9201)
+2021-06-26 22:52:10,939 - DEBUG - ServiceFinder - [EtcdSupport.py:277]: init service info from etcd success, will going to watch, at etcd index -> 125
+2021-06-26 22:52:10,950 - DEBUG - ServiceRegister - [EtcdSupport.py:163]: regist service : dispatcher_service success, {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:55:10.9271689Z","ttl":180,"modifiedIndex":126,"createdIndex":126},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:53:41.2783212Z","ttl":91,"modifiedIndex":123,"createdIndex":123}}
+
+2021-06-26 22:52:10,962 - DEBUG - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> dispatcher_service: ('127.0.0.1', 9100) - [126]
+2021-06-26 22:52:10,964 - DEBUG - ServiceFinder - [EtcdSupport.py:299]: duplicate service info  -> dispatcher_service:('127.0.0.1', 9100)
+2021-06-26 22:52:14,486 - DEBUG - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> lobby_server: ('127.0.0.1', 10001) - [127]
+2021-06-26 22:52:14,488 - DEBUG - ServiceFinder - [EtcdSupport.py:299]: duplicate service info  -> lobby_server:('127.0.0.1', 10001)
+2021-06-26 22:52:17,622 - DEBUG - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> lobby_gate: ('127.0.0.1', 9201) - [128]
+2021-06-26 22:52:17,625 - DEBUG - ServiceFinder - [EtcdSupport.py:299]: duplicate service info  -> lobby_gate:('127.0.0.1', 9201)
+2021-06-26 22:52:20,455 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 7304) is connected !!!!
+2021-06-26 22:52:23,594 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 7306) is connected !!!!
+2021-06-26 22:52:49,504 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 7327) is connected !!!!
+2021-06-26 22:53:25,640 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 128 -> 128
+2021-06-26 22:53:56,891 - WARNING - TcpConn - [TcpConn.py:173]: connection is closed by error: [WinError 64] The specified network name is no longer available
+2021-06-26 22:54:00,967 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624719240.9643588, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 22:54:00,981 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624719240.9783227, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:57:00.9763287Z","ttl":180,"modifiedIndex":130,"createdIndex":130},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:55:10.9271689Z","ttl":70,"modifiedIndex":126,"createdIndex":126}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 22:54:31,655 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 128 -> 128
+2021-06-26 22:55:37,671 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 128 -> 131
+2021-06-26 22:55:40,488 - WARNING - TcpConn - [TcpConn.py:173]: connection is closed by error: [WinError 64] The specified network name is no longer available
+2021-06-26 22:55:42,294 - DEBUG - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> lobby_gate: ('127.0.0.1', 9201) - [132]
+2021-06-26 22:55:42,297 - DEBUG - ServiceFinder - [EtcdSupport.py:299]: duplicate service info  -> lobby_gate:('127.0.0.1', 9201)
+2021-06-26 22:55:47,412 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 13226) is connected !!!!
+2021-06-26 22:55:47,491 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 13228) is connected !!!!
+2021-06-26 22:55:47,999 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624719347.9951165, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 22:55:48,015 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624719348.0130923, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:58:48.0107278Z","ttl":180,"modifiedIndex":133,"createdIndex":133},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:57:00.9763287Z","ttl":73,"modifiedIndex":130,"createdIndex":130}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 22:56:09,207 - WARNING - TcpConn - [TcpConn.py:173]: connection is closed by error: [WinError 64] The specified network name is no longer available
+2021-06-26 22:56:10,568 - WARNING - TcpConn - [TcpConn.py:173]: connection is closed by error: [WinError 64] The specified network name is no longer available
+2021-06-26 22:56:50,305 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 132 -> 132
+2021-06-26 22:57:38,027 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624719458.0234864, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 22:57:38,044 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624719458.0427966, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:00:38.0402868Z","ttl":180,"modifiedIndex":136,"createdIndex":136},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T14:58:48.0107278Z","ttl":70,"modifiedIndex":133,"createdIndex":133}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 22:58:00,330 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 132 -> 134
+2021-06-26 22:58:42,547 - DEBUG - ServiceFinder - [EtcdSupport.py:433]: recv watch expire, info--> lobby_gate: ('127.0.0.1', 9201) - [137]
+2021-06-26 22:59:26,051 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624719566.0488193, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 22:59:26,067 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624719566.0647562, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:02:26.0617777Z","ttl":180,"modifiedIndex":139,"createdIndex":139},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:00:38.0402868Z","ttl":72,"modifiedIndex":136,"createdIndex":136}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 22:59:26,229 - DEBUG - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> lobby_gate: ('127.0.0.1', 9201) - [140]
+2021-06-26 22:59:31,207 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 11667) is connected !!!!
+2021-06-26 22:59:31,302 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 11669) is connected !!!!
+2021-06-26 23:00:14,258 - ERROR - RpcHandler - [RpcHandler.py:274]: Exception OSError(22, 'Invalid argument') in call handler 'report_load'
+2021-06-26 23:00:14,261 - CRITICAL - RpcHandler - [RpcHandler.py:275]: on_traceback, type:<class 'OSError'>, value:[Errno 22] Invalid argument, traceback:<class 'OSError'>
+[Errno 22] Invalid argument
+  File "C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py", line 268, in handle_rpc
+    locals={'self': <RpcHandler.RpcHandler object at 0x00000164072C13D0>, 'rpc_msg': b'\x96\x01\x08\xadLoadCollector\xabreport_load\x95\xaalobby_gate\xa6gate_0\xa9127.0.0.1\xcd#\xf1\xcb?\xed\xb4[p@\xd5\x92\x80', '_rpc_msg_tuple': (1, 8, 'LoadCollector', 'report_load', ('lobby_gate', 'gate_0', '127.0.0.1', 9201, 0.9282662575193845), {}), '_rpc_type': 1, '_entity_type_str': 'LoadCollector', '_method_name': 'report_load', '_method_args': ('lobby_gate', 'gate_0', '127.0.0.1', 9201, 0.9282662575193845), '_method_kwargs': {}, '_method': <bound method LoadCollector.report_load of <server_entity.LoadCollector.LoadCollector object at 0x0000016406FF0820>>, 'e': OSError(22, 'Invalid argument')}
+  File "C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py", line 227, in handle_request_notify_rpc
+    locals={'_method': <bound method LoadCollector.report_load of <server_entity.LoadCollector.LoadCollector object at 0x0000016406FF0820>>, '_method_name': 'report_load', '_method_args': ('lobby_gate', 'gate_0', '127.0.0.1', 9201, 0.9282662575193845), '_method_kwargs': {}, '_is_rpc_func': True}
+  File "C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py", line 322, in wrapper
+    locals={'args': (<server_entity.LoadCollector.LoadCollector object at 0x0000016406FF0820>, 'lobby_gate', 'gate_0', '127.0.0.1', 9201, 0.9282662575193845), 'kwargs': {}, 'func': <function LoadCollector.report_load at 0x0000016406FE7AF0>}
+  File "C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\server_entity\LoadCollector.py", line 43, in report_load
+    locals={'self': <server_entity.LoadCollector.LoadCollector object at 0x0000016406FF0820>, 'etcd_tag': 'lobby_gate', 'server_name': 'gate_0', 'ip': '127.0.0.1', 'port': 9201, 'load': 0.9282662575193845}
+2021-06-26 23:00:15,128 - ERROR - RpcHandler - [RpcHandler.py:274]: Exception OSError(22, 'Invalid argument') in call handler 'report_load'
+2021-06-26 23:00:15,132 - CRITICAL - RpcHandler - [RpcHandler.py:275]: on_traceback, type:<class 'OSError'>, value:[Errno 22] Invalid argument, traceback:<class 'OSError'>
+[Errno 22] Invalid argument
+  File "C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py", line 268, in handle_rpc
+    locals={'self': <RpcHandler.RpcHandler object at 0x00000164070BB3A0>, 'rpc_msg': b"\x96\x01P\xadLoadCollector\xabreport_load\x95\xaclobby_server\xa7lobby_0\xa9127.0.0.1\xcd'\x11\xcb?\xd3\xc9h\xe7V\xef\x19\x80", '_rpc_msg_tuple': (1, 80, 'LoadCollector', 'report_load', ('lobby_server', 'lobby_0', '127.0.0.1', 10001, 0.30916807739025526), {}), '_rpc_type': 1, '_entity_type_str': 'LoadCollector', '_method_name': 'report_load', '_method_args': ('lobby_server', 'lobby_0', '127.0.0.1', 10001, 0.30916807739025526), '_method_kwargs': {}, '_method': <bound method LoadCollector.report_load of <server_entity.LoadCollector.LoadCollector object at 0x0000016406FF0820>>, 'e': OSError(22, 'Invalid argument')}
+  File "C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py", line 227, in handle_request_notify_rpc
+    locals={'_method': <bound method LoadCollector.report_load of <server_entity.LoadCollector.LoadCollector object at 0x0000016406FF0820>>, '_method_name': 'report_load', '_method_args': ('lobby_server', 'lobby_0', '127.0.0.1', 10001, 0.30916807739025526), '_method_kwargs': {}, '_is_rpc_func': True}
+  File "C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py", line 322, in wrapper
+    locals={'args': (<server_entity.LoadCollector.LoadCollector object at 0x0000016406FF0820>, 'lobby_server', 'lobby_0', '127.0.0.1', 10001, 0.30916807739025526), 'kwargs': {}, 'func': <function LoadCollector.report_load at 0x0000016406FE7AF0>}
+  File "C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\server_entity\LoadCollector.py", line 43, in report_load
+    locals={'self': <server_entity.LoadCollector.LoadCollector object at 0x0000016406FF0820>, 'etcd_tag': 'lobby_server', 'server_name': 'lobby_0', 'ip': '127.0.0.1', 'port': 10001, 'load': 0.30916807739025526}
+2021-06-26 23:00:20,277 - ERROR - RpcHandler - [RpcHandler.py:274]: Exception OSError(22, 'Invalid argument') in call handler 'report_load'
+2021-06-26 23:00:20,280 - CRITICAL - RpcHandler - [RpcHandler.py:275]: on_traceback, type:<class 'OSError'>, value:[Errno 22] Invalid argument, traceback:<class 'OSError'>
+[Errno 22] Invalid argument
+  File "C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py", line 268, in handle_rpc
+    locals={'self': <RpcHandler.RpcHandler object at 0x00000164072C13D0>, 'rpc_msg': b"\x96\x01\t\xadLoadCollector\xabreport_load\x95\xaalobby_gate\xa6gate_0\xa9127.0.0.1\xcd#\xf1\xcb?\xf8\xdbx\xcc'qn\x80", '_rpc_msg_tuple': (1, 9, 'LoadCollector', 'report_load', ('lobby_gate', 'gate_0', '127.0.0.1', 9201, 1.553581998326162), {}), '_rpc_type': 1, '_entity_type_str': 'LoadCollector', '_method_name': 'report_load', '_method_args': ('lobby_gate', 'gate_0', '127.0.0.1', 9201, 1.553581998326162), '_method_kwargs': {}, '_method': <bound method LoadCollector.report_load of <server_entity.LoadCollector.LoadCollector object at 0x0000016406FF0820>>, 'e': OSError(22, 'Invalid argument')}
+  File "C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py", line 227, in handle_request_notify_rpc
+    locals={'_method': <bound method LoadCollector.report_load of <server_entity.LoadCollector.LoadCollector object at 0x0000016406FF0820>>, '_method_name': 'report_load', '_method_args': ('lobby_gate', 'gate_0', '127.0.0.1', 9201, 1.553581998326162), '_method_kwargs': {}, '_is_rpc_func': True}
+  File "C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py", line 322, in wrapper
+    locals={'args': (<server_entity.LoadCollector.LoadCollector object at 0x0000016406FF0820>, 'lobby_gate', 'gate_0', '127.0.0.1', 9201, 1.553581998326162), 'kwargs': {}, 'func': <function LoadCollector.report_load at 0x0000016406FE7AF0>}
+  File "C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\server_entity\LoadCollector.py", line 43, in report_load
+    locals={'self': <server_entity.LoadCollector.LoadCollector object at 0x0000016406FF0820>, 'etcd_tag': 'lobby_gate', 'server_name': 'gate_0', 'ip': '127.0.0.1', 'port': 9201, 'load': 1.553581998326162}
+2021-06-26 23:00:21,135 - ERROR - RpcHandler - [RpcHandler.py:274]: Exception OSError(22, 'Invalid argument') in call handler 'report_load'
+2021-06-26 23:00:21,140 - CRITICAL - RpcHandler - [RpcHandler.py:275]: on_traceback, type:<class 'OSError'>, value:[Errno 22] Invalid argument, traceback:<class 'OSError'>
+[Errno 22] Invalid argument
+  File "C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py", line 268, in handle_rpc
+    locals={'self': <RpcHandler.RpcHandler object at 0x00000164070BB3A0>, 'rpc_msg': b"\x96\x01Q\xadLoadCollector\xabreport_load\x95\xaclobby_server\xa7lobby_0\xa9127.0.0.1\xcd'\x11\xcb?\xe8\xc4\x1f\x9e\x7f/\xe2\x80", '_rpc_msg_tuple': (1, 81, 'LoadCollector', 'report_load', ('lobby_server', 'lobby_0', '127.0.0.1', 10001, 0.7739408584252454), {}), '_rpc_type': 1, '_entity_type_str': 'LoadCollector', '_method_name': 'report_load', '_method_args': ('lobby_server', 'lobby_0', '127.0.0.1', 10001, 0.7739408584252454), '_method_kwargs': {}, '_method': <bound method LoadCollector.report_load of <server_entity.LoadCollector.LoadCollector object at 0x0000016406FF0820>>, 'e': OSError(22, 'Invalid argument')}
+  File "C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py", line 227, in handle_request_notify_rpc
+    locals={'_method': <bound method LoadCollector.report_load of <server_entity.LoadCollector.LoadCollector object at 0x0000016406FF0820>>, '_method_name': 'report_load', '_method_args': ('lobby_server', 'lobby_0', '127.0.0.1', 10001, 0.7739408584252454), '_method_kwargs': {}, '_is_rpc_func': True}
+  File "C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py", line 322, in wrapper
+    locals={'args': (<server_entity.LoadCollector.LoadCollector object at 0x0000016406FF0820>, 'lobby_server', 'lobby_0', '127.0.0.1', 10001, 0.7739408584252454), 'kwargs': {}, 'func': <function LoadCollector.report_load at 0x0000016406FE7AF0>}
+  File "C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\server_entity\LoadCollector.py", line 43, in report_load
+    locals={'self': <server_entity.LoadCollector.LoadCollector object at 0x0000016406FF0820>, 'etcd_tag': 'lobby_server', 'server_name': 'lobby_0', 'ip': '127.0.0.1', 'port': 10001, 'load': 0.7739408584252454}
+2021-06-26 23:00:26,296 - ERROR - RpcHandler - [RpcHandler.py:274]: Exception OSError(22, 'Invalid argument') in call handler 'report_load'
+2021-06-26 23:00:26,300 - CRITICAL - RpcHandler - [RpcHandler.py:275]: on_traceback, type:<class 'OSError'>, value:[Errno 22] Invalid argument, traceback:<class 'OSError'>
+[Errno 22] Invalid argument
+  File "C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py", line 268, in handle_rpc
+    locals={'self': <RpcHandler.RpcHandler object at 0x00000164072C13D0>, 'rpc_msg': b'\x96\x01\n\xadLoadCollector\xabreport_load\x95\xaalobby_gate\xa6gate_0\xa9127.0.0.1\xcd#\xf1\xcb?\xfbP\r\x082\xdc\x8d\x80', '_rpc_msg_tuple': (1, 10, 'LoadCollector', 'report_load', ('lobby_gate', 'gate_0', '127.0.0.1', 9201, 1.7070436783085683), {}), '_rpc_type': 1, '_entity_type_str': 'LoadCollector', '_method_name': 'report_load', '_method_args': ('lobby_gate', 'gate_0', '127.0.0.1', 9201, 1.7070436783085683), '_method_kwargs': {}, '_method': <bound method LoadCollector.report_load of <server_entity.LoadCollector.LoadCollector object at 0x0000016406FF0820>>, 'e': OSError(22, 'Invalid argument')}
+  File "C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py", line 227, in handle_request_notify_rpc
+    locals={'_method': <bound method LoadCollector.report_load of <server_entity.LoadCollector.LoadCollector object at 0x0000016406FF0820>>, '_method_name': 'report_load', '_method_args': ('lobby_gate', 'gate_0', '127.0.0.1', 9201, 1.7070436783085683), '_method_kwargs': {}, '_is_rpc_func': True}
+  File "C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py", line 322, in wrapper
+    locals={'args': (<server_entity.LoadCollector.LoadCollector object at 0x0000016406FF0820>, 'lobby_gate', 'gate_0', '127.0.0.1', 9201, 1.7070436783085683), 'kwargs': {}, 'func': <function LoadCollector.report_load at 0x0000016406FE7AF0>}
+  File "C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\server_entity\LoadCollector.py", line 43, in report_load
+    locals={'self': <server_entity.LoadCollector.LoadCollector object at 0x0000016406FF0820>, 'etcd_tag': 'lobby_gate', 'server_name': 'gate_0', 'ip': '127.0.0.1', 'port': 9201, 'load': 1.7070436783085683}
+2021-06-26 23:00:27,154 - ERROR - RpcHandler - [RpcHandler.py:274]: Exception OSError(22, 'Invalid argument') in call handler 'report_load'
+2021-06-26 23:00:27,158 - CRITICAL - RpcHandler - [RpcHandler.py:275]: on_traceback, type:<class 'OSError'>, value:[Errno 22] Invalid argument, traceback:<class 'OSError'>
+[Errno 22] Invalid argument
+  File "C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py", line 268, in handle_rpc
+    locals={'self': <RpcHandler.RpcHandler object at 0x00000164070BB3A0>, 'rpc_msg': b"\x96\x01R\xadLoadCollector\xabreport_load\x95\xaclobby_server\xa7lobby_0\xa9127.0.0.1\xcd'\x11\xcb?\xdd\xdd\xf3W\xeb~\x83\x80", '_rpc_msg_tuple': (1, 82, 'LoadCollector', 'report_load', ('lobby_server', 'lobby_0', '127.0.0.1', 10001, 0.46667178712775853), {}), '_rpc_type': 1, '_entity_type_str': 'LoadCollector', '_method_name': 'report_load', '_method_args': ('lobby_server', 'lobby_0', '127.0.0.1', 10001, 0.46667178712775853), '_method_kwargs': {}, '_method': <bound method LoadCollector.report_load of <server_entity.LoadCollector.LoadCollector object at 0x0000016406FF0820>>, 'e': OSError(22, 'Invalid argument')}
+  File "C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py", line 227, in handle_request_notify_rpc
+    locals={'_method': <bound method LoadCollector.report_load of <server_entity.LoadCollector.LoadCollector object at 0x0000016406FF0820>>, '_method_name': 'report_load', '_method_args': ('lobby_server', 'lobby_0', '127.0.0.1', 10001, 0.46667178712775853), '_method_kwargs': {}, '_is_rpc_func': True}
+  File "C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py", line 322, in wrapper
+    locals={'args': (<server_entity.LoadCollector.LoadCollector object at 0x0000016406FF0820>, 'lobby_server', 'lobby_0', '127.0.0.1', 10001, 0.46667178712775853), 'kwargs': {}, 'func': <function LoadCollector.report_load at 0x0000016406FE7AF0>}
+  File "C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\server_entity\LoadCollector.py", line 43, in report_load
+    locals={'self': <server_entity.LoadCollector.LoadCollector object at 0x0000016406FF0820>, 'etcd_tag': 'lobby_server', 'server_name': 'lobby_0', 'ip': '127.0.0.1', 'port': 10001, 'load': 0.46667178712775853}
+2021-06-26 23:00:32,255 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 140 -> 140
+2021-06-26 23:00:32,321 - ERROR - RpcHandler - [RpcHandler.py:274]: Exception OSError(22, 'Invalid argument') in call handler 'report_load'
+2021-06-26 23:00:32,325 - CRITICAL - RpcHandler - [RpcHandler.py:275]: on_traceback, type:<class 'OSError'>, value:[Errno 22] Invalid argument, traceback:<class 'OSError'>
+[Errno 22] Invalid argument
+  File "C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py", line 268, in handle_rpc
+    locals={'self': <RpcHandler.RpcHandler object at 0x00000164072C13D0>, 'rpc_msg': b'\x96\x01\x0b\xadLoadCollector\xabreport_load\x95\xaalobby_gate\xa6gate_0\xa9127.0.0.1\xcd#\xf1\xcb?\xed\xa61y\xedT]\x80', '_rpc_msg_tuple': (1, 11, 'LoadCollector', 'report_load', ('lobby_gate', 'gate_0', '127.0.0.1', 9201, 0.9265372640026147), {}), '_rpc_type': 1, '_entity_type_str': 'LoadCollector', '_method_name': 'report_load', '_method_args': ('lobby_gate', 'gate_0', '127.0.0.1', 9201, 0.9265372640026147), '_method_kwargs': {}, '_method': <bound method LoadCollector.report_load of <server_entity.LoadCollector.LoadCollector object at 0x0000016406FF0820>>, 'e': OSError(22, 'Invalid argument')}
+  File "C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py", line 227, in handle_request_notify_rpc
+    locals={'_method': <bound method LoadCollector.report_load of <server_entity.LoadCollector.LoadCollector object at 0x0000016406FF0820>>, '_method_name': 'report_load', '_method_args': ('lobby_gate', 'gate_0', '127.0.0.1', 9201, 0.9265372640026147), '_method_kwargs': {}, '_is_rpc_func': True}
+  File "C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py", line 322, in wrapper
+    locals={'args': (<server_entity.LoadCollector.LoadCollector object at 0x0000016406FF0820>, 'lobby_gate', 'gate_0', '127.0.0.1', 9201, 0.9265372640026147), 'kwargs': {}, 'func': <function LoadCollector.report_load at 0x0000016406FE7AF0>}
+  File "C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\server_entity\LoadCollector.py", line 43, in report_load
+    locals={'self': <server_entity.LoadCollector.LoadCollector object at 0x0000016406FF0820>, 'etcd_tag': 'lobby_gate', 'server_name': 'gate_0', 'ip': '127.0.0.1', 'port': 9201, 'load': 0.9265372640026147}
+2021-06-26 23:00:33,176 - ERROR - RpcHandler - [RpcHandler.py:274]: Exception OSError(22, 'Invalid argument') in call handler 'report_load'
+2021-06-26 23:00:33,181 - CRITICAL - RpcHandler - [RpcHandler.py:275]: on_traceback, type:<class 'OSError'>, value:[Errno 22] Invalid argument, traceback:<class 'OSError'>
+[Errno 22] Invalid argument
+  File "C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py", line 268, in handle_rpc
+    locals={'self': <RpcHandler.RpcHandler object at 0x00000164070BB3A0>, 'rpc_msg': b"\x96\x01S\xadLoadCollector\xabreport_load\x95\xaclobby_server\xa7lobby_0\xa9127.0.0.1\xcd'\x11\xcb?\xe3\xcc*\n\xe8V\xe6\x80", '_rpc_msg_tuple': (1, 83, 'LoadCollector', 'report_load', ('lobby_server', 'lobby_0', '127.0.0.1', 10001, 0.618672391227588), {}), '_rpc_type': 1, '_entity_type_str': 'LoadCollector', '_method_name': 'report_load', '_method_args': ('lobby_server', 'lobby_0', '127.0.0.1', 10001, 0.618672391227588), '_method_kwargs': {}, '_method': <bound method LoadCollector.report_load of <server_entity.LoadCollector.LoadCollector object at 0x0000016406FF0820>>, 'e': OSError(22, 'Invalid argument')}
+  File "C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py", line 227, in handle_request_notify_rpc
+    locals={'_method': <bound method LoadCollector.report_load of <server_entity.LoadCollector.LoadCollector object at 0x0000016406FF0820>>, '_method_name': 'report_load', '_method_args': ('lobby_server', 'lobby_0', '127.0.0.1', 10001, 0.618672391227588), '_method_kwargs': {}, '_is_rpc_func': True}
+  File "C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py", line 322, in wrapper
+    locals={'args': (<server_entity.LoadCollector.LoadCollector object at 0x0000016406FF0820>, 'lobby_server', 'lobby_0', '127.0.0.1', 10001, 0.618672391227588), 'kwargs': {}, 'func': <function LoadCollector.report_load at 0x0000016406FE7AF0>}
+  File "C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\server_entity\LoadCollector.py", line 43, in report_load
+    locals={'self': <server_entity.LoadCollector.LoadCollector object at 0x0000016406FF0820>, 'etcd_tag': 'lobby_server', 'server_name': 'lobby_0', 'ip': '127.0.0.1', 'port': 10001, 'load': 0.618672391227588}
+2021-06-26 23:00:38,331 - ERROR - RpcHandler - [RpcHandler.py:274]: Exception OSError(22, 'Invalid argument') in call handler 'report_load'
+2021-06-26 23:00:38,334 - CRITICAL - RpcHandler - [RpcHandler.py:275]: on_traceback, type:<class 'OSError'>, value:[Errno 22] Invalid argument, traceback:<class 'OSError'>
+[Errno 22] Invalid argument
+  File "C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py", line 268, in handle_rpc
+    locals={'self': <RpcHandler.RpcHandler object at 0x00000164072C13D0>, 'rpc_msg': b'\x96\x01\x0c\xadLoadCollector\xabreport_load\x95\xaalobby_gate\xa6gate_0\xa9127.0.0.1\xcd#\xf1\xcb?\xf3\xdd]\x05\xc15F\x80', '_rpc_msg_tuple': (1, 12, 'LoadCollector', 'report_load', ('lobby_gate', 'gate_0', '127.0.0.1', 9201, 1.2415437912744252), {}), '_rpc_type': 1, '_entity_type_str': 'LoadCollector', '_method_name': 'report_load', '_method_args': ('lobby_gate', 'gate_0', '127.0.0.1', 9201, 1.2415437912744252), '_method_kwargs': {}, '_method': <bound method LoadCollector.report_load of <server_entity.LoadCollector.LoadCollector object at 0x0000016406FF0820>>, 'e': OSError(22, 'Invalid argument')}
+  File "C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py", line 227, in handle_request_notify_rpc
+    locals={'_method': <bound method LoadCollector.report_load of <server_entity.LoadCollector.LoadCollector object at 0x0000016406FF0820>>, '_method_name': 'report_load', '_method_args': ('lobby_gate', 'gate_0', '127.0.0.1', 9201, 1.2415437912744252), '_method_kwargs': {}, '_is_rpc_func': True}
+  File "C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py", line 322, in wrapper
+    locals={'args': (<server_entity.LoadCollector.LoadCollector object at 0x0000016406FF0820>, 'lobby_gate', 'gate_0', '127.0.0.1', 9201, 1.2415437912744252), 'kwargs': {}, 'func': <function LoadCollector.report_load at 0x0000016406FE7AF0>}
+  File "C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\server_entity\LoadCollector.py", line 43, in report_load
+    locals={'self': <server_entity.LoadCollector.LoadCollector object at 0x0000016406FF0820>, 'etcd_tag': 'lobby_gate', 'server_name': 'gate_0', 'ip': '127.0.0.1', 'port': 9201, 'load': 1.2415437912744252}
+2021-06-26 23:00:39,177 - ERROR - RpcHandler - [RpcHandler.py:274]: Exception OSError(22, 'Invalid argument') in call handler 'report_load'
+2021-06-26 23:00:39,180 - CRITICAL - RpcHandler - [RpcHandler.py:275]: on_traceback, type:<class 'OSError'>, value:[Errno 22] Invalid argument, traceback:<class 'OSError'>
+[Errno 22] Invalid argument
+  File "C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py", line 268, in handle_rpc
+    locals={'self': <RpcHandler.RpcHandler object at 0x00000164070BB3A0>, 'rpc_msg': b"\x96\x01T\xadLoadCollector\xabreport_load\x95\xaclobby_server\xa7lobby_0\xa9127.0.0.1\xcd'\x11\xcb?\xf1l\xc1z\x18\xa9\x83\x80", '_rpc_msg_tuple': (1, 84, 'LoadCollector', 'report_load', ('lobby_server', 'lobby_0', '127.0.0.1', 10001, 1.0890517014873644), {}), '_rpc_type': 1, '_entity_type_str': 'LoadCollector', '_method_name': 'report_load', '_method_args': ('lobby_server', 'lobby_0', '127.0.0.1', 10001, 1.0890517014873644), '_method_kwargs': {}, '_method': <bound method LoadCollector.report_load of <server_entity.LoadCollector.LoadCollector object at 0x0000016406FF0820>>, 'e': OSError(22, 'Invalid argument')}
+  File "C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py", line 227, in handle_request_notify_rpc
+    locals={'_method': <bound method LoadCollector.report_load of <server_entity.LoadCollector.LoadCollector object at 0x0000016406FF0820>>, '_method_name': 'report_load', '_method_args': ('lobby_server', 'lobby_0', '127.0.0.1', 10001, 1.0890517014873644), '_method_kwargs': {}, '_is_rpc_func': True}
+  File "C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py", line 322, in wrapper
+    locals={'args': (<server_entity.LoadCollector.LoadCollector object at 0x0000016406FF0820>, 'lobby_server', 'lobby_0', '127.0.0.1', 10001, 1.0890517014873644), 'kwargs': {}, 'func': <function LoadCollector.report_load at 0x0000016406FE7AF0>}
+  File "C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\server_entity\LoadCollector.py", line 43, in report_load
+    locals={'self': <server_entity.LoadCollector.LoadCollector object at 0x0000016406FF0820>, 'etcd_tag': 'lobby_server', 'server_name': 'lobby_0', 'ip': '127.0.0.1', 'port': 10001, 'load': 1.0890517014873644}
+2021-06-26 23:00:44,356 - ERROR - RpcHandler - [RpcHandler.py:274]: Exception OSError(22, 'Invalid argument') in call handler 'report_load'
+2021-06-26 23:00:44,359 - CRITICAL - RpcHandler - [RpcHandler.py:275]: on_traceback, type:<class 'OSError'>, value:[Errno 22] Invalid argument, traceback:<class 'OSError'>
+[Errno 22] Invalid argument
+  File "C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py", line 268, in handle_rpc
+    locals={'self': <RpcHandler.RpcHandler object at 0x00000164072C13D0>, 'rpc_msg': b'\x96\x01\r\xadLoadCollector\xabreport_load\x95\xaalobby_gate\xa6gate_0\xa9127.0.0.1\xcd#\xf1\xcb?\xfd\xe0\xc9`\x15R\xb5\x80', '_rpc_msg_tuple': (1, 13, 'LoadCollector', 'report_load', ('lobby_gate', 'gate_0', '127.0.0.1', 9201, 1.8673795464757579), {}), '_rpc_type': 1, '_entity_type_str': 'LoadCollector', '_method_name': 'report_load', '_method_args': ('lobby_gate', 'gate_0', '127.0.0.1', 9201, 1.8673795464757579), '_method_kwargs': {}, '_method': <bound method LoadCollector.report_load of <server_entity.LoadCollector.LoadCollector object at 0x0000016406FF0820>>, 'e': OSError(22, 'Invalid argument')}
+  File "C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py", line 227, in handle_request_notify_rpc
+    locals={'_method': <bound method LoadCollector.report_load of <server_entity.LoadCollector.LoadCollector object at 0x0000016406FF0820>>, '_method_name': 'report_load', '_method_args': ('lobby_gate', 'gate_0', '127.0.0.1', 9201, 1.8673795464757579), '_method_kwargs': {}, '_is_rpc_func': True}
+  File "C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py", line 322, in wrapper
+    locals={'args': (<server_entity.LoadCollector.LoadCollector object at 0x0000016406FF0820>, 'lobby_gate', 'gate_0', '127.0.0.1', 9201, 1.8673795464757579), 'kwargs': {}, 'func': <function LoadCollector.report_load at 0x0000016406FE7AF0>}
+  File "C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\server_entity\LoadCollector.py", line 43, in report_load
+    locals={'self': <server_entity.LoadCollector.LoadCollector object at 0x0000016406FF0820>, 'etcd_tag': 'lobby_gate', 'server_name': 'gate_0', 'ip': '127.0.0.1', 'port': 9201, 'load': 1.8673795464757579}
+2021-06-26 23:00:45,189 - ERROR - RpcHandler - [RpcHandler.py:274]: Exception OSError(22, 'Invalid argument') in call handler 'report_load'
+2021-06-26 23:00:45,192 - CRITICAL - RpcHandler - [RpcHandler.py:275]: on_traceback, type:<class 'OSError'>, value:[Errno 22] Invalid argument, traceback:<class 'OSError'>
+[Errno 22] Invalid argument
+  File "C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py", line 268, in handle_rpc
+    locals={'self': <RpcHandler.RpcHandler object at 0x00000164070BB3A0>, 'rpc_msg': b"\x96\x01U\xadLoadCollector\xabreport_load\x95\xaclobby_server\xa7lobby_0\xa9127.0.0.1\xcd'\x11\xcb?\xe8\xf6jcs\x8c\xe3\x80", '_rpc_msg_tuple': (1, 85, 'LoadCollector', 'report_load', ('lobby_server', 'lobby_0', '127.0.0.1', 10001, 0.7800800268563787), {}), '_rpc_type': 1, '_entity_type_str': 'LoadCollector', '_method_name': 'report_load', '_method_args': ('lobby_server', 'lobby_0', '127.0.0.1', 10001, 0.7800800268563787), '_method_kwargs': {}, '_method': <bound method LoadCollector.report_load of <server_entity.LoadCollector.LoadCollector object at 0x0000016406FF0820>>, 'e': OSError(22, 'Invalid argument')}
+  File "C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py", line 227, in handle_request_notify_rpc
+    locals={'_method': <bound method LoadCollector.report_load of <server_entity.LoadCollector.LoadCollector object at 0x0000016406FF0820>>, '_method_name': 'report_load', '_method_args': ('lobby_server', 'lobby_0', '127.0.0.1', 10001, 0.7800800268563787), '_method_kwargs': {}, '_is_rpc_func': True}
+  File "C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py", line 322, in wrapper
+    locals={'args': (<server_entity.LoadCollector.LoadCollector object at 0x0000016406FF0820>, 'lobby_server', 'lobby_0', '127.0.0.1', 10001, 0.7800800268563787), 'kwargs': {}, 'func': <function LoadCollector.report_load at 0x0000016406FE7AF0>}
+  File "C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\server_entity\LoadCollector.py", line 43, in report_load
+    locals={'self': <server_entity.LoadCollector.LoadCollector object at 0x0000016406FF0820>, 'etcd_tag': 'lobby_server', 'server_name': 'lobby_0', 'ip': '127.0.0.1', 'port': 10001, 'load': 0.7800800268563787}
+2021-06-26 23:00:50,367 - ERROR - RpcHandler - [RpcHandler.py:274]: Exception OSError(22, 'Invalid argument') in call handler 'report_load'
+2021-06-26 23:00:50,370 - CRITICAL - RpcHandler - [RpcHandler.py:275]: on_traceback, type:<class 'OSError'>, value:[Errno 22] Invalid argument, traceback:<class 'OSError'>
+[Errno 22] Invalid argument
+  File "C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py", line 268, in handle_rpc
+    locals={'self': <RpcHandler.RpcHandler object at 0x00000164072C13D0>, 'rpc_msg': b'\x96\x01\x0e\xadLoadCollector\xabreport_load\x95\xaalobby_gate\xa6gate_0\xa9127.0.0.1\xcd#\xf1\xcb?\xf3\xeb\x9d\xab\xf3i!\x80', '_rpc_msg_tuple': (1, 14, 'LoadCollector', 'report_load', ('lobby_gate', 'gate_0', '127.0.0.1', 9201, 1.245023414309408), {}), '_rpc_type': 1, '_entity_type_str': 'LoadCollector', '_method_name': 'report_load', '_method_args': ('lobby_gate', 'gate_0', '127.0.0.1', 9201, 1.245023414309408), '_method_kwargs': {}, '_method': <bound method LoadCollector.report_load of <server_entity.LoadCollector.LoadCollector object at 0x0000016406FF0820>>, 'e': OSError(22, 'Invalid argument')}
+  File "C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py", line 227, in handle_request_notify_rpc
+    locals={'_method': <bound method LoadCollector.report_load of <server_entity.LoadCollector.LoadCollector object at 0x0000016406FF0820>>, '_method_name': 'report_load', '_method_args': ('lobby_gate', 'gate_0', '127.0.0.1', 9201, 1.245023414309408), '_method_kwargs': {}, '_is_rpc_func': True}
+  File "C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py", line 322, in wrapper
+    locals={'args': (<server_entity.LoadCollector.LoadCollector object at 0x0000016406FF0820>, 'lobby_gate', 'gate_0', '127.0.0.1', 9201, 1.245023414309408), 'kwargs': {}, 'func': <function LoadCollector.report_load at 0x0000016406FE7AF0>}
+  File "C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\server_entity\LoadCollector.py", line 43, in report_load
+    locals={'self': <server_entity.LoadCollector.LoadCollector object at 0x0000016406FF0820>, 'etcd_tag': 'lobby_gate', 'server_name': 'gate_0', 'ip': '127.0.0.1', 'port': 9201, 'load': 1.245023414309408}
+2021-06-26 23:00:51,197 - ERROR - RpcHandler - [RpcHandler.py:274]: Exception OSError(22, 'Invalid argument') in call handler 'report_load'
+2021-06-26 23:00:51,200 - CRITICAL - RpcHandler - [RpcHandler.py:275]: on_traceback, type:<class 'OSError'>, value:[Errno 22] Invalid argument, traceback:<class 'OSError'>
+[Errno 22] Invalid argument
+  File "C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py", line 268, in handle_rpc
+    locals={'self': <RpcHandler.RpcHandler object at 0x00000164070BB3A0>, 'rpc_msg': b"\x96\x01V\xadLoadCollector\xabreport_load\x95\xaclobby_server\xa7lobby_0\xa9127.0.0.1\xcd'\x11\xcb?\xe3\xfa\xda\xd5\x18?\xdb\x80", '_rpc_msg_tuple': (1, 86, 'LoadCollector', 'report_load', ('lobby_server', 'lobby_0', '127.0.0.1', 10001, 0.6243719255453429), {}), '_rpc_type': 1, '_entity_type_str': 'LoadCollector', '_method_name': 'report_load', '_method_args': ('lobby_server', 'lobby_0', '127.0.0.1', 10001, 0.6243719255453429), '_method_kwargs': {}, '_method': <bound method LoadCollector.report_load of <server_entity.LoadCollector.LoadCollector object at 0x0000016406FF0820>>, 'e': OSError(22, 'Invalid argument')}
+  File "C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py", line 227, in handle_request_notify_rpc
+    locals={'_method': <bound method LoadCollector.report_load of <server_entity.LoadCollector.LoadCollector object at 0x0000016406FF0820>>, '_method_name': 'report_load', '_method_args': ('lobby_server', 'lobby_0', '127.0.0.1', 10001, 0.6243719255453429), '_method_kwargs': {}, '_is_rpc_func': True}
+  File "C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py", line 322, in wrapper
+    locals={'args': (<server_entity.LoadCollector.LoadCollector object at 0x0000016406FF0820>, 'lobby_server', 'lobby_0', '127.0.0.1', 10001, 0.6243719255453429), 'kwargs': {}, 'func': <function LoadCollector.report_load at 0x0000016406FE7AF0>}
+  File "C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\server_entity\LoadCollector.py", line 43, in report_load
+    locals={'self': <server_entity.LoadCollector.LoadCollector object at 0x0000016406FF0820>, 'etcd_tag': 'lobby_server', 'server_name': 'lobby_0', 'ip': '127.0.0.1', 'port': 10001, 'load': 0.6243719255453429}
+2021-06-26 23:00:53,144 - WARNING - TcpConn - [TcpConn.py:173]: connection is closed by error: [WinError 64] The specified network name is no longer available
+2021-06-26 23:00:56,374 - ERROR - RpcHandler - [RpcHandler.py:274]: Exception OSError(22, 'Invalid argument') in call handler 'report_load'
+2021-06-26 23:00:56,379 - CRITICAL - RpcHandler - [RpcHandler.py:275]: on_traceback, type:<class 'OSError'>, value:[Errno 22] Invalid argument, traceback:<class 'OSError'>
+[Errno 22] Invalid argument
+  File "C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py", line 268, in handle_rpc
+    locals={'self': <RpcHandler.RpcHandler object at 0x00000164072C13D0>, 'rpc_msg': b'\x96\x01\x0f\xadLoadCollector\xabreport_load\x95\xaalobby_gate\xa6gate_0\xa9127.0.0.1\xcd#\xf1\xcb?\xed\xa8\x93<\xb5\xac\x00\x80', '_rpc_msg_tuple': (1, 15, 'LoadCollector', 'report_load', ('lobby_gate', 'gate_0', '127.0.0.1', 9201, 0.9268280206428017), {}), '_rpc_type': 1, '_entity_type_str': 'LoadCollector', '_method_name': 'report_load', '_method_args': ('lobby_gate', 'gate_0', '127.0.0.1', 9201, 0.9268280206428017), '_method_kwargs': {}, '_method': <bound method LoadCollector.report_load of <server_entity.LoadCollector.LoadCollector object at 0x0000016406FF0820>>, 'e': OSError(22, 'Invalid argument')}
+  File "C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py", line 227, in handle_request_notify_rpc
+    locals={'_method': <bound method LoadCollector.report_load of <server_entity.LoadCollector.LoadCollector object at 0x0000016406FF0820>>, '_method_name': 'report_load', '_method_args': ('lobby_gate', 'gate_0', '127.0.0.1', 9201, 0.9268280206428017), '_method_kwargs': {}, '_is_rpc_func': True}
+  File "C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py", line 322, in wrapper
+    locals={'args': (<server_entity.LoadCollector.LoadCollector object at 0x0000016406FF0820>, 'lobby_gate', 'gate_0', '127.0.0.1', 9201, 0.9268280206428017), 'kwargs': {}, 'func': <function LoadCollector.report_load at 0x0000016406FE7AF0>}
+  File "C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\server_entity\LoadCollector.py", line 43, in report_load
+    locals={'self': <server_entity.LoadCollector.LoadCollector object at 0x0000016406FF0820>, 'etcd_tag': 'lobby_gate', 'server_name': 'gate_0', 'ip': '127.0.0.1', 'port': 9201, 'load': 0.9268280206428017}
+2021-06-26 23:00:57,379 - WARNING - TcpConn - [TcpConn.py:173]: connection is closed by error: [WinError 64] The specified network name is no longer available
+2021-06-26 23:00:59,608 - WARNING - TcpConn - [TcpConn.py:173]: connection is closed by error: [WinError 64] The specified network name is no longer available
+2021-06-26 23:01:20,960 - DEBUG - ServerEntity.LoadCollector - [ServerEntity.py:23]: __init__ create entity LoadCollector with id 60d74140f72c4bf09fc34806 mem_id=2514742806608
+2021-06-26 23:01:20,961 - DEBUG - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60d74140f72c4bf09fc34806 
+2021-06-26 23:01:20,985 - DEBUG - ServiceNode - [EtcdSupport.py:533]: we have create ServiceFinder
+2021-06-26 23:01:21,001 - DEBUG - ServiceFinder - [EtcdSupport.py:352]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-06-26 23:01:21,013 - DEBUG - ServiceRegister - [EtcdSupport.py:155]: _do_regist: now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 23:01:21,034 - DEBUG - TcpServer - [TcpServer.py:194]: Server on ('127.0.0.1', 9100)
+2021-06-26 23:01:21,071 - DEBUG - ServiceFinder - [EtcdSupport.py:323]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-06-26 23:01:21,075 - DEBUG - ServiceFinder - [EtcdSupport.py:323]: add service node info--> lobby_server: ('127.0.0.1', 10001)
+2021-06-26 23:01:21,080 - DEBUG - ServiceFinder - [EtcdSupport.py:323]: add service node info--> lobby_gate: ('127.0.0.1', 9201)
+2021-06-26 23:01:21,086 - DEBUG - ServiceFinder - [EtcdSupport.py:277]: init service info from etcd success, will going to watch, at etcd index -> 140
+2021-06-26 23:01:21,105 - DEBUG - ServiceRegister - [EtcdSupport.py:163]: regist service : dispatcher_service success, {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:04:21.0584191Z","ttl":180,"modifiedIndex":141,"createdIndex":141},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:02:26.0617777Z","ttl":66,"modifiedIndex":139,"createdIndex":139}}
+
+2021-06-26 23:01:21,124 - DEBUG - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> dispatcher_service: ('127.0.0.1', 9100) - [141]
+2021-06-26 23:01:21,129 - DEBUG - ServiceFinder - [EtcdSupport.py:299]: duplicate service info  -> dispatcher_service:('127.0.0.1', 9100)
+2021-06-26 23:01:23,843 - DEBUG - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> lobby_gate: ('127.0.0.1', 9201) - [142]
+2021-06-26 23:01:23,848 - DEBUG - ServiceFinder - [EtcdSupport.py:299]: duplicate service info  -> lobby_gate:('127.0.0.1', 9201)
+2021-06-26 23:01:26,208 - DEBUG - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> lobby_server: ('127.0.0.1', 10001) - [143]
+2021-06-26 23:01:26,211 - DEBUG - ServiceFinder - [EtcdSupport.py:299]: duplicate service info  -> lobby_server:('127.0.0.1', 10001)
+2021-06-26 23:01:29,784 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 11821) is connected !!!!
+2021-06-26 23:01:32,180 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 11823) is connected !!!!
+2021-06-26 23:02:28,235 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 143 -> 143
+2021-06-26 23:03:02,132 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624719782.1296506, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 23:03:02,149 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624719782.147685, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:06:02.1446972Z","ttl":180,"modifiedIndex":144,"createdIndex":144},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:04:21.0584191Z","ttl":79,"modifiedIndex":141,"createdIndex":141}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 23:03:38,244 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 143 -> 143
+2021-06-26 23:04:44,266 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 143 -> 146
+2021-06-26 23:04:45,173 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624719885.1691082, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 23:04:45,191 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624719885.1882515, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:07:45.1855581Z","ttl":180,"modifiedIndex":147,"createdIndex":147},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:06:02.1446972Z","ttl":77,"modifiedIndex":144,"createdIndex":144}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 23:05:12,658 - DEBUG - ServerEntity.LoadCollector - [ServerEntity.py:23]: __init__ create entity LoadCollector with id 60d74228cb463299a4348580 mem_id=2890449619168
+2021-06-26 23:05:12,659 - DEBUG - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60d74228cb463299a4348580 
+2021-06-26 23:05:12,676 - DEBUG - ServiceNode - [EtcdSupport.py:533]: we have create ServiceFinder
+2021-06-26 23:05:12,686 - DEBUG - ServiceFinder - [EtcdSupport.py:352]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-06-26 23:05:12,693 - DEBUG - ServiceRegister - [EtcdSupport.py:155]: _do_regist: now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 23:05:12,707 - DEBUG - TcpServer - [TcpServer.py:194]: Server on ('127.0.0.1', 9100)
+2021-06-26 23:05:12,729 - DEBUG - ServiceFinder - [EtcdSupport.py:323]: add service node info--> lobby_server: ('127.0.0.1', 10001)
+2021-06-26 23:05:12,732 - DEBUG - ServiceFinder - [EtcdSupport.py:323]: add service node info--> lobby_gate: ('127.0.0.1', 9201)
+2021-06-26 23:05:12,735 - DEBUG - ServiceFinder - [EtcdSupport.py:323]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-06-26 23:05:12,738 - DEBUG - ServiceFinder - [EtcdSupport.py:277]: init service info from etcd success, will going to watch, at etcd index -> 149
+2021-06-26 23:05:12,749 - DEBUG - ServiceRegister - [EtcdSupport.py:163]: regist service : dispatcher_service success, {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:08:12.7250642Z","ttl":180,"modifiedIndex":150,"createdIndex":150},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:07:45.1855581Z","ttl":153,"modifiedIndex":147,"createdIndex":147}}
+
+2021-06-26 23:05:12,760 - DEBUG - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> dispatcher_service: ('127.0.0.1', 9100) - [150]
+2021-06-26 23:05:12,763 - DEBUG - ServiceFinder - [EtcdSupport.py:299]: duplicate service info  -> dispatcher_service:('127.0.0.1', 9100)
+2021-06-26 23:05:16,188 - DEBUG - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> lobby_gate: ('127.0.0.1', 9201) - [151]
+2021-06-26 23:05:16,191 - DEBUG - ServiceFinder - [EtcdSupport.py:299]: duplicate service info  -> lobby_gate:('127.0.0.1', 9201)
+2021-06-26 23:05:20,956 - DEBUG - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> lobby_server: ('127.0.0.1', 10001) - [152]
+2021-06-26 23:05:20,960 - DEBUG - ServiceFinder - [EtcdSupport.py:299]: duplicate service info  -> lobby_server:('127.0.0.1', 10001)
+2021-06-26 23:05:22,175 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 2041) is connected !!!!
+2021-06-26 23:05:26,935 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 2044) is connected !!!!
+2021-06-26 23:06:20,975 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 152 -> 152
+2021-06-26 23:07:00,756 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624720020.753002, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 23:07:00,772 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624720020.7692692, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:10:00.7660226Z","ttl":180,"modifiedIndex":154,"createdIndex":154},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:08:12.7250642Z","ttl":72,"modifiedIndex":150,"createdIndex":150}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 23:07:02,996 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 2109) is connected !!!!
+2021-06-26 23:07:23,984 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 152 -> 152
+2021-06-26 23:07:32,319 - WARNING - TcpConn - [TcpConn.py:173]: connection is closed by error: [WinError 64] The specified network name is no longer available
+2021-06-26 23:07:33,675 - WARNING - TcpConn - [TcpConn.py:173]: connection is closed by error: [WinError 64] The specified network name is no longer available
+2021-06-26 23:08:27,997 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 152 -> 155
+2021-06-26 23:08:45,778 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624720125.775945, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 23:08:45,796 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624720125.7932928, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:11:45.7900144Z","ttl":180,"modifiedIndex":156,"createdIndex":156},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:10:00.7660226Z","ttl":75,"modifiedIndex":154,"createdIndex":154}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 23:09:37,017 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 155 -> 155
+2021-06-26 23:09:56,546 - DEBUG - ServiceFinder - [EtcdSupport.py:433]: recv watch expire, info--> lobby_gate: ('127.0.0.1', 9201) - [158]
+2021-06-26 23:10:26,813 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624720226.8100164, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 23:10:26,830 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624720226.8274045, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:13:26.8229703Z","ttl":180,"modifiedIndex":159,"createdIndex":159},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:11:45.7900144Z","ttl":79,"modifiedIndex":156,"createdIndex":156}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 23:11:00,569 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 158 -> 158
+2021-06-26 23:12:01,582 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 158 -> 160
+2021-06-26 23:12:16,844 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624720336.8416936, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 23:12:16,862 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624720336.8590243, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:15:16.8556505Z","ttl":180,"modifiedIndex":162,"createdIndex":162},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:13:26.8229703Z","ttl":70,"modifiedIndex":159,"createdIndex":159}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 23:13:10,593 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 160 -> 160
+2021-06-26 23:13:58,871 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624720438.8672392, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 23:13:58,887 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624720438.8843198, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:16:58.8811814Z","ttl":180,"modifiedIndex":164,"createdIndex":164},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:15:16.8556505Z","ttl":78,"modifiedIndex":162,"createdIndex":162}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 23:14:18,605 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 160 -> 162
+2021-06-26 23:15:21,643 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 162 -> 164
+2021-06-26 23:15:33,651 - DEBUG - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> lobby_gate: ('127.0.0.1', 9201) - [165]
+2021-06-26 23:15:35,802 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 14672) is connected !!!!
+2021-06-26 23:15:35,894 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 14674) is connected !!!!
+2021-06-26 23:15:41,901 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624720541.8979104, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 23:15:41,920 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624720541.9179082, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:18:41.9149125Z","ttl":180,"modifiedIndex":166,"createdIndex":166},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:16:58.8811814Z","ttl":77,"modifiedIndex":164,"createdIndex":164}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 23:15:58,599 - WARNING - TcpConn - [TcpConn.py:173]: connection is closed by error: [WinError 64] The specified network name is no longer available
+2021-06-26 23:16:00,345 - WARNING - TcpConn - [TcpConn.py:173]: connection is closed by error: [WinError 64] The specified network name is no longer available
+2021-06-26 23:16:34,675 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 165 -> 165
+2021-06-26 23:17:26,944 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624720646.941674, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 23:17:26,960 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624720646.9584498, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:20:26.9546898Z","ttl":180,"modifiedIndex":168,"createdIndex":168},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:18:41.9149125Z","ttl":75,"modifiedIndex":166,"createdIndex":166}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 23:17:41,688 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 165 -> 167
+2021-06-26 23:18:34,046 - DEBUG - ServiceFinder - [EtcdSupport.py:433]: recv watch expire, info--> lobby_gate: ('127.0.0.1', 9201) - [170]
+2021-06-26 23:19:07,966 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624720747.961034, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 23:19:07,995 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624720747.9902458, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:22:07.9858344Z","ttl":180,"modifiedIndex":171,"createdIndex":171},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:20:26.9546898Z","ttl":79,"modifiedIndex":168,"createdIndex":168}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 23:19:43,059 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 170 -> 170
+2021-06-26 23:19:56,291 - DEBUG - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> lobby_gate: ('127.0.0.1', 9201) - [173]
+2021-06-26 23:20:02,262 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 1818) is connected !!!!
+2021-06-26 23:20:14,322 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 1829) is connected !!!!
+2021-06-26 23:20:39,271 - WARNING - TcpConn - [TcpConn.py:173]: connection is closed by error: [WinError 64] The specified network name is no longer available
+2021-06-26 23:20:41,293 - WARNING - TcpConn - [TcpConn.py:173]: connection is closed by error: [WinError 64] The specified network name is no longer available
+2021-06-26 23:20:56,023 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624720856.0206168, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 23:20:56,039 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624720856.0377727, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:23:56.0335362Z","ttl":180,"modifiedIndex":174,"createdIndex":174},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:22:07.9858344Z","ttl":72,"modifiedIndex":171,"createdIndex":171}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 23:21:03,324 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 173 -> 173
+2021-06-26 23:22:04,349 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 173 -> 174
+2021-06-26 23:22:38,650 - DEBUG - ServerEntity.LoadCollector - [ServerEntity.py:24]: __init__ create entity LoadCollector with id 60d7463e45291bad1f8cd87c mem_id=1901973936304
+2021-06-26 23:22:38,650 - DEBUG - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60d7463e45291bad1f8cd87c 
+2021-06-26 23:22:38,664 - DEBUG - ServiceNode - [EtcdSupport.py:533]: we have create ServiceFinder
+2021-06-26 23:22:38,673 - DEBUG - ServiceFinder - [EtcdSupport.py:352]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-06-26 23:22:38,679 - DEBUG - ServiceRegister - [EtcdSupport.py:155]: _do_regist: now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 23:22:38,693 - DEBUG - TcpServer - [TcpServer.py:194]: Server on ('127.0.0.1', 9100)
+2021-06-26 23:22:38,721 - DEBUG - ServiceFinder - [EtcdSupport.py:323]: add service node info--> lobby_gate: ('127.0.0.1', 9201)
+2021-06-26 23:22:38,724 - DEBUG - ServiceFinder - [EtcdSupport.py:323]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-06-26 23:22:38,727 - DEBUG - ServiceFinder - [EtcdSupport.py:323]: add service node info--> lobby_server: ('127.0.0.1', 10001)
+2021-06-26 23:22:38,729 - DEBUG - ServiceFinder - [EtcdSupport.py:277]: init service info from etcd success, will going to watch, at etcd index -> 175
+2021-06-26 23:22:38,739 - DEBUG - ServiceRegister - [EtcdSupport.py:163]: regist service : dispatcher_service success, {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:25:38.7167257Z","ttl":180,"modifiedIndex":176,"createdIndex":176},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:23:56.0335362Z","ttl":78,"modifiedIndex":174,"createdIndex":174}}
+
+2021-06-26 23:22:38,750 - DEBUG - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> dispatcher_service: ('127.0.0.1', 9100) - [176]
+2021-06-26 23:22:38,753 - DEBUG - ServiceFinder - [EtcdSupport.py:299]: duplicate service info  -> dispatcher_service:('127.0.0.1', 9100)
+2021-06-26 23:22:39,007 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 1931) is connected !!!!
+2021-06-26 23:22:40,138 - WARNING - TcpConn - [TcpConn.py:173]: connection is closed by error: [WinError 64] The specified network name is no longer available
+2021-06-26 23:22:41,937 - DEBUG - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> lobby_server: ('127.0.0.1', 10001) - [177]
+2021-06-26 23:22:41,942 - DEBUG - ServiceFinder - [EtcdSupport.py:299]: duplicate service info  -> lobby_server:('127.0.0.1', 10001)
+2021-06-26 23:22:43,293 - DEBUG - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> lobby_gate: ('127.0.0.1', 9201) - [178]
+2021-06-26 23:22:43,296 - DEBUG - ServiceFinder - [EtcdSupport.py:299]: duplicate service info  -> lobby_gate:('127.0.0.1', 9201)
+2021-06-26 23:22:46,644 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 1968) is connected !!!!
+2021-06-26 23:22:46,738 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 1970) is connected !!!!
+2021-06-26 23:22:47,888 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 1973) is connected !!!!
+2021-06-26 23:23:14,919 - WARNING - TcpConn - [TcpConn.py:173]: connection is closed by error: [WinError 64] The specified network name is no longer available
+2021-06-26 23:23:16,442 - WARNING - TcpConn - [TcpConn.py:173]: connection is closed by error: [WinError 64] The specified network name is no longer available
+2021-06-26 23:23:27,816 - DEBUG - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> lobby_gate: ('127.0.0.1', 9201) - [179]
+2021-06-26 23:23:27,819 - DEBUG - ServiceFinder - [EtcdSupport.py:299]: duplicate service info  -> lobby_gate:('127.0.0.1', 9201)
+2021-06-26 23:23:33,451 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 2011) is connected !!!!
+2021-06-26 23:23:33,560 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 2013) is connected !!!!
+2021-06-26 23:23:55,370 - WARNING - TcpConn - [TcpConn.py:173]: connection is closed by error: [WinError 64] The specified network name is no longer available
+2021-06-26 23:23:57,052 - WARNING - TcpConn - [TcpConn.py:173]: connection is closed by error: [WinError 64] The specified network name is no longer available
+2021-06-26 23:24:21,760 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624721061.756407, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 23:24:21,778 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624721061.7756681, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:27:21.77256Z","ttl":180,"modifiedIndex":180,"createdIndex":180},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:25:38.7167257Z","ttl":77,"modifiedIndex":176,"createdIndex":176}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 23:24:33,840 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 179 -> 179
+2021-06-26 23:25:11,846 - WARNING - TcpConn - [TcpConn.py:173]: connection is closed by error: [WinError 64] The specified network name is no longer available
+2021-06-26 23:25:13,725 - DEBUG - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> lobby_server: ('127.0.0.1', 10001) - [182]
+2021-06-26 23:25:13,728 - DEBUG - ServiceFinder - [EtcdSupport.py:299]: duplicate service info  -> lobby_server:('127.0.0.1', 10001)
+2021-06-26 23:25:16,759 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 12720) is connected !!!!
+2021-06-26 23:25:19,698 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 12723) is connected !!!!
+2021-06-26 23:25:48,593 - WARNING - TcpConn - [TcpConn.py:173]: connection is closed by error: [WinError 64] The specified network name is no longer available
+2021-06-26 23:25:55,662 - WARNING - TcpConn - [TcpConn.py:173]: connection is closed by error: [WinError 64] The specified network name is no longer available
+2021-06-26 23:26:09,792 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624721169.7892523, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 23:26:09,809 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624721169.8069482, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:29:09.8023678Z","ttl":180,"modifiedIndex":183,"createdIndex":183},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:27:21.77256Z","ttl":72,"modifiedIndex":180,"createdIndex":180}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 23:26:21,750 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 182 -> 182
+2021-06-26 23:26:28,047 - DEBUG - ServiceFinder - [EtcdSupport.py:433]: recv watch expire, info--> lobby_gate: ('127.0.0.1', 9201) - [184]
+2021-06-26 23:27:34,061 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 184 -> 184
+2021-06-26 23:27:50,834 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624721270.8313663, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 23:27:50,851 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624721270.8483977, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:30:50.8443751Z","ttl":180,"modifiedIndex":185,"createdIndex":185},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:29:09.8023678Z","ttl":79,"modifiedIndex":183,"createdIndex":183}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 23:28:14,044 - DEBUG - ServiceFinder - [EtcdSupport.py:433]: recv watch expire, info--> lobby_server: ('127.0.0.1', 10001) - [186]
+2021-06-26 23:29:14,060 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 186 -> 186
+2021-06-26 23:29:16,640 - DEBUG - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> battle_server: ('$BATTLE_SRV_IP$', 11001) - [187]
+2021-06-26 23:29:22,618 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 12851) is connected !!!!
+2021-06-26 23:29:30,856 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624721370.8538702, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 23:29:30,876 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624721370.8746018, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:32:30.8717429Z","ttl":180,"modifiedIndex":188,"createdIndex":188},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:30:50.8443751Z","ttl":80,"modifiedIndex":185,"createdIndex":185}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 23:30:16,276 - WARNING - TcpConn - [TcpConn.py:173]: connection is closed by error: [WinError 64] The specified network name is no longer available
+2021-06-26 23:30:21,658 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 187 -> 187
+2021-06-26 23:31:11,893 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624721471.8909154, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 23:31:11,909 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624721471.907886, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:34:11.9039313Z","ttl":180,"modifiedIndex":189,"createdIndex":189},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:32:30.8717429Z","ttl":79,"modifiedIndex":188,"createdIndex":188}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 23:31:28,677 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 187 -> 188
+2021-06-26 23:32:03,920 - DEBUG - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> battle_server: ('127.0.0.1', 11001) - [190]
+2021-06-26 23:32:08,443 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 12949) is connected !!!!
+2021-06-26 23:32:17,047 - DEBUG - ServiceFinder - [EtcdSupport.py:433]: recv watch expire, info--> battle_server: ('$BATTLE_SRV_IP$', 11001) - [191]
+2021-06-26 23:33:00,921 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624721580.918044, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 23:33:00,938 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624721580.9350362, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:36:00.9310534Z","ttl":180,"modifiedIndex":192,"createdIndex":192},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:34:11.9039313Z","ttl":71,"modifiedIndex":189,"createdIndex":189}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 23:33:21,075 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 191 -> 191
+2021-06-26 23:34:27,099 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 191 -> 192
+2021-06-26 23:34:41,951 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624721681.9497645, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 23:34:41,966 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624721681.9638412, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:37:41.9618395Z","ttl":180,"modifiedIndex":194,"createdIndex":194},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:36:00.9310534Z","ttl":79,"modifiedIndex":192,"createdIndex":192}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 23:35:04,727 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-06-26 23:35:33,118 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 192 -> 193
+2021-06-26 23:36:21,973 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624721781.970871, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 23:36:21,989 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624721781.9879565, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:39:21.9848357Z","ttl":180,"modifiedIndex":195,"createdIndex":195},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:37:41.9618395Z","ttl":80,"modifiedIndex":194,"createdIndex":194}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 23:36:34,120 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 193 -> 194
+2021-06-26 23:36:53,045 - DEBUG - ServiceFinder - [EtcdSupport.py:433]: recv watch expire, info--> battle_server: ('127.0.0.1', 11001) - [196]
+2021-06-26 23:36:58,279 - DEBUG - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> battle_server: ('127.0.0.1', 11001) - [197]
+2021-06-26 23:37:07,040 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 13324) is connected !!!!
+2021-06-26 23:38:04,005 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624721884.0019977, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 23:38:04,022 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624721884.0194752, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:41:04.0151485Z","ttl":180,"modifiedIndex":198,"createdIndex":198},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:39:21.9848357Z","ttl":78,"modifiedIndex":195,"createdIndex":195}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 23:38:07,294 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 197 -> 197
+2021-06-26 23:38:47,396 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 13382) is connected !!!!
+2021-06-26 23:38:49,366 - WARNING - TcpConn - [TcpConn.py:173]: connection is closed by error: [WinError 64] The specified network name is no longer available
+2021-06-26 23:39:03,395 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 13395) is connected !!!!
+2021-06-26 23:39:11,403 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-06-26 23:39:13,313 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 197 -> 198
+2021-06-26 23:39:48,032 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624721988.0295289, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 23:39:48,049 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624721988.0474656, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:42:48.0424816Z","ttl":180,"modifiedIndex":200,"createdIndex":200},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:41:04.0151485Z","ttl":76,"modifiedIndex":198,"createdIndex":198}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 23:40:14,322 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 198 -> 199
+2021-06-26 23:40:45,952 - DEBUG - ServerEntity.LoadCollector - [ServerEntity.py:24]: __init__ create entity LoadCollector with id 60d74a7de1b9f468b039bbe3 mem_id=1997209803024
+2021-06-26 23:40:45,953 - DEBUG - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60d74a7de1b9f468b039bbe3 
+2021-06-26 23:40:45,966 - DEBUG - ServiceNode - [EtcdSupport.py:533]: we have create ServiceFinder
+2021-06-26 23:40:45,976 - DEBUG - ServiceFinder - [EtcdSupport.py:352]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-06-26 23:40:45,983 - DEBUG - ServiceRegister - [EtcdSupport.py:155]: _do_regist: now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 23:40:45,996 - DEBUG - TcpServer - [TcpServer.py:194]: Server on ('127.0.0.1', 9100)
+2021-06-26 23:40:46,016 - DEBUG - ServiceFinder - [EtcdSupport.py:323]: add service node info--> battle_server: ('127.0.0.1', 11001)
+2021-06-26 23:40:46,019 - DEBUG - ServiceFinder - [EtcdSupport.py:323]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-06-26 23:40:46,022 - DEBUG - ServiceFinder - [EtcdSupport.py:277]: init service info from etcd success, will going to watch, at etcd index -> 201
+2021-06-26 23:40:46,035 - DEBUG - ServiceRegister - [EtcdSupport.py:163]: regist service : dispatcher_service success, {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:43:46.0128616Z","ttl":180,"modifiedIndex":202,"createdIndex":202},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:42:48.0424816Z","ttl":123,"modifiedIndex":200,"createdIndex":200}}
+
+2021-06-26 23:40:46,045 - DEBUG - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> dispatcher_service: ('127.0.0.1', 9100) - [202]
+2021-06-26 23:40:46,048 - DEBUG - ServiceFinder - [EtcdSupport.py:299]: duplicate service info  -> dispatcher_service:('127.0.0.1', 9100)
+2021-06-26 23:40:49,891 - DEBUG - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> battle_server: ('127.0.0.1', 11001) - [203]
+2021-06-26 23:40:49,895 - DEBUG - ServiceFinder - [EtcdSupport.py:299]: duplicate service info  -> battle_server:('127.0.0.1', 11001)
+2021-06-26 23:40:55,861 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 13467) is connected !!!!
+2021-06-26 23:40:59,872 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 13476) is connected !!!!
+2021-06-26 23:41:07,878 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-06-26 23:41:20,124 - DEBUG - ServerEntity.LoadCollector - [ServerEntity.py:24]: __init__ create entity LoadCollector with id 60d74aa086d1ce166443e011 mem_id=2773684918544
+2021-06-26 23:41:20,125 - DEBUG - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60d74aa086d1ce166443e011 
+2021-06-26 23:41:20,141 - DEBUG - ServiceNode - [EtcdSupport.py:533]: we have create ServiceFinder
+2021-06-26 23:41:20,151 - DEBUG - ServiceFinder - [EtcdSupport.py:352]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-06-26 23:41:20,157 - DEBUG - ServiceRegister - [EtcdSupport.py:155]: _do_regist: now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 23:41:20,170 - DEBUG - TcpServer - [TcpServer.py:194]: Server on ('127.0.0.1', 9100)
+2021-06-26 23:41:20,190 - DEBUG - ServiceFinder - [EtcdSupport.py:277]: init service info from etcd success, will going to watch, at etcd index -> 3
+2021-06-26 23:41:20,200 - DEBUG - ServiceRegister - [EtcdSupport.py:163]: regist service : dispatcher_service success, {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:44:20.186779Z","ttl":180,"modifiedIndex":4,"createdIndex":4}}
+
+2021-06-26 23:41:20,210 - DEBUG - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> dispatcher_service: ('127.0.0.1', 9100) - [4]
+2021-06-26 23:41:29,152 - DEBUG - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> battle_server: ('127.0.0.1', 11001) - [5]
+2021-06-26 23:41:35,128 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 13512) is connected !!!!
+2021-06-26 23:41:37,777 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 13520) is connected !!!!
+2021-06-26 23:41:54,607 - WARNING - TcpConn - [TcpConn.py:173]: connection is closed by error: [WinError 64] The specified network name is no longer available
+2021-06-26 23:41:56,145 - WARNING - TcpConn - [TcpConn.py:173]: connection is closed by error: [WinError 64] The specified network name is no longer available
+2021-06-26 23:42:22,277 - DEBUG - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> lobby_server: ('127.0.0.1', 10001) - [6]
+2021-06-26 23:42:25,796 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 13559) is connected !!!!
+2021-06-26 23:42:28,256 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 13561) is connected !!!!
+2021-06-26 23:42:33,810 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-06-26 23:42:56,678 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 13581) is connected !!!!
+2021-06-26 23:43:08,215 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624722188.2120302, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 23:43:08,232 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624722188.2290516, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:46:08.2259811Z","ttl":180,"modifiedIndex":7,"createdIndex":7},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:44:20.186779Z","ttl":72,"modifiedIndex":4,"createdIndex":4}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 23:43:26,332 - WARNING - TcpConn - [TcpConn.py:173]: connection is closed by error: [WinError 64] The specified network name is no longer available
+2021-06-26 23:43:27,980 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 13603) is connected !!!!
+2021-06-26 23:43:32,306 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 6 -> 6
+2021-06-26 23:43:56,566 - WARNING - TcpConn - [TcpConn.py:173]: connection is closed by error: [WinError 64] The specified network name is no longer available
+2021-06-26 23:43:57,945 - WARNING - TcpConn - [TcpConn.py:173]: connection is closed by error: [WinError 64] The specified network name is no longer available
+2021-06-26 23:44:29,532 - DEBUG - ServiceFinder - [EtcdSupport.py:433]: recv watch expire, info--> battle_server: ('127.0.0.1', 11001) - [8]
+2021-06-26 23:44:49,253 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624722289.2504258, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 23:44:49,272 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624722289.2692165, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:47:49.2657843Z","ttl":180,"modifiedIndex":9,"createdIndex":9},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:46:08.2259811Z","ttl":79,"modifiedIndex":7,"createdIndex":7}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 23:45:22,532 - DEBUG - ServiceFinder - [EtcdSupport.py:433]: recv watch expire, info--> lobby_server: ('127.0.0.1', 10001) - [10]
+2021-06-26 23:46:26,551 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 10 -> 10
+2021-06-26 23:46:39,268 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624722399.2658253, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 23:46:39,285 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624722399.2827811, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:49:39.2797948Z","ttl":180,"modifiedIndex":11,"createdIndex":11},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:47:49.2657843Z","ttl":70,"modifiedIndex":9,"createdIndex":9}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 23:47:36,560 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 10 -> 10
+2021-06-26 23:48:23,307 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624722503.304735, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 23:48:23,323 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624722503.3214607, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:51:23.3177118Z","ttl":180,"modifiedIndex":12,"createdIndex":12},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:49:39.2797948Z","ttl":76,"modifiedIndex":11,"createdIndex":11}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 23:48:41,584 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 10 -> 11
+2021-06-26 23:49:49,585 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 11 -> 12
+2021-06-26 23:50:03,798 - DEBUG - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> lobby_server: ('127.0.0.1', 10001) - [13]
+2021-06-26 23:50:06,019 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 13436) is connected !!!!
+2021-06-26 23:50:09,341 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624722609.3379214, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 23:50:09,359 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624722609.3560574, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:53:09.3530594Z","ttl":180,"modifiedIndex":14,"createdIndex":14},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:51:23.3177118Z","ttl":74,"modifiedIndex":12,"createdIndex":12}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 23:50:09,771 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 13440) is connected !!!!
+2021-06-26 23:51:03,815 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 13 -> 13
+2021-06-26 23:51:05,852 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-06-26 23:51:57,372 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624722717.3681393, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 23:51:57,387 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624722717.3845708, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:54:57.3810581Z","ttl":180,"modifiedIndex":15,"createdIndex":15},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:53:09.3530594Z","ttl":72,"modifiedIndex":14,"createdIndex":14}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 23:52:12,829 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 13 -> 14
+2021-06-26 23:52:26,683 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 13524) is connected !!!!
+2021-06-26 23:53:04,275 - WARNING - TcpConn - [TcpConn.py:173]: connection is closed by error: [WinError 64] The specified network name is no longer available
+2021-06-26 23:53:06,037 - DEBUG - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> lobby_server: ('127.0.0.1', 10001) - [17]
+2021-06-26 23:53:06,040 - DEBUG - ServiceFinder - [EtcdSupport.py:299]: duplicate service info  -> lobby_server:('127.0.0.1', 10001)
+2021-06-26 23:53:10,016 - WARNING - TcpConn - [TcpConn.py:173]: connection is closed by error: [WinError 64] The specified network name is no longer available
+2021-06-26 23:53:11,626 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 13563) is connected !!!!
+2021-06-26 23:53:12,013 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 13565) is connected !!!!
+2021-06-26 23:53:38,401 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624722818.3981273, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 23:53:38,417 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624722818.4141302, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:56:38.4111477Z","ttl":180,"modifiedIndex":18,"createdIndex":18},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:54:57.3810581Z","ttl":79,"modifiedIndex":15,"createdIndex":15}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 23:53:44,060 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-06-26 23:54:09,055 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 17 -> 17
+2021-06-26 23:54:29,841 - WARNING - TcpConn - [TcpConn.py:173]: connection is closed by error: [WinError 64] The specified network name is no longer available
+2021-06-26 23:55:13,082 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 17 -> 18
+2021-06-26 23:55:19,433 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624722919.4309287, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 23:55:19,449 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624722919.4458928, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:58:19.4438993Z","ttl":180,"modifiedIndex":19,"createdIndex":19},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:56:38.4111477Z","ttl":79,"modifiedIndex":18,"createdIndex":18}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 23:56:06,532 - DEBUG - ServiceFinder - [EtcdSupport.py:433]: recv watch expire, info--> lobby_server: ('127.0.0.1', 10001) - [20]
+2021-06-26 23:56:49,691 - DEBUG - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> lobby_server: ('127.0.0.1', 10001) - [21]
+2021-06-26 23:56:51,796 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 9443) is connected !!!!
+2021-06-26 23:56:55,675 - DEBUG - TcpServer - [TcpServer.py:180]: ('127.0.0.1', 9447) is connected !!!!
+2021-06-26 23:57:04,465 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624723024.4621046, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 23:57:04,481 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624723024.478646, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T16:00:04.4760917Z","ttl":180,"modifiedIndex":22,"createdIndex":22},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T15:58:19.4438993Z","ttl":75,"modifiedIndex":19,"createdIndex":19}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 23:57:55,710 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 21 -> 21
+2021-06-26 23:58:53,506 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624723133.5020404, refresh service dispatcher_service, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 23:58:53,526 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624723133.524336, refresh service success: dispatcher_service: {"action":"set","node":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T16:01:53.5209721Z","ttl":180,"modifiedIndex":24,"createdIndex":24},"prevNode":{"key":"/services/dispatcher_service/127.0.0.1|9100","value":"","expiration":"2021-06-26T16:00:04.4760917Z","ttl":71,"modifiedIndex":22,"createdIndex":22}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/dispatcher_service/127.0.0.1|9100
+2021-06-26 23:59:04,715 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 21 -> 22

@@ -1,0 +1,349 @@
+2021-04-15 00:00:06,142 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1618416006.1405017, refresh service battle_server, now_url: http://127.0.0.1:2379/v2/keys/services/battle_server/127.0.0.1|8888
+2021-04-15 00:00:06,164 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1618416006.1633193, refresh service success: battle_server: {"action":"set","node":{"key":"/services/battle_server/127.0.0.1|8888","value":"","expiration":"2021-04-14T16:03:06.1523409Z","ttl":180,"modifiedIndex":3686,"createdIndex":3686},"prevNode":{"key":"/services/battle_server/127.0.0.1|8888","value":"","expiration":"2021-04-14T16:01:22.1256743Z","ttl":76,"modifiedIndex":3682,"createdIndex":3682}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/battle_server/127.0.0.1|8888
+2021-04-15 00:00:31,142 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 3682 -> 3684
+2021-04-15 00:01:39,131 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 3684 -> 3688
+2021-04-15 00:01:55,174 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1618416115.173092, refresh service battle_server, now_url: http://127.0.0.1:2383/v2/keys/services/battle_server/127.0.0.1|8888
+2021-04-15 00:01:55,188 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1618416115.186017, refresh service success: battle_server: {"action":"set","node":{"key":"/services/battle_server/127.0.0.1|8888","value":"","expiration":"2021-04-14T16:04:55.1809381Z","ttl":180,"modifiedIndex":3690,"createdIndex":3690},"prevNode":{"key":"/services/battle_server/127.0.0.1|8888","value":"","expiration":"2021-04-14T16:03:06.1523409Z","ttl":71,"modifiedIndex":3686,"createdIndex":3686}}
+, now_url: http://127.0.0.1:2383/v2/keys/services/battle_server/127.0.0.1|8888
+2021-04-15 00:02:42,140 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 3688 -> 3689
+2021-04-15 00:03:37,188 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1618416217.1861763, refresh service battle_server, now_url: http://127.0.0.1:2381/v2/keys/services/battle_server/127.0.0.1|8888
+2021-04-15 00:03:37,208 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1618416217.2078154, refresh service success: battle_server: {"action":"set","node":{"key":"/services/battle_server/127.0.0.1|8888","value":"","expiration":"2021-04-14T16:06:37.193112Z","ttl":180,"modifiedIndex":3694,"createdIndex":3694},"prevNode":{"key":"/services/battle_server/127.0.0.1|8888","value":"","expiration":"2021-04-14T16:04:55.1809381Z","ttl":78,"modifiedIndex":3690,"createdIndex":3690}}
+, now_url: http://127.0.0.1:2381/v2/keys/services/battle_server/127.0.0.1|8888
+2021-04-15 00:03:44,142 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 3689 -> 3692
+2021-04-15 00:04:53,160 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 3692 -> 3694
+2021-04-15 00:05:22,210 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1618416322.2087553, refresh service battle_server, now_url: http://127.0.0.1:2381/v2/keys/services/battle_server/127.0.0.1|8888
+2021-04-15 00:05:22,225 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1618416322.2237992, refresh service success: battle_server: {"action":"set","node":{"key":"/services/battle_server/127.0.0.1|8888","value":"","expiration":"2021-04-14T16:08:22.2168115Z","ttl":180,"modifiedIndex":3698,"createdIndex":3698},"prevNode":{"key":"/services/battle_server/127.0.0.1|8888","value":"","expiration":"2021-04-14T16:06:37.193112Z","ttl":75,"modifiedIndex":3694,"createdIndex":3694}}
+, now_url: http://127.0.0.1:2381/v2/keys/services/battle_server/127.0.0.1|8888
+2021-04-15 00:05:54,174 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 3694 -> 3696
+2021-04-15 00:07:00,190 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 3696 -> 3700
+2021-04-15 00:07:04,226 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1618416424.225098, refresh service battle_server, now_url: http://127.0.0.1:2379/v2/keys/services/battle_server/127.0.0.1|8888
+2021-04-15 00:07:04,238 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1618416424.23611, refresh service success: battle_server: {"action":"set","node":{"key":"/services/battle_server/127.0.0.1|8888","value":"","expiration":"2021-04-14T16:10:04.229201Z","ttl":180,"modifiedIndex":3702,"createdIndex":3702},"prevNode":{"key":"/services/battle_server/127.0.0.1|8888","value":"","expiration":"2021-04-14T16:08:22.2168115Z","ttl":78,"modifiedIndex":3698,"createdIndex":3698}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/battle_server/127.0.0.1|8888
+2021-04-15 00:08:09,200 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 3700 -> 3701
+2021-04-15 00:08:44,251 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1618416524.2504075, refresh service battle_server, now_url: http://127.0.0.1:2381/v2/keys/services/battle_server/127.0.0.1|8888
+2021-04-15 00:08:44,265 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1618416524.2645826, refresh service success: battle_server: {"action":"set","node":{"key":"/services/battle_server/127.0.0.1|8888","value":"","expiration":"2021-04-14T16:11:44.2595633Z","ttl":180,"modifiedIndex":3706,"createdIndex":3706},"prevNode":{"key":"/services/battle_server/127.0.0.1|8888","value":"","expiration":"2021-04-14T16:10:04.229201Z","ttl":80,"modifiedIndex":3702,"createdIndex":3702}}
+, now_url: http://127.0.0.1:2381/v2/keys/services/battle_server/127.0.0.1|8888
+2021-04-15 00:09:14,206 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 3701 -> 3704
+2021-04-15 00:10:20,212 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 3704 -> 3708
+2021-04-15 00:10:26,273 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1618416626.2719545, refresh service battle_server, now_url: http://127.0.0.1:2383/v2/keys/services/battle_server/127.0.0.1|8888
+2021-04-15 00:10:26,285 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1618416626.2838902, refresh service success: battle_server: {"action":"set","node":{"key":"/services/battle_server/127.0.0.1|8888","value":"","expiration":"2021-04-14T16:13:26.2789947Z","ttl":180,"modifiedIndex":3710,"createdIndex":3710},"prevNode":{"key":"/services/battle_server/127.0.0.1|8888","value":"","expiration":"2021-04-14T16:11:44.2595633Z","ttl":78,"modifiedIndex":3706,"createdIndex":3706}}
+, now_url: http://127.0.0.1:2383/v2/keys/services/battle_server/127.0.0.1|8888
+2021-04-15 00:11:30,216 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 3708 -> 3708
+2021-04-15 00:12:12,281 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1618416732.2797678, refresh service battle_server, now_url: http://127.0.0.1:2379/v2/keys/services/battle_server/127.0.0.1|8888
+2021-04-15 00:12:12,296 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1618416732.2956495, refresh service success: battle_server: {"action":"set","node":{"key":"/services/battle_server/127.0.0.1|8888","value":"","expiration":"2021-04-14T16:15:12.2885866Z","ttl":180,"modifiedIndex":3714,"createdIndex":3714},"prevNode":{"key":"/services/battle_server/127.0.0.1|8888","value":"","expiration":"2021-04-14T16:13:26.2789947Z","ttl":74,"modifiedIndex":3710,"createdIndex":3710}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/battle_server/127.0.0.1|8888
+2021-04-15 00:12:31,206 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 3708 -> 3712
+2021-04-15 00:13:41,216 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 3712 -> 3715
+2021-04-15 00:13:52,297 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1618416832.2955291, refresh service battle_server, now_url: http://127.0.0.1:2381/v2/keys/services/battle_server/127.0.0.1|8888
+2021-04-15 00:13:52,311 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1618416832.3104348, refresh service success: battle_server: {"action":"set","node":{"key":"/services/battle_server/127.0.0.1|8888","value":"","expiration":"2021-04-14T16:16:52.304367Z","ttl":180,"modifiedIndex":3717,"createdIndex":3717},"prevNode":{"key":"/services/battle_server/127.0.0.1|8888","value":"","expiration":"2021-04-14T16:15:12.2885866Z","ttl":80,"modifiedIndex":3714,"createdIndex":3714}}
+, now_url: http://127.0.0.1:2381/v2/keys/services/battle_server/127.0.0.1|8888
+2021-04-15 00:14:48,232 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 3715 -> 3716
+2021-04-15 00:15:42,317 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1618416942.3164756, refresh service battle_server, now_url: http://127.0.0.1:2379/v2/keys/services/battle_server/127.0.0.1|8888
+2021-04-15 00:15:42,330 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1618416942.3293328, refresh service success: battle_server: {"action":"set","node":{"key":"/services/battle_server/127.0.0.1|8888","value":"","expiration":"2021-04-14T16:18:42.3243488Z","ttl":180,"modifiedIndex":3721,"createdIndex":3721},"prevNode":{"key":"/services/battle_server/127.0.0.1|8888","value":"","expiration":"2021-04-14T16:16:52.304367Z","ttl":70,"modifiedIndex":3717,"createdIndex":3717}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/battle_server/127.0.0.1|8888
+2021-04-15 00:15:51,237 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 3716 -> 3720
+2021-04-15 00:16:54,246 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 3720 -> 3722
+2021-04-15 00:17:27,335 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1618417047.3340368, refresh service battle_server, now_url: http://127.0.0.1:2381/v2/keys/services/battle_server/127.0.0.1|8888
+2021-04-15 00:17:27,351 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1618417047.349059, refresh service success: battle_server: {"action":"set","node":{"key":"/services/battle_server/127.0.0.1|8888","value":"","expiration":"2021-04-14T16:20:27.3430537Z","ttl":180,"modifiedIndex":3726,"createdIndex":3726},"prevNode":{"key":"/services/battle_server/127.0.0.1|8888","value":"","expiration":"2021-04-14T16:18:42.3243488Z","ttl":75,"modifiedIndex":3721,"createdIndex":3721}}
+, now_url: http://127.0.0.1:2381/v2/keys/services/battle_server/127.0.0.1|8888
+2021-04-15 00:18:02,252 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 3722 -> 3724
+2021-04-15 00:19:05,252 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 3724 -> 3728
+2021-04-15 00:19:07,345 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1618417147.3443904, refresh service battle_server, now_url: http://127.0.0.1:2381/v2/keys/services/battle_server/127.0.0.1|8888
+2021-04-15 00:19:07,357 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1618417147.3563497, refresh service success: battle_server: {"action":"set","node":{"key":"/services/battle_server/127.0.0.1|8888","value":"","expiration":"2021-04-14T16:22:07.3514544Z","ttl":180,"modifiedIndex":3729,"createdIndex":3729},"prevNode":{"key":"/services/battle_server/127.0.0.1|8888","value":"","expiration":"2021-04-14T16:20:27.3430537Z","ttl":80,"modifiedIndex":3726,"createdIndex":3726}}
+, now_url: http://127.0.0.1:2381/v2/keys/services/battle_server/127.0.0.1|8888
+2021-04-15 00:20:08,262 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 3728 -> 3728
+2021-04-15 00:20:55,361 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1618417255.3585086, refresh service battle_server, now_url: http://127.0.0.1:2381/v2/keys/services/battle_server/127.0.0.1|8888
+2021-04-15 00:20:55,373 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1618417255.3714647, refresh service success: battle_server: {"action":"set","node":{"key":"/services/battle_server/127.0.0.1|8888","value":"","expiration":"2021-04-14T16:23:55.3665547Z","ttl":180,"modifiedIndex":3733,"createdIndex":3733},"prevNode":{"key":"/services/battle_server/127.0.0.1|8888","value":"","expiration":"2021-04-14T16:22:07.3514544Z","ttl":72,"modifiedIndex":3729,"createdIndex":3729}}
+, now_url: http://127.0.0.1:2381/v2/keys/services/battle_server/127.0.0.1|8888
+2021-04-15 00:21:08,275 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 3728 -> 3732
+2021-04-15 00:22:11,284 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 3732 -> 3735
+2021-04-15 00:22:44,383 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1618417364.3812206, refresh service battle_server, now_url: http://127.0.0.1:2383/v2/keys/services/battle_server/127.0.0.1|8888
+2021-04-15 00:22:44,397 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1618417364.3961422, refresh service success: battle_server: {"action":"set","node":{"key":"/services/battle_server/127.0.0.1|8888","value":"","expiration":"2021-04-14T16:25:44.3891779Z","ttl":180,"modifiedIndex":3738,"createdIndex":3738},"prevNode":{"key":"/services/battle_server/127.0.0.1|8888","value":"","expiration":"2021-04-14T16:23:55.3665547Z","ttl":71,"modifiedIndex":3733,"createdIndex":3733}}
+, now_url: http://127.0.0.1:2383/v2/keys/services/battle_server/127.0.0.1|8888
+2021-04-15 00:22:44,535 - WARNING - TcpConn - [TcpConn.py:173]: connection is closed by error: [WinError 64] The specified network name is no longer available
+2021-04-15 00:22:46,217 - DEBUG - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> dispatcher_service: ('127.0.0.1', 9100) - [3739]
+2021-04-15 00:22:46,219 - DEBUG - ServiceFinder - [EtcdSupport.py:299]: duplicate service info  -> dispatcher_service:('127.0.0.1', 9100)
+2021-04-15 00:29:43,420 - DEBUG - ServerEntity.LoadReporter - [ServerEntity.py:25]: __init__ create entity LoadReporter with id 60771877d1641237ccf46454 mem_id=1632870129472
+2021-04-15 00:29:43,422 - DEBUG - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60771877d1641237ccf46454 
+2021-04-15 00:29:43,430 - DEBUG - ServiceNode - [EtcdSupport.py:533]: we have create ServiceFinder
+2021-04-15 00:29:43,434 - DEBUG - ServiceFinder - [EtcdSupport.py:352]: _init_info, now_url: http://127.0.0.1:2381/v2/keys?recursive=true
+2021-04-15 00:29:43,437 - DEBUG - ServiceRegister - [EtcdSupport.py:155]: _do_regist: now_url: http://127.0.0.1:2379/v2/keys/services/battle_server/127.0.0.1|8888
+2021-04-15 00:29:43,442 - DEBUG - TcpServer - [TcpServer.py:189]: Server on ('127.0.0.1', 8888)
+2021-04-15 00:29:43,453 - DEBUG - ServiceFinder - [EtcdSupport.py:323]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-04-15 00:29:43,455 - DEBUG - ServiceFinder - [EtcdSupport.py:277]: init service info from etcd success, will going to watch, at etcd index -> 10
+2021-04-15 00:29:43,459 - DEBUG - ServiceRegister - [EtcdSupport.py:163]: regist service : battle_server success, {"action":"set","node":{"key":"/services/battle_server/127.0.0.1|8888","value":"","expiration":"2021-04-14T16:32:43.4506408Z","ttl":180,"modifiedIndex":11,"createdIndex":11}}
+
+2021-04-15 00:29:43,469 - DEBUG - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> battle_server: ('127.0.0.1', 8888) - [11]
+2021-04-15 00:29:57,441 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-04-15 00:30:05,446 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-04-15 00:30:13,447 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-04-15 00:30:21,449 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-04-15 00:30:29,450 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-04-15 00:30:37,452 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-04-15 00:30:45,454 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-04-15 00:30:47,482 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 11 -> 11
+2021-04-15 00:30:53,444 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-04-15 00:31:01,442 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-04-15 00:31:01,446 - WARNING - RpcHandler - [RpcHandler.py:184]: bbb _try_connect_times=1, id(self._conn)= 1632870929984
+2021-04-15 00:31:01,452 - WARNING - RpcHandler - [RpcHandler.py:189]: aaa _try_connect_times=2, id(self._conn)= 1632870931088
+2021-04-15 00:31:01,454 - WARNING - RpcHandler - [RpcHandler.py:211]: rrr _try_connect_times=2, id(self._conn)= 1632870931088
+2021-04-15 00:31:41,806 - DEBUG - ServerEntity.LoadReporter - [ServerEntity.py:25]: __init__ create entity LoadReporter with id 607718edd1641233207203b1 mem_id=3048049659760
+2021-04-15 00:31:41,807 - DEBUG - server.EntityManager - [EntityManager.py:139]: addentity  entity id  607718edd1641233207203b1 
+2021-04-15 00:31:41,813 - DEBUG - ServiceNode - [EtcdSupport.py:533]: we have create ServiceFinder
+2021-04-15 00:31:41,819 - DEBUG - ServiceFinder - [EtcdSupport.py:352]: _init_info, now_url: http://127.0.0.1:2381/v2/keys?recursive=true
+2021-04-15 00:31:41,822 - DEBUG - ServiceRegister - [EtcdSupport.py:155]: _do_regist: now_url: http://127.0.0.1:2381/v2/keys/services/battle_server/127.0.0.1|8888
+2021-04-15 00:31:41,827 - DEBUG - TcpServer - [TcpServer.py:189]: Server on ('127.0.0.1', 8888)
+2021-04-15 00:31:41,838 - DEBUG - ServiceFinder - [EtcdSupport.py:323]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-04-15 00:31:41,839 - DEBUG - ServiceFinder - [EtcdSupport.py:323]: add service node info--> battle_server: ('127.0.0.1', 8888)
+2021-04-15 00:31:41,840 - DEBUG - ServiceFinder - [EtcdSupport.py:277]: init service info from etcd success, will going to watch, at etcd index -> 12
+2021-04-15 00:31:41,846 - DEBUG - ServiceRegister - [EtcdSupport.py:163]: regist service : battle_server success, {"action":"set","node":{"key":"/services/battle_server/127.0.0.1|8888","value":"","expiration":"2021-04-14T16:34:41.8350435Z","ttl":180,"modifiedIndex":13,"createdIndex":13},"prevNode":{"key":"/services/battle_server/127.0.0.1|8888","value":"","expiration":"2021-04-14T16:32:43.4506408Z","ttl":62,"modifiedIndex":11,"createdIndex":11}}
+
+2021-04-15 00:31:41,855 - DEBUG - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> battle_server: ('127.0.0.1', 8888) - [13]
+2021-04-15 00:31:41,856 - DEBUG - ServiceFinder - [EtcdSupport.py:299]: duplicate service info  -> battle_server:('127.0.0.1', 8888)
+2021-04-15 00:32:38,039 - DEBUG - ServerEntity.LoadReporter - [ServerEntity.py:25]: __init__ create entity LoadReporter with id 60771926d164121698ff3727 mem_id=1908316757632
+2021-04-15 00:32:38,040 - DEBUG - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60771926d164121698ff3727 
+2021-04-15 00:32:38,047 - DEBUG - ServiceNode - [EtcdSupport.py:533]: we have create ServiceFinder
+2021-04-15 00:32:38,053 - DEBUG - ServiceFinder - [EtcdSupport.py:352]: _init_info, now_url: http://127.0.0.1:2381/v2/keys?recursive=true
+2021-04-15 00:32:38,056 - DEBUG - ServiceRegister - [EtcdSupport.py:155]: _do_regist: now_url: http://127.0.0.1:2381/v2/keys/services/battle_server/127.0.0.1|8888
+2021-04-15 00:32:38,062 - DEBUG - TcpServer - [TcpServer.py:189]: Server on ('127.0.0.1', 8888)
+2021-04-15 00:32:38,073 - DEBUG - ServiceFinder - [EtcdSupport.py:323]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-04-15 00:32:38,074 - DEBUG - ServiceFinder - [EtcdSupport.py:323]: add service node info--> battle_server: ('127.0.0.1', 8888)
+2021-04-15 00:32:38,076 - DEBUG - ServiceFinder - [EtcdSupport.py:277]: init service info from etcd success, will going to watch, at etcd index -> 14
+2021-04-15 00:32:38,081 - DEBUG - ServiceRegister - [EtcdSupport.py:163]: regist service : battle_server success, {"action":"set","node":{"key":"/services/battle_server/127.0.0.1|8888","value":"","expiration":"2021-04-14T16:35:38.070362Z","ttl":180,"modifiedIndex":15,"createdIndex":15},"prevNode":{"key":"/services/battle_server/127.0.0.1|8888","value":"","expiration":"2021-04-14T16:34:41.8350435Z","ttl":124,"modifiedIndex":13,"createdIndex":13}}
+
+2021-04-15 00:32:38,091 - DEBUG - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> battle_server: ('127.0.0.1', 8888) - [15]
+2021-04-15 00:32:38,093 - DEBUG - ServiceFinder - [EtcdSupport.py:299]: duplicate service info  -> battle_server:('127.0.0.1', 8888)
+2021-04-15 00:33:29,361 - DEBUG - ServerEntity.LoadReporter - [ServerEntity.py:25]: __init__ create entity LoadReporter with id 60771959d1641205f4cc9aac mem_id=2975263219568
+2021-04-15 00:33:29,362 - DEBUG - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60771959d1641205f4cc9aac 
+2021-04-15 00:33:29,369 - DEBUG - ServiceNode - [EtcdSupport.py:533]: we have create ServiceFinder
+2021-04-15 00:33:29,373 - DEBUG - ServiceFinder - [EtcdSupport.py:352]: _init_info, now_url: http://127.0.0.1:2383/v2/keys?recursive=true
+2021-04-15 00:33:29,377 - DEBUG - ServiceRegister - [EtcdSupport.py:155]: _do_regist: now_url: http://127.0.0.1:2379/v2/keys/services/battle_server/127.0.0.1|8888
+2021-04-15 00:33:29,382 - DEBUG - TcpServer - [TcpServer.py:189]: Server on ('127.0.0.1', 8888)
+2021-04-15 00:33:29,394 - DEBUG - ServiceFinder - [EtcdSupport.py:323]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-04-15 00:33:29,396 - DEBUG - ServiceFinder - [EtcdSupport.py:323]: add service node info--> battle_server: ('127.0.0.1', 8888)
+2021-04-15 00:33:29,397 - DEBUG - ServiceFinder - [EtcdSupport.py:277]: init service info from etcd success, will going to watch, at etcd index -> 15
+2021-04-15 00:33:29,402 - DEBUG - ServiceRegister - [EtcdSupport.py:163]: regist service : battle_server success, {"action":"set","node":{"key":"/services/battle_server/127.0.0.1|8888","value":"","expiration":"2021-04-14T16:36:29.3900263Z","ttl":180,"modifiedIndex":16,"createdIndex":16},"prevNode":{"key":"/services/battle_server/127.0.0.1|8888","value":"","expiration":"2021-04-14T16:35:38.070362Z","ttl":129,"modifiedIndex":15,"createdIndex":15}}
+
+2021-04-15 00:33:29,414 - DEBUG - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> battle_server: ('127.0.0.1', 8888) - [16]
+2021-04-15 00:33:29,416 - DEBUG - ServiceFinder - [EtcdSupport.py:299]: duplicate service info  -> battle_server:('127.0.0.1', 8888)
+2021-04-15 00:33:31,263 - DEBUG - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> dispatcher_service: ('127.0.0.1', 9100) - [17]
+2021-04-15 00:33:31,265 - DEBUG - ServiceFinder - [EtcdSupport.py:299]: duplicate service info  -> dispatcher_service:('127.0.0.1', 9100)
+2021-04-15 00:45:22,412 - DEBUG - ServerEntity.LoadReporter - [ServerEntity.py:25]: __init__ create entity LoadReporter with id 60771c22d164120e947dd437 mem_id=1758847684320
+2021-04-15 00:45:22,415 - DEBUG - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60771c22d164120e947dd437 
+2021-04-15 00:45:22,422 - DEBUG - ServiceNode - [EtcdSupport.py:533]: we have create ServiceFinder
+2021-04-15 00:45:22,428 - DEBUG - ServiceFinder - [EtcdSupport.py:352]: _init_info, now_url: http://127.0.0.1:2383/v2/keys?recursive=true
+2021-04-15 00:45:22,431 - DEBUG - ServiceRegister - [EtcdSupport.py:155]: _do_regist: now_url: http://127.0.0.1:2381/v2/keys/services/battle_server/127.0.0.1|8888
+2021-04-15 00:45:22,438 - DEBUG - TcpServer - [TcpServer.py:189]: Server on ('127.0.0.1', 8888)
+2021-04-15 00:45:22,450 - DEBUG - ServiceFinder - [EtcdSupport.py:323]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-04-15 00:45:22,452 - DEBUG - ServiceFinder - [EtcdSupport.py:277]: init service info from etcd success, will going to watch, at etcd index -> 20
+2021-04-15 00:45:22,456 - DEBUG - ServiceRegister - [EtcdSupport.py:163]: regist service : battle_server success, {"action":"set","node":{"key":"/services/battle_server/127.0.0.1|8888","value":"","expiration":"2021-04-14T16:48:22.4473361Z","ttl":180,"modifiedIndex":21,"createdIndex":21}}
+
+2021-04-15 00:45:22,466 - DEBUG - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> battle_server: ('127.0.0.1', 8888) - [21]
+2021-04-15 00:45:28,445 - ERROR - RpcHandler - [RpcHandler.py:286]: _rpc_reply_fut_obj.rpc_func_name='report_load': _error="'NoneType' object has no attribute 'zadd'"
+2021-04-15 00:45:34,440 - ERROR - RpcHandler - [RpcHandler.py:286]: _rpc_reply_fut_obj.rpc_func_name='report_load': _error="Argument {'battle_0|127.0.0.1|8888': 0.15610179963918608} expected to be of bytearray, bytes, float, int, or str type"
+2021-04-15 00:45:40,426 - ERROR - RpcHandler - [RpcHandler.py:286]: _rpc_reply_fut_obj.rpc_func_name='report_load': _error="Argument {'battle_0|127.0.0.1|8888': 0.15751097284464297} expected to be of bytearray, bytes, float, int, or str type"
+2021-04-15 00:45:46,425 - ERROR - RpcHandler - [RpcHandler.py:286]: _rpc_reply_fut_obj.rpc_func_name='report_load': _error="Argument {'battle_0|127.0.0.1|8888': 0.15716817181443432} expected to be of bytearray, bytes, float, int, or str type"
+2021-04-15 00:45:52,419 - ERROR - RpcHandler - [RpcHandler.py:286]: _rpc_reply_fut_obj.rpc_func_name='report_load': _error="Argument {'battle_0|127.0.0.1|8888': 0.0} expected to be of bytearray, bytes, float, int, or str type"
+2021-04-15 00:45:58,419 - ERROR - RpcHandler - [RpcHandler.py:286]: _rpc_reply_fut_obj.rpc_func_name='report_load': _error="Argument {'battle_0|127.0.0.1|8888': 0.15655532420922075} expected to be of bytearray, bytes, float, int, or str type"
+2021-04-15 00:46:04,423 - ERROR - RpcHandler - [RpcHandler.py:286]: _rpc_reply_fut_obj.rpc_func_name='report_load': _error="Argument {'battle_0|127.0.0.1|8888': 0.1566668515355914} expected to be of bytearray, bytes, float, int, or str type"
+2021-04-15 00:46:10,423 - ERROR - RpcHandler - [RpcHandler.py:286]: _rpc_reply_fut_obj.rpc_func_name='report_load': _error="Argument {'battle_0|127.0.0.1|8888': 0.0} expected to be of bytearray, bytes, float, int, or str type"
+2021-04-15 00:46:16,420 - ERROR - RpcHandler - [RpcHandler.py:286]: _rpc_reply_fut_obj.rpc_func_name='report_load': _error="Argument {'battle_0|127.0.0.1|8888': 0.1571937311516115} expected to be of bytearray, bytes, float, int, or str type"
+2021-04-15 00:46:22,421 - ERROR - RpcHandler - [RpcHandler.py:286]: _rpc_reply_fut_obj.rpc_func_name='report_load': _error="Argument {'battle_0|127.0.0.1|8888': 0.1565846502315224} expected to be of bytearray, bytes, float, int, or str type"
+2021-04-15 00:46:22,476 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 21 -> 21
+2021-04-15 00:46:28,423 - ERROR - RpcHandler - [RpcHandler.py:286]: _rpc_reply_fut_obj.rpc_func_name='report_load': _error="Argument {'battle_0|127.0.0.1|8888': 0.3137464420710157} expected to be of bytearray, bytes, float, int, or str type"
+2021-04-15 00:46:31,488 - WARNING - TcpConn - [TcpConn.py:173]: connection is closed by error: [WinError 64] The specified network name is no longer available
+2021-04-15 00:46:32,498 - DEBUG - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> dispatcher_service: ('127.0.0.1', 9100) - [22]
+2021-04-15 00:46:32,500 - DEBUG - ServiceFinder - [EtcdSupport.py:299]: duplicate service info  -> dispatcher_service:('127.0.0.1', 9100)
+2021-04-15 00:46:34,434 - ERROR - RpcHandler - [RpcHandler.py:286]: _rpc_reply_fut_obj.rpc_func_name='report_load': _error="'NoneType' object has no attribute 'zadd'"
+2021-04-15 00:46:35,445 - DEBUG - ServerEntity.LoadReporter - [ServerEntity.py:25]: __init__ create entity LoadReporter with id 60771c6bd16412359c8d75ab mem_id=2291906629296
+2021-04-15 00:46:35,447 - DEBUG - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60771c6bd16412359c8d75ab 
+2021-04-15 00:46:35,458 - DEBUG - ServiceNode - [EtcdSupport.py:533]: we have create ServiceFinder
+2021-04-15 00:46:35,466 - DEBUG - ServiceFinder - [EtcdSupport.py:352]: _init_info, now_url: http://127.0.0.1:2383/v2/keys?recursive=true
+2021-04-15 00:46:35,471 - DEBUG - ServiceRegister - [EtcdSupport.py:155]: _do_regist: now_url: http://127.0.0.1:2379/v2/keys/services/battle_server/127.0.0.1|8888
+2021-04-15 00:46:35,481 - DEBUG - TcpServer - [TcpServer.py:189]: Server on ('127.0.0.1', 8888)
+2021-04-15 00:46:35,501 - DEBUG - ServiceFinder - [EtcdSupport.py:323]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-04-15 00:46:35,503 - DEBUG - ServiceFinder - [EtcdSupport.py:323]: add service node info--> battle_server: ('127.0.0.1', 8888)
+2021-04-15 00:46:35,505 - DEBUG - ServiceFinder - [EtcdSupport.py:277]: init service info from etcd success, will going to watch, at etcd index -> 22
+2021-04-15 00:46:35,512 - DEBUG - ServiceRegister - [EtcdSupport.py:163]: regist service : battle_server success, {"action":"set","node":{"key":"/services/battle_server/127.0.0.1|8888","value":"","expiration":"2021-04-14T16:49:35.4967946Z","ttl":180,"modifiedIndex":23,"createdIndex":23},"prevNode":{"key":"/services/battle_server/127.0.0.1|8888","value":"","expiration":"2021-04-14T16:48:22.4473361Z","ttl":107,"modifiedIndex":21,"createdIndex":21}}
+
+2021-04-15 00:46:35,527 - DEBUG - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> battle_server: ('127.0.0.1', 8888) - [23]
+2021-04-15 00:46:35,529 - DEBUG - ServiceFinder - [EtcdSupport.py:299]: duplicate service info  -> battle_server:('127.0.0.1', 8888)
+2021-04-15 00:46:41,457 - ERROR - RpcHandler - [RpcHandler.py:286]: _rpc_reply_fut_obj.rpc_func_name='report_load': _error="'NoneType' object has no attribute 'zadd'"
+2021-04-15 00:46:47,458 - ERROR - RpcHandler - [RpcHandler.py:286]: _rpc_reply_fut_obj.rpc_func_name='report_load': _error="Argument {'battle_0|127.0.0.1|8888': 0.0} expected to be of bytearray, bytes, float, int, or str type"
+2021-04-15 00:46:53,452 - ERROR - RpcHandler - [RpcHandler.py:286]: _rpc_reply_fut_obj.rpc_func_name='report_load': _error="Argument {'battle_0|127.0.0.1|8888': 0.15677084965465968} expected to be of bytearray, bytes, float, int, or str type"
+2021-04-15 00:58:44,719 - DEBUG - ServerEntity.LoadReporter - [ServerEntity.py:25]: __init__ create entity LoadReporter with id 60771f44d1641212ecf84624 mem_id=2591397760736
+2021-04-15 00:58:44,721 - DEBUG - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60771f44d1641212ecf84624 
+2021-04-15 00:58:44,728 - DEBUG - ServiceNode - [EtcdSupport.py:533]: we have create ServiceFinder
+2021-04-15 00:58:44,732 - DEBUG - ServiceFinder - [EtcdSupport.py:352]: _init_info, now_url: http://127.0.0.1:2381/v2/keys?recursive=true
+2021-04-15 00:58:44,735 - DEBUG - ServiceRegister - [EtcdSupport.py:155]: _do_regist: now_url: http://127.0.0.1:2383/v2/keys/services/battle_server/127.0.0.1|8888
+2021-04-15 00:58:44,741 - DEBUG - TcpServer - [TcpServer.py:189]: Server on ('127.0.0.1', 8888)
+2021-04-15 00:58:44,752 - DEBUG - ServiceFinder - [EtcdSupport.py:323]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-04-15 00:58:44,753 - DEBUG - ServiceFinder - [EtcdSupport.py:277]: init service info from etcd success, will going to watch, at etcd index -> 26
+2021-04-15 00:58:44,758 - DEBUG - ServiceRegister - [EtcdSupport.py:163]: regist service : battle_server success, {"action":"set","node":{"key":"/services/battle_server/127.0.0.1|8888","value":"","expiration":"2021-04-14T17:01:44.7491726Z","ttl":180,"modifiedIndex":27,"createdIndex":27}}
+
+2021-04-15 00:58:44,768 - DEBUG - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> battle_server: ('127.0.0.1', 8888) - [27]
+2021-04-15 00:58:50,732 - ERROR - RpcHandler - [RpcHandler.py:287]: _rpc_reply_fut_obj.rpc_func_name='report_load': _error="Argument {'battle_0|127.0.0.1|8888': 0.9302191343399888} expected to be of bytearray, bytes, float, int, or str type"
+2021-04-15 00:58:56,729 - ERROR - RpcHandler - [RpcHandler.py:287]: _rpc_reply_fut_obj.rpc_func_name='report_load': _error="Argument {'battle_0|127.0.0.1|8888': 0.15622992326530455} expected to be of bytearray, bytes, float, int, or str type"
+2021-04-15 01:01:50,084 - DEBUG - ServerEntity.LoadReporter - [ServerEntity.py:25]: __init__ create entity LoadReporter with id 60771ffed16412355cc49f18 mem_id=2084324953776
+2021-04-15 01:01:50,085 - DEBUG - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60771ffed16412355cc49f18 
+2021-04-15 01:01:50,093 - DEBUG - ServiceNode - [EtcdSupport.py:533]: we have create ServiceFinder
+2021-04-15 01:01:50,097 - DEBUG - ServiceFinder - [EtcdSupport.py:352]: _init_info, now_url: http://127.0.0.1:2381/v2/keys?recursive=true
+2021-04-15 01:01:50,100 - DEBUG - ServiceRegister - [EtcdSupport.py:155]: _do_regist: now_url: http://127.0.0.1:2379/v2/keys/services/battle_server/127.0.0.1|8888
+2021-04-15 01:01:50,106 - DEBUG - TcpServer - [TcpServer.py:189]: Server on ('127.0.0.1', 8888)
+2021-04-15 01:01:50,118 - DEBUG - ServiceFinder - [EtcdSupport.py:323]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-04-15 01:01:50,119 - DEBUG - ServiceFinder - [EtcdSupport.py:277]: init service info from etcd success, will going to watch, at etcd index -> 30
+2021-04-15 01:01:50,124 - DEBUG - ServiceRegister - [EtcdSupport.py:163]: regist service : battle_server success, {"action":"set","node":{"key":"/services/battle_server/127.0.0.1|8888","value":"","expiration":"2021-04-14T17:04:50.1154553Z","ttl":180,"modifiedIndex":31,"createdIndex":31}}
+
+2021-04-15 01:01:50,135 - DEBUG - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> battle_server: ('127.0.0.1', 8888) - [31]
+2021-04-15 01:02:04,085 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-04-15 01:02:12,081 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-04-15 01:02:20,085 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-04-15 01:02:20,089 - WARNING - RpcHandler - [RpcHandler.py:185]: bbb _try_connect_times=1, id(self._conn)= 2084325758624
+2021-04-15 01:02:20,095 - WARNING - RpcHandler - [RpcHandler.py:190]: aaa _try_connect_times=2, id(self._conn)= 2084325760832
+2021-04-15 01:02:20,096 - WARNING - RpcHandler - [RpcHandler.py:212]: rrr _try_connect_times=2, id(self._conn)= 2084325760832
+2021-04-15 01:02:28,099 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-04-15 01:02:28,101 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-04-15 01:02:28,105 - WARNING - RpcHandler - [RpcHandler.py:185]: bbb _try_connect_times=1, id(self._conn)= 2084325760592
+2021-04-15 01:02:28,111 - WARNING - RpcHandler - [RpcHandler.py:190]: aaa _try_connect_times=2, id(self._conn)= 2084325759152
+2021-04-15 01:02:28,112 - WARNING - RpcHandler - [RpcHandler.py:212]: rrr _try_connect_times=2, id(self._conn)= 2084325759152
+2021-04-15 01:02:36,118 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-04-15 01:02:36,120 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-04-15 01:02:36,124 - WARNING - RpcHandler - [RpcHandler.py:185]: bbb _try_connect_times=1, id(self._conn)= 2084326564672
+2021-04-15 01:02:36,129 - WARNING - RpcHandler - [RpcHandler.py:190]: aaa _try_connect_times=2, id(self._conn)= 2084325075456
+2021-04-15 01:02:36,130 - WARNING - RpcHandler - [RpcHandler.py:212]: rrr _try_connect_times=2, id(self._conn)= 2084325075456
+2021-04-15 01:02:44,135 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-04-15 01:02:44,137 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-04-15 01:02:44,140 - WARNING - RpcHandler - [RpcHandler.py:185]: bbb _try_connect_times=1, id(self._conn)= 2084326566544
+2021-04-15 01:02:44,146 - WARNING - RpcHandler - [RpcHandler.py:190]: aaa _try_connect_times=2, id(self._conn)= 2084325758624
+2021-04-15 01:02:44,147 - WARNING - RpcHandler - [RpcHandler.py:212]: rrr _try_connect_times=2, id(self._conn)= 2084325758624
+2021-04-15 01:02:52,152 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-04-15 01:02:52,154 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-04-15 01:02:52,158 - WARNING - RpcHandler - [RpcHandler.py:185]: bbb _try_connect_times=1, id(self._conn)= 2084326565488
+2021-04-15 01:02:52,163 - WARNING - RpcHandler - [RpcHandler.py:190]: aaa _try_connect_times=2, id(self._conn)= 2084325757328
+2021-04-15 01:02:52,164 - WARNING - RpcHandler - [RpcHandler.py:212]: rrr _try_connect_times=2, id(self._conn)= 2084325757328
+2021-04-15 01:02:55,125 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 31 -> 31
+2021-04-15 01:03:00,164 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-04-15 01:03:00,166 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-04-15 01:03:00,169 - WARNING - RpcHandler - [RpcHandler.py:185]: bbb _try_connect_times=1, id(self._conn)= 2084326563904
+2021-04-15 01:03:00,174 - WARNING - RpcHandler - [RpcHandler.py:190]: aaa _try_connect_times=2, id(self._conn)= 2084325758288
+2021-04-15 01:03:00,176 - WARNING - RpcHandler - [RpcHandler.py:212]: rrr _try_connect_times=2, id(self._conn)= 2084325758288
+2021-04-15 01:03:08,180 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-04-15 01:03:08,182 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-04-15 01:03:08,185 - WARNING - RpcHandler - [RpcHandler.py:185]: bbb _try_connect_times=1, id(self._conn)= 2084326566256
+2021-04-15 01:03:08,191 - WARNING - RpcHandler - [RpcHandler.py:190]: aaa _try_connect_times=2, id(self._conn)= 2084325758672
+2021-04-15 01:03:08,192 - WARNING - RpcHandler - [RpcHandler.py:212]: rrr _try_connect_times=2, id(self._conn)= 2084325758672
+2021-04-15 01:03:16,196 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-04-15 01:03:16,198 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-04-15 01:03:16,201 - WARNING - RpcHandler - [RpcHandler.py:185]: bbb _try_connect_times=1, id(self._conn)= 2084326564000
+2021-04-15 01:03:16,206 - WARNING - RpcHandler - [RpcHandler.py:190]: aaa _try_connect_times=2, id(self._conn)= 2084325757376
+2021-04-15 01:03:16,208 - WARNING - RpcHandler - [RpcHandler.py:212]: rrr _try_connect_times=2, id(self._conn)= 2084325757376
+2021-04-15 01:03:24,208 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-04-15 01:03:24,210 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-04-15 01:03:24,213 - WARNING - RpcHandler - [RpcHandler.py:185]: bbb _try_connect_times=1, id(self._conn)= 2084325075312
+2021-04-15 01:03:24,218 - WARNING - RpcHandler - [RpcHandler.py:190]: aaa _try_connect_times=2, id(self._conn)= 2084325759104
+2021-04-15 01:03:24,220 - WARNING - RpcHandler - [RpcHandler.py:212]: rrr _try_connect_times=2, id(self._conn)= 2084325759104
+2021-04-15 01:03:31,129 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1618419811.127403, refresh service battle_server, now_url: http://127.0.0.1:2383/v2/keys/services/battle_server/127.0.0.1|8888
+2021-04-15 01:03:31,140 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1618419811.1394935, refresh service success: battle_server: {"action":"set","node":{"key":"/services/battle_server/127.0.0.1|8888","value":"","expiration":"2021-04-14T17:06:31.134431Z","ttl":180,"modifiedIndex":32,"createdIndex":32},"prevNode":{"key":"/services/battle_server/127.0.0.1|8888","value":"","expiration":"2021-04-14T17:04:50.1154553Z","ttl":79,"modifiedIndex":31,"createdIndex":31}}
+, now_url: http://127.0.0.1:2383/v2/keys/services/battle_server/127.0.0.1|8888
+2021-04-15 01:03:32,225 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-04-15 01:03:32,227 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-04-15 01:03:32,230 - WARNING - RpcHandler - [RpcHandler.py:185]: bbb _try_connect_times=1, id(self._conn)= 2084325759344
+2021-04-15 01:03:32,235 - WARNING - RpcHandler - [RpcHandler.py:190]: aaa _try_connect_times=2, id(self._conn)= 2084325759296
+2021-04-15 01:03:32,237 - WARNING - RpcHandler - [RpcHandler.py:212]: rrr _try_connect_times=2, id(self._conn)= 2084325759296
+2021-04-15 01:03:40,240 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-04-15 01:03:40,243 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-04-15 01:03:40,247 - WARNING - RpcHandler - [RpcHandler.py:185]: bbb _try_connect_times=1, id(self._conn)= 2084326567360
+2021-04-15 01:03:40,254 - WARNING - RpcHandler - [RpcHandler.py:190]: aaa _try_connect_times=2, id(self._conn)= 2084325758432
+2021-04-15 01:03:40,256 - WARNING - RpcHandler - [RpcHandler.py:212]: rrr _try_connect_times=2, id(self._conn)= 2084325758432
+2021-04-15 01:03:48,258 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-04-15 01:03:48,261 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-04-15 01:03:48,264 - WARNING - RpcHandler - [RpcHandler.py:185]: bbb _try_connect_times=1, id(self._conn)= 2084325758624
+2021-04-15 01:03:48,270 - WARNING - RpcHandler - [RpcHandler.py:190]: aaa _try_connect_times=2, id(self._conn)= 2084325758960
+2021-04-15 01:03:48,272 - WARNING - RpcHandler - [RpcHandler.py:212]: rrr _try_connect_times=2, id(self._conn)= 2084325758960
+2021-04-15 01:03:56,135 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 31 -> 31
+2021-04-15 01:03:56,278 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-04-15 01:03:56,280 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-04-15 01:03:56,284 - WARNING - RpcHandler - [RpcHandler.py:185]: bbb _try_connect_times=1, id(self._conn)= 2084325760592
+2021-04-15 01:03:56,289 - WARNING - RpcHandler - [RpcHandler.py:190]: aaa _try_connect_times=2, id(self._conn)= 2084325759392
+2021-04-15 01:03:56,290 - WARNING - RpcHandler - [RpcHandler.py:212]: rrr _try_connect_times=2, id(self._conn)= 2084325759392
+2021-04-15 01:04:04,291 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-04-15 01:04:04,293 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-04-15 01:04:04,296 - WARNING - RpcHandler - [RpcHandler.py:185]: bbb _try_connect_times=1, id(self._conn)= 2084325075648
+2021-04-15 01:04:04,302 - WARNING - RpcHandler - [RpcHandler.py:190]: aaa _try_connect_times=2, id(self._conn)= 2084325758624
+2021-04-15 01:04:04,303 - WARNING - RpcHandler - [RpcHandler.py:212]: rrr _try_connect_times=2, id(self._conn)= 2084325758624
+2021-04-15 01:04:12,306 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-04-15 01:04:12,308 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-04-15 01:04:12,313 - WARNING - RpcHandler - [RpcHandler.py:185]: bbb _try_connect_times=1, id(self._conn)= 2084325759488
+2021-04-15 01:04:12,319 - WARNING - RpcHandler - [RpcHandler.py:190]: aaa _try_connect_times=2, id(self._conn)= 2084325759392
+2021-04-15 01:04:12,321 - WARNING - RpcHandler - [RpcHandler.py:212]: rrr _try_connect_times=2, id(self._conn)= 2084325759392
+2021-04-15 01:04:20,325 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-04-15 01:04:20,327 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-04-15 01:04:20,330 - WARNING - RpcHandler - [RpcHandler.py:185]: bbb _try_connect_times=1, id(self._conn)= 2084325758288
+2021-04-15 01:04:20,336 - WARNING - RpcHandler - [RpcHandler.py:190]: aaa _try_connect_times=2, id(self._conn)= 2084325758960
+2021-04-15 01:04:20,338 - WARNING - RpcHandler - [RpcHandler.py:212]: rrr _try_connect_times=2, id(self._conn)= 2084325758960
+2021-04-15 01:04:28,345 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-04-15 01:04:28,347 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-04-15 01:04:28,351 - WARNING - RpcHandler - [RpcHandler.py:185]: bbb _try_connect_times=1, id(self._conn)= 2084325759392
+2021-04-15 01:04:28,357 - WARNING - RpcHandler - [RpcHandler.py:190]: aaa _try_connect_times=2, id(self._conn)= 2084325759104
+2021-04-15 01:04:28,358 - WARNING - RpcHandler - [RpcHandler.py:212]: rrr _try_connect_times=2, id(self._conn)= 2084325759104
+2021-04-15 01:04:36,350 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-04-15 01:04:36,352 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-04-15 01:04:36,357 - WARNING - RpcHandler - [RpcHandler.py:185]: bbb _try_connect_times=1, id(self._conn)= 2084325076512
+2021-04-15 01:04:36,363 - WARNING - RpcHandler - [RpcHandler.py:190]: aaa _try_connect_times=2, id(self._conn)= 2084325758432
+2021-04-15 01:04:36,365 - WARNING - RpcHandler - [RpcHandler.py:212]: rrr _try_connect_times=2, id(self._conn)= 2084325758432
+2021-04-15 01:04:38,097 - ERROR - RpcHandler - [RpcHandler.py:287]: _rpc_reply_fut_obj.rpc_func_name='report_load': _error="Argument {'battle_0|127.0.0.1|8888': 0.31274184601178484} expected to be of bytearray, bytes, float, int, or str type"
+2021-04-15 01:04:44,089 - ERROR - RpcHandler - [RpcHandler.py:287]: _rpc_reply_fut_obj.rpc_func_name='report_load': _error="Argument {'battle_0|127.0.0.1|8888': 0.1553208825722367} expected to be of bytearray, bytes, float, int, or str type"
+2021-04-15 01:04:44,359 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-04-15 01:04:50,089 - ERROR - RpcHandler - [RpcHandler.py:287]: _rpc_reply_fut_obj.rpc_func_name='report_load': _error="Argument {'battle_0|127.0.0.1|8888': 0.15812771534694914} expected to be of bytearray, bytes, float, int, or str type"
+2021-04-15 01:04:52,364 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-04-15 01:04:56,100 - ERROR - RpcHandler - [RpcHandler.py:287]: _rpc_reply_fut_obj.rpc_func_name='report_load': _error="Argument {'battle_0|127.0.0.1|8888': 0.0} expected to be of bytearray, bytes, float, int, or str type"
+2021-04-15 01:05:00,360 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-04-15 01:05:02,114 - ERROR - RpcHandler - [RpcHandler.py:287]: _rpc_reply_fut_obj.rpc_func_name='report_load': _error="Argument {'battle_0|127.0.0.1|8888': 0.0} expected to be of bytearray, bytes, float, int, or str type"
+2021-04-15 01:05:03,137 - DEBUG - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 31 -> 32
+2021-04-15 01:05:08,108 - ERROR - RpcHandler - [RpcHandler.py:287]: _rpc_reply_fut_obj.rpc_func_name='report_load': _error="Argument {'battle_0|127.0.0.1|8888': 0.3138371946134392} expected to be of bytearray, bytes, float, int, or str type"
+2021-04-15 01:05:08,362 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-04-15 01:05:14,108 - ERROR - RpcHandler - [RpcHandler.py:287]: _rpc_reply_fut_obj.rpc_func_name='report_load': _error="Argument {'battle_0|127.0.0.1|8888': 0.3142177298948517} expected to be of bytearray, bytes, float, int, or str type"
+2021-04-15 01:05:16,370 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-04-15 01:05:20,107 - ERROR - RpcHandler - [RpcHandler.py:287]: _rpc_reply_fut_obj.rpc_func_name='report_load': _error="Argument {'battle_0|127.0.0.1|8888': 0.3138459008826952} expected to be of bytearray, bytes, float, int, or str type"
+2021-04-15 01:05:20,143 - DEBUG - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1618419920.1419864, refresh service battle_server, now_url: http://127.0.0.1:2381/v2/keys/services/battle_server/127.0.0.1|8888
+2021-04-15 01:05:20,154 - DEBUG - ServiceRegister - [EtcdSupport.py:214]: time.time()=1618419920.1539896, refresh service success: battle_server: {"action":"set","node":{"key":"/services/battle_server/127.0.0.1|8888","value":"","expiration":"2021-04-14T17:08:20.1489881Z","ttl":180,"modifiedIndex":34,"createdIndex":34},"prevNode":{"key":"/services/battle_server/127.0.0.1|8888","value":"","expiration":"2021-04-14T17:06:31.134431Z","ttl":71,"modifiedIndex":32,"createdIndex":32}}
+, now_url: http://127.0.0.1:2381/v2/keys/services/battle_server/127.0.0.1|8888
+2021-04-15 01:05:24,360 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-04-15 01:05:26,114 - ERROR - RpcHandler - [RpcHandler.py:287]: _rpc_reply_fut_obj.rpc_func_name='report_load': _error="Argument {'battle_0|127.0.0.1|8888': 0.6287155827837626} expected to be of bytearray, bytes, float, int, or str type"
+2021-04-15 01:05:32,113 - ERROR - RpcHandler - [RpcHandler.py:287]: _rpc_reply_fut_obj.rpc_func_name='report_load': _error="Argument {'battle_0|127.0.0.1|8888': 0.3149585546812243} expected to be of bytearray, bytes, float, int, or str type"
+2021-04-15 01:05:32,384 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-04-15 01:05:38,112 - ERROR - RpcHandler - [RpcHandler.py:287]: _rpc_reply_fut_obj.rpc_func_name='report_load': _error="Argument {'battle_0|127.0.0.1|8888': 0.3142301228182477} expected to be of bytearray, bytes, float, int, or str type"
+2021-04-15 01:05:40,368 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-04-15 01:05:44,107 - ERROR - RpcHandler - [RpcHandler.py:287]: _rpc_reply_fut_obj.rpc_func_name='report_load': _error="Argument {'battle_0|127.0.0.1|8888': 0.15725355287787487} expected to be of bytearray, bytes, float, int, or str type"
+2021-04-15 01:05:48,406 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-04-15 01:05:50,110 - ERROR - RpcHandler - [RpcHandler.py:287]: _rpc_reply_fut_obj.rpc_func_name='report_load': _error="Argument {'battle_0|127.0.0.1|8888': 0.3139631862066012} expected to be of bytearray, bytes, float, int, or str type"
+2021-04-15 01:05:56,104 - ERROR - RpcHandler - [RpcHandler.py:287]: _rpc_reply_fut_obj.rpc_func_name='report_load': _error="Argument {'battle_0|127.0.0.1|8888': 0.0} expected to be of bytearray, bytes, float, int, or str type"
+2021-04-15 01:05:56,391 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-04-15 01:06:02,107 - ERROR - RpcHandler - [RpcHandler.py:287]: _rpc_reply_fut_obj.rpc_func_name='report_load': _error="Argument {'battle_0|127.0.0.1|8888': 0.0} expected to be of bytearray, bytes, float, int, or str type"
+2021-04-15 01:06:04,401 - WARNING - TcpConn - [TcpConn.py:173]: heartbeat timeout
+2021-04-15 01:06:08,106 - ERROR - RpcHandler - [RpcHandler.py:287]: _rpc_reply_fut_obj.rpc_func_name='report_load': _error="Argument {'battle_0|127.0.0.1|8888': 0.3139314353434248} expected to be of bytearray, bytes, float, int, or str type"
+2021-04-15 01:06:08,212 - WARNING - TcpConn - [TcpConn.py:173]: connection is closed by error: [WinError 64] The specified network name is no longer available
+2021-04-15 01:06:08,214 - WARNING - TcpConn - [TcpConn.py:173]: connection is closed by error: [WinError 64] The specified network name is no longer available
+2021-04-15 01:06:08,217 - WARNING - RpcHandler - [RpcHandler.py:185]: bbb _try_connect_times=1, id(self._conn)= 2084325758672
+2021-04-15 01:06:09,331 - DEBUG - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> dispatcher_service: ('127.0.0.1', 9100) - [35]
+2021-04-15 01:06:09,334 - DEBUG - ServiceFinder - [EtcdSupport.py:299]: duplicate service info  -> dispatcher_service:('127.0.0.1', 9100)
+2021-04-15 01:06:09,721 - WARNING - RpcHandler - [RpcHandler.py:190]: aaa _try_connect_times=2, id(self._conn)= 2084326566064
+2021-04-15 01:06:09,722 - WARNING - RpcHandler - [RpcHandler.py:212]: rrr _try_connect_times=2, id(self._conn)= 2084326566064
+2021-04-15 01:06:10,945 - DEBUG - ServerEntity.LoadReporter - [ServerEntity.py:25]: __init__ create entity LoadReporter with id 60772102d164121128b7051e mem_id=2678535409184
+2021-04-15 01:06:10,946 - DEBUG - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60772102d164121128b7051e 
+2021-04-15 01:06:10,954 - DEBUG - ServiceNode - [EtcdSupport.py:533]: we have create ServiceFinder
+2021-04-15 01:06:10,959 - DEBUG - ServiceFinder - [EtcdSupport.py:352]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-04-15 01:06:10,962 - DEBUG - ServiceRegister - [EtcdSupport.py:155]: _do_regist: now_url: http://127.0.0.1:2379/v2/keys/services/battle_server/127.0.0.1|8888
+2021-04-15 01:06:10,968 - DEBUG - TcpServer - [TcpServer.py:189]: Server on ('127.0.0.1', 8888)
+2021-04-15 01:06:10,979 - DEBUG - ServiceFinder - [EtcdSupport.py:323]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-04-15 01:06:10,980 - DEBUG - ServiceFinder - [EtcdSupport.py:323]: add service node info--> battle_server: ('127.0.0.1', 8888)
+2021-04-15 01:06:10,982 - DEBUG - ServiceFinder - [EtcdSupport.py:277]: init service info from etcd success, will going to watch, at etcd index -> 35
+2021-04-15 01:06:10,986 - DEBUG - ServiceRegister - [EtcdSupport.py:163]: regist service : battle_server success, {"action":"set","node":{"key":"/services/battle_server/127.0.0.1|8888","value":"","expiration":"2021-04-14T17:09:10.976218Z","ttl":180,"modifiedIndex":36,"createdIndex":36},"prevNode":{"key":"/services/battle_server/127.0.0.1|8888","value":"","expiration":"2021-04-14T17:08:20.1489881Z","ttl":130,"modifiedIndex":34,"createdIndex":34}}
+
+2021-04-15 01:06:11,011 - DEBUG - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> battle_server: ('127.0.0.1', 8888) - [36]
+2021-04-15 01:06:11,022 - DEBUG - ServiceFinder - [EtcdSupport.py:299]: duplicate service info  -> battle_server:('127.0.0.1', 8888)
+2021-04-15 01:07:00,887 - DEBUG - TcpServer - [TcpServer.py:175]: ('127.0.0.1', 1706) is connected !!!!
+2021-04-15 01:07:00,909 - DEBUG - ServerEntity.Puppet - [ServerEntity.py:25]: __init__ create entity Puppet with id 60772134d164121128b7051f mem_id=2678536437520
+2021-04-15 01:07:00,911 - DEBUG - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60772134d164121128b7051f 
+2021-04-15 01:07:00,941 - INFO - core.tool.incremental_reload - [incremental_reload.py:71]: nothing to reload

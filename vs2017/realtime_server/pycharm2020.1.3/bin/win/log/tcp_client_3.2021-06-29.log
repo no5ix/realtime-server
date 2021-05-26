@@ -1,0 +1,12 @@
+2021-06-29 00:12:42,407 - INFO - ServerEntity.ServerEntity - [ServerEntity.py:25]: __init__ create entity ServerEntity with id 60d9f4faaebac8bae6763436 mem_id=1955009862432
+2021-06-29 00:12:42,413 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60d9f4faaebac8bae6763436 
+2021-06-29 00:12:42,499 - DEBUG - __main__ - [TcpClient2.py:60]: lobby server info: ('gate_0', '127.0.0.1', 9201)
+2021-06-29 00:12:42,515 - INFO - ServerEntity.Avatar - [ServerEntity.py:25]: __init__ create entity Avatar with id 60d9f4faaebac8bae6763438 mem_id=1955010576976
+2021-06-29 00:12:42,523 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60d9f4faaebac8bae6763438 
+2021-06-29 00:20:06,769 - INFO - ServerEntity.ServerEntity - [ServerEntity.py:25]: __init__ create entity ServerEntity with id 60d9f6b6ecafd94262ea86e6 mem_id=2524673350528
+2021-06-29 00:20:06,774 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60d9f6b6ecafd94262ea86e6 
+2021-06-29 00:20:06,865 - DEBUG - __main__ - [TcpClient2.py:60]: lobby server info: ('gate_2', '127.0.0.1', 9203)
+2021-06-29 00:20:06,883 - INFO - ServerEntity.Avatar - [ServerEntity.py:25]: __init__ create entity Avatar with id 60d9f6b6ecafd94262ea86e8 mem_id=2524674069168
+2021-06-29 00:20:06,890 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60d9f6b6ecafd94262ea86e8 
+2021-06-29 00:21:36,375 - WARNING - TcpConn - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\TcpConn.py:163"]: peer addr: ('127.0.0.1', 9203), close_reason='connection is closed by error: [WinError 10054] An existing connection was forcibly closed by the remote host'
+2021-06-29 00:21:36,386 - WARNING - TcpConn - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\TcpConn.py:163"]: peer addr: ('127.0.0.1', 9100), close_reason='connection is closed by error: [WinError 64] The specified network name is no longer available'

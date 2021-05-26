@@ -1,0 +1,16 @@
+2021-07-04 00:57:56,445 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e09714f0c1812e6f789001 mem_id=2351534365040
+2021-07-04 00:57:56,446 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e09714f0c1812e6f789001 
+2021-07-04 00:57:56,457 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 00:57:56,459 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 00:57:56,472 - INFO - TcpServer - [TcpServer.py:127]: Server on ('127.0.0.1', 9101)
+2021-07-04 00:57:59,469 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 00:57:59,473 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> lobby_server: ('127.0.0.1', 10001)
+2021-07-04 00:57:59,474 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> lobby_server: ('127.0.0.1', 10003)
+2021-07-04 00:57:59,476 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> lobby_server: ('127.0.0.1', 10002)
+2021-07-04 00:57:59,477 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 00:57:59,479 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9101)
+2021-07-04 00:57:59,480 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9102)
+2021-07-04 00:57:59,482 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> lobby_gate: ('127.0.0.1', 9201)
+2021-07-04 00:57:59,483 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> lobby_gate: ('127.0.0.1', 9202)
+2021-07-04 00:57:59,485 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> lobby_gate: ('127.0.0.1', 9203)
+2021-07-04 00:57:59,486 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 1359

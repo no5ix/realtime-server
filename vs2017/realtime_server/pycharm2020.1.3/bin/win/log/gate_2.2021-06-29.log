@@ -1,0 +1,87 @@
+2021-06-29 00:11:01,318 - INFO - ServerEntity.LoadReporter - [ServerEntity.py:25]: __init__ create entity LoadReporter with id 60d9f4955ad510fae1db7da1 mem_id=2411526010240
+2021-06-29 00:11:01,321 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60d9f4955ad510fae1db7da1 
+2021-06-29 00:11:01,335 - INFO - ServiceNode - [EtcdSupport.py:533]: we have create ServiceFinder
+2021-06-29 00:11:01,345 - INFO - ServiceFinder - [EtcdSupport.py:352]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-06-29 00:11:01,351 - INFO - ServiceRegister - [EtcdSupport.py:155]: _do_regist: now_url: http://127.0.0.1:2379/v2/keys/services/lobby_gate/127.0.0.1|9203
+2021-06-29 00:11:01,359 - INFO - TcpServer - [TcpServer.py:200]: Server on ('127.0.0.1', 9203)
+2021-06-29 00:11:01,394 - INFO - ServiceFinder - [EtcdSupport.py:323]: add service node info--> lobby_server: ('127.0.0.1', 10001)
+2021-06-29 00:11:01,401 - INFO - ServiceFinder - [EtcdSupport.py:323]: add service node info--> lobby_server: ('127.0.0.1', 10002)
+2021-06-29 00:11:01,409 - INFO - ServiceFinder - [EtcdSupport.py:323]: add service node info--> lobby_server: ('127.0.0.1', 10003)
+2021-06-29 00:11:01,416 - INFO - ServiceFinder - [EtcdSupport.py:323]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-06-29 00:11:01,423 - INFO - ServiceFinder - [EtcdSupport.py:323]: add service node info--> dispatcher_service: ('127.0.0.1', 9101)
+2021-06-29 00:11:01,431 - INFO - ServiceFinder - [EtcdSupport.py:323]: add service node info--> dispatcher_service: ('127.0.0.1', 9102)
+2021-06-29 00:11:01,439 - INFO - ServiceFinder - [EtcdSupport.py:323]: add service node info--> lobby_gate: ('127.0.0.1', 9201)
+2021-06-29 00:11:01,446 - INFO - ServiceFinder - [EtcdSupport.py:323]: add service node info--> lobby_gate: ('127.0.0.1', 9202)
+2021-06-29 00:11:01,451 - INFO - ServiceFinder - [EtcdSupport.py:277]: init service info from etcd success, will going to watch, at etcd index -> 322
+2021-06-29 00:11:01,467 - INFO - ServiceRegister - [EtcdSupport.py:163]: regist service : lobby_gate success, {"action":"set","node":{"key":"/services/lobby_gate/127.0.0.1|9203","value":"","expiration":"2021-06-28T16:14:01.3761298Z","ttl":180,"modifiedIndex":323,"createdIndex":323}}
+
+2021-06-29 00:11:01,477 - INFO - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> lobby_gate: ('127.0.0.1', 9203) - [323]
+2021-06-29 00:12:04,503 - INFO - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 323 -> 323
+2021-06-29 00:12:24,540 - INFO - TcpServer - [TcpServer.py:186]: ('127.0.0.1', 6712) is connected !!!!
+2021-06-29 00:12:24,606 - DEBUG - ProxyLobbyRpcHandler - [ProxyRpcHandler.py:87]: ETCD_TAG_LOBBY_SRV success0000 !!!rand_dispatcher_service_addr=('127.0.0.1', 9102)
+2021-06-29 00:12:24,609 - INFO - ServerEntity.ServerEntity - [ServerEntity.py:25]: __init__ create entity ServerEntity with id 60d9f4e85ad510fae1db7da3 mem_id=2411527224624
+2021-06-29 00:12:24,613 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60d9f4e85ad510fae1db7da3 
+2021-06-29 00:12:24,656 - DEBUG - ProxyLobbyRpcHandler - [ProxyRpcHandler.py:107]: ETCD_TAG_LOBBY_SRV offset: offset=0.05043935775756836
+2021-06-29 00:12:24,659 - DEBUG - ProxyLobbyRpcHandler - [ProxyRpcHandler.py:108]: ETCD_TAG_LOBBY_SRV success0.5 !!! _lobby_addr_info=('lobby_2', '127.0.0.1', 10003)
+2021-06-29 00:12:24,662 - DEBUG - ProxyLobbyRpcHandler - [ProxyRpcHandler.py:120]: ETCD_TAG_LOBBY_SRV success111 !!! _lobby_addr_info=('lobby_2', '127.0.0.1', 10003)
+2021-06-29 00:12:24,665 - DEBUG - ProxyLobbyRpcHandler - [ProxyRpcHandler.py:121]: ETCD_TAG_LOBBY_SRV success333 !!! _lobby_addr_info=('lobby_2', '127.0.0.1', 10003)
+2021-06-29 00:12:50,456 - INFO - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624896770.4528513, refresh service lobby_gate, now_url: http://127.0.0.1:2379/v2/keys/services/lobby_gate/127.0.0.1|9203
+2021-06-29 00:12:50,537 - INFO - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624896770.5324132, refresh service success: lobby_gate: {"action":"set","node":{"key":"/services/lobby_gate/127.0.0.1|9203","value":"","expiration":"2021-06-28T16:15:50.5089268Z","ttl":180,"modifiedIndex":332,"createdIndex":332},"prevNode":{"key":"/services/lobby_gate/127.0.0.1|9203","value":"","expiration":"2021-06-28T16:14:01.3761298Z","ttl":71,"modifiedIndex":323,"createdIndex":323}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/lobby_gate/127.0.0.1|9203
+2021-06-29 00:13:10,552 - INFO - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 323 -> 323
+2021-06-29 00:14:14,654 - INFO - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 323 -> 332
+2021-06-29 00:14:33,540 - INFO - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624896873.5356264, refresh service lobby_gate, now_url: http://127.0.0.1:2379/v2/keys/services/lobby_gate/127.0.0.1|9203
+2021-06-29 00:14:33,659 - INFO - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624896873.6543677, refresh service success: lobby_gate: {"action":"set","node":{"key":"/services/lobby_gate/127.0.0.1|9203","value":"","expiration":"2021-06-28T16:17:33.6126473Z","ttl":180,"modifiedIndex":341,"createdIndex":341},"prevNode":{"key":"/services/lobby_gate/127.0.0.1|9203","value":"","expiration":"2021-06-28T16:15:50.5089268Z","ttl":77,"modifiedIndex":332,"createdIndex":332}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/lobby_gate/127.0.0.1|9203
+2021-06-29 00:15:14,723 - INFO - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 332 -> 336
+2021-06-29 00:16:15,674 - INFO - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624896975.6684341, refresh service lobby_gate, now_url: http://127.0.0.1:2379/v2/keys/services/lobby_gate/127.0.0.1|9203
+2021-06-29 00:16:15,806 - INFO - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624896975.8020291, refresh service success: lobby_gate: {"action":"set","node":{"key":"/services/lobby_gate/127.0.0.1|9203","value":"","expiration":"2021-06-28T16:19:15.7614671Z","ttl":180,"modifiedIndex":349,"createdIndex":349},"prevNode":{"key":"/services/lobby_gate/127.0.0.1|9203","value":"","expiration":"2021-06-28T16:17:33.6126473Z","ttl":78,"modifiedIndex":341,"createdIndex":341}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/lobby_gate/127.0.0.1|9203
+2021-06-29 00:16:17,778 - INFO - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 336 -> 341
+2021-06-29 00:17:17,827 - INFO - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 341 -> 349
+2021-06-29 00:18:03,792 - INFO - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624897083.7870443, refresh service lobby_gate, now_url: http://127.0.0.1:2379/v2/keys/services/lobby_gate/127.0.0.1|9203
+2021-06-29 00:18:03,878 - INFO - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624897083.8742595, refresh service success: lobby_gate: {"action":"set","node":{"key":"/services/lobby_gate/127.0.0.1|9203","value":"","expiration":"2021-06-28T16:21:03.8523877Z","ttl":180,"modifiedIndex":358,"createdIndex":358},"prevNode":{"key":"/services/lobby_gate/127.0.0.1|9203","value":"","expiration":"2021-06-28T16:19:15.7614671Z","ttl":72,"modifiedIndex":349,"createdIndex":349}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/lobby_gate/127.0.0.1|9203
+2021-06-29 00:18:23,862 - INFO - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 349 -> 350
+2021-06-29 00:18:35,043 - WARNING - TcpConn - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\TcpConn.py:163"]: peer addr: ('127.0.0.1', 10003), close_reason='connection is closed by error: [WinError 64] The specified network name is no longer available'
+2021-06-29 00:18:35,049 - WARNING - TcpConn - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\TcpConn.py:163"]: peer addr: ('127.0.0.1', 9100), close_reason='connection is closed by error: [WinError 64] The specified network name is no longer available'
+2021-06-29 00:19:41,982 - INFO - ServerEntity.LoadReporter - [ServerEntity.py:25]: __init__ create entity LoadReporter with id 60d9f69db61d73201dc69149 mem_id=1656425657776
+2021-06-29 00:19:41,986 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60d9f69db61d73201dc69149 
+2021-06-29 00:19:42,002 - INFO - ServiceNode - [EtcdSupport.py:533]: we have create ServiceFinder
+2021-06-29 00:19:42,014 - INFO - ServiceFinder - [EtcdSupport.py:352]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-06-29 00:19:42,021 - INFO - ServiceRegister - [EtcdSupport.py:155]: _do_regist: now_url: http://127.0.0.1:2379/v2/keys/services/lobby_gate/127.0.0.1|9203
+2021-06-29 00:19:42,033 - INFO - TcpServer - [TcpServer.py:200]: Server on ('127.0.0.1', 9203)
+2021-06-29 00:19:42,068 - INFO - ServiceFinder - [EtcdSupport.py:323]: add service node info--> lobby_server: ('127.0.0.1', 10001)
+2021-06-29 00:19:42,076 - INFO - ServiceFinder - [EtcdSupport.py:323]: add service node info--> lobby_server: ('127.0.0.1', 10002)
+2021-06-29 00:19:42,081 - INFO - ServiceFinder - [EtcdSupport.py:323]: add service node info--> lobby_server: ('127.0.0.1', 10003)
+2021-06-29 00:19:42,087 - INFO - ServiceFinder - [EtcdSupport.py:323]: add service node info--> dispatcher_service: ('127.0.0.1', 9101)
+2021-06-29 00:19:42,094 - INFO - ServiceFinder - [EtcdSupport.py:323]: add service node info--> dispatcher_service: ('127.0.0.1', 9102)
+2021-06-29 00:19:42,101 - INFO - ServiceFinder - [EtcdSupport.py:323]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-06-29 00:19:42,108 - INFO - ServiceFinder - [EtcdSupport.py:323]: add service node info--> lobby_gate: ('127.0.0.1', 9203)
+2021-06-29 00:19:42,112 - INFO - ServiceFinder - [EtcdSupport.py:323]: add service node info--> lobby_gate: ('127.0.0.1', 9201)
+2021-06-29 00:19:42,115 - INFO - ServiceFinder - [EtcdSupport.py:323]: add service node info--> lobby_gate: ('127.0.0.1', 9202)
+2021-06-29 00:19:42,118 - INFO - ServiceFinder - [EtcdSupport.py:277]: init service info from etcd success, will going to watch, at etcd index -> 367
+2021-06-29 00:19:42,130 - INFO - ServiceRegister - [EtcdSupport.py:163]: regist service : lobby_gate success, {"action":"set","node":{"key":"/services/lobby_gate/127.0.0.1|9203","value":"","expiration":"2021-06-28T16:22:42.0517849Z","ttl":180,"modifiedIndex":368,"createdIndex":368},"prevNode":{"key":"/services/lobby_gate/127.0.0.1|9203","value":"","expiration":"2021-06-28T16:21:03.8523877Z","ttl":82,"modifiedIndex":358,"createdIndex":358}}
+
+2021-06-29 00:19:42,144 - INFO - ServiceFinder - [EtcdSupport.py:422]: recv watch set service node info--> lobby_gate: ('127.0.0.1', 9203) - [368]
+2021-06-29 00:19:42,147 - INFO - ServiceFinder - [EtcdSupport.py:299]: duplicate service info  -> lobby_gate:('127.0.0.1', 9203)
+2021-06-29 00:20:01,334 - INFO - TcpServer - [TcpServer.py:186]: ('127.0.0.1', 7179) is connected !!!!
+2021-06-29 00:20:01,367 - DEBUG - ProxyLobbyRpcHandler - [ProxyRpcHandler.py:87]: ETCD_TAG_LOBBY_SRV success0000 !!!rand_dispatcher_service_addr=('127.0.0.1', 9101)
+2021-06-29 00:20:01,372 - INFO - ServerEntity.ServerEntity - [ServerEntity.py:25]: __init__ create entity ServerEntity with id 60d9f6b1b61d73201dc6914b mem_id=1656426868064
+2021-06-29 00:20:01,376 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60d9f6b1b61d73201dc6914b 
+2021-06-29 00:20:01,452 - DEBUG - ProxyLobbyRpcHandler - [ProxyRpcHandler.py:107]: ETCD_TAG_LOBBY_SRV offset: offset=0.08293390274047852
+2021-06-29 00:20:01,455 - DEBUG - ProxyLobbyRpcHandler - [ProxyRpcHandler.py:108]: ETCD_TAG_LOBBY_SRV success0.5 !!! _lobby_addr_info=('lobby_1', '127.0.0.1', 10002)
+2021-06-29 00:20:01,459 - DEBUG - ProxyLobbyRpcHandler - [ProxyRpcHandler.py:120]: ETCD_TAG_LOBBY_SRV success111 !!! _lobby_addr_info=('lobby_1', '127.0.0.1', 10002)
+2021-06-29 00:20:01,465 - DEBUG - ProxyLobbyRpcHandler - [ProxyRpcHandler.py:121]: ETCD_TAG_LOBBY_SRV success333 !!! _lobby_addr_info=('lobby_1', '127.0.0.1', 10002)
+2021-06-29 00:20:06,892 - INFO - TcpServer - [TcpServer.py:186]: ('127.0.0.1', 7190) is connected !!!!
+2021-06-29 00:20:06,995 - DEBUG - ProxyLobbyRpcHandler - [ProxyRpcHandler.py:87]: ETCD_TAG_LOBBY_SRV success0000 !!!rand_dispatcher_service_addr=('127.0.0.1', 9102)
+2021-06-29 00:20:07,003 - INFO - ServerEntity.ServerEntity - [ServerEntity.py:25]: __init__ create entity ServerEntity with id 60d9f6b6b61d73201dc6914d mem_id=1656427618848
+2021-06-29 00:20:07,011 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60d9f6b6b61d73201dc6914d 
+2021-06-29 00:20:07,265 - DEBUG - ProxyLobbyRpcHandler - [ProxyRpcHandler.py:107]: ETCD_TAG_LOBBY_SRV offset: offset=0.26990771293640137
+2021-06-29 00:20:07,270 - DEBUG - ProxyLobbyRpcHandler - [ProxyRpcHandler.py:108]: ETCD_TAG_LOBBY_SRV success0.5 !!! _lobby_addr_info=('lobby_1', '127.0.0.1', 10002)
+2021-06-29 00:20:07,275 - DEBUG - ProxyLobbyRpcHandler - [ProxyRpcHandler.py:120]: ETCD_TAG_LOBBY_SRV success111 !!! _lobby_addr_info=('lobby_1', '127.0.0.1', 10002)
+2021-06-29 00:20:07,281 - DEBUG - ProxyLobbyRpcHandler - [ProxyRpcHandler.py:121]: ETCD_TAG_LOBBY_SRV success333 !!! _lobby_addr_info=('lobby_1', '127.0.0.1', 10002)
+2021-06-29 00:20:49,282 - INFO - ServiceFinder - [EtcdSupport.py:475]: etcd watch timeout, rest watch index 368 -> 368
+2021-06-29 00:21:31,213 - INFO - ServiceRegister - [EtcdSupport.py:196]: outside, time.time()=1624897291.2059913, refresh service lobby_gate, now_url: http://127.0.0.1:2379/v2/keys/services/lobby_gate/127.0.0.1|9203
+2021-06-29 00:21:31,641 - INFO - ServiceRegister - [EtcdSupport.py:214]: time.time()=1624897291.636435, refresh service success: lobby_gate: {"action":"set","node":{"key":"/services/lobby_gate/127.0.0.1|9203","value":"","expiration":"2021-06-28T16:24:31.4952064Z","ttl":180,"modifiedIndex":376,"createdIndex":376},"prevNode":{"key":"/services/lobby_gate/127.0.0.1|9203","value":"","expiration":"2021-06-28T16:22:42.0517849Z","ttl":71,"modifiedIndex":368,"createdIndex":368}}
+, now_url: http://127.0.0.1:2379/v2/keys/services/lobby_gate/127.0.0.1|9203

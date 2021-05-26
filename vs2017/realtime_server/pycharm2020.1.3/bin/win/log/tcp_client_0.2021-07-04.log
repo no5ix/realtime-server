@@ -1,0 +1,165 @@
+2021-07-04 00:00:16,123 - ERROR - RpcHandler - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py:221"]: ('127.0.0.1', 9100)
+2021-07-04 00:00:16,124 - WARNING - RpcHandler - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py:223"]: try reconnect ('127.0.0.1', 9100) ... 1
+2021-07-04 00:00:16,739 - ERROR - RpcHandler - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py:221"]: ('127.0.0.1', 9100)
+2021-07-04 00:00:16,741 - WARNING - RpcHandler - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py:223"]: try reconnect ('127.0.0.1', 9100) ... 2
+2021-07-04 00:00:17,347 - ERROR - RpcHandler - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py:221"]: ('127.0.0.1', 9100)
+2021-07-04 00:00:17,348 - WARNING - RpcHandler - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py:223"]: try reconnect ('127.0.0.1', 9100) ... 3
+2021-07-04 00:00:17,956 - ERROR - RpcHandler - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py:221"]: ('127.0.0.1', 9100)
+2021-07-04 00:00:17,957 - WARNING - RpcHandler - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py:223"]: try reconnect ('127.0.0.1', 9100) ... 4
+2021-07-04 00:00:18,566 - ERROR - RpcHandler - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py:221"]: ('127.0.0.1', 9100)
+2021-07-04 00:00:18,567 - WARNING - RpcHandler - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py:223"]: try reconnect ('127.0.0.1', 9100) ... 5
+2021-07-04 00:00:19,175 - ERROR - RpcHandler - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py:221"]: ('127.0.0.1', 9100)
+2021-07-04 00:00:19,176 - ERROR - RpcHandler - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py:226"]: try 6 times , still can't connect remote addr: ('127.0.0.1', 9100)
+2021-07-04 00:01:22,810 - ERROR - RpcHandler - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py:221"]: ('127.0.0.1', 9100)
+2021-07-04 00:01:22,811 - WARNING - RpcHandler - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py:223"]: try reconnect ('127.0.0.1', 9100) ... 1
+2021-07-04 00:01:23,430 - ERROR - RpcHandler - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py:221"]: ('127.0.0.1', 9100)
+2021-07-04 00:01:23,432 - WARNING - RpcHandler - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py:223"]: try reconnect ('127.0.0.1', 9100) ... 2
+2021-07-04 00:01:24,037 - ERROR - RpcHandler - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py:221"]: ('127.0.0.1', 9100)
+2021-07-04 00:01:24,038 - WARNING - RpcHandler - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py:223"]: try reconnect ('127.0.0.1', 9100) ... 3
+2021-07-04 00:01:24,656 - ERROR - RpcHandler - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py:221"]: ('127.0.0.1', 9100)
+2021-07-04 00:01:24,658 - WARNING - RpcHandler - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py:223"]: try reconnect ('127.0.0.1', 9100) ... 4
+2021-07-04 00:02:00,530 - WARNING - RpcHandler - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py:217"]: self._try_connect_times=1, id(self._conn)=1677847729392
+2021-07-04 00:04:28,857 - INFO - TcpServerProtocol - [TcpServer.py:84]: ('127.0.0.1', 9100) is connected !!!!
+2021-07-04 00:04:28,859 - WARNING - RpcHandler - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py:217"]: self._try_connect_times=1, id(self._conn)=2840301680144
+2021-07-04 00:04:28,864 - ERROR - __main__ - ["C:/Users/b/Documents/github/realtime-server/pycharm2020.1.3/script/client/TcpClient2.py:72"]: _err="request rpc timeout, rpc_fuc_name='pick_lowest_load_service_addr', rpc_fuc_args=['lobby_gate'], rpc_fuc_kwargs={}"
+2021-07-04 00:04:29,079 - ERROR - __main__ - ["C:/Users/b/Documents/github/realtime-server/pycharm2020.1.3/script/client/TcpClient2.py:72"]: _err="request rpc timeout, rpc_fuc_name='pick_lowest_load_service_addr', rpc_fuc_args=['lobby_gate'], rpc_fuc_kwargs={}"
+2021-07-04 00:04:29,296 - ERROR - __main__ - ["C:/Users/b/Documents/github/realtime-server/pycharm2020.1.3/script/client/TcpClient2.py:72"]: _err="request rpc timeout, rpc_fuc_name='pick_lowest_load_service_addr', rpc_fuc_args=['lobby_gate'], rpc_fuc_kwargs={}"
+2021-07-04 00:04:29,515 - ERROR - __main__ - ["C:/Users/b/Documents/github/realtime-server/pycharm2020.1.3/script/client/TcpClient2.py:72"]: _err="request rpc timeout, rpc_fuc_name='pick_lowest_load_service_addr', rpc_fuc_args=['lobby_gate'], rpc_fuc_kwargs={}"
+2021-07-04 00:04:29,746 - ERROR - __main__ - ["C:/Users/b/Documents/github/realtime-server/pycharm2020.1.3/script/client/TcpClient2.py:72"]: _err="request rpc timeout, rpc_fuc_name='pick_lowest_load_service_addr', rpc_fuc_args=['lobby_gate'], rpc_fuc_kwargs={}"
+2021-07-04 00:04:29,965 - ERROR - __main__ - ["C:/Users/b/Documents/github/realtime-server/pycharm2020.1.3/script/client/TcpClient2.py:72"]: _err="request rpc timeout, rpc_fuc_name='pick_lowest_load_service_addr', rpc_fuc_args=['lobby_gate'], rpc_fuc_kwargs={}"
+2021-07-04 00:04:30,183 - ERROR - __main__ - ["C:/Users/b/Documents/github/realtime-server/pycharm2020.1.3/script/client/TcpClient2.py:72"]: _err="request rpc timeout, rpc_fuc_name='pick_lowest_load_service_addr', rpc_fuc_args=['lobby_gate'], rpc_fuc_kwargs={}"
+2021-07-04 00:04:30,399 - ERROR - __main__ - ["C:/Users/b/Documents/github/realtime-server/pycharm2020.1.3/script/client/TcpClient2.py:72"]: _err="request rpc timeout, rpc_fuc_name='pick_lowest_load_service_addr', rpc_fuc_args=['lobby_gate'], rpc_fuc_kwargs={}"
+2021-07-04 00:04:30,618 - ERROR - __main__ - ["C:/Users/b/Documents/github/realtime-server/pycharm2020.1.3/script/client/TcpClient2.py:72"]: _err="request rpc timeout, rpc_fuc_name='pick_lowest_load_service_addr', rpc_fuc_args=['lobby_gate'], rpc_fuc_kwargs={}"
+2021-07-04 00:04:30,839 - ERROR - __main__ - ["C:/Users/b/Documents/github/realtime-server/pycharm2020.1.3/script/client/TcpClient2.py:72"]: _err="request rpc timeout, rpc_fuc_name='pick_lowest_load_service_addr', rpc_fuc_args=['lobby_gate'], rpc_fuc_kwargs={}"
+2021-07-04 00:04:31,055 - ERROR - __main__ - ["C:/Users/b/Documents/github/realtime-server/pycharm2020.1.3/script/client/TcpClient2.py:72"]: _err="request rpc timeout, rpc_fuc_name='pick_lowest_load_service_addr', rpc_fuc_args=['lobby_gate'], rpc_fuc_kwargs={}"
+2021-07-04 00:04:31,274 - ERROR - __main__ - ["C:/Users/b/Documents/github/realtime-server/pycharm2020.1.3/script/client/TcpClient2.py:72"]: _err="request rpc timeout, rpc_fuc_name='pick_lowest_load_service_addr', rpc_fuc_args=['lobby_gate'], rpc_fuc_kwargs={}"
+2021-07-04 00:04:31,494 - ERROR - __main__ - ["C:/Users/b/Documents/github/realtime-server/pycharm2020.1.3/script/client/TcpClient2.py:72"]: _err="request rpc timeout, rpc_fuc_name='pick_lowest_load_service_addr', rpc_fuc_args=['lobby_gate'], rpc_fuc_kwargs={}"
+2021-07-04 00:04:31,712 - ERROR - __main__ - ["C:/Users/b/Documents/github/realtime-server/pycharm2020.1.3/script/client/TcpClient2.py:72"]: _err="request rpc timeout, rpc_fuc_name='pick_lowest_load_service_addr', rpc_fuc_args=['lobby_gate'], rpc_fuc_kwargs={}"
+2021-07-04 00:04:31,933 - ERROR - __main__ - ["C:/Users/b/Documents/github/realtime-server/pycharm2020.1.3/script/client/TcpClient2.py:72"]: _err="request rpc timeout, rpc_fuc_name='pick_lowest_load_service_addr', rpc_fuc_args=['lobby_gate'], rpc_fuc_kwargs={}"
+2021-07-04 00:04:32,150 - ERROR - __main__ - ["C:/Users/b/Documents/github/realtime-server/pycharm2020.1.3/script/client/TcpClient2.py:72"]: _err="request rpc timeout, rpc_fuc_name='pick_lowest_load_service_addr', rpc_fuc_args=['lobby_gate'], rpc_fuc_kwargs={}"
+2021-07-04 00:04:32,367 - ERROR - __main__ - ["C:/Users/b/Documents/github/realtime-server/pycharm2020.1.3/script/client/TcpClient2.py:72"]: _err="request rpc timeout, rpc_fuc_name='pick_lowest_load_service_addr', rpc_fuc_args=['lobby_gate'], rpc_fuc_kwargs={}"
+2021-07-04 00:04:32,584 - ERROR - __main__ - ["C:/Users/b/Documents/github/realtime-server/pycharm2020.1.3/script/client/TcpClient2.py:72"]: _err="request rpc timeout, rpc_fuc_name='pick_lowest_load_service_addr', rpc_fuc_args=['lobby_gate'], rpc_fuc_kwargs={}"
+2021-07-04 00:04:32,803 - ERROR - __main__ - ["C:/Users/b/Documents/github/realtime-server/pycharm2020.1.3/script/client/TcpClient2.py:72"]: _err="request rpc timeout, rpc_fuc_name='pick_lowest_load_service_addr', rpc_fuc_args=['lobby_gate'], rpc_fuc_kwargs={}"
+2021-07-04 00:04:33,021 - ERROR - __main__ - ["C:/Users/b/Documents/github/realtime-server/pycharm2020.1.3/script/client/TcpClient2.py:72"]: _err="request rpc timeout, rpc_fuc_name='pick_lowest_load_service_addr', rpc_fuc_args=['lobby_gate'], rpc_fuc_kwargs={}"
+2021-07-04 00:04:33,239 - ERROR - __main__ - ["C:/Users/b/Documents/github/realtime-server/pycharm2020.1.3/script/client/TcpClient2.py:72"]: _err="request rpc timeout, rpc_fuc_name='pick_lowest_load_service_addr', rpc_fuc_args=['lobby_gate'], rpc_fuc_kwargs={}"
+2021-07-04 00:04:33,456 - ERROR - __main__ - ["C:/Users/b/Documents/github/realtime-server/pycharm2020.1.3/script/client/TcpClient2.py:72"]: _err="request rpc timeout, rpc_fuc_name='pick_lowest_load_service_addr', rpc_fuc_args=['lobby_gate'], rpc_fuc_kwargs={}"
+2021-07-04 00:04:33,677 - ERROR - __main__ - ["C:/Users/b/Documents/github/realtime-server/pycharm2020.1.3/script/client/TcpClient2.py:72"]: _err="request rpc timeout, rpc_fuc_name='pick_lowest_load_service_addr', rpc_fuc_args=['lobby_gate'], rpc_fuc_kwargs={}"
+2021-07-04 00:04:33,893 - ERROR - __main__ - ["C:/Users/b/Documents/github/realtime-server/pycharm2020.1.3/script/client/TcpClient2.py:72"]: _err="request rpc timeout, rpc_fuc_name='pick_lowest_load_service_addr', rpc_fuc_args=['lobby_gate'], rpc_fuc_kwargs={}"
+2021-07-04 00:04:34,115 - ERROR - __main__ - ["C:/Users/b/Documents/github/realtime-server/pycharm2020.1.3/script/client/TcpClient2.py:72"]: _err="request rpc timeout, rpc_fuc_name='pick_lowest_load_service_addr', rpc_fuc_args=['lobby_gate'], rpc_fuc_kwargs={}"
+2021-07-04 00:04:34,332 - ERROR - __main__ - ["C:/Users/b/Documents/github/realtime-server/pycharm2020.1.3/script/client/TcpClient2.py:72"]: _err="request rpc timeout, rpc_fuc_name='pick_lowest_load_service_addr', rpc_fuc_args=['lobby_gate'], rpc_fuc_kwargs={}"
+2021-07-04 00:04:34,550 - ERROR - __main__ - ["C:/Users/b/Documents/github/realtime-server/pycharm2020.1.3/script/client/TcpClient2.py:72"]: _err="request rpc timeout, rpc_fuc_name='pick_lowest_load_service_addr', rpc_fuc_args=['lobby_gate'], rpc_fuc_kwargs={}"
+2021-07-04 00:04:34,766 - ERROR - __main__ - ["C:/Users/b/Documents/github/realtime-server/pycharm2020.1.3/script/client/TcpClient2.py:72"]: _err="request rpc timeout, rpc_fuc_name='pick_lowest_load_service_addr', rpc_fuc_args=['lobby_gate'], rpc_fuc_kwargs={}"
+2021-07-04 00:04:34,985 - ERROR - __main__ - ["C:/Users/b/Documents/github/realtime-server/pycharm2020.1.3/script/client/TcpClient2.py:72"]: _err="request rpc timeout, rpc_fuc_name='pick_lowest_load_service_addr', rpc_fuc_args=['lobby_gate'], rpc_fuc_kwargs={}"
+2021-07-04 00:04:35,202 - ERROR - __main__ - ["C:/Users/b/Documents/github/realtime-server/pycharm2020.1.3/script/client/TcpClient2.py:72"]: _err="request rpc timeout, rpc_fuc_name='pick_lowest_load_service_addr', rpc_fuc_args=['lobby_gate'], rpc_fuc_kwargs={}"
+2021-07-04 00:04:35,419 - ERROR - __main__ - ["C:/Users/b/Documents/github/realtime-server/pycharm2020.1.3/script/client/TcpClient2.py:72"]: _err="request rpc timeout, rpc_fuc_name='pick_lowest_load_service_addr', rpc_fuc_args=['lobby_gate'], rpc_fuc_kwargs={}"
+2021-07-04 00:04:35,640 - ERROR - __main__ - ["C:/Users/b/Documents/github/realtime-server/pycharm2020.1.3/script/client/TcpClient2.py:72"]: _err="request rpc timeout, rpc_fuc_name='pick_lowest_load_service_addr', rpc_fuc_args=['lobby_gate'], rpc_fuc_kwargs={}"
+2021-07-04 00:04:35,855 - ERROR - __main__ - ["C:/Users/b/Documents/github/realtime-server/pycharm2020.1.3/script/client/TcpClient2.py:72"]: _err="request rpc timeout, rpc_fuc_name='pick_lowest_load_service_addr', rpc_fuc_args=['lobby_gate'], rpc_fuc_kwargs={}"
+2021-07-04 00:04:36,075 - ERROR - __main__ - ["C:/Users/b/Documents/github/realtime-server/pycharm2020.1.3/script/client/TcpClient2.py:72"]: _err="request rpc timeout, rpc_fuc_name='pick_lowest_load_service_addr', rpc_fuc_args=['lobby_gate'], rpc_fuc_kwargs={}"
+2021-07-04 00:04:36,296 - ERROR - __main__ - ["C:/Users/b/Documents/github/realtime-server/pycharm2020.1.3/script/client/TcpClient2.py:72"]: _err="request rpc timeout, rpc_fuc_name='pick_lowest_load_service_addr', rpc_fuc_args=['lobby_gate'], rpc_fuc_kwargs={}"
+2021-07-04 00:04:36,516 - ERROR - __main__ - ["C:/Users/b/Documents/github/realtime-server/pycharm2020.1.3/script/client/TcpClient2.py:72"]: _err="request rpc timeout, rpc_fuc_name='pick_lowest_load_service_addr', rpc_fuc_args=['lobby_gate'], rpc_fuc_kwargs={}"
+2021-07-04 00:04:36,734 - ERROR - __main__ - ["C:/Users/b/Documents/github/realtime-server/pycharm2020.1.3/script/client/TcpClient2.py:72"]: _err="request rpc timeout, rpc_fuc_name='pick_lowest_load_service_addr', rpc_fuc_args=['lobby_gate'], rpc_fuc_kwargs={}"
+2021-07-04 00:04:36,957 - ERROR - __main__ - ["C:/Users/b/Documents/github/realtime-server/pycharm2020.1.3/script/client/TcpClient2.py:72"]: _err="request rpc timeout, rpc_fuc_name='pick_lowest_load_service_addr', rpc_fuc_args=['lobby_gate'], rpc_fuc_kwargs={}"
+2021-07-04 00:04:37,173 - ERROR - __main__ - ["C:/Users/b/Documents/github/realtime-server/pycharm2020.1.3/script/client/TcpClient2.py:72"]: _err="request rpc timeout, rpc_fuc_name='pick_lowest_load_service_addr', rpc_fuc_args=['lobby_gate'], rpc_fuc_kwargs={}"
+2021-07-04 00:04:37,393 - ERROR - __main__ - ["C:/Users/b/Documents/github/realtime-server/pycharm2020.1.3/script/client/TcpClient2.py:72"]: _err="request rpc timeout, rpc_fuc_name='pick_lowest_load_service_addr', rpc_fuc_args=['lobby_gate'], rpc_fuc_kwargs={}"
+2021-07-04 00:04:37,611 - ERROR - __main__ - ["C:/Users/b/Documents/github/realtime-server/pycharm2020.1.3/script/client/TcpClient2.py:72"]: _err="request rpc timeout, rpc_fuc_name='pick_lowest_load_service_addr', rpc_fuc_args=['lobby_gate'], rpc_fuc_kwargs={}"
+2021-07-04 00:04:37,831 - ERROR - __main__ - ["C:/Users/b/Documents/github/realtime-server/pycharm2020.1.3/script/client/TcpClient2.py:72"]: _err="request rpc timeout, rpc_fuc_name='pick_lowest_load_service_addr', rpc_fuc_args=['lobby_gate'], rpc_fuc_kwargs={}"
+2021-07-04 00:04:50,176 - INFO - TcpServerProtocol - [TcpServer.py:84]: ('127.0.0.1', 9100) is connected !!!!
+2021-07-04 00:04:50,177 - WARNING - RpcHandler - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py:217"]: self._try_connect_times=1, id(self._conn)=1798789331312
+2021-07-04 00:05:55,885 - INFO - TcpServerProtocol - [TcpServer.py:84]: ('127.0.0.1', 9100) is connected !!!!
+2021-07-04 00:05:57,660 - WARNING - RpcHandler - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py:217"]: self._try_connect_times=1, id(self._conn)=1957402516832
+2021-07-04 00:06:30,804 - INFO - TcpServerProtocol - [TcpServer.py:84]: ('127.0.0.1', 9100) is connected !!!!
+2021-07-04 00:06:32,155 - WARNING - RpcHandler - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py:217"]: self._try_connect_times=1, id(self._conn)=2448588119200
+2021-07-04 00:06:55,821 - WARNING - TcpConn - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\TcpConn.py:161"]: peer addr: ('127.0.0.1', 9100), close_reason='[WinError 64] The specified network name is no longer available'
+2021-07-04 00:07:20,443 - INFO - TcpServerProtocol - [TcpServer.py:84]: ('127.0.0.1', 9100) is connected !!!!
+2021-07-04 00:07:20,444 - WARNING - RpcHandler - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py:217"]: self._try_connect_times=1, id(self._conn)=2150338172000
+2021-07-04 00:08:56,263 - INFO - TcpServerProtocol - [TcpServer.py:84]: ('127.0.0.1', 9100) is connected !!!!
+2021-07-04 00:08:56,265 - WARNING - RpcHandler - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py:217"]: self._try_connect_times=1, id(self._conn)=2460463568016
+2021-07-04 00:10:10,743 - INFO - TcpServerProtocol - [TcpServer.py:84]: ('127.0.0.1', 9100) is connected !!!!
+2021-07-04 00:10:10,745 - WARNING - RpcHandler - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py:217"]: self._try_connect_times=1, id(self._conn)=1964941087792
+2021-07-04 00:12:31,516 - INFO - TcpServerProtocol - [TcpServer.py:84]: ('127.0.0.1', 9100) is connected !!!!
+2021-07-04 00:12:31,518 - WARNING - RpcHandler - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py:217"]: self._try_connect_times=1, id(self._conn)=1694969262816
+2021-07-04 00:16:19,387 - INFO - TcpServerProtocol - [TcpServer.py:84]: ('127.0.0.1', 9100) is connected !!!!
+2021-07-04 00:16:19,389 - WARNING - RpcHandler - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py:217"]: self._try_connect_times=1, id(self._conn)=2625883378832
+2021-07-04 00:18:52,664 - INFO - TcpServerProtocol - [TcpServer.py:84]: ('127.0.0.1', 9100) is connected !!!!
+2021-07-04 00:18:52,666 - WARNING - RpcHandler - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py:217"]: self._try_connect_times=1, id(self._conn)=1557863957264
+2021-07-04 00:19:45,287 - INFO - TcpServerProtocol - [TcpServer.py:84]: ('127.0.0.1', 9100) is connected !!!!
+2021-07-04 00:19:45,289 - WARNING - RpcHandler - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py:217"]: self._try_connect_times=1, id(self._conn)=3120582857776
+2021-07-04 00:19:45,295 - WARNING - RpcHandler - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py:81"]: self.rpc_handler_id=b'`\xe0\x8e!\x85\xbc\xa6\x8eulI\xcf' RpcHandler Destroy!
+2021-07-04 00:19:45,295 - DEBUG - __main__ - [TcpClient2.py:83]: lobby server info: ('gate_0', '127.0.0.1', 9201)
+2021-07-04 00:19:45,303 - INFO - ServerEntity.Avatar - [ServerEntity.py:25]: __init__ create entity Avatar with id 60e08e2185bca68e756c49d0 mem_id=3120581929328
+2021-07-04 00:19:45,305 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e08e2185bca68e756c49d0 
+2021-07-04 00:25:54,972 - INFO - TcpServerProtocol - [TcpServer.py:84]: ('127.0.0.1', 9100) is connected !!!!
+2021-07-04 00:25:54,974 - WARNING - RpcHandler - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py:217"]: self._try_connect_times=1, id(self._conn)=1778988668096
+2021-07-04 00:25:54,982 - WARNING - RpcHandler - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py:81"]: self.rpc_handler_id=b'`\xe0\x8f\x92P|\xa8\x8eH.\xe5\xfd' RpcHandler Destroy!
+2021-07-04 00:25:54,983 - DEBUG - __main__ - [TcpClient2.py:84]: lobby server info: ('gate_0', '127.0.0.1', 9201)
+2021-07-04 00:25:54,985 - INFO - ServerEntity.Avatar - [ServerEntity.py:25]: __init__ create entity Avatar with id 60e08f92507ca88e482ee5fe mem_id=1778987718160
+2021-07-04 00:25:54,987 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e08f92507ca88e482ee5fe 
+2021-07-04 00:26:26,095 - INFO - TcpServerProtocol - [TcpServer.py:84]: ('127.0.0.1', 9100) is connected !!!!
+2021-07-04 00:26:26,098 - WARNING - RpcHandler - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py:217"]: self._try_connect_times=1, id(self._conn)=2666239661200
+2021-07-04 00:26:26,102 - WARNING - RpcHandler - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py:81"]: self.rpc_handler_id=b'`\xe0\x8f\xb2/[\x148\xad\x08\x140' RpcHandler Destroy!
+2021-07-04 00:26:26,103 - DEBUG - __main__ - [TcpClient2.py:84]: lobby server info: ('gate_0', '127.0.0.1', 9201)
+2021-07-04 00:26:26,105 - INFO - ServerEntity.Avatar - [ServerEntity.py:25]: __init__ create entity Avatar with id 60e08fb22f5b1438ad081431 mem_id=2666238728656
+2021-07-04 00:26:26,106 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e08fb22f5b1438ad081431 
+2021-07-04 00:26:26,110 - INFO - TcpServerProtocol - [TcpServer.py:84]: ('127.0.0.1', 9201) is connected !!!!
+2021-07-04 00:26:48,518 - INFO - TcpServerProtocol - [TcpServer.py:84]: ('127.0.0.1', 9100) is connected !!!!
+2021-07-04 00:26:48,519 - WARNING - RpcHandler - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py:217"]: self._try_connect_times=1, id(self._conn)=1607805703408
+2021-07-04 00:26:48,524 - DEBUG - __main__ - [TcpClient2.py:84]: lobby server info: ('gate_0', '127.0.0.1', 9201)
+2021-07-04 00:26:48,526 - INFO - ServerEntity.Avatar - [ServerEntity.py:25]: __init__ create entity Avatar with id 60e08fc842b91f6113d43719 mem_id=1607804804592
+2021-07-04 00:26:48,527 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e08fc842b91f6113d43719 
+2021-07-04 00:26:48,533 - INFO - TcpServerProtocol - [TcpServer.py:84]: ('127.0.0.1', 9201) is connected !!!!
+2021-07-04 00:27:31,170 - INFO - TcpServerProtocol - [TcpServer.py:84]: ('127.0.0.1', 9100) is connected !!!!
+2021-07-04 00:27:31,171 - WARNING - RpcHandler - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py:217"]: self._try_connect_times=1, id(self._conn)=2148101854496
+2021-07-04 00:27:31,178 - WARNING - RpcHandler - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py:81"]: self.rpc_handler_id=b"`\xe0\x8f\xf3\x7f\x02@,'\xf2C)" RpcHandler Destroy!
+2021-07-04 00:27:31,179 - DEBUG - __main__ - [TcpClient2.py:84]: lobby server info: ('gate_0', '127.0.0.1', 9201)
+2021-07-04 00:27:31,181 - INFO - ServerEntity.Avatar - [ServerEntity.py:25]: __init__ create entity Avatar with id 60e08ff37f02402c27f2432a mem_id=2148100954720
+2021-07-04 00:27:31,182 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e08ff37f02402c27f2432a 
+2021-07-04 00:27:31,186 - INFO - TcpServerProtocol - [TcpServer.py:84]: ('127.0.0.1', 9201) is connected !!!!
+2021-07-04 00:28:36,499 - INFO - TcpServerProtocol - [TcpServer.py:84]: ('127.0.0.1', 9100) is connected !!!!
+2021-07-04 00:28:36,500 - WARNING - RpcHandler - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py:217"]: self._try_connect_times=1, id(self._conn)=2674564240528
+2021-07-04 00:28:36,505 - WARNING - RpcHandler - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py:81"]: self.rpc_handler_id=b'`\xe0\x904\x80qN\x86V\xd2\n\xc4' RpcHandler Destroy!
+2021-07-04 00:28:36,506 - DEBUG - __main__ - [TcpClient2.py:84]: lobby server info: ('gate_0', '127.0.0.1', 9201)
+2021-07-04 00:28:36,508 - INFO - ServerEntity.Avatar - [ServerEntity.py:25]: __init__ create entity Avatar with id 60e0903480714e8656d20ac5 mem_id=2674563307984
+2021-07-04 00:28:36,509 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e0903480714e8656d20ac5 
+2021-07-04 00:28:36,514 - INFO - TcpServerProtocol - [TcpServer.py:84]: ('127.0.0.1', 9201) is connected !!!!
+2021-07-04 00:41:24,761 - INFO - TcpServerProtocol - [TcpServer.py:84]: ('127.0.0.1', 9100) is connected !!!!
+2021-07-04 00:41:24,762 - WARNING - RpcHandler - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py:217"]: self._try_connect_times=1, id(self._conn)=1545885619344
+2021-07-04 00:41:24,772 - WARNING - RpcHandler - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py:81"]: self.rpc_handler_id=b"`\xe0\x934d\xf1\x15'<\xd9\xff^" RpcHandler Destroy!
+2021-07-04 00:41:24,773 - DEBUG - __main__ - [TcpClient2.py:84]: lobby server info: ('gate_0', '127.0.0.1', 9201)
+2021-07-04 00:41:24,774 - INFO - ServerEntity.Avatar - [ServerEntity.py:25]: __init__ create entity Avatar with id 60e0933464f115273cd9ff5f mem_id=1545884686800
+2021-07-04 00:41:24,776 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e0933464f115273cd9ff5f 
+2021-07-04 00:41:24,780 - INFO - TcpServerProtocol - [TcpServer.py:84]: ('127.0.0.1', 9201) is connected !!!!
+2021-07-04 00:42:57,697 - INFO - TcpServerProtocol - [TcpServer.py:84]: ('127.0.0.1', 9100) is connected !!!!
+2021-07-04 00:42:57,697 - WARNING - RpcHandler - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py:217"]: self._try_connect_times=1, id(self._conn)=2522636487264
+2021-07-04 00:43:15,212 - WARNING - RpcHandler - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py:81"]: self.rpc_handler_id=b'`\xe0\x93\x8f\xa1\xae\x1b\x18o\r\xd2\xe8' RpcHandler Destroy!
+2021-07-04 00:43:17,737 - DEBUG - __main__ - [TcpClient2.py:84]: lobby server info: ('gate_0', '127.0.0.1', 9201)
+2021-07-04 00:43:17,741 - INFO - ServerEntity.Avatar - [ServerEntity.py:25]: __init__ create entity Avatar with id 60e093a5a1ae1b186f0dd2e9 mem_id=2522636125952
+2021-07-04 00:43:17,744 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e093a5a1ae1b186f0dd2e9 
+2021-07-04 00:43:53,271 - INFO - TcpServerProtocol - [TcpServer.py:84]: ('127.0.0.1', 9201) is connected !!!!
+2021-07-04 00:45:22,540 - INFO - TcpServerProtocol - [TcpServer.py:84]: ('127.0.0.1', 9100) is connected !!!!
+2021-07-04 00:45:22,540 - WARNING - RpcHandler - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py:217"]: self._try_connect_times=1, id(self._conn)=1418368998848
+2021-07-04 00:45:30,680 - WARNING - RpcHandler - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py:81"]: self.rpc_handler_id=b'`\xe0\x94\x1a\xbe\n\\+\x90M\x14\xe8' RpcHandler Destroy!
+2021-07-04 00:45:32,408 - DEBUG - __main__ - [TcpClient2.py:84]: lobby server info: ('gate_0', '127.0.0.1', 9201)
+2021-07-04 00:45:32,412 - INFO - ServerEntity.Avatar - [ServerEntity.py:25]: __init__ create entity Avatar with id 60e0942cbe0a5c2b904d14e9 mem_id=1418368997504
+2021-07-04 00:45:32,415 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e0942cbe0a5c2b904d14e9 
+2021-07-04 00:45:34,714 - INFO - TcpServerProtocol - [TcpServer.py:84]: ('127.0.0.1', 9201) is connected !!!!
+2021-07-04 00:50:37,685 - INFO - TcpServerProtocol - [TcpServer.py:86]: ('127.0.0.1', 9100) is connected !!!!
+2021-07-04 00:50:37,687 - WARNING - RpcHandler - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py:217"]: self._try_connect_times=1, id(self._conn)=2067170895088
+2021-07-04 00:50:37,694 - WARNING - RpcHandler - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py:81"]: self.rpc_handler_id=b'`\xe0\x95]e\x1b\xcb%\xb1Co:' RpcHandler Destroy!
+2021-07-04 00:50:37,695 - DEBUG - __main__ - [TcpClient2.py:84]: lobby server info: ('gate_0', '127.0.0.1', 9201)
+2021-07-04 00:50:37,697 - INFO - ServerEntity.Avatar - [ServerEntity.py:25]: __init__ create entity Avatar with id 60e0955d651bcb25b1436f3b mem_id=2067169958880
+2021-07-04 00:50:37,699 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e0955d651bcb25b1436f3b 
+2021-07-04 00:50:37,705 - INFO - TcpServerProtocol - [TcpServer.py:86]: ('127.0.0.1', 9201) is connected !!!!
+2021-07-04 00:51:18,102 - INFO - TcpServerProtocol - [TcpServer.py:86]: ('127.0.0.1', 9100) is connected !!!!
+2021-07-04 00:51:18,103 - WARNING - RpcHandler - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py:217"]: self._try_connect_times=1, id(self._conn)=2306396921968
+2021-07-04 00:51:21,120 - WARNING - RpcHandler - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py:81"]: self.rpc_handler_id=b'`\xe0\x95\x80\xf8g\xd1J\x0c\x14;\x7f' RpcHandler Destroy!
+2021-07-04 00:51:21,543 - DEBUG - __main__ - [TcpClient2.py:84]: lobby server info: ('gate_0', '127.0.0.1', 9201)
+2021-07-04 00:51:21,546 - INFO - ServerEntity.Avatar - [ServerEntity.py:25]: __init__ create entity Avatar with id 60e09589f867d14a0c143b80 mem_id=2304290547792
+2021-07-04 00:51:21,549 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e09589f867d14a0c143b80 
+2021-07-04 00:51:22,822 - INFO - TcpServerProtocol - [TcpServer.py:86]: ('127.0.0.1', 9201) is connected !!!!
+2021-07-04 00:56:08,012 - INFO - TcpServerProtocol - [TcpServer.py:89]: ('127.0.0.1', 9100) is connected !!!!
+2021-07-04 00:56:08,015 - WARNING - RpcHandler - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py:217"]: self._try_connect_times=1, id(self._conn)=1998356286048
+2021-07-04 00:56:08,020 - WARNING - RpcHandler - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py:81"]: self.rpc_handler_id=b'`\xe0\x96\xa7\x142|\xfa\x96\x11\x14\xc4' RpcHandler Destroy!
+2021-07-04 00:56:08,021 - DEBUG - __main__ - [TcpClient2.py:84]: lobby server info: ('gate_0', '127.0.0.1', 9201)
+2021-07-04 00:56:08,022 - INFO - ServerEntity.Avatar - [ServerEntity.py:25]: __init__ create entity Avatar with id 60e096a814327cfa961114c5 mem_id=1998355947728
+2021-07-04 00:56:08,024 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e096a814327cfa961114c5 
+2021-07-04 00:56:08,028 - INFO - TcpServerProtocol - [TcpServer.py:89]: ('127.0.0.1', 9201) is connected !!!!

@@ -1,0 +1,5 @@
+2021-06-28 22:31:55,339 - INFO - ServerEntity.ServerEntity - [ServerEntity.py:25]: __init__ create entity ServerEntity with id 60d9dd5bd4dd3ddd1bf93feb mem_id=1812003625904
+2021-06-28 22:31:55,343 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60d9dd5bd4dd3ddd1bf93feb 
+2021-06-28 22:31:55,387 - DEBUG - __main__ - [TcpClient2.py:60]: lobby server info: ('gate_2', '127.0.0.1', 9203)
+2021-06-28 22:31:55,400 - INFO - ServerEntity.Avatar - [ServerEntity.py:25]: __init__ create entity Avatar with id 60d9dd5bd4dd3ddd1bf93fed mem_id=1812004340448
+2021-06-28 22:31:55,405 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60d9dd5bd4dd3ddd1bf93fed 

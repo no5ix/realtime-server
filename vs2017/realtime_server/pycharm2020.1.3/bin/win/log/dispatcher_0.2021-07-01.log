@@ -1,0 +1,10 @@
+2021-07-01 22:02:00,133 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60ddcad8de1b3aaa2c0e77b4 mem_id=2794810636320
+2021-07-01 22:02:00,135 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60ddcad8de1b3aaa2c0e77b4 
+2021-07-01 22:02:00,245 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-01 22:02:00,247 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-01 22:02:00,275 - INFO - TcpServer - [TcpServer.py:200]: Server on ('127.0.0.1', 9100)
+2021-07-01 22:02:03,277 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-01 22:02:03,282 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-01 22:02:03,284 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9101)
+2021-07-01 22:02:03,285 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9102)
+2021-07-01 22:02:03,287 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 388

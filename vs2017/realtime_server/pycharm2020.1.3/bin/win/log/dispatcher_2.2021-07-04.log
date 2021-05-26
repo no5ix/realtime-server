@@ -1,0 +1,17 @@
+2021-07-04 00:57:58,051 - INFO - ServerEntity.LoadCollector - [ServerEntity.py:25]: __init__ create entity LoadCollector with id 60e097167a4de72a947f6533 mem_id=2519196555632
+2021-07-04 00:57:58,052 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60e097167a4de72a947f6533 
+2021-07-04 00:57:58,064 - INFO - ServiceNode - [EtcdSupport.py:549]: we have create ServiceRegister
+2021-07-04 00:57:58,066 - INFO - ServiceNode - [EtcdSupport.py:552]: we have create ServiceFinder
+2021-07-04 00:57:58,082 - INFO - TcpServer - [TcpServer.py:127]: Server on ('127.0.0.1', 9102)
+2021-07-04 00:58:01,067 - INFO - ServiceFinder - [EtcdSupport.py:382]: _init_info, now_url: http://127.0.0.1:2379/v2/keys?recursive=true
+2021-07-04 00:58:01,071 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> lobby_gate: ('127.0.0.1', 9201)
+2021-07-04 00:58:01,072 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> lobby_gate: ('127.0.0.1', 9202)
+2021-07-04 00:58:01,074 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> lobby_gate: ('127.0.0.1', 9203)
+2021-07-04 00:58:01,075 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> lobby_server: ('127.0.0.1', 10001)
+2021-07-04 00:58:01,076 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> lobby_server: ('127.0.0.1', 10003)
+2021-07-04 00:58:01,078 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> lobby_server: ('127.0.0.1', 10002)
+2021-07-04 00:58:01,079 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9100)
+2021-07-04 00:58:01,080 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9101)
+2021-07-04 00:58:01,081 - INFO - ServiceFinder - [EtcdSupport.py:353]: add service node info--> dispatcher_service: ('127.0.0.1', 9102)
+2021-07-04 00:58:01,082 - INFO - ServiceFinder - [EtcdSupport.py:302]: init service info from etcd success, will going to watch, at etcd index -> 1359
+2021-07-04 00:59:59,291 - INFO - TcpServerProtocol - [TcpServer.py:89]: ('127.0.0.1', 10987) is connected !!!!

@@ -1,0 +1,11 @@
+2021-07-01 22:02:20,000 - ERROR - __main__ - ["C:/Users/b/Documents/github/realtime-server/pycharm2020.1.3/script/client/TcpClient2.py:69"]: _err="request rpc timeout, rpc_fuc_name='pick_lowest_load_service_addr', rpc_fuc_args=['lobby_gate'], rpc_fuc_kwargs={}"
+2021-07-01 22:02:20,200 - ERROR - __main__ - ["C:/Users/b/Documents/github/realtime-server/pycharm2020.1.3/script/client/TcpClient2.py:69"]: _err="request rpc timeout, rpc_fuc_name='pick_lowest_load_service_addr', rpc_fuc_args=['lobby_gate'], rpc_fuc_kwargs={}"
+2021-07-01 22:02:20,419 - ERROR - __main__ - ["C:/Users/b/Documents/github/realtime-server/pycharm2020.1.3/script/client/TcpClient2.py:69"]: _err="request rpc timeout, rpc_fuc_name='pick_lowest_load_service_addr', rpc_fuc_args=['lobby_gate'], rpc_fuc_kwargs={}"
+2021-07-01 22:02:20,636 - ERROR - __main__ - ["C:/Users/b/Documents/github/realtime-server/pycharm2020.1.3/script/client/TcpClient2.py:69"]: _err="request rpc timeout, rpc_fuc_name='pick_lowest_load_service_addr', rpc_fuc_args=['lobby_gate'], rpc_fuc_kwargs={}"
+2021-07-01 22:02:20,854 - ERROR - __main__ - ["C:/Users/b/Documents/github/realtime-server/pycharm2020.1.3/script/client/TcpClient2.py:69"]: _err="request rpc timeout, rpc_fuc_name='pick_lowest_load_service_addr', rpc_fuc_args=['lobby_gate'], rpc_fuc_kwargs={}"
+2021-07-01 22:02:20,861 - WARNING - RpcHandler - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py:216"]: self._try_connect_times=6, id(self._conn)=2073808618400
+2021-07-01 22:02:20,862 - WARNING - RpcHandler - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py:239"]: sum self._try_connect_times=6, id(self._conn)=2073808618400
+2021-07-01 22:02:20,873 - WARNING - RpcHandler - ["C:\Users\b\Documents\github\realtime-server\pycharm2020.1.3\script\RpcHandler.py:81"]: self.rpc_handler_id=b'`\xdd\xca\xeb\xc2]\x00\xba\x8f\xd1\xdfi' RpcHandler Destroy!
+2021-07-01 22:02:20,875 - DEBUG - __main__ - [TcpClient2.py:80]: lobby server info: ('gate_2', '127.0.0.1', 9203)
+2021-07-01 22:02:20,881 - INFO - ServerEntity.Avatar - [ServerEntity.py:25]: __init__ create entity Avatar with id 60ddcaecc25d00ba8fd1df6a mem_id=2073807560608
+2021-07-01 22:02:20,882 - INFO - server.EntityManager - [EntityManager.py:139]: addentity  entity id  60ddcaecc25d00ba8fd1df6a 
