@@ -15,7 +15,7 @@ class LobbyServer(object):
     def __init__(self, server_name):
         # game_server_name = sys.argv[1]
 
-        server_json_conf_path = r"../bin/win/conf/battle_server.json"
+        server_json_conf_path = r"../bin/win/conf/lobby_server.json"
         self._server = TcpServer(server_name, server_json_conf_path)
         self._logger = LogManager.get_logger()
 
