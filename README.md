@@ -22,6 +22,8 @@ python 3.8.8
 <!-- - [ ] 各个战斗服务器之间的协同center stub, center掉了, stub尝试重连center的逻辑 -->
 - [ ] 加上type hint
 - [ ] 安全关闭服务器的时候关闭各种conn和server以及清理各种数据和落地
+- [ ] lobby_gate
+- [ ] lobby_server
 - [ ] 鉴权
 
 
@@ -29,11 +31,9 @@ python 3.8.8
 
 
 - [ ] kcp connection 共用心跳模块
-- [ ] lobby_server
 - [ ] game_mgr process for forwarding/reloading
 - [ ] game_mgr_client to exec game_script
 - [ ] db manager
-- [ ] lobby_gate
 
 - [ ] login service
 - [ ] rename

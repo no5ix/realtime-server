@@ -10,6 +10,7 @@
         // "ETCD_IP": "192.168.82.177",
         // "DISPATCHER_IP": "192.168.82.177",
         "LOBBY_SRV_ETCD_TAG": "lobby_server",
+        "BATTLE_SRV_ETCD_TAG": "battle_server",
         "DISPATCHER_ETCD_TAG": "dispatcher_service",
         "GATE_IP": "127.0.0.1"
     },
@@ -70,40 +71,40 @@
     },
     "gate_0": {
         "ip": "$GATE_IP",
-        "port": 100001
+        "port": 9201
     },
     "gate_1": {
         "ip": "$GATE_IP",
-        "port": 100002
+        "port": 9202
+    },
+    "dispatcher_0": {
+        "ip": "$DISPATCHER_IP$",
+        "etcd_tag": "$DISPATCHER_ETCD_TAG$",
+        "port": 9100
+    },
+    "dispatcher_1": {
+        "ip": "$DISPATCHER_IP$",
+        "etcd_tag": "$DISPATCHER_ETCD_TAG$",
+        "port": 9101
+    },
+    "dispatcher_2": {
+        "ip": "$DISPATCHER_IP$",
+        "etcd_tag": "$DISPATCHER_ETCD_TAG$",
+        "port": 9102
+    },
+    "dispatcher_3": {
+        "ip": "$DISPATCHER_IP$",
+        "etcd_tag": "$DISPATCHER_ETCD_TAG$",
+        "port": 9103
+    },
+    "dispatcher_4": {
+        "ip": "$DISPATCHER_IP$",
+        "etcd_tag": "$DISPATCHER_ETCD_TAG$",
+        "port": 9104
+    },
+    "dispatcher_5": {
+        "ip": "$DISPATCHER_IP$",
+        "etcd_tag": "$DISPATCHER_ETCD_TAG$",
+        "port": 9105
     }
-//    "dispatcher_0": {
-//        "ip": "$DISPATCHER_IP$",
-//        "etcd_tag": "$DISPATCHER_ETCD_TAG$",
-//        "port": 9100
-//    },
-//    "dispatcher_1": {
-//        "ip": "$DISPATCHER_IP$",
-//        "etcd_tag": "$DISPATCHER_ETCD_TAG$",
-//        "port": 9101
-//    },
-//    "dispatcher_2": {
-//        "ip": "$DISPATCHER_IP$",
-//        "etcd_tag": "$DISPATCHER_ETCD_TAG$",
-//        "port": 9102
-//    },
-//    "dispatcher_3": {
-//        "ip": "$DISPATCHER_IP$",
-//        "etcd_tag": "$DISPATCHER_ETCD_TAG$",
-//        "port": 9103
-//    },
-//    "dispatcher_4": {
-//        "ip": "$DISPATCHER_IP$",
-//        "etcd_tag": "$DISPATCHER_ETCD_TAG$",
-//        "port": 9104
-//    },
-//    "dispatcher_5": {
-//        "ip": "$DISPATCHER_IP$",
-//        "etcd_tag": "$DISPATCHER_ETCD_TAG$",
-//        "port": 9105
-//    }
 }

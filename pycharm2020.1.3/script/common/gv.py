@@ -15,8 +15,8 @@ is_dev_version = True
 
 
 db_save_interval_sec = 8
-entity_db_name = "entity_db"
-entity_collection_name = "entity_collection"
+# entity_db_name = "entity_db"
+# entity_collection_name = "entity_collection"
 
 
 bind_entity = None

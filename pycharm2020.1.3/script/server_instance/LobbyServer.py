@@ -2,7 +2,7 @@ import sys
 
 from TcpServer import TcpServer
 # from common import gr
-from common.service_const import ETCD_TAG_LOBBY_GATE
+from common.service_const import ETCD_TAG_LOBBY_GATE, ETCD_TAG_LOBBY_SRV
 from core.common.RpcMethodArgs import RpcMethodArg, Float
 from core.common.RpcSupport import rpc_method, SRV_TO_SRV
 from core.mobilelog.LogManager import LogManager
@@ -19,7 +19,7 @@ class LobbyServer(object):
         self._server = TcpServer(server_name, server_json_conf_path)
         self._logger = LogManager.get_logger()
 
-        self._load_reporter = LoadReporter(ETCD_TAG_LOBBY_GATE)
+        self._load_reporter = LoadReporter(ETCD_TAG_LOBBY_SRV)
 
     def start(self):
         self._server.run()
@@ -40,10 +40,10 @@ if __name__ == '__main__':
     #     host,
     #     port
     # )
-    # db = connection[database]
+    # db_inst = connection[database]
     #
-    # for doc in db.post.find({}, ['item_id', 'title', 'content']):
-    #     db.post.update({'item_id': doc.get('item_id')}, {
+    # for doc in db_inst.post.find({}, ['item_id', 'title', 'content']):
+    #     db_inst.post.update({'item_id': doc.get('item_id')}, {
     #         '$set': {
     #             'title': doc.get('title'),
     #             'content': doc.get('title')
@@ -63,11 +63,11 @@ if __name__ == '__main__':
     #     host,
     #     port
     # )
-    # db = connection[database]
+    # db_inst = connection[database]
     # start = time.time()
     #
-    # for doc in db.LiePin_Analysis1.find({}, ['_id', 'JobTitle', 'is_end']):
-    #     db.LiePin_Analysis1.update_one({'_id': doc.get('_id')}, {
+    # for doc in db_inst.LiePin_Analysis1.find({}, ['_id', 'JobTitle', 'is_end']):
+    #     db_inst.LiePin_Analysis1.update_one({'_id': doc.get('_id')}, {
     #         '$set': {
     #             'is_end': 1
     #         }
@@ -82,13 +82,13 @@ if __name__ == '__main__':
     #     host,
     #     port
     # )
-    # db = connection[database]
+    # db_inst = connection[database]
     #
     # start = time.time()
     #
     # async def run():
-    #     async for doc in db.LiePin_Analysis1.find({}, ['_id', 'JobTitle', 'is_end']):
-    #         db.LiePin_Analysis1.update_one({'_id': doc.get('_id')}, {'$set': {'is_end': 0}})
+    #     async for doc in db_inst.LiePin_Analysis1.find({}, ['_id', 'JobTitle', 'is_end']):
+    #         db_inst.LiePin_Analysis1.update_one({'_id': doc.get('_id')}, {'$set': {'is_end': 0}})
     #
     #
     # asyncio.get_event_loop().run_until_complete(run())
