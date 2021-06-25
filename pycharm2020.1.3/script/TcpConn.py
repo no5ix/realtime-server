@@ -110,7 +110,7 @@ class TcpConn(object):
     # def send_msg(self, msg):
     #     self._asyncio_writer.write(MsgpackSupport.encode(msg))
 
-    def get_rpc_handler(self):
+    def get_rpc_handler(self) -> RpcHandler:
         return self._rpc_handler
 
     # def loop(self):

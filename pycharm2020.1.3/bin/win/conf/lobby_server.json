@@ -3,16 +3,17 @@
       "LOBBY_SRV_IP": "127.0.0.1",
       "ETCD_IP": "127.0.0.1",
       "DISPATCHER_IP": "127.0.0.1",
+      "$LOBBY_GATE_IP": "127.0.0.1"
+
         // "LOBBY_SRV_IP": "192.168.1.4",
         // "ETCD_IP": "192.168.1.4",
         // "DISPATCHER_IP": "192.168.1.4",
         // "LOBBY_SRV_IP": "192.168.82.177",
         // "ETCD_IP": "192.168.82.177",
         // "DISPATCHER_IP": "192.168.82.177",
-        "LOBBY_SRV_ETCD_TAG": "lobby_server",
-        "BATTLE_SRV_ETCD_TAG": "battle_server",
-        "DISPATCHER_ETCD_TAG": "dispatcher_service",
-        "GATE_IP": "127.0.0.1"
+//        "LOBBY_SRV_ETCD_TAG": "lobby_server",
+//        "BATTLE_SRV_ETCD_TAG": "battle_server",
+//        "DISPATCHER_ETCD_TAG": "dispatcher_service",
     },
 
     "etcd_servers": [
@@ -28,83 +29,53 @@
     "lobby_0": {
         "is_center": true,
         "game_server_name": "lobby_0",
-        "etcd_tag": "$LOBBY_SRV_ETCD_TAG$",
+//        "etcd_tag": "$LOBBY_SRV_ETCD_TAG$",
         "ip": "$LOBBY_SRV_IP$",
         "port": 10001
     },
     "lobby_1": {
         "game_server_name": "lobby_1",
-        "etcd_tag": "$LOBBY_SRV_ETCD_TAG$",
+//        "etcd_tag": "$LOBBY_SRV_ETCD_TAG$",
         "ip": "$LOBBY_SRV_IP$",
         "port": 10002
     },
     "lobby_2": {
         "game_server_name": "lobby_2",
-        "etcd_tag": "$LOBBY_SRV_ETCD_TAG$",
+//        "etcd_tag": "$LOBBY_SRV_ETCD_TAG$",
         "ip": "$LOBBY_SRV_IP$",
         "port": 10003
     },
     "lobby_3": {
         "is_center": true,
         "game_server_name": "lobby_3",
-        "etcd_tag": "$LOBBY_SRV_ETCD_TAG$",
+//        "etcd_tag": "$LOBBY_SRV_ETCD_TAG$",
         "ip": "$LOBBY_SRV_IP$",
         "port": 10004
     },
     "lobby_4": {
         "game_server_name": "lobby_4",
-        "etcd_tag": "$LOBBY_SRV_ETCD_TAG$",
+//        "etcd_tag": "$LOBBY_SRV_ETCD_TAG$",
         "ip": "$LOBBY_SRV_IP$",
         "port": 10005
     },
     "lobby_5": {
         "game_server_name": "lobby_5",
-        "etcd_tag": "$LOBBY_SRV_ETCD_TAG$",
+//        "etcd_tag": "$LOBBY_SRV_ETCD_TAG$",
         "ip": "$LOBBY_SRV_IP$",
         "port": 10006
     },
     "lobby_6": {
         "game_server_name": "lobby_6",
-        "etcd_tag": "$LOBBY_SRV_ETCD_TAG$",
+//        "etcd_tag": "$LOBBY_SRV_ETCD_TAG$",
         "ip": "$LOBBY_SRV_IP$",
         "port": 10007
     },
     "gate_0": {
-        "ip": "$GATE_IP",
+        "ip": "$LOBBY_GATE_IP",
         "port": 9201
     },
     "gate_1": {
-        "ip": "$GATE_IP",
+        "ip": "$LOBBY_GATE_IP",
         "port": 9202
     },
-    "dispatcher_0": {
-        "ip": "$DISPATCHER_IP$",
-        "etcd_tag": "$DISPATCHER_ETCD_TAG$",
-        "port": 9100
-    },
-    "dispatcher_1": {
-        "ip": "$DISPATCHER_IP$",
-        "etcd_tag": "$DISPATCHER_ETCD_TAG$",
-        "port": 9101
-    },
-    "dispatcher_2": {
-        "ip": "$DISPATCHER_IP$",
-        "etcd_tag": "$DISPATCHER_ETCD_TAG$",
-        "port": 9102
-    },
-    "dispatcher_3": {
-        "ip": "$DISPATCHER_IP$",
-        "etcd_tag": "$DISPATCHER_ETCD_TAG$",
-        "port": 9103
-    },
-    "dispatcher_4": {
-        "ip": "$DISPATCHER_IP$",
-        "etcd_tag": "$DISPATCHER_ETCD_TAG$",
-        "port": 9104
-    },
-    "dispatcher_5": {
-        "ip": "$DISPATCHER_IP$",
-        "etcd_tag": "$DISPATCHER_ETCD_TAG$",
-        "port": 9105
-    }
 }

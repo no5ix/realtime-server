@@ -11,7 +11,7 @@ from server_entity.ServerEntity import ServerEntity
 
 # LOAD_REPORT_INTERVAL = 0.01  # todo modify to 8
 # LOAD_REPORT_INTERVAL = 0.04  # todo modify to 8
-LOAD_REPORT_INTERVAL = 2
+LOAD_REPORT_INTERVAL = 6
 
 
 class LoadReporter(ServerEntity):

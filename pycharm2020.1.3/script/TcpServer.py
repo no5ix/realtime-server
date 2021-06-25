@@ -44,8 +44,9 @@ from core.tool import incremental_reload
 
 class TcpServer:
 
-    def __init__(self, server_name, json_conf_path):
+    def __init__(self, server_name, etcd_tag, json_conf_path):
         UtilApi.parse_json_conf(json_conf_path)
+        gv.etcd_tag = etcd_tag
 
         self._ev_loop = gv.get_ev_loop()
         # print(f"TcpServer._ev_loop is {id(self._ev_loop)=}")
@@ -244,7 +245,7 @@ class TcpServer:
         # service_module_dict = {"BattleAllocatorCenter": ""} if gr.game_server_name == "battle_0" else {
         #     "BattleAllocatorStub": ""}
 
-        gv.etcd_tag = gv.game_json_conf[gv.game_server_name]["etcd_tag"]
+        # gv.etcd_tag = gv.game_json_conf[gv.game_server_name]["etcd_tag"]
         self._etcd_service_node = ServiceNode(
             etcd_addr_list, my_addr, gv.etcd_tag)
         # self._etcd_service_node = ServiceNode(etcd_addr_list, my_addr, {"BattleAllocatorStub": ""})

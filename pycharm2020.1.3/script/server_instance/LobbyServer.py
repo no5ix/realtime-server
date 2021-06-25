@@ -2,10 +2,12 @@ import sys
 
 from TcpServer import TcpServer
 # from common import gr
+from common import gv
 from common.service_const import ETCD_TAG_LOBBY_GATE, ETCD_TAG_LOBBY_SRV, ETCD_TAG_DISPATCHER_SERVICE
 from core.common.RpcMethodArgs import RpcMethodArg, Float
 from core.common.RpcSupport import rpc_method, SRV_TO_SRV
 from core.mobilelog.LogManager import LogManager
+from core.util import UtilApi
 from server_entity.LoadReporter import LoadReporter
 from server_entity.ServerEntity import ServerEntity
 
@@ -16,9 +18,10 @@ class LobbyServer(object):
         # game_server_name = sys.argv[1]
 
         server_json_conf_path = r"../bin/win/conf/lobby_server.json"
-        self._server = TcpServer(server_name, server_json_conf_path)
+        self._server = TcpServer(server_name, ETCD_TAG_LOBBY_SRV, server_json_conf_path)
         self._logger = LogManager.get_logger()
 
+        # self._load_reporter = LoadReporter(ETCD_TAG_DISPATCHER_SERVICE)
         self._load_reporter = LoadReporter(ETCD_TAG_DISPATCHER_SERVICE)
 
     def start(self):

@@ -1,17 +1,19 @@
 {
     "$MACRO$": {
-      "BATTLE_SRV_IP": "127.0.0.1",
+      "LOBBY_SRV_IP": "127.0.0.1",
       "ETCD_IP": "127.0.0.1",
       "DISPATCHER_IP": "127.0.0.1",
-        // "BATTLE_SRV_IP": "192.168.1.4",
+      "$LOBBY_GATE_IP": "127.0.0.1"
+
+        // "LOBBY_SRV_IP": "192.168.1.4",
         // "ETCD_IP": "192.168.1.4",
         // "DISPATCHER_IP": "192.168.1.4",
-        // "BATTLE_SRV_IP": "192.168.82.177",
+        // "LOBBY_SRV_IP": "192.168.82.177",
         // "ETCD_IP": "192.168.82.177",
         // "DISPATCHER_IP": "192.168.82.177",
-        "BATTLE_SRV_ETCD_TAG": "battle_server",
-        "LOBBY_SRV_ETCD_TAG": "lobby_server",
-        "DISPATCHER_ETCD_TAG": "dispatcher_service"
+//        "LOBBY_SRV_ETCD_TAG": "lobby_server",
+//        "BATTLE_SRV_ETCD_TAG": "battle_server",
+//        "DISPATCHER_ETCD_TAG": "dispatcher_service",
     },
 
     "etcd_servers": [
@@ -27,75 +29,75 @@
     "battle_0": {
         "is_center": true,
         "game_server_name": "battle_0",
-        "etcd_tag": "$BATTLE_SRV_ETCD_TAG$",
+//        "etcd_tag": "$BATTLE_SRV_ETCD_TAG$",
         "ip": "$BATTLE_SRV_IP$",
         "port": 11001
     },
     "battle_1": {
         "game_server_name": "battle_1",
-        "etcd_tag": "$BATTLE_SRV_ETCD_TAG$",
+//        "etcd_tag": "$BATTLE_SRV_ETCD_TAG$",
         "ip": "$BATTLE_SRV_IP$",
         "port": 11002
     },
     "battle_2": {
         "game_server_name": "battle_2",
-        "etcd_tag": "$BATTLE_SRV_ETCD_TAG$",
+//        "etcd_tag": "$BATTLE_SRV_ETCD_TAG$",
         "ip": "$BATTLE_SRV_IP$",
         "port": 11003
     },
     "battle_3": {
         "is_center": true,
         "game_server_name": "battle_3",
-        "etcd_tag": "$BATTLE_SRV_ETCD_TAG$",
+//        "etcd_tag": "$BATTLE_SRV_ETCD_TAG$",
         "ip": "$BATTLE_SRV_IP$",
         "port": 11004
     },
     "battle_4": {
         "game_server_name": "battle_4",
-        "etcd_tag": "$BATTLE_SRV_ETCD_TAG$",
+//        "etcd_tag": "$BATTLE_SRV_ETCD_TAG$",
         "ip": "$BATTLE_SRV_IP$",
         "port": 11005
     },
     "battle_5": {
         "game_server_name": "battle_5",
-        "etcd_tag": "$BATTLE_SRV_ETCD_TAG$",
+//        "etcd_tag": "$BATTLE_SRV_ETCD_TAG$",
         "ip": "$BATTLE_SRV_IP$",
         "port": 11006
     },
     "battle_6": {
         "game_server_name": "battle_6",
-        "etcd_tag": "$BATTLE_SRV_ETCD_TAG$",
+//        "etcd_tag": "$BATTLE_SRV_ETCD_TAG$",
         "ip": "$BATTLE_SRV_IP$",
         "port": 11007
     },
     "dispatcher_0": {
         "ip": "$DISPATCHER_IP$",
-        "etcd_tag": "$DISPATCHER_ETCD_TAG$",
+//        "etcd_tag": "$DISPATCHER_ETCD_TAG$",
         "port": 9100
     },
     "dispatcher_1": {
         "ip": "$DISPATCHER_IP$",
-        "etcd_tag": "$DISPATCHER_ETCD_TAG$",
+//        "etcd_tag": "$DISPATCHER_ETCD_TAG$",
         "port": 9101
     },
     "dispatcher_2": {
         "ip": "$DISPATCHER_IP$",
-        "etcd_tag": "$DISPATCHER_ETCD_TAG$",
+//        "etcd_tag": "$DISPATCHER_ETCD_TAG$",
         "port": 9102
     },
     "dispatcher_3": {
         "ip": "$DISPATCHER_IP$",
-        "etcd_tag": "$DISPATCHER_ETCD_TAG$",
+//        "etcd_tag": "$DISPATCHER_ETCD_TAG$",
         "port": 9103
     },
     "dispatcher_4": {
         "ip": "$DISPATCHER_IP$",
-        "etcd_tag": "$DISPATCHER_ETCD_TAG$",
+//        "etcd_tag": "$DISPATCHER_ETCD_TAG$",
         "port": 9104
     },
     "dispatcher_5": {
         "ip": "$DISPATCHER_IP$",
-        "etcd_tag": "$DISPATCHER_ETCD_TAG$",
+//        "etcd_tag": "$DISPATCHER_ETCD_TAG$",
         "port": 9105
     }
 }

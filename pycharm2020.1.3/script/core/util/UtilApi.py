@@ -61,6 +61,11 @@ def async_lock(f):
 
 
 def wait_or_not(concurrency_limit=888):
+    """
+    此装饰器能让一个async的函数在被调用的时候无需await, 但是如果你需要这个函数的return结果的话, 依然可以await, 所以脚wait or not
+    :param concurrency_limit:
+    :return:
+    """
     # Bind the default event loop
     # print("a bousennnnnn")
     # sem = asyncio.BoundedSemaphore(concurrency_limit)

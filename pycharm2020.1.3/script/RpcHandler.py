@@ -238,6 +238,7 @@ class RpcHandler:
             _rpc_type = _rpc_msg_tuple[0]
             if _rpc_type == RPC_TYPE_REQUEST or _rpc_type == RPC_TYPE_NOTIFY:
                 try:
+                    # msg = (RPC_TYPE_REQUEST, _reply_id, rpc_remote_entity_type, rpc_fuc_name, rpc_fuc_args, rpc_fuc_kwargs)
                     _entity_type_str, _method_name, _method_args, _method_kwargs = _rpc_msg_tuple[-4:]
                     if self._entity is None:
                         self._entity = core.util.UtilApi.get_server_singleton(_entity_type_str)

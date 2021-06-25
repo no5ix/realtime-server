@@ -2,7 +2,7 @@ import sys
 
 from TcpServer import TcpServer
 from common import gv
-from common.service_const import ETCD_TAG_DISPATCHER_SERVICE
+from common.service_const import ETCD_TAG_DISPATCHER_SERVICE, ETCD_TAG_BATTLE_SRV
 from core.mobilelog.LogManager import LogManager
 from core.common import EntityScanner
 from core.common.EntityFactory import EntityFactory
@@ -17,7 +17,7 @@ class BattleServer(object):
         # game_server_name = sys.argv[1]
 
         server_json_conf_path = r"../bin/win/conf/battle_server.json"
-        self._server = TcpServer(server_name, server_json_conf_path)
+        self._server = TcpServer(server_name, ETCD_TAG_BATTLE_SRV, server_json_conf_path)
         self._logger = LogManager.get_logger()
         self._timer_hub = TimerHub()
 
