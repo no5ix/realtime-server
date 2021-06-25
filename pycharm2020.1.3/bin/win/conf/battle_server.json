@@ -3,7 +3,7 @@
       "LOBBY_SRV_IP": "127.0.0.1",
       "ETCD_IP": "127.0.0.1",
       "DISPATCHER_IP": "127.0.0.1",
-      "$LOBBY_GATE_IP": "127.0.0.1"
+      "LOBBY_GATE_IP": "127.0.0.1"
 
         // "LOBBY_SRV_IP": "192.168.1.4",
         // "ETCD_IP": "192.168.1.4",

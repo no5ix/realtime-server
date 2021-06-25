@@ -41,10 +41,10 @@ class ProxyLobbyRpcHandler(RpcHandler):
         return rpc_msg
 
     @wait_or_not()
-    def handle_rpc(self, rpc_msg):
+    async def handle_rpc(self, rpc_msg):
         try:
             rpc_msg = self.compress_n_encode(rpc_msg)
-            self.proxy_cli_rpc_handler._send_rpc_msg(rpc_msg)  # todo
+            await self.proxy_cli_rpc_handler._send_rpc_msg(rpc_msg)  # todo
         except:
             self._logger.log_last_except()
 
@@ -66,7 +66,7 @@ class ProxyCliRpcHandler(RpcHandler):
         return rpc_msg
 
     @wait_or_not()
-    def handle_rpc(self, rpc_msg):
+    async def handle_rpc(self, rpc_msg):
         try:
             rpc_msg = self.uncompress_n_decode(rpc_msg)
             if self.proxy_lobby_rpc_handler is None:
@@ -105,7 +105,7 @@ class ProxyCliRpcHandler(RpcHandler):
                 await ConnMgr.instance().get_conn_by_addr(addr=_lobby_addr, rpc_handler=plrh)
                 self.proxy_lobby_rpc_handler = plrh
                 # await self._send_rpc_msg(msg=rpc_msg, ip_port_tuple=_lobby_addr)
-            self.proxy_lobby_rpc_handler._send_rpc_msg(rpc_msg)  # todo
+            await self.proxy_lobby_rpc_handler._send_rpc_msg(rpc_msg)  # todo
         except:
             self._logger.log_last_except()
 
