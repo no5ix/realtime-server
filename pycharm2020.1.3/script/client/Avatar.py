@@ -5,7 +5,7 @@ from typing import Union
 from BattleEntity import BattleEntity
 from common.component.Component import components
 from common.component.ComponentSupport import ComponentSupport
-from client.component.puppet.CompAvatarTest import CompAvatarTest
+from client.component.avatar.CompAvatarTest import CompAvatarTest
 # from client.BattleEntity import BattleEntity
 
 

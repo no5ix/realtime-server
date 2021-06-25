@@ -2,7 +2,7 @@ import sys
 
 from TcpServer import TcpServer
 # from common import gr
-from common.service_const import ETCD_TAG_LOBBY_GATE, ETCD_TAG_LOBBY_SRV
+from common.service_const import ETCD_TAG_LOBBY_GATE, ETCD_TAG_LOBBY_SRV, ETCD_TAG_DISPATCHER_SERVICE
 from core.common.RpcMethodArgs import RpcMethodArg, Float
 from core.common.RpcSupport import rpc_method, SRV_TO_SRV
 from core.mobilelog.LogManager import LogManager
@@ -19,7 +19,7 @@ class LobbyServer(object):
         self._server = TcpServer(server_name, server_json_conf_path)
         self._logger = LogManager.get_logger()
 
-        self._load_reporter = LoadReporter(ETCD_TAG_LOBBY_SRV)
+        self._load_reporter = LoadReporter(ETCD_TAG_DISPATCHER_SERVICE)
 
     def start(self):
         self._server.run()
