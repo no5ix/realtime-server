@@ -18,6 +18,7 @@ import typing
 
 # from core.util.performance.cpu_load_handler import CpuLoad
 from ConnMgr import ConnMgr
+from ProxyRpcHandler import ProxyCliRpcHandler
 from core.util import UtilApi
 from core.util.UtilApi import wait_or_not, Singleton
 
@@ -44,9 +45,11 @@ from core.tool import incremental_reload
 
 class TcpServer:
 
-    def __init__(self, server_name, etcd_tag, json_conf_path):
+    def __init__(self, server_name, etcd_tag, json_conf_path, is_proxy=False):
         UtilApi.parse_json_conf(json_conf_path)
         gv.etcd_tag = etcd_tag
+
+        self._is_proxy = is_proxy
 
         self._ev_loop = gv.get_ev_loop()
         # print(f"TcpServer._ev_loop is {id(self._ev_loop)=}")
@@ -171,7 +174,8 @@ class TcpServer:
 
     def _handle_client_connected(self, reader, writer):
         # self._add_conn(TcpConn.ROLE_TYPE_PASSIVE, writer, reader)
-        ConnMgr.instance().add_conn(TcpConn.ROLE_TYPE_PASSIVE, writer, reader)
+        ConnMgr.instance().add_conn(
+            TcpConn.ROLE_TYPE_PASSIVE, writer, reader, rpc_handler=ProxyCliRpcHandler() if self._is_proxy else None)
         addr = writer.get_extra_info('peername')  # type: typing.Tuple[str, int]
         self._logger.debug(f"{addr!r} is connected !!!!")
 

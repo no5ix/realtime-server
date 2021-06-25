@@ -84,11 +84,6 @@ class ServerEntity:
             rpc_remote_entity_type: typing.Union[None, str] = None,
             ip_port_tuple: typing.Tuple[str, int] = None
     ):
-        # if self._rpc_handler is None:
-        #     if ip_port_tuple is None:
-        #         self.logger.error("self._conn is None and ip_port_tuple is None")
-        #         return
-        #     self._rpc_handler = RpcHandler()
         try:
             return self._rpc_handler.request_rpc(
                 rpc_fuc_name, rpc_fuc_args, rpc_fuc_kwargs, rpc_callback, rpc_need_reply, rpc_reply_timeout,
