@@ -104,7 +104,7 @@ class RpcHandler:
         except:
             self._logger.log_last_except()
 
-    @wait_or_not()
+    # @wait_or_not()
     async def request_rpc(
             self,
             rpc_fuc_name: str,

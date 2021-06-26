@@ -2,6 +2,7 @@ from __future__ import annotations
 import typing
 
 from core.util import DbUtil
+from core.util.UtilApi import wait_or_not
 
 if typing.TYPE_CHECKING:
     pass
@@ -73,7 +74,8 @@ class ServerEntity:
     #     self._conn.request_rpc(method_name, parameters)
     #     await _tcp_conn.loop()
 
-    def call_remote_method(
+    @wait_or_not()
+    async def call_remote_method(
             self,
             rpc_fuc_name: str,
             rpc_fuc_args: typing.Union[typing.Set, typing.List, typing.Tuple] = (),
@@ -85,7 +87,7 @@ class ServerEntity:
             ip_port_tuple: typing.Tuple[str, int] = None
     ):
         try:
-            return self._rpc_handler.request_rpc(
+            return await self._rpc_handler.request_rpc(
                 rpc_fuc_name, rpc_fuc_args, rpc_fuc_kwargs, rpc_callback, rpc_need_reply, rpc_reply_timeout,
                 rpc_remote_entity_type or self.__class__.__name__, ip_port_tuple
                 # *args, **kwargs

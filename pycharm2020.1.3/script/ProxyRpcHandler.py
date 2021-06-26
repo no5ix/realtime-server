@@ -17,10 +17,10 @@ from common.service_const import ETCD_TAG_LOBBY_SRV
 from core.util import EnhancedJson
 from core.util.TimerHub import TimerHub
 from core.util.UtilApi import wait_or_not
+from server_entity.ServerEntity import ServerEntity
 
 if typing.TYPE_CHECKING:
     from TcpConn import TcpConn
-    from server_entity.ServerEntity import ServerEntity
 
 from common import gv
 from core.common import MsgpackSupport
@@ -86,6 +86,8 @@ class ProxyCliRpcHandler(RpcHandler):
 
                 temp_se = ServerEntity()
                 # _err, _lobby_addr = self.request_rpc(
+                start_time = time.time()
+                self._logger.info(f'start: {start_time=}')
                 _err, _lobby_addr = await temp_se.call_remote_method(
                     "pick_lowest_load_service_addr",
                     # [gv.etcd_tag],
@@ -97,15 +99,26 @@ class ProxyCliRpcHandler(RpcHandler):
                     # rpc_callback=lambda err, res: self.logger.info(f"pick_lowest_load_service_addr: {err=} {res=}"),
                     rpc_remote_entity_type="LoadCollector",
                     ip_port_tuple=rand_dispatcher_service_addr)
+                end_time = time.time()
+                offset = end_time - start_time
+                self._logger.info(f'end: {offset=}')
+
                 if _err:
                     self._logger.error(f'{_err=}')
                     return
 
+                print(f'ETCD_TAG_LOBBY_SRV success111 !!! {_lobby_addr=}')
                 plrh = ProxyLobbyRpcHandler(self)
-                await ConnMgr.instance().get_conn_by_addr(addr=_lobby_addr, rpc_handler=plrh)
+                await ConnMgr.instance().get_conn_by_addr(addr=_lobby_addr[1:], rpc_handler=plrh)
+                print(f'ETCD_TAG_LOBBY_SRV success222 !!! {_lobby_addr=}')
+
                 self.proxy_lobby_rpc_handler = plrh
                 # await self._send_rpc_msg(msg=rpc_msg, ip_port_tuple=_lobby_addr)
+                print(f'ETCD_TAG_LOBBY_SRV success333 !!! {_lobby_addr=}')
+
+            print(f'ETCD_TAG_LOBBY_SRV success444 !!!')
             await self.proxy_lobby_rpc_handler._send_rpc_msg(rpc_msg)  # todo
+
         except:
             self._logger.log_last_except()
 

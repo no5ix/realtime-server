@@ -2,6 +2,7 @@ import asyncio
 import random
 import sys
 # from asyncio import events
+import time
 
 import TcpConn
 from client.Avatar import Avatar
@@ -10,7 +11,7 @@ from client.Puppet import Puppet
 # from common import gr
 # from core.common import MsgpackSupport
 from common import gv
-from common.service_const import ETCD_TAG_LOBBY_GATE, ETCD_TAG_DISPATCHER_SERVICE
+from common.service_const import ETCD_TAG_LOBBY_GATE, ETCD_TAG_DISPATCHER_SERVICE, ETCD_TAG_LOBBY_SRV
 from core.mobilelog.LogManager import LogManager
 # from core.util import UtilApi
 from core.util import UtilApi, EnhancedJson
@@ -39,16 +40,25 @@ async def tcp_echo_client(cli_index):
             break
 
     temp_se = ServerEntity()
+    start_time = time.time()
+    print(f'start: {start_time=}')
     _err, _res = await temp_se.call_remote_method(
         "pick_lowest_load_service_addr",
         # [gv.etcd_tag],
         # ["battle_server"],
         # ["lobby_server"],
-        [ETCD_TAG_LOBBY_GATE],
+        # [ETCD_TAG_LOBBY_GATE],
+        [ETCD_TAG_LOBBY_SRV],
         # rpc_reply_timeout=None,
         # rpc_remote_entity_type="LoadCollector", ip_port_tuple=dispatcher_service_addr
         # rpc_callback=lambda err, res: self.logger.info(f"pick_lowest_load_service_addr: {err=} {res=}"),
-        rpc_remote_entity_type="LoadCollector", ip_port_tuple=rand_dispatcher_service_addr)
+        rpc_remote_entity_type="LoadCollector",
+        ip_port_tuple=rand_dispatcher_service_addr)
+
+    end_time = time.time()
+    offset = end_time - start_time
+    print(f'end: {offset=}')
+
     if _err:
         cli_log.error(f"{_err=}")
         return
@@ -103,7 +113,8 @@ async def tcp_echo_client(cli_index):
         0.016,  # 极限
         # 0.01,  # 基本已经处理不过来
         lambda: _ppt.CompAvatarTest.puppet_chat_to_ppt({'content': 'puppet_chat_to_ppt'}),
-        repeat_count=-1, repeat_interval_sec=10
+        # repeat_count=-1,
+        # repeat_interval_sec=10
     )
         # _cnt -= 1
         # print(_cnt)

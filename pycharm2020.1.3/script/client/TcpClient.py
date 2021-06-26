@@ -9,6 +9,7 @@ from client.Puppet import Puppet
 # from common import gr
 # from core.common import MsgpackSupport
 from common import gv
+from common.service_const import ETCD_TAG_BATTLE_SRV
 from core.mobilelog.LogManager import LogManager
 # from core.util import UtilApi
 from core.util import UtilApi
@@ -22,11 +23,11 @@ async def tcp_echo_client(cli_index):
 
     cli_log = LogManager.get_logger()
 
-    json_conf_path = r"../bin/win/conf/battle_server.json"
+    json_conf_path = r"../bin/win/conf/dispatcher_service.json"
     UtilApi.parse_json_conf(json_conf_path)
     rand_dispatcher_service_addr = None
     for _svr_name, _svr_info in gv.game_json_conf.items():
-        if type(_svr_info) is dict and _svr_info.get("etcd_tag", None) == "dispatcher_service":
+        if type(_svr_info) is dict and _svr_name.startswith("dispatcher"):
             rand_dispatcher_service_addr = (_svr_info["ip"], _svr_info["port"])
             break
 
@@ -34,11 +35,12 @@ async def tcp_echo_client(cli_index):
     _err, _res = await temp_se.call_remote_method(
         "pick_lowest_load_service_addr",
         # [gv.etcd_tag],
-        ["battle_server"],
-        rpc_reply_timeout=None,
+        [ETCD_TAG_BATTLE_SRV],
+        # rpc_reply_timeout=None,
         # rpc_remote_entity_type="LoadCollector", ip_port_tuple=dispatcher_service_addr
         # rpc_callback=lambda err, res: self.logger.info(f"pick_lowest_load_service_addr: {err=} {res=}"),
-        rpc_remote_entity_type="LoadCollector", ip_port_tuple=rand_dispatcher_service_addr)
+        rpc_remote_entity_type="LoadCollector",
+        ip_port_tuple=rand_dispatcher_service_addr)
     if _err:
         cli_log.error(f"{_err=}")
         return

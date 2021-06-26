@@ -1,6 +1,8 @@
 # import functools
 import asyncio
 
+import time
+
 from RpcHandler import rpc_func
 # from common import gv
 from core.util.UtilApi import Singleton, wait_or_not
@@ -47,6 +49,9 @@ class LoadCollector(ServerEntity):
     @rpc_func
     async def pick_lowest_load_service_addr(self, etcd_tag: str) -> typing.Tuple[str, str, int]:
         # _res_list = await async_wrap(lambda: self._redis_cli.zrange(etcd_tag, 0, 0))  # type: typing.List[str]
+
+        start_time = time.time()
+        print(f'pick_lowest_load_service_addr start: {start_time=}')
         _res_list = await self._redis_cli.zrange(etcd_tag, 0, 0)
         _ret = None
         if _res_list:
@@ -54,6 +59,11 @@ class LoadCollector(ServerEntity):
             _ret = (split_res[0], split_res[1], int(split_res[2]))
             # self.logger.debug(f"pick_lowest_load_service server_name: {split_res[0]}, addr: {_ret}")
             print(f"pick_lowest_load_service server_name: {split_res[0]}, addr: {_ret}")
+
+        end_time = time.time()
+        offset = end_time - start_time
+        print(f'pick_lowest_load_service_addr end: {offset=}')
+
         return _ret
 
         # # todo: del

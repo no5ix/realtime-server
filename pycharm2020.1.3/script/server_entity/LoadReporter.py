@@ -20,7 +20,8 @@ class LoadReporter(ServerEntity):
         super().__init__()
         self._load_collector_etcd_tag = load_collector_etcd_tag
         self._avg_load = AvgCpuLoad()
-        self.timer_hub.call_later(LOAD_REPORT_INTERVAL, self.report_load, repeat_count=-1)
+        self.timer_hub.call_later(
+            0, self.report_load, repeat_count=-1, repeat_interval_sec=LOAD_REPORT_INTERVAL)
         # self.timer_hub.call_later(LOAD_REPORT_INTERVAL, self.report_load, repeat_count=8)  # TODO: del
 
     def report_load(self):
