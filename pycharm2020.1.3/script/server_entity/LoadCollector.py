@@ -51,7 +51,7 @@ class LoadCollector(ServerEntity):
         # _res_list = await async_wrap(lambda: self._redis_cli.zrange(etcd_tag, 0, 0))  # type: typing.List[str]
 
         start_time = time.time()
-        print(f'pick_lowest_load_service_addr start: {start_time=}')
+        # print(f'pick_lowest_load_service_addr start: {start_time=}')
         _res_list = await self._redis_cli.zrange(etcd_tag, 0, 0)
         _ret = None
         if _res_list:
@@ -62,7 +62,7 @@ class LoadCollector(ServerEntity):
 
         end_time = time.time()
         offset = end_time - start_time
-        print(f'pick_lowest_load_service_addr end: {offset=}')
+        self.logger.info(f'pick_lowest_load_service_addr end: {offset=}')
 
         return _ret
 

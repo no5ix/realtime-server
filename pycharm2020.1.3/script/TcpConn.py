@@ -71,7 +71,7 @@ class TcpConn(object):
 
         self.loop()
 
-        self._last_heartbeat_ts = 0
+        self._last_heartbeat_ts = time.time()
         self._timer_hub.call_later(HEARTBEAT_TIMEOUT, self.handle_remote_heartbeat_timeout, repeat_count=-1)
         self._timer_hub.call_later(HEARTBEAT_INTERVAL, self.heartbeat, repeat_count=-1)
 
@@ -87,15 +87,21 @@ class TcpConn(object):
     def is_active(self):
         return self._role_type == ROLE_TYPE_ACTIVE
 
-    async def handle_remote_heartbeat_timeout(self):
-        # print("ckkkkcheck handle_remote_heartbeat_timeout")
-        if time.time() - self._last_heartbeat_ts > HEARTBEAT_TIMEOUT:
+    def handle_remote_heartbeat_timeout(self):
+        _now = time.time()
+        _offset = _now - self._last_heartbeat_ts
+        # self._logger.info(f"{self._addr=} { _offset=} {_now=}ckkkkcheck handle_remote_heartbeat_timeout")
+        if _offset > HEARTBEAT_TIMEOUT:
             self.handle_close(close_reason="heartbeat timeout")
 
     def remote_heart_beat(self):
         self._last_heartbeat_ts = time.time()
+        # self._logger.info(
+        #     f"{self._addr=}, {self._last_heartbeat_ts}, remote_heart_beat")
 
     async def heartbeat(self):
+        # self._logger.info(
+        #     f"{self._addr=} heartbeat")
         await self._rpc_handler.send_heartbeat()
 
     # def set_entity(self, entity: ServerEntity):
@@ -170,7 +176,7 @@ class TcpConn(object):
     def handle_close(self, close_reason: str):
         if not self.is_connected():
             return
-        self._logger.warning(close_reason)
+        self._logger.warning(f'peer addr: {self._addr}, {close_reason=}')
         self.set_connection_state(False)
         self._close_cb()
         # await self._asyncio_writer.drain()

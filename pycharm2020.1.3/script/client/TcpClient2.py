@@ -47,9 +47,9 @@ async def tcp_echo_client(cli_index):
         # [gv.etcd_tag],
         # ["battle_server"],
         # ["lobby_server"],
-        # [ETCD_TAG_LOBBY_GATE],
-        [ETCD_TAG_LOBBY_SRV],
-        # rpc_reply_timeout=None,
+        [ETCD_TAG_LOBBY_GATE],
+        # [ETCD_TAG_LOBBY_SRV],
+        rpc_reply_timeout=None,
         # rpc_remote_entity_type="LoadCollector", ip_port_tuple=dispatcher_service_addr
         # rpc_callback=lambda err, res: self.logger.info(f"pick_lowest_load_service_addr: {err=} {res=}"),
         rpc_remote_entity_type="LoadCollector",
@@ -114,7 +114,7 @@ async def tcp_echo_client(cli_index):
         # 0.01,  # 基本已经处理不过来
         lambda: _ppt.CompAvatarTest.puppet_chat_to_ppt({'content': 'puppet_chat_to_ppt'}),
         repeat_count=-1,
-        repeat_interval_sec=1
+        repeat_interval_sec=3
     )
         # _cnt -= 1
         # print(_cnt)

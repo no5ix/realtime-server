@@ -98,9 +98,9 @@ class RpcHandler:
 
     async def send_heartbeat(self):
         try:
-            # print("sennnnnnnnnd heartbeatttt")
+            # self._logger.info("sennnnnnnnnd heartbeatttt")
             msg = (RPC_TYPE_HEARTBEAT, )
-            await self._send_rpc_msg(msg)
+            await self._send_rpc_msg(self.do_encode(msg))
         except:
             self._logger.log_last_except()
 
@@ -131,7 +131,7 @@ class RpcHandler:
             _reply_fut.add_done_callback(final_fut_cb)
             _rpc_reply_fut_obj = RpcReplyFuture(_reply_id, rpc_fuc_name, _reply_fut)
             self._pending_requests[_reply_id] = _rpc_reply_fut_obj
-            await self._send_rpc_msg(msg, ip_port_tuple)
+            await self._send_rpc_msg(self.do_encode(msg), ip_port_tuple)
             try:
                 # print(f"deaaaaaaa before{time.time()=}")
                 return await asyncio.wait_for(asyncio.shield(_reply_fut), timeout=rpc_reply_timeout)
@@ -155,12 +155,12 @@ class RpcHandler:
                 return await _reply_fut
         else:
             msg = (RPC_TYPE_NOTIFY, rpc_remote_entity_type, rpc_fuc_name, rpc_fuc_args, rpc_fuc_kwargs)
-            await self._send_rpc_msg(msg, ip_port_tuple)
+            await self._send_rpc_msg(self.do_encode(msg), ip_port_tuple)
             return None
 
     # @wait_or_not
     async def _send_rpc_msg(self, msg, ip_port_tuple=None):
-        assert ((self._conn is None and ip_port_tuple) or (not self._conn.is_connected()) or self._conn)
+        # assert ((self._conn is None and ip_port_tuple) or (not self._conn.is_connected()) or self._conn)
         # if ip_port_tuple:
         #     _cur_addr = ip_port_tuple
         # else:
@@ -168,11 +168,11 @@ class RpcHandler:
         if self._conn is None or not self._conn.is_connected():
             self._msg_buffer.append(msg)
             # print(f"_send_rpc_msg  _try_connect_times={self._try_connect_times}, id(self._conn)= {id(self._conn)}")
-            if self._try_connect_times > 0:  # means connecting ...
+            if self._try_connect_times > 0 or ip_port_tuple is None:  # `self._try_connect_times > 0` means connecting
                 return
             await self._handle_create_conn(ip_port_tuple)
             return
-        self._conn.send_data_and_count(self.do_encode(msg))
+        self._conn.send_data_and_count(msg)
 
     # @wait_or_not
     async def _handle_create_conn(self, addr: typing.Tuple[str, int] = None):
@@ -213,7 +213,7 @@ class RpcHandler:
             self._try_connect_times = 0
             for _msg in self._msg_buffer:
                 # print(f"send before{time.time()=}")
-                self._conn.send_data_and_count(self.do_encode(_msg))
+                self._conn.send_data_and_count(_msg)
                 # print(f"send after{time.time()=}")
             self._msg_buffer.clear()
 
@@ -276,7 +276,7 @@ class RpcHandler:
                     if _rpc_type == RPC_TYPE_REQUEST:
                         _rpc_reply = (RPC_TYPE_REPLY, _rpc_msg_tuple[1], str(e), None)
                 if _rpc_type == RPC_TYPE_REQUEST:
-                    await self._send_rpc_msg(_rpc_reply)
+                    await self._send_rpc_msg(self.do_encode(_rpc_reply))
             # elif _rpc_type == RPC_TYPE_NOTIFY:
             #     pass
             elif _rpc_type == RPC_TYPE_REPLY:
