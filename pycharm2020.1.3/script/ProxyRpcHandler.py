@@ -16,7 +16,7 @@ from RpcHandler import RpcReplyFuture
 from common.service_const import ETCD_TAG_LOBBY_SRV
 from core.util import EnhancedJson
 from core.util.TimerHub import TimerHub
-from core.util.UtilApi import wait_or_not
+from core.util.UtilApi import wait_or_not, async_lock
 from server_entity.ServerEntity import ServerEntity
 
 if typing.TYPE_CHECKING:
@@ -66,6 +66,7 @@ class ProxyLobbyRpcHandler(RpcHandler):
         await self._send_rpc_msg(msg=rpc_msg, ip_port_tuple=self._lobby_addr)
 
     @wait_or_not()
+    @async_lock
     async def try_retrieve_lobby_addr(self):
         if self._lobby_addr is None:
             dispatcher_json_conf_path = r"../bin/win/conf/dispatcher_service.json"
@@ -86,19 +87,21 @@ class ProxyLobbyRpcHandler(RpcHandler):
             # _err, _lobby_addr = self.request_rpc(
             start_time = time.time()
             # self._logger.info(f'start: {start_time=}')
-            print(f'ETCD_TAG_LOBBY_SRV success0000 !!!')
+            print(f'ETCD_TAG_LOBBY_SRV success0000 !!!{rand_dispatcher_service_addr=}')
 
-            _err, _lobby_addr_info = await temp_se.call_remote_method(
-                "pick_lowest_load_service_addr",
-                # [gv.etcd_tag],
-                # ["battle_server"],
-                # ["lobby_server"],
-                [ETCD_TAG_LOBBY_SRV],
-                rpc_reply_timeout=None,  # todo: 时常会timeout
-                # rpc_remote_entity_type="LoadCollector", ip_port_tuple=dispatcher_service_addr
-                # rpc_callback=lambda err, res: self.logger.info(f"pick_lowest_load_service_addr: {err=} {res=}"),
-                rpc_remote_entity_type="LoadCollector",
-                ip_port_tuple=rand_dispatcher_service_addr)
+            # todo: uncomment
+            # _err, _lobby_addr_info = await temp_se.call_remote_method(
+            #     "pick_lowest_load_service_addr",
+            #     # [gv.etcd_tag],
+            #     # ["battle_server"],
+            #     # ["lobby_server"],
+            #     [ETCD_TAG_LOBBY_SRV],
+            #     rpc_reply_timeout=None,  # todo: 时常会timeout
+            #     # rpc_remote_entity_type="LoadCollector", ip_port_tuple=dispatcher_service_addr
+            #     # rpc_callback=lambda err, res: self.logger.info(f"pick_lowest_load_service_addr: {err=} {res=}"),
+            #     rpc_remote_entity_type="LoadCollector",
+            #     ip_port_tuple=rand_dispatcher_service_addr)
+            _err, _lobby_addr_info = None, (None, '127.0.0.1', 10001)
             end_time = time.time()
             offset = end_time - start_time
             self._logger.info(f'end: {offset=}')

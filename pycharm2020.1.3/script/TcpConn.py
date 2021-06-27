@@ -72,7 +72,8 @@ class TcpConn(object):
         self.loop()
 
         self._last_heartbeat_ts = time.time()
-        self._timer_hub.call_later(HEARTBEAT_TIMEOUT, self.handle_remote_heartbeat_timeout, repeat_count=-1)
+        # todo
+        # self._timer_hub.call_later(HEARTBEAT_TIMEOUT, self.handle_remote_heartbeat_timeout, repeat_count=-1)
         self._timer_hub.call_later(HEARTBEAT_INTERVAL, self.heartbeat, repeat_count=-1)
 
     def get_addr(self):

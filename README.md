@@ -24,6 +24,7 @@ python 3.8.8
 - [ ] 安全关闭服务器的时候关闭各种conn和server以及清理各种数据和落地
 - [ ] lobby_gate
 - [ ] lobby_server
+- [ ] 玩家离线存盘
 - [ ] 鉴权
 
 

@@ -4,6 +4,7 @@ import asyncio
 
 from common import gv
 import TcpConn
+from core.mobilelog.LogManager import LogManager
 from core.util.UtilApi import Singleton
 
 if typing.TYPE_CHECKING:
@@ -15,6 +16,7 @@ class ConnMgr:
 
     def __init__(self):
         self._addr_2_conn_map = {}  # type: typing.Dict[typing.Tuple[str, int], TcpConn.TcpConn]
+        self._logger = LogManager.get_logger()
 
     def add_conn(
             self,
@@ -33,7 +35,8 @@ class ConnMgr:
     def _remove_conn(self, addr: typing.Tuple[str, int]):
         self._addr_2_conn_map.pop(addr, None)
 
-    async def get_conn_by_addr(self, addr: typing.Tuple[str, int], rpc_handler: RpcHandler = None) -> TcpConn:
+    async def get_conn_by_addr(
+            self, addr: typing.Tuple[str, int], rpc_handler: RpcHandler = None) -> TcpConn:
         _conn = self._addr_2_conn_map.get(addr, None)
         if _conn is None:
             reader, writer = await asyncio.open_connection(addr[0], addr[1])

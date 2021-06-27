@@ -70,35 +70,5 @@
 //        "etcd_tag": "$BATTLE_SRV_ETCD_TAG$",
         "ip": "$BATTLE_SRV_IP$",
         "port": 11007
-    },
-    "dispatcher_0": {
-        "ip": "$DISPATCHER_IP$",
-//        "etcd_tag": "$DISPATCHER_ETCD_TAG$",
-        "port": 9100
-    },
-    "dispatcher_1": {
-        "ip": "$DISPATCHER_IP$",
-//        "etcd_tag": "$DISPATCHER_ETCD_TAG$",
-        "port": 9101
-    },
-    "dispatcher_2": {
-        "ip": "$DISPATCHER_IP$",
-//        "etcd_tag": "$DISPATCHER_ETCD_TAG$",
-        "port": 9102
-    },
-    "dispatcher_3": {
-        "ip": "$DISPATCHER_IP$",
-//        "etcd_tag": "$DISPATCHER_ETCD_TAG$",
-        "port": 9103
-    },
-    "dispatcher_4": {
-        "ip": "$DISPATCHER_IP$",
-//        "etcd_tag": "$DISPATCHER_ETCD_TAG$",
-        "port": 9104
-    },
-    "dispatcher_5": {
-        "ip": "$DISPATCHER_IP$",
-//        "etcd_tag": "$DISPATCHER_ETCD_TAG$",
-        "port": 9105
     }
 }
