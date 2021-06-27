@@ -52,7 +52,7 @@ class ProxyLobbyRpcHandler(RpcHandler):
 
             if _rpc_type == RPC_TYPE_HEARTBEAT:
                 self._conn.remote_heart_beat()
-            self.proxy_cli_rpc_handler._conn.send_data_and_count(rpc_msg)  # todo
+            self.proxy_cli_rpc_handler._conn.send_data_and_count(self.rpc_handler_id. rpc_msg)  # todo
             # elif _rpc_type in (RPC_TYPE_NOTIFY, RPC_TYPE_REQUEST, RPC_TYPE_REPLY,):
             #     await self.proxy_cli_rpc_handler._conn.send_data_and_count(rpc_msg)  # todo
             # else:

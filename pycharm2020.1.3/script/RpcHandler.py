@@ -8,8 +8,11 @@ from asyncio import futures
 
 import time
 
+from bson import ObjectId
+
 import core.util.UtilApi
 from ConnMgr import ConnMgr
+from core.common.IdManager import IdManager
 from core.util.TimerHub import TimerHub
 from core.util.UtilApi import wait_or_not
 
@@ -34,6 +37,10 @@ RECONNECT_INTERVAL = 0.6  # sec
 REQUEST_RPC_TIMEOUT = 3  # sec
 
 
+def get_a_rpc_handler_id() -> bytes:
+    return IdManager.genid().binary
+
+
 class RpcReplyFuture:
 
     def __init__(self, rpc_reply_id: int, rpc_func_name: str, fut: futures.Future):
@@ -52,8 +59,9 @@ class RpcReplyFuture:
 class RpcHandler:
 
     def __init__(
-            self, conn: TcpConn = None,
+            self, rpc_handler_id: bytes, conn: TcpConn = None,
             entity: ServerEntity = None):
+        self.rpc_handler_id = rpc_handler_id
         self._logger = LogManager.get_logger()
         self._conn = conn  # type: TcpConn
         self._entity = entity  # type: ServerEntity
@@ -172,7 +180,7 @@ class RpcHandler:
                 return
             await self._handle_create_conn(ip_port_tuple)
             return
-        self._conn.send_data_and_count(msg)
+        self._conn.send_data_and_count(self.rpc_handler_id, msg)
 
     # @wait_or_not
     async def _handle_create_conn(self, addr: typing.Tuple[str, int] = None):
@@ -213,7 +221,7 @@ class RpcHandler:
             self._try_connect_times = 0
             for _msg in self._msg_buffer:
                 # print(f"send before{time.time()=}")
-                self._conn.send_data_and_count(_msg)
+                self._conn.send_data_and_count(self.rpc_handler_id, _msg)
                 # print(f"send after{time.time()=}")
             self._msg_buffer.clear()
 

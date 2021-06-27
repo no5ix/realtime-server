@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import bson.objectid as objectid
+from bson import objectid
 import uuid
 
 
@@ -33,7 +33,7 @@ class IdManagerInterface(object):
         raise NotImplementedError
 
 
-class IdManagerImpl_UUID(IdManagerInterface):
+class IdManagerImplUuid(IdManagerInterface):
     """
     IdManager负责给Entity产生一个唯一的id
     """
@@ -51,7 +51,7 @@ class IdManagerImpl_UUID(IdManagerInterface):
 
     @staticmethod
     def bytes2id(bytes):
-        return uuid.UUID(bytes = bytes)
+        return uuid.UUID(bytes=bytes)
 
     @staticmethod
     def id2bytes(uid):
@@ -66,7 +66,7 @@ class IdManagerImpl_UUID(IdManagerInterface):
         return isinstance(obj, uuid.UUID)
 
 
-class IdManagerImpl_ObjectId(IdManagerInterface):
+class IdManagerImplObjectId(IdManagerInterface):
     """
     IdManager负责给Entity产生一个唯一的id
     """
@@ -99,4 +99,4 @@ class IdManagerImpl_ObjectId(IdManagerInterface):
         return isinstance(obj, objectid.ObjectId)
 
 
-IdManager = IdManagerImpl_ObjectId
+IdManager = IdManagerImplObjectId

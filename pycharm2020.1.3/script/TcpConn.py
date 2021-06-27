@@ -7,6 +7,7 @@ import typing
 from asyncio.exceptions import CancelledError
 
 from common import gv
+from core.common.IdManager import IdManager
 from core.util.TimerHub import TimerHub
 from core.util.UtilApi import wait_or_not, async_lock
 
@@ -21,6 +22,8 @@ from core.mobilelog.LogManager import LogManager
 
 
 HEAD_LEN = 4
+RPC_HANDLER_ID_LEN = 12
+STRUCT_PACK_FORMAT = '12s'
 MAX_BODY_LEN = 4294967296
 
 HEARTBEAT_TIMEOUT = 8
@@ -64,17 +67,17 @@ class TcpConn(object):
         self._logger = LogManager.get_logger(self.__class__.__name__)
         if rpc_handler:
             rpc_handler.set_conn(self)
-            self._rpc_handler = rpc_handler
+            self._rpc_handlers_map = {rpc_handler.rpc_handler_id: rpc_handler}
         else:
-            from RpcHandler import RpcHandler
-            self._rpc_handler = RpcHandler(self)
+            self._rpc_handlers_map = {}
 
         self.loop()
 
         self._last_heartbeat_ts = time.time()
-        # todo
-        # self._timer_hub.call_later(HEARTBEAT_TIMEOUT, self.handle_remote_heartbeat_timeout, repeat_count=-1)
-        self._timer_hub.call_later(HEARTBEAT_INTERVAL, self.heartbeat, repeat_count=-1)
+        # todo:
+        if not gv.is_dev_version:
+            self._timer_hub.call_later(HEARTBEAT_TIMEOUT, self.handle_remote_heartbeat_timeout, repeat_count=-1)
+            self._timer_hub.call_later(HEARTBEAT_INTERVAL, self.heartbeat, repeat_count=-1)
 
     def get_addr(self):
         return self._addr
@@ -103,25 +106,8 @@ class TcpConn(object):
     async def heartbeat(self):
         # self._logger.info(
         #     f"{self._addr=} heartbeat")
-        await self._rpc_handler.send_heartbeat()
-
-    # def set_entity(self, entity: ServerEntity):
-    #     self._entity = entity
-    #
-    # def get_entity(self) -> ServerEntity:
-    #     return self._entity
-
-    # def set_asyncio_writer(self, _asyncio_writer):
-    #     self._asyncio_writer = _asyncio_writer
-
-    # def send_msg(self, msg):
-    #     self._asyncio_writer.write(MsgpackSupport.encode(msg))
-
-    def get_rpc_handler(self) -> RpcHandler:
-        return self._rpc_handler
-
-    # def loop(self):
-    #     return asyncio.create_task(self._loop())
+        for _, _rh in self._rpc_handlers_map.items():
+            await _rh.send_heartbeat()
 
     @wait_or_not()
     async def loop(self):
@@ -139,15 +125,16 @@ class TcpConn(object):
                     if _len_recv_data < HEAD_LEN:
                         break
                     _body_len, = struct.unpack('i', self._recv_data[:HEAD_LEN])
+                    _rpc_handler_id, = struct.unpack(STRUCT_PACK_FORMAT, self._recv_data[HEAD_LEN: HEAD_LEN+RPC_HANDLER_ID_LEN])
                     _input_data_len = HEAD_LEN + _body_len
                     if _body_len > MAX_BODY_LEN or _body_len < 0:
                         self.handle_close("body too big, Close the connection")
                         return
                     elif _len_recv_data >= _input_data_len:
-                        _body_data = self._recv_data[HEAD_LEN:_input_data_len]
+                        _body_data = self._recv_data[HEAD_LEN + RPC_HANDLER_ID_LEN:_input_data_len]
                         self._recv_cnt += 1
                         # self.logger.debug("self._recv_cnt:" + str(self._recv_cnt))
-                        self.handle_message(_body_data)
+                        self.handle_message(_rpc_handler_id, _body_data)
                         self._recv_data = self._recv_data[_input_data_len:]
                     else:
                         break
@@ -163,16 +150,6 @@ class TcpConn(object):
             except:
                 self._logger.log_last_except()
 
-            # message = MsgpackSupport.decode(_data)
-            # self.forward(self._asyncio_writer, addr, message)
-            # await self._asyncio_writer.drain()
-            # if message == "exit":
-            #     message = f"{addr!r} wants to close the connection."
-            #     self.logger.debug(message)
-            #     self.forward(self._asyncio_writer, "Server", message)
-            #     break
-        # self._asyncio_writer.close()
-
     # @wait_or_not
     def handle_close(self, close_reason: str):
         if not self.is_connected():
@@ -182,75 +159,32 @@ class TcpConn(object):
         self._close_cb()
         # await self._asyncio_writer.drain()
         self._asyncio_writer.close()
-        self._rpc_handler.on_conn_close()
+        for _, _rh in self._rpc_handlers_map.items():
+            _rh.on_conn_close()
         self._timer_hub.destroy()
         # gv.get_cur_server().remove_conn(self._addr)
 
-    def handle_message(self, msg_data):
+    def handle_message(self, rpc_handler_id: bytes, msg_data: bytes):
         try:
             # rpc_message = self.do_decode(msg_data)
-            self._rpc_handler.handle_rpc(msg_data)
+            _rh = self._rpc_handlers_map.get(rpc_handler_id, None)
+            if _rh is None:
+                try:
+                    IdManager.bytes2id(rpc_handler_id)
+                except:
+                    self.handle_close(f"{rpc_handler_id=} err, Close the connection")
+                    return
+                from RpcHandler import RpcHandler
+                _rh = RpcHandler(rpc_handler_id, self)
+                self._rpc_handlers_map[rpc_handler_id] = _rh
+            _rh.handle_rpc(msg_data)
         except:
             self._logger.log_last_except()
 
-    # def handle_rpc(self, rpc_msg):
-    #     _entity_type_str, _method_name, _parameters = rpc_msg
-    #     if self._entity is None:
-    #         self._entity = gr.get_server_singleton(_entity_type_str)
-    #         if self._entity is None:
-    #             self._entity = EntityFactory.instance().create_entity(_entity_type_str)
-    #         self._entity.set_connection(self)
-    #     _method = getattr(self._entity, _method_name, None)
-    #
-    #     if not _method:
-    #         self._logger.error("entity:%s  method:%s not exist", self._entity, _method_name)
-    #         return
-    #     try:
-    #         _method(_parameters)
-    #     except:
-    #         self._logger.log_last_except()
-
-    # def request_rpc(
-    #         # self, address, service_id, method_name, args=[], service_id_type=0, method_name_type=0,
-    #         # self, entity_type,
-    #         # method_name, args=None,
-    #         # method_name_type=0,
-    #         # need_reply=False, timeout=2
-    #         self, *args, **kwargs
-    # ):
-    #     self._rpc_handler.request_rpc(*args, **kwargs)
-        # message = [RPC_REQUEST, service_id_type, service_id, method_name_type, method_name, args]
-        # message = [entity_type, method_name, args]
-        # try:
-        #     data = self.do_encode(message)
-        #     # if conn is None:
-        #     #     conn = gr.get_cur_server().get_conn_by_addr(ip_port_tuple)
-        # except:
-        #     # self.logger.error("encode request message error")
-        #     self._logger.log_last_except()
-        #     # self.handle_traceback()
-        #     self._logger.debug("encode request message error")
-        # else:
-        #     # con.send_data_and_count(data)
-        #     # if gr.flow_backups:
-        #     #     gr.flow_msg('[BATTLE] NET UP ', len(data), message)
-        #     # await self.send_data_and_count(data)
-        #     self.send_data_and_count(data)
-        #     # _task = asyncio.create_task(self.send_data_and_count(data))
-        # # return _task
-
-    # @staticmethod
-    # def do_decode(msg):
-    #     return MsgpackSupport.decode(msg)
-    #
-    # @staticmethod
-    # def do_encode(message):
-    #     return MsgpackSupport.encode(message)
-
-    # @async_lock
-    # async def send_data_and_count(self, data: bytes):
-    def send_data_and_count(self, data: bytes):
+    def send_data_and_count(self, rpc_handler_id: int, data: bytes):
         self._send_cnt += 1
+        rh_id_data = struct.pack(STRUCT_PACK_FORMAT, rpc_handler_id)
+        data = rh_id_data + data
         data_len = len(data) if data else 0
         header_data = struct.pack("i", data_len)
         data = header_data + data

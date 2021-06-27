@@ -1,6 +1,7 @@
 from __future__ import annotations
 import typing
 
+from RpcHandler import get_a_rpc_handler_id
 from core.util import DbUtil
 from core.util.UtilApi import wait_or_not
 
@@ -25,7 +26,7 @@ class ServerEntity:
         EntityManager.instance().addentity(self.id, self, False)
         self.is_destroy = False
 
-        self._rpc_handler = RpcHandler.RpcHandler(entity=self)
+        self._rpc_handler = RpcHandler.RpcHandler(get_a_rpc_handler_id(), entity=self)
         self.timer_hub = TimerHub()
         self.timer_hub.call_later(gv.db_save_interval_sec, lambda: self.db_save(), repeat_count=-1)
 
