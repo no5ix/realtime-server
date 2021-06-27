@@ -21,6 +21,7 @@ from ConnMgr import ConnMgr
 from ProxyRpcHandler import ProxyCliRpcHandler
 from core.util import UtilApi
 from core.util.UtilApi import wait_or_not, Singleton
+from RpcHandler import get_a_rpc_handler_id
 
 if typing.TYPE_CHECKING:
     from RpcHandler import RpcHandler
@@ -175,7 +176,10 @@ class TcpServer:
     def _handle_client_connected(self, reader, writer):
         # self._add_conn(TcpConn.ROLE_TYPE_PASSIVE, writer, reader)
         ConnMgr.instance().add_conn(
-            TcpConn.ROLE_TYPE_PASSIVE, writer, reader, rpc_handler=ProxyCliRpcHandler() if self._is_proxy else None)
+            TcpConn.ROLE_TYPE_PASSIVE, writer, reader,
+            # rpc_handler=ProxyCliRpcHandler(get_a_rpc_handler_id()) if self._is_proxy else None
+            is_proxy=self._is_proxy
+        )
         addr = writer.get_extra_info('peername')  # type: typing.Tuple[str, int]
         self._logger.debug(f"{addr!r} is connected !!!!")
 

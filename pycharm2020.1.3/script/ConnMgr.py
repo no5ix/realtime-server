@@ -23,12 +23,15 @@ class ConnMgr:
             role_type: int,
             writer: asyncio.StreamWriter,
             reader: asyncio.StreamReader,
-            rpc_handler: RpcHandler = None
+            rpc_handler: RpcHandler = None,
+            is_proxy: bool = False
     ):
         addr = writer.get_extra_info("peername")
         conn = TcpConn.TcpConn(
             role_type, addr, writer, reader, rpc_handler,
-            close_cb=lambda: self._remove_conn(addr))
+            close_cb=lambda: self._remove_conn(addr),
+            is_proxy=is_proxy
+        )
         self._addr_2_conn_map[addr] = conn
         return conn
 

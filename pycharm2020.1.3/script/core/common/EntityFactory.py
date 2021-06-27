@@ -42,11 +42,11 @@ class EntityFactory(object):
             EntityClass = entitytype
         return EntityClass
 
-    def create_entity(self, entitytype,  entityid = None):
+    def create_entity(self, entitytype,  entityid=None):
         """创建Entity"""
         EntityClass = self.get_entity_class(entitytype)
         if not EntityClass:
-            self.logger.error( "failed to create entity for type %s id %s", str(entitytype),  str(entityid))
+            self.logger.error("failed to create entity for type %s id %s", str(entitytype),  str(entityid))
             return None
         if entityid == None:
             return EntityClass()

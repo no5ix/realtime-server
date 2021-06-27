@@ -48,12 +48,14 @@ class TcpConn(object):
             asyncio_reader: asyncio.StreamReader,
             rpc_handler: RpcHandler = None,
             close_cb: typing.Callable = lambda: None,
+            is_proxy: bool = False
     ):
         if role_type == ROLE_TYPE_ACTIVE:
             assert(rpc_handler is not None)
         self._is_connected = True
 
         self._role_type = role_type
+        self._is_proxy = is_proxy
         self._addr = addr  # type: typing.Tuple[str, int]
         self._asyncio_writer = asyncio_writer  # type: asyncio.StreamWriter
         self._asyncio_reader = asyncio_reader  # type: asyncio.StreamReader
@@ -175,13 +177,14 @@ class TcpConn(object):
                     self.handle_close(f"{rpc_handler_id=} err, Close the connection")
                     return
                 from RpcHandler import RpcHandler
-                _rh = RpcHandler(rpc_handler_id, self)
+                from ProxyRpcHandler import ProxyCliRpcHandler
+                _rh = ProxyCliRpcHandler(rpc_handler_id, self) if self._is_proxy else RpcHandler(rpc_handler_id, self)
                 self._rpc_handlers_map[rpc_handler_id] = _rh
             _rh.handle_rpc(msg_data)
         except:
             self._logger.log_last_except()
 
-    def send_data_and_count(self, rpc_handler_id: int, data: bytes):
+    def send_data_and_count(self, rpc_handler_id: bytes, data: bytes):
         self._send_cnt += 1
         rh_id_data = struct.pack(STRUCT_PACK_FORMAT, rpc_handler_id)
         data = rh_id_data + data

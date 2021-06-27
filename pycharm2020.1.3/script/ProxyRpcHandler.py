@@ -11,7 +11,8 @@ from typing import Optional
 
 import core.util.UtilApi
 from ConnMgr import ConnMgr
-from RpcHandler import RpcHandler, RPC_TYPE_HEARTBEAT, RPC_TYPE_NOTIFY, RPC_TYPE_REQUEST, RPC_TYPE_REPLY
+from RpcHandler import RpcHandler, RPC_TYPE_HEARTBEAT, RPC_TYPE_NOTIFY, RPC_TYPE_REQUEST, RPC_TYPE_REPLY, \
+    get_a_rpc_handler_id
 from RpcHandler import RpcReplyFuture
 from common.service_const import ETCD_TAG_LOBBY_SRV
 from core.util import EnhancedJson
@@ -31,9 +32,10 @@ from core.mobilelog.LogManager import LogManager
 class ProxyLobbyRpcHandler(RpcHandler):
 
     def __init__(
-            self, proxy_cli_rpc_handler: ProxyCliRpcHandler, conn: TcpConn = None,
-            entity: ServerEntity = None, ):
-        super(ProxyLobbyRpcHandler, self).__init__(conn, entity)
+            self, proxy_cli_rpc_handler: ProxyCliRpcHandler,
+            rpc_handler_id: bytes, conn: TcpConn = None,
+            entity: ServerEntity = None):
+        super(ProxyLobbyRpcHandler, self).__init__(rpc_handler_id, conn, entity)
         self.proxy_cli_rpc_handler = proxy_cli_rpc_handler  # type: Optional[ProxyCliRpcHandler]
         self._lobby_addr = None  # type: Optional[tuple]
         self.try_retrieve_lobby_addr()
@@ -52,7 +54,7 @@ class ProxyLobbyRpcHandler(RpcHandler):
 
             if _rpc_type == RPC_TYPE_HEARTBEAT:
                 self._conn.remote_heart_beat()
-            self.proxy_cli_rpc_handler._conn.send_data_and_count(self.rpc_handler_id. rpc_msg)  # todo
+            self.proxy_cli_rpc_handler._conn.send_data_and_count(self.rpc_handler_id, rpc_msg)  # todo
             # elif _rpc_type in (RPC_TYPE_NOTIFY, RPC_TYPE_REQUEST, RPC_TYPE_REPLY,):
             #     await self.proxy_cli_rpc_handler._conn.send_data_and_count(rpc_msg)  # todo
             # else:
@@ -124,14 +126,14 @@ class ProxyLobbyRpcHandler(RpcHandler):
 class ProxyCliRpcHandler(RpcHandler):
 
     def __init__(
-            self, conn: TcpConn = None,
+            self, rpc_handler_id: bytes, conn: TcpConn = None,
             entity: ServerEntity = None):
-        super(ProxyCliRpcHandler, self).__init__(conn, entity)
+        super(ProxyCliRpcHandler, self).__init__(rpc_handler_id, conn, entity)
         # cli_2_lobby_map = {}
         # lobby_2_cli_map = {}
         # self.cli_conn = conn
         # self._conn = None  # 这里指的是 和大厅的连接
-        self._proxy_lobby_rpc_handler = ProxyLobbyRpcHandler(self)  # type: ProxyLobbyRpcHandler
+        self._proxy_lobby_rpc_handler = ProxyLobbyRpcHandler(self, get_a_rpc_handler_id())  # type: ProxyLobbyRpcHandler
 
     def uncompress_n_decode(self, rpc_msg):
         # todo
