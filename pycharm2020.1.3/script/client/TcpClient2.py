@@ -101,11 +101,12 @@ async def tcp_echo_client(cli_index):
     th.call_later(
         # 1,
         # 10,
-        0.016,  # 极限
+        0.016,  # 极限 60fps
+        # 0.033,  # 30fps
         # 0.01,  # 基本已经处理不过来
         lambda: _ppt.CompAvatarTest.puppet_chat_to_ppt({'content': 'puppet_chat_to_ppt'}),
         repeat_count=-1,
-        repeat_interval_sec=3
+        # repeat_interval_sec=3
     )
         # _cnt -= 1
         # print(_cnt)

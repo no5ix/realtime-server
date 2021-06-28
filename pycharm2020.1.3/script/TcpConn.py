@@ -127,15 +127,16 @@ class TcpConn(object):
                 self._recv_data += _data
                 while True:
                     _len_recv_data = len(self._recv_data)
-                    if _len_recv_data < HEAD_LEN:
+                    if _len_recv_data < (HEAD_LEN+RPC_HANDLER_ID_LEN):
                         break
                     _body_len, = struct.unpack('i', self._recv_data[:HEAD_LEN])
-                    _rpc_handler_id, = struct.unpack(STRUCT_PACK_FORMAT, self._recv_data[HEAD_LEN: HEAD_LEN+RPC_HANDLER_ID_LEN])
                     _input_data_len = HEAD_LEN + _body_len
                     if _body_len > MAX_BODY_LEN or _body_len < 0:
                         self.handle_close("body too big, Close the connection")
                         return
                     elif _len_recv_data >= _input_data_len:
+                        _rpc_handler_id, = struct.unpack(
+                            STRUCT_PACK_FORMAT, self._recv_data[HEAD_LEN: HEAD_LEN + RPC_HANDLER_ID_LEN])
                         _body_data = self._recv_data[HEAD_LEN + RPC_HANDLER_ID_LEN:_input_data_len]
                         self._recv_cnt += 1
                         # self.logger.info("self._recv_cnt:" + str(self._recv_cnt))
