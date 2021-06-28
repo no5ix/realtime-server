@@ -94,7 +94,7 @@ class ProxyLobbyRpcHandler(RpcHandler):
                 # ["battle_server"],
                 # ["lobby_server"],
                 [ETCD_TAG_LOBBY_SRV],
-                rpc_reply_timeout=None,  # todo: 时常会timeout
+                # rpc_reply_timeout=None,  # todo: 时常会timeout
                 # rpc_remote_entity_type="LoadCollector", ip_port_tuple=dispatcher_service_addr
                 # rpc_callback=lambda err, res: self.logger.info(f"pick_lowest_load_service_addr: {err=} {res=}"),
                 rpc_remote_entity_type="LoadCollector",
