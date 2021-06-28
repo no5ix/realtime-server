@@ -120,7 +120,7 @@ class TcpConn(object):
             try:
                 # self._asyncio_writer
                 _data = await self._asyncio_reader.read(8192)
-                # self.logger.debug("_data")
+                # self.logger.info("_data")
                 if _data == b"":
                     self.handle_close("the peer has performed an orderly shutdown (recv 0 byte).")
                     return
@@ -138,7 +138,7 @@ class TcpConn(object):
                     elif _len_recv_data >= _input_data_len:
                         _body_data = self._recv_data[HEAD_LEN + RPC_HANDLER_ID_LEN:_input_data_len]
                         self._recv_cnt += 1
-                        # self.logger.debug("self._recv_cnt:" + str(self._recv_cnt))
+                        # self.logger.info("self._recv_cnt:" + str(self._recv_cnt))
                         self.handle_message(_rpc_handler_id, _body_data)
                         self._recv_data = self._recv_data[_input_data_len:]
                     else:

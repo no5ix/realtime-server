@@ -132,7 +132,7 @@ class RpcHandler:
             _reply_fut = gv.get_ev_loop().create_future()
 
             def final_fut_cb(fut, rid=_reply_id, cb=rpc_callback):
-                # self._logger.debug(f"final_fut_cb: rid={rid}")
+                # self._logger.info(f"final_fut_cb: rid={rid}")
                 self._pending_requests.pop(rid, None)
                 if callable(cb):
                     cb(*fut.result())

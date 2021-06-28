@@ -262,7 +262,7 @@ class LogManager:
         # #     #     #     logger = LogManager.get_logger('test_logger')
         # #     #     #
         # #     #     # # 'application' code
-        # #     #     #     await logger.debug('debug message')
+        # #     #     #     await logger.info('debug message')
         # #     #     #     await logger.info('info message')
         # #     #     #     await logger.warning('warn message')
         # #     #     #     await logger.error('error message')
@@ -299,8 +299,8 @@ class AsyncLogger:
         # add 'levelname_c' attribute to log resords
 
         log_colors = {
-            logging.DEBUG: "\033[1;34m",  # blue
-            logging.INFO: "\033[1;32m",  # green
+            logging.DEBUG: "\033[1;32m",  # blue
+            logging.INFO: "\033[1;34m",  # green
             logging.WARNING: "\033[1;38m",  # white
             logging.ERROR: "\033[1;35m",  # magenta
             logging.CRITICAL: "\033[1;45m",  # magenta reverted
@@ -361,7 +361,7 @@ class AsyncLogger:
     @_log_decorator
     def debug(self, msg, *args, **kwargs):
         pass
-        # _log_tp_executor.submit(self.logger.debug, self.join_caller_filename_lineno(msg), *args, **kwargs)
+        # _log_tp_executor.submit(self.logger.info, self.join_caller_filename_lineno(msg), *args, **kwargs)
 
     @_log_decorator
     def info(self, msg, *args, **kwargs):
@@ -384,7 +384,7 @@ class AsyncLogger:
         pass
 
     # def debug(self, msg, *args, **kwargs):
-    #     _log_tp_executor.submit(self.logger.debug, self.join_caller_filename_lineno(msg), *args, **kwargs)
+    #     _log_tp_executor.submit(self.logger.info, self.join_caller_filename_lineno(msg), *args, **kwargs)
     #
     # def info(self, msg, *args, **kwargs):
     #     _log_tp_executor.submit(self.logger.info, self.join_caller_filename_lineno(msg), *args, **kwargs)
@@ -456,7 +456,7 @@ if __name__ == '__main__':
     logger.addHandler(fh)
     logger.setLevel(logging.DEBUG)
 
-    logger.debug('debug message ::%s', "dmmm?")
+    logger.info('debug message ::%s', "dmmm?")
     logger.info('info message')
     logger.warning('warn message')
     logger.error('error message')
@@ -466,7 +466,7 @@ if __name__ == '__main__':
     # async logger 'application' code
     LogManager.set_log_tag('test_log')
     logger = LogManager.get_logger('test_log')
-    logger.debug('debug message')
+    logger.info('debug message')
     logger.info('info message')
     logger.warning('warn message')
     logger.error('error message')

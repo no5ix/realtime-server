@@ -51,9 +51,9 @@
 #                 self.connect_cb()
 #                 self.connect_cb = None
 #         else:
-#             self.logger.debug(
+#             self.logger.info(
 #                 f'Stub cannot connect to {self._center_name}, try again after 1 sec... {self._connect_counter}')
-#             self.logger.debug(
+#             self.logger.info(
 #                 'Stub cannot connect to %s, try again after 1 sec... (%d)', self._center_name,
 #                 self._connect_counter)
 #             # gr.callback(1.0, lambda: self.connect_to_center())
@@ -108,7 +108,7 @@
 #         self.on_connected_to_center()
 #
 #     def on_connected_to_center(self):
-#         self.logger.debug("on_connected_to_center")
+#         self.logger.info("on_connected_to_center")
 #
 #     # def get_mailbox(self):
 #     #     mb = EntityMailbox()

@@ -20,7 +20,7 @@
 #
 #     def register_callback(self, succeeded):
 #         if succeeded:
-#             self.logger.debug('Register global %s succeed', self.__class__.__name__)
+#             self.logger.info('Register global %s succeed', self.__class__.__name__)
 #         else:
 #             self.logger.error('Failed to register global %s!!', self.__class__.__name__)
 #
@@ -69,7 +69,7 @@
 #     #     pass
 #
 #     def on_stub_connected(self, stub_box):
-#         self.logger.debug("center: on_stub_connected")
+#         self.logger.info("center: on_stub_connected")
 #
 #     # def get_stub_num(self):
 #     #     return len(self._stubs)

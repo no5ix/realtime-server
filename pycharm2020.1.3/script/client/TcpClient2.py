@@ -25,23 +25,11 @@ async def tcp_echo_client(cli_index):
 
     cli_log = LogManager.get_logger()
 
-    dispatcher_json_conf_path = r"../bin/win/conf/dispatcher_service.json"
-
-    # dispatcher_json_conf = None
-    with open(dispatcher_json_conf_path) as conf_file:
-        dispatcher_json_conf = EnhancedJson.load(conf_file)
-
-    # UtilApi.parse_json_conf(json_conf_path)
-
-    rand_dispatcher_service_addr = None
-    for _svr_name, _svr_info in dispatcher_json_conf.items():
-        if type(_svr_info) is dict and _svr_name.startswith("dispatcher"):
-            rand_dispatcher_service_addr = (_svr_info["ip"], _svr_info["port"])
-            break
-
+    rand_dispatcher_service_addr = UtilApi.get_rand_dispatcher_addr()
     temp_se = ServerEntity()
     start_time = time.time()
     print(f'start: {start_time=}')
+    print(f"{rand_dispatcher_service_addr=}")
     _err, _res = await temp_se.call_remote_method(
         "pick_lowest_load_service_addr",
         # [gv.etcd_tag],
@@ -68,7 +56,9 @@ async def tcp_echo_client(cli_index):
     local_server_port_tuple = (8888,)
     port = random.choice(local_server_port_tuple)
 
-    cli_log.debug(f"bs: {_res}")
+    cli_log.debug(f"lobby server info: {_res}")
+    # return  # todo: del
+
     reader, writer = await asyncio.open_connection(
         _res[1], _res[2])
         # '192.168.82.177', port)

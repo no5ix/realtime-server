@@ -135,7 +135,7 @@ class ServiceRegister(EtcdProcessor):
         #             res = json.loads(r_text)
         #             self._fail_time = 0
         #             if res.get("action") == "get" and res.get("node", {}).get("nodes", []):
-        #                 self.logger.debug("service : %s not stateless, but exist, %s", service_name, r_text)
+        #                 self.logger.info("service : %s not stateless, but exist, %s", service_name, r_text)
         #                 return False
         #             break
         #         except:
@@ -152,7 +152,7 @@ class ServiceRegister(EtcdProcessor):
                 # if singleton:
                 #     now_url = self._get_url(service_name) + "?prevExist=false"
                 # r = requests.request("PUT", now_url, data=data, headers=_HEADER, timeout=2)
-                self._logger.debug(f"_do_regist: now_url: {now_url}")
+                self._logger.info(f"_do_regist: now_url: {now_url}")
                 # r = await UtilApi.async_wrap(
                 #     lambda: requests.request("PUT", now_url, data=data, headers=_HEADER, timeout=2))
                 r_text, _ = await UtilApi.async_http_requests(
@@ -160,7 +160,7 @@ class ServiceRegister(EtcdProcessor):
 
                 res = json.loads(r_text)
                 if res.get("action") in ("create", "set"):
-                    self._logger.debug("regist service : %s success, %s", service_name, r_text)
+                    self._logger.info("regist service : %s success, %s", service_name, r_text)
                     self._fail_time = 0
                     return True
                 else:
@@ -193,12 +193,12 @@ class ServiceRegister(EtcdProcessor):
             while self.check_ok():
                 try:
                     now_url = self._get_url(service_name)
-                    self._logger.debug(f"outside, {time.time()=}, refresh service {service_name}, now_url: {now_url}")
+                    self._logger.info(f"outside, {time.time()=}, refresh service {service_name}, now_url: {now_url}")
 
                     # def request_etcd_put():
-                    #     self._logger.debug(f"inside before, {time.time()=}, refresh service {service_name}, now_url: {now_url}")
+                    #     self._logger.info(f"inside before, {time.time()=}, refresh service {service_name}, now_url: {now_url}")
                     #     req_res = requests.request("PUT", now_url, data=ttl_refresh_data, headers=_HEADER, timeout=2)
-                    #     self._logger.debug(
+                    #     self._logger.info(
                     #         f"inside after, {time.time()=}, refresh service {service_name}, now_url: {now_url}")
                     #     return req_res
                     #
@@ -211,7 +211,7 @@ class ServiceRegister(EtcdProcessor):
 
                     res = json.loads(r_text)
                     if res.get("action", "") == "set":
-                        self._logger.debug(f"{time.time()=}, refresh service success: {service_name}: {r_text}, now_url: {now_url}")
+                        self._logger.info(f"{time.time()=}, refresh service success: {service_name}: {r_text}, now_url: {now_url}")
                         self._fail_time = 0
                         break
                     else:
@@ -226,14 +226,14 @@ class ServiceRegister(EtcdProcessor):
         for _ in range(10):
             """在退出的时候，将注册的信息删除掉，如果删除失败，那就靠ttl自动删除吧"""
             try:
-                self._logger.debug(f"try delete service: {service_name}")
+                self._logger.info(f"try delete service: {service_name}")
                 # r = await UtilApi.async_wrap(
                 #     lambda: requests.request("DELETE", self._get_url(service_name)))
                 r_text, _ = await UtilApi.async_http_requests(
                     "DELETE", self._get_url(service_name), session=self._session)
                 res = json.loads(r_text)
                 if res.get("action", "") == "delete":
-                    self._logger.debug("delete service : %s success", service_name)
+                    self._logger.info("delete service : %s success", service_name)
                     break
                 else:
                     self._logger.error(
@@ -274,7 +274,7 @@ class ServiceFinder(EtcdProcessor):
         self._session = session
         # await asyncio.sleep(5)
         if await self._init_info():
-            self._logger.debug(
+            self._logger.info(
                 "init service info from etcd success, will going to watch, at etcd index -> %s", self._etcd_index)
             # gevent.spawn(self._watch_process)
             # await asyncio.create_task(self._watch_process())
@@ -296,7 +296,7 @@ class ServiceFinder(EtcdProcessor):
         # if service_name not in self._services:
         #     self._services[service_name] = []
         if address in self._services[service_name]:
-            self._logger.debug("duplicate service info  -> %s:%s", service_name, address)
+            self._logger.info("duplicate service info  -> %s:%s", service_name, address)
             return
         self._services[service_name].add(address)
 
@@ -320,7 +320,7 @@ class ServiceFinder(EtcdProcessor):
                 address_str = self._get_node_name(prefix, service_node["key"])
                 ip, port = str(address_str.split("|")[0]), int(address_str.split("|")[1])
                 self._add_service_info(service_name, (ip, port))
-                self._logger.debug("add service node info--> %s: %s", service_name, (ip, port))
+                self._logger.info("add service node info--> %s: %s", service_name, (ip, port))
 
     def _process_add_entity_info(self, node):
         value = node.get("value")
@@ -328,7 +328,7 @@ class ServiceFinder(EtcdProcessor):
             entity_info = json.loads(value)
             entity_info["ip"] = str(entity_info["ip"])
             entity_info["key"] = node["key"]
-            self._logger.debug("set entity info -> %s", entity_info)
+            self._logger.info("set entity info -> %s", entity_info)
             self._es[entity_info["name"]] = entity_info
         elif "nodes" in node:
             for item in node.get("nodes", []):
@@ -337,7 +337,7 @@ class ServiceFinder(EtcdProcessor):
     def _process_delete_enttiy_info(self, key):
         entity_name = key[len(_NAME_ENTITY_PREFIX):]
         try:
-            self._logger.debug("delete enttiy info -> %s", self._es[entity_name])
+            self._logger.info("delete enttiy info -> %s", self._es[entity_name])
             del self._es[entity_name]
         except:
             pass
@@ -349,7 +349,7 @@ class ServiceFinder(EtcdProcessor):
         while self.check_ok():
             try:
                 now_url = self._get_server_info() + _ETCD_KEY_PREFIX + "?recursive=true"
-                self._logger.debug(f"_init_info, now_url: {now_url}")
+                self._logger.info(f"_init_info, now_url: {now_url}")
                 # r = await UtilApi.async_wrap(lambda: requests.request("GET", now_url))
                 r_text, r_headers = await UtilApi.async_http_requests("GET", now_url, session=self._session)
                 res = json.loads(r_text)
@@ -389,7 +389,7 @@ class ServiceFinder(EtcdProcessor):
         return service_name, (ip, port)
 
     async def _watch_process_impl(self):
-        # self.logger.debug(f"_watch_process_impl1, now_url: {self._get_server_info() + _ETCD_KEY_PREFIX}")
+        # self.logger.info(f"_watch_process_impl1, now_url: {self._get_server_info() + _ETCD_KEY_PREFIX}")
 
         # r = await UtilApi.async_wrap(lambda: requests.request("GET", self._get_server_info() + _ETCD_KEY_PREFIX))
         _, r_headers = await UtilApi.async_http_requests(
@@ -398,8 +398,8 @@ class ServiceFinder(EtcdProcessor):
         now_url = self._get_server_info() + _ETCD_KEY_PREFIX + "?wait=true&recursive=true"
         if self._watch_index:
             now_url += "&waitIndex=" + str(self._watch_index + 1)
-            # self.logger.debug(f"waiting _watch_process_impl2 {now_url}")
-        # self._logger.debug("bbb ttt test wait longpoll")  # TODO: DEL
+            # self.logger.info(f"waiting _watch_process_impl2 {now_url}")
+        # self._logger.info("bbb ttt test wait longpoll")  # TODO: DEL
 
         # r = await UtilApi.async_wrap(lambda: requests.request("GET", now_url))
         r_text, _ = await UtilApi.async_http_requests("GET", now_url, session=self._session)
@@ -419,22 +419,22 @@ class ServiceFinder(EtcdProcessor):
                 # return  # TODO: DEL no
 
                 service_name, address = self._get_service_node_info(key_path)
-                self._logger.debug(
+                self._logger.info(
                     "recv watch %s service node info--> %s: %s - [%s]",
                     action, service_name, address, self._watch_index)
                 self._add_service_info(service_name, address)
             elif key_path.startswith(_NAME_ENTITY_PREFIX):
-                self._logger.debug("recv watch %s entity info -> %s", action, res)
+                self._logger.info("recv watch %s entity info -> %s", action, res)
                 self._process_add_entity_info(res.get("node", {}))
         elif action in ("expire", "delete"):
             """key超时销毁或删除"""
             if key_path.startswith(_MOBILE_SERVICE_PREFIX):
                 service_name, address = self._get_service_node_info(key_path)
-                self._logger.debug(
+                self._logger.info(
                     "recv watch %s, info--> %s: %s - [%s]", action, service_name, address, self._watch_index)
                 self._delete_service_info(service_name, address)
             elif key_path.startswith(_NAME_ENTITY_PREFIX):
-                self._logger.debug("recv watch %s entity info -> %s", action, res)
+                self._logger.info("recv watch %s entity info -> %s", action, res)
                 self._process_delete_enttiy_info(key_path)
         elif res.get("errorCode", 0) == 401:
             """
@@ -442,7 +442,7 @@ class ServiceFinder(EtcdProcessor):
             由于现在是全量更新，所以这种情况出现的可能性应该很小很小，除非同时启动或者停止大量的服务，不过如果
             出现了这种情况，还是重置一下数据吧
             """
-            self._logger.debug("recv watch index out of date, %s", r_text)
+            self._logger.info("recv watch index out of date, %s", r_text)
             if not await self._init_info():
                 self._logger.error("reset etcd data error, will stop")
                 return
@@ -472,7 +472,7 @@ class ServiceFinder(EtcdProcessor):
                 # if e is now_timeout:
                     # watch的timeout，将watch的index更新到上一次get更新的是时候etcd服务器的index
                 self._fail_time = 0
-                self._logger.debug("etcd watch timeout, rest watch index %s -> %s", self._watch_index, self._etcd_index)
+                self._logger.info("etcd watch timeout, rest watch index %s -> %s", self._watch_index, self._etcd_index)
                 self._watch_index = self._etcd_index
                 # else:
                 #     raise
@@ -527,10 +527,10 @@ class ServiceNode(object):
     def __init__(self, etcd_address_list, my_address, service_module_dict):
         self._logger = LogManager.get_logger("ServiceNode")
         self._register = ServiceRegister(etcd_address_list, my_address, service_module_dict)
-        # self._logger.debug("we have create ServiceRegister, wait 5 seconds")
+        # self._logger.info("we have create ServiceRegister, wait 5 seconds")
         # gevent.sleep(5)
         self._finder = ServiceFinder(etcd_address_list)
-        self._logger.debug("we have create ServiceFinder")
+        self._logger.info("we have create ServiceFinder")
 
     async def start(self):
         # await self._register.start()

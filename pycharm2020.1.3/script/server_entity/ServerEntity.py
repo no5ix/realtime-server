@@ -22,7 +22,7 @@ class ServerEntity:
         self.id = (entity_id is None) and IdManager.genid() or entity_id
         self.local_id = -1
         self.logger = LogManager.get_logger("ServerEntity." + self.__class__.__name__)
-        self.logger.debug("__init__ create entity %s with id %s mem_id=%s", self.__class__.__name__, self.id, id(self))
+        self.logger.info("__init__ create entity %s with id %s mem_id=%s", self.__class__.__name__, self.id, id(self))
         EntityManager.instance().addentity(self.id, self, False)
         self.is_destroy = False
 

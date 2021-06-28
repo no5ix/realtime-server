@@ -39,8 +39,8 @@ class LoadCollector(ServerEntity):
 
     @rpc_func
     def report_load(self, etcd_tag, server_name, ip, port, load):
-        # self.logger.debug(f"_etcd_tag: {etcd_tag} server_name: {server_name} load: {load}")
-        print(f"_etcd_tag: {etcd_tag} server_name: {server_name} load: {load}")  # TODO: DEL
+        # self.logger.info(f"_etcd_tag: {etcd_tag} server_name: {server_name} load: {load}")
+        # print(f"_etcd_tag: {etcd_tag} server_name: {server_name} load: {load}")  # TODO: DEL
         # self._pipe.zadd(_etcd_tag, {server_name: load})
         # async_wrap(lambda: self._redis_cli.zadd(etcd_tag, {"|".join([server_name, ip, str(port)]): load}))
         self._redis_cli.zadd(etcd_tag, load, "|".join([server_name, ip, str(port)]))
@@ -50,6 +50,8 @@ class LoadCollector(ServerEntity):
     async def pick_lowest_load_service_addr(self, etcd_tag: str) -> typing.Tuple[str, str, int]:
         # _res_list = await async_wrap(lambda: self._redis_cli.zrange(etcd_tag, 0, 0))  # type: typing.List[str]
 
+        self.logger.info(f"pick_lowest_load_service_addr: {etcd_tag=}")
+
         start_time = time.time()
         # print(f'pick_lowest_load_service_addr start: {start_time=}')
         _res_list = await self._redis_cli.zrange(etcd_tag, 0, 0)
@@ -57,18 +59,18 @@ class LoadCollector(ServerEntity):
         if _res_list:
             split_res = _res_list[0].split("|")
             _ret = (split_res[0], split_res[1], int(split_res[2]))
-            # self.logger.debug(f"pick_lowest_load_service server_name: {split_res[0]}, addr: {_ret}")
-            print(f"pick_lowest_load_service server_name: {split_res[0]}, addr: {_ret}")
+            # self.logger.info(f"pick_lowest_load_service_addr server_name: {split_res[0]}, addr: {_ret}")
+            self.logger.info(f"pick_lowest_load_service_addr server_name: {split_res[0]}, addr: {_ret}")
 
         end_time = time.time()
         offset = end_time - start_time
-        self.logger.info(f'pick_lowest_load_service_addr end: {offset=}')
+        # self.logger.info(f'pick_lowest_load_service_addr end: {offset=}')
 
         return _ret
 
         # # todo: del
         # await asyncio.sleep(10)
-        # self.logger.debug(f"pick_lowest_load_service server_name: fake, addr: fake")
+        # self.logger.info(f"pick_lowest_load_service_addr server_name: fake, addr: fake")
         # return "", 1
 
 # if __name__ == "__main__":

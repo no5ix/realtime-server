@@ -2,6 +2,7 @@ from __future__ import annotations
 import asyncio
 # from asyncio import AbstractEventLoop
 import functools
+import random
 from typing import Callable
 # from TcpServer import ev_loop
 # import typing
@@ -74,13 +75,13 @@ def wait_or_not(concurrency_limit=888):
     # LogManager.set_log_tag("tcp_client_" + str(1))
     # LogManager.set_log_path("../bin/win/log/")
     # logger = LogManager.get_logger()
-    # logger.debug(f"b bousennnnnn {id(sem._loop)=}")
-    # logger.debug(f"b bousennnnnn{id(sem)=}")
+    # logger.info(f"b bousennnnnn {id(sem._loop)=}")
+    # logger.info(f"b bousennnnnn{id(sem)=}")
 
     def wait_or_not_without_limit(f):
         @functools.wraps(f)
         def _wrapped(*args, **kwargs):
-            # logger.debug(f"b withold {id(gv.get_ev_loop())=}")
+            # logger.info(f"b withold {id(gv.get_ev_loop())=}")
 
             return gv.get_ev_loop().create_task(f(*args, **kwargs))
         return _wrapped
@@ -183,4 +184,18 @@ def get_conn_mgr() -> ConnMgr:
     return get_server_singleton("ConnMgr")
 
 
+def get_rand_dispatcher_addr() -> typing.Tuple[str, int]:
+
+    dispatcher_json_conf_path = r"../bin/win/conf/dispatcher_service.json"
+
+    # dispatcher_json_conf = None
+    with open(dispatcher_json_conf_path) as conf_file:
+        dispatcher_json_conf = EnhancedJson.load(conf_file)
+    while 1:
+        # _svr_name = random.choice((dispatcher_json_conf.items()))
+        _svr_name, _svr_info = random.choice(list(dispatcher_json_conf.items()))
+        if type(_svr_info) is dict and _svr_name.startswith("dispatcher"):
+            rand_dispatcher_service_addr = (_svr_info["ip"], _svr_info["port"])
+            break
+    return rand_dispatcher_service_addr
 

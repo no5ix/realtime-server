@@ -15,7 +15,7 @@ from RpcHandler import RpcHandler, RPC_TYPE_HEARTBEAT, RPC_TYPE_NOTIFY, RPC_TYPE
     get_a_rpc_handler_id
 from RpcHandler import RpcReplyFuture
 from common.service_const import ETCD_TAG_LOBBY_SRV
-from core.util import EnhancedJson
+from core.util import EnhancedJson, UtilApi
 from core.util.TimerHub import TimerHub
 from core.util.UtilApi import wait_or_not, async_lock
 from server_entity.ServerEntity import ServerEntity
@@ -71,42 +71,32 @@ class ProxyLobbyRpcHandler(RpcHandler):
     @async_lock
     async def try_retrieve_lobby_addr(self):
         if self._lobby_addr is None:
-            dispatcher_json_conf_path = r"../bin/win/conf/dispatcher_service.json"
 
-            # dispatcher_json_conf = None
-            with open(dispatcher_json_conf_path) as conf_file:
-                dispatcher_json_conf = EnhancedJson.load(conf_file)
-
-            # UtilApi.parse_json_conf(json_conf_path)
-
-            rand_dispatcher_service_addr = None
-            for _svr_name, _svr_info in dispatcher_json_conf.items():
-                if type(_svr_info) is dict and _svr_name.startswith("dispatcher"):
-                    rand_dispatcher_service_addr = (_svr_info["ip"], _svr_info["port"])
-                    break
-
+            rand_dispatcher_service_addr = UtilApi.get_rand_dispatcher_addr()
             # _err, _lobby_addr = self.request_rpc(
             start_time = time.time()
             # self._logger.info(f'start: {start_time=}')
             print(f'ETCD_TAG_LOBBY_SRV success0000 !!!{rand_dispatcher_service_addr=}')
 
             # todo: uncomment
-            # temp_se = ServerEntity()
-            # _err, _lobby_addr_info = await temp_se.call_remote_method(
-            #     "pick_lowest_load_service_addr",
-            #     # [gv.etcd_tag],
-            #     # ["battle_server"],
-            #     # ["lobby_server"],
-            #     [ETCD_TAG_LOBBY_SRV],
-            #     rpc_reply_timeout=None,  # todo: 时常会timeout
-            #     # rpc_remote_entity_type="LoadCollector", ip_port_tuple=dispatcher_service_addr
-            #     # rpc_callback=lambda err, res: self.logger.info(f"pick_lowest_load_service_addr: {err=} {res=}"),
-            #     rpc_remote_entity_type="LoadCollector",
-            #     ip_port_tuple=rand_dispatcher_service_addr)
-            _err, _lobby_addr_info = None, (None, '127.0.0.1', 10001)
+            temp_se = ServerEntity()
+            _err, _lobby_addr_info = await temp_se.call_remote_method(
+                "pick_lowest_load_service_addr",
+                # [gv.etcd_tag],
+                # ["battle_server"],
+                # ["lobby_server"],
+                [ETCD_TAG_LOBBY_SRV],
+                rpc_reply_timeout=None,  # todo: 时常会timeout
+                # rpc_remote_entity_type="LoadCollector", ip_port_tuple=dispatcher_service_addr
+                # rpc_callback=lambda err, res: self.logger.info(f"pick_lowest_load_service_addr: {err=} {res=}"),
+                rpc_remote_entity_type="LoadCollector",
+                ip_port_tuple=rand_dispatcher_service_addr)
+
+            # _err, _lobby_addr_info = None, (None, '127.0.0.1', 10001)  # todo: del
+
             end_time = time.time()
             offset = end_time - start_time
-            self._logger.info(f'end: {offset=}')
+            self._logger.info(f'ETCD_TAG_LOBBY_SRV offset: {offset=}')
             print(f'ETCD_TAG_LOBBY_SRV success0.5 !!! {_lobby_addr_info=}')
 
             if _err:
@@ -145,6 +135,9 @@ class ProxyCliRpcHandler(RpcHandler):
 
             _rpc_msg_tuple = self.do_decode(rpc_msg)  # todo: 不应该解出来的
             _rpc_type = _rpc_msg_tuple[0]
+
+            _entity_type_str, _method_name, _method_args, _method_kwargs = _rpc_msg_tuple[-4:]
+            self._logger.info(f'{_entity_type_str=}, {_method_name=}, {_method_args=}, {_method_kwargs=}')
 
             if _rpc_type == RPC_TYPE_HEARTBEAT:
                 self._conn.remote_heart_beat()

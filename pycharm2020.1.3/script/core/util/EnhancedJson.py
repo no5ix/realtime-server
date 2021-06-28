@@ -146,16 +146,16 @@ def _remove_last_comma(str_list, before_index):
 
 # Below are just some wrapper function around the standard json module.
 
-def loads(text, **kwargs):
+def loads(text, **kwargs) -> dict:
     temp_str = dispose(text)
     return handle_macro(temp_str, **kwargs)
 
 
-def load(fp, **kwargs):
+def load(fp, **kwargs) -> dict:
     return loads(fp.read(), **kwargs)
 
 
-def dumps(obj, **kwargs):
+def dumps(obj, **kwargs) -> str:
     return json.dumps(obj, **kwargs)
 
 

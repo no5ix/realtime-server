@@ -33,16 +33,16 @@
     //        "etcd_tag": "$DISPATCHER_ETCD_TAG$",
     "port": 9100
   },
-//  "dispatcher_1": {
-//    "ip": "$DISPATCHER_IP$",
-//    //        "etcd_tag": "$DISPATCHER_ETCD_TAG$",
-//    "port": 9101
-//  },
-//  "dispatcher_2": {
-//    "ip": "$DISPATCHER_IP$",
-//    //        "etcd_tag": "$DISPATCHER_ETCD_TAG$",
-//    "port": 9102
-//  },
+  "dispatcher_1": {
+    "ip": "$DISPATCHER_IP$",
+    //        "etcd_tag": "$DISPATCHER_ETCD_TAG$",
+    "port": 9101
+  },
+  "dispatcher_2": {
+    "ip": "$DISPATCHER_IP$",
+    //        "etcd_tag": "$DISPATCHER_ETCD_TAG$",
+    "port": 9102
+  },
 //  "dispatcher_3": {
 //    "ip": "$DISPATCHER_IP$",
 //    //        "etcd_tag": "$DISPATCHER_ETCD_TAG$",

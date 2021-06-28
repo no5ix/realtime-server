@@ -31,7 +31,7 @@ class CompPuppetTest(Component):
     def puppet_chat_to_channel(self, chat_info):
         # import sys
         # isin = "component.puppet.CompPuppetTest" in sys.modules  # TODO del
-        # self.entity.logger.debug(str(sys.modules))
+        # self.entity.logger.info(str(sys.modules))
 
         print(chat_info)
         # self._cnt -= 1

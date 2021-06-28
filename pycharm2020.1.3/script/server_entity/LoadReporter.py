@@ -30,7 +30,7 @@ class LoadReporter(ServerEntity):
                 return
             dispatcher_service_addr = UtilApi.get_service_info(self._load_collector_etcd_tag)
             # if self._rpc_handler._conn:
-            #     self.logger.debug(f"{self._rpc_handler._conn.get_addr()=}")
+            #     self.logger.info(f"{self._rpc_handler._conn.get_addr()=}")
             if dispatcher_service_addr:  # todo: 每次都有新ip, 但是还是用self.rpc_handler还是用老conn
                 self.call_remote_method(
                     "report_load",
@@ -38,7 +38,7 @@ class LoadReporter(ServerEntity):
                         self._avg_load.get_avg_cpu_by_period(10)],
                     rpc_remote_entity_type="LoadCollector", ip_port_tuple=dispatcher_service_addr)
                 # self.logger.info(f"report_server_load: {self._avg_load.get_avg_cpu_by_period(10)}")
-                print(f"report_server_load: {self._avg_load.get_avg_cpu_by_period(10)}")  # TODO: DEL
+                # print(f"report_server_load: {self._avg_load.get_avg_cpu_by_period(10)}")  # TODO: DEL
             else:
                 self.logger.error("can not find dispatcher_service_addr")
         except:

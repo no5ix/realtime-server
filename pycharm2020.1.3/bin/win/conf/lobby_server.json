@@ -78,5 +78,9 @@
     "gate_1": {
         "ip": "$LOBBY_GATE_IP$",
         "port": 9202
+    },
+    "gate_2": {
+        "ip": "$LOBBY_GATE_IP$",
+        "port": 9203
     }
 }

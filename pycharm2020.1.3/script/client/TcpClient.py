@@ -23,13 +23,7 @@ async def tcp_echo_client(cli_index):
 
     cli_log = LogManager.get_logger()
 
-    json_conf_path = r"../bin/win/conf/dispatcher_service.json"
-    UtilApi.parse_json_conf(json_conf_path)
-    rand_dispatcher_service_addr = None
-    for _svr_name, _svr_info in gv.game_json_conf.items():
-        if type(_svr_info) is dict and _svr_name.startswith("dispatcher"):
-            rand_dispatcher_service_addr = (_svr_info["ip"], _svr_info["port"])
-            break
+    rand_dispatcher_service_addr = UtilApi.get_rand_dispatcher_addr()
 
     temp_se = ServerEntity()
     _err, _res = await temp_se.call_remote_method(

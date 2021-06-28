@@ -183,7 +183,7 @@ class TcpServer:
             # is_proxy=self._is_proxy
         )
         addr = writer.get_extra_info('peername')  # type: typing.Tuple[str, int]
-        self._logger.debug(f"{addr!r} is connected !!!!")
+        self._logger.info(f"{addr!r} is connected !!!!")
 
     async def _start_server_task(self):
         # server = await asyncio.start_server(
@@ -197,12 +197,12 @@ class TcpServer:
             # await _etcd_support_task
             # server = await _start_srv_task
             addr = server.sockets[0].getsockname()
-            self._logger.debug(f'Server on {addr}')
+            self._logger.info(f'Server on {addr}')
 
             async with server:
                 await server.serve_forever()
         except KeyboardInterrupt:
-            self._logger.debug(f"\nShutting Down Server: {gv.game_server_name}...\n")
+            self._logger.info(f"\nShutting Down Server: {gv.game_server_name}...\n")
             # _loop = asyncio.get_running_loop()
             # _loop.stop()
             # _loop.close()
@@ -210,7 +210,7 @@ class TcpServer:
 
             return
         except:
-            # self.logger.debug("Unexpected error:", sys.exc_info()[0])
+            # self.logger.info("Unexpected error:", sys.exc_info()[0])
             self._logger.log_last_except()
             raise
 
@@ -265,7 +265,7 @@ class TcpServer:
     def _handle_sig(self):
 
         def ask_exit(sig_name, loop):
-            self._logger.debug('got signal %s: exit' % sig_name)
+            self._logger.info('got signal %s: exit' % sig_name)
             try:
                 loop.stop()
             except RuntimeError:

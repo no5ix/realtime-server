@@ -117,7 +117,7 @@ class SingletonEntityManager(object):
             core.util.UtilApi.add_server_singleton(center)
         # else:
         #     EntityFactory.instance().create_entity('BattleAllocatorStub')
-        self.logger.debug('_register_relevant_centers_cb, status:%s' % 'good')
+        self.logger.info('_register_relevant_centers_cb, status:%s' % 'good')
 
     # def _register_relevant_centers_cb(self, status, game_server_name):
     #     self.register_stubs(lambda flag: self._register_stubs_cb(flag), game_server_name)
@@ -136,7 +136,7 @@ class SingletonEntityManager(object):
             stub.start_connect(center_name)
             self.logger.info("%s connected to center" % stub.__class__.__name__)
         # self._stubs_connect_success()
-        self.logger.debug('_register_stubs_cb, status:%s' % 'good')
+        self.logger.info('_register_stubs_cb, status:%s' % 'good')
 
         # # self._finish_stubs_cb = finish_cb
         # game_server_prefix = game_server_name.split('_')[0]
@@ -149,7 +149,7 @@ class SingletonEntityManager(object):
         #     stub.start_connect(center_name)
         #     self.logger.info("%s connected to center" % stub.__class__.__name__)
         # # self._stubs_connect_success()
-        # self.logger.debug('_register_stubs_cb, status:%s', 'good')
+        # self.logger.info('_register_stubs_cb, status:%s', 'good')
 
     # @staticmethod
     # def get_register_and_subscript_service():
