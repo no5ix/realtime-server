@@ -85,13 +85,13 @@ class ProxyLobbyRpcHandler(RpcHandler):
                     rand_dispatcher_service_addr = (_svr_info["ip"], _svr_info["port"])
                     break
 
-            temp_se = ServerEntity()
             # _err, _lobby_addr = self.request_rpc(
             start_time = time.time()
             # self._logger.info(f'start: {start_time=}')
             print(f'ETCD_TAG_LOBBY_SRV success0000 !!!{rand_dispatcher_service_addr=}')
 
             # todo: uncomment
+            # temp_se = ServerEntity()
             # _err, _lobby_addr_info = await temp_se.call_remote_method(
             #     "pick_lowest_load_service_addr",
             #     # [gv.etcd_tag],
@@ -132,8 +132,7 @@ class ProxyCliRpcHandler(RpcHandler):
         # cli_2_lobby_map = {}
         # lobby_2_cli_map = {}
         # self.cli_conn = conn
-        # self._conn = None  # 这里指的是 和大厅的连接
-        self._proxy_lobby_rpc_handler = ProxyLobbyRpcHandler(self, get_a_rpc_handler_id())  # type: ProxyLobbyRpcHandler
+        self._proxy_lobby_rpc_handler = ProxyLobbyRpcHandler(self, rpc_handler_id)  # type: ProxyLobbyRpcHandler
 
     def uncompress_n_decode(self, rpc_msg):
         # todo

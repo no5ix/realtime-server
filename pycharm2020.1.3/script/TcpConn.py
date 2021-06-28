@@ -81,6 +81,9 @@ class TcpConn(object):
             self._timer_hub.call_later(HEARTBEAT_TIMEOUT, self.handle_remote_heartbeat_timeout, repeat_count=-1)
             self._timer_hub.call_later(HEARTBEAT_INTERVAL, self.heartbeat, repeat_count=-1)
 
+    def add_rpc_handler(self, rpc_handler):
+        self._rpc_handlers_map[rpc_handler.rpc_handler_id] = rpc_handler
+
     def get_addr(self):
         return self._addr
 

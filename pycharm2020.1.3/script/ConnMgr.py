@@ -17,6 +17,10 @@ class ConnMgr:
     def __init__(self):
         self._addr_2_conn_map = {}  # type: typing.Dict[typing.Tuple[str, int], TcpConn.TcpConn]
         self._logger = LogManager.get_logger()
+        self._is_proxy = False
+
+    def set_is_proxy(self, is_proxy):
+        self._is_proxy = is_proxy
 
     def add_conn(
             self,
@@ -24,13 +28,13 @@ class ConnMgr:
             writer: asyncio.StreamWriter,
             reader: asyncio.StreamReader,
             rpc_handler: RpcHandler = None,
-            is_proxy: bool = False
+            # is_proxy: bool = False
     ):
         addr = writer.get_extra_info("peername")
         conn = TcpConn.TcpConn(
             role_type, addr, writer, reader, rpc_handler,
             close_cb=lambda: self._remove_conn(addr),
-            is_proxy=is_proxy
+            is_proxy=self._is_proxy
         )
         self._addr_2_conn_map[addr] = conn
         return conn
@@ -44,5 +48,7 @@ class ConnMgr:
         if _conn is None:
             reader, writer = await asyncio.open_connection(addr[0], addr[1])
             _conn = self.add_conn(TcpConn.ROLE_TYPE_ACTIVE, writer, reader, rpc_handler)
+        if rpc_handler is not None:
+            _conn.add_rpc_handler(rpc_handler)
         return _conn
 

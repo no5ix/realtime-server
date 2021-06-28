@@ -79,6 +79,8 @@ class TcpServer:
 
         incremental_reload.init_reload_record()  # 注意!! 一定要放到EntityScanner注册了的代码之后, 不然sys.modules里没相关的模块
 
+        ConnMgr.instance().set_is_proxy(is_proxy)
+
     def _register_component(self):
         from common.component.Component import Component
         from common.component import ComponentRegister
@@ -178,7 +180,7 @@ class TcpServer:
         ConnMgr.instance().add_conn(
             TcpConn.ROLE_TYPE_PASSIVE, writer, reader,
             # rpc_handler=ProxyCliRpcHandler(get_a_rpc_handler_id()) if self._is_proxy else None
-            is_proxy=self._is_proxy
+            # is_proxy=self._is_proxy
         )
         addr = writer.get_extra_info('peername')  # type: typing.Tuple[str, int]
         self._logger.debug(f"{addr!r} is connected !!!!")

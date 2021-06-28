@@ -25,14 +25,13 @@ class CompAvatarTest(Component):
 
     def __init__(self):
         super().__init__()
-        pass
-        self._cnt = random.randint(0, 10)
+        self._cnt = random.randint(0, 100)
 
     # @rpc_method(CLI_TO_SRV, (Dict('p'),))
     @rpc_func
     def puppet_chat_to_ppt(self, chat_info: typing.Dict):
         # print(chat_info)
         # self._cnt -= 1
-        print("self._cnt:" + str(self._cnt))
+        self.entity.logger.info("self._cnt:" + str(self._cnt))
         chat_info.update({'cnt': self._cnt})
         self.remote_comp.puppet_chat_from_srv(chat_info)

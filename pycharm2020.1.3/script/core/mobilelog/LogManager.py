@@ -301,9 +301,9 @@ class AsyncLogger:
         log_colors = {
             logging.DEBUG: "\033[1;34m",  # blue
             logging.INFO: "\033[1;32m",  # green
-            logging.WARNING: "\033[1;35m",  # magenta
-            logging.ERROR: "\033[1;31m",  # red
-            logging.CRITICAL: "\033[1;41m",  # red reverted
+            logging.WARNING: "\033[1;38m",  # white
+            logging.ERROR: "\033[1;35m",  # magenta
+            logging.CRITICAL: "\033[1;45m",  # magenta reverted
         }
 
         def record_factory(*args, **kwargs):
