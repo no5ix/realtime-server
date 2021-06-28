@@ -39,7 +39,7 @@ class LoadCollector(ServerEntity):
 
     @rpc_func
     def report_load(self, etcd_tag, server_name, ip, port, load):
-        # self.logger.info(f"_etcd_tag: {etcd_tag} server_name: {server_name} load: {load}")
+        # self.logger.debug(f"_etcd_tag: {etcd_tag} server_name: {server_name} load: {load}")
         # print(f"_etcd_tag: {etcd_tag} server_name: {server_name} load: {load}")  # TODO: DEL
         # self._pipe.zadd(_etcd_tag, {server_name: load})
         # async_wrap(lambda: self._redis_cli.zadd(etcd_tag, {"|".join([server_name, ip, str(port)]): load}))
@@ -50,7 +50,7 @@ class LoadCollector(ServerEntity):
     async def pick_lowest_load_service_addr(self, etcd_tag: str) -> typing.Tuple[str, str, int]:
         # _res_list = await async_wrap(lambda: self._redis_cli.zrange(etcd_tag, 0, 0))  # type: typing.List[str]
 
-        self.logger.info(f"pick_lowest_load_service_addr: {etcd_tag=}")
+        # self.logger.debug(f"pick_lowest_load_service_addr: {etcd_tag=}")
 
         start_time = time.time()
         # print(f'pick_lowest_load_service_addr start: {start_time=}')
@@ -60,7 +60,7 @@ class LoadCollector(ServerEntity):
             split_res = _res_list[0].split("|")
             _ret = (split_res[0], split_res[1], int(split_res[2]))
             # self.logger.info(f"pick_lowest_load_service_addr server_name: {split_res[0]}, addr: {_ret}")
-            self.logger.info(f"pick_lowest_load_service_addr server_name: {split_res[0]}, addr: {_ret}")
+            self.logger.debug(f"pick_lowest_load_service_addr server_name: {split_res[0]}, addr: {_ret}")
 
         end_time = time.time()
         offset = end_time - start_time

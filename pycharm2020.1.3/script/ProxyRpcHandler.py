@@ -136,8 +136,8 @@ class ProxyCliRpcHandler(RpcHandler):
             _rpc_msg_tuple = self.do_decode(rpc_msg)  # todo: 不应该解出来的
             _rpc_type = _rpc_msg_tuple[0]
 
-            _entity_type_str, _method_name, _method_args, _method_kwargs = _rpc_msg_tuple[-4:]
-            self._logger.info(f'{_entity_type_str=}, {_method_name=}, {_method_args=}, {_method_kwargs=}')
+            # _entity_type_str, _method_name, _method_args, _method_kwargs = _rpc_msg_tuple[-4:]
+            # self._logger.debug(f'{_entity_type_str=}, {_method_name=}, {_method_args=}, {_method_kwargs=}')
 
             if _rpc_type == RPC_TYPE_HEARTBEAT:
                 self._conn.remote_heart_beat()

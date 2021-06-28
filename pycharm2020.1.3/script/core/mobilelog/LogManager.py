@@ -299,8 +299,8 @@ class AsyncLogger:
         # add 'levelname_c' attribute to log resords
 
         log_colors = {
-            logging.DEBUG: "\033[1;32m",  # blue
-            logging.INFO: "\033[1;34m",  # green
+            logging.DEBUG: "\033[1;34m",  # blue
+            logging.INFO: "\033[1;32m",  # green
             logging.WARNING: "\033[1;38m",  # white
             logging.ERROR: "\033[1;35m",  # magenta
             logging.CRITICAL: "\033[1;45m",  # magenta reverted

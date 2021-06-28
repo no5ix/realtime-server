@@ -32,6 +32,8 @@ class LoadReporter(ServerEntity):
             # if self._rpc_handler._conn:
             #     self.logger.info(f"{self._rpc_handler._conn.get_addr()=}")
             if dispatcher_service_addr:  # todo: 每次都有新ip, 但是还是用self.rpc_handler还是用老conn
+
+                # self.logger.debug(f"_etcd_tag: {gv.etcd_tag} server_name: {gv.game_server_name}")
                 self.call_remote_method(
                     "report_load",
                     [gv.etcd_tag, gv.game_server_name, gv.local_ip, gv.local_port,

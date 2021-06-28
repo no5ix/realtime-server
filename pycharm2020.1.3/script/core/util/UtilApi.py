@@ -9,6 +9,8 @@ from typing import Callable
 import aiohttp
 import typing
 
+from common.service_const import ETCD_TAG_DISPATCHER_SERVICE
+
 if typing.TYPE_CHECKING:
     from ConnMgr import ConnMgr
     from TcpServer import TcpServer
@@ -185,17 +187,20 @@ def get_conn_mgr() -> ConnMgr:
 
 
 def get_rand_dispatcher_addr() -> typing.Tuple[str, int]:
-
-    dispatcher_json_conf_path = r"../bin/win/conf/dispatcher_service.json"
-
-    # dispatcher_json_conf = None
-    with open(dispatcher_json_conf_path) as conf_file:
-        dispatcher_json_conf = EnhancedJson.load(conf_file)
-    while 1:
-        # _svr_name = random.choice((dispatcher_json_conf.items()))
-        _svr_name, _svr_info = random.choice(list(dispatcher_json_conf.items()))
-        if type(_svr_info) is dict and _svr_name.startswith("dispatcher"):
-            rand_dispatcher_service_addr = (_svr_info["ip"], _svr_info["port"])
-            break
+    rand_dispatcher_service_addr = get_service_info(ETCD_TAG_DISPATCHER_SERVICE)
+    if rand_dispatcher_service_addr is None:
+        dispatcher_json_conf_path = r"../bin/win/conf/dispatcher_service.json"
+        with open(dispatcher_json_conf_path) as conf_file:
+            dispatcher_json_conf = EnhancedJson.load(conf_file)
+        cnt = len(dispatcher_json_conf.items()) * 6
+        while cnt > 0:
+            # _svr_name = random.choice((dispatcher_json_conf.items()))
+            _svr_name, _svr_info = random.choice(list(dispatcher_json_conf.items()))
+            if type(_svr_info) is dict and _svr_name.startswith("dispatcher"):
+                rand_dispatcher_service_addr = (_svr_info["ip"], _svr_info["port"])
+                break
+            cnt -= 1
     return rand_dispatcher_service_addr
+
+
 
