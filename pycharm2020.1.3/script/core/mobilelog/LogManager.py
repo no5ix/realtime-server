@@ -329,7 +329,8 @@ class AsyncLogger:
         # def wrapper(self, msg, *args, **kw):
         def wrapper(self, msg, *args, stack_incr_cnt=0, **kwargs):
             # final_msg = self.join_caller_filename_lineno(msg, kw.get("stack_incr_cnt", 0))
-            final_msg = self.join_caller_filename_lineno(msg, stack_incr_cnt)
+            final_msg = self.join_caller_filename_lineno(
+                msg, func.__name__ in ("error", "warning", "critical"), stack_incr_cnt)
             _func_name = func.__name__
             # if gv.is_dev_version:
             #     # and func.__name__ in ("debug", "error", "warning", "critical"):
@@ -343,11 +344,16 @@ class AsyncLogger:
         return wrapper
 
     @staticmethod
-    def join_caller_filename_lineno(msg, stack_incr_cnt=0):
+    def join_caller_filename_lineno(msg, use_full_file_name, stack_incr_cnt=0):
         # caller = inspect.getframeinfo(inspect.stack()[2][0])
         caller = inspect.stack()[2+stack_incr_cnt]
+        if use_full_file_name:
+            final_msg = ''.join(
+                ('["', caller.filename, ':', str(caller.lineno), '"]: ', msg))
+        else:
+            final_msg = ''.join(
+                ('[', os.path.basename(caller.filename), ':', str(caller.lineno), ']: ', msg))
         # return ''.join(('[', inspect.stack()[2].filename, ':', str(inspect.stack()[2].lineno), ']', msg))
-        final_msg = ''.join(('[', os.path.basename(caller.filename), ':', str(caller.lineno), ']: ', msg))
         # if gr.is_dev_version:
         #     print(final_msg)
         return final_msg
