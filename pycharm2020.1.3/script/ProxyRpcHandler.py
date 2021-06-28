@@ -52,14 +52,14 @@ class ProxyLobbyRpcHandler(RpcHandler):
             _rpc_msg_tuple = self.do_decode(rpc_msg)  # todo: 不应该解出来的
             _rpc_type = _rpc_msg_tuple[0]
 
-            _entity_type_str, _method_name, _method_args, _method_kwargs = _rpc_msg_tuple[-4:]
-            self._logger.debug(f'{_entity_type_str=}, {_method_name=}, {_method_args=}, {_method_kwargs=}')
+            # _entity_type_str, _method_name, _method_args, _method_kwargs = _rpc_msg_tuple[-4:]
+            # self._logger.debug(f'{_entity_type_str=}, {_method_name=}, {_method_args=}, {_method_kwargs=}')
 
             if _rpc_type == RPC_TYPE_HEARTBEAT:
                 self._conn.remote_heart_beat()
             self.proxy_cli_rpc_handler._conn.send_data_and_count(self.rpc_handler_id, rpc_msg)  # todo
 
-            self._logger.debug(f'handle_rpcxxxxx, {self.rpc_handler_id=}')
+            # self._logger.debug(f'handle_rpcxxxxx, {self.rpc_handler_id=}')
 
             # elif _rpc_type in (RPC_TYPE_NOTIFY, RPC_TYPE_REQUEST, RPC_TYPE_REPLY,):
             #     await self.proxy_cli_rpc_handler._conn.send_data_and_count(rpc_msg)  # todo
@@ -73,7 +73,7 @@ class ProxyLobbyRpcHandler(RpcHandler):
         await self.try_retrieve_lobby_addr()
         await self._send_rpc_msg(msg=rpc_msg, ip_port_tuple=self._lobby_addr)
 
-        self._logger.debug(f'forward_to_lobby_serverxxxxxxxxx, {self.rpc_handler_id=}, {self._lobby_addr=}')
+        # self._logger.debug(f'forward_to_lobby_serverxxxxxxxxx, {self.rpc_handler_id=}, {self._lobby_addr=}')
 
     @wait_or_not()
     @async_lock
@@ -144,8 +144,8 @@ class ProxyCliRpcHandler(RpcHandler):
             _rpc_msg_tuple = self.do_decode(rpc_msg)  # todo: 不应该解出来的
             _rpc_type = _rpc_msg_tuple[0]
 
-            _entity_type_str, _method_name, _method_args, _method_kwargs = _rpc_msg_tuple[-4:]
-            self._logger.debug(f'{_entity_type_str=}, {_method_name=}, {_method_args=}, {_method_kwargs=}')
+            # _entity_type_str, _method_name, _method_args, _method_kwargs = _rpc_msg_tuple[-4:]
+            # self._logger.debug(f'{_entity_type_str=}, {_method_name=}, {_method_args=}, {_method_kwargs=}')
 
             if _rpc_type == RPC_TYPE_HEARTBEAT:
                 self._conn.remote_heart_beat()
