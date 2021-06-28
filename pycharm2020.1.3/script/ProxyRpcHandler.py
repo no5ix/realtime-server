@@ -52,9 +52,15 @@ class ProxyLobbyRpcHandler(RpcHandler):
             _rpc_msg_tuple = self.do_decode(rpc_msg)  # todo: 不应该解出来的
             _rpc_type = _rpc_msg_tuple[0]
 
+            _entity_type_str, _method_name, _method_args, _method_kwargs = _rpc_msg_tuple[-4:]
+            self._logger.debug(f'{_entity_type_str=}, {_method_name=}, {_method_args=}, {_method_kwargs=}')
+
             if _rpc_type == RPC_TYPE_HEARTBEAT:
                 self._conn.remote_heart_beat()
             self.proxy_cli_rpc_handler._conn.send_data_and_count(self.rpc_handler_id, rpc_msg)  # todo
+
+            self._logger.debug(f'handle_rpcxxxxx, {self.rpc_handler_id=}')
+
             # elif _rpc_type in (RPC_TYPE_NOTIFY, RPC_TYPE_REQUEST, RPC_TYPE_REPLY,):
             #     await self.proxy_cli_rpc_handler._conn.send_data_and_count(rpc_msg)  # todo
             # else:
@@ -64,8 +70,10 @@ class ProxyLobbyRpcHandler(RpcHandler):
             self._logger.log_last_except()
 
     async def forward_to_lobby_server(self, rpc_msg):
-        self.try_retrieve_lobby_addr()
+        await self.try_retrieve_lobby_addr()
         await self._send_rpc_msg(msg=rpc_msg, ip_port_tuple=self._lobby_addr)
+
+        self._logger.debug(f'forward_to_lobby_serverxxxxxxxxx, {self.rpc_handler_id=}, {self._lobby_addr=}')
 
     @wait_or_not()
     @async_lock
@@ -76,7 +84,7 @@ class ProxyLobbyRpcHandler(RpcHandler):
             # _err, _lobby_addr = self.request_rpc(
             start_time = time.time()
             # self._logger.info(f'start: {start_time=}')
-            print(f'ETCD_TAG_LOBBY_SRV success0000 !!!{rand_dispatcher_service_addr=}')
+            self._logger.debug(f'ETCD_TAG_LOBBY_SRV success0000 !!!{rand_dispatcher_service_addr=}')
 
             # todo: uncomment
             temp_se = ServerEntity()
@@ -96,8 +104,8 @@ class ProxyLobbyRpcHandler(RpcHandler):
 
             end_time = time.time()
             offset = end_time - start_time
-            self._logger.info(f'ETCD_TAG_LOBBY_SRV offset: {offset=}')
-            print(f'ETCD_TAG_LOBBY_SRV success0.5 !!! {_lobby_addr_info=}')
+            self._logger.debug(f'ETCD_TAG_LOBBY_SRV offset: {offset=}')
+            self._logger.debug(f'ETCD_TAG_LOBBY_SRV success0.5 !!! {_lobby_addr_info=}')
 
             if _err:
                 self._logger.error(f'{_err=}')
@@ -109,8 +117,8 @@ class ProxyLobbyRpcHandler(RpcHandler):
                 return
 
             self._lobby_addr = _lobby_addr_info[1:]
-            print(f'ETCD_TAG_LOBBY_SRV success111 !!! {_lobby_addr_info=}')
-            print(f'ETCD_TAG_LOBBY_SRV success333 !!! {_lobby_addr_info=}')
+            self._logger.debug(f'ETCD_TAG_LOBBY_SRV success111 !!! {_lobby_addr_info=}')
+            self._logger.debug(f'ETCD_TAG_LOBBY_SRV success333 !!! {_lobby_addr_info=}')
 
 
 class ProxyCliRpcHandler(RpcHandler):
@@ -136,8 +144,8 @@ class ProxyCliRpcHandler(RpcHandler):
             _rpc_msg_tuple = self.do_decode(rpc_msg)  # todo: 不应该解出来的
             _rpc_type = _rpc_msg_tuple[0]
 
-            # _entity_type_str, _method_name, _method_args, _method_kwargs = _rpc_msg_tuple[-4:]
-            # self._logger.debug(f'{_entity_type_str=}, {_method_name=}, {_method_args=}, {_method_kwargs=}')
+            _entity_type_str, _method_name, _method_args, _method_kwargs = _rpc_msg_tuple[-4:]
+            self._logger.debug(f'{_entity_type_str=}, {_method_name=}, {_method_args=}, {_method_kwargs=}')
 
             if _rpc_type == RPC_TYPE_HEARTBEAT:
                 self._conn.remote_heart_beat()

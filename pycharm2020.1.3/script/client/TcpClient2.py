@@ -26,9 +26,10 @@ async def tcp_echo_client(cli_index):
     cli_log = LogManager.get_logger()
 
     rand_dispatcher_service_addr = UtilApi.get_rand_dispatcher_addr()
+
     temp_se = ServerEntity()
     start_time = time.time()
-    print(f'start: {start_time=}')
+    # print(f'start: {start_time=}')
     print(f"{rand_dispatcher_service_addr=}")
     _err, _res = await temp_se.call_remote_method(
         "pick_lowest_load_service_addr",
@@ -45,7 +46,7 @@ async def tcp_echo_client(cli_index):
 
     end_time = time.time()
     offset = end_time - start_time
-    print(f'end: {offset=}')
+    # print(f'end: {offset=}')
 
     if _err:
         cli_log.error(f"{_err=}")

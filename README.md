@@ -26,6 +26,7 @@ python 3.8.8
 - [ ] lobby_server
 - [ ] 玩家离线存盘
 - [ ] 鉴权
+- [ ] bug: 当某些服务器已经下线, 但etcd似乎没有让某些服务器过期
 
 
 - [ ] base on etcd distributed lock

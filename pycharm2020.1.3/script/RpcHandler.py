@@ -63,7 +63,7 @@ class RpcHandler:
             entity: ServerEntity = None):
         self.rpc_handler_id = rpc_handler_id
         self._logger = LogManager.get_logger()
-        self._logger.info(f'!!! xx {rpc_handler_id=}')
+        # self._logger.info(f'!!! xx {rpc_handler_id=}')
         self._conn = conn  # type: TcpConn
         self._entity = entity  # type: ServerEntity
         self._next_reply_id = 0
