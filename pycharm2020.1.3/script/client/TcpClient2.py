@@ -130,7 +130,7 @@ async def tcp_echo_client(cli_index):
     #     data = await reader.read(100)
     #     # print(f'Received: {data.decode()!r}')
     #     print(f'Received: {MsgpackSupport.decode(data)!r}')
-    await asyncio.sleep(888888888)
+    # await asyncio.sleep(888888888)
     # print('Close the connection')
     # writer.close()
 
@@ -146,5 +146,8 @@ if __name__ == '__main__':
     # events.set_event_loop(_ev_loop)
     # _ev_loop.run_until_complete(tcp_echo_client())
     # _ev_loop.run_forever()
-    gv.get_ev_loop().run_until_complete(tcp_echo_client(sys.argv[1]))
+    ev_loop = gv.get_ev_loop()
+    ev_loop.create_task(tcp_echo_client(sys.argv[1]))
+    ev_loop.run_forever()
+    # gv.get_ev_loop().run_until_complete(tcp_echo_client(sys.argv[1]))
     # asyncio.run(tcp_echo_client(sys.argv[1]))
