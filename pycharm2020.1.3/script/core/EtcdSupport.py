@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import collections
+from typing import Union, Optional
 
 import aiohttp
 # import requests
@@ -19,16 +20,22 @@ import json
 # import gevent.event
 import random
 
+from core.util.UtilApi import wait_or_not
+from core.util.performance.cpu_load_handler import AvgCpuLoad
+
 _WATCH_TIMEOUT = 60                             # watch执行的超时时间
 # _WATCH_TIMEOUT = 0.5                             # watch执行的超时时间  # TODO: del
 _GET_TIMEOUT = 5                                # 获取节点值或者refresh ttl的超时
 _MAX_FAIL_TIME = 10                             # get 或者 regist, refresh ttl 的时候最多的失败尝试次数
 
 
-_KEY_TIME_OUT = 180                             # key超时时间
-_TTL_INTERVAL = 100                             # ttl refresh间隔时间
-# _KEY_TIME_OUT = 2                             # key超时时间  # TODO: del
+_KEY_TIME_OUT = 29                             # key超时时间
+_TTL_INTERVAL = 6                             # ttl refresh间隔时间
+_TTL_INTERVAL_RAND_LATENCY = 8                   # ttl refresh间隔时间的随机延迟
+# _KEY_TIME_OUT = 22                             # key超时时间  # TODO: del
 # _TTL_INTERVAL = 1                             # ttl refresh间隔时间  # TODO: del
+# _TTL_INTERVAL_RAND_LATENCY = 1                   # ttl refresh间隔时间的随机延迟  # TODO: del
+
 _TTL_RETRY = 2                                  # ttl刷新失败之后重新尝试的延迟间隔
 
 
@@ -38,8 +45,8 @@ _TAG_DOMAIN = "/v2/keys/tags/"                  # 注册tag的目录
 
 _NAME_ENTITY_PREFIX = "/nameentity/"
 
-_MOBILE_SERVICE_PREFIX = "/services/"
-_MOBILE_SERVICE_DOMAIN = "/v2/keys" + _MOBILE_SERVICE_PREFIX
+_SERVICE_PREFIX = "/services/"
+_SERVICE_DOMAIN = "/v2/keys" + _SERVICE_PREFIX
 
 
 _HEADER = {"Content-Type": "application/x-www-form-urlencoded"}
@@ -77,12 +84,13 @@ class EtcdProcessor(object):
 
 
 class ServiceRegister(EtcdProcessor):
-    def __init__(self, etcd_address_list, my_address, service_tag):
+    def __init__(self, etcd_address_list, my_address, service_tag, server_name):
         EtcdProcessor.__init__(self, etcd_address_list)
         self._logger = LogManager.get_logger()
         self._my_address = my_address                                            # 当前节点的监听地址(ip, port)
-        self._address_str = my_address[0] + "|" + str(my_address[1])             # 当前节点的监听地址的字符串描述
-        self._service_tag = service_tag                          # 服务模块的name->module字典
+        self._address_str = server_name + "|" + my_address[0] + "|" + str(my_address[1])  # 当前节点的监听地址的字符串描述
+        self._service_tag = service_tag
+        self._server_name = server_name                          # 服务模块的name->module字典
         # self._stop_event = gevent.event.Event()
         self._service_regist_status = dict()
         self._threads = []
@@ -90,11 +98,13 @@ class ServiceRegister(EtcdProcessor):
 
         # for name in self._service_module_dict.keys():
             # self._threads.append(gevent.spawn(self._process_regist_and_ttl, name))
-        self._threads.append(self._process_regist_and_ttl(self._service_tag))
+        self._threads.append(self._update_cpu_load_n_ttl(self._service_tag))
             # self._threads.append(asyncio.create_task(self._process_regist_and_ttl(name)))
 
         # gevent.spawn(self._dead_check_process)
         # await asyncio.gather(*self._threads)
+
+        self._avg_load = AvgCpuLoad()
 
     # async def _dead_check_process(self):
     async def start(self, session: aiohttp.ClientSession):
@@ -108,21 +118,24 @@ class ServiceRegister(EtcdProcessor):
     #     return self._die_event.wait(timeout=timeout)
 
     def _get_url(self, service_name):
-        path = self._get_server_info() + _MOBILE_SERVICE_DOMAIN + service_name + "/" + self._address_str
+        path = self._get_server_info() + _SERVICE_DOMAIN + service_name + "/" + self._address_str
+        # self._logger.debug(f'{path=}')
         return path
 
     def _do_unregist(self, service_name):
         pass
 
-    async def _do_regist(self, service_name):
+    async def _update_cpu_load(self, service_name):
         """
         注册service，如果注册成功，返回True
         """
         # service_module = self._service_module_dict[service_name]
         # singleton = service_module.singleton
         # assert service_name == service_module.service_name
-        data = urllib.parse.urlencode({"ttl": _KEY_TIME_OUT})
+        data = urllib.parse.urlencode(
+            {"ttl": _KEY_TIME_OUT, "value": self._avg_load.get_avg_cpu_by_period(_TTL_INTERVAL)})
 
+        # todo: 处理 单例 的情况
         # if singleton:
         #     """
         #     如果是有状态的服务，那么在注册的时候需要确保etcd没有相关的服务信息的注册
@@ -130,7 +143,7 @@ class ServiceRegister(EtcdProcessor):
         #     """
         #     while self.check_ok():
         #         try:
-        #             now_url = self._get_server_info() + _MOBILE_SERVICE_DOMAIN + service_name
+        #             now_url = self._get_server_info() + _SERVICE_DOMAIN + service_name
         #             r = await AioApi.async_wrap(lambda: requests.request("GET", now_url, timeout=2))
         #             res = json.loads(r_text)
         #             self._fail_time = 0
@@ -176,20 +189,28 @@ class ServiceRegister(EtcdProcessor):
                 #     GameServerRepo.game_event_callback.on_traceback(t, v, tb)
         return False
 
-    async def _process_regist_and_ttl(self, service_name):
+    async def _update_cpu_load_n_ttl(self, service_name):
         """
         为每一个服务启动一个单独的协程来处理注册与ttl的刷新
         """
-        if not await self._do_regist(service_name):
+        if not await self._update_cpu_load(service_name):
             self._logger.error("regist service %s fail", service_name)
             return
 
-        ttl_refresh_data = urllib.parse.urlencode({"ttl": _KEY_TIME_OUT, "refresh": True})
+        ttl_refresh_data = urllib.parse.urlencode(
+            {
+                # "value": self._avg_load.get_avg_cpu_by_period(_TTL_INTERVAL),
+                "ttl": _KEY_TIME_OUT,
+                "refresh": True,
+                "prevExist": True
+            })
         while self.check_ok():
             # self._stop_event.wait(random.randint(_TTL_INTERVAL, _TTL_INTERVAL + 10))
-            await asyncio.sleep(random.randint(_TTL_INTERVAL, _TTL_INTERVAL + 10))  # TODO: revert
-            # await asyncio.sleep(random.randint(_TTL_INTERVAL, _TTL_INTERVAL + 1))  # TODO: revert
-            # await asyncio.sleep(_TTL_INTERVAL)  # TODO: revert
+            await asyncio.sleep(
+                random.randint(_TTL_INTERVAL, _TTL_INTERVAL + _TTL_INTERVAL_RAND_LATENCY))
+
+            await self._update_cpu_load(service_name)
+
             while self.check_ok():
                 try:
                     now_url = self._get_url(service_name)
@@ -210,7 +231,7 @@ class ServiceRegister(EtcdProcessor):
                         "PUT", now_url, data=ttl_refresh_data, headers=_HEADER, timeout=2, session=self._session)
 
                     res = json.loads(r_text)
-                    if res.get("action", "") == "set":
+                    if res.get("action", "") in ("set", "update"):
                         self._logger.info(f"{time.time()=}, refresh service success: {service_name}: {r_text}, now_url: {now_url}")
                         self._fail_time = 0
                         break
@@ -264,8 +285,9 @@ class ServiceFinder(EtcdProcessor):
         EtcdProcessor.__init__(self, etcd_address_list)
         self._logger = LogManager.get_logger("ServiceFinder")
         self._server_len = len(self._etcd_address_list) - 1
-        self._services = \
-            collections.defaultdict(set)  # type: typing.DefaultDict[str, typing.Set[typing.Tuple[str, int]]]
+        self._tag_to_addr_2_load = \
+            collections.defaultdict(  # just like: _tag_to_addr_2_load[service_tag][address] = (server_name, cpu_load)
+                dict)  # type: typing.DefaultDict[str, typing.Dict[typing.Tuple[str, int], typing.Tuple[str, float]]]
         self._es = dict()
         self._etcd_index = 0  # 最近一次get获取的etcd服务器所处的index
         self._watch_index = 0  # 当前watch所在的index
@@ -289,20 +311,21 @@ class ServiceFinder(EtcdProcessor):
             return key_path[len(prefix):]
         raise Exception("what")
 
-    def _add_service_info(self, service_name, address):
+    def _add_service_info(self, service_tag, server_name, address: typing.Tuple[str, int], cpu_load: Union[float, str]):
         """
         可能会存在某个服务进程异常退出了，之后重启，之前的注册信息还没有失效，那么存在重复的情况
         """
-        # if service_name not in self._services:
-        #     self._services[service_name] = []
-        if address in self._services[service_name]:
-            self._logger.info("duplicate service info  -> %s:%s", service_name, address)
+        # if service_tag not in self._tag_to_addr_2_load:
+        #     self._tag_to_addr_2_load[service_tag] = []
+        if address in self._tag_to_addr_2_load[service_tag]:
+            self._logger.info("duplicate service info  -> %s:%s", service_tag, address)
             return
-        self._services[service_name].add(address)
+        # self._tag_to_addr_2_load[service_tag].add(address)
+        self._tag_to_addr_2_load[service_tag][address] = (server_name, cpu_load)
 
-    def _delete_service_info(self, service_name, address):
+    def _delete_service_info(self, service_tag, address: typing.Tuple[str, int]):
         try:
-            self._services[service_name].discard(address)
+            self._tag_to_addr_2_load[service_tag].pop(address, None)
         except:
             self._logger.log_last_except()
             # if GameServerRepo.game_event_callback is not None:
@@ -314,13 +337,16 @@ class ServiceFinder(EtcdProcessor):
         从服务节点列表中初始化服务信息
         """
         for node in nodes:
-            service_name, service_nodes = self._get_node_name("/services/", node["key"]), node.get("nodes", [])
+            # node just like:
+            # `{'key': '/services/dispatcher_service', 'dir': True, 'modifiedIndex': 4, 'createdIndex': 4}`
+            service_tag, service_nodes = self._get_node_name("/services/", node["key"]), node.get("nodes", [])
             prefix = node["key"] + "/"
             for service_node in service_nodes:
                 address_str = self._get_node_name(prefix, service_node["key"])
-                ip, port = str(address_str.split("|")[0]), int(address_str.split("|")[1])
-                self._add_service_info(service_name, (ip, port))
-                self._logger.info("add service node info--> %s: %s", service_name, (ip, port))
+                server_name, ip, port = \
+                    str(address_str.split("|")[0]), str(address_str.split("|")[1]), int(address_str.split("|")[2])
+                self._add_service_info(service_tag, server_name, (ip, port), float(service_node["value"]))
+                self._logger.info("add service node info--> %s: %s", service_tag, (ip, port))
 
     def _process_add_entity_info(self, node):
         value = node.get("value")
@@ -356,11 +382,11 @@ class ServiceFinder(EtcdProcessor):
                 self._fail_time = 0
                 self._etcd_index = int(r_headers["x-etcd-index"])
                 self._watch_index = self._etcd_index
-                self._services = collections.defaultdict(set)  # service的信息重置
+                self._tag_to_addr_2_load = collections.defaultdict(dict)  # service的信息重置
                 self._es = dict()            # MobileServer注册的Entity信息重置
                 root_nodes = res.get("node", {}).get("nodes", [])
                 for node in root_nodes:
-                    if _MOBILE_SERVICE_PREFIX.startswith(node.get("key")):        # service的相关注册信息
+                    if _SERVICE_PREFIX.startswith(node.get("key")):        # service的相关注册信息
                         self._init_node_info(node.get("nodes", []))
                     elif node.get("key", "") == _NAME_ENTITY_PREFIX[:-1]:         # mobileserver注册的entity
                         self._process_add_entity_info(node)
@@ -379,14 +405,17 @@ class ServiceFinder(EtcdProcessor):
             out.append("http://%s:%s" % (ip, port))
         return out
 
-    def _get_service_node_info(self, key_path):
+    @staticmethod
+    def _get_service_node_info(key_path):
         """
         /services/fjs/192.168.82.177|8080
         """
-        key_path = key_path[len(_MOBILE_SERVICE_PREFIX):]
-        service_name, address_str = key_path.split("/")[0], key_path.split("/")[1]
-        ip, port = str(address_str.split("|")[0]), int(address_str.split("|")[1])
-        return service_name, (ip, port)
+        key_path = key_path[len(_SERVICE_PREFIX):]
+        service_tag, address_str = key_path.split("/")[0], key_path.split("/")[1]
+        server_name, ip, port = \
+            str(address_str.split("|")[0]), str(address_str.split("|")[1]), int(address_str.split("|")[2])
+        # ip, port = str(address_str.split("|")[0]), int(address_str.split("|")[1])
+        return service_tag, server_name, (ip, port)
 
     async def _watch_process_impl(self):
         # self.logger.info(f"_watch_process_impl1, now_url: {self._get_server_info() + _ETCD_KEY_PREFIX}")
@@ -408,6 +437,7 @@ class ServiceFinder(EtcdProcessor):
 
         action = res.get("action", "")
         key_path = res.get("node", {}).get("key", "")
+        cpu_load = float(res.get("node", {}).get("value", "0.0"))  # type: float
         etcd_modify_index = res.get("node", {}).get("modifiedIndex", 0)
         if etcd_modify_index:
             self._watch_index = etcd_modify_index
@@ -415,24 +445,23 @@ class ServiceFinder(EtcdProcessor):
 
         if action in ("create", "set"):
             """key的创建"""
-            if key_path.startswith(_MOBILE_SERVICE_PREFIX):
+            if key_path.startswith(_SERVICE_PREFIX):
                 # return  # TODO: DEL no
-
-                service_name, address = self._get_service_node_info(key_path)
+                server_tag, service_name, address = self._get_service_node_info(key_path)
                 self._logger.info(
                     "recv watch %s service node info--> %s: %s - [%s]",
                     action, service_name, address, self._watch_index)
-                self._add_service_info(service_name, address)
+                self._add_service_info(server_tag, service_name, address, cpu_load)
             elif key_path.startswith(_NAME_ENTITY_PREFIX):
                 self._logger.info("recv watch %s entity info -> %s", action, res)
                 self._process_add_entity_info(res.get("node", {}))
         elif action in ("expire", "delete"):
             """key超时销毁或删除"""
-            if key_path.startswith(_MOBILE_SERVICE_PREFIX):
-                service_name, address = self._get_service_node_info(key_path)
+            if key_path.startswith(_SERVICE_PREFIX):
+                server_tag, service_name, address = self._get_service_node_info(key_path)
                 self._logger.info(
                     "recv watch %s, info--> %s: %s - [%s]", action, service_name, address, self._watch_index)
-                self._delete_service_info(service_name, address)
+                self._delete_service_info(server_tag, address)
             elif key_path.startswith(_NAME_ENTITY_PREFIX):
                 self._logger.info("recv watch %s entity info -> %s", action, res)
                 self._process_delete_enttiy_info(key_path)
@@ -485,22 +514,20 @@ class ServiceFinder(EtcdProcessor):
             # finally:
             #     now_timeout.cancel()
 
-    def get_service_info(self, service_name) -> typing.Tuple[str, int]:
-        # """
-        # 获取service_name的服务地址列表，如果没有信息的话，返回的是一个空的列表，这里是返回的一个随机的list副本,
-        # 用于实现一个简单的负载均衡
-        #
-        # :todo 本身这里是应该有很多策略和控制的，类似于更具延迟，吞吐来返回一个优先权的排序列表
-        # """
-        # if service_name != 'all_service':
-        #     out_list = list(self._services.get(service_name, []))
-        # else:
-        #     out_list = []
-        #     for info_list in self._services.values():
-        #         out_list.extend(info_list)
-        # random.shuffle(out_list)
-        # return out_list
-        return random.choice(tuple(self._services.get(service_name, {None})) or (None, ))
+    def get_lowest_load_service(self, service_tag) -> Optional[typing.Tuple[str, str, int]]:
+        """
+        :param service_tag:
+        :return: 一个元组 (server_name, ip, port)
+        """
+
+        _addr_2_load = self._tag_to_addr_2_load.get(service_tag, None)
+        if _addr_2_load is None:
+            return None
+
+        _addr_tuple = min(_addr_2_load, key=lambda k: _addr_2_load[k][1])
+        server_name, _ = _addr_2_load[_addr_tuple]
+        return server_name, _addr_tuple[0], _addr_tuple[1]
+        # return random.choice(tuple(self._tag_to_addr_2_load.get(service_tag, {})) or (None,))
 
     def get_entity_info(self, entity_name):
         """
@@ -513,7 +540,7 @@ class ServiceFinder(EtcdProcessor):
 
     # def get_service_map(self):
     #     service_dict = {}
-    #     for service_name, service_infos in self._services.iteritems():
+    #     for service_name, service_infos in self._tag_to_addr_2_load.iteritems():
     #         for service_info in service_infos:
     #             service_dict[service_info] = service_name
     #
@@ -524,9 +551,9 @@ class ServiceNode(object):
     """
     对于一个service节点，既需要进行服务的注册，也同时需要服务的发现
     """
-    def __init__(self, etcd_address_list, my_address, service_module_dict):
+    def __init__(self, etcd_address_list, my_address, etcd_tag, server_name):
         self._logger = LogManager.get_logger("ServiceNode")
-        self._register = ServiceRegister(etcd_address_list, my_address, service_module_dict)
+        self._register = ServiceRegister(etcd_address_list, my_address, etcd_tag, server_name)
         # self._logger.info("we have create ServiceRegister, wait 5 seconds")
         # gevent.sleep(5)
         self._finder = ServiceFinder(etcd_address_list)
@@ -538,12 +565,13 @@ class ServiceNode(object):
         # await self._finder.start()
         async with aiohttp.ClientSession() as session:
             # html = await fetch(session, 'http://python.org')
-
             register_task = asyncio.create_task(self._register.start(session))
+            await asyncio.sleep(6)
             finder_task = asyncio.create_task(self._finder.start(session))
             await register_task
-            # await asyncio.sleep(5)
             await finder_task
+            # self._register.start(session)
+            # self._finder.start(session)
 
     def stop(self):
         self._register.stop()
@@ -552,8 +580,8 @@ class ServiceNode(object):
     # def wait_dead(self, timeout):
     #     return self._register.wait_dead(timeout)
 
-    def get_service_info(self, service_name):
-        return self._finder.get_service_info(service_name)
+    def get_lowest_load_service_addr(self, service_name):
+        return self._finder.get_lowest_load_service(service_name)
 
     def get_entity_info(self, entity_name):
         return self._finder.get_entity_info(entity_name)

@@ -15,14 +15,14 @@ from server_entity.ServerEntity import ServerEntity
 class LobbyServer(object):
 
     def __init__(self, server_name):
-        # game_server_name = sys.argv[1]
+        # server_name = sys.argv[1]
 
         server_json_conf_path = r"../bin/win/conf/lobby_server.json"
         self._server = TcpServer(server_name, ETCD_TAG_LOBBY_SRV, server_json_conf_path)
         self._logger = LogManager.get_logger()
 
         # self._load_reporter = LoadReporter(ETCD_TAG_DISPATCHER_SERVICE)
-        self._load_reporter = LoadReporter(ETCD_TAG_DISPATCHER_SERVICE)
+        # self._load_reporter = LoadReporter(ETCD_TAG_DISPATCHER_SERVICE)
 
     def start(self):
         self._server.run()

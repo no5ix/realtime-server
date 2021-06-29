@@ -136,7 +136,7 @@ async def tcp_echo_client(cli_index):
 
 
 if __name__ == '__main__':
-    # gr.game_server_name = sys.argv[1]
+    # gr.server_name = sys.argv[1]
     # tcp_server = TcpServer()
     # TCP_SERVER = tcp_server
     # tcp_server.run()

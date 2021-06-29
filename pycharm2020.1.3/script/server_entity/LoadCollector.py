@@ -2,9 +2,11 @@
 import asyncio
 
 import time
+from typing import Optional
 
 from RpcHandler import rpc_func
 # from common import gv
+from core.util import UtilApi
 from core.util.UtilApi import Singleton, wait_or_not
 from server_entity.ServerEntity import ServerEntity
 import typing
@@ -47,31 +49,27 @@ class LoadCollector(ServerEntity):
         # self.call_remote_method("report_load_pingpong_test")
 
     @rpc_func
-    async def pick_lowest_load_service_addr(self, etcd_tag: str) -> typing.Tuple[str, str, int]:
+    async def pick_lowest_load_service_addr(self, etcd_tag: str) -> Optional[typing.Tuple[str, str, int]]:
         # _res_list = await async_wrap(lambda: self._redis_cli.zrange(etcd_tag, 0, 0))  # type: typing.List[str]
 
         # self.logger.debug(f"pick_lowest_load_service_addr: {etcd_tag=}")
+        return UtilApi.get_lowest_load_service_addr(etcd_tag)
 
-        start_time = time.time()
-        # print(f'pick_lowest_load_service_addr start: {start_time=}')
-        _res_list = await self._redis_cli.zrange(etcd_tag, 0, 0)
-        _ret = None
-        if _res_list:
-            split_res = _res_list[0].split("|")
-            _ret = (split_res[0], split_res[1], int(split_res[2]))
-            # self.logger.info(f"pick_lowest_load_service_addr server_name: {split_res[0]}, addr: {_ret}")
-            self.logger.debug(f"pick_lowest_load_service_addr server_name: {split_res[0]}, addr: {_ret}")
+        # start_time = time.time()
+        # # print(f'pick_lowest_load_service_addr start: {start_time=}')
+        # _res_list = await self._redis_cli.zrange(etcd_tag, 0, 0)
+        # _ret = None
+        # if _res_list:
+        #     split_res = _res_list[0].split("|")
+        #     _ret = (split_res[0], split_res[1], int(split_res[2]))
+        #     # self.logger.info(f"pick_lowest_load_service_addr server_name: {split_res[0]}, addr: {_ret}")
+        #     self.logger.debug(f"pick_lowest_load_service_addr server_name: {split_res[0]}, addr: {_ret}")
+        #
+        # end_time = time.time()
+        # offset = end_time - start_time
+        # # self.logger.info(f'pick_lowest_load_service_addr end: {offset=}')
+        # return _ret
 
-        end_time = time.time()
-        offset = end_time - start_time
-        # self.logger.info(f'pick_lowest_load_service_addr end: {offset=}')
-
-        return _ret
-
-        # # todo: del
-        # await asyncio.sleep(10)
-        # self.logger.info(f"pick_lowest_load_service_addr server_name: fake, addr: fake")
-        # return "", 1
 
 # if __name__ == "__main__":
 #     pool = redis.ConnectionPool(host='localhost', port=6379, decode_responses=True)

@@ -25,10 +25,10 @@ is_client = False
 local_ip = None
 local_port = None
 
-# 游戏服务器名
-game_server_name = None
+# 服务器名
+server_name = None
 etcd_tag = None
-# game_server_name = 'battle_1'
+# server_name = 'battle_1'
 
 game_json_conf = None  # type: typing.Union[typing.Dict, None]
 etcd_service_node = None  # type: typing.Union[ServiceNode, None]

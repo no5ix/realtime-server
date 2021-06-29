@@ -14,14 +14,14 @@ from server_entity.LoadReporter import LoadReporter
 class BattleServer(object):
 
     def __init__(self, server_name):
-        # game_server_name = sys.argv[1]
+        # server_name = sys.argv[1]
 
         server_json_conf_path = r"../bin/win/conf/battle_server.json"
         self._server = TcpServer(server_name, ETCD_TAG_BATTLE_SRV, server_json_conf_path)
         self._logger = LogManager.get_logger()
         self._timer_hub = TimerHub()
 
-        self._load_reporter = LoadReporter(ETCD_TAG_DISPATCHER_SERVICE)
+        # self._load_reporter = LoadReporter(ETCD_TAG_DISPATCHER_SERVICE)
         # self.external_task()
 
     def external_task(self):

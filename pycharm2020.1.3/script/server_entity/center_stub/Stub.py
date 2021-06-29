@@ -37,7 +37,7 @@
 #     def connect_to_center(self):
 #         self._connect_counter += 1
 #         # center = UtilApi.get_global_entity_mailbox(self._center_name)
-#         center_ip_port_tuple = UtilApi.get_service_info(self._center_name)
+#         center_ip_port_tuple = UtilApi.get_lowest_load_service_addr(self._center_name)
 #         if center_ip_port_tuple:
 #             center_ip_port = center_ip_port_tuple[0]
 #             # asyncio.create_task(self.call_server_method_with_ip_port(
@@ -64,7 +64,7 @@
 #             self.logger.error('call_center_method error: not connected to center method:%s', method_name)
 #         else:
 #
-#             center_ip_port_tuple = UtilApi.get_service_info(self._center_name)
+#             center_ip_port_tuple = UtilApi.get_lowest_load_service_addr(self._center_name)
 #             if center_ip_port_tuple:
 #                 center_ip_port = center_ip_port_tuple[0]
 #                 self.call_remote_method(method_name, args)

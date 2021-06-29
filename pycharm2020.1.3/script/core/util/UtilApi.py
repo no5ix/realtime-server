@@ -2,8 +2,9 @@ from __future__ import annotations
 import asyncio
 # from asyncio import AbstractEventLoop
 import functools
+import json
 import random
-from typing import Callable
+from typing import Callable, Union
 # from TcpServer import ev_loop
 # import typing
 import aiohttp
@@ -117,13 +118,18 @@ def async_wrap(func: Callable):  # TODO: 貌似和long polling 不和, 不适合
     return gv.get_ev_loop().run_in_executor(None, func)
 
 
-async def async_http_requests(method: str, url: str, session: aiohttp.ClientSession = None, **kwargs) -> (str, dict):
+async def async_http_requests(
+        method: str, url: str, session: aiohttp.ClientSession = None,
+        response_as_json=False, **kwargs) -> (Union[str, dict], dict):
     method = method.lower()
     assert(method in ("get", "put", "post", "delete"))
 
     async def _async_http_requests_impl(_method, _url, _session, **_kwargs):
         async with getattr(_session, _method)(_url, **_kwargs) as response:  # type: aiohttp.ClientResponse
-            return await response.text(), response.headers
+            r_body = await response.text()
+            if response_as_json:
+                r_body = json.loads(r_body)
+            return r_body, response.headers
 
     if session is None:
         async with aiohttp.ClientSession() as session:
@@ -136,10 +142,10 @@ def get_global_entity_mailbox(entity_unique_name):
     return gv.etcd_service_node.get_entity_info(entity_unique_name)
 
 
-def get_service_info(service_name):
+def get_lowest_load_service_addr(service_name):
     if gv.etcd_service_node is None:
         return None
-    return gv.etcd_service_node.get_service_info(service_name)
+    return gv.etcd_service_node.get_lowest_load_service_addr(service_name)
 
 
 def register_entity_globally():
@@ -187,7 +193,7 @@ def get_conn_mgr() -> ConnMgr:
 
 
 def get_rand_dispatcher_addr() -> typing.Tuple[str, int]:
-    rand_dispatcher_service_addr = get_service_info(ETCD_TAG_DISPATCHER_SERVICE)
+    rand_dispatcher_service_addr = get_lowest_load_service_addr(ETCD_TAG_DISPATCHER_SERVICE)
     if rand_dispatcher_service_addr is None:
         dispatcher_json_conf_path = r"../bin/win/conf/dispatcher_service.json"
         with open(dispatcher_json_conf_path) as conf_file:
@@ -200,6 +206,8 @@ def get_rand_dispatcher_addr() -> typing.Tuple[str, int]:
                 rand_dispatcher_service_addr = (_svr_info["ip"], _svr_info["port"])
                 break
             cnt -= 1
+    else:
+        rand_dispatcher_service_addr = rand_dispatcher_service_addr[1:]
     return rand_dispatcher_service_addr
 
 

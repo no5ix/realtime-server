@@ -13,7 +13,7 @@ from server_entity.ServerEntity import ServerEntity
 class DispatcherService(object):
 
     def __init__(self, server_name):
-        # game_server_name = sys.argv[1]
+        # server_name = sys.argv[1]
 
         server_json_conf_path = r"../bin/win/conf/dispatcher_service.json"
         self._server = TcpServer(server_name, ETCD_TAG_DISPATCHER_SERVICE, server_json_conf_path)

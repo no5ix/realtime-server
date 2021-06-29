@@ -99,10 +99,10 @@ class SingletonEntityManager(object):
 
     def register_centers_and_stubs(self, game_server_name, cb):
         self._finish_centers_stubs_cb = cb
-        # self.register_server_singleton(game_server_name)
+        # self.register_server_singleton(server_name)
         self.register_relevant_centers(
             game_server_name,)
-            # lambda flag: self._register_relevant_centers_cb(flag, game_server_name))
+            # lambda flag: self._register_relevant_centers_cb(flag, server_name))
         self.register_stubs(game_server_name)
         # self.register_and_subscript_service()
 
@@ -119,8 +119,8 @@ class SingletonEntityManager(object):
         #     EntityFactory.instance().create_entity('BattleAllocatorStub')
         self.logger.info('_register_relevant_centers_cb, status:%s' % 'good')
 
-    # def _register_relevant_centers_cb(self, status, game_server_name):
-    #     self.register_stubs(lambda flag: self._register_stubs_cb(flag), game_server_name)
+    # def _register_relevant_centers_cb(self, status, server_name):
+    #     self.register_stubs(lambda flag: self._register_stubs_cb(flag), server_name)
 
     def register_stubs(self, game_server_name):
         # conf = gr.game_json_conf
@@ -139,7 +139,7 @@ class SingletonEntityManager(object):
         self.logger.info('_register_stubs_cb, status:%s' % 'good')
 
         # # self._finish_stubs_cb = finish_cb
-        # game_server_prefix = game_server_name.split('_')[0]
+        # game_server_prefix = server_name.split('_')[0]
         # stub_names = self.stub_names.get(game_server_prefix, [])
         # for name in stub_names:
         #     stub = EntityFactory.instance().create_entity(name)
@@ -173,14 +173,14 @@ class SingletonEntityManager(object):
     #     }
     #
     # def register_and_subscript_service(self):
-    #     game_server_name = gr.game_server_name
-    #     game_server_prefix = game_server_name.split('_')[0]
+    #     server_name = gr.server_name
+    #     game_server_prefix = server_name.split('_')[0]
     #
     #     all_rss = self.get_register_and_subscript_service()
     #     # register service
     #     reg_dict = all_rss.get('reg', {})
     #     reg_list = reg_dict.get(game_server_prefix, [])
-    #     reg_list.extend(reg_dict.get(game_server_name, []))
+    #     reg_list.extend(reg_dict.get(server_name, []))
     #
     #     for reg_info in reg_list:
     #         center = gr.get_server_singleton(reg_info.entity_name)
@@ -189,6 +189,6 @@ class SingletonEntityManager(object):
     #     # subscript tag service
     #     sub_dict = all_rss.get('sub', {})
     #     sub_list = sub_dict.get(game_server_prefix, [])
-    #     sub_list.extend(sub_dict.get(game_server_name, []))
+    #     sub_list.extend(sub_dict.get(server_name, []))
     #     for sub_tag in sub_list:
     #         UtilApi.subscribe_entity_tag(sub_tag)

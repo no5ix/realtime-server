@@ -28,16 +28,16 @@ class LoadReporter(ServerEntity):
         try:
             if gv.etcd_service_node is None:
                 return
-            dispatcher_service_addr = UtilApi.get_service_info(self._load_collector_etcd_tag)
+            dispatcher_service_addr = UtilApi.get_lowest_load_service_addr(self._load_collector_etcd_tag)
             # if self._rpc_handler._conn:
             #     self.logger.info(f"{self._rpc_handler._conn.get_addr()=}")
             if dispatcher_service_addr:  # todo: 每次都有新ip, 但是还是用self.rpc_handler还是用老conn
 
-                # self.logger.debug(f"_etcd_tag: {gv.etcd_tag} server_name: {gv.game_server_name}")
+                # self.logger.debug(f"_etcd_tag: {gv.etcd_tag} server_name: {gv.server_name}")
                 self.call_remote_method(
                     "report_load",
-                    [gv.etcd_tag, gv.game_server_name, gv.local_ip, gv.local_port,
-                        self._avg_load.get_avg_cpu_by_period(10)],
+                    [gv.etcd_tag, gv.server_name, gv.local_ip, gv.local_port,
+                     self._avg_load.get_avg_cpu_by_period(10)],
                     rpc_remote_entity_type="LoadCollector", ip_port_tuple=dispatcher_service_addr)
                 # self.logger.info(f"report_server_load: {self._avg_load.get_avg_cpu_by_period(10)}")
                 # print(f"report_server_load: {self._avg_load.get_avg_cpu_by_period(10)}")  # TODO: DEL

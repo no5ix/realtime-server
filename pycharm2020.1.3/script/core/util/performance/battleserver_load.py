@@ -8,7 +8,7 @@ from core.common.EntityManager import EntityManager
 
 class BattleProcessMetric(PerformanceMetric):
     def __init__(self):
-        super(BattleProcessMetric, self).__init__(GameServerRepo.game_server_name)
+        super(BattleProcessMetric, self).__init__(GameServerRepo.server_name)
         # avatar, robot, battle
         self._entity_count = Load(load_length=3)
         self._average_cpu = Load(load_length=1)
