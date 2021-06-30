@@ -26,7 +26,9 @@ python 3.8.8
 - [ ] lobby_server
 - [ ] 玩家离线存盘
 - [ ] 鉴权
+- [ ] bug: 当某些服务器已经下线, 但etcd 的ttl没处理好, 还在
 - [ ] bug: 当某些服务器已经下线, 但`pick_lowest_load_service_addr`里的redis没有让某些服务器过期
+  - [ ] fix: 用etcd来记录cpu load
 - [ ] 服务器下线应该主动通知redis/etcd
 
 

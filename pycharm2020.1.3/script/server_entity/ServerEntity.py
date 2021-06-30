@@ -26,12 +26,13 @@ class ServerEntity:
         EntityManager.instance().addentity(self.id, self, False)
         self.is_destroy = False
 
-        self._rpc_handler = RpcHandler.RpcHandler(get_a_rpc_handler_id(), entity=self)
+        self._rpc_handler = RpcHandler.RpcHandler(get_a_rpc_handler_id(), entity=self)  # type: RpcHandler
         self.timer_hub = TimerHub()
         self.timer_hub.call_later(gv.db_save_interval_sec, lambda: self.db_save(), repeat_count=-1)
 
     def destroy(self):
         self.timer_hub.destroy()
+        self._rpc_handler.destroy()
         self.timer_hub = None
         self.is_destroy = True
 

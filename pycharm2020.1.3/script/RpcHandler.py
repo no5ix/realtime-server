@@ -72,12 +72,22 @@ class RpcHandler:
         self._timer_hub = TimerHub()
         self._try_connect_times = 0
 
+        self._is_destroyed = False
+
+    def destroy(self):
+        self._timer_hub.destroy()
+        self._logger = None
+        # self._conn.handle_close(close_reason=f'RpcHandler destroy, {self.rpc_handler_id=}')
+        self._conn.remove_rpc_handler(self.rpc_handler_id)
+        self._entity = None
+
     @wait_or_not()
     async def on_conn_close(self):
         # self.fire_all_future_with_result(close_reason)
-        if self._conn.is_active():
-            await self._handle_create_conn()
+        # if self._conn.is_active_role():
+        #     await self._handle_create_conn()
         # self._conn = None
+        pass
 
     # def fire_all_future_with_result(self, error: str, result=None):
     #     for _reply_id, _reply_fut_tuple in self._pending_requests.items():
@@ -187,7 +197,7 @@ class RpcHandler:
     async def _handle_create_conn(self, addr: typing.Tuple[str, int] = None):
         try:
             if self._conn:
-                if not self._conn.is_active():
+                if not self._conn.is_active_role():
                     return
                 addr = self._conn.get_addr()
             if self._try_connect_times > 0:

@@ -67,11 +67,11 @@ class TcpConn(object):
 
         self._timer_hub = TimerHub()
         self._logger = LogManager.get_logger(self.__class__.__name__)
+        self._rpc_handlers_map = {}  # type: typing.Dict[int, RpcHandler]
+
         if rpc_handler:
             rpc_handler.set_conn(self)
             self._rpc_handlers_map = {rpc_handler.rpc_handler_id: rpc_handler}
-        else:
-            self._rpc_handlers_map = {}
 
         self.loop()
 
@@ -84,6 +84,11 @@ class TcpConn(object):
     def add_rpc_handler(self, rpc_handler):
         self._rpc_handlers_map[rpc_handler.rpc_handler_id] = rpc_handler
 
+    def remove_rpc_handler(self, rpc_handler_id):
+        self._rpc_handlers_map.pop(rpc_handler_id, None)
+        if not self._rpc_handlers_map:
+            self.handle_close(close_reason=f'has no rpc handler')
+
     def get_addr(self):
         return self._addr
 
@@ -93,7 +98,7 @@ class TcpConn(object):
     def set_connection_state(self, is_conned):
         self._is_connected = is_conned
 
-    def is_active(self):
+    def is_active_role(self):
         return self._role_type == ROLE_TYPE_ACTIVE
 
     def handle_remote_heartbeat_timeout(self):
@@ -166,7 +171,8 @@ class TcpConn(object):
         # await self._asyncio_writer.drain()
         self._asyncio_writer.close()
         for _, _rh in self._rpc_handlers_map.items():
-            _rh.on_conn_close()
+            # _rh.on_conn_close()
+            _rh.destroy()
         self._timer_hub.destroy()
         # gv.get_cur_server().remove_conn(self._addr)
 

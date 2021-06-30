@@ -317,11 +317,12 @@ class ServiceFinder(EtcdProcessor):
         """
         # if service_tag not in self._tag_to_addr_2_load:
         #     self._tag_to_addr_2_load[service_tag] = []
-        if address in self._tag_to_addr_2_load[service_tag]:
-            self._logger.info("duplicate service info  -> %s:%s", service_tag, address)
-            return
+        # if address in self._tag_to_addr_2_load[service_tag]:
+        #     self._logger.info("duplicate service info  -> %s:%s", service_tag, address)
+        #     return
         # self._tag_to_addr_2_load[service_tag].add(address)
         self._tag_to_addr_2_load[service_tag][address] = (server_name, cpu_load)
+        # self._logger.debug(f'{service_tag=}, {server_name=}, {address=}, {cpu_load=}')
 
     def _delete_service_info(self, service_tag, address: typing.Tuple[str, int]):
         try:
