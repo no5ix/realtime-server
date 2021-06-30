@@ -86,8 +86,8 @@ class TcpConn(object):
 
     def remove_rpc_handler(self, rpc_handler_id):
         self._rpc_handlers_map.pop(rpc_handler_id, None)
-        if not self._rpc_handlers_map:
-            self.handle_close(close_reason=f'has no rpc handler')
+        # if not self._rpc_handlers_map:
+        #     self.handle_close(close_reason=f'has no rpc handler')
 
     def get_addr(self):
         return self._addr
@@ -171,8 +171,8 @@ class TcpConn(object):
         # await self._asyncio_writer.drain()
         self._asyncio_writer.close()
         for _, _rh in self._rpc_handlers_map.items():
-            # _rh.on_conn_close()
-            _rh.destroy()
+            _rh.on_conn_close()
+            # _rh.destroy()
         self._timer_hub.destroy()
         # gv.get_cur_server().remove_conn(self._addr)
 
@@ -196,7 +196,7 @@ class TcpConn(object):
 
     def send_data_and_count(self, rpc_handler_id: bytes, data: bytes):
         self._send_cnt += 1
-        rh_id_data = struct.pack(STRUCT_PACK_FORMAT, rpc_handler_id)
+        rh_id_data = struct.pack(STRUCT_PACK_FORMAT, rpc_handler_id)  # type: bytes
         data = rh_id_data + data
         data_len = len(data) if data else 0
         header_data = struct.pack("i", data_len)

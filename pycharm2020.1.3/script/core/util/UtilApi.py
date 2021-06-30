@@ -4,7 +4,7 @@ import asyncio
 import functools
 import json
 import random
-from typing import Callable, Union
+from typing import Callable, Union, Optional
 # from TcpServer import ev_loop
 # import typing
 import aiohttp
@@ -142,10 +142,14 @@ def get_global_entity_mailbox(entity_unique_name):
     return gv.etcd_service_node.get_entity_info(entity_unique_name)
 
 
-def get_lowest_load_service_addr(service_name):
+def get_lowest_load_service_info(service_tag) -> Optional[typing.Tuple[str, str, int]]:
+    """
+    :param service_tag:
+    :return: 一个元组 (server_name, ip, port)
+    """
     if gv.etcd_service_node is None:
         return None
-    return gv.etcd_service_node.get_lowest_load_service_addr(service_name)
+    return gv.etcd_service_node.get_lowest_load_service_addr(service_tag)
 
 
 def register_entity_globally():
@@ -193,7 +197,7 @@ def get_conn_mgr() -> ConnMgr:
 
 
 def get_rand_dispatcher_addr() -> typing.Tuple[str, int]:
-    rand_dispatcher_service_addr = get_lowest_load_service_addr(ETCD_TAG_DISPATCHER_SERVICE)
+    rand_dispatcher_service_addr = get_lowest_load_service_info(ETCD_TAG_DISPATCHER_SERVICE)
     if rand_dispatcher_service_addr is None:
         dispatcher_json_conf_path = r"../bin/win/conf/dispatcher_service.json"
         with open(dispatcher_json_conf_path) as conf_file:

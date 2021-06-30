@@ -27,7 +27,7 @@ class ServerEntity:
         self.is_destroy = False
 
         self._rpc_handler = RpcHandler.RpcHandler(get_a_rpc_handler_id(), entity=self)  # type: RpcHandler
-        self.timer_hub = TimerHub()
+        self.timer_hub = TimerHub()  # type: TimerHub
         self.timer_hub.call_later(gv.db_save_interval_sec, lambda: self.db_save(), repeat_count=-1)
 
     def destroy(self):

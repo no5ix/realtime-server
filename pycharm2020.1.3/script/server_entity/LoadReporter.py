@@ -28,7 +28,7 @@ class LoadReporter(ServerEntity):
         try:
             if gv.etcd_service_node is None:
                 return
-            dispatcher_service_addr = UtilApi.get_lowest_load_service_addr(self._load_collector_etcd_tag)
+            dispatcher_service_addr = UtilApi.get_lowest_load_service_info(self._load_collector_etcd_tag)
             # if self._rpc_handler._conn:
             #     self.logger.info(f"{self._rpc_handler._conn.get_addr()=}")
             if dispatcher_service_addr:  # todo: 每次都有新ip, 但是还是用self.rpc_handler还是用老conn

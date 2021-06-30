@@ -26,37 +26,34 @@ async def tcp_echo_client(cli_index):
     cli_log = LogManager.get_logger()
 
     while 1:
-        try:
-            rand_dispatcher_service_addr = UtilApi.get_rand_dispatcher_addr()
+        rand_dispatcher_service_addr = UtilApi.get_rand_dispatcher_addr()
 
-            temp_se = ServerEntity()
-            start_time = time.time()
-            # print(f'start: {start_time=}')
-            print(f"{rand_dispatcher_service_addr=}")
-            _err, _res = await temp_se.call_remote_method(
-                "pick_lowest_load_service_addr",
-                # [gv.etcd_tag],
-                # ["battle_server"],
-                # ["lobby_server"],
-                [ETCD_TAG_LOBBY_GATE],
-                # [ETCD_TAG_LOBBY_SRV],
-                rpc_reply_timeout=0.1,
-                # rpc_remote_entity_type="LoadCollector", ip_port_tuple=dispatcher_service_addr
-                # rpc_callback=lambda err, res: self.logger.info(f"pick_lowest_load_service_addr: {err=} {res=}"),
-                rpc_remote_entity_type="LoadCollector",
-                ip_port_tuple=rand_dispatcher_service_addr)
-            temp_se.destroy()
-            end_time = time.time()
-            offset = end_time - start_time
-            # print(f'end: {offset=}')
+        temp_se = ServerEntity()
+        start_time = time.time()
+        # print(f'start: {start_time=}')
+        print(f"{rand_dispatcher_service_addr=}")
+        _err, _res = await temp_se.call_remote_method(
+            "pick_lowest_load_service_addr",
+            # [gv.etcd_tag],
+            # ["battle_server"],
+            # ["lobby_server"],
+            [ETCD_TAG_LOBBY_GATE],
+            # [ETCD_TAG_LOBBY_SRV],
+            rpc_reply_timeout=0.6,
+            # rpc_remote_entity_type="LoadCollector", ip_port_tuple=dispatcher_service_addr
+            # rpc_callback=lambda err, res: self.logger.info(f"pick_lowest_load_service_addr: {err=} {res=}"),
+            rpc_remote_entity_type="LoadCollector",
+            ip_port_tuple=rand_dispatcher_service_addr)
+        temp_se.destroy()
+        end_time = time.time()
+        offset = end_time - start_time
+        print(f'end: {offset=}')
 
-            if _err:
-                cli_log.error(f"{_err=}")
-                continue
-            else:
-                break
-        except:
-            pass
+        if _err:
+            cli_log.error(f"{_err=}")
+            continue
+        else:
+            break
 
     # local_server_port_tuple = (8888, 8889, 9000, 9001, 9002, 9003, 9004)
     local_server_port_tuple = (8888,)
@@ -111,7 +108,7 @@ async def tcp_echo_client(cli_index):
         # 0.01,  # 基本已经处理不过来
         lambda: _ppt.CompAvatarTest.puppet_chat_to_ppt({'content': 'puppet_chat_to_ppt'}),
         repeat_count=-1,
-        # repeat_interval_sec=3
+        repeat_interval_sec=3
     )
         # _cnt -= 1
         # print(_cnt)

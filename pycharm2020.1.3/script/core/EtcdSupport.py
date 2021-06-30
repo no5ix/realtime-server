@@ -10,6 +10,7 @@ import typing
 
 import time
 
+from common import gv
 from core.util import UtilApi
 # from ..distserver.game import GameServerRepo
 # from common import gv
@@ -88,7 +89,7 @@ class ServiceRegister(EtcdProcessor):
         EtcdProcessor.__init__(self, etcd_address_list)
         self._logger = LogManager.get_logger()
         self._my_address = my_address                                            # 当前节点的监听地址(ip, port)
-        self._address_str = server_name + "|" + my_address[0] + "|" + str(my_address[1])  # 当前节点的监听地址的字符串描述
+        self._service_name_address_str = server_name + "|" + my_address[0] + "|" + str(my_address[1])  # 当前节点的监听地址的字符串描述
         self._service_tag = service_tag
         self._server_name = server_name                          # 服务模块的name->module字典
         # self._stop_event = gevent.event.Event()
@@ -118,22 +119,23 @@ class ServiceRegister(EtcdProcessor):
     #     return self._die_event.wait(timeout=timeout)
 
     def _get_url(self, service_name):
-        path = self._get_server_info() + _SERVICE_DOMAIN + service_name + "/" + self._address_str
+        path = self._get_server_info() + _SERVICE_DOMAIN + service_name + "/" + self._service_name_address_str
         # self._logger.debug(f'{path=}')
         return path
 
     def _do_unregist(self, service_name):
         pass
 
-    async def _update_cpu_load(self, service_name):
+    async def _update_cpu_load(self, service_tag):
         """
         注册service，如果注册成功，返回True
         """
-        # service_module = self._service_module_dict[service_name]
+        # service_module = self._service_module_dict[service_tag]
         # singleton = service_module.singleton
-        # assert service_name == service_module.service_name
+        # assert service_tag == service_module.service_tag
+        cur_cpu_load = self._avg_load.get_avg_cpu_by_period(_TTL_INTERVAL)
         data = urllib.parse.urlencode(
-            {"ttl": _KEY_TIME_OUT, "value": self._avg_load.get_avg_cpu_by_period(_TTL_INTERVAL)})
+            {"ttl": _KEY_TIME_OUT, "value": cur_cpu_load})
 
         # todo: 处理 单例 的情况
         # if singleton:
@@ -143,17 +145,17 @@ class ServiceRegister(EtcdProcessor):
         #     """
         #     while self.check_ok():
         #         try:
-        #             now_url = self._get_server_info() + _SERVICE_DOMAIN + service_name
+        #             now_url = self._get_server_info() + _SERVICE_DOMAIN + service_tag
         #             r = await AioApi.async_wrap(lambda: requests.request("GET", now_url, timeout=2))
         #             res = json.loads(r_text)
         #             self._fail_time = 0
         #             if res.get("action") == "get" and res.get("node", {}).get("nodes", []):
-        #                 self.logger.info("service : %s not stateless, but exist, %s", service_name, r_text)
+        #                 self.logger.info("service : %s not stateless, but exist, %s", service_tag, r_text)
         #                 return False
         #             break
         #         except:
         #             self._fail_time += 1
-        #             self.logger.error("check singleton service : %s error", service_name)
+        #             self.logger.error("check singleton service : %s error", service_tag)
         #             self.logger.log_last_except()
         #             # if GameServerRepo.game_event_callback is not None:
         #             #     t, v, tb = sys.exc_info()
@@ -161,11 +163,11 @@ class ServiceRegister(EtcdProcessor):
 
         while self.check_ok():
             try:
-                now_url = self._get_url(service_name)
+                now_url = self._get_url(service_tag)
                 # if singleton:
-                #     now_url = self._get_url(service_name) + "?prevExist=false"
+                #     now_url = self._get_url(service_tag) + "?prevExist=false"
                 # r = requests.request("PUT", now_url, data=data, headers=_HEADER, timeout=2)
-                self._logger.info(f"_do_regist: now_url: {now_url}")
+                # self._logger.debug(f"_update_cpu_load: now_url: {now_url}")
                 # r = await UtilApi.async_wrap(
                 #     lambda: requests.request("PUT", now_url, data=data, headers=_HEADER, timeout=2))
                 r_text, _ = await UtilApi.async_http_requests(
@@ -173,28 +175,28 @@ class ServiceRegister(EtcdProcessor):
 
                 res = json.loads(r_text)
                 if res.get("action") in ("create", "set"):
-                    self._logger.info("regist service : %s success, %s", service_name, r_text)
+                    self._logger.debug(f"_update_cpu_load {self._server_name=}, {self._my_address}, {cur_cpu_load=}")
                     self._fail_time = 0
                     return True
                 else:
                     self._fail_time += 1
                     self._logger.error(
-                        "regist service : %s error: %s, fail time: %d", service_name, r_text, self._fail_time)
+                        "regist service : %s error: %s, fail time: %d", service_tag, r_text, self._fail_time)
             except:
                 self._fail_time += 1
-                self._logger.error("regist service : %s error", service_name)
+                self._logger.error("regist service : %s error", service_tag)
                 self._logger.log_last_except()
                 # if GameServerRepo.game_event_callback is not None:
                 #     t, v, tb = sys.exc_info()
                 #     GameServerRepo.game_event_callback.on_traceback(t, v, tb)
         return False
 
-    async def _update_cpu_load_n_ttl(self, service_name):
+    async def _update_cpu_load_n_ttl(self, service_tag):
         """
         为每一个服务启动一个单独的协程来处理注册与ttl的刷新
         """
-        if not await self._update_cpu_load(service_name):
-            self._logger.error("regist service %s fail", service_name)
+        if not await self._update_cpu_load(service_tag):
+            self._logger.error("regist service %s fail", service_tag)
             return
 
         ttl_refresh_data = urllib.parse.urlencode(
@@ -209,18 +211,18 @@ class ServiceRegister(EtcdProcessor):
             await asyncio.sleep(
                 random.randint(_TTL_INTERVAL, _TTL_INTERVAL + _TTL_INTERVAL_RAND_LATENCY))
 
-            await self._update_cpu_load(service_name)
+            await self._update_cpu_load(service_tag)
 
             while self.check_ok():
                 try:
-                    now_url = self._get_url(service_name)
-                    self._logger.info(f"outside, {time.time()=}, refresh service {service_name}, now_url: {now_url}")
+                    now_url = self._get_url(service_tag)
+                    # self._logger.info(f"outside, {time.time()=}, refresh service {service_tag}, now_url: {now_url}")
 
                     # def request_etcd_put():
-                    #     self._logger.info(f"inside before, {time.time()=}, refresh service {service_name}, now_url: {now_url}")
+                    #     self._logger.info(f"inside before, {time.time()=}, refresh service {service_tag}, now_url: {now_url}")
                     #     req_res = requests.request("PUT", now_url, data=ttl_refresh_data, headers=_HEADER, timeout=2)
                     #     self._logger.info(
-                    #         f"inside after, {time.time()=}, refresh service {service_name}, now_url: {now_url}")
+                    #         f"inside after, {time.time()=}, refresh service {service_tag}, now_url: {now_url}")
                     #     return req_res
                     #
                     # r = await UtilApi.async_wrap(
@@ -232,12 +234,13 @@ class ServiceRegister(EtcdProcessor):
 
                     res = json.loads(r_text)
                     if res.get("action", "") in ("set", "update"):
-                        self._logger.info(f"{time.time()=}, refresh service success: {service_name}: {r_text}, now_url: {now_url}")
+                        # self._logger.debug(
+                        #   f"{time.time()=}, refresh service success: {service_tag}: {r_text}, now_url: {now_url}")
                         self._fail_time = 0
                         break
                     else:
                         self._fail_time += 1
-                        self._logger.error(f"{time.time()=}, refresh service {service_name} error: {r_text}, now_url: {now_url}")
+                        self._logger.error(f"{time.time()=}, refresh service {service_tag} error: {r_text}, now_url: {now_url}")
                 except:
                     self._fail_time += 1
                     self._logger.log_last_except()
@@ -247,18 +250,18 @@ class ServiceRegister(EtcdProcessor):
         for _ in range(10):
             """在退出的时候，将注册的信息删除掉，如果删除失败，那就靠ttl自动删除吧"""
             try:
-                self._logger.info(f"try delete service: {service_name}")
+                self._logger.info(f"try delete service: {service_tag}")
                 # r = await UtilApi.async_wrap(
-                #     lambda: requests.request("DELETE", self._get_url(service_name)))
+                #     lambda: requests.request("DELETE", self._get_url(service_tag)))
                 r_text, _ = await UtilApi.async_http_requests(
-                    "DELETE", self._get_url(service_name), session=self._session)
+                    "DELETE", self._get_url(service_tag), session=self._session)
                 res = json.loads(r_text)
                 if res.get("action", "") == "delete":
-                    self._logger.info("delete service : %s success", service_name)
+                    self._logger.info("delete service : %s success", service_tag)
                     break
                 else:
                     self._logger.error(
-                        f"delete service {service_name} error: {r_text}, now_url: {self._get_url(service_name)}")
+                        f"delete service {service_tag} error: {r_text}, now_url: {self._get_url(service_tag)}")
             except:
                 self._logger.log_last_except()
                 # if GameServerRepo.game_event_callback is not None:
@@ -449,9 +452,8 @@ class ServiceFinder(EtcdProcessor):
             if key_path.startswith(_SERVICE_PREFIX):
                 # return  # TODO: DEL no
                 server_tag, service_name, address = self._get_service_node_info(key_path)
-                self._logger.info(
-                    "recv watch %s service node info--> %s: %s - [%s]",
-                    action, service_name, address, self._watch_index)
+                self._logger.debug(
+                    f"recv watch {action=} service node info--> {service_name=}: {address=} - {cpu_load=}")
                 self._add_service_info(server_tag, service_name, address, cpu_load)
             elif key_path.startswith(_NAME_ENTITY_PREFIX):
                 self._logger.info("recv watch %s entity info -> %s", action, res)
@@ -520,7 +522,6 @@ class ServiceFinder(EtcdProcessor):
         :param service_tag:
         :return: 一个元组 (server_name, ip, port)
         """
-
         _addr_2_load = self._tag_to_addr_2_load.get(service_tag, None)
         if _addr_2_load is None:
             return None
@@ -528,7 +529,6 @@ class ServiceFinder(EtcdProcessor):
         _addr_tuple = min(_addr_2_load, key=lambda k: _addr_2_load[k][1])
         server_name, _ = _addr_2_load[_addr_tuple]
         return server_name, _addr_tuple[0], _addr_tuple[1]
-        # return random.choice(tuple(self._tag_to_addr_2_load.get(service_tag, {})) or (None,))
 
     def get_entity_info(self, entity_name):
         """
@@ -539,14 +539,6 @@ class ServiceFinder(EtcdProcessor):
     def get_all_entity_info(self):
         return dict(self._es)
 
-    # def get_service_map(self):
-    #     service_dict = {}
-    #     for service_name, service_infos in self._tag_to_addr_2_load.iteritems():
-    #         for service_info in service_infos:
-    #             service_dict[service_info] = service_name
-    #
-    #     return service_dict
-
 
 class ServiceNode(object):
     """
@@ -555,34 +547,26 @@ class ServiceNode(object):
     def __init__(self, etcd_address_list, my_address, etcd_tag, server_name):
         self._logger = LogManager.get_logger("ServiceNode")
         self._register = ServiceRegister(etcd_address_list, my_address, etcd_tag, server_name)
-        # self._logger.info("we have create ServiceRegister, wait 5 seconds")
+        self._logger.info("we have create ServiceRegister")
         # gevent.sleep(5)
         self._finder = ServiceFinder(etcd_address_list)
         self._logger.info("we have create ServiceFinder")
 
     async def start(self):
-        # await self._register.start()
-        # await asyncio.sleep(5)
-        # await self._finder.start()
         async with aiohttp.ClientSession() as session:
             # html = await fetch(session, 'http://python.org')
-            register_task = asyncio.create_task(self._register.start(session))
-            await asyncio.sleep(6)
-            finder_task = asyncio.create_task(self._finder.start(session))
+            register_task = gv.get_ev_loop().create_task(self._register.start(session))
+            await asyncio.sleep(3)
+            finder_task = gv.get_ev_loop().create_task(self._finder.start(session))
             await register_task
             await finder_task
-            # self._register.start(session)
-            # self._finder.start(session)
 
     def stop(self):
         self._register.stop()
         self._finder.stop()
 
-    # def wait_dead(self, timeout):
-    #     return self._register.wait_dead(timeout)
-
-    def get_lowest_load_service_addr(self, service_name):
-        return self._finder.get_lowest_load_service(service_name)
+    def get_lowest_load_service_addr(self, service_tag):
+        return self._finder.get_lowest_load_service(service_tag)
 
     def get_entity_info(self, entity_name):
         return self._finder.get_entity_info(entity_name)

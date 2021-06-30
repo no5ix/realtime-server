@@ -7,12 +7,14 @@ import typing
 from asyncio import futures
 
 import time
+from typing import Optional
 
 from bson import ObjectId
 
 import core.util.UtilApi
 from ConnMgr import ConnMgr
 from core.common.IdManager import IdManager
+from core.mobilelog.LogManager import AsyncLogger
 from core.util.TimerHub import TimerHub
 from core.util.UtilApi import wait_or_not
 
@@ -62,7 +64,7 @@ class RpcHandler:
             self, rpc_handler_id: bytes, conn: TcpConn = None,
             entity: ServerEntity = None):
         self.rpc_handler_id = rpc_handler_id
-        self._logger = LogManager.get_logger()
+        self._logger = LogManager.get_logger()  # type: AsyncLogger
         # self._logger.info(f'!!! xx {rpc_handler_id=}')
         self._conn = conn  # type: TcpConn
         self._entity = entity  # type: ServerEntity
@@ -73,20 +75,27 @@ class RpcHandler:
         self._try_connect_times = 0
 
         self._is_destroyed = False
+        self._create_conn_task = None  # type: Optional[asyncio.Task]
 
     def destroy(self):
+        self._logger.warning(f'{self.rpc_handler_id=} RpcHandler Destroy!')
         self._timer_hub.destroy()
         self._logger = None
         # self._conn.handle_close(close_reason=f'RpcHandler destroy, {self.rpc_handler_id=}')
-        self._conn.remove_rpc_handler(self.rpc_handler_id)
         self._entity = None
+        if self._conn:
+            self._conn.remove_rpc_handler(self.rpc_handler_id)
+        if self._create_conn_task:
+            self._create_conn_task.cancel()
+            self._create_conn_task = None
 
-    @wait_or_not()
+        self._is_destroyed = True
+
     async def on_conn_close(self):
         # self.fire_all_future_with_result(close_reason)
         # if self._conn.is_active_role():
         #     await self._handle_create_conn()
-        # self._conn = None
+        self._conn = None
         pass
 
     # def fire_all_future_with_result(self, error: str, result=None):
@@ -119,7 +128,7 @@ class RpcHandler:
         try:
             # self._logger.info("sennnnnnnnnd heartbeatttt")
             msg = (RPC_TYPE_HEARTBEAT, )
-            await self._send_rpc_msg(self.do_encode(msg))
+            self._send_rpc_msg(self.do_encode(msg))
         except:
             self._logger.log_last_except()
 
@@ -150,7 +159,7 @@ class RpcHandler:
             _reply_fut.add_done_callback(final_fut_cb)
             _rpc_reply_fut_obj = RpcReplyFuture(_reply_id, rpc_fuc_name, _reply_fut)
             self._pending_requests[_reply_id] = _rpc_reply_fut_obj
-            await self._send_rpc_msg(self.do_encode(msg), ip_port_tuple)
+            self._send_rpc_msg(self.do_encode(msg), ip_port_tuple)
             try:
                 # print(f"deaaaaaaa before{time.time()=}")
                 return await asyncio.wait_for(asyncio.shield(_reply_fut), timeout=rpc_reply_timeout)
@@ -174,11 +183,11 @@ class RpcHandler:
                 return await _reply_fut
         else:
             msg = (RPC_TYPE_NOTIFY, rpc_remote_entity_type, rpc_fuc_name, rpc_fuc_args, rpc_fuc_kwargs)
-            await self._send_rpc_msg(self.do_encode(msg), ip_port_tuple)
+            self._send_rpc_msg(self.do_encode(msg), ip_port_tuple)
             return None
 
-    # @wait_or_not
-    async def _send_rpc_msg(self, msg, ip_port_tuple=None):
+    # @wait_or_not()
+    def _send_rpc_msg(self, msg, ip_port_tuple: typing.Tuple[str, int] = None):
         # assert ((self._conn is None and ip_port_tuple) or (not self._conn.is_connected()) or self._conn)
         # if ip_port_tuple:
         #     _cur_addr = ip_port_tuple
@@ -189,11 +198,11 @@ class RpcHandler:
             # print(f"_send_rpc_msg  _try_connect_times={self._try_connect_times}, id(self._conn)= {id(self._conn)}")
             if self._try_connect_times > 0 or ip_port_tuple is None:  # `self._try_connect_times > 0` means connecting
                 return
-            await self._handle_create_conn(ip_port_tuple)
+            self._create_conn_task = gv.get_ev_loop().create_task(self._handle_create_conn(ip_port_tuple))
             return
         self._conn.send_data_and_count(self.rpc_handler_id, msg)
 
-    # @wait_or_not
+    # @wait_or_not()
     async def _handle_create_conn(self, addr: typing.Tuple[str, int] = None):
         try:
             if self._conn:
@@ -207,7 +216,8 @@ class RpcHandler:
 #             # print(f"{self._conn=}")
             if self._try_connect_times > 1:
                 self._logger.warning(f"aaa _try_connect_times={self._try_connect_times}, id(self._conn)= {id(self._conn)}")
-        # except ConnectionRefusedError:
+        except asyncio.CancelledError:
+            return
         except Exception as e:
             self._logger.error(str(e))
             if self._try_connect_times < RECONNECT_MAX_TIMES:
@@ -295,7 +305,7 @@ class RpcHandler:
                     if _rpc_type == RPC_TYPE_REQUEST:
                         _rpc_reply = (RPC_TYPE_REPLY, _rpc_msg_tuple[1], str(e), None)
                 if _rpc_type == RPC_TYPE_REQUEST:
-                    await self._send_rpc_msg(self.do_encode(_rpc_reply))
+                    self._send_rpc_msg(self.do_encode(_rpc_reply))
             # elif _rpc_type == RPC_TYPE_NOTIFY:
             #     pass
             elif _rpc_type == RPC_TYPE_REPLY:

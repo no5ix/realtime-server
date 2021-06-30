@@ -175,109 +175,6 @@ class ParallelTimedRotatingFileHandler(logging.handlers.TimedRotatingFileHandler
         self.rolloverAt = newRolloverAt
 
 
-class LogManager:
-    log_tag = ""
-    log_path = ""
-    file_handler = None
-    stream_handler = None
-
-    @staticmethod
-    def set_log_tag(tag):
-        LogManager.log_tag = tag
-
-    @staticmethod
-    def set_log_path(path):
-        LogManager.log_path = path
-
-    @staticmethod
-    def get_logger(logger_name=None):
-        if logger_name is None:
-            try:
-                # st = inspect.stack()
-                # sta1 = inspect.stack()[1]
-                caller_module = inspect.stack()[1][0]
-                if "self" in caller_module.f_locals:
-                    logger_name = caller_module.f_locals["self"].__class__.__name__
-                elif "cls" in caller_module.f_locals:
-                    logger_name = caller_module.f_locals["cls"].__name__
-                else:
-                    logger_name = inspect.getmodule(caller_module).__name__
-            except:
-                raise Exception("logger_name is None and can't get caller name")
-        if LogManager.file_handler is None:
-            if LogManager.log_tag == "":
-                raise Exception("LogManager Error: log tag is empty!")
-            # LogManager.file_handler = TimedRotatingFileHandler(
-            # LogManager.file_handler = WholeIntervalRotatingFileHandler(
-            LogManager.file_handler = ParallelTimedRotatingFileHandler(
-                "".join((LogManager.log_path + LogManager.log_tag
-                         # + "." + time.strftime("%Y-%m-%d_%H-%M-%S", time.localtime())
-                         ))
-                # , when="M")
-                , when="D")
-            # LogManager.file_handler.suffix = "%Y-%m-%d.log"
-        if LogManager.stream_handler is None:
-            LogManager.stream_handler = logging.StreamHandler()
-            # LogManager.file_handler.doRollover()
-        return AsyncLogger(logger_name)
-        # _temp_file_name = 'test_log.log'
-        #
-        # use_st_logger = True
-        # # _th_executor = ThreadPoolExecutor(max_workers=1)
-        # # _th_executor.submit()
-        # # if platform.system() == 'Linux':
-        # if use_st_logger:
-        #     # logger = logging.getLogger(logger_name)
-        #     # # logger.setLevel(logging.DEBUG)
-        #     # fh = TimedRotatingFileHandler('test_log.log', when='D')
-        #     # # fh = TimedRotatingFileHandler(_temp_file_name, when='S')
-        #     # # fh.setLevel(logging.DEBUG)
-        #     #
-        #     # formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - [%(filename)s:%(lineno)d] : %(message)s')
-        #     # fh.setFormatter(formatter)
-        #     # logger.addHandler(fh)
-        #     # # fh.setLevel(logging.DEBUG)
-        #     # logger.setLevel(logging.DEBUG)
-        #     # # logger.shu
-        #
-        #     return AsyncLogger(logger_name)
-        # # else:
-        # #     logger = aiologger.logger.Logger()
-        # #     handler = AsyncTimedRotatingFileHandler(
-        # #         # filename=self.temp_file.name,
-        # #         filename=_temp_file_name,
-        # #         when=RolloverInterval.SECONDS,
-        # #
-        # #         # backup_count=1,
-        # #     )
-        # #     # handler.stream
-        # #     formatter = Formatter('%(asctime)s - %(name)s - %(levelname)s - [%(filename)s:%(lineno)d] : %(message)s')
-        # #     handler.formatter = formatter
-        # #     logger.add_handler(handler)
-        # #     logger.level = LogLevel.INFO
-        # #
-        # #     # if __name__ == '__main__':
-        # #     #
-        # #     #     # async def main():
-        # #     #     #     logger = LogManager.get_logger('test_logger')
-        # #     #     #
-        # #     #     # # 'application' code
-        # #     #     #     await logger.info('debug message')
-        # #     #     #     await logger.info('info message')
-        # #     #     #     await logger.warning('warn message')
-        # #     #     #     await logger.error('error message')
-        # #     #     #     await logger.critical('critical message')
-        # #     #     #     # await logger.shutdown()
-        # #     #     #
-        # #     #     # import asyncio
-        # #     #     #
-        # #     #     # loop = asyncio.get_event_loop()
-        # #     #     # loop.run_until_complete(main())
-        # #     #     # loop.close()
-        # #
-        # #     return logger
-
-
 ORIGINAL_RECORD_FACTORY = logging.getLogRecordFactory()
 
 
@@ -438,6 +335,109 @@ class AsyncLogger:
             tb = tb.tb_next
             n = n + 1
         return '\n'.join(tb_info)
+
+
+class LogManager:
+    log_tag = ""
+    log_path = ""
+    file_handler = None
+    stream_handler = None
+
+    @staticmethod
+    def set_log_tag(tag):
+        LogManager.log_tag = tag
+
+    @staticmethod
+    def set_log_path(path):
+        LogManager.log_path = path
+
+    @staticmethod
+    def get_logger(logger_name=None) -> AsyncLogger:
+        if logger_name is None:
+            try:
+                # st = inspect.stack()
+                # sta1 = inspect.stack()[1]
+                caller_module = inspect.stack()[1][0]
+                if "self" in caller_module.f_locals:
+                    logger_name = caller_module.f_locals["self"].__class__.__name__
+                elif "cls" in caller_module.f_locals:
+                    logger_name = caller_module.f_locals["cls"].__name__
+                else:
+                    logger_name = inspect.getmodule(caller_module).__name__
+            except:
+                raise Exception("logger_name is None and can't get caller name")
+        if LogManager.file_handler is None:
+            if LogManager.log_tag == "":
+                raise Exception("LogManager Error: log tag is empty!")
+            # LogManager.file_handler = TimedRotatingFileHandler(
+            # LogManager.file_handler = WholeIntervalRotatingFileHandler(
+            LogManager.file_handler = ParallelTimedRotatingFileHandler(
+                "".join((LogManager.log_path + LogManager.log_tag
+                         # + "." + time.strftime("%Y-%m-%d_%H-%M-%S", time.localtime())
+                         ))
+                # , when="M")
+                , when="D")
+            # LogManager.file_handler.suffix = "%Y-%m-%d.log"
+        if LogManager.stream_handler is None:
+            LogManager.stream_handler = logging.StreamHandler()
+            # LogManager.file_handler.doRollover()
+        return AsyncLogger(logger_name)
+        # _temp_file_name = 'test_log.log'
+        #
+        # use_st_logger = True
+        # # _th_executor = ThreadPoolExecutor(max_workers=1)
+        # # _th_executor.submit()
+        # # if platform.system() == 'Linux':
+        # if use_st_logger:
+        #     # logger = logging.getLogger(logger_name)
+        #     # # logger.setLevel(logging.DEBUG)
+        #     # fh = TimedRotatingFileHandler('test_log.log', when='D')
+        #     # # fh = TimedRotatingFileHandler(_temp_file_name, when='S')
+        #     # # fh.setLevel(logging.DEBUG)
+        #     #
+        #     # formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - [%(filename)s:%(lineno)d] : %(message)s')
+        #     # fh.setFormatter(formatter)
+        #     # logger.addHandler(fh)
+        #     # # fh.setLevel(logging.DEBUG)
+        #     # logger.setLevel(logging.DEBUG)
+        #     # # logger.shu
+        #
+        #     return AsyncLogger(logger_name)
+        # # else:
+        # #     logger = aiologger.logger.Logger()
+        # #     handler = AsyncTimedRotatingFileHandler(
+        # #         # filename=self.temp_file.name,
+        # #         filename=_temp_file_name,
+        # #         when=RolloverInterval.SECONDS,
+        # #
+        # #         # backup_count=1,
+        # #     )
+        # #     # handler.stream
+        # #     formatter = Formatter('%(asctime)s - %(name)s - %(levelname)s - [%(filename)s:%(lineno)d] : %(message)s')
+        # #     handler.formatter = formatter
+        # #     logger.add_handler(handler)
+        # #     logger.level = LogLevel.INFO
+        # #
+        # #     # if __name__ == '__main__':
+        # #     #
+        # #     #     # async def main():
+        # #     #     #     logger = LogManager.get_logger('test_logger')
+        # #     #     #
+        # #     #     # # 'application' code
+        # #     #     #     await logger.info('debug message')
+        # #     #     #     await logger.info('info message')
+        # #     #     #     await logger.warning('warn message')
+        # #     #     #     await logger.error('error message')
+        # #     #     #     await logger.critical('critical message')
+        # #     #     #     # await logger.shutdown()
+        # #     #     #
+        # #     #     # import asyncio
+        # #     #     #
+        # #     #     # loop = asyncio.get_event_loop()
+        # #     #     # loop.run_until_complete(main())
+        # #     #     # loop.close()
+        # #
+        # #     return logger
 
 
 if __name__ == '__main__':
