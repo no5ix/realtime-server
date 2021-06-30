@@ -25,6 +25,7 @@ async def tcp_echo_client(cli_index):
     LogManager.set_log_path("../bin/win/log/")
 
     cli_log = LogManager.get_logger()
+    temp_rh = RpcHandler(get_a_rpc_handler_id())
 
     while 1:
         rand_dispatcher_service_addr = UtilApi.get_rand_dispatcher_addr()
@@ -46,7 +47,6 @@ async def tcp_echo_client(cli_index):
         #     ip_port_tuple=rand_dispatcher_service_addr)
         # temp_se.destroy()
 
-        temp_rh = RpcHandler(get_a_rpc_handler_id())
         _err, _res = await temp_rh.request_rpc(
             "pick_lowest_load_service_addr",
             # [gv.etcd_tag],
@@ -59,7 +59,7 @@ async def tcp_echo_client(cli_index):
             # rpc_callback=lambda err, res: self.logger.info(f"pick_lowest_load_service_addr: {err=} {res=}"),
             rpc_remote_entity_type="LoadCollector",
             ip_port_tuple=rand_dispatcher_service_addr)
-        temp_rh.destroy()
+
 
         end_time = time.time()
         offset = end_time - start_time
@@ -70,6 +70,8 @@ async def tcp_echo_client(cli_index):
             continue
         else:
             break
+
+    temp_rh.destroy()
 
     # local_server_port_tuple = (8888, 8889, 9000, 9001, 9002, 9003, 9004)
     local_server_port_tuple = (8888,)
@@ -124,7 +126,7 @@ async def tcp_echo_client(cli_index):
         # 0.01,  # 基本已经处理不过来
         lambda: _ppt.CompAvatarTest.puppet_chat_to_ppt({'content': 'puppet_chat_to_ppt'}),
         repeat_count=-1,
-        repeat_interval_sec=3
+        # repeat_interval_sec=3
     )
         # _cnt -= 1
         # print(_cnt)

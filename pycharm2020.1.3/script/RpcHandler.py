@@ -75,7 +75,7 @@ class RpcHandler:
         self._try_connect_times = 0
 
         self._is_destroyed = False
-        self._create_conn_task = None  # type: Optional[asyncio.Task]
+        self._create_conn_tasks = []  # type: typing.List[asyncio.Task]
 
     def destroy(self):
         self._logger.warning(f'{self.rpc_handler_id=} RpcHandler Destroy!')
@@ -85,9 +85,9 @@ class RpcHandler:
         self._entity = None
         if self._conn:
             self._conn.remove_rpc_handler(self.rpc_handler_id)
-        if self._create_conn_task:
-            self._create_conn_task.cancel()
-            self._create_conn_task = None
+        for _ct in self._create_conn_tasks:
+            _ct.cancel()
+        self._create_conn_tasks = []
 
         self._is_destroyed = True
 
@@ -196,10 +196,12 @@ class RpcHandler:
         if self._conn is None or not self._conn.is_connected():
             self._msg_buffer.append(msg)
             # print(f"_send_rpc_msg  _try_connect_times={self._try_connect_times}, id(self._conn)= {id(self._conn)}")
-            if self._try_connect_times > 0 or ip_port_tuple is None:  # `self._try_connect_times > 0` means connecting
+            # if self._try_connect_times > 0 or ip_port_tuple is None:  # `self._try_connect_times > 0` means connecting
+            #     return
+            if ip_port_tuple is None:  # `self._try_connect_times > 0` means connecting
                 return
-            # self._create_conn_task = gv.get_ev_loop().create_task(self._handle_create_conn(ip_port_tuple))
-            self._create_conn_task = self._handle_create_conn(ip_port_tuple)
+            # self._create_conn_tasks.append((gv.get_ev_loop().create_task(self._handle_create_conn(ip_port_tuple))))
+            self._create_conn_tasks.append(self._handle_create_conn(ip_port_tuple))
             return
         self._conn.send_data_and_count(self.rpc_handler_id, msg)
 
@@ -239,7 +241,7 @@ class RpcHandler:
             return
         else:
             if self._try_connect_times > 1:
-                self._logger.warning(f"rrr _try_connect_times={self._try_connect_times}, id(self._conn)= {id(self._conn)}")
+                self._logger.warning(f"rrr sum _try_connect_times={self._try_connect_times}, id(self._conn)= {id(self._conn)}")
             self._try_connect_times = 0
             for _msg in self._msg_buffer:
                 # print(f"send before{time.time()=}")
