@@ -219,7 +219,7 @@ class RpcHandler:
             if self._try_connect_times > 1:
                 self._logger.warning(f"aaa _try_connect_times={self._try_connect_times}, id(self._conn)= {id(self._conn)}")
         except asyncio.CancelledError:
-            return
+            raise
         except Exception as e:
             self._logger.error(str(e))
             if self._try_connect_times < RECONNECT_MAX_TIMES:
