@@ -132,7 +132,7 @@ class RpcHandler:
         except:
             self._logger.log_last_except()
 
-    # @wait_or_not()
+    @wait_or_not()
     async def request_rpc(
             self,
             rpc_fuc_name: str,
@@ -198,11 +198,12 @@ class RpcHandler:
             # print(f"_send_rpc_msg  _try_connect_times={self._try_connect_times}, id(self._conn)= {id(self._conn)}")
             if self._try_connect_times > 0 or ip_port_tuple is None:  # `self._try_connect_times > 0` means connecting
                 return
-            self._create_conn_task = gv.get_ev_loop().create_task(self._handle_create_conn(ip_port_tuple))
+            # self._create_conn_task = gv.get_ev_loop().create_task(self._handle_create_conn(ip_port_tuple))
+            self._create_conn_task = self._handle_create_conn(ip_port_tuple)
             return
         self._conn.send_data_and_count(self.rpc_handler_id, msg)
 
-    # @wait_or_not()
+    @wait_or_not()
     async def _handle_create_conn(self, addr: typing.Tuple[str, int] = None):
         try:
             if self._conn:

@@ -5,6 +5,7 @@ import sys
 import time
 
 import TcpConn
+from RpcHandler import RpcHandler, get_a_rpc_handler_id
 from client.Avatar import Avatar
 from client.Puppet import Puppet
 # from client.PuppetBindEntity import PuppetBindEntity
@@ -27,24 +28,39 @@ async def tcp_echo_client(cli_index):
 
     while 1:
         rand_dispatcher_service_addr = UtilApi.get_rand_dispatcher_addr()
-
-        temp_se = ServerEntity()
-        start_time = time.time()
-        # print(f'start: {start_time=}')
         print(f"{rand_dispatcher_service_addr=}")
-        _err, _res = await temp_se.call_remote_method(
+        start_time = time.time()
+
+        # temp_se = ServerEntity()
+        # _err, _res = await temp_se.call_remote_method(
+        #     "pick_lowest_load_service_addr",
+        #     # [gv.etcd_tag],
+        #     # ["battle_server"],
+        #     # ["lobby_server"],
+        #     [ETCD_TAG_LOBBY_GATE],
+        #     # [ETCD_TAG_LOBBY_SRV],
+        #     rpc_reply_timeout=0.2,
+        #     # rpc_remote_entity_type="LoadCollector", ip_port_tuple=dispatcher_service_addr
+        #     # rpc_callback=lambda err, res: self.logger.info(f"pick_lowest_load_service_addr: {err=} {res=}"),
+        #     rpc_remote_entity_type="LoadCollector",
+        #     ip_port_tuple=rand_dispatcher_service_addr)
+        # temp_se.destroy()
+
+        temp_rh = RpcHandler(get_a_rpc_handler_id())
+        _err, _res = await temp_rh.request_rpc(
             "pick_lowest_load_service_addr",
             # [gv.etcd_tag],
             # ["battle_server"],
             # ["lobby_server"],
             [ETCD_TAG_LOBBY_GATE],
             # [ETCD_TAG_LOBBY_SRV],
-            rpc_reply_timeout=0.6,
+            rpc_reply_timeout=0.2,
             # rpc_remote_entity_type="LoadCollector", ip_port_tuple=dispatcher_service_addr
             # rpc_callback=lambda err, res: self.logger.info(f"pick_lowest_load_service_addr: {err=} {res=}"),
             rpc_remote_entity_type="LoadCollector",
             ip_port_tuple=rand_dispatcher_service_addr)
-        temp_se.destroy()
+        temp_rh.destroy()
+
         end_time = time.time()
         offset = end_time - start_time
         print(f'end: {offset=}')
