@@ -15,8 +15,11 @@ python 3.8.8
 <!-- - [ ] 手动心跳 -->
 <!-- - [ ] 断线重连 -->
 <!-- - [ ] battle_server -->
+- [ ] base on etcd distributed lock
+- [ ] kcp connection 共用心跳模块
+
 - [ ] tick loop
-- [ ] dispatcher_service
+<!-- - [ ] dispatcher_service -->
 - [ ] 大厅服务器通知战斗服务器相关puppet的信息已经加密令牌, 约定通信协议
 - [ ] 客户端拿着令牌来和战斗服务器连接并交互
 <!-- - [ ] 各个战斗服务器之间的协同center stub, center掉了, stub尝试重连center的逻辑 -->
@@ -26,16 +29,10 @@ python 3.8.8
 - [ ] lobby_server
 - [ ] 玩家离线存盘
 - [ ] 鉴权
-- [ ] bug: 当某些服务器已经下线, 但etcd 的ttl没处理好, 还在
+<!-- - [ ] bug: 当某些服务器已经下线, 但etcd 的ttl没处理好, 还在
 - [ ] bug: 当某些服务器已经下线, 但`pick_lowest_load_service_addr`里的redis没有让某些服务器过期
   - [ ] fix: 用etcd来记录cpu load
-- [ ] 服务器下线应该主动通知redis/etcd
-
-
-- [ ] base on etcd distributed lock
-
-
-- [ ] kcp connection 共用心跳模块
+- [ ] 服务器下线应该主动通知redis/etcd -->
 - [ ] game_mgr process for forwarding/reloading
 - [ ] game_mgr_client to exec game_script
 - [ ] db manager
