@@ -91,12 +91,11 @@ class RpcHandler:
 
         self._is_destroyed = True
 
-    async def on_conn_close(self):
+    def on_conn_close(self):
         # self.fire_all_future_with_result(close_reason)
         # if self._conn.is_active_role():
         #     await self._handle_create_conn()
         self._conn = None
-        pass
 
     # def fire_all_future_with_result(self, error: str, result=None):
     #     for _reply_id, _reply_fut_tuple in self._pending_requests.items():

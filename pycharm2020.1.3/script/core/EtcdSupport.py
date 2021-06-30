@@ -175,7 +175,7 @@ class ServiceRegister(EtcdProcessor):
 
                 res = json.loads(r_text)
                 if res.get("action") in ("create", "set"):
-                    self._logger.debug(f"_update_cpu_load {self._server_name=}, {self._my_address}, {cur_cpu_load=}")
+                    # self._logger.debug(f"_update_cpu_load {self._server_name=}, {self._my_address}, {cur_cpu_load=}")
                     self._fail_time = 0
                     return True
                 else:
@@ -452,8 +452,7 @@ class ServiceFinder(EtcdProcessor):
             if key_path.startswith(_SERVICE_PREFIX):
                 # return  # TODO: DEL no
                 server_tag, service_name, address = self._get_service_node_info(key_path)
-                self._logger.debug(
-                    f"recv watch {action=} service node info--> {service_name=}: {address=} - {cpu_load=}")
+                # self._logger.debug(f"recv watch {action=}, {service_name=}: {address=} - {cpu_load=}")
                 self._add_service_info(server_tag, service_name, address, cpu_load)
             elif key_path.startswith(_NAME_ENTITY_PREFIX):
                 self._logger.info("recv watch %s entity info -> %s", action, res)
