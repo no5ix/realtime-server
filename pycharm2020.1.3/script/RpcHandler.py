@@ -211,13 +211,9 @@ class RpcHandler:
                 if not self._conn.is_active_role():
                     return
                 addr = self._conn.get_addr()
-            if self._try_connect_times > 0:
-                self._logger.warning(f"bbb _try_connect_times={self._try_connect_times}, id(self._conn)= {id(self._conn)}")
             self._try_connect_times += 1
             self._conn = await ConnMgr.instance().get_conn_by_addr(addr, self)
-#             # print(f"{self._conn=}")
-            if self._try_connect_times > 1:
-                self._logger.warning(f"aaa _try_connect_times={self._try_connect_times}, id(self._conn)= {id(self._conn)}")
+            self._logger.warning(f"{self._try_connect_times=}, {id(self._conn)=}")
         except asyncio.CancelledError:
             raise
         except Exception as e:
@@ -240,12 +236,10 @@ class RpcHandler:
             return
         else:
             if self._try_connect_times > 1:
-                self._logger.warning(f"rrr sum _try_connect_times={self._try_connect_times}, id(self._conn)= {id(self._conn)}")
+                self._logger.warning(f"sum {self._try_connect_times=}, {id(self._conn)=}")
             self._try_connect_times = 0
             for _msg in self._msg_buffer:
-                # print(f"send before{time.time()=}")
                 self._conn.send_data_and_count(self.rpc_handler_id, _msg)
-                # print(f"send after{time.time()=}")
             self._msg_buffer.clear()
 
     @staticmethod
