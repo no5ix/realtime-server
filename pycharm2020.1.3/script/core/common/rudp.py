@@ -708,7 +708,7 @@ class Kcp(object):
         """
         Set interval
         """
-        # interval = max(10, min(5000, interval))  # todo: uncomment
+        interval = max(10, min(5000, interval))
         self.interval = interval
 
     def set_wndsize(self, sndwnd=32, rcvwnd=32):
@@ -737,14 +737,12 @@ class Kcp(object):
         if nodelay is not None:
             self.nodelay = nodelay
             if nodelay:
-                self.rx_minrto = 1  # todo: del
-                # self.rx_minrto = IKCP_RTO_NDL
+                self.rx_minrto = IKCP_RTO_NDL
             else:
                 self.rx_minrto = IKCP_RTO_MIN
 
         if interval >= 0:
-            # self.set_interval(interval)
-            self.set_interval(1)  # todo: del
+            self.set_interval(interval)
 
         if resend >= 0:
             self.fastresend = resend
