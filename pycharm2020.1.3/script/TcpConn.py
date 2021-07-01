@@ -38,7 +38,7 @@ CONN_STATE_DISCONNECTING = 2
 CONN_STATE_DISCONNECTED = 3
 
 
-class TcpConn(object):
+class TcpConn:
 
     def __init__(
             self,
