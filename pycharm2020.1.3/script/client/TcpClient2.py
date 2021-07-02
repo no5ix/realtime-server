@@ -4,6 +4,7 @@ import sys
 # from asyncio import events
 import time
 
+import ConnBase
 import TcpConn
 from RpcHandler import RpcHandler, get_a_rpc_handler_id
 from client.Avatar import Avatar
@@ -29,6 +30,7 @@ async def tcp_echo_client(cli_index):
 
     while 1:
         rand_dispatcher_service_addr = UtilApi.get_rand_dispatcher_addr()
+        rand_dispatcher_service_addr = ('127.0.0.1', 9100)
         print(f"{rand_dispatcher_service_addr=}")
         start_time = time.time()
 
@@ -60,7 +62,6 @@ async def tcp_echo_client(cli_index):
             rpc_remote_entity_type="LoadCollector",
             ip_port_tuple=rand_dispatcher_service_addr)
 
-
         end_time = time.time()
         offset = end_time - start_time
         print(f'end: {offset=}')
@@ -89,7 +90,7 @@ async def tcp_echo_client(cli_index):
     # _ppt = Puppet()
     _ppt = Avatar()
     _tcp_conn = TcpConn.TcpConn(
-        TcpConn.ROLE_TYPE_ACTIVE,
+        ConnBase.ROLE_TYPE_ACTIVE,
         writer.get_extra_info('peername'), writer, reader, _ppt.get_rpc_handle())
     # _tcp_conn.loop()
     # _pbe = PuppetBindEntity()

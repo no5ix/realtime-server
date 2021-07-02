@@ -2,7 +2,7 @@ import asyncio
 import random
 import sys
 # from asyncio import events
-
+import ConnBase
 import TcpConn
 from client.Puppet import Puppet
 # from client.PuppetBindEntity import PuppetBindEntity
@@ -53,7 +53,7 @@ async def tcp_echo_client(cli_index):
     # peer_name = writer.get_extra_info('peername')
     _ppt = Puppet()
     _tcp_conn = TcpConn.TcpConn(
-        TcpConn.ROLE_TYPE_ACTIVE,
+        ConnBase.ROLE_TYPE_ACTIVE,
         writer.get_extra_info('peername'), writer, reader, _ppt.get_rpc_handle())
     # _tcp_conn.loop()
     # _pbe = PuppetBindEntity()

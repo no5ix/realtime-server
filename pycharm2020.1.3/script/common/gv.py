@@ -5,10 +5,12 @@ import asyncio
 from asyncio import AbstractEventLoop
 # from TcpServer import ev_loop
 import typing
+from typing import Optional
 
 
 if typing.TYPE_CHECKING:
     from core.EtcdSupport import ServiceNode
+    from ServerBase import ServerBase
 
 
 is_dev_version = True
@@ -18,6 +20,8 @@ db_save_interval_sec = 8
 # entity_db_name = "entity_db"
 # entity_collection_name = "entity_collection"
 
+server_inst_arr = []  # todo: 后期要支持udp/kcp共存, udp连不上就tcp
+server_inst = None  # type: Optional[ServerBase]
 
 bind_entity = None
 is_client = False

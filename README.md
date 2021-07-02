@@ -17,7 +17,9 @@ python 3.8.8
 <!-- - [ ] battle_server -->
 - [ ] base on etcd distributed lock
 - [ ] kcp connection 共用心跳模块
+- [ ] rudp 和tcp共存, 先rudp再tcp
 - [ ] 服务器快速重启, 客户端应该要可以自动重连
+- [ ] 打通 cli-gate-lobby-battle
 
 - [ ] tick loop
 <!-- - [ ] dispatcher_service -->
@@ -37,6 +39,7 @@ python 3.8.8
 - [ ] game_mgr process for forwarding/reloading
 - [ ] game_mgr_client to exec game_script
 - [ ] db manager
+- [ ] quic
 
 - [ ] login service
 - [ ] rename

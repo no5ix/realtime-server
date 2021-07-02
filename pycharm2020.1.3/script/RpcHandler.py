@@ -12,7 +12,7 @@ from typing import Optional
 from bson import ObjectId
 
 import core.util.UtilApi
-from ConnMgr import ConnMgr
+from ConnMgr import ConnMgr, CONN_TYPE_TCP
 from core.common.IdManager import IdManager
 from core.mobilelog.LogManager import AsyncLogger
 from core.util.TimerHub import TimerHub
@@ -212,7 +212,8 @@ class RpcHandler:
                     return
                 addr = self._conn.get_addr()
             self._try_connect_times += 1
-            self._conn = await ConnMgr.instance().get_conn_by_addr(addr, self)
+            self._conn = await ConnMgr.instance().get_conn_by_addr(CONN_TYPE_TCP, addr, self)
+
             self._logger.warning(f"{self._try_connect_times=}, {id(self._conn)=}")
         except asyncio.CancelledError:
             raise

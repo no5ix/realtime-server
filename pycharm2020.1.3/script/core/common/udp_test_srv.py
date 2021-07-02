@@ -6,6 +6,12 @@ from core.common import rudp
 from core.util.TimerHub import TimerHub
 from core.util.UtilApi import wait_or_not
 
+import time
+
+from core.util.UtilApi import wait_or_not
+
+last_ts12 = time.time()
+
 
 class EchoServerProtocol:
 
@@ -18,7 +24,7 @@ class EchoServerProtocol:
 
     def connection_made(self, transport):
         self.transport = transport
-        # print(f'connection_made, {self.conv=}')
+        print(f'connection_made, {self.conv=}')
 
     def datagram_received(self, data, addr):
         # message = data.decode()
@@ -58,6 +64,11 @@ class EchoServerProtocol:
         assert self.transport
         self.transport.sendto(data, self._cli_addr)
 
+        global last_ts12
+        ts_1111112 = time.time() - last_ts12
+        print(f'{ ts_1111112=}')
+        last_ts12 = time.time()
+
     # @wait_or_not()
     def tick_kcp_update(self):
         now = time.time()
@@ -90,3 +101,42 @@ async def main():
 
 
 asyncio.run(main())
+
+
+
+
+
+# import asyncio
+#
+#
+# class EchoServerProtocol(asyncio.DatagramProtocol):
+#     def connection_made(self, transport):
+#         self.transport = transport
+#
+#     def datagram_received(self, data, addr):
+#         message = data.decode()
+#         print('Received %r from %s' % (message, addr))
+#         print('Send %r to %s' % (message, addr))
+#         self.transport.sendto(data, addr)
+#
+#
+# async def main():
+#     print("Starting UDP server")
+#
+#     # Get a reference to the event loop as we plan to use
+#     # low-level APIs.
+#     loop = asyncio.get_running_loop()
+#
+#     # One protocol instance will be created to serve all
+#     # client requests.
+#     transport, protocol = await loop.create_datagram_endpoint(
+#         lambda: EchoServerProtocol(),
+#         local_addr=('127.0.0.1', 9999))
+#
+#     try:
+#         await asyncio.sleep(3600)  # Serve for 1 hour.
+#     finally:
+#         transport.close()
+#
+#
+# asyncio.run(main())

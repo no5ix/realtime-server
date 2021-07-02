@@ -4,15 +4,16 @@ import time
 import asyncio
 import struct
 import typing
+from asyncio import transports
 from asyncio.exceptions import CancelledError
 
+from ConnBase import HEARTBEAT_TIMEOUT, HEARTBEAT_INTERVAL, ROLE_TYPE_ACTIVE, ConnBase
 from common import gv
 from core.common.IdManager import IdManager
 from core.util.TimerHub import TimerHub
-from core.util.UtilApi import wait_or_not, async_lock
+from core.util.UtilApi import wait_or_not
 
 if typing.TYPE_CHECKING:
-    from server_entity.ServerEntity import ServerEntity
     from RpcHandler import RpcHandler
 
 # from common import gr
@@ -26,29 +27,19 @@ RPC_HANDLER_ID_LEN = 12
 STRUCT_PACK_FORMAT = '12s'
 MAX_BODY_LEN = 4294967296
 
-HEARTBEAT_TIMEOUT = 8
-HEARTBEAT_INTERVAL = 6
 
-ROLE_TYPE_ACTIVE = 0
-ROLE_TYPE_PASSIVE = 1
-
-CONN_STATE_CONNECTING = 0
-CONN_STATE_CONNECTED = 1
-CONN_STATE_DISCONNECTING = 2
-CONN_STATE_DISCONNECTED = 3
-
-
-class TcpConn:
+class TcpConn(ConnBase):
 
     def __init__(
             self,
             role_type: int,
             addr: typing.Tuple[str, int],
-            asyncio_writer: asyncio.StreamWriter,
-            asyncio_reader: asyncio.StreamReader,
+            # asyncio_writer: asyncio.StreamWriter,
+            # asyncio_reader: asyncio.StreamReader,
             rpc_handler: RpcHandler = None,
             close_cb: typing.Callable = lambda: None,
-            is_proxy: bool = False
+            is_proxy: bool = False,
+            transport: transports.BaseTransport = None
     ):
         if role_type == ROLE_TYPE_ACTIVE:
             assert(rpc_handler is not None)
@@ -57,9 +48,11 @@ class TcpConn:
         self._role_type = role_type
         self._is_proxy = is_proxy
         self._addr = addr  # type: typing.Tuple[str, int]
-        self._asyncio_writer = asyncio_writer  # type: asyncio.StreamWriter
-        self._asyncio_reader = asyncio_reader  # type: asyncio.StreamReader
+        # self._asyncio_writer = asyncio_writer  # type: # asyncio.StreamWriter
+        # self._asyncio_reader = asyncio_reader  # type: asyncio.StreamReader
         self._close_cb = close_cb
+
+        self._transport = transport
 
         self._send_cnt = 0
         self._recv_cnt = 0
@@ -119,12 +112,12 @@ class TcpConn:
         for _, _rh in self._rpc_handlers_map.items():
             await _rh.send_heartbeat()
 
-    @wait_or_not()
-    async def loop(self):
+    # @wait_or_not()
+    def handle_read(self, _data):
         while True:
             try:
                 # self._asyncio_writer
-                _data = await self._asyncio_reader.read(8192)
+                # _data = await self._asyncio_reader.read(8192)
                 # self.logger.info("_data")
                 if _data == b"":
                     self.handle_close("the peer has performed an orderly shutdown (recv 0 byte).")
@@ -169,7 +162,8 @@ class TcpConn:
         self.set_connection_state(False)
         self._close_cb()
         # await self._asyncio_writer.drain()
-        self._asyncio_writer.close()
+
+        self._transport.close()
         for _, _rh in self._rpc_handlers_map.items():
             _rh.on_conn_close()
             # _rh.destroy()
@@ -202,5 +196,6 @@ class TcpConn:
         header_data = struct.pack("i", data_len)
         data = header_data + data
 
-        self._asyncio_writer.write(data)
+        # self._asyncio_writer.write(data)
+        self._transport.write(data)
         # await self._asyncio_writer.drain()
