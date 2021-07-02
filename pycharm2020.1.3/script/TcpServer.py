@@ -49,7 +49,26 @@ from core.tool import incremental_reload
 # TCP_SERVER = None
 
 
-class TcpProtocol(asyncio.Protocol):
+# class TcpClientProtocol(asyncio.Protocol):
+#     def __init__(self):
+#     # def __init__(self):
+#         # self._role_type = role_type
+#         # self._create_tcp_conn_cb = create_tcp_conn_cb
+#         self._conn = None  # type: Optional[TcpConn.TcpConn]
+#
+#     def connection_made(self, transport: transports.BaseTransport) -> None:
+#         # assert callable(self._create_tcp_conn_cb)
+#         # self._conn = self._create_tcp_conn_cb(self._role_type, transport)
+#         self._conn = ConnMgr.instance().create_conn(ROLE_TYPE_PASSIVE, CONN_TYPE_TCP, transport)
+#
+#     def data_received(self, data: bytes) -> None:
+#         self._conn.handle_read(data)
+#
+#     def connection_lost(self, exc: Optional[Exception]) -> None:
+#         self._conn.handle_close(str(exc))
+
+
+class TcpServerProtocol(asyncio.Protocol):
     # def __init__(self, role_type, create_tcp_conn_cb):
     def __init__(self):
         # self._role_type = role_type
@@ -83,7 +102,7 @@ class TcpServer(ServerBase):
     #     _conn = self._addr_2_conn_map.get(addr, None)
     #     if _conn is None:
     #         transport, protocol = await self._ev_loop.create_connection(
-    #             lambda: TcpProtocol(ROLE_TYPE_ACTIVE, self._create_conn),
+    #             lambda: TcpServerProtocol(ROLE_TYPE_ACTIVE, self._create_conn),
     #             addr[0], addr[1])
     #     if rpc_handler is not None:
     #         _conn.add_rpc_handler(rpc_handler)
@@ -93,7 +112,7 @@ class TcpServer(ServerBase):
         try:
             # _ev_loop = gv.get_ev_loop()
             server = await self._ev_loop.create_server(
-                lambda: TcpProtocol(),
+                lambda: TcpServerProtocol(),
                 gv.local_ip, gv.local_port)
 
             async with server:

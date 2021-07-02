@@ -18,6 +18,7 @@ CONN_TYPE_TCP = 0
 CONN_TYPE_RUDP = 1
 
 
+
 @Singleton
 class ConnMgr:
 
@@ -43,13 +44,14 @@ class ConnMgr:
 
     async def get_conn_by_addr(
             self, conn_type, addr: typing.Tuple[str, int], rpc_handler: RpcHandler = None) -> TcpConn:
-        from TcpServer import TcpProtocol
+        from TcpServer import TcpServerProtocol
         _conn = self._addr_2_conn_map.get(addr, None)
         if _conn is None:
             if conn_type == CONN_TYPE_TCP:
                 transport, protocol = await self._ev_loop.create_connection(
-                    lambda: TcpProtocol(),
+                    lambda: TcpServerProtocol(),
                     addr[0], addr[1])
+                _conn = self._addr_2_conn_map[addr]
             else:
                 pass  # todo: rudp
         if rpc_handler is not None:
