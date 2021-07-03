@@ -162,7 +162,7 @@ class TimerHub:
 if __name__ == "__main__":
 
     # hello_str = "hhx"
-    _EV_LOOP = asyncio.get_event_loop()
+    EV_LOOP = asyncio.get_event_loop()
     # # EV_LOOP.call_later(2, partial(print, hello_str))
     # # EV_LOOP.call_later(2, print, hello_str)
     # cur_timer = EV_LOOP.call_later(1, lambda h=hello_str: print(h))
@@ -227,4 +227,4 @@ if __name__ == "__main__":
     # print(f"daffinal: {th._final_key_2_timer_info_map}")
     # th.destroy()
 
-    _EV_LOOP.run_forever()
+    EV_LOOP.run_forever()

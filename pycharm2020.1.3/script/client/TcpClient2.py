@@ -6,6 +6,7 @@ import time
 
 import ConnBase
 import TcpConn
+from ConnMgr import ConnMgr, CONN_TYPE_TCP
 from RpcHandler import RpcHandler, get_a_rpc_handler_id
 from client.Avatar import Avatar
 from client.Puppet import Puppet
@@ -30,7 +31,7 @@ async def tcp_echo_client(cli_index):
 
     while 1:
         rand_dispatcher_service_addr = UtilApi.get_rand_dispatcher_addr()
-        rand_dispatcher_service_addr = ('127.0.0.1', 9100)
+        # rand_dispatcher_service_addr = ('127.0.0.1', 9100)
         print(f"{rand_dispatcher_service_addr=}")
         start_time = time.time()
 
@@ -56,7 +57,7 @@ async def tcp_echo_client(cli_index):
             # ["lobby_server"],
             [ETCD_TAG_LOBBY_GATE],
             # [ETCD_TAG_LOBBY_SRV],
-            rpc_reply_timeout=0.2,
+            rpc_reply_timeout=None,
             # rpc_remote_entity_type="LoadCollector", ip_port_tuple=dispatcher_service_addr
             # rpc_callback=lambda err, res: self.logger.info(f"pick_lowest_load_service_addr: {err=} {res=}"),
             rpc_remote_entity_type="LoadCollector",
@@ -65,6 +66,8 @@ async def tcp_echo_client(cli_index):
         end_time = time.time()
         offset = end_time - start_time
         print(f'end: {offset=}')
+
+        # return  # todo: del
 
         if _err:
             cli_log.error(f"{_err=}")
@@ -81,17 +84,22 @@ async def tcp_echo_client(cli_index):
     cli_log.debug(f"lobby server info: {_res}")
     # return  # todo: del
 
-    reader, writer = await asyncio.open_connection(
-        _res[1], _res[2])
+    # reader, writer = await asyncio.open_connection(
+
+    # tranport, protocol = await gv.get_ev_loop().create_connection(
+    #     _res[1], _res[2])
         # '192.168.82.177', port)
         # '192.168.1.4', port)
         # '127.0.0.1', port)
     # peer_name = writer.get_extra_info('peername')
     # _ppt = Puppet()
+
     _ppt = Avatar()
-    _tcp_conn = TcpConn.TcpConn(
-        ConnBase.ROLE_TYPE_ACTIVE,
-        writer.get_extra_info('peername'), writer, reader, _ppt.get_rpc_handle())
+    _tcp_conn = await ConnMgr.instance().get_conn_by_addr(
+        conn_type=CONN_TYPE_TCP, addr=_res[1:], rpc_handler=_ppt.get_rpc_handle())
+    # _tcp_conn = TcpConn.TcpConn(
+    #     ConnBase.ROLE_TYPE_ACTIVE,
+    #     writer.get_extra_info('peername'), writer, reader, _ppt.get_rpc_handle())
     # _tcp_conn.loop()
     # _pbe = PuppetBindEntity()
     # _tcp_conn.set_entity(_pbe)

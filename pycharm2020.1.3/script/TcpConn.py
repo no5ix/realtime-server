@@ -66,7 +66,7 @@ class TcpConn(ConnBase):
             rpc_handler.set_conn(self)
             self._rpc_handlers_map = {rpc_handler.rpc_handler_id: rpc_handler}
 
-        self.loop()
+        # self.loop()
 
         self._last_heartbeat_ts = time.time()
         # todo:
@@ -74,8 +74,9 @@ class TcpConn(ConnBase):
             self._timer_hub.call_later(HEARTBEAT_TIMEOUT, self.handle_remote_heartbeat_timeout, repeat_count=-1)
             self._timer_hub.call_later(HEARTBEAT_INTERVAL, self.heartbeat, repeat_count=-1)
 
-    def add_rpc_handler(self, rpc_handler):
+    def add_rpc_handler(self, rpc_handler: RpcHandler):
         self._rpc_handlers_map[rpc_handler.rpc_handler_id] = rpc_handler
+        rpc_handler.set_conn(self)
 
     def remove_rpc_handler(self, rpc_handler_id):
         self._rpc_handlers_map.pop(rpc_handler_id, None)
@@ -114,45 +115,45 @@ class TcpConn(ConnBase):
 
     # @wait_or_not()
     def handle_read(self, _data):
-        while True:
-            try:
-                # self._asyncio_writer
-                # _data = await self._asyncio_reader.read(8192)
-                # self.logger.info("_data")
-                if _data == b"":
-                    self.handle_close("the peer has performed an orderly shutdown (recv 0 byte).")
-                    return
-                self._recv_data += _data
-                while True:
-                    _len_recv_data = len(self._recv_data)
-                    if _len_recv_data < (HEAD_LEN+RPC_HANDLER_ID_LEN):
-                        break
-                    _body_len, = struct.unpack('i', self._recv_data[:HEAD_LEN])
-                    _input_data_len = HEAD_LEN + _body_len
-                    if _body_len > MAX_BODY_LEN or _body_len < 0:
-                        self.handle_close("body too big, Close the connection")
-                        return
-                    elif _len_recv_data >= _input_data_len:
-                        _rpc_handler_id, = struct.unpack(
-                            STRUCT_PACK_FORMAT, self._recv_data[HEAD_LEN: HEAD_LEN + RPC_HANDLER_ID_LEN])
-                        _body_data = self._recv_data[HEAD_LEN + RPC_HANDLER_ID_LEN:_input_data_len]
-                        self._recv_cnt += 1
-                        # self.logger.info("self._recv_cnt:" + str(self._recv_cnt))
-                        self.handle_message(_rpc_handler_id, _body_data)
-                        self._recv_data = self._recv_data[_input_data_len:]
-                    else:
-                        break
-            except (
-                    ConnectionResetError,
-                    ConnectionAbortedError,
-                    # ConnectionRefusedError
-            ) as e:
-                self.handle_close(f"connection is closed by error: {str(e)}")
+        # while True:
+        try:
+            # self._asyncio_writer
+            # _data = await self._asyncio_reader.read(8192)
+            # self.logger.info("_data")
+            if _data == b"":
+                self.handle_close("the peer has performed an orderly shutdown (recv 0 byte).")
                 return
-            except CancelledError as e:
-                self._logger.error(str(e))  # TODO
-            except:
-                self._logger.log_last_except()
+            self._recv_data += _data
+            while True:
+                _len_recv_data = len(self._recv_data)
+                if _len_recv_data < (HEAD_LEN+RPC_HANDLER_ID_LEN):
+                    break
+                _body_len, = struct.unpack('i', self._recv_data[:HEAD_LEN])
+                _input_data_len = HEAD_LEN + _body_len
+                if _body_len > MAX_BODY_LEN or _body_len < 0:
+                    self.handle_close("body too big, Close the connection")
+                    return
+                elif _len_recv_data >= _input_data_len:
+                    _rpc_handler_id, = struct.unpack(
+                        STRUCT_PACK_FORMAT, self._recv_data[HEAD_LEN: HEAD_LEN + RPC_HANDLER_ID_LEN])
+                    _body_data = self._recv_data[HEAD_LEN + RPC_HANDLER_ID_LEN:_input_data_len]
+                    self._recv_cnt += 1
+                    # self.logger.info("self._recv_cnt:" + str(self._recv_cnt))
+                    self.handle_message(_rpc_handler_id, _body_data)
+                    self._recv_data = self._recv_data[_input_data_len:]
+                else:
+                    break
+        except (
+                ConnectionResetError,
+                ConnectionAbortedError,
+                # ConnectionRefusedError
+        ) as e:
+            self.handle_close(f"connection is closed by error: {str(e)}")
+            return
+        except CancelledError as e:
+            self._logger.error(str(e))  # TODO
+        except:
+            self._logger.log_last_except()
 
     # @wait_or_not
     def handle_close(self, close_reason: str):

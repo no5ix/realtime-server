@@ -71,14 +71,22 @@ from core.tool import incremental_reload
 class TcpServerProtocol(asyncio.Protocol):
     # def __init__(self, role_type, create_tcp_conn_cb):
     def __init__(self):
+    # def __init__(self, rpc_handler=None):
         # self._role_type = role_type
         # self._create_tcp_conn_cb = create_tcp_conn_cb
         self._conn = None  # type: Optional[TcpConn.TcpConn]
+        # self._rpc_handler = rpc_handler  # type: Optional[RpcHandler]
 
     def connection_made(self, transport: transports.BaseTransport) -> None:
         # assert callable(self._create_tcp_conn_cb)
         # self._conn = self._create_tcp_conn_cb(self._role_type, transport)
-        self._conn = ConnMgr.instance().create_conn(ROLE_TYPE_PASSIVE, CONN_TYPE_TCP, transport)
+        self._conn = ConnMgr.instance().create_conn(
+            ROLE_TYPE_PASSIVE, CONN_TYPE_TCP, transport,
+            # self._rpc_handler
+        )
+
+        addr = transport.get_extra_info('peername')  # type: typing.Tuple[str, int]
+        LogManager.get_logger().info(f"{addr!r} is connected !!!!")
 
     def data_received(self, data: bytes) -> None:
         self._conn.handle_read(data)
@@ -115,6 +123,8 @@ class TcpServer(ServerBase):
                 lambda: TcpServerProtocol(),
                 gv.local_ip, gv.local_port)
 
+            addr = server.sockets[0].getsockname()
+            self._logger.info(f'Server on {addr}')
             async with server:
                 await server.serve_forever()
         except KeyboardInterrupt:
