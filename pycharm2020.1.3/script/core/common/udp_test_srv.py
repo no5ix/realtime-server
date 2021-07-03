@@ -27,6 +27,8 @@ class EchoServerProtocol:
         print(f'connection_made, {self.conv=}')
 
     def datagram_received(self, data, addr):
+        addr = self.transport.get_extra_info('peername')  # type: typing.Tuple[str, int]
+
         # message = data.decode()
         # print('Received %r from %s' % (message, addr))
         # print('Send %r to %s' % (message, addr))

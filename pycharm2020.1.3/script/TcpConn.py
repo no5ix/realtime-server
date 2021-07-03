@@ -22,12 +22,6 @@ if typing.TYPE_CHECKING:
 from core.mobilelog.LogManager import LogManager
 
 
-HEAD_LEN = 4
-RPC_HANDLER_ID_LEN = 12
-STRUCT_PACK_FORMAT = '12s'
-MAX_BODY_LEN = 4294967296
-
-
 class TcpConn(ConnBase):
 
     def __init__(

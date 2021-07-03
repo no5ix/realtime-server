@@ -2,10 +2,11 @@ from __future__ import annotations
 import typing
 import asyncio
 from asyncio import transports
-from typing import Optional
+from typing import Optional, Tuple
 
 import ConnBase
 from ConnBase import ROLE_TYPE_ACTIVE
+from RudpConn import RudpConn
 from common import gv
 import TcpConn
 from core.mobilelog.LogManager import LogManager
@@ -30,20 +31,29 @@ class ConnMgr:
     def set_is_proxy(self, is_proxy):
         self._is_proxy = is_proxy
 
+    def get_conn(self, addr, conn_type) -> ConnBase:
+        return self._addr_2_conn_map.get(addr, None)
+
     def create_conn(
             self, role_type, conn_type, transport: transports.BaseTransport,
+            rudp_conv: int = 0, rudp_peer_addr: Optional[Tuple[str, int]] = None
             # rpc_handler: Optional[RpcHandler] = None
     ) -> TcpConn.TcpConn:
         addr = transport.get_extra_info('peername')  # type: typing.Tuple[str, int]
 
         if conn_type == CONN_TYPE_TCP:
-            tcp_conn = TcpConn.TcpConn(
+            _conn = TcpConn.TcpConn(
                 role_type, addr, close_cb=self._remove_conn, is_proxy=self._is_proxy,
                 transport=transport)
         else:
             pass  # todo: rudp
-        self._addr_2_conn_map[addr] = tcp_conn
-        return tcp_conn
+            assert rudp_conv > 0
+            _conn = RudpConn(
+                rudp_conv, role_type, rudp_peer_addr, close_cb=self._remove_conn, is_proxy=self._is_proxy,
+                transport=transport)
+
+        self._addr_2_conn_map[addr] = _conn
+        return _conn
 
     async def get_conn_by_addr(
             self, conn_type, addr: typing.Tuple[str, int],

@@ -9,6 +9,7 @@ from asyncio.exceptions import CancelledError
 
 from ConnBase import HEARTBEAT_TIMEOUT, HEARTBEAT_INTERVAL, ROLE_TYPE_ACTIVE, ConnBase
 from common import gv
+from core.common import rudp
 from core.common.IdManager import IdManager
 from core.util.TimerHub import TimerHub
 from core.util.UtilApi import wait_or_not
@@ -29,4 +30,35 @@ MAX_BODY_LEN = 4294967296
 
 
 class RudpConn(ConnBase):
-    pass
+
+    def __init__(
+            self,
+            conv: int,
+            role_type: int,
+            addr: typing.Tuple[str, int],
+            # asyncio_writer: asyncio.StreamWriter,
+            # asyncio_reader: asyncio.StreamReader,
+            rpc_handler: RpcHandler = None,
+            close_cb: typing.Callable = lambda: None,
+            is_proxy: bool = False,
+            transport: transports.BaseTransport = None
+    ):
+        super(RudpConn, self).__init__(role_type, addr, rpc_handler, close_cb, is_proxy, transport)
+        self._conv = conv
+
+        self._kcp = rudp.Kcp(conv, self.send_data_internal)
+        self._kcp.set_nodelay(nodelay=True, interval=10, resend=2, nocwnd=True)
+        self.tick_kcp_update()
+
+    # @wait_or_not()
+    def tick_kcp_update(self):
+        now = time.time()
+        self._kcp.update(int(time.time() * 1000))
+        wait_sec = self._kcp.check(int(time.time() * 1000)) / 1000
+        # print(f"tickkkkkkkk, {wait_sec-now=}")
+
+        self._timer_hub.call_at(wait_sec, self.tick_kcp_update)
+
+    def send_data_internal(self, kcp, data):
+        assert self._transport
+        self._transport.sendto(data, self._addr)
