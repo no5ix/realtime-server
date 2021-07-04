@@ -18,9 +18,11 @@ from asyncio import events, tasks, transports
 import typing
 
 # from core.util.performance.cpu_load_handler import CpuLoad
+from sanic_jwt_extended.jwt_manager import JWT
+
 import ConnBase
 # from ConnBase import ROLE_TYPE_PASSIVE
-from ConnMgr import ConnMgr, CONN_TYPE_RUDP, RudpProtocol
+from ConnMgr import ConnMgr, PROTO_TYPE_RUDP, RudpProtocol
 from ProxyRpcHandler import ProxyCliRpcHandler
 from core.util import UtilApi
 from core.util.UtilApi import wait_or_not, Singleton

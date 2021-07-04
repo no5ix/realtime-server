@@ -13,7 +13,7 @@ from bson import ObjectId
 
 import core.util.UtilApi
 from ConnBase import ConnBase
-from ConnMgr import ConnMgr, CONN_TYPE_TCP, CONN_TYPE_RUDP
+from ConnMgr import ConnMgr, PROTO_TYPE_TCP, PROTO_TYPE_RUDP
 from core.common.IdManager import IdManager
 from core.mobilelog.LogManager import AsyncLogger
 from core.util.TimerHub import TimerHub
@@ -60,11 +60,15 @@ class RpcHandler:
 
     def __init__(
             self, rpc_handler_id: bytes, conn: ConnBase = None,
-            entity: ServerEntity = None):
+            entity: ServerEntity = None, conn_proto_type: int = PROTO_TYPE_TCP):
         self.rpc_handler_id = rpc_handler_id
         self._logger = LogManager.get_logger()  # type: AsyncLogger
         # self._logger.info(f'!!! xx {rpc_handler_id=}')
-        self._conn = conn  # type: TcpConn
+        self._conn = conn  # type: ConnBase
+        if conn:
+            self._conn_proto_type = conn.get_proto_type()
+        else:
+            self._conn_proto_type = conn_proto_type
         self._entity = entity  # type: ServerEntity
         self._next_reply_id = 0
         self._pending_requests = {}  # type: typing.Dict[int, RpcReplyFuture]
@@ -210,8 +214,9 @@ class RpcHandler:
                     return
                 addr = self._conn.get_addr()
             # self._try_connect_times += 1
-            self._conn, is_conned = await ConnMgr.instance().open_conn_by_addr(CONN_TYPE_TCP, addr, self)
-            # self._conn, is_conned = await ConnMgr.instance().open_conn_by_addr(CONN_TYPE_RUDP, addr, self)
+            # self._conn, is_conned = await ConnMgr.instance().open_conn_by_addr(CONN_TYPE_TCP, addr, self)
+            self._conn, is_conned = await ConnMgr.instance().open_conn_by_addr(
+                self._conn_proto_type, addr, self)
             if not is_conned:
                 for _msg in self._msg_buffer:
                     if _msg[0] == RPC_TYPE_REQUEST:

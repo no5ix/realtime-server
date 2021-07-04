@@ -9,7 +9,7 @@ from asyncio.exceptions import CancelledError
 
 from ConnBase import HEARTBEAT_TIMEOUT, HEARTBEAT_INTERVAL, ConnBase, RECONNECT_MAX_TIMES, RECONNECT_INTERVAL, \
     CONN_STATE_CONNECTING, CONN_STATE_CONNECTED, STRUCT_PACK_FORMAT
-from ConnMgr import CONN_TYPE_TCP, CONN_TYPE_RUDP, RudpProtocol, RUDP_HANDSHAKE_SYN, ConnMgr, ROLE_TYPE_PASSIVE
+from ConnMgr import PROTO_TYPE_TCP, PROTO_TYPE_RUDP, RudpProtocol, RUDP_HANDSHAKE_SYN, ConnMgr, ROLE_TYPE_PASSIVE
 from common import gv
 from core.common import rudp
 from core.common.IdManager import IdManager
@@ -39,9 +39,8 @@ class RudpConn(ConnBase):
             transport: transports.BaseTransport = None,
             conv: int = None,
     ):
-        self._conn_type = CONN_TYPE_RUDP
-
         super(RudpConn, self).__init__(role_type, addr, rpc_handler, close_cb, is_proxy, transport)
+        self._proto_type = PROTO_TYPE_RUDP
         self._conv = conv
         if self._role_type == ROLE_TYPE_PASSIVE:
             self._init_kcp()
@@ -53,14 +52,12 @@ class RudpConn(ConnBase):
 
     async def try_connect(self) -> bool:
         self._conn_state = CONN_STATE_CONNECTING
-
         while self._try_connect_times < RECONNECT_MAX_TIMES:
             self._try_connect_times += 1
-            transport, protocol = await gv.get_ev_loop().create_datagram_endpoint(
+            self._transport, protocol = await gv.get_ev_loop().create_datagram_endpoint(
                 lambda: RudpProtocol(),
                 remote_addr=self._addr)
             self._transport.sendto(RUDP_HANDSHAKE_SYN)
-            self._transport = transport
             fut = ConnMgr.instance().create_rudp_conned_fut(self._addr)
             # self._logger.error(str(e))
             # await asyncio.sleep(RECONNECT_INTERVAL)
@@ -69,7 +66,7 @@ class RudpConn(ConnBase):
                 conv = await asyncio.wait_for(
                     asyncio.shield(fut), timeout=RECONNECT_INTERVAL)
             except asyncio.exceptions.TimeoutError:
-                pass
+                self._logger.warning(f"try reconnect rudp: {str(self._addr)} ... {self._try_connect_times}")
             else:
                 self._conv = conv
                 self.set_connection_state(CONN_STATE_CONNECTED)
@@ -78,7 +75,7 @@ class RudpConn(ConnBase):
                 return True
         else:
             pass  # todo
-            self._logger.error(f"try {RECONNECT_MAX_TIMES} times , still can't connect remote addr: {addr}")
+            self._logger.error(f"try {RECONNECT_MAX_TIMES} times , still can't connect rudp remote addr: {self._addr}")
             self._try_connect_times = 0
             return False
 

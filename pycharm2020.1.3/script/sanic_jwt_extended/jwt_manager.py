@@ -29,7 +29,7 @@ class JWT:
 
     @classmethod
     @contextmanager
-    def initialize(cls, app):
+    def initialize(cls, sanic_app=None):
         cls.config = Config()
         cls.handler = Handler()
 
@@ -39,7 +39,7 @@ class JWT:
         cls.handler.read_only = True
         cls._validate_config()
         cls._setup_blacklist()
-        cls._set_error_handlers(app)
+        cls._set_error_handlers(sanic_app)
 
     @classmethod
     def _setup_blacklist(cls):
@@ -78,6 +78,8 @@ class JWT:
 
     @classmethod
     def _set_error_handlers(cls, app):
+        if app is None:
+            return
         app.error_handler.add(NoAuthorizationError, cls.handler.no_authorization)
         app.error_handler.add(ExpiredSignatureError, cls.handler.expired_signature)
         app.error_handler.add(InvalidHeaderError, cls.handler.invalid_header)

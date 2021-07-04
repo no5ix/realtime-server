@@ -21,7 +21,7 @@ from typing import Optional
 
 import ConnBase
 # from ConnBase import ROLE_TYPE_PASSIVE, ROLE_TYPE_ACTIVE
-from ConnMgr import ConnMgr, CONN_TYPE_TCP, TcpProtocol, ROLE_TYPE_PASSIVE
+from ConnMgr import ConnMgr, PROTO_TYPE_TCP, TcpProtocol, ROLE_TYPE_PASSIVE
 from ProxyRpcHandler import ProxyCliRpcHandler
 from ServerBase import ServerBase
 from core.util import UtilApi

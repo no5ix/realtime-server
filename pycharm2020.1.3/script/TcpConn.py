@@ -9,7 +9,7 @@ from asyncio.exceptions import CancelledError
 
 from ConnBase import HEARTBEAT_TIMEOUT, HEARTBEAT_INTERVAL, ConnBase, RPC_HANDLER_ID_LEN, RECONNECT_MAX_TIMES, \
     RECONNECT_INTERVAL, CONN_STATE_CONNECTED, CONN_STATE_CONNECTING
-from ConnMgr import CONN_TYPE_TCP, ROLE_TYPE_ACTIVE
+from ConnMgr import PROTO_TYPE_TCP, ROLE_TYPE_ACTIVE
 from common import gv
 from core.common.IdManager import IdManager
 from core.util.TimerHub import TimerHub
@@ -38,7 +38,7 @@ class TcpConn(ConnBase):
             transport: transports.BaseTransport = None
     ):
         super(TcpConn, self).__init__(role_type, addr, rpc_handler, close_cb, is_proxy, transport)
-        self._conn_type = CONN_TYPE_TCP
+        self._proto_type = PROTO_TYPE_TCP
 
     # @wait_or_not()
     async def try_connect(self) -> bool:
@@ -62,7 +62,7 @@ class TcpConn(ConnBase):
                 return True
         else:
             pass  # todo
-            self._logger.error(f"try {RECONNECT_MAX_TIMES} times , still can't connect remote addr: {addr}")
+            self._logger.error(f"try {RECONNECT_MAX_TIMES} times , still can't connect tcp remote addr: {self._addr}")
             self._try_connect_times = 0
             return False
 

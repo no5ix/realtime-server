@@ -54,7 +54,7 @@ class ConnBase:
             transport: transports.BaseTransport = None
     ):
 
-        self._conn_type = None
+        self._proto_type = None
 
         self._try_connect_times = 0
 
@@ -95,6 +95,9 @@ class ConnBase:
             # self.try_connect()
         else:
             self._conn_state = CONN_STATE_CONNECTED
+
+    def get_proto_type(self):
+        return self._proto_type
 
     # @wait_or_not()
     async def try_connect(self) -> bool:

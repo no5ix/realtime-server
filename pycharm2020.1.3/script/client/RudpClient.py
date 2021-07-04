@@ -6,7 +6,7 @@ import time
 
 import ConnBase
 import TcpConn
-from ConnMgr import ConnMgr, CONN_TYPE_TCP
+from ConnMgr import ConnMgr, PROTO_TYPE_TCP, PROTO_TYPE_RUDP
 from RpcHandler import RpcHandler, get_a_rpc_handler_id
 from client.Avatar import Avatar
 from client.Puppet import Puppet
@@ -52,7 +52,7 @@ async def rudp_echo_cli(cli_index):
         offset = end_time - start_time
         print(f'end: {offset=}')
 
-        return  # todo: del
+        # return  # todo: del
 
         if _err:
             cli_log.error(f"{_err=}")
@@ -80,8 +80,8 @@ async def rudp_echo_cli(cli_index):
     # _ppt = Puppet()
 
     _ppt = Avatar()
-    _tcp_conn = await ConnMgr.instance().open_conn_by_addr(
-        conn_type=CONN_TYPE_TCP, addr=_res[1:], rpc_handler=_ppt.get_rpc_handle())
+    _conn, _is_conned = await ConnMgr.instance().open_conn_by_addr(
+        proto_type=PROTO_TYPE_RUDP, addr=_res[1:], rpc_handler=_ppt.get_rpc_handle())
     # _tcp_conn = TcpConn.TcpConn(
     #     ConnBase.ROLE_TYPE_ACTIVE,
     #     writer.get_extra_info('peername'), writer, reader, _ppt.get_rpc_handle())
@@ -92,6 +92,9 @@ async def rudp_echo_cli(cli_index):
     # _ppt.set_rpc_handler(_tcp_conn.get_rpc_handler())
     # _pbe.set_puppet(_ppt)
     # _pbe.set_connection(_tcp_conn)
+    if not _is_conned:
+        cli_log.error(f"cant conn to ls")
+        return
 
     _ppt.init_from_dict({})
 
