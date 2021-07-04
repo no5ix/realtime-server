@@ -172,7 +172,7 @@ class ServerBase:
     # def _remove_conn(self, addr: typing.Tuple[str, int]):
     #     self._addr_2_conn_map.pop(addr, None)
     #
-    # async def get_conn_by_addr(self, addr: typing.Tuple[str, int], rpc_handler: RpcHandler):
+    # async def create_conn_by_addr(self, addr: typing.Tuple[str, int], rpc_handler: RpcHandler):
     #     _conn = self._addr_2_conn_map.get(addr, None)
     #     if _conn is None:
     #         reader, writer = await asyncio.open_connection(addr[0], addr[1])

@@ -34,9 +34,6 @@ RPC_TYPE_REQUEST = 1
 RPC_TYPE_REPLY = 2
 RPC_TYPE_HEARTBEAT = 3
 
-RECONNECT_MAX_TIMES = 6
-RECONNECT_INTERVAL = 0.6  # sec
-
 REQUEST_RPC_TIMEOUT = 3  # sec
 
 
@@ -73,7 +70,7 @@ class RpcHandler:
         self._pending_requests = {}  # type: typing.Dict[int, RpcReplyFuture]
         self._msg_buffer = []  # type: typing.List[typing.Tuple]
         self._timer_hub = TimerHub()
-        self._try_connect_times = 0
+        # self._try_connect_times = 0
 
         self._is_destroyed = False
         self._create_conn_tasks = []  # type: typing.List[asyncio.Task]
@@ -212,19 +209,9 @@ class RpcHandler:
                 if not self._conn.is_active_role():
                     return
                 addr = self._conn.get_addr()
-            self._try_connect_times += 1
-            self._conn = await ConnMgr.instance().get_conn_by_addr(CONN_TYPE_TCP, addr, self)
-
-            self._logger.warning(f"{self._try_connect_times=}, {id(self._conn)=}")
-        except asyncio.CancelledError:
-            raise
-        except Exception as e:
-            self._logger.error(str(e))
-            if self._try_connect_times < RECONNECT_MAX_TIMES:
-                self._logger.warning(f"try reconnect {str(addr)} ... {self._try_connect_times}")
-                self._timer_hub.call_later(RECONNECT_INTERVAL, lambda: self._handle_create_conn(addr))
-            else:
-                self._logger.error(f"try {RECONNECT_MAX_TIMES} times , still can't connect remote addr: {addr}")
+            # self._try_connect_times += 1
+            self._conn = await ConnMgr.instance().create_conn_by_addr(CONN_TYPE_TCP, addr, self)
+            if self._conn is None:
                 for _msg in self._msg_buffer:
                     if _msg[0] == RPC_TYPE_REQUEST:
                         _reply_id = _msg[1]
@@ -234,15 +221,39 @@ class RpcHandler:
                             f"fire pending requests future, rpc func: {_msg[3]}, reply_id: {_reply_id}")
                         self._pending_requests[_reply_id].set_error_and_result(
                             f"cant connect remote addr: {addr}", None)
-                self._try_connect_times = 0
-            return
-        else:
-            if self._try_connect_times > 1:
-                self._logger.warning(f"sum {self._try_connect_times=}, {id(self._conn)=}")
-            self._try_connect_times = 0
-            for _msg in self._msg_buffer:
-                self._conn.send_data_and_count(self.rpc_handler_id, _msg)
-            self._msg_buffer.clear()
+            else:
+                for _msg in self._msg_buffer:
+                    self._conn.send_data_and_count(self.rpc_handler_id, _msg)
+                self._msg_buffer.clear()
+
+            # self._logger.warning(f"{self._try_connect_times=}, {id(self._conn)=}")
+        except asyncio.CancelledError:
+            raise
+        # except Exception as e:
+        #     self._logger.error(str(e))
+        #     if self._try_connect_times < RECONNECT_MAX_TIMES:
+        #         self._logger.warning(f"try reconnect {str(addr)} ... {self._try_connect_times}")
+        #         self._timer_hub.call_later(RECONNECT_INTERVAL, lambda: self._handle_create_conn(addr))
+        #     else:
+        #         self._logger.error(f"try {RECONNECT_MAX_TIMES} times , still can't connect remote addr: {addr}")
+        #         for _msg in self._msg_buffer:
+        #             if _msg[0] == RPC_TYPE_REQUEST:
+        #                 _reply_id = _msg[1]
+        #                 if _reply_id not in self._pending_requests:
+        #                     continue
+        #                 self._logger.warning(
+        #                     f"fire pending requests future, rpc func: {_msg[3]}, reply_id: {_reply_id}")
+        #                 self._pending_requests[_reply_id].set_error_and_result(
+        #                     f"cant connect remote addr: {addr}", None)
+        #         self._try_connect_times = 0
+        #     return
+        # else:
+        #     if self._try_connect_times > 1:
+        #         self._logger.warning(f"sum {self._try_connect_times=}, {id(self._conn)=}")
+        #     self._try_connect_times = 0
+        #     for _msg in self._msg_buffer:
+        #         self._conn.send_data_and_count(self.rpc_handler_id, _msg)
+        #     self._msg_buffer.clear()
 
     @staticmethod
     async def handle_request_notify_rpc(_method, _method_name, _method_args, _method_kwargs):

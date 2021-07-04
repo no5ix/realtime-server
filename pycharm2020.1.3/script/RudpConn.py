@@ -7,7 +7,8 @@ import typing
 from asyncio import transports
 from asyncio.exceptions import CancelledError
 
-from ConnBase import HEARTBEAT_TIMEOUT, HEARTBEAT_INTERVAL, ROLE_TYPE_ACTIVE, ConnBase
+from ConnBase import HEARTBEAT_TIMEOUT, HEARTBEAT_INTERVAL, ConnBase
+from ConnMgr import CONN_TYPE_TCP, CONN_TYPE_RUDP
 from common import gv
 from core.common import rudp
 from core.common.IdManager import IdManager
@@ -39,6 +40,7 @@ class RudpConn(ConnBase):
     ):
         super(RudpConn, self).__init__(role_type, addr, rpc_handler, close_cb, is_proxy, transport)
         self._conv = conv
+        self._conn_type = CONN_TYPE_RUDP
 
         self._kcp = rudp.Kcp(conv, self.send_data_internal)
         self._kcp.set_nodelay(nodelay=True, interval=10, resend=2, nocwnd=True)

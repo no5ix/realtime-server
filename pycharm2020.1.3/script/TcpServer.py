@@ -20,8 +20,8 @@ import typing
 from typing import Optional
 
 import ConnBase
-from ConnBase import ROLE_TYPE_PASSIVE, ROLE_TYPE_ACTIVE
-from ConnMgr import ConnMgr, CONN_TYPE_TCP
+# from ConnBase import ROLE_TYPE_PASSIVE, ROLE_TYPE_ACTIVE
+from ConnMgr import ConnMgr, CONN_TYPE_TCP, TcpServerProtocol
 from ProxyRpcHandler import ProxyCliRpcHandler
 from ServerBase import ServerBase
 from core.util import UtilApi
@@ -59,40 +59,13 @@ from core.tool import incremental_reload
 #     def connection_made(self, transport: transports.BaseTransport) -> None:
 #         # assert callable(self._create_tcp_conn_cb)
 #         # self._conn = self._create_tcp_conn_cb(self._role_type, transport)
-#         self._conn = ConnMgr.instance().create_conn(ROLE_TYPE_PASSIVE, CONN_TYPE_TCP, transport)
+#         self._conn = ConnMgr.instance().add_conn(ROLE_TYPE_PASSIVE, CONN_TYPE_TCP, transport)
 #
 #     def data_received(self, data: bytes) -> None:
 #         self._conn.handle_read(data)
 #
 #     def connection_lost(self, exc: Optional[Exception]) -> None:
 #         self._conn.handle_close(str(exc))
-
-
-class TcpServerProtocol(asyncio.Protocol):
-    # def __init__(self, role_type, create_tcp_conn_cb):
-    def __init__(self):
-    # def __init__(self, rpc_handler=None):
-        # self._role_type = role_type
-        # self._create_tcp_conn_cb = create_tcp_conn_cb
-        self._conn = None  # type: Optional[TcpConn.TcpConn]
-        # self._rpc_handler = rpc_handler  # type: Optional[RpcHandler]
-
-    def connection_made(self, transport: transports.BaseTransport) -> None:
-        # assert callable(self._create_tcp_conn_cb)
-        # self._conn = self._create_tcp_conn_cb(self._role_type, transport)
-        self._conn = ConnMgr.instance().create_conn(
-            ROLE_TYPE_PASSIVE, CONN_TYPE_TCP, transport,
-            # self._rpc_handler
-        )
-
-        addr = transport.get_extra_info('peername')  # type: typing.Tuple[str, int]
-        LogManager.get_logger().info(f"{addr!r} is connected !!!!")
-
-    def data_received(self, data: bytes) -> None:
-        self._conn.handle_read(data)
-
-    def connection_lost(self, exc: Optional[Exception]) -> None:
-        self._conn.handle_close(str(exc))
 
 
 class TcpServer(ServerBase):
@@ -105,7 +78,7 @@ class TcpServer(ServerBase):
     #     self._addr_2_conn_map[addr] = tcp_conn
     #     return tcp_conn
     #
-    # async def get_conn_by_addr(
+    # async def create_conn_by_addr(
     #         self, addr: typing.Tuple[str, int], rpc_handler: RpcHandler = None) -> TcpConn:
     #     _conn = self._addr_2_conn_map.get(addr, None)
     #     if _conn is None:
@@ -124,7 +97,7 @@ class TcpServer(ServerBase):
                 gv.local_ip, gv.local_port)
 
             addr = server.sockets[0].getsockname()
-            self._logger.info(f'Server on {addr}')
+            self._logger.info(f'TCP Server on {addr}')
             async with server:
                 await server.serve_forever()
         except KeyboardInterrupt:

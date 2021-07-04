@@ -22,8 +22,8 @@ from core.util.TimerHub import TimerHub
 from server_entity.ServerEntity import ServerEntity
 
 
-async def tcp_echo_client(cli_index):
-    LogManager.set_log_tag("tcp_client2_" + str(cli_index))
+async def rudp_echo_cli(cli_index):
+    LogManager.set_log_tag("rudp_client_" + str(cli_index))
     LogManager.set_log_path("../bin/win/log/")
 
     cli_log = LogManager.get_logger()
@@ -31,24 +31,9 @@ async def tcp_echo_client(cli_index):
 
     while 1:
         rand_dispatcher_service_addr = UtilApi.get_rand_dispatcher_addr()
-        rand_dispatcher_service_addr = ('127.0.0.1', 9100)
+        rand_dispatcher_service_addr = ('127.0.0.1', 9100)  # todo: just for debugging
         print(f"{rand_dispatcher_service_addr=}")
         start_time = time.time()
-
-        # temp_se = ServerEntity()
-        # _err, _res = await temp_se.call_remote_method(
-        #     "pick_lowest_load_service_addr",
-        #     # [gv.etcd_tag],
-        #     # ["battle_server"],
-        #     # ["lobby_server"],
-        #     [ETCD_TAG_LOBBY_GATE],
-        #     # [ETCD_TAG_LOBBY_SRV],
-        #     rpc_reply_timeout=0.2,
-        #     # rpc_remote_entity_type="LoadCollector", ip_port_tuple=dispatcher_service_addr
-        #     # rpc_callback=lambda err, res: self.logger.info(f"pick_lowest_load_service_addr: {err=} {res=}"),
-        #     rpc_remote_entity_type="LoadCollector",
-        #     ip_port_tuple=rand_dispatcher_service_addr)
-        # temp_se.destroy()
 
         _err, _res = await temp_rh.request_rpc(
             "pick_lowest_load_service_addr",
@@ -67,7 +52,7 @@ async def tcp_echo_client(cli_index):
         offset = end_time - start_time
         print(f'end: {offset=}')
 
-        # return  # todo: del
+        return  # todo: del
 
         if _err:
             cli_log.error(f"{_err=}")
@@ -173,10 +158,10 @@ if __name__ == '__main__':
 
     # _ev_loop = events.new_event_loop()
     # events.set_event_loop(_ev_loop)
-    # _ev_loop.run_until_complete(tcp_echo_client())
+    # _ev_loop.run_until_complete(rudp_echo_cli())
     # _ev_loop.run_forever()
     ev_loop = gv.get_ev_loop()
-    ev_loop.create_task(tcp_echo_client(sys.argv[1]))
+    ev_loop.create_task(rudp_echo_cli(sys.argv[1]))
     ev_loop.run_forever()
-    # gv.get_ev_loop().run_until_complete(tcp_echo_client(sys.argv[1]))
-    # asyncio.run(tcp_echo_client(sys.argv[1]))
+    # gv.get_ev_loop().run_until_complete(rudp_echo_cli(sys.argv[1]))
+    # asyncio.run(rudp_echo_cli(sys.argv[1]))

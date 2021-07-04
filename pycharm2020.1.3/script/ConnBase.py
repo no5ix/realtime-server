@@ -8,6 +8,7 @@ from asyncio import transports
 from asyncio.exceptions import CancelledError
 
 # from ConnBase import HEARTBEAT_TIMEOUT, HEARTBEAT_INTERVAL, ROLE_TYPE_ACTIVE, ConnBase
+from ConnMgr import ROLE_TYPE_ACTIVE
 from common import gv
 from core.common.IdManager import IdManager
 from core.util.TimerHub import TimerHub
@@ -23,9 +24,6 @@ from core.mobilelog.LogManager import LogManager
 
 HEARTBEAT_TIMEOUT = 8
 HEARTBEAT_INTERVAL = 6
-
-ROLE_TYPE_ACTIVE = 0
-ROLE_TYPE_PASSIVE = 1
 
 CONN_STATE_CONNECTING = 0
 CONN_STATE_CONNECTED = 1
@@ -53,6 +51,9 @@ class ConnBase:
     ):
         if role_type == ROLE_TYPE_ACTIVE:
             assert (rpc_handler is not None)
+
+        self._conn_type = None
+
         self._is_connected = True
 
         self._role_type = role_type
