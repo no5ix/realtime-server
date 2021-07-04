@@ -10,6 +10,7 @@ import time
 from typing import Optional
 
 import core.util.UtilApi
+from ConnBase import ConnBase
 from ConnMgr import ConnMgr
 from RpcHandler import RpcHandler, RPC_TYPE_HEARTBEAT, RPC_TYPE_NOTIFY, RPC_TYPE_REQUEST, RPC_TYPE_REPLY, \
     get_a_rpc_handler_id
@@ -131,7 +132,7 @@ class ProxyLobbyRpcHandler(RpcHandler):
 class ProxyCliRpcHandler(RpcHandler):
 
     def __init__(
-            self, rpc_handler_id: bytes, conn: TcpConn = None,
+            self, rpc_handler_id: bytes, conn: ConnBase = None,
             entity: ServerEntity = None):
         super(ProxyCliRpcHandler, self).__init__(rpc_handler_id, conn, entity)
         # cli_2_lobby_map = {}

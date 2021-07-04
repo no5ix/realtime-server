@@ -100,14 +100,6 @@ class RudpServerProtocol(asyncio.DatagramProtocol):
             _cur_conn = ConnMgr.instance().get_conn(addr, CONN_TYPE_RUDP)
             if _cur_conn:
                 _cur_conn.handle_read(data)
-        # message = data.decode()
-        # print('Received %r from %s' % (message, addr))
-        # print('Send %r to %s' % (message, addr))
-        self.transport.sendto(data, addr)
-
-    def send_data_internal(self, kcp, data):
-        assert self.transport
-        self.transport.sendto(data, self._cli_addr)
 
 
 class RudpServer(ServerBase):

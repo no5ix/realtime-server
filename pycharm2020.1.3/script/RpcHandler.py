@@ -12,6 +12,7 @@ from typing import Optional
 from bson import ObjectId
 
 import core.util.UtilApi
+from ConnBase import ConnBase
 from ConnMgr import ConnMgr, CONN_TYPE_TCP
 from core.common.IdManager import IdManager
 from core.mobilelog.LogManager import AsyncLogger
@@ -61,7 +62,7 @@ class RpcReplyFuture:
 class RpcHandler:
 
     def __init__(
-            self, rpc_handler_id: bytes, conn: TcpConn = None,
+            self, rpc_handler_id: bytes, conn: ConnBase = None,
             entity: ServerEntity = None):
         self.rpc_handler_id = rpc_handler_id
         self._logger = LogManager.get_logger()  # type: AsyncLogger

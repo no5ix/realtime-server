@@ -23,12 +23,6 @@ if typing.TYPE_CHECKING:
 from core.mobilelog.LogManager import LogManager
 
 
-HEAD_LEN = 4
-RPC_HANDLER_ID_LEN = 12
-STRUCT_PACK_FORMAT = '12s'
-MAX_BODY_LEN = 4294967296
-
-
 class RudpConn(ConnBase):
 
     def __init__(
@@ -62,3 +56,22 @@ class RudpConn(ConnBase):
     def send_data_internal(self, kcp, data):
         assert self._transport
         self._transport.sendto(data, self._addr)
+
+    def handle_read(self, _data):
+        _input_res = self._kcp.input(_data)
+        if _input_res < 0:
+            self.handle_close(close_reason=f'kcp input error {_input_res=}')
+            return
+        elif _input_res == 0:
+            while (_recv_data := self._kcp.recv()) is not None:
+                super(RudpConn, self).handle_read(_recv_data)
+            self._kcp.update(int(time.time() * 1000))
+
+    def send_data_and_count(self, rpc_handler_id: bytes, data: bytes):
+        self._send_cnt += 1
+        rh_id_data = struct.pack(STRUCT_PACK_FORMAT, rpc_handler_id)  # type: bytes
+        data = rh_id_data + data
+        data_len = len(data) if data else 0
+        header_data = struct.pack("i", data_len)
+        data = header_data + data
+        self._kcp.send(data)

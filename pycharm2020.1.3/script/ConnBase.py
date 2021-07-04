@@ -7,7 +7,7 @@ import typing
 from asyncio import transports
 from asyncio.exceptions import CancelledError
 
-from ConnBase import HEARTBEAT_TIMEOUT, HEARTBEAT_INTERVAL, ROLE_TYPE_ACTIVE, ConnBase
+# from ConnBase import HEARTBEAT_TIMEOUT, HEARTBEAT_INTERVAL, ROLE_TYPE_ACTIVE, ConnBase
 from common import gv
 from core.common.IdManager import IdManager
 from core.util.TimerHub import TimerHub
