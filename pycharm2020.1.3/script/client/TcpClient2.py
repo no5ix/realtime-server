@@ -31,7 +31,7 @@ async def tcp_echo_client(cli_index):
 
     while 1:
         rand_dispatcher_service_addr = UtilApi.get_rand_dispatcher_addr()
-        rand_dispatcher_service_addr = ('127.0.0.1', 9100)
+        # rand_dispatcher_service_addr = ('127.0.0.1', 9101)
         print(f"{rand_dispatcher_service_addr=}")
         start_time = time.time()
 

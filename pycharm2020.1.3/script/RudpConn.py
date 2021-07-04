@@ -52,21 +52,21 @@ class RudpConn(ConnBase):
 
     async def try_connect(self) -> bool:
         self._conn_state = CONN_STATE_CONNECTING
+        self._transport, protocol = await gv.get_ev_loop().create_datagram_endpoint(
+            lambda: RudpProtocol(),
+            remote_addr=self._addr)
         while self._try_connect_times < RECONNECT_MAX_TIMES:
             self._try_connect_times += 1
-            self._transport, protocol = await gv.get_ev_loop().create_datagram_endpoint(
-                lambda: RudpProtocol(),
-                remote_addr=self._addr)
             self._transport.sendto(RUDP_HANDSHAKE_SYN)
+
             fut = ConnMgr.instance().create_rudp_conned_fut(self._addr)
-            # self._logger.error(str(e))
-            # await asyncio.sleep(RECONNECT_INTERVAL)
-            # if self._try_connect_times < RECONNECT_MAX_TIMES:
             try:
                 conv = await asyncio.wait_for(
                     asyncio.shield(fut), timeout=RECONNECT_INTERVAL)
             except asyncio.exceptions.TimeoutError:
                 self._logger.warning(f"try reconnect rudp: {str(self._addr)} ... {self._try_connect_times}")
+            except Exception as e:
+                self._logger.warning(f"try reconnect rudp: {str(e)} {str(self._addr)} ... {self._try_connect_times}")
             else:
                 self._conv = conv
                 self.set_connection_state(CONN_STATE_CONNECTED)

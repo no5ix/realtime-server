@@ -11,7 +11,7 @@ from typing import Optional
 
 import core.util.UtilApi
 from ConnBase import ConnBase
-from ConnMgr import ConnMgr
+from ConnMgr import ConnMgr, PROTO_TYPE_TCP
 from RpcHandler import RpcHandler, RPC_TYPE_HEARTBEAT, RPC_TYPE_NOTIFY, RPC_TYPE_REQUEST, RPC_TYPE_REPLY, \
     get_a_rpc_handler_id
 from RpcHandler import RpcReplyFuture
@@ -87,8 +87,8 @@ class ProxyCliRpcHandler(RpcHandler):
 
     def __init__(
             self, rpc_handler_id: bytes, conn: ConnBase = None,
-            entity: ServerEntity = None):
-        super(ProxyCliRpcHandler, self).__init__(rpc_handler_id, conn, entity)
+            entity: ServerEntity = None, conn_proto_type: int = PROTO_TYPE_TCP):
+        super(ProxyCliRpcHandler, self).__init__(rpc_handler_id, conn, entity, conn_proto_type)
         # cli_2_lobby_map = {}
         # lobby_2_cli_map = {}
         # self.cli_conn = conn

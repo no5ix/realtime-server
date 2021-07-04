@@ -213,7 +213,8 @@ class ConnBase:
                     return
                 from RpcHandler import RpcHandler
                 from ProxyRpcHandler import ProxyCliRpcHandler
-                _rh = ProxyCliRpcHandler(rpc_handler_id, self) if self._is_proxy else RpcHandler(rpc_handler_id, self)
+                rh_cls = ProxyCliRpcHandler if self._is_proxy else RpcHandler
+                _rh = rh_cls(rpc_handler_id, self, conn_proto_type=self._proto_type)
                 self._rpc_handlers_map[rpc_handler_id] = _rh
             _rh.handle_rpc(msg_data)
         except:
@@ -229,6 +230,6 @@ class ConnBase:
 
         self._transport.write(data)
 
-        peer_addr = self._transport.get_extra_info('peername')  # type: typing.Tuple[str, int]
-        self._logger.debug(f'send_data_and_count: {peer_addr=}')
+        # peer_addr = self._transport.get_extra_info('peername')  # type: typing.Tuple[str, int]
+        # self._logger.debug(f'send_data_and_count: {peer_addr=}')
 

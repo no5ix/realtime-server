@@ -17,8 +17,8 @@ class DispatcherService(object):
         # server_name = sys.argv[1]
 
         server_json_conf_path = r"../bin/win/conf/dispatcher_service.json"
-        self._server = TcpServer(server_name, ETCD_TAG_DISPATCHER_SERVICE, server_json_conf_path)
-        # self._server = RudpServer(server_name, ETCD_TAG_DISPATCHER_SERVICE, server_json_conf_path)
+        # self._server = TcpServer(server_name, ETCD_TAG_DISPATCHER_SERVICE, server_json_conf_path)
+        self._server = RudpServer(server_name, ETCD_TAG_DISPATCHER_SERVICE, server_json_conf_path)
         self._logger = LogManager.get_logger()
 
         self._load_collector = LoadCollector.instance()
