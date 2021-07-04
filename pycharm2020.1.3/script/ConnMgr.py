@@ -241,7 +241,7 @@ class ConnMgr:
             #     _conn.add_rpc_handler(rpc_handler)
             is_conned = await _conn.try_connect()
         else:
-            _conn.add_rpc_handler(rpc_handler)
+            _conn.add_rpc_handler(rpc_handler)  # 不加这个会造成 proxy 类的服务器转发混乱
             is_conned = _conn.is_connected()
         return _conn, is_conned
 
