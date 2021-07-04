@@ -20,7 +20,7 @@ import typing
 # from core.util.performance.cpu_load_handler import CpuLoad
 import ConnBase
 # from ConnBase import ROLE_TYPE_PASSIVE
-from ConnMgr import ConnMgr, CONN_TYPE_RUDP, RudpServerProtocol
+from ConnMgr import ConnMgr, CONN_TYPE_RUDP, RudpProtocol
 from ProxyRpcHandler import ProxyCliRpcHandler
 from core.util import UtilApi
 from core.util.UtilApi import wait_or_not, Singleton
@@ -54,7 +54,7 @@ class RudpServer(ServerBase):
         try:
             _ev_loop = gv.get_ev_loop()
             _transport, _protocol = await _ev_loop.create_datagram_endpoint(
-                lambda: RudpServerProtocol(), local_addr=(gv.local_ip, gv.local_port))
+                lambda: RudpProtocol(), local_addr=(gv.local_ip, gv.local_port))
 
             # server = await asyncio.start_server(
             #     self._handle_client_connected, gv.local_ip, gv.local_port)

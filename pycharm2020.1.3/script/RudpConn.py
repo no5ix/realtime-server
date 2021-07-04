@@ -7,8 +7,9 @@ import typing
 from asyncio import transports
 from asyncio.exceptions import CancelledError
 
-from ConnBase import HEARTBEAT_TIMEOUT, HEARTBEAT_INTERVAL, ConnBase
-from ConnMgr import CONN_TYPE_TCP, CONN_TYPE_RUDP
+from ConnBase import HEARTBEAT_TIMEOUT, HEARTBEAT_INTERVAL, ConnBase, RECONNECT_MAX_TIMES, RECONNECT_INTERVAL, \
+    CONN_STATE_CONNECTING, CONN_STATE_CONNECTED, STRUCT_PACK_FORMAT
+from ConnMgr import CONN_TYPE_TCP, CONN_TYPE_RUDP, RudpProtocol, RUDP_HANDSHAKE_SYN, ConnMgr, ROLE_TYPE_PASSIVE
 from common import gv
 from core.common import rudp
 from core.common.IdManager import IdManager
@@ -28,7 +29,6 @@ class RudpConn(ConnBase):
 
     def __init__(
             self,
-            conv: int,
             role_type: int,
             addr: typing.Tuple[str, int],
             # asyncio_writer: asyncio.StreamWriter,
@@ -36,21 +36,57 @@ class RudpConn(ConnBase):
             rpc_handler: RpcHandler = None,
             close_cb: typing.Callable = lambda: None,
             is_proxy: bool = False,
-            transport: transports.BaseTransport = None
+            transport: transports.BaseTransport = None,
+            conv: int = None,
     ):
-        super(RudpConn, self).__init__(role_type, addr, rpc_handler, close_cb, is_proxy, transport)
-        self._conv = conv
         self._conn_type = CONN_TYPE_RUDP
 
-        self._kcp = rudp.Kcp(conv, self.send_data_internal)
+        super(RudpConn, self).__init__(role_type, addr, rpc_handler, close_cb, is_proxy, transport)
+        self._conv = conv
+        if self._role_type == ROLE_TYPE_PASSIVE:
+            self._init_kcp()
+
+    def _init_kcp(self):
+        self._kcp = rudp.Kcp(self._conv, self.send_data_internal)
         self._kcp.set_nodelay(nodelay=True, interval=10, resend=2, nocwnd=True)
         self.tick_kcp_update()
 
+    async def try_connect(self) -> bool:
+        self._conn_state = CONN_STATE_CONNECTING
+
+        while self._try_connect_times < RECONNECT_MAX_TIMES:
+            self._try_connect_times += 1
+            transport, protocol = await gv.get_ev_loop().create_datagram_endpoint(
+                lambda: RudpProtocol(),
+                remote_addr=self._addr)
+            self._transport.sendto(RUDP_HANDSHAKE_SYN)
+            self._transport = transport
+            fut = ConnMgr.instance().create_rudp_conned_fut(self._addr)
+            # self._logger.error(str(e))
+            # await asyncio.sleep(RECONNECT_INTERVAL)
+            # if self._try_connect_times < RECONNECT_MAX_TIMES:
+            try:
+                conv = await asyncio.wait_for(
+                    asyncio.shield(fut), timeout=RECONNECT_INTERVAL)
+            except asyncio.exceptions.TimeoutError:
+                pass
+            else:
+                self._conv = conv
+                self.set_connection_state(CONN_STATE_CONNECTED)
+                self._init_kcp()
+                self._try_connect_times = 0
+                return True
+        else:
+            pass  # todo
+            self._logger.error(f"try {RECONNECT_MAX_TIMES} times , still can't connect remote addr: {addr}")
+            self._try_connect_times = 0
+            return False
+
     # @wait_or_not()
     def tick_kcp_update(self):
-        now = time.time()
-        self._kcp.update(int(time.time() * 1000))
-        wait_sec = self._kcp.check(int(time.time() * 1000)) / 1000
+        now_ms = int(time.time() * 1000)
+        self._kcp.update(now_ms)
+        wait_sec = self._kcp.check(now_ms) / 1000
         # print(f"tickkkkkkkk, {wait_sec-now=}")
 
         self._timer_hub.call_at(wait_sec, self.tick_kcp_update)

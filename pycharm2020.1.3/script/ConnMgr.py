@@ -24,18 +24,15 @@ if typing.TYPE_CHECKING:
 CONN_TYPE_TCP = 0
 CONN_TYPE_RUDP = 1
 
-RECONNECT_MAX_TIMES = 6
-RECONNECT_INTERVAL = 0.6  # sec
-
 ROLE_TYPE_ACTIVE = 0
 ROLE_TYPE_PASSIVE = 1
 
 
-class TcpServerProtocol(asyncio.Protocol):
+class TcpProtocol(asyncio.Protocol):
     # def __init__(self, role_type, create_tcp_conn_cb):
-    def __init__(self):
+    def __init__(self, role_type):
     # def __init__(self, rpc_handler=None):
-        # self._role_type = role_type
+        self._role_type = role_type
         # self._create_tcp_conn_cb = create_tcp_conn_cb
         self._conn = None  # type: Optional[TcpConn.TcpConn]
         # self._rpc_handler = rpc_handler  # type: Optional[RpcHandler]
@@ -43,12 +40,15 @@ class TcpServerProtocol(asyncio.Protocol):
     def connection_made(self, transport: transports.BaseTransport) -> None:
         # assert callable(self._create_tcp_conn_cb)
         # self._conn = self._create_tcp_conn_cb(self._role_type, transport)
-        self._conn = ConnMgr.instance().add_conn(
-            ROLE_TYPE_PASSIVE, CONN_TYPE_TCP, transport,
-            # self._rpc_handler
-        )
-
         addr = transport.get_extra_info('peername')  # type: typing.Tuple[str, int]
+        if self._role_type == ROLE_TYPE_PASSIVE:
+            self._conn = ConnMgr.instance().add_incoming_conn(
+                CONN_TYPE_TCP, transport, addr
+                # self._rpc_handler
+            )
+        else:
+            self._conn = ConnMgr.instance().get_conn(addr, CONN_TYPE_TCP)
+            assert self._conn
         LogManager.get_logger().info(f"{addr!r} is connected !!!!")
 
     def data_received(self, data: bytes) -> None:
@@ -66,7 +66,7 @@ RUDP_HANDSHAKE_ACK_PREFIX = b'new_byte_ack:'
 RUDP_CONV = 0
 
 
-class RudpServerProtocol(asyncio.DatagramProtocol):
+class RudpProtocol(asyncio.DatagramProtocol):
     # def __init__(self, create_kcp_conn_cb):
     def __init__(self):
         # self._create_kcp_conn_cb = create_kcp_conn_cb
@@ -91,23 +91,47 @@ class RudpServerProtocol(asyncio.DatagramProtocol):
             parts = data.split(RUDP_HANDSHAKE_ACK_PREFIX, 2)
             if len(parts) != 2:
                 raise Exception(f"Expected value '{RUDP_HANDSHAKE_ACK_PREFIX}<JWT>'")
+
             raw_jwt = parts[1].decode()
             token_obj = Token(raw_jwt)
             if token_obj.type != "access":
                 raise Exception("Only access tokens are allowed")
             conv = token_obj.identity
 
-            ConnMgr.instance().add_conn(
-                ROLE_TYPE_PASSIVE, CONN_TYPE_RUDP, self.transport,
-                rudp_conv=conv, rudp_peer_addr=addr
+            ConnMgr.instance().add_incoming_conn(
+                CONN_TYPE_RUDP, self.transport, addr, rudp_conv=conv
                 # self._rpc_handler
             )
             # addr = transport.get_extra_info('peername')  # type: typing.Tuple[str, int]
             LogManager.get_logger().info(f"{addr!r} is connected !!!!")
+        elif data.startswith(RUDP_HANDSHAKE_SYN_ACK_PREFIX):
+            parts = data.split(RUDP_HANDSHAKE_SYN_ACK_PREFIX, 2)
+            if len(parts) != 2:
+                raise Exception(f"Expected value '{RUDP_HANDSHAKE_SYN_ACK_PREFIX}<JWT>'")
+
+            raw_jwt = parts[1].decode()
+            token_obj = Token(raw_jwt)
+            if token_obj.type != "access":
+                raise Exception("Only access tokens are allowed")
+            self.transport.sendto(RUDP_HANDSHAKE_ACK_PREFIX + raw_jwt.encode(), addr)
+            conv = token_obj.identity
+            try:
+                ConnMgr.instance().set_fut_result(addr, conv)
+            except asyncio.InvalidStateError:
+                # 并发情况即使`fut`已经done了也无所谓, 不处理即可
+                pass
+
+            # ConnMgr.instance().add_incoming_conn(
+            #     ROLE_TYPE_ACTIVE, CONN_TYPE_RUDP, self.transport,
+            #     rudp_conv=conv, rudp_peer_addr=addr
+            #     # self._rpc_handler
+            # )
+            # addr = transport.get_extra_info('peername')  # type: typing.Tuple[str, int]
+            LogManager.get_logger().info(f"{addr!r} is connected !!!!")
         else:
             _cur_conn = ConnMgr.instance().get_conn(addr, CONN_TYPE_RUDP)
-            if _cur_conn:
-                _cur_conn.handle_read(data)
+            assert _cur_conn
+            _cur_conn.handle_read(data)
 
 
 @Singleton
@@ -119,6 +143,18 @@ class ConnMgr:
         self._is_proxy = False
         self._conn_type_2_addr_2_conn = {CONN_TYPE_TCP: {}, CONN_TYPE_RUDP: {}}
         self._addr_2_try_connect_times = defaultdict(int)
+        self._addr_2_rudp_conned_fut = {}
+
+    def create_rudp_conned_fut(self, addr):
+        _fut = gv.get_ev_loop().create_future()
+        self._addr_2_rudp_conned_fut[addr] = _fut
+
+        def final_fut_cb(fut, _addr=addr):
+            # self._logger.info(f"final_fut_cb: rid={rid}")
+            self._addr_2_rudp_conned_fut.pop(_addr, None)
+
+        _fut.add_done_callback(final_fut_cb)
+        return _fut
 
     def set_is_proxy(self, is_proxy):
         self._is_proxy = is_proxy
@@ -131,77 +167,75 @@ class ConnMgr:
             _conn = self._conn_type_2_addr_2_conn[CONN_TYPE_TCP].get(addr, None)
         return _conn
 
-    def add_conn(
-            self, role_type, conn_type, transport: transports.BaseTransport,
-            rudp_conv: int = 0, rudp_peer_addr: Optional[Tuple[str, int]] = None
+    def add_incoming_conn(
+            self, conn_type, transport: transports.BaseTransport,
+            peer_addr: Optional[Tuple[str, int]] = None,
+            rudp_conv: int = None
             # rpc_handler: Optional[RpcHandler] = None
     ) -> ConnBase:
         if conn_type == CONN_TYPE_TCP:
-            import TcpConn
-            addr = transport.get_extra_info('peername')  # type: typing.Tuple[str, int]
-            _conn = TcpConn.TcpConn(
-                role_type, addr,
-                close_cb=lambda ct=conn_type, a=addr: self._remove_conn(ct, a),
+            from TcpConn import TcpConn
+            _conn = TcpConn(
+                ROLE_TYPE_PASSIVE, peer_addr,
+                close_cb=lambda ct=conn_type, a=peer_addr: self._remove_conn(ct, a),
                 is_proxy=self._is_proxy,
                 transport=transport)
         else:
-            pass  # todo: rudp
             from RudpConn import RudpConn
             assert rudp_conv > 0
-            addr = rudp_peer_addr
             _conn = RudpConn(
-                rudp_conv, role_type, addr,
-                close_cb=lambda ct=conn_type, a=addr: self._remove_conn(ct, a),
+                ROLE_TYPE_PASSIVE, peer_addr,
+                close_cb=lambda ct=conn_type, a=peer_addr: self._remove_conn(ct, a),
                 is_proxy=self._is_proxy,
-                transport=transport)
+                transport=transport,
+                conv=rudp_conv)
 
-        self._conn_type_2_addr_2_conn[conn_type][addr] = _conn
+        self._conn_type_2_addr_2_conn[conn_type][peer_addr] = _conn
         return _conn
 
-    async def create_conn_by_addr(
+    async def open_conn_by_addr(
             self, conn_type, addr: typing.Tuple[str, int],
             rpc_handler: RpcHandler = None
-    ) -> ConnBase:
+    ) -> (ConnBase, bool):
+
         _conn = self._conn_type_2_addr_2_conn[conn_type].get(addr, None)
+        is_conned = True
         if _conn is None:
-            if conn_type == CONN_TYPE_RUDP:
-                _conn = await self._try_create_rudp_conn(addr)
-            if _conn is None:
-                _conn = await self._try_create_tcp_conn(addr)
-        if _conn is not None and rpc_handler is not None:
-            _conn.add_rpc_handler(rpc_handler)
-        return _conn
-
-    async def _try_create_rudp_conn(self, addr):
-        pass
-
-    async def _try_create_tcp_conn(self, addr):
-        while self._addr_2_try_connect_times[addr] < RECONNECT_MAX_TIMES:
-            try:
-                from TcpServer import TcpServerProtocol
-                self._addr_2_try_connect_times[addr] += 1
-                transport, protocol = await gv.get_ev_loop().create_connection(
-                    lambda: TcpServerProtocol(),
-                    addr[0], addr[1])
-            except Exception as e:
-                self._logger.error(str(e))
-                await asyncio.sleep(RECONNECT_INTERVAL)
-                # if self._addr_2_try_connect_times[addr] < RECONNECT_MAX_TIMES:
-                self._logger.warning(f"try reconnect tcp: {str(addr)} ... {self._addr_2_try_connect_times[addr]}")
-                await self._try_create_tcp_conn(addr)
+            if conn_type == CONN_TYPE_TCP:
+                from TcpConn import TcpConn
+                conn_cls = TcpConn
+                # addr = transport.get_extra_info('peername')  # type: typing.Tuple[str, int]
+                # _conn = TcpConn.TcpConn(
+                #     ROLE_TYPE_ACTIVE, addr,
+                #     close_cb=lambda ct=conn_type, a=addr: self._remove_conn(ct, a),
+                #     is_proxy=self._is_proxy,
+                #     # transport=transport
+                # )
             else:
-                self._addr_2_try_connect_times[addr] = 0
-                return self._conn_type_2_addr_2_conn[CONN_TYPE_TCP][addr]
-        else:
-            pass  # todo
-            self._logger.error(f"try {RECONNECT_MAX_TIMES} times , still can't connect remote addr: {addr}")
-            self._addr_2_try_connect_times[addr] = 0
-            return None
+                pass  # todo: rudp
+                from RudpConn import RudpConn
+                conn_cls = RudpConn
+
+                # assert rudp_conv > 0
+                # addr = rudp_peer_addr
+            _conn = conn_cls(
+                ROLE_TYPE_ACTIVE, addr,
+                rpc_handler=rpc_handler,
+                close_cb=lambda ct=conn_type, a=addr: self._remove_conn(ct, a),
+                is_proxy=self._is_proxy,
+                # transport=transport
+            )
+
+            self._conn_type_2_addr_2_conn[conn_type][addr] = _conn
+            # if rpc_handler is not None:
+            #     _conn.add_rpc_handler(rpc_handler)
+            is_conned = await _conn.try_connect()
+        return _conn, is_conned
 
     def _remove_conn(self, conn_type, addr: typing.Tuple[str, int]):
         self._conn_type_2_addr_2_conn[conn_type].pop(addr, None)
 
-    # def add_conn(
+    # def add_incoming_conn(
     #         self,
     #         role_type: int,
     #         writer: asyncio.StreamWriter,
@@ -218,12 +252,12 @@ class ConnMgr:
     #     self._addr_2_conn_map[addr] = conn
     #     return conn
     #
-    # async def create_conn_by_addr(
+    # async def open_conn_by_addr(
     #         self, addr: typing.Tuple[str, int], rpc_handler: RpcHandler = None) -> TcpConn:
     #     _conn = self._addr_2_conn_map.get(addr, None)
     #     if _conn is None:
     #         reader, writer = await asyncio.open_connection(addr[0], addr[1])
-    #         _conn = self.add_conn(ConnBase.ROLE_TYPE_ACTIVE, writer, reader, rpc_handler)
+    #         _conn = self.add_incoming_conn(ConnBase.ROLE_TYPE_ACTIVE, writer, reader, rpc_handler)
     #     if rpc_handler is not None:
     #         _conn.add_rpc_handler(rpc_handler)
     #     return _conn

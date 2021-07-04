@@ -7,8 +7,9 @@ import typing
 from asyncio import transports
 from asyncio.exceptions import CancelledError
 
-from ConnBase import HEARTBEAT_TIMEOUT, HEARTBEAT_INTERVAL, ConnBase, RPC_HANDLER_ID_LEN
-from ConnMgr import CONN_TYPE_TCP
+from ConnBase import HEARTBEAT_TIMEOUT, HEARTBEAT_INTERVAL, ConnBase, RPC_HANDLER_ID_LEN, RECONNECT_MAX_TIMES, \
+    RECONNECT_INTERVAL, CONN_STATE_CONNECTED, CONN_STATE_CONNECTING
+from ConnMgr import CONN_TYPE_TCP, ROLE_TYPE_ACTIVE
 from common import gv
 from core.common.IdManager import IdManager
 from core.util.TimerHub import TimerHub
@@ -38,6 +39,34 @@ class TcpConn(ConnBase):
     ):
         super(TcpConn, self).__init__(role_type, addr, rpc_handler, close_cb, is_proxy, transport)
         self._conn_type = CONN_TYPE_TCP
+
+    # @wait_or_not()
+    async def try_connect(self) -> bool:
+        self._conn_state = CONN_STATE_CONNECTING
+        while self._try_connect_times < RECONNECT_MAX_TIMES:
+            try:
+                from TcpServer import TcpProtocol
+                self._try_connect_times += 1
+                transport, protocol = await gv.get_ev_loop().create_connection(
+                    lambda: TcpProtocol(ROLE_TYPE_ACTIVE),
+                    self._addr[0], self._addr[1])
+            except Exception as e:
+                self._logger.error(str(e))
+                await asyncio.sleep(RECONNECT_INTERVAL)
+                # if self._try_connect_times < RECONNECT_MAX_TIMES:
+                self._logger.warning(f"try reconnect tcp: {str(self._addr)} ... {self._try_connect_times}")
+            else:
+                self._try_connect_times = 0
+                self.set_connection_state(CONN_STATE_CONNECTED)
+                self._transport = transport
+                return True
+        else:
+            pass  # todo
+            self._logger.error(f"try {RECONNECT_MAX_TIMES} times , still can't connect remote addr: {addr}")
+            self._try_connect_times = 0
+            return False
+
+
     #     if role_type == ROLE_TYPE_ACTIVE:
     #         assert(rpc_handler is not None)
     #     self._is_connected = True

@@ -172,7 +172,7 @@ class ServerBase:
     # def _remove_conn(self, addr: typing.Tuple[str, int]):
     #     self._addr_2_conn_map.pop(addr, None)
     #
-    # async def create_conn_by_addr(self, addr: typing.Tuple[str, int], rpc_handler: RpcHandler):
+    # async def open_conn_by_addr(self, addr: typing.Tuple[str, int], rpc_handler: RpcHandler):
     #     _conn = self._addr_2_conn_map.get(addr, None)
     #     if _conn is None:
     #         reader, writer = await asyncio.open_connection(addr[0], addr[1])
@@ -190,7 +190,7 @@ class ServerBase:
 
     # def _handle_client_connected(self, reader, writer):
     #     # self._add_conn(TcpConn.ROLE_TYPE_PASSIVE, writer, reader)
-    #     ConnMgr.instance().add_conn(
+    #     ConnMgr.instance().add_incoming_conn(
     #         ConnBase.ROLE_TYPE_PASSIVE, writer, reader,
     #         # rpc_handler=ProxyCliRpcHandler(get_a_rpc_handler_id()) if self._is_proxy else None
     #         # is_proxy=self._is_proxy

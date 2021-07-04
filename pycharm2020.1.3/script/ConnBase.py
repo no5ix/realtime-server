@@ -22,6 +22,10 @@ if typing.TYPE_CHECKING:
 # from core.common.EntityFactory import EntityFactory
 from core.mobilelog.LogManager import LogManager
 
+
+RECONNECT_MAX_TIMES = 6
+RECONNECT_INTERVAL = 0.6  # sec
+
 HEARTBEAT_TIMEOUT = 8
 HEARTBEAT_INTERVAL = 6
 
@@ -49,12 +53,13 @@ class ConnBase:
             is_proxy: bool = False,
             transport: transports.BaseTransport = None
     ):
-        if role_type == ROLE_TYPE_ACTIVE:
-            assert (rpc_handler is not None)
 
         self._conn_type = None
 
-        self._is_connected = True
+        self._try_connect_times = 0
+
+        # self._is_connected = True
+        self._conn_state = CONN_STATE_DISCONNECTED  # TOdo
 
         self._role_type = role_type
         self._is_proxy = is_proxy
@@ -85,6 +90,16 @@ class ConnBase:
             self._timer_hub.call_later(HEARTBEAT_TIMEOUT, self.handle_remote_heartbeat_timeout, repeat_count=-1)
             self._timer_hub.call_later(HEARTBEAT_INTERVAL, self.heartbeat, repeat_count=-1)
 
+        if role_type == ROLE_TYPE_ACTIVE:
+            assert (rpc_handler is not None)
+            # self.try_connect()
+        else:
+            self._conn_state = CONN_STATE_CONNECTED
+
+    # @wait_or_not()
+    async def try_connect(self) -> bool:
+        raise NotImplementedError
+
     def add_rpc_handler(self, rpc_handler: RpcHandler):
         self._rpc_handlers_map[rpc_handler.rpc_handler_id] = rpc_handler
         rpc_handler.set_conn(self)
@@ -98,10 +113,10 @@ class ConnBase:
         return self._addr
 
     def is_connected(self):
-        return self._is_connected
+        return self._conn_state == CONN_STATE_CONNECTED
 
-    def set_connection_state(self, is_conned):
-        self._is_connected = is_conned
+    def set_connection_state(self, conn_state):
+        self._conn_state = conn_state
 
     def is_active_role(self):
         return self._role_type == ROLE_TYPE_ACTIVE

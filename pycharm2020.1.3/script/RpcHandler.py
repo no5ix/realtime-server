@@ -13,7 +13,7 @@ from bson import ObjectId
 
 import core.util.UtilApi
 from ConnBase import ConnBase
-from ConnMgr import ConnMgr, CONN_TYPE_TCP
+from ConnMgr import ConnMgr, CONN_TYPE_TCP, CONN_TYPE_RUDP
 from core.common.IdManager import IdManager
 from core.mobilelog.LogManager import AsyncLogger
 from core.util.TimerHub import TimerHub
@@ -206,12 +206,13 @@ class RpcHandler:
     async def _handle_create_conn(self, addr: typing.Tuple[str, int] = None):
         try:
             if self._conn:
-                if not self._conn.is_active_role():
+                if not self._conn.is_active_role() or self._conn.is_connected():
                     return
                 addr = self._conn.get_addr()
             # self._try_connect_times += 1
-            self._conn = await ConnMgr.instance().create_conn_by_addr(CONN_TYPE_TCP, addr, self)
-            if self._conn is None:
+            self._conn, is_conned = await ConnMgr.instance().open_conn_by_addr(CONN_TYPE_TCP, addr, self)
+            # self._conn, is_conned = await ConnMgr.instance().open_conn_by_addr(CONN_TYPE_RUDP, addr, self)
+            if not is_conned:
                 for _msg in self._msg_buffer:
                     if _msg[0] == RPC_TYPE_REQUEST:
                         _reply_id = _msg[1]
@@ -225,7 +226,6 @@ class RpcHandler:
                 for _msg in self._msg_buffer:
                     self._conn.send_data_and_count(self.rpc_handler_id, _msg)
                 self._msg_buffer.clear()
-
             # self._logger.warning(f"{self._try_connect_times=}, {id(self._conn)=}")
         except asyncio.CancelledError:
             raise

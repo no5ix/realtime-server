@@ -107,7 +107,7 @@ class ServerEntity:
     #         _tcp_conn = TcpConn(writer.get_extra_info('peername'), writer, reader)
     #         self.set_connection(_tcp_conn)
     #         tcp_srv = gr.get_cur_server()
-    #         tcp_srv.add_conn(server_ip_port_tuple, _tcp_conn)
+    #         tcp_srv.add_incoming_conn(server_ip_port_tuple, _tcp_conn)
     #
     #         self._conn.set_entity(self)
     #         self._conn.request_rpc(remote_entity_type or self.__class__.__name__, method_name, parameters)

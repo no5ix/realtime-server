@@ -31,7 +31,7 @@ async def tcp_echo_client(cli_index):
 
     while 1:
         rand_dispatcher_service_addr = UtilApi.get_rand_dispatcher_addr()
-        rand_dispatcher_service_addr = ('127.0.0.1', 9100)
+        # rand_dispatcher_service_addr = ('127.0.0.1', 9100)
         print(f"{rand_dispatcher_service_addr=}")
         start_time = time.time()
 
@@ -95,7 +95,7 @@ async def tcp_echo_client(cli_index):
     # _ppt = Puppet()
 
     _ppt = Avatar()
-    _tcp_conn = await ConnMgr.instance().create_conn_by_addr(
+    _tcp_conn = await ConnMgr.instance().open_conn_by_addr(
         conn_type=CONN_TYPE_TCP, addr=_res[1:], rpc_handler=_ppt.get_rpc_handle())
     # _tcp_conn = TcpConn.TcpConn(
     #     ConnBase.ROLE_TYPE_ACTIVE,

@@ -80,7 +80,7 @@ async def rudp_echo_cli(cli_index):
     # _ppt = Puppet()
 
     _ppt = Avatar()
-    _tcp_conn = await ConnMgr.instance().create_conn_by_addr(
+    _tcp_conn = await ConnMgr.instance().open_conn_by_addr(
         conn_type=CONN_TYPE_TCP, addr=_res[1:], rpc_handler=_ppt.get_rpc_handle())
     # _tcp_conn = TcpConn.TcpConn(
     #     ConnBase.ROLE_TYPE_ACTIVE,

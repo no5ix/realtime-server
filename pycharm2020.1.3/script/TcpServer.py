@@ -21,7 +21,7 @@ from typing import Optional
 
 import ConnBase
 # from ConnBase import ROLE_TYPE_PASSIVE, ROLE_TYPE_ACTIVE
-from ConnMgr import ConnMgr, CONN_TYPE_TCP, TcpServerProtocol
+from ConnMgr import ConnMgr, CONN_TYPE_TCP, TcpProtocol, ROLE_TYPE_PASSIVE
 from ProxyRpcHandler import ProxyCliRpcHandler
 from ServerBase import ServerBase
 from core.util import UtilApi
@@ -59,7 +59,7 @@ from core.tool import incremental_reload
 #     def connection_made(self, transport: transports.BaseTransport) -> None:
 #         # assert callable(self._create_tcp_conn_cb)
 #         # self._conn = self._create_tcp_conn_cb(self._role_type, transport)
-#         self._conn = ConnMgr.instance().add_conn(ROLE_TYPE_PASSIVE, CONN_TYPE_TCP, transport)
+#         self._conn = ConnMgr.instance().add_incoming_conn(ROLE_TYPE_PASSIVE, CONN_TYPE_TCP, transport)
 #
 #     def data_received(self, data: bytes) -> None:
 #         self._conn.handle_read(data)
@@ -78,7 +78,7 @@ class TcpServer(ServerBase):
     #     self._addr_2_conn_map[addr] = tcp_conn
     #     return tcp_conn
     #
-    # async def create_conn_by_addr(
+    # async def open_conn_by_addr(
     #         self, addr: typing.Tuple[str, int], rpc_handler: RpcHandler = None) -> TcpConn:
     #     _conn = self._addr_2_conn_map.get(addr, None)
     #     if _conn is None:
@@ -93,7 +93,7 @@ class TcpServer(ServerBase):
         try:
             # _ev_loop = gv.get_ev_loop()
             server = await self._ev_loop.create_server(
-                lambda: TcpServerProtocol(),
+                lambda: TcpProtocol(ROLE_TYPE_PASSIVE),
                 gv.local_ip, gv.local_port)
 
             addr = server.sockets[0].getsockname()
