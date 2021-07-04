@@ -46,10 +46,11 @@ class TcpProtocol(asyncio.Protocol):
                 PROTO_TYPE_TCP, transport, addr
                 # self._rpc_handler
             )
+            LogManager.get_logger().info(f"TCP ROLE_TYPE_PASSIVE peer_addr={addr} is connected !!!!")
         else:
             self._conn = ConnMgr.instance().get_conn(addr, PROTO_TYPE_TCP)
             assert self._conn
-        LogManager.get_logger().info(f"TCP {addr!r} is connected !!!!")
+            LogManager.get_logger().info(f"TCP ROLE_TYPE_ACTIVE peer_addr={addr} is connected !!!!")
 
     def data_received(self, data: bytes) -> None:
         self._conn.handle_read(data)
@@ -107,7 +108,7 @@ class RudpProtocol(asyncio.DatagramProtocol):
                 # self._rpc_handler
             )
             # addr = transport.get_extra_info('peername')  # type: typing.Tuple[str, int]
-            LogManager.get_logger().info(f"RUDP {addr!r} is connected !!!!")
+            LogManager.get_logger().info(f"RUDP ROLE_TYPE_PASSIVE peer_addr={addr} is connected !!!!")
         elif data.startswith(RUDP_HANDSHAKE_SYN_ACK_PREFIX):
             parts = data.split(RUDP_HANDSHAKE_SYN_ACK_PREFIX, 2)
             if len(parts) != 2:
@@ -127,7 +128,7 @@ class RudpProtocol(asyncio.DatagramProtocol):
             #     # self._rpc_handler
             # )
             # addr = transport.get_extra_info('peername')  # type: typing.Tuple[str, int]
-            LogManager.get_logger().info(f"RUDP {addr!r} is connected !!!!")
+            LogManager.get_logger().info(f"RUDP ROLE_TYPE_ACTIVE peer_addr={addr} is connected !!!!")
         else:
             _cur_conn = ConnMgr.instance().get_conn(addr, PROTO_TYPE_RUDP)
             assert _cur_conn
@@ -209,7 +210,6 @@ class ConnMgr:
     ) -> (ConnBase, bool):
 
         _conn = self._proto_type_2_addr_2_conn[proto_type].get(addr, None)
-        is_conned = True
         if _conn is None:
             if proto_type == PROTO_TYPE_TCP:
                 from TcpConn import TcpConn
@@ -240,6 +240,9 @@ class ConnMgr:
             # if rpc_handler is not None:
             #     _conn.add_rpc_handler(rpc_handler)
             is_conned = await _conn.try_connect()
+        else:
+            _conn.add_rpc_handler(rpc_handler)
+            is_conned = _conn.is_connected()
         return _conn, is_conned
 
     def _remove_conn(self, proto_type, addr: typing.Tuple[str, int]):

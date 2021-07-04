@@ -77,7 +77,7 @@ class RpcHandler:
         # self._try_connect_times = 0
 
         self._is_destroyed = False
-        self._create_conn_tasks = []  # type: typing.List[asyncio.Task]
+        self._addr_2_create_conn_tasks = {}  # type: typing.Dict[typing.Tuple[str, int], asyncio.Task]
 
     def destroy(self):
         self._logger.warning(f'{self.rpc_handler_id=} RpcHandler Destroy!')
@@ -87,9 +87,9 @@ class RpcHandler:
         self._entity = None
         if self._conn:
             self._conn.remove_rpc_handler(self.rpc_handler_id)
-        for _ct in self._create_conn_tasks:
+        for _ct in self._addr_2_create_conn_tasks.values():
             _ct.cancel()
-        self._create_conn_tasks = []
+        self._addr_2_create_conn_tasks = {}
 
         self._is_destroyed = True
 
@@ -199,10 +199,10 @@ class RpcHandler:
             # print(f"_send_rpc_msg  _try_connect_times={self._try_connect_times}, id(self._conn)= {id(self._conn)}")
             # if self._try_connect_times > 0 or ip_port_tuple is None:  # `self._try_connect_times > 0` means connecting
             #     return
-            if ip_port_tuple is None:  # `self._try_connect_times > 0` means connecting
+            if ip_port_tuple is None or ip_port_tuple in self._addr_2_create_conn_tasks:  # means connecting
                 return
             # self._create_conn_tasks.append((gv.get_ev_loop().create_task(self._handle_create_conn(ip_port_tuple))))
-            self._create_conn_tasks.append(self._handle_create_conn(ip_port_tuple))
+            self._addr_2_create_conn_tasks[ip_port_tuple] = self._handle_create_conn(ip_port_tuple)
             return
         self._conn.send_data_and_count(self.rpc_handler_id, msg)
 
@@ -215,8 +215,9 @@ class RpcHandler:
                 addr = self._conn.get_addr()
             # self._try_connect_times += 1
             # self._conn, is_conned = await ConnMgr.instance().open_conn_by_addr(CONN_TYPE_TCP, addr, self)
-            self._conn, is_conned = await ConnMgr.instance().open_conn_by_addr(
+            _conn, is_conned = await ConnMgr.instance().open_conn_by_addr(
                 self._conn_proto_type, addr, self)
+            self._addr_2_create_conn_tasks.pop(addr, None)
             if not is_conned:
                 for _msg in self._msg_buffer:
                     if _msg[0] == RPC_TYPE_REQUEST:
@@ -228,6 +229,7 @@ class RpcHandler:
                         self._pending_requests[_reply_id].set_error_and_result(
                             f"cant connect remote addr: {addr}", None)
             else:
+                self._conn = _conn
                 for _msg in self._msg_buffer:
                     self._conn.send_data_and_count(self.rpc_handler_id, _msg)
                 self._msg_buffer.clear()

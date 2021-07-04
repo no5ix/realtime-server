@@ -188,8 +188,8 @@ class ConnBase:
     def handle_close(self, close_reason: str):
         if not self.is_connected():
             return
+        self.set_connection_state(CONN_STATE_DISCONNECTING)
         self._logger.warning(f'peer addr: {self._addr}, {close_reason=}')
-        self.set_connection_state(False)
         self._close_cb()
         # await self._asyncio_writer.drain()
 
@@ -199,6 +199,7 @@ class ConnBase:
             # _rh.destroy()
         self._timer_hub.destroy()
         # gv.get_cur_server().remove_conn(self._addr)
+        self.set_connection_state(CONN_STATE_DISCONNECTED)
 
     def handle_message(self, rpc_handler_id: bytes, msg_data: bytes):
         try:
@@ -226,7 +227,8 @@ class ConnBase:
         header_data = struct.pack("i", data_len)
         data = header_data + data
 
-        # self._asyncio_writer.write(data)
         self._transport.write(data)
-        # await self._asyncio_writer.drain()
+
+        peer_addr = self._transport.get_extra_info('peername')  # type: typing.Tuple[str, int]
+        self._logger.debug(f'send_data_and_count: {peer_addr=}')
 

@@ -31,7 +31,7 @@ async def tcp_echo_client(cli_index):
 
     while 1:
         rand_dispatcher_service_addr = UtilApi.get_rand_dispatcher_addr()
-        # rand_dispatcher_service_addr = ('127.0.0.1', 9100)
+        rand_dispatcher_service_addr = ('127.0.0.1', 9100)
         print(f"{rand_dispatcher_service_addr=}")
         start_time = time.time()
 
@@ -57,7 +57,7 @@ async def tcp_echo_client(cli_index):
             # ["lobby_server"],
             [ETCD_TAG_LOBBY_GATE],
             # [ETCD_TAG_LOBBY_SRV],
-            rpc_reply_timeout=None,
+            # rpc_reply_timeout=None,
             # rpc_remote_entity_type="LoadCollector", ip_port_tuple=dispatcher_service_addr
             # rpc_callback=lambda err, res: self.logger.info(f"pick_lowest_load_service_addr: {err=} {res=}"),
             rpc_remote_entity_type="LoadCollector",
@@ -138,7 +138,7 @@ async def tcp_echo_client(cli_index):
         # 0.01,  # 基本已经处理不过来
         lambda: _ppt.CompAvatarTest.puppet_chat_to_ppt({'content': 'puppet_chat_to_ppt'}),
         repeat_count=-1,
-        repeat_interval_sec=1
+        repeat_interval_sec=3
     )
         # _cnt -= 1
         # print(_cnt)
