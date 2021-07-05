@@ -235,7 +235,7 @@ class RpcHandler:
                     self._conn.send_data_and_count(self.rpc_handler_id, _msg)
                 self._msg_buffer.clear()
             # self._logger.warning(f"{self._try_connect_times=}, {id(self._conn)=}")
-        except asyncio.CancelledError as e:
+        except asyncio.CancelledError:
             LogManager.get_logger().warning(f'cancel _handle_create_conn task {addr=}')
             raise
 
