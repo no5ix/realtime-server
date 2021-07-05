@@ -52,7 +52,7 @@ class LoadCollector(ServerEntity):
     async def pick_lowest_load_service_addr(self, etcd_tag: str) -> Optional[typing.Tuple[str, str, int]]:
         # _res_list = await async_wrap(lambda: self._redis_cli.zrange(etcd_tag, 0, 0))  # type: typing.List[str]
 
-        # self.logger.debug(f"pick_lowest_load_service_addr: {etcd_tag=}")
+        self.logger.debug(f"pick_lowest_load_service_addr: {etcd_tag=}")
         return UtilApi.get_lowest_load_service_info(etcd_tag)
 
         # start_time = time.time()

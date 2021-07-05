@@ -31,7 +31,7 @@ async def rudp_echo_cli(cli_index):
 
     while 1:
         rand_dispatcher_service_addr = UtilApi.get_rand_dispatcher_addr()
-        # rand_dispatcher_service_addr = ('127.0.0.1', 9100)  # todo: just for debugging
+        rand_dispatcher_service_addr = ('127.0.0.1', 9100)  # todo: just for debugging
         cli_log.debug(f"{rand_dispatcher_service_addr=}")
         start_time = time.time()
 
@@ -43,7 +43,7 @@ async def rudp_echo_cli(cli_index):
             [ETCD_TAG_LOBBY_GATE],
             # [ETCD_TAG_LOBBY_SRV],
             # rpc_reply_timeout=None,
-            rpc_reply_timeout=0.3,
+            # rpc_reply_timeout=0.6,
             # rpc_remote_entity_type="LoadCollector", ip_port_tuple=dispatcher_service_addr
             # rpc_callback=lambda err, res: self.logger.info(f"pick_lowest_load_service_addr: {err=} {res=}"),
             rpc_remote_entity_type="LoadCollector",
@@ -54,7 +54,7 @@ async def rudp_echo_cli(cli_index):
         # cli_log.debug(f'end: {offset=}')
         cli_log.debug(f'{_err=} {_res=}')
 
-        # return  # todo: del
+        return  # todo: del
 
         if _err:
             cli_log.error(f"{_err=}")

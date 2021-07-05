@@ -22,7 +22,7 @@ from sanic_jwt_extended.jwt_manager import JWT
 
 import ConnBase
 # from ConnBase import ROLE_TYPE_PASSIVE
-from ConnMgr import ConnMgr, PROTO_TYPE_RUDP, RudpProtocol
+from ConnMgr import ConnMgr, PROTO_TYPE_RUDP, RudpProtocol, ROLE_TYPE_PASSIVE, TcpProtocol
 from ProxyRpcHandler import ProxyCliRpcHandler
 from core.util import UtilApi
 from core.util.UtilApi import wait_or_not, Singleton
@@ -57,14 +57,17 @@ class RudpServer(ServerBase):
             _ev_loop = gv.get_ev_loop()
             _transport, _protocol = await _ev_loop.create_datagram_endpoint(
                 lambda: RudpProtocol(), local_addr=(gv.local_ip, gv.local_port))
-
-            # server = await asyncio.start_server(
-            #     self._handle_client_connected, gv.local_ip, gv.local_port)
-            # addr = server.sockets[0].getsockname()
             self._logger.info(f'RUDP Server on {gv.local_ip, gv.local_port}')
 
-            # async with server:
-            #     await server.serve_forever()
+            server = await self._ev_loop.create_server(
+                lambda: TcpProtocol(ROLE_TYPE_PASSIVE),
+                gv.local_ip, gv.local_port)
+
+            addr = server.sockets[0].getsockname()
+            self._logger.info(f'TCP Server on {addr}')
+            async with server:
+                await server.serve_forever()
+
         except KeyboardInterrupt:
             self._logger.info(f"\nShutting Down Server: {gv.server_name}...\n")
             # _loop = asyncio.get_running_loop()

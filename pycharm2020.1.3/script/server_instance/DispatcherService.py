@@ -3,6 +3,7 @@ import sys
 from RudpServer import RudpServer
 from TcpServer import TcpServer
 # from common import gr
+from common import gv
 from common.service_const import ETCD_TAG_DISPATCHER_SERVICE
 from core.common.RpcMethodArgs import RpcMethodArg, Float
 from core.common.RpcSupport import rpc_method, SRV_TO_SRV

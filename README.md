@@ -18,7 +18,7 @@ python 3.8.8
 - [ ] base on etcd distributed lock
 - [ ] kcp connection 共用心跳模块
 <!-- - [ ] rudp 和tcp共存, 先rudp再tcp -->
-- [ ] 服务器快速重启, 客户端应该要可以自动重连
+<!-- - [ ] 服务器快速重启, 客户端应该要可以自动重连 -->
 - [ ] 打通 cli-gate-lobby-battle
 
 - [ ] tick loop

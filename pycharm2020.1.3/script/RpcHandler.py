@@ -12,7 +12,7 @@ from typing import Optional
 from bson import ObjectId
 
 import core.util.UtilApi
-from ConnBase import ConnBase
+from ConnBase import ConnBase, RECONNECT_INTERVAL, RECONNECT_MAX_TIMES
 from ConnMgr import ConnMgr, PROTO_TYPE_TCP, PROTO_TYPE_RUDP
 from core.common.IdManager import IdManager
 from core.mobilelog.LogManager import AsyncLogger
@@ -34,7 +34,7 @@ RPC_TYPE_REQUEST = 1
 RPC_TYPE_REPLY = 2
 RPC_TYPE_HEARTBEAT = 3
 
-REQUEST_RPC_TIMEOUT = 3  # sec
+REQUEST_RPC_TIMEOUT = (RECONNECT_MAX_TIMES + 1) * RECONNECT_INTERVAL  # sec
 
 
 def get_a_rpc_handler_id() -> bytes:
@@ -203,7 +203,6 @@ class RpcHandler:
                 return
             # self._create_conn_tasks.append((gv.get_ev_loop().create_task(self._handle_create_conn(ip_port_tuple))))
             self._addr_2_create_conn_tasks[ip_port_tuple] = self._handle_create_conn(ip_port_tuple)
-
             return
         self._conn.send_data_and_count(self.rpc_handler_id, msg)
 
@@ -219,15 +218,17 @@ class RpcHandler:
             self._logger.debug(f'_handle_create_conn: {addr=}')
             _conn: ConnBase = await ConnMgr.instance().open_conn_by_addr(
                 self._conn_proto_type, addr, self)
+
             self._addr_2_create_conn_tasks.pop(addr, None)
+
             if _conn.is_connected():
                 self._logger.debug(f'_handle_create_conn: _conn.is_connected() {addr=}')
-                if self._conn is None:
-                    self._conn = _conn
-                    for _msg in self._msg_buffer:
-                        self._conn.send_data_and_count(self.rpc_handler_id, _msg)
-                    self._msg_buffer.clear()
-            elif _conn.is_disconnected_or_disconnecting():
+                self._conn = _conn
+                for _msg in self._msg_buffer:
+                    self._conn.send_data_and_count(self.rpc_handler_id, _msg)
+                self._msg_buffer.clear()
+            else:
+            # elif _conn.is_disconnected_or_disconnecting():
                 self._logger.debug(f'_handle_create_conn: _conn.is_disconnected_or_disconnecting() {addr=}')
                 if self._conn is None:
                     for _msg in self._msg_buffer:
@@ -239,9 +240,8 @@ class RpcHandler:
                                 f"fire pending requests future, rpc func: {_msg[3]}, reply_id: {_reply_id}")
                             self._pending_requests[_reply_id].set_error_and_result(
                                 f"cant connect remote addr: {addr}", None)
-            elif _conn.is_connecting():
-                self._logger.debug(f'_handle_create_conn: _conn.is_connecting() {addr=}')
-                pass
+            # elif _conn.is_connecting():
+            #     self._logger.debug(f'_handle_create_conn: _conn.is_connecting() {addr=}')
         except asyncio.CancelledError:
             LogManager.get_logger().warning(f'cancel _handle_create_conn task {addr=}')
             raise

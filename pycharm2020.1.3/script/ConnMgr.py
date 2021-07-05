@@ -88,11 +88,12 @@ class RudpProtocol(asyncio.DatagramProtocol):
             access_token_jwt: bytes = JWT.create_access_token(
                 identity=str(RUDP_CONV), expires_delta=datetime.timedelta(seconds=RUDP_JWT_EXP)).encode()
 
-            exp = int((Token(access_token_jwt.decode()).exp - datetime.datetime.utcnow()).total_seconds())
+            # exp = int((Token(access_token_jwt.decode()).exp - datetime.datetime.utcnow()).total_seconds())
             # print(f'aaa {exp=}')
 
             self.transport.sendto(RUDP_HANDSHAKE_SYN_ACK_PREFIX + access_token_jwt, addr)
         elif data.startswith(RUDP_HANDSHAKE_ACK_PREFIX):
+            # return  # todo: del
             parts = data.split(RUDP_HANDSHAKE_ACK_PREFIX, 2)
             if len(parts) != 2:
                 raise Exception(f"Expected value '{RUDP_HANDSHAKE_ACK_PREFIX}<JWT>'")
@@ -119,12 +120,22 @@ class RudpProtocol(asyncio.DatagramProtocol):
 
             self.logger.info(f"RUDP ROLE_TYPE_PASSIVE peer_addr={addr} is connected !!!!")
         elif data.startswith(RUDP_HANDSHAKE_SYN_ACK_PREFIX):
+            # return  # todo: del
             parts = data.split(RUDP_HANDSHAKE_SYN_ACK_PREFIX, 2)
             if len(parts) != 2:
                 raise Exception(f"Expected value '{RUDP_HANDSHAKE_SYN_ACK_PREFIX}<JWT>'")
 
             raw_jwt = parts[1].decode()
-            token_obj = Token(raw_jwt)
+            try:
+                token_obj = Token(raw_jwt)
+                # exp = int((token_obj.exp - datetime.datetime.utcnow()).total_seconds())
+                # print(f'xxx {exp=}')
+            except ExpiredSignatureError as e:
+                self.logger.warning(str(e))
+                return
+            except:
+                self.logger.log_last_except()
+                return
             if token_obj.type != "access":
                 raise Exception("Only access tokens are allowed")
             self.transport.sendto(RUDP_HANDSHAKE_ACK_PREFIX + raw_jwt.encode(), addr)
@@ -133,9 +144,10 @@ class RudpProtocol(asyncio.DatagramProtocol):
 
             self.logger.info(f"RUDP ROLE_TYPE_ACTIVE peer_addr={addr} is connected !!!!")
         else:
+
             _cur_conn = ConnMgr.instance().get_conn(addr, PROTO_TYPE_RUDP)
-            assert _cur_conn
-            _cur_conn.handle_read(data)
+            if _cur_conn:
+                _cur_conn.handle_read(data)
 
 
 @Singleton
@@ -228,15 +240,16 @@ class ConnMgr:
             self._proto_type_2_addr_2_conn[proto_type][addr] = _conn
             # if rpc_handler is not None:
             #     _conn.add_rpc_handler(rpc_handler)
-            await _conn.try_connect()
-            # if not is_conned:
-            #     _conn.handle_close(close_reason='try connecting failed')
-            #     _conn = None
+            is_conned = await _conn.try_connect()
         else:
             _conn.add_rpc_handler(rpc_handler)  # 不加这个会造成 proxy 类的服务器转发混乱
-            # is_conned = _conn.is_connected()
+            is_conned = _conn.is_connected()
             if _conn.is_disconnected_or_disconnecting():
-                await _conn.try_connect()
+                is_conned = await _conn.try_connect()
+        if not is_conned and proto_type == PROTO_TYPE_RUDP:
+            _conn = await self.open_conn_by_addr(PROTO_TYPE_TCP, addr, rpc_handler)
+        #     _conn.handle_close(close_reason='try connecting failed')
+        #     _conn = None
         return _conn
 
     def _remove_conn(self, proto_type, addr: typing.Tuple[str, int]):

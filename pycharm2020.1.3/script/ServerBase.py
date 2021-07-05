@@ -225,37 +225,6 @@ class ServerBase:
     #     except:
     #         # self.logger.info("Unexpected error:", sys.exc_info()[0])
     #         self._logger.log_last_except()
-    #         raise
-
-    async def _main(self):
-        try:
-            self._handle_sig()
-
-            # etcd_addr_list = [('127.0.0.1', '2379'),]
-            # etcd_addr_list = [('192.168.83.23', '2379'),]
-            # etcd_addr_list = [
-            #     (ip_port_map["ip"], str(ip_port_map["port"])) for ip_port_map in gr.game_json_conf["etcd_servers"]]
-
-            gv.local_ip = gv.game_json_conf[gv.server_name]["ip"]
-            gv.local_port = gv.game_json_conf[gv.server_name]["port"]
-
-            # my_addr = (_ip, str(_port))
-            #
-            # service_module_dict = {"BattleAllocatorCenter": ""} if gr.server_name == "battle_0" else {
-            #     "BattleAllocatorStub": ""}
-            #
-            # self._etcd_service_node = ServiceNode(etcd_addr_list, my_addr, service_module_dict)
-            # # self._etcd_service_node = ServiceNode(etcd_addr_list, my_addr, {"BattleAllocatorStub": ""})
-            # gr.etcd_service_node = self._etcd_service_node
-            # self._timer_hub.call_later(4, self._check_game_start)
-
-            _etcd_support_task = asyncio.create_task(self._start_etcd_task())
-            _start_srv_task = asyncio.create_task(self._start_server_task())
-
-            await _etcd_support_task
-            await _start_srv_task
-        except:
-            self._logger.log_last_except()
 
     async def _start_etcd_task(self):
         etcd_addr_list = [
@@ -290,8 +259,24 @@ class ServerBase:
             self._ev_loop.add_signal_handler(
                 getattr(signal, _sig_name), functools.partial(ask_exit, _sig_name, self._ev_loop))
 
-    def run(self):
+    #         raise
 
+    async def _main(self):
+        try:
+            self._handle_sig()
+
+            gv.local_ip = gv.game_json_conf[gv.server_name]["ip"]
+            gv.local_port = gv.game_json_conf[gv.server_name]["port"]
+
+            _etcd_support_task = asyncio.create_task(self._start_etcd_task())
+            _start_srv_task = asyncio.create_task(self._start_server_task())
+
+            await _etcd_support_task
+            await _start_srv_task
+        except:
+            self._logger.log_last_except()
+
+    def run(self):
         try:
             # events.set_event_loop(loop)
             # if debug is not None:
