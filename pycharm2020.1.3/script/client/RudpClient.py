@@ -85,24 +85,24 @@ async def rudp_echo_cli(cli_index):
     # _ppt = Puppet()
     # _res = ('gate_0', '127.0.0.1', 9201)  # todo: just for debugging
 
-    _ppt = Avatar()
+    _avt = Avatar()
     _conn = await ConnMgr.instance().open_conn_by_addr(
-        proto_type=PROTO_TYPE_RUDP, addr=_res[1:], rpc_handler=_ppt.get_rpc_handle())
+        proto_type=PROTO_TYPE_RUDP, addr=_res[1:], rpc_handler=_avt.get_rpc_handle())
     # _tcp_conn = TcpConn.TcpConn(
     #     ConnBase.ROLE_TYPE_ACTIVE,
-    #     writer.get_extra_info('peername'), writer, reader, _ppt.get_rpc_handle())
+    #     writer.get_extra_info('peername'), writer, reader, _avt.get_rpc_handle())
     # _tcp_conn.loop()
     # _pbe = PuppetBindEntity()
     # _tcp_conn.set_entity(_pbe)
-    # _tcp_conn.set_entity(_ppt)
-    # _ppt.set_rpc_handler(_tcp_conn.get_rpc_handler())
-    # _pbe.set_puppet(_ppt)
+    # _tcp_conn.set_entity(_avt)
+    # _avt.set_rpc_handler(_tcp_conn.get_rpc_handler())
+    # _pbe.set_puppet(_avt)
     # _pbe.set_connection(_tcp_conn)
     if not _conn.is_connected():
         cli_log.error(f"cant conn to ls")
         return
 
-    _ppt.init_from_dict({})
+    _avt.init_from_dict({})
 
     # _ppt.set_bind_entity(_pbe)
     # gr.bind_entity = _pbe
@@ -120,17 +120,47 @@ async def rudp_echo_cli(cli_index):
 
     # _cnt = 1000000
     # while _cnt > 0:
+
     th = TimerHub()
-    th.call_later(
-        # 1,
-        # 10,
-        0.016,  # 极限 60fps
-        # 0.033,  # 30fps
-        # 0.01,  # 基本已经处理不过来
-        lambda: _ppt.CompAvatarTest.puppet_chat_to_ppt({'content': 'puppet_chat_to_ppt'}),
-        repeat_count=-1,
-        # repeat_interval_sec=1
-    )
+    # th.call_later(
+    #     # 1,
+    #     # 10,
+    #     0.016,  # 极限 60fps
+    #     # 0.033,  # 30fps
+    #     # 0.01,  # 基本已经处理不过来
+    #     lambda: _ppt.CompAvatarTest.puppet_chat_to_ppt({'content': 'puppet_chat_to_ppt'}),
+    #     repeat_count=-1,
+    #     # repeat_interval_sec=1
+    # )
+
+    _err, battle_srv_addr_info = await _avt.CompAvatarTest.simulate_matching()
+    print(f'{battle_srv_addr_info=}')
+
+    _bs_addr = battle_srv_addr_info[1:]
+
+    _ppt = Puppet()
+    _conn = await ConnMgr.instance().open_conn_by_addr(
+        proto_type=PROTO_TYPE_RUDP, addr=_bs_addr, rpc_handler=_ppt.get_rpc_handle())
+    # _tcp_conn = TcpConn.TcpConn(
+    #     ConnBase.ROLE_TYPE_ACTIVE,
+    #     writer.get_extra_info('peername'), writer, reader, _ppt.get_rpc_handle())
+    # _tcp_conn.loop()
+    # _pbe = PuppetBindEntity()
+    # _tcp_conn.set_entity(_pbe)
+    # _tcp_conn.set_entity(_ppt)
+    # _ppt.set_rpc_handler(_tcp_conn.get_rpc_handler())
+    # _pbe.set_puppet(_ppt)
+    # _pbe.set_connection(_tcp_conn)
+    if not _conn.is_connected():
+        cli_log.error(f"cant conn to ls")
+        return
+
+    _ppt.init_from_dict({})
+
+
+    msg = "calll test_timer_async"
+    _ppt.CompPuppetTest.test_response_rpc(msg)
+
         # _cnt -= 1
         # print(_cnt)
         # await asyncio.sleep(1)

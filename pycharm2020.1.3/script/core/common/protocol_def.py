@@ -54,6 +54,7 @@ RUDP_HANDSHAKE_SYN = b'new_byte_hello_its_me'
 RUDP_HANDSHAKE_SYN_ACK_PREFIX = b'new_byte_welcome:'
 RUDP_HANDSHAKE_ACK_PREFIX = b'new_byte_ack:'
 RUDP_HANDSHAKE_RESET_PREFIX = b'new_byte_reset'
+
 RUDP_JWT_EXP = 6
 RUDP_CONV = 0
 

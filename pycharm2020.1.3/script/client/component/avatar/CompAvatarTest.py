@@ -49,3 +49,7 @@ class CompAvatarTest(Component):
         # if self._cnt > 0:
         #     self.remote_comp.puppet_chat_to_ppt({'content': 'puppet_chat_to_ppt'})
         # last_ts = time.time()
+
+    @rpc_func
+    async def simulate_matching(self):
+        return await self.remote_comp.handle_simulate_matching()
