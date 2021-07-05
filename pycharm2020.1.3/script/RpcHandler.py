@@ -72,7 +72,7 @@ class RpcHandler:
         self._entity = entity  # type: ServerEntity
         self._next_reply_id = 0
         self._pending_requests = {}  # type: typing.Dict[int, RpcReplyFuture]
-        self._msg_buffer = []  # type: typing.List[typing.Tuple]
+        self._msg_buffer = []  # type: typing.List[bytes]
         self._timer_hub = TimerHub()
         # self._try_connect_times = 0
 
@@ -187,7 +187,7 @@ class RpcHandler:
             return None
 
     # @wait_or_not()
-    def _send_rpc_msg(self, msg, ip_port_tuple: typing.Tuple[str, int] = None):
+    def _send_rpc_msg(self, msg: bytes, ip_port_tuple: typing.Tuple[str, int] = None):
         # assert ((self._conn is None and ip_port_tuple) or (not self._conn.is_connected()) or self._conn)
         # if ip_port_tuple:
         #     _cur_addr = ip_port_tuple
@@ -198,7 +198,8 @@ class RpcHandler:
             # print(f"_send_rpc_msg  _try_connect_times={self._try_connect_times}, id(self._conn)= {id(self._conn)}")
             # if self._try_connect_times > 0 or ip_port_tuple is None:  # `self._try_connect_times > 0` means connecting
             #     return
-            if ip_port_tuple is None or ip_port_tuple in self._addr_2_create_conn_tasks:  # means connecting
+            if ip_port_tuple is None:
+                    # or ip_port_tuple in self._addr_2_create_conn_tasks:  # means connecting
                 return
             # self._create_conn_tasks.append((gv.get_ev_loop().create_task(self._handle_create_conn(ip_port_tuple))))
             self._addr_2_create_conn_tasks[ip_port_tuple] = self._handle_create_conn(ip_port_tuple)
@@ -216,25 +217,31 @@ class RpcHandler:
             # self._try_connect_times += 1
             # self._conn, is_conned = await ConnMgr.instance().open_conn_by_addr(CONN_TYPE_TCP, addr, self)
             self._logger.debug(f'_handle_create_conn: {addr=}')
-            _conn, is_conned = await ConnMgr.instance().open_conn_by_addr(
+            _conn: ConnBase = await ConnMgr.instance().open_conn_by_addr(
                 self._conn_proto_type, addr, self)
             self._addr_2_create_conn_tasks.pop(addr, None)
-            if not is_conned:
-                for _msg in self._msg_buffer:
-                    if _msg[0] == RPC_TYPE_REQUEST:
-                        _reply_id = _msg[1]
-                        if _reply_id not in self._pending_requests:
-                            continue
-                        self._logger.warning(
-                            f"fire pending requests future, rpc func: {_msg[3]}, reply_id: {_reply_id}")
-                        self._pending_requests[_reply_id].set_error_and_result(
-                            f"cant connect remote addr: {addr}", None)
-            else:
-                self._conn = _conn
-                for _msg in self._msg_buffer:
-                    self._conn.send_data_and_count(self.rpc_handler_id, _msg)
-                self._msg_buffer.clear()
-            # self._logger.warning(f"{self._try_connect_times=}, {id(self._conn)=}")
+            if _conn.is_connected():
+                self._logger.debug(f'_handle_create_conn: _conn.is_connected() {addr=}')
+                if self._conn is None:
+                    self._conn = _conn
+                    for _msg in self._msg_buffer:
+                        self._conn.send_data_and_count(self.rpc_handler_id, _msg)
+                    self._msg_buffer.clear()
+            elif _conn.is_disconnected_or_disconnecting():
+                self._logger.debug(f'_handle_create_conn: _conn.is_disconnected_or_disconnecting() {addr=}')
+                if self._conn is None:
+                    for _msg in self._msg_buffer:
+                        if _msg[0] == RPC_TYPE_REQUEST:
+                            _reply_id = _msg[1]
+                            if _reply_id not in self._pending_requests:
+                                continue
+                            self._logger.warning(
+                                f"fire pending requests future, rpc func: {_msg[3]}, reply_id: {_reply_id}")
+                            self._pending_requests[_reply_id].set_error_and_result(
+                                f"cant connect remote addr: {addr}", None)
+            elif _conn.is_connecting():
+                self._logger.debug(f'_handle_create_conn: _conn.is_connecting() {addr=}')
+                pass
         except asyncio.CancelledError:
             LogManager.get_logger().warning(f'cancel _handle_create_conn task {addr=}')
             raise

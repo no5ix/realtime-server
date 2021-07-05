@@ -118,6 +118,15 @@ class ConnBase:
     def is_connected(self):
         return self._conn_state == CONN_STATE_CONNECTED
 
+    def is_connecting(self):
+        return self._conn_state == CONN_STATE_CONNECTING
+
+    def is_disconnected_or_disconnecting(self):
+        return self._conn_state == CONN_STATE_DISCONNECTED or self._conn_state == CONN_STATE_DISCONNECTING
+
+    def get_conn_state(self):
+        return self._conn_state
+
     def set_connection_state(self, conn_state):
         self._conn_state = conn_state
 
@@ -186,8 +195,8 @@ class ConnBase:
 
     # @wait_or_not
     def handle_close(self, close_reason: str):
-        if not self.is_connected():
-            return
+        # if self._conn_state == CONN_STATE_DISCONNECTED:
+        #     return
         self.set_connection_state(CONN_STATE_DISCONNECTING)
         self._logger.warning(f'peer addr: {self._addr}, {close_reason=}')
         self._close_cb()

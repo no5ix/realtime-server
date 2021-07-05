@@ -8,7 +8,7 @@ from asyncio import transports
 from asyncio.exceptions import CancelledError
 
 from ConnBase import HEARTBEAT_TIMEOUT, HEARTBEAT_INTERVAL, ConnBase, RECONNECT_MAX_TIMES, RECONNECT_INTERVAL, \
-    CONN_STATE_CONNECTING, CONN_STATE_CONNECTED, STRUCT_PACK_FORMAT
+    CONN_STATE_CONNECTING, CONN_STATE_CONNECTED, STRUCT_PACK_FORMAT, CONN_STATE_DISCONNECTED
 from ConnMgr import PROTO_TYPE_TCP, PROTO_TYPE_RUDP, RudpProtocol, RUDP_HANDSHAKE_SYN, ConnMgr, ROLE_TYPE_PASSIVE
 from common import gv
 from core.common import rudp
@@ -51,7 +51,7 @@ class RudpConn(ConnBase):
         self.tick_kcp_update()
 
     async def try_connect(self) -> bool:
-        self._conn_state = CONN_STATE_CONNECTING
+        self.set_connection_state(CONN_STATE_CONNECTING)
         self._transport, protocol = await gv.get_ev_loop().create_datagram_endpoint(
             lambda: RudpProtocol(),
             remote_addr=self._addr)
@@ -74,9 +74,9 @@ class RudpConn(ConnBase):
                 self._try_connect_times = 0
                 return True
         else:
-            pass  # todo
             self._logger.error(f"try {RECONNECT_MAX_TIMES} times , still can't connect rudp remote addr: {self._addr}")
             self._try_connect_times = 0
+            self.set_connection_state(CONN_STATE_DISCONNECTED)
             return False
 
     # @wait_or_not()

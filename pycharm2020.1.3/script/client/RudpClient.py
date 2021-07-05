@@ -32,7 +32,7 @@ async def rudp_echo_cli(cli_index):
     while 1:
         rand_dispatcher_service_addr = UtilApi.get_rand_dispatcher_addr()
         # rand_dispatcher_service_addr = ('127.0.0.1', 9100)  # todo: just for debugging
-        print(f"{rand_dispatcher_service_addr=}")
+        cli_log.debug(f"{rand_dispatcher_service_addr=}")
         start_time = time.time()
 
         _err, _res = await temp_rh.request_rpc(
@@ -43,6 +43,7 @@ async def rudp_echo_cli(cli_index):
             [ETCD_TAG_LOBBY_GATE],
             # [ETCD_TAG_LOBBY_SRV],
             # rpc_reply_timeout=None,
+            rpc_reply_timeout=0.3,
             # rpc_remote_entity_type="LoadCollector", ip_port_tuple=dispatcher_service_addr
             # rpc_callback=lambda err, res: self.logger.info(f"pick_lowest_load_service_addr: {err=} {res=}"),
             rpc_remote_entity_type="LoadCollector",
@@ -50,7 +51,8 @@ async def rudp_echo_cli(cli_index):
 
         end_time = time.time()
         offset = end_time - start_time
-        print(f'end: {offset=}')
+        # cli_log.debug(f'end: {offset=}')
+        cli_log.debug(f'{_err=} {_res=}')
 
         # return  # todo: del
 
@@ -60,7 +62,7 @@ async def rudp_echo_cli(cli_index):
         else:
             break
 
-    temp_rh.destroy()
+    # temp_rh.destroy()
 
     # local_server_port_tuple = (8888, 8889, 9000, 9001, 9002, 9003, 9004)
     local_server_port_tuple = (8888,)
@@ -80,7 +82,7 @@ async def rudp_echo_cli(cli_index):
     # _ppt = Puppet()
 
     _ppt = Avatar()
-    _conn, _is_conned = await ConnMgr.instance().open_conn_by_addr(
+    _conn = await ConnMgr.instance().open_conn_by_addr(
         proto_type=PROTO_TYPE_RUDP, addr=_res[1:], rpc_handler=_ppt.get_rpc_handle())
     # _tcp_conn = TcpConn.TcpConn(
     #     ConnBase.ROLE_TYPE_ACTIVE,
@@ -92,7 +94,7 @@ async def rudp_echo_cli(cli_index):
     # _ppt.set_rpc_handler(_tcp_conn.get_rpc_handler())
     # _pbe.set_puppet(_ppt)
     # _pbe.set_connection(_tcp_conn)
-    if not _is_conned:
+    if not _conn.is_connected():
         cli_log.error(f"cant conn to ls")
         return
 
@@ -123,7 +125,7 @@ async def rudp_echo_cli(cli_index):
         # 0.01,  # 基本已经处理不过来
         lambda: _ppt.CompAvatarTest.puppet_chat_to_ppt({'content': 'puppet_chat_to_ppt'}),
         repeat_count=-1,
-        repeat_interval_sec=1
+        # repeat_interval_sec=1
     )
         # _cnt -= 1
         # print(_cnt)

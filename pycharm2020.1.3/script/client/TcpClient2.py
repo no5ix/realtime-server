@@ -95,7 +95,7 @@ async def tcp_echo_client(cli_index):
     # _ppt = Puppet()
 
     _ppt = Avatar()
-    _conn, _is_conned = await ConnMgr.instance().open_conn_by_addr(
+    _conn = await ConnMgr.instance().open_conn_by_addr(
         proto_type=PROTO_TYPE_TCP, addr=_res[1:], rpc_handler=_ppt.get_rpc_handle())
     # _tcp_conn = TcpConn.TcpConn(
     #     ConnBase.ROLE_TYPE_ACTIVE,
@@ -107,7 +107,7 @@ async def tcp_echo_client(cli_index):
     # _ppt.set_rpc_handler(_tcp_conn.get_rpc_handler())
     # _pbe.set_puppet(_ppt)
     # _pbe.set_connection(_tcp_conn)
-    if not _is_conned:
+    if not _conn.is_connected():
         cli_log.error(f"cant conn to ls")
         return
 
