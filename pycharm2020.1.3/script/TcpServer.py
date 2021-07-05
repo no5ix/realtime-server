@@ -3,7 +3,8 @@ import sys
 
 import typing
 
-from ConnMgr import ConnMgr, PROTO_TYPE_TCP, TcpProtocol, ROLE_TYPE_PASSIVE
+from ConnMgr import ConnMgr, ROLE_TYPE_PASSIVE
+from core.common.protocol_def import PROTO_TYPE_TCP, TcpProtocol
 from ServerBase import ServerBase
 
 if typing.TYPE_CHECKING:

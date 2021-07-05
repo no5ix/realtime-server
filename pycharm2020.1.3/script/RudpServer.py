@@ -22,7 +22,8 @@ from sanic_jwt_extended.jwt_manager import JWT
 
 import ConnBase
 # from ConnBase import ROLE_TYPE_PASSIVE
-from ConnMgr import ConnMgr, PROTO_TYPE_RUDP, RudpProtocol, ROLE_TYPE_PASSIVE, TcpProtocol
+from ConnMgr import ConnMgr, ROLE_TYPE_PASSIVE
+from core.common.protocol_def import PROTO_TYPE_RUDP, TcpProtocol, RudpProtocol
 from ProxyRpcHandler import ProxyCliRpcHandler
 from core.util import UtilApi
 from core.util.UtilApi import wait_or_not, Singleton

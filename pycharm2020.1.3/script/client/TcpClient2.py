@@ -6,7 +6,8 @@ import time
 
 import ConnBase
 import TcpConn
-from ConnMgr import ConnMgr, PROTO_TYPE_TCP
+from ConnMgr import ConnMgr
+from core.common.protocol_def import PROTO_TYPE_TCP
 from RpcHandler import RpcHandler, get_a_rpc_handler_id
 from client.Avatar import Avatar
 from client.Puppet import Puppet

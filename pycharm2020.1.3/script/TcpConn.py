@@ -9,7 +9,8 @@ from asyncio.exceptions import CancelledError
 
 from ConnBase import HEARTBEAT_TIMEOUT, HEARTBEAT_INTERVAL, ConnBase, RPC_HANDLER_ID_LEN, RECONNECT_MAX_TIMES, \
     RECONNECT_INTERVAL, CONN_STATE_CONNECTED, CONN_STATE_CONNECTING, CONN_STATE_DISCONNECTED
-from ConnMgr import PROTO_TYPE_TCP, ROLE_TYPE_ACTIVE
+from ConnMgr import ROLE_TYPE_ACTIVE
+from core.common.protocol_def import PROTO_TYPE_TCP, TcpProtocol
 from common import gv
 from core.common.IdManager import IdManager
 from core.util.TimerHub import TimerHub
@@ -44,7 +45,6 @@ class TcpConn(ConnBase):
         self.set_connection_state(CONN_STATE_CONNECTING)
         while self._try_connect_times < RECONNECT_MAX_TIMES:
             try:
-                from TcpServer import TcpProtocol
                 self._try_connect_times += 1
                 transport, protocol = await gv.get_ev_loop().create_connection(
                     lambda: TcpProtocol(ROLE_TYPE_ACTIVE),

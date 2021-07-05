@@ -11,7 +11,8 @@ from typing import Optional
 
 import core.util.UtilApi
 from ConnBase import ConnBase
-from ConnMgr import ConnMgr, PROTO_TYPE_TCP
+from ConnMgr import ConnMgr
+from core.common.protocol_def import PROTO_TYPE_TCP
 from RpcHandler import RpcHandler, RPC_TYPE_HEARTBEAT, RPC_TYPE_NOTIFY, RPC_TYPE_REQUEST, RPC_TYPE_REPLY, \
     get_a_rpc_handler_id
 from RpcHandler import RpcReplyFuture

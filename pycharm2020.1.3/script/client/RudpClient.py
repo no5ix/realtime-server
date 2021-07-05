@@ -6,7 +6,8 @@ import time
 
 import ConnBase
 import TcpConn
-from ConnMgr import ConnMgr, PROTO_TYPE_TCP, PROTO_TYPE_RUDP
+from ConnMgr import ConnMgr
+from core.common.protocol_def import PROTO_TYPE_TCP, PROTO_TYPE_RUDP
 from RpcHandler import RpcHandler, get_a_rpc_handler_id
 from client.Avatar import Avatar
 from client.Puppet import Puppet
@@ -31,7 +32,7 @@ async def rudp_echo_cli(cli_index):
 
     while 1:
         rand_dispatcher_service_addr = UtilApi.get_rand_dispatcher_addr()
-        rand_dispatcher_service_addr = ('127.0.0.1', 9100)  # todo: just for debugging
+        # rand_dispatcher_service_addr = ('127.0.0.1', 9100)  # todo: just for debugging
         cli_log.debug(f"{rand_dispatcher_service_addr=}")
         start_time = time.time()
 
@@ -43,7 +44,7 @@ async def rudp_echo_cli(cli_index):
             [ETCD_TAG_LOBBY_GATE],
             # [ETCD_TAG_LOBBY_SRV],
             # rpc_reply_timeout=None,
-            # rpc_reply_timeout=0.6,
+            rpc_reply_timeout=0.6,
             # rpc_remote_entity_type="LoadCollector", ip_port_tuple=dispatcher_service_addr
             # rpc_callback=lambda err, res: self.logger.info(f"pick_lowest_load_service_addr: {err=} {res=}"),
             rpc_remote_entity_type="LoadCollector",
@@ -54,7 +55,7 @@ async def rudp_echo_cli(cli_index):
         # cli_log.debug(f'end: {offset=}')
         cli_log.debug(f'{_err=} {_res=}')
 
-        return  # todo: del
+        # return  # todo: del
 
         if _err:
             cli_log.error(f"{_err=}")
@@ -62,13 +63,15 @@ async def rudp_echo_cli(cli_index):
         else:
             break
 
+    # return  # todo: del
+
     # temp_rh.destroy()
 
     # local_server_port_tuple = (8888, 8889, 9000, 9001, 9002, 9003, 9004)
     local_server_port_tuple = (8888,)
     port = random.choice(local_server_port_tuple)
 
-    cli_log.debug(f"lobby server info: {_res}")
+    # cli_log.debug(f"lobby gate info: {_res}")
     # return  # todo: del
 
     # reader, writer = await asyncio.open_connection(
@@ -80,6 +83,7 @@ async def rudp_echo_cli(cli_index):
         # '127.0.0.1', port)
     # peer_name = writer.get_extra_info('peername')
     # _ppt = Puppet()
+    # _res = ('gate_0', '127.0.0.1', 9201)  # todo: just for debugging
 
     _ppt = Avatar()
     _conn = await ConnMgr.instance().open_conn_by_addr(

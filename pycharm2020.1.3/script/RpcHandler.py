@@ -13,7 +13,8 @@ from bson import ObjectId
 
 import core.util.UtilApi
 from ConnBase import ConnBase, RECONNECT_INTERVAL, RECONNECT_MAX_TIMES
-from ConnMgr import ConnMgr, PROTO_TYPE_TCP, PROTO_TYPE_RUDP
+from ConnMgr import ConnMgr
+from core.common.protocol_def import PROTO_TYPE_TCP, PROTO_TYPE_RUDP
 from core.common.IdManager import IdManager
 from core.mobilelog.LogManager import AsyncLogger
 from core.util.TimerHub import TimerHub
@@ -198,8 +199,7 @@ class RpcHandler:
             # print(f"_send_rpc_msg  _try_connect_times={self._try_connect_times}, id(self._conn)= {id(self._conn)}")
             # if self._try_connect_times > 0 or ip_port_tuple is None:  # `self._try_connect_times > 0` means connecting
             #     return
-            if ip_port_tuple is None:
-                    # or ip_port_tuple in self._addr_2_create_conn_tasks:  # means connecting
+            if ip_port_tuple is None or ip_port_tuple in self._addr_2_create_conn_tasks:  # means connecting
                 return
             # self._create_conn_tasks.append((gv.get_ev_loop().create_task(self._handle_create_conn(ip_port_tuple))))
             self._addr_2_create_conn_tasks[ip_port_tuple] = self._handle_create_conn(ip_port_tuple)
@@ -218,12 +218,18 @@ class RpcHandler:
             self._logger.debug(f'_handle_create_conn: {addr=}')
             _conn: ConnBase = await ConnMgr.instance().open_conn_by_addr(
                 self._conn_proto_type, addr, self)
+            if addr not in self._addr_2_create_conn_tasks:  # 说明是其他的addr已经连上了, 本addr后来连上的就直接中断吧
+                self._logger.debug(f'_handle_create_conn: {addr=} connecting interrupt')
+                return
 
             self._addr_2_create_conn_tasks.pop(addr, None)
 
             if _conn.is_connected():
                 self._logger.debug(f'_handle_create_conn: _conn.is_connected() {addr=}')
                 self._conn = _conn
+                for _ct in self._addr_2_create_conn_tasks.values():
+                    _ct.cancel()
+                self._addr_2_create_conn_tasks = {}
                 for _msg in self._msg_buffer:
                     self._conn.send_data_and_count(self.rpc_handler_id, _msg)
                 self._msg_buffer.clear()
