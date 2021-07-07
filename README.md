@@ -1,6 +1,217 @@
-# version
+一个轻量级游戏服务器框架
+
+
+# python version
 
 python 3.8.8
+
+
+# 要点
+
+- 业务层基于ECS框架来做开发, 继承实体基类与组件基类即可
+- 基于msgpack的RPC框架, 支持 ip地址直接call以及配合ECS实体/组件直接call
+- 基于asyncio异步IO的协程业务层支持, 可实现类似 `result = await rpc_call()` 的效果
+- 支持异步的TimedRotating日志模块
+    - 自动根据日期切换日志文件
+    - 根据日志level改变颜色, 方便查询
+    - 报trace可打印堆栈与`locals`
+- 支持1:N模型的定时器模块, 避免覆盖同一个key的易错点 
+    - 可以重复使用一个key, 并不会冲掉之前key的timer, 但是当调用`cancel_timer`的时候, 会一次性全部cancel掉所有
+- 制作了增强型json解析器, 支持注释/自动去除逗号/变量宏
+- 增量式热更新reload模块
+- 
+
+
+# ToDo List
+
+- Unity基于pythonnet来引入python实现热更或业务编写
+
+
+# 架构
+
+
+### 客户端角度
+
+```puml
+actor game_player_client as c
+database S3
+
+rectangle gs [
+    <b>游戏服(gamesvr)
+    ....
+    Python with asiocore
+    ----
+    Avatar
+    部分Center, Stub
+]
+
+rectangle bs [
+    <b>战斗服(battlesvr)
+    ....
+    Python with asiocore
+    ----
+    Entity: Battle, PuppetBindEntity
+    LocalEntity: AvatarPuppet, Flyer, ...
+]
+
+rectangle ms [
+    <b>微服务(mssvr)
+    ....
+    Python with gevent
+    ----
+    AvatarService, MatchService, BattleService, ...
+]
+
+rectangle api [
+    <b>API Gateway
+    ....
+    网关
+    ----
+    外网用户访问https://g90agw.nie.netease.com
+    内网用户访问http://g90agw-in.nie.netease.com
+]
+
+rectangle api_service [
+    <b> API Service
+    ....
+    Golang HTTP Server in Symphony / ECS
+    ----
+    like, login, s3, ...
+]
+
+c <--> gs: TCP
+c <--> bs: KCP/TCP
+c <--> api: https
+c --> S3: http
+
+gs <--> ms
+bs <--> ms
+gs <--> bs
+gs --> api: http/https
+bs --> api: http/https
+api <--> api_service
+api_service --> S3
+```
+
+关系图如下:  
+```puml
+sprite $comp jar:archimate/component
+sprite $service jar:archimate/service
+sprite $server jar:archimate/device
+sprite $client jar:archimate/actor
+
+archimate #Physical Client as C <<actor>>
+archimate #Physical Server as S <<device>>
+
+archimate #Technology Ocean as DB <<service>>
+archimate #Technology S3 <<service>>
+archimate #Technology 计费 as pay <<service>>
+archimate #Technology "API Gateway" as GW <<service>>
+
+archimate #Application "g90/login-server" as SLogin <<component>>
+archimate #Application "g68/rank" as SRank <<component>>
+archimate #Application "g90/screen-bullet" as SBullet <<component>>
+archimate #Application "g90/s3" as SS3 <<component>>
+archimate #Application "g90/payment-server" as SPay <<component>>
+
+C -down-> GW: HTTPS
+GW -down-> SLogin: /auth
+GW -down-> SBullet: /send
+GW -down-> SRank: /get_rank
+
+SRank <-down- S: Update Rank
+SS3 <-down- S: Upload/List/Delete
+SPay -down-> S: call online avt
+SPay -down-> DB: insert doc into messages
+S <-right-> DB
+
+C --> S3: HTTP
+SS3 -up-> S3: Upload/List/Delete
+
+pay -down-> SPay: /ship
+
+legend left
+图例：
+<$comp>: API service
+<$service>: 外部服务
+<$server>: 游戏服务器
+<$client>: 客户端
+==
+注：服务器与API service之间的通信，同样走API Gateway
+endlegend
+```
+
+### 周边服务角度
+
+```puml
+database Ocean as mongo
+database redis [
+    Jetis
+    ....
+    ElastiCache
+]
+database S3
+database etcd
+
+rectangle gs [
+    <b>游戏服(gamesvr)
+    ....
+    Python with asiocore
+    ----
+    Avatar
+    部分Center, Stub
+    ----
+    gamemanager
+    dbmanager
+    gate
+    game
+]
+
+rectangle bs [
+    <b>战斗服(battlesvr)
+    ....
+    Python with asiocore
+    ----
+    Entity: Battle, PuppetBindEntity
+    LocalEntity: AvatarPuppet, Flyer, ...
+    ----
+    gamemanager
+    dbmanager
+    gate
+    battle
+]
+
+rectangle ms [
+    <b>微服务(mssvr)
+    ....
+    Python with gevent
+    ----
+    AvatarService, MatchService, BattleService, ...
+    ----
+    service_gate
+    service
+]
+
+rectangle api [
+    <b>API Service
+    ....
+    Golang HTTP Server in Symphony / ECS
+    ----
+    rank, login, s3, ...
+]
+
+api --> S3
+api --> mongo
+api --> redis
+
+gs --> mongo
+bs --> mongo
+ms --> mongo
+gs --> etcd
+bs --> etcd
+ms --> etcd
+ms --> redis
+```
 
 
 # todo list
