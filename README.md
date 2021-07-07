@@ -9,17 +9,24 @@ python 3.8.8
 # 要点
 
 - 业务层基于ECS框架来做开发, 继承实体基类与组件基类即可
-- 基于msgpack的RPC框架, 支持 ip地址直接call以及配合ECS实体/组件直接call
+- 基于msgpack的RPC框架, 支持 ip地址直接call以及配合ECS的remote虚拟实体/组件直接call
 - 基于asyncio异步IO的协程业务层支持, 可实现类似 `result = await rpc_call()` 的效果
+    - 实现了协程池, 封装成简洁的装饰器便于业务层调用
 - 支持异步的TimedRotating日志模块
-    - 自动根据日期切换日志文件
+    - 自动根据日期时间切换日志文件
+    - 支持协程对象的callback
     - 根据日志level改变颜色, 方便查询
     - 报trace可打印堆栈与`locals`
+    - 对于 warning 以上的日志级别直接对Pycharm提供文件跳转支持
 - 支持1:N模型的定时器模块, 避免覆盖同一个key的易错点 
     - 可以重复使用一个key, 并不会冲掉之前key的timer, 但是当调用`cancel_timer`的时候, 会一次性全部cancel掉所有
 - 制作了增强型json解析器, 支持注释/自动去除逗号/变量宏
 - 增量式热更新reload模块
-- 
+- 基于etcd的 服务注册 / TTL / 服务发现 / 负载均衡 / 上报负载 / Watch机制 一体化
+- 断线重连
+- 基于MongoDB的数据落地模块
+- client端的模拟与自动化测试配套
+- 大厅服务器的前置网关gate服务器, 负责压缩/解压, 加密/解密数据以及鉴权
 
 
 # ToDo List
