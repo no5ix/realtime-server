@@ -6,8 +6,8 @@
 - 业务层基于ECS框架来做开发, 继承实体基类与组件基类即可
 - 基于`etcd`的 服务注册 / TTL / 服务发现 / 负载均衡 / 上报负载 / Watch机制 一体化
 - 基于`msgpack`的RPC框架, 支持 ip地址直接call以及配合ECS的remote虚拟实体/组件直接call
-- 基于asyncio异步IO的协程业务层支持, 可实现类似 `result = await rpc_call()` 的效果
-    - 实现了协程池, 封装成简洁的装饰器便于业务层调用
+- 基于asyncio异步IO的协程业务层支持, 可实现类似 `result = await rpc_call()` 的直接调RPC拿返回的效果
+    - 实现了协程池, 封装成了简洁的装饰器便于业务层调用
 - 支持TCP与RUDP
 - 基于sanic开发的异步HTTP微服务框架供方便开发各类公共服务
     - 基于jwt的auth模块
