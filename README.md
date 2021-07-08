@@ -36,78 +36,14 @@ python 3.8.8
 
 # 架构图
 
-
-```puml
-actor game_player_client as cl
-database MongoDB
-database Redis
-database etcd
-
-rectangle hs [
-    <b>HTTP微服务集群
-    ....
-    基于sanic开发的异步HTTP微服务类集群
-    ----
-    可基于此扩展实现登陆微服务、排队微服务、排行榜微服务等等
-]
-
-rectangle lg [
-    <b>lobby_gate0, lobby_gate1, ...
-    ----
-    负责客户端到 lobby 服 之间的数据转发
-]
-
-rectangle lb [
-    <b>lobby_0, lobby_1, ....
-    ----
-    负责游戏大厅逻辑的集群
-]
-
-rectangle bs [
-    <b>battle_0, battle_1, ...
-    ----
-    承载战斗服逻辑的集群
-]
-
-rectangle ds[
-    <b>调度逻辑类集群
-    ....
-    基于etcd的 服务注册 / TTL / 服务发现 / 负载均衡 / 上报负载 / Watch机制 的调度逻辑类集群
-    ----
-    可基于此扩展实现匹配类逻辑、全局广播类逻辑
-]
-
-cl <--> lg: TCP
-lb <--> bs: TCP
-lg <--> lb: TCP
-cl <--> bs: TCP/RUDP
-lb <--> ds: TCP
-lg <--> ds: TCP
-bs <--> ds: TCP
-
-cl <--> hs: HTTPS
-lb <--> hs: HTTP/HTTPS
-bs <--> hs: HTTP/HTTPS
-
-ds <--> Redis
-hs <--> Redis
-hs <--> MongoDB
-lb <--> MongoDB
-
-lb <--> etcd: HTTP/HTTPS
-lg <--> etcd: HTTP/HTTPS
-bs <--> etcd: HTTP/HTTPS
-ds <--> etcd: HTTP/HTTPS
-
-
-```
-
+![](/img/img_1.png)
 
 # Q&A
 
 常见问题解答, 就不要去群里刷屏问了哈:  
-* 为何选用python? 不选cpp
-    * 原来是cpp的, 但本服务器引擎的愿景是面向大众开发者, 能够快速开发, 且希望更多的开发者能够参与贡献, python受众广, 易上手, 好维护
+* 为何选用python? 不选cpp? 或者做成cpp的底层py的上层?
+    * 原来是cpp的, 但本服务器引擎的愿景是面向大众开发者, 能够快速开发, python受众广, 易上手
+    * 用cpp做底层, py做上层来调用的话也是可以的, 但是愿景是希望更多的开发者能够参与贡献, 对于其他贡献者cpp门槛明显比python高
 * lobby_gate的意义? 为何客户端不直连lobby?
     * 一般的，在延迟不敏感的情况下，客户端通过连接 gate 来访问 lobby, gate负责代理转发客户端与 game 之间的网络通信数据。由 gate 负责完成对通信数据加密解析、压缩解压操作, 减轻lobby性能压力。
     * lobby 处理消息的逻辑可以更加简洁，不用处理 I/O 复用，因为所有的消息来自单个 TCP 连接（单网关）或者固定数量的几个 TCP 连接（多网关的情况）。
