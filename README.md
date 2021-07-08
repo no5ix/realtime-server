@@ -1,4 +1,4 @@
-一个轻量级游戏服务器框架
+一个轻量级的游戏服务器引擎
 
 
 # python version
@@ -9,11 +9,19 @@ python 3.8.8
 # 要点
 
 - 业务层基于ECS框架来做开发, 继承实体基类与组件基类即可
-- 基于msgpack的RPC框架, 支持 ip地址直接call以及配合ECS的remote虚拟实体/组件直接call
+- 基于`etcd`的 服务注册 / TTL / 服务发现 / 负载均衡 / 上报负载 / Watch机制 一体化
+- 基于`msgpack`的RPC框架, 支持 ip地址直接call以及配合ECS的remote虚拟实体/组件直接call
 - 基于asyncio异步IO的协程业务层支持, 可实现类似 `result = await rpc_call()` 的效果
     - 实现了协程池, 封装成简洁的装饰器便于业务层调用
+- 基于sanic开发的异步HTTP微服务框架供方便开发各类公共服务
+    - 基于jwt的auth模块
+    - 基于redis的数据落地模块
+    - 基于umongo的ODM模块
+- 热更新reload模块
+    - 全量式, 安全保障
+    - 增量式, 速度更快, 方便平时开发
 - 支持异步的TimedRotating日志模块
-    - 自动根据日期时间切换日志文件
+    - 根据日期时间自动滚动切换日志文件
     - 支持协程对象的callback
     - 根据日志level改变颜色, 方便查询
     - 报trace可打印堆栈与`locals`
@@ -21,267 +29,121 @@ python 3.8.8
 - 支持1:N模型的定时器模块, 避免覆盖同一个key的易错点 
     - 可以重复使用一个key, 并不会冲掉之前key的timer, 但是当调用`cancel_timer`的时候, 会一次性全部cancel掉所有
 - 制作了增强型json解析器, 支持注释/自动去除逗号/变量宏
-- 增量式热更新reload模块
-- 基于etcd的 服务注册 / TTL / 服务发现 / 负载均衡 / 上报负载 / Watch机制 一体化
-- 断线重连
 - 基于MongoDB的数据落地模块
 - client端的模拟与自动化测试配套
 - 大厅服务器的前置网关gate服务器, 负责压缩/解压, 加密/解密数据以及鉴权
 
 
-# ToDo List
+# 架构图
 
-- Unity基于pythonnet来引入python实现热更或业务编写
-
-
-# 架构
-
-
-### 客户端角度
 
 ```puml
-actor game_player_client as c
-database S3
-
-rectangle gs [
-    <b>游戏服(gamesvr)
-    ....
-    Python with asiocore
-    ----
-    Avatar
-    部分Center, Stub
-]
-
-rectangle bs [
-    <b>战斗服(battlesvr)
-    ....
-    Python with asiocore
-    ----
-    Entity: Battle, PuppetBindEntity
-    LocalEntity: AvatarPuppet, Flyer, ...
-]
-
-rectangle ms [
-    <b>微服务(mssvr)
-    ....
-    Python with gevent
-    ----
-    AvatarService, MatchService, BattleService, ...
-]
-
-rectangle api [
-    <b>API Gateway
-    ....
-    网关
-    ----
-    外网用户访问https://g90agw.nie.netease.com
-    内网用户访问http://g90agw-in.nie.netease.com
-]
-
-rectangle api_service [
-    <b> API Service
-    ....
-    Golang HTTP Server in Symphony / ECS
-    ----
-    like, login, s3, ...
-]
-
-c <--> gs: TCP
-c <--> bs: KCP/TCP
-c <--> api: https
-c --> S3: http
-
-gs <--> ms
-bs <--> ms
-gs <--> bs
-gs --> api: http/https
-bs --> api: http/https
-api <--> api_service
-api_service --> S3
-```
-
-关系图如下:  
-```puml
-sprite $comp jar:archimate/component
-sprite $service jar:archimate/service
-sprite $server jar:archimate/device
-sprite $client jar:archimate/actor
-
-archimate #Physical Client as C <<actor>>
-archimate #Physical Server as S <<device>>
-
-archimate #Technology Ocean as DB <<service>>
-archimate #Technology S3 <<service>>
-archimate #Technology 计费 as pay <<service>>
-archimate #Technology "API Gateway" as GW <<service>>
-
-archimate #Application "g90/login-server" as SLogin <<component>>
-archimate #Application "g68/rank" as SRank <<component>>
-archimate #Application "g90/screen-bullet" as SBullet <<component>>
-archimate #Application "g90/s3" as SS3 <<component>>
-archimate #Application "g90/payment-server" as SPay <<component>>
-
-C -down-> GW: HTTPS
-GW -down-> SLogin: /auth
-GW -down-> SBullet: /send
-GW -down-> SRank: /get_rank
-
-SRank <-down- S: Update Rank
-SS3 <-down- S: Upload/List/Delete
-SPay -down-> S: call online avt
-SPay -down-> DB: insert doc into messages
-S <-right-> DB
-
-C --> S3: HTTP
-SS3 -up-> S3: Upload/List/Delete
-
-pay -down-> SPay: /ship
-
-legend left
-图例：
-<$comp>: API service
-<$service>: 外部服务
-<$server>: 游戏服务器
-<$client>: 客户端
-==
-注：服务器与API service之间的通信，同样走API Gateway
-endlegend
-```
-
-### 周边服务角度
-
-```puml
-database Ocean as mongo
-database redis [
-    Jetis
-    ....
-    ElastiCache
-]
-database S3
+actor game_player_client as cl
+database MongoDB
+database Redis
 database etcd
 
-rectangle gs [
-    <b>游戏服(gamesvr)
+rectangle hs [
+    <b>HTTP微服务集群
     ....
-    Python with asiocore
+    基于sanic开发的异步HTTP微服务类集群
     ----
-    Avatar
-    部分Center, Stub
+    可基于此扩展实现登陆微服务、排队微服务、排行榜微服务等等
+]
+
+rectangle lg [
+    <b>lobby_gate0, lobby_gate1, ...
     ----
-    gamemanager
-    dbmanager
-    gate
-    game
+    负责客户端到 lobby 服 之间的数据转发
+]
+
+rectangle lb [
+    <b>lobby_0, lobby_1, ....
+    ----
+    负责游戏大厅逻辑的集群
 ]
 
 rectangle bs [
-    <b>战斗服(battlesvr)
-    ....
-    Python with asiocore
+    <b>battle_0, battle_1, ...
     ----
-    Entity: Battle, PuppetBindEntity
-    LocalEntity: AvatarPuppet, Flyer, ...
-    ----
-    gamemanager
-    dbmanager
-    gate
-    battle
+    承载战斗服逻辑的集群
 ]
 
-rectangle ms [
-    <b>微服务(mssvr)
+rectangle ds[
+    <b>调度逻辑类集群
     ....
-    Python with gevent
+    基于etcd的 服务注册 / TTL / 服务发现 / 负载均衡 / 上报负载 / Watch机制 的调度逻辑类集群
     ----
-    AvatarService, MatchService, BattleService, ...
-    ----
-    service_gate
-    service
+    可基于此扩展实现匹配类逻辑、全局广播类逻辑
 ]
 
-rectangle api [
-    <b>API Service
-    ....
-    Golang HTTP Server in Symphony / ECS
-    ----
-    rank, login, s3, ...
-]
+cl <--> lg: TCP
+lb <--> bs: TCP
+lg <--> lb: TCP
+cl <--> bs: TCP/RUDP
+lb <--> ds: TCP
+lg <--> ds: TCP
+bs <--> ds: TCP
 
-api --> S3
-api --> mongo
-api --> redis
+cl <--> hs: HTTPS
+lb <--> hs: HTTP/HTTPS
+bs <--> hs: HTTP/HTTPS
 
-gs --> mongo
-bs --> mongo
-ms --> mongo
-gs --> etcd
-bs --> etcd
-ms --> etcd
-ms --> redis
+ds <--> Redis
+hs <--> Redis
+hs <--> MongoDB
+lb <--> MongoDB
+
+lb <--> etcd: HTTP/HTTPS
+lg <--> etcd: HTTP/HTTPS
+bs <--> etcd: HTTP/HTTPS
+ds <--> etcd: HTTP/HTTPS
+
+
 ```
 
 
-# todo list
+# Q&A
 
-<!-- - [ ] reload all/rpc func而不需要rpc_impl, 给reload_impl加上log, test"from test_const import SD_STR" -->
-<!-- - [ ] puppet -->
-<!-- - [ ] avatar -->
-<!-- - [ ] 等回调的逻辑的wrapper -->
-- [ ] dungeon
-<!-- - [ ] reload 支持 `rpc_func`装饰器的增删 -->
-- [ ] 启动脚本
-<!-- - [ ] 手动心跳 -->
-<!-- - [ ] 断线重连 -->
-<!-- - [ ] battle_server -->
-- [ ] base on etcd distributed lock
-- [ ] kcp connection 共用心跳模块
-<!-- - [ ] rudp 和tcp共存, 先rudp再tcp -->
-<!-- - [ ] 服务器快速重启, 客户端应该要可以自动重连 -->
-- [ ] 打通 cli-gate-lobby-battle
-
-- [ ] tick loop
-<!-- - [ ] dispatcher_service -->
-- [ ] 大厅服务器通知战斗服务器相关puppet的信息已经加密令牌, 约定通信协议
-- [ ] 客户端拿着令牌来和战斗服务器连接并交互
-<!-- - [ ] 各个战斗服务器之间的协同center stub, center掉了, stub尝试重连center的逻辑 -->
-- [ ] 加上type hint
-- [ ] 安全关闭服务器的时候关闭各种conn和server以及清理各种数据和落地
-- [ ] lobby_gate
-- [ ] lobby_server
-- [ ] 玩家离线存盘
-- [ ] 鉴权
-<!-- - [ ] bug: 当某些服务器已经下线, 但etcd 的ttl没处理好, 还在
-- [ ] bug: 当某些服务器已经下线, 但`pick_lowest_load_service_addr`里的redis没有让某些服务器过期
-  - [ ] fix: 用etcd来记录cpu load
-- [ ] 服务器下线应该主动通知redis/etcd -->
-- [ ] game_mgr process for forwarding/reloading
-- [ ] game_mgr_client to exec game_script
-- [ ] db manager
-- [ ] quic
-
-- [ ] login service
-- [ ] rename
-- [ ] 信号处理
-- [ ] keyboardinterrupt
-<!-- - [ ] exception 以及 各种抛出 -->
-<!-- - [ ] timer with key and cancel -->
-<!-- - [ ] etcd -->
-<!-- - [ ] server call cli -->
-<!-- - [ ] rpc_method装饰器的参数不一定要是tuple -->
-- [ ] 配表导表工具
-<!-- - [ ] 日志: 按日期滚动, 并输出到控制台并且按照日志等级有颜色区分, 可以多进程同时输出也可以默认另开线程输出 -->
-- [ ] 日志输出到运营日志
-- [ ] 加密
-- [ ] 压缩
-- [ ] db
-- [ ] test
-- [ ] 录像回放, 直播
-<!-- - [ ] 配置json解析与初始化 -->
+常见问题解答, 就不要去群里刷屏问了哈:  
+* 为何选用python? 不选cpp
+    * 原来是cpp的, 但本服务器引擎的愿景是面向大众开发者, 能够快速开发, 且希望更多的开发者能够参与贡献, python受众广, 易上手, 好维护
+* lobby_gate的意义? 为何客户端不直连lobby?
+    * 一般的，在延迟不敏感的情况下，客户端通过连接 gate 来访问 lobby, gate负责代理转发客户端与 game 之间的网络通信数据。由 gate 负责完成对通信数据加密解析、压缩解压操作, 减轻lobby性能压力。
+    * lobby 处理消息的逻辑可以更加简洁，不用处理 I/O 复用，因为所有的消息来自单个 TCP 连接（单网关）或者固定数量的几个 TCP 连接（多网关的情况）。
+    * 客户端启动后连接的是网关，网关再去连接场景服务器并转发所有消息包。切换场景时客户端与网关的连接是不断的，由网关负责去连接新的场景，因为网关和游戏服务器通常在同一局域网内，所以掉线的问题大大改善了。
+    * 在多进程的网络游戏架构中，game 除了要处理客户端的消息，同时还会处理其他进程的消息，比如账号、GM 工具等。出于安全原因，一定需要把客户端的消息隔离开来加以限制。
+    * 游戏服务器经常需要开服、合服，还有硬件故障等原因导致不得不做服务器迁移。如果 game 直接对客户端提供服务，服务发生变更时往往需要客户端退出重新走登录流程。如果使用网关，在服务器内部发生地址变更时只需要保证网关得到更新并发起重连，客户端甚至根本觉察不到。
+* RUDP是什么?
+    * 全称是 reliable UDP
+    * 目前本服务器引擎基于标准KCP算法使用py实现
+    * 后续有计划要改造kcp, 性能将更上一层楼敬请期待:
+        * 加入基于srtt监测的动态冗余包机制
+        * 精简包头(如包头的一些字段并不需要32位, 可改为16位)
+        * 引入dupack机制, 不只是发`IKCP_CMD_ACK`包
+            * 充分利用包头的字段, 比如当acklist数组里需要发送的ack小于等于3时, 用包头中的len/rdc_len/sn来表示收到了的包的序号
+            * 冗余ack机制: 当acklist数组里需要发送的ack大于3时, body里会包含合并acklist的所有ack以及之前发过的ack, 直到包大小到达mss
+        * ...
 
 
-# 代码规范
+# 关于引入etcd
 
-使用const变量之时不建议使用from ... import ... , 因为
-> Don't use a from import unless the variable is intended to be a constant. from shared_stuff import a would create a new a variable initialized to whatever shared_stuff.a referred to at the time of the import, and this new a variable would not be affected by assignments to shared_stuff.a.
+* 通过其ttl以及watch机制来实现 服务注册 / 服务发现 / 负载均衡 / 上报负载
+* 方便做严谨的分布式锁
+* 与etcd的交互使用的是其V2版本的HTTP API, 与其交互是延迟不敏感的所以不使用grpc, 保持简单
+* 为啥选etcd不选zookeeper?
+    * 两个应用实现的目的不同。etcd的目的是一个高可用的 Key/Value 存储系统，主要用于分享配置和服务发现；zookeeper的目的是高有效和可靠的协同工作系统。
+    * 接口调用方式不同。etcd是基于HTTP+JSON的API，直接使用curl就可以轻松使用，方便集群中每一个主机访问；zookeeper基于TCP，需要专门的客户端支持。
+    * 功能就比较相似了。etcd和zookeeper都是提供了key，value存储服务，集群队列同步服务，观察一个key的数值变化。
+    * 部署方式也是差不多：采用集群的方式，可以达到上千节点。只是etcd是go写的，直接编译好二进制文件部署安装即可；zookeeper是java写的，需要依赖于jdk，需要先部署jdk。
+    * 实现语言： go 拥有几乎不输于C的效率，特别是go语言本身就是面向多线程，进程通信的语言。在小规模集群中性能非常突出；java，实现代码量要多于go，在小规模集群中性能一般，但是在大规模情况下，使用对多线程的优化后，也和go相差不大。
 
-这样会影响incremental_reload, 而用reload_all的话则会卡顿一阵
+
+# ToDo List
+
+- Unity基于pythonnet来引入python做热更或业务编写, 实现前后端代码统一
+- 火焰图的配套工具制作
+- 配表导表工具
+- ...
+
+
