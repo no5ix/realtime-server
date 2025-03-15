@@ -44,7 +44,7 @@ Here are the answers to common questions. Please don't spam the group with these
 * **Where can I find the old version?**
     - Do you mean the CPP version in the following demo image? It's in the [master branch](https://github.com/no5ix/realtime-server/tree/master).
     - ![](/img/UE4DemoScreenshot.gif)
-* **Why choose Python for the new version instead of C++? Or why not make C++ the底层 and Python the upper layer?**
+* **Why choose Python for the new version instead of C++? Or why not make C++ the bottom layer and Python the upper layer?**
     - It's possible to use C++ as the bottom layer and Python as the upper layer for calling. However, the current vision is to encourage more developers to contribute. The threshold of C++ is significantly higher than that of Python for other contributors.
     - If there are enough users in the future, we will consider making the bottom layer in C++ and packaging it into `.pyd` or `.so` for the upper layer to call.
     - For most games, the performance of Python is sufficient.
