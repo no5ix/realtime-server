@@ -7,4 +7,4 @@ bson == 0.5.10
 msgpack == 1.0.2
 
 # D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py: 2
-requests == 2.25.1
+requests == 2.33.0
