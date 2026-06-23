@@ -4,7 +4,7 @@
 bson == 0.5.10
 
 # D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\common\MsgpackSupport.py: 1
-msgpack == 1.0.2
+msgpack == 1.2.1
 
 # D:\Documents\github\realtime-server\pycharm2020.1.3\script\core\EtcdSupport.py: 2
 requests == 2.25.1
